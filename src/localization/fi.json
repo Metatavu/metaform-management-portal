@@ -1,0 +1,16 @@
+{
+
+  "generic": {
+    "cancel": "Peruuta",
+    "delete": "Poista",
+    "edit": "Muokkaa",
+    "logout": "Kirjaudu ulos",
+    "notImplemented": "Ei vielä toteutettu",
+    "save": "Tallenna"
+  },
+
+  "errorHandling": {
+    "title": "Error"
+  }
+
+}

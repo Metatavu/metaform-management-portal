@@ -1,0 +1,41 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "packageRules": [
+    {
+      "labels": [
+        "linting"
+      ],
+      "matchPackagePatterns": [
+        "eslint"
+      ]
+    },
+    {
+      "addLabels": [
+        "optional"
+      ],
+      "matchDepTypes": [
+        "optionalDependencies"
+      ]
+    },
+    {
+      "automerge": true,
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest",
+        "devDependencies"
+      ]
+    }
+  ],
+  "requiredStatusChecks": null,
+  "reviewers": [
+    "jarinykanen",
+    "lauriLukkarinen"
+  ]
+}
