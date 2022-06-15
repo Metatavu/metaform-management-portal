@@ -1,5 +1,5 @@
 {
-  "name": "react-typescript-template",
+  "name": "essote-management-portal",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -34,7 +34,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .ts,.tsx ./src",
-    "build-client": "openapi-generator-cli generate -i api-spec/swagger.yaml -o src/generated/client -c generator-config.json -g typescript-fetch"
+    "build-client": "openapi-generator-cli generate -i metaform-api-spec/swagger.yaml -o src/generated/client -c generator-config.json -g typescript-fetch"
   },
   "eslintConfig": {
     "extends": [
