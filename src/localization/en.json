@@ -11,6 +11,11 @@
 
   "errorHandling": {
     "title": "Error"
+  },
+
+  "header": {
+    "user": "User",
+    "logo": "Essote logo"
   }
 
 }

@@ -26,6 +26,14 @@ export interface Localized extends LocalizedStringsMethods {
     title: string;
   };
 
+  /**
+   * Translations related to header
+   */
+  header: {
+    user: string;
+    logo: string;
+  };
+
 }
 
 /**
