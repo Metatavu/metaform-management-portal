@@ -37,3 +37,12 @@ export type ConfirmOptions = {
   onConfirm?: () => any;
   title: string;
 };
+
+/**
+ * Enum navigation links
+ */
+export enum NavigationLinks {
+  FORMS,
+  USERS,
+  EDITOR
+}

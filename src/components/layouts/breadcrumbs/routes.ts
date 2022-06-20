@@ -11,7 +11,7 @@ const routes = [
     breadcrumb: strings.breadcrumb.home
   },
   {
-    path: "/users",
+    path: "/users/*",
     breadcrumb: strings.breadcrumb.users
   },
   {

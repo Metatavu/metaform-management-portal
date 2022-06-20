@@ -12,11 +12,10 @@ export default createTheme({
 
   palette: {
     primary: {
-      main: "#000000"
+      main: "#375AA3"
     },
     secondary: {
-      main: "#F9473B",
-      light: "#39a849"
+      main: "#4FA3DF"
     },
     text: {
       primary: "#333333",
@@ -30,31 +29,30 @@ export default createTheme({
 
   typography: {
     allVariants: {
-      fontFamily: "acumin-pro, sans-serif",
-      fontWeight: 400
+      fontFamily: "poppins, sans-serif"
     },
     h1: {
-      fontFamily: "ambroise-std, serif",
-      fontWeight: 800,
-      fontSize: 42,
-      letterSpacing: "0.05em",
+      fontWeight: 600,
+      fontSize: 24,
       [breakpoints.down("sm")]: {
         fontSize: "1.75rem"
       }
     },
     h2: {
-      fontFamily: "ambroise-std, serif",
-      fontWeight: 800,
-      fontSize: 30
-    },
-    h3: {
-      fontSize: 26
-    },
-    h4: {
+      fontWeight: 600,
       fontSize: 20
     },
+    h3: {
+      fontWeight: 100,
+      fontSize: 20
+    },
+    h4: {
+      fontWeight: 100,
+      fontSize: 16,
+      color: "rgba(0, 0, 0, 0.5)"
+    },
     body1: {
-      fontSize: 18
+      fontSize: 16
     },
     h5: {
       fontSize: 16
@@ -63,8 +61,7 @@ export default createTheme({
       fontSize: 12
     },
     body2: {
-      fontSize: 16,
-      lineHeight: 1.63
+      fontSize: 14
     }
   },
 

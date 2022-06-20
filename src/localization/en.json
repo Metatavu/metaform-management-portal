@@ -5,7 +5,9 @@
     "edit": "Edit",
     "logout": "Logout",
     "notImplemented": "Not yet implemented",
-    "save": "Save"
+    "save": "Save",
+    "yes": "Yes",
+    "no": "No"
   },
 
   "errorHandling": {
@@ -21,5 +23,20 @@
     "list": "List",
     "answer": "Answer",
     "history": "History"
+  },
+
+  "navigationHeader": {
+    "formsScreens": {
+      "title": "title",
+      "description": "desc"
+    },
+    "usersScreens": {
+      "title": "title",
+      "description": "desc"
+    },
+    "editorScreens": {
+      "title": "title",
+      "description": "desc"
+    }
   }
 }

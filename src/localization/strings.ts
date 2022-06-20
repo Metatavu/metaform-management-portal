@@ -17,6 +17,8 @@ export interface Localized extends LocalizedStringsMethods {
     logout: string;
     notImplemented: string;
     save: string;
+    yes: string;
+    no: string;
   };
 
   /**
@@ -38,6 +40,24 @@ export interface Localized extends LocalizedStringsMethods {
     list: string;
     answer: string;
     history: string;
+  };
+
+  /**
+   * Translations related to navigation header
+   */
+  navigationHeader: {
+    formsScreens: {
+      title: string;
+      description: string;
+    };
+    usersScreens: {
+      title: string;
+      description: string;
+    };
+    editorScreens: {
+      title: string;
+      description: string;
+    };
   };
 }
 

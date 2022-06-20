@@ -1,4 +1,5 @@
 import { BreadcrumbComponentType } from "use-react-router-breadcrumbs";
+import React from "react";
 
 /**
  * Custom component for form breadcrumbs
@@ -11,6 +12,6 @@ const DraftBreadcrumb: BreadcrumbComponentType<"draftId"> = ({ match }) => {
   return (
     <div>{ draftId }</div>
   );
-}
+};
 
 export default DraftBreadcrumb;
