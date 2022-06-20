@@ -1,5 +1,4 @@
 {
-
   "generic": {
     "cancel": "Peruuta",
     "delete": "Poista",
@@ -11,6 +10,16 @@
 
   "errorHandling": {
     "title": "Error"
-  }
+  },
 
+  "breadcrumb": {
+    "home": "Koti",
+    "users": "Käyttäjät",
+    "editor": "Editori",
+    "forms": "Lomakelistaus",
+    "data": "Tiedot",
+    "list": "Lista",
+    "answer": "Vastaus",
+    "history": "Historia"
+  }
 }

@@ -26,6 +26,19 @@ export interface Localized extends LocalizedStringsMethods {
     title: string;
   };
 
+  /**
+   * Translations related to breadcrumb
+   */
+  breadcrumb: {
+    home: string;
+    users: string;
+    editor: string;
+    forms: string;
+    data: string;
+    list: string;
+    answer: string;
+    history: string;
+  };
 }
 
 /**

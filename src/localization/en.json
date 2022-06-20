@@ -1,5 +1,4 @@
 {
-
   "generic": {
     "cancel": "Cancel",
     "delete": "Delete",
@@ -11,6 +10,16 @@
 
   "errorHandling": {
     "title": "Error"
-  }
+  },
 
+  "breadcrumb": {
+    "home": "Home",
+    "users": "Users",
+    "editor": "Editor",
+    "forms": "Forms",
+    "data": "Data",
+    "list": "List",
+    "answer": "Answer",
+    "history": "History"
+  }
 }

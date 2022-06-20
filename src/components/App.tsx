@@ -6,8 +6,8 @@ import ConfirmHandler from "components/contexts/confirm-handler";
 import ErrorHandler from "components/contexts/error-handler";
 import ApiProvider from "./providers/api-provider";
 import FormsRoutes from "./screens/forms/forms-routes";
-import UsersScreen from "./screens/users/users-routes";
-import EditorScreen from "./screens/editor/editor-screen";
+import UsersScreen from "./screens/users/users-screen";
+import EditorRoutes from "./screens/editor/editor-routes";
 
 const apiProviders: React.FC<{}>[] = [];
 
@@ -26,16 +26,16 @@ const App: React.FC = () => (
               element={ <MainScreen/> }
             />
             <Route
-              path="/forms"
-              element={ <FormsRoutes/> }
-            />
-            <Route
               path="/users"
               element={ <UsersScreen/> }
             />
             <Route
-              path="/editor"
-              element={ <EditorScreen/> }
+              path="/forms/*"
+              element={ <FormsRoutes/> }
+            />
+            <Route
+              path="/editor/*"
+              element={ <EditorRoutes/> }
             />
           </Routes>
         </BrowserRouter>
