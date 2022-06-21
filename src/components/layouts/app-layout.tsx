@@ -1,3 +1,4 @@
+import Header from "components/layout-components/header";
 import React from "react";
 import { Content, Root } from "styled/layouts/app-layout";
 
@@ -9,6 +10,7 @@ import { Content, Root } from "styled/layouts/app-layout";
 const AppLayout: React.FC = ({ children }) => {
   return (
     <Root>
+      <Header/>
       <Content>
         { children }
       </Content>
