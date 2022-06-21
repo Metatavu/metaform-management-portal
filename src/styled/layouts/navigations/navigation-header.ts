@@ -10,7 +10,7 @@ const HeaderNavigationWrapper = styled(Stack, {
   flex: theme.spacing(1),
   justifyContent: "space-between",
   alignItems: "center",
-  backgroundColor: "#fff"
+  backgroundColor: theme.palette.secondary.main
 }));
 
 export default HeaderNavigationWrapper;

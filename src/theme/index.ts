@@ -12,10 +12,11 @@ export default createTheme({
 
   palette: {
     primary: {
-      main: "#375AA3"
+      main: "#375AA3",
+      light: "#4FA3DF"
     },
     secondary: {
-      main: "#4FA3DF"
+      main: "#ffffff"
     },
     text: {
       primary: "#333333",

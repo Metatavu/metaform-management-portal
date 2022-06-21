@@ -28,8 +28,8 @@ const NavigationLink: React.FC<Props> = ({
   const [ title ] = LocalizationUtils.getLocalizedNavigationLink(navigation);
   const match = currentNavigation === navigation;
   const color = match ?
-    theme.palette.secondary.main :
-    theme.palette.grey[500];
+    theme.palette.primary.light :
+    theme.palette.grey[400];
 
   /**
    * Component render

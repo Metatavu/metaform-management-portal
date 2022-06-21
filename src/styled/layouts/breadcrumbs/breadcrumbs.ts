@@ -13,7 +13,7 @@ export const Wrapper = styled(Paper, {
   flex: 1,
   zIndex: theme.zIndex.drawer,
   padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
-  backgroundColor: theme.palette.secondary.main
+  backgroundColor: theme.palette.primary.light
 }));
 
 /**
