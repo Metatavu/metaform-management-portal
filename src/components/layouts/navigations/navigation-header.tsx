@@ -1,45 +1,22 @@
 import { Stack, Typography } from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { NavigationLinks } from "types";
 import LocalizationUtils from "utils/localization-utils";
 import NavigationLink from "./navigation-link";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import GroupIcon from "@mui/icons-material/Group";
 import EditIcon from "@mui/icons-material/Edit";
-import strings from "localization/strings";
+import NavigationUtils from "utils/navigation-utils";
+import HeaderNavigationWrapper from "styled/layouts/navigations/navigation-header";
 /**
  * Navigation header component
  */
 const NavigationHeader: React.FC = () => {
-  const navigate = useNavigate();
-  // TODO change location init
-  const [ location, setLocation ] = React.useState<NavigationLinks>(NavigationLinks.FORMS);
-  const [ title, description ] = LocalizationUtils.getLocalizedNavigationLink(location);
+  const { pathname } = useLocation();
 
-  /**
-   * On navigate forms click
-   */
-  const onNavigateFormsClick = () => {
-    setLocation(NavigationLinks.FORMS);
-    navigate("/forms");
-  };
-
-  /**
-   * On navigate users click
-   */
-  const onNavigateUsersClick = () => {
-    setLocation(NavigationLinks.USERS);
-    navigate("/users");
-  };
-
-  /**
-   * On navigate editor click
-   */
-  const onNavigateEditorClick = () => {
-    setLocation(NavigationLinks.EDITOR);
-    navigate("/editor");
-  };
+  const currentNavigation = NavigationUtils.matchNavigation(pathname);
+  const [ title, description ] = LocalizationUtils.getLocalizedNavigationLink(currentNavigation);
 
   /**
    * Renders header text
@@ -57,21 +34,18 @@ const NavigationHeader: React.FC = () => {
   const renderNavigationLinks = () => (
     <Stack direction="row">
       <NavigationLink
-        selected={ NavigationLinks.FORMS === location }
-        title={ strings.navigationHeader.formsScreens.title }
-        onClick={ onNavigateFormsClick }
+        currentNavigation={ currentNavigation }
+        navigation={ NavigationLinks.FORMS }
         renderIcon={ color => <FormatAlignJustifyIcon htmlColor={ color }/> }
       />
       <NavigationLink
-        selected={ NavigationLinks.USERS === location }
-        title={ strings.navigationHeader.usersScreens.title }
-        onClick={ onNavigateUsersClick }
+        currentNavigation={ currentNavigation }
+        navigation={ NavigationLinks.USERS }
         renderIcon={ color => <GroupIcon htmlColor={ color }/> }
       />
       <NavigationLink
-        selected={ NavigationLinks.EDITOR === location }
-        title={ strings.navigationHeader.editorScreens.title }
-        onClick={ onNavigateEditorClick }
+        currentNavigation={ currentNavigation }
+        navigation={ NavigationLinks.EDITOR }
         renderIcon={ color => <EditIcon htmlColor={ color }/> }
       />
     </Stack>
@@ -82,17 +56,10 @@ const NavigationHeader: React.FC = () => {
    */
   return (
     // TODO move to style
-    <Stack
-      px={ 4 }
-      flex={ 1 }
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      sx={{ backgroundColor: "#fff" }}
-    >
+    <HeaderNavigationWrapper direction="row">
       { renderHeaderText() }
       { renderNavigationLinks() }
-    </Stack>
+    </HeaderNavigationWrapper>
   );
 };
 

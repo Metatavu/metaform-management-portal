@@ -1,10 +1,10 @@
 import { Stack, styled } from "@mui/material";
 
 /**
- * Styled breadcrumbs container wrapper
+ * Styled navigation wrapper
  */
 const NavigationWrapper = styled(Stack, {
-  label: "breadcrumb-wrapper"
+  label: "navigation-wrapper"
 })(({ theme }) => ({
   paddingTop: theme.spacing(1),
   width: 120,

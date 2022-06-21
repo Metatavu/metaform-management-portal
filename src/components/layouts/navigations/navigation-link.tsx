@@ -2,14 +2,17 @@ import { Button, Divider, Typography } from "@mui/material";
 import theme from "theme";
 import React from "react";
 import NavigationWrapper from "styled/layouts/navigations/navigation-link";
+import { useNavigate } from "react-router-dom";
+import { NavigationLinks } from "types";
+import LocalizationUtils from "utils/localization-utils";
+import NavigationUtils from "utils/navigation-utils";
 
 /**
  * Component properties
  */
 interface Props {
-  title: string;
-  selected: boolean;
-  onClick: () => void;
+  navigation: NavigationLinks
+  currentNavigation?: NavigationLinks;
   renderIcon: (color: string) => React.ReactNode;
 }
 
@@ -17,15 +20,16 @@ interface Props {
  * Draft editor screen component
  */
 const NavigationLink: React.FC<Props> = ({
-  title,
-  selected,
-  onClick,
+  navigation,
+  currentNavigation,
   renderIcon
 }) => {
-  const color = selected ?
+  const navigate = useNavigate();
+  const [ title ] = LocalizationUtils.getLocalizedNavigationLink(navigation);
+  const match = currentNavigation === navigation;
+  const color = match ?
     theme.palette.secondary.main :
     theme.palette.grey[500];
-  console.log("color: ", color);
 
   /**
    * Component render
@@ -33,12 +37,12 @@ const NavigationLink: React.FC<Props> = ({
   return (
     <Button
       sx={{ padding: 0 }}
-      onClick={ onClick }
+      onClick={ () => navigate(NavigationUtils.getTranslatedNavigation(navigation)) }
     >
       <NavigationWrapper spacing={ 1 }>
         { renderIcon(color) }
         <Typography color={ color }>{ title }</Typography>
-        { selected && <Divider sx={{ height: 2 }} color={ color }/> }
+        { match && <Divider sx={{ height: 2 }} color={ color }/> }
       </NavigationWrapper>
     </Button>
   );

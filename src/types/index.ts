@@ -42,7 +42,7 @@ export type ConfirmOptions = {
  * Enum navigation links
  */
 export enum NavigationLinks {
-  FORMS,
-  USERS,
-  EDITOR
+  FORMS = "FORMS",
+  USERS = "USERS",
+  EDITOR = "EDITOR"
 }
