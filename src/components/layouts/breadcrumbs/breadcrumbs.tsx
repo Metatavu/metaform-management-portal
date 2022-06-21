@@ -51,7 +51,7 @@ const Breadcrumbs: React.FC = () => {
    * Component render
    */
   return (
-    <Wrapper>
+    <Wrapper elevation={ 0 }>
       { breadcrumbs.map(renderSingleBreadcrumb) }
     </Wrapper>
   );
