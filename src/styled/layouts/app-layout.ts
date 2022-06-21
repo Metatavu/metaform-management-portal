@@ -33,5 +33,6 @@ export const Content = styled(Paper, {
   flex: 1,
   width: "100%",
   borderRadius: theme.spacing(4),
-  boxShadow: "none"
+  boxShadow: "none",
+  overflow: "hidden"
 }));

@@ -1,11 +1,11 @@
 import { Button, Divider, Typography } from "@mui/material";
 import theme from "theme";
 import React from "react";
-import NavigationWrapper from "styled/layouts/navigations/navigation-link";
 import { useNavigate } from "react-router-dom";
 import { NavigationLinks } from "types";
 import LocalizationUtils from "utils/localization-utils";
 import NavigationUtils from "utils/navigation-utils";
+import { NavigationWrapper } from "styled/layouts/navigations";
 
 /**
  * Component properties

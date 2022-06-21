@@ -2,7 +2,7 @@ import { Typography, Stack } from "@mui/material";
 import routes from "./routes";
 import React from "react";
 import useBreadcrumbs, { BreadcrumbData } from "use-react-router-breadcrumbs";
-import { Crumb, Wrapper } from "styled/layouts/breadcrumbs/breadcrumbs";
+import { Crumb, Wrapper } from "styled/layouts/breadcrumbs";
 
 /**
  * Breadcrumbs component

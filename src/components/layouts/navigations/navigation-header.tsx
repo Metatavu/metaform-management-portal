@@ -8,7 +8,7 @@ import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import GroupIcon from "@mui/icons-material/Group";
 import EditIcon from "@mui/icons-material/Edit";
 import NavigationUtils from "utils/navigation-utils";
-import HeaderNavigationWrapper from "styled/layouts/navigations/navigation-header";
+import { HeaderNavigationWrapper } from "styled/layouts/navigations";
 /**
  * Navigation header component
  */
