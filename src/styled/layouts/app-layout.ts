@@ -10,8 +10,7 @@ export const Root = styled(Box, {
 })(({ theme }) => ({
   height: "100vh",
   width: "100vw",
-  overflow: "hidden",
-  background: "linear-gradient(180deg, #375AA3 0%, #4FA3DF 100%);"
+  overflow: "hidden"
 }));
 
 /**

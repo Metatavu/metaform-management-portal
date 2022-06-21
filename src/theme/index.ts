@@ -78,7 +78,10 @@ export default createTheme({
             textDecoration: "none"
           }
         },
-        body: palette.mode === "dark" ? darkScrollbar() : null
+        body: {
+          ...palette.mode === "dark" ? darkScrollbar() : null,
+          background: "linear-gradient(180deg, #375AA3 0%, #4FA3DF 100%)"
+        }
       }
     },
     MuiAppBar: {
