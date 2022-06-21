@@ -24,12 +24,9 @@ const Header: React.FC<Props> = ({
         <Stack
           width="100%"
           direction="row"
-          spacing={ 150 }
-          sx={{
-            alignItems: "center",
-            justifyContent: "stretch",
-            flexGrow: 1
-          }}
+          spacing={ 2 }
+          alignItems="center"
+          justifyContent="space-between"
         >
           <Typography variant="h1">
             { strings.header.logo }
