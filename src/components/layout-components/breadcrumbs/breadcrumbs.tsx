@@ -1,36 +1,9 @@
-import { Paper, styled, Typography, Stack } from "@mui/material";
+import { Typography, Stack } from "@mui/material";
 import routes from "./routes";
 import React from "react";
-import { NavLink } from "react-router-dom";
 import theme from "theme";
 import useBreadcrumbs, { BreadcrumbData } from "use-react-router-breadcrumbs";
-
-/**
- * Styled breadcrumbs container wrapper
- */
-const Wrapper = styled(Paper, {
-  label: "breadcrumb-wrapper"
-})(() => ({
-  display: "flex",
-  alignItems: "center",
-  flex: 1,
-  zIndex: theme.zIndex.drawer,
-  padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
-  backgroundColor: theme.palette.background.default
-}));
-
-/**
- * Styled breadcrumbs crumb
- */
-const Crumb = styled(NavLink, {
-  label: "breadcrumb-link"
-})(() => ({
-  color: theme.palette.text.primary,
-  textDecoration: "none",
-  "&:hover": {
-    textDecoration: "underline"
-  }
-}));
+import { Crumb, Wrapper } from "styled/layout-components/breadcrumbs";
 
 /**
  * Breadcrumbs component
@@ -64,7 +37,7 @@ const Breadcrumbs: React.FC = () => {
         >
           <Typography
             variant="subtitle2"
-            style={ currentPage ? { fontWeight: "bold", color: theme.palette.primary.main } : {} }
+            style={ currentPage ? { fontWeight: "bold", color: theme.palette.primary.light } : {} }
           >
             { breadcrumb }
           </Typography>
