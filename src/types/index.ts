@@ -39,6 +39,14 @@ export type ConfirmOptions = {
 };
 
 /**
+ * List item data
+ */
+export type ListItemData = {
+  title: string;
+  description: string;
+};
+
+/**
  * Enum navigation links
  */
 export enum NavigationLinks {

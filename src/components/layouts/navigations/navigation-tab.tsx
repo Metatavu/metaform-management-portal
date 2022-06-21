@@ -1,16 +1,16 @@
-import { Stack, Typography } from "@mui/material";
+import { Box, ListItemText } from "@mui/material";
 import theme from "theme";
 import React from "react";
 import { Link } from "react-router-dom";
 import { NavigationTabWrapper } from "styled/layouts/navigations";
+import { ListItemData } from "types";
 
 /**
  * Component properties
  */
 interface Props {
   active?: boolean;
-  title: string;
-  description: string;
+  text: ListItemData;
   to?: string;
   renderFilters?: () => React.ReactNode;
 }
@@ -20,15 +20,12 @@ interface Props {
  */
 const NavigationTab: React.FC<Props> = ({
   active = true,
-  title,
-  description,
+  text,
   to,
   renderFilters
 }) => {
+  const { title, description } = text;
   const linkEnabled = active && !to;
-  const color = linkEnabled ?
-    undefined :
-    theme.palette.grey[400];
 
   /**
    * Renders tab content
@@ -41,16 +38,24 @@ const NavigationTab: React.FC<Props> = ({
           theme.palette.grey[100]
       }}
     >
-      <Stack>
-        <Typography variant="h1" color={ color }>{ title }</Typography>
-        <Typography variant="h4" color={ color }>{ description }</Typography>
-      </Stack>
+      <ListItemText
+        primary={ title }
+        secondary={ description }
+        primaryTypographyProps={{
+          ...theme.components?.MuiListItemText?.defaultProps?.primaryTypographyProps,
+          color: linkEnabled ? undefined : theme.palette.grey[400]
+        }}
+      />
       { linkEnabled && renderFilters?.() }
     </NavigationTabWrapper>
   );
 
   if (!to) {
-    return renderTabContent();
+    return (
+      <Box sx={{ flex: 1 }}>
+        { renderTabContent() }
+      </Box>
+    );
   }
 
   /**
@@ -59,7 +64,7 @@ const NavigationTab: React.FC<Props> = ({
   return (
     <Link
       to={ to }
-      style={{ textDecoration: "none", width: "100%" }}
+      style={{ textDecoration: "none", flex: 1 }}
     >
       { renderTabContent() }
     </Link>

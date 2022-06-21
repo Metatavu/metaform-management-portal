@@ -33,11 +33,19 @@
   "navigationHeader": {
     "formsScreens": {
       "title": "Forms",
-      "description": "Review of forms and responses."
+      "description": "Review of forms and responses.",
+      "formScreen": {
+        "title": "Form listing",
+        "description": "A list of forms that the user has permission to process."
+      },
+      "formDataScreen": {
+        "title": "Viewing data",
+        "description": "Information e.g. the utilization rate of the forms."
+      }
     },
     "usersScreens": {
       "title": "Users",
-      "description": "Ohjeteksti"
+      "description": "Help text"
     },
     "editorScreens": {
       "title": "Editors",

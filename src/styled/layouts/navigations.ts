@@ -43,7 +43,6 @@ export const NavigationTabWrapper = styled(Stack, {
   label: "navigation-tab-wrapper"
 })(({ theme }) => ({
   height: "100%",
-  width: "100%",
   flexDirection: "row",
   alignItems: "center",
   padding: theme.spacing(4)

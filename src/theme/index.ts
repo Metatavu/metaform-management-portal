@@ -49,8 +49,7 @@ export default createTheme({
     },
     h4: {
       fontWeight: 100,
-      fontSize: 16,
-      color: "rgba(0, 0, 0, 0.5)"
+      fontSize: 16
     },
     body1: {
       fontSize: 16
@@ -126,6 +125,19 @@ export default createTheme({
         root: {
           alignItems: "center",
           justifyContent: "space-between"
+        }
+      }
+    },
+    MuiListItemText: {
+      defaultProps: {
+        primaryTypographyProps: {
+          fontSize: 24,
+          fontWeight: 600
+        },
+        secondaryTypographyProps: {
+          fontSize: 16,
+          fontWeight: 600,
+          color: palette.grey[400]
         }
       }
     }

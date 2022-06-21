@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { ListItemText, Stack } from "@mui/material";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { NavigationLinks } from "types";
@@ -17,16 +17,6 @@ const NavigationHeader: React.FC = () => {
 
   const currentNavigation = NavigationUtils.matchNavigation(pathname);
   const [ title, description ] = LocalizationUtils.getLocalizedNavigationLink(currentNavigation);
-
-  /**
-   * Renders header text
-   */
-  const renderHeaderText = () => (
-    <Stack>
-      <Typography variant="h1">{ title }</Typography>
-      <Typography variant="h4">{ description }</Typography>
-    </Stack>
-  );
 
   /**
    * Renders navigation links
@@ -56,7 +46,10 @@ const NavigationHeader: React.FC = () => {
    */
   return (
     <HeaderNavigationWrapper direction="row">
-      { renderHeaderText() }
+      <ListItemText
+        primary={ title }
+        secondary={ description }
+      />
       { renderNavigationLinks() }
     </HeaderNavigationWrapper>
   );
