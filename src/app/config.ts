@@ -5,10 +5,12 @@ import { Configuration } from "types";
  * Validates that environment variables are in place and have correct form
  */
 const env = cleanEnv(process.env, {
-  REACT_APP_KEYCLOAK_URL: url(),
-  REACT_APP_KEYCLOAK_REALM: str(),
-  REACT_APP_KEYCLOAK_CLIENT_ID: str(),
-  REACT_APP_API_BASE_URL: url()
+  REACT_APP_KEYCLOAK_URL: url({ default: undefined }),
+  REACT_APP_KEYCLOAK_REALM: str({ default: undefined }),
+  REACT_APP_KEYCLOAK_CLIENT_ID: str({ default: undefined }),
+  REACT_APP_API_BASE_URL: url({ default: undefined }),
+  REACT_APP_SENTRY_DSN: url({ default: undefined }),
+  REACT_APP_SENTRY_ENVIRONMENT: str({ default: "production" })
 });
 
 /**
@@ -31,5 +33,23 @@ export default class Config {
       baseUrl: env.REACT_APP_API_BASE_URL
     }
   });
+
+  /**
+   * Returns sentry dsn
+   * 
+   * @returns sentry dsn
+   */
+  public static getSentryDsn(): string | undefined {
+    return env.REACT_APP_SENTRY_DSN;
+  }
+
+  /**
+   * Returns sentry environment
+   * 
+   * @returns sentry environment
+   */
+  public static getSentryEnvironment(): string {
+    return env.REACT_APP_SENTRY_ENVIRONMENT;
+  }
 
 }
