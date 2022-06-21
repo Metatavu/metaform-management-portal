@@ -23,6 +23,7 @@ const Header: React.FC<Props> = ({
     <Root position="static">
       <HeaderToolbar>
         <LogoContainer>
+          {/* TODO replace the logo to higher resolution */}
           <Logo alt="Essote logo" src={ EssoteLogoPath }/>
         </LogoContainer>
         <TextField

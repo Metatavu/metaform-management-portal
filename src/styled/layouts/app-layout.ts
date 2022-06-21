@@ -10,7 +10,9 @@ export const Root = styled(Box, {
 })(() => ({
   height: "100vh",
   width: "100vw",
-  overflow: "hidden"
+  overflow: "hidden",
+  display: "grid",
+  gridTemplateRows: "auto auto auto 1fr"
 }));
 
 /**
@@ -21,6 +23,7 @@ export const ContentWrapper = styled(Box, {
 })(({ theme }) => ({
   flex: 1,
   width: "100%",
+  display: "flex",
   padding: theme.spacing(4)
 }));
 
@@ -30,6 +33,8 @@ export const ContentWrapper = styled(Box, {
 export const Content = styled(Paper, {
   label: "app-layout--content"
 })(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
   flex: 1,
   width: "100%",
   borderRadius: theme.spacing(4),
