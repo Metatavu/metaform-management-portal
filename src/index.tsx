@@ -6,6 +6,23 @@ import { store } from "app/store";
 import { CssBaseline, responsiveFontSizes, ThemeProvider } from "@mui/material";
 import theme from "theme";
 import App from "components/App";
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
+import Config from "app/config";
+
+const sentryDsn = Config.getSentryDsn();
+
+/**
+ * Initialize Sentry
+ */
+if (sentryDsn) {
+  Sentry.init({
+    dsn: sentryDsn,
+    tracesSampleRate: 1.0,
+    environment: Config.getSentryEnvironment(),
+    integrations: [new BrowserTracing()]
+  });
+}
 
 /**
  * Initializes React component structure to the web page
