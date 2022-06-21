@@ -22,7 +22,7 @@ export default createTheme({
       secondary: "#ffffff"
     },
     background: {
-      default: "#E0E0E0",
+      default: "#405da3",
       paper: "#ffffff"
     }
   },

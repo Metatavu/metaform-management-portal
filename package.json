@@ -19,15 +19,15 @@
     "eslint-config-airbnb-typescript": "^16.1.0",
     "keycloak-js": "^16.1.1",
     "localized-strings": "^0.2.4",
-    "moment": "^2.29.1",
+    "moment": "^2.29.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
-    "typescript": "^4.5.5",
-    "web-vitals": "^2.1.4",
-    "use-react-router-breadcrumbs": "^3.0.1"
+    "typescript": "^4.7.3",
+    "use-react-router-breadcrumbs": "^3.2.1",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,7 +35,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .ts,.tsx ./src",
-    "build-client": "openapi-generator-cli generate -i api-spec/swagger.yaml -o src/generated/client -c generator-config.json -g typescript-fetch"
+    "build-client": "openapi-generator-cli generate -i metaform-api-spec/swagger.yaml -o src/generated/client -c generator-config.json -g typescript-fetch"
   },
   "eslintConfig": {
     "extends": [

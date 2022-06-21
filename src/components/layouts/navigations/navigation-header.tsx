@@ -55,7 +55,6 @@ const NavigationHeader: React.FC = () => {
    * Component render
    */
   return (
-    // TODO move to style
     <HeaderNavigationWrapper direction="row">
       { renderHeaderText() }
       { renderNavigationLinks() }

@@ -11,7 +11,7 @@ export const Root = styled(Box, {
   height: "100vh",
   width: "100vw",
   overflow: "hidden",
-  backgroundColor: theme.palette.background.default
+  background: "linear-gradient(180deg, #375AA3 0%, #4FA3DF 100%);"
 }));
 
 /**
@@ -20,7 +20,6 @@ export const Root = styled(Box, {
 export const Content = styled(Stack, {
   label: "app-layout--content"
 })(({ theme }) => ({
-  backgroundColor: "rgba(218,219,205,0.1)",
   flex: 1,
   width: "100%",
   minHeight: `calc(100vh - ${theme.spacing(64)}px)`

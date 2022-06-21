@@ -1,3 +1,4 @@
+import Header from "components/layout-components/header";
 import React from "react";
 import { Content, Root } from "styled/layouts/app-layout";
 import Breadcrumbs from "./breadcrumbs/breadcrumbs";
@@ -14,6 +15,7 @@ const AppLayout: React.FC = ({ children }) => {
    */
   return (
     <Root>
+      <Header/>
       <NavigationHeader/>
       <Breadcrumbs/>
       <Content>

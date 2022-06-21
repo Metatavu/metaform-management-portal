@@ -14,6 +14,11 @@
     "title": "Error"
   },
 
+  "header": {
+    "user": "Käyttäjä",
+    "logo": "Essote logo"
+  },
+
   "breadcrumb": {
     "home": "Koti",
     "users": "Käyttäjät",

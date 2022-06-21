@@ -29,6 +29,14 @@ export interface Localized extends LocalizedStringsMethods {
   };
 
   /**
+  * Translations related to header
+  */
+  header: {
+    user: string;
+    logo: string;
+  };
+
+  /**
    * Translations related to breadcrumb
    */
   breadcrumb: {
