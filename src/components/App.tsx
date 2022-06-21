@@ -24,7 +24,7 @@ const App: React.FC = () => (
             <Routes>
               <Route
                 path="/"
-                element={ <Navigate to="/forms/list"/> }
+                element={ <Navigate to="/forms"/> }
               />
               <Route
                 path="/users"

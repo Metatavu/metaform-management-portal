@@ -1,7 +1,7 @@
 import React from "react";
 import { Content, Root } from "styled/layouts/app-layout";
 import Breadcrumbs from "./breadcrumbs/breadcrumbs";
-import NavigationHeader from "./navigation/navigation-header";
+import NavigationHeader from "./navigations/navigation-header";
 
 /**
  * App layout component

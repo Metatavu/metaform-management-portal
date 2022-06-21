@@ -11,7 +11,7 @@ import FormsScreen from "./forms-screen";
 const FormsRoutes: React.FC = () => (
   <Routes>
     <Route
-      path="/list"
+      path="/"
       element={ <FormsScreen/> }
     />
     <Route

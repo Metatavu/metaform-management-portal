@@ -32,7 +32,6 @@ const Breadcrumbs: React.FC = () => {
       >
         <Crumb
           to={ pathname }
-          hidden={ lastLink }
         >
           <Typography
             variant="subtitle2"
@@ -42,7 +41,7 @@ const Breadcrumbs: React.FC = () => {
           </Typography>
         </Crumb>
         { !lastLink &&
-          <Typography sx={{ fontWeight: 100 }}>/</Typography>
+          <Typography variant="subtitle2">/</Typography>
         }
       </Stack>
     );

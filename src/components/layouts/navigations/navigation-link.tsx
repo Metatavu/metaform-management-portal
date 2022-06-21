@@ -1,6 +1,7 @@
-import { Divider, Stack, Typography } from "@mui/material";
+import { Button, Divider, Typography } from "@mui/material";
 import theme from "theme";
 import React from "react";
+import NavigationWrapper from "styled/layouts/navigations/navigation-link";
 
 /**
  * Component properties
@@ -22,7 +23,7 @@ const NavigationLink: React.FC<Props> = ({
   renderIcon
 }) => {
   const color = selected ?
-    theme.palette.primary.main :
+    theme.palette.secondary.main :
     theme.palette.grey[500];
   console.log("color: ", color);
 
@@ -30,21 +31,16 @@ const NavigationLink: React.FC<Props> = ({
    * Component render
    */
   return (
-    <Stack
-      width={ 120 }
-      alignItems="center"
+    <Button
+      sx={{ padding: 0 }}
       onClick={ onClick }
     >
-      <Stack
-        p={ 1 }
-        spacing={ 1 }
-        alignItems="center"
-      >
+      <NavigationWrapper spacing={ 1 }>
         { renderIcon(color) }
         <Typography color={ color }>{ title }</Typography>
-      </Stack>
-      { selected && <Divider color={ color }/> }
-    </Stack>
+        { selected && <Divider sx={{ height: 2 }} color={ color }/> }
+      </NavigationWrapper>
+    </Button>
   );
 };
 

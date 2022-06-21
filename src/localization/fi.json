@@ -27,16 +27,16 @@
 
   "navigationHeader": {
     "formsScreens": {
-      "title": "title",
-      "description": "desc"
+      "title": "Lomakkeet",
+      "description": "Lomakkeiden ja vastausten tarkastelu."
     },
     "usersScreens": {
-      "title": "title",
-      "description": "desc"
+      "title": "Käyttäjät",
+      "description": "Ohjeteksti"
     },
     "editorScreens": {
-      "title": "title",
-      "description": "desc"
+      "title": "Editori",
+      "description": "Lomakkeiden muokkaus ja uusien lomakkeiden luominen."
     }
   }
 }

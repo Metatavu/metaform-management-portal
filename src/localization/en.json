@@ -27,16 +27,16 @@
 
   "navigationHeader": {
     "formsScreens": {
-      "title": "title",
-      "description": "desc"
+      "title": "Forms",
+      "description": "Review of forms and responses."
     },
     "usersScreens": {
-      "title": "title",
-      "description": "desc"
+      "title": "Users",
+      "description": "Ohjeteksti"
     },
     "editorScreens": {
-      "title": "title",
-      "description": "desc"
+      "title": "Editors",
+      "description": "Edit forms and create new forms."
     }
   }
 }

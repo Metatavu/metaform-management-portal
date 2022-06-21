@@ -35,7 +35,7 @@ const routes = [
     breadcrumb: strings.breadcrumb.data
   },
   {
-    path: "/forms/list",
+    path: "/forms",
     breadcrumb: strings.breadcrumb.list
   },
   {

@@ -5,7 +5,9 @@ import { NavigationLinks } from "types";
 import LocalizationUtils from "utils/localization-utils";
 import NavigationLink from "./navigation-link";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
-
+import GroupIcon from "@mui/icons-material/Group";
+import EditIcon from "@mui/icons-material/Edit";
+import strings from "localization/strings";
 /**
  * Navigation header component
  */
@@ -20,7 +22,7 @@ const NavigationHeader: React.FC = () => {
    */
   const onNavigateFormsClick = () => {
     setLocation(NavigationLinks.FORMS);
-    navigate("/forms/list");
+    navigate("/forms");
   };
 
   /**
@@ -56,21 +58,21 @@ const NavigationHeader: React.FC = () => {
     <Stack direction="row">
       <NavigationLink
         selected={ NavigationLinks.FORMS === location }
-        title={ title }
+        title={ strings.navigationHeader.formsScreens.title }
         onClick={ onNavigateFormsClick }
-        renderIcon={ color => <FormatAlignJustifyIcon fontSize="large" htmlColor={ color }/> }
+        renderIcon={ color => <FormatAlignJustifyIcon htmlColor={ color }/> }
       />
       <NavigationLink
         selected={ NavigationLinks.USERS === location }
-        title={ title }
+        title={ strings.navigationHeader.usersScreens.title }
         onClick={ onNavigateUsersClick }
-        renderIcon={ color => <FormatAlignJustifyIcon fontSize="large" htmlColor={ color }/> }
+        renderIcon={ color => <GroupIcon htmlColor={ color }/> }
       />
       <NavigationLink
         selected={ NavigationLinks.EDITOR === location }
-        title={ title }
+        title={ strings.navigationHeader.editorScreens.title }
         onClick={ onNavigateEditorClick }
-        renderIcon={ color => <FormatAlignJustifyIcon fontSize="large" htmlColor={ color }/> }
+        renderIcon={ color => <EditIcon htmlColor={ color }/> }
       />
     </Stack>
   );

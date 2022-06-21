@@ -62,6 +62,11 @@ export default createTheme({
     },
     body2: {
       fontSize: 14
+    },
+    subtitle2: {
+      fontSize: 14,
+      color: "#fff",
+      fontWeight: 600
     }
   },
 
