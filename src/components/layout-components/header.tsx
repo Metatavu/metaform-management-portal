@@ -20,7 +20,7 @@ const Header: React.FC<Props> = ({
 }) => {
   return (
     <Root position="relative">
-      <Toolbar>
+      <Toolbar style={{ width: "100%" }}>
         <Stack
           width="100%"
           direction="row"
