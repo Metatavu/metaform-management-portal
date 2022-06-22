@@ -37,3 +37,20 @@ export type ConfirmOptions = {
   onConfirm?: () => any;
   title: string;
 };
+
+/**
+ * List item data
+ */
+export type ListItemData = {
+  title: string;
+  description: string;
+};
+
+/**
+ * Enum navigation links
+ */
+export enum NavigationLinks {
+  FORMS = "FORMS",
+  USERS = "USERS",
+  EDITOR = "EDITOR"
+}

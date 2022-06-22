@@ -17,6 +17,8 @@ export interface Localized extends LocalizedStringsMethods {
     logout: string;
     notImplemented: string;
     save: string;
+    yes: string;
+    no: string;
   };
 
   /**
@@ -34,6 +36,45 @@ export interface Localized extends LocalizedStringsMethods {
     logo: string;
   };
 
+  /**
+   * Translations related to breadcrumb
+   */
+  breadcrumb: {
+    home: string;
+    users: string;
+    editor: string;
+    forms: string;
+    data: string;
+    list: string;
+    answer: string;
+    history: string;
+  };
+
+  /**
+   * Translations related to navigation header
+   */
+  navigationHeader: {
+    formsScreens: {
+      title: string;
+      description: string;
+      formScreen: {
+        title: string;
+        description: string;
+      };
+      formDataScreen: {
+        title: string;
+        description: string;
+      };
+    };
+    usersScreens: {
+      title: string;
+      description: string;
+    };
+    editorScreens: {
+      title: string;
+      description: string;
+    };
+  };
 }
 
 /**

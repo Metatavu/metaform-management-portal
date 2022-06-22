@@ -1,12 +1,13 @@
 {
-
   "generic": {
     "cancel": "Peruuta",
     "delete": "Poista",
     "edit": "Muokkaa",
     "logout": "Kirjaudu ulos",
     "notImplemented": "Ei vielä toteutettu",
-    "save": "Tallenna"
+    "save": "Tallenna",
+    "yes": "Kyllä",
+    "no": "Ei"
   },
 
   "errorHandling": {
@@ -16,6 +17,39 @@
   "header": {
     "user": "Käyttäjä",
     "logo": "Essote logo"
-  }
+  },
 
+  "breadcrumb": {
+    "home": "Koti",
+    "users": "Käyttäjät",
+    "editor": "Editori",
+    "forms": "Lomakelistaus",
+    "data": "Tiedot",
+    "list": "Lista",
+    "answer": "Vastaus",
+    "history": "Historia"
+  },
+
+  "navigationHeader": {
+    "formsScreens": {
+      "title": "Lomakkeet",
+      "description": "Lomakkeiden ja vastausten tarkastelu.",
+      "formScreen": {
+        "title": "Lomakelistaus",
+        "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus."
+      },
+      "formDataScreen": {
+        "title": "Datan tarkastelu",
+        "description": "Tietoja mm. lomakkeiden käyttöasteesta."
+      }
+    },
+    "usersScreens": {
+      "title": "Käyttäjät",
+      "description": "Ohjeteksti"
+    },
+    "editorScreens": {
+      "title": "Editori",
+      "description": "Lomakkeiden muokkaus ja uusien lomakkeiden luominen."
+    }
+  }
 }

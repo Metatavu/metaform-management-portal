@@ -1,12 +1,13 @@
 {
-
   "generic": {
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
     "logout": "Logout",
     "notImplemented": "Not yet implemented",
-    "save": "Save"
+    "save": "Save",
+    "yes": "Yes",
+    "no": "No"
   },
 
   "errorHandling": {
@@ -16,6 +17,39 @@
   "header": {
     "user": "User",
     "logo": "Essote logo"
-  }
+  },
 
+  "breadcrumb": {
+    "home": "Home",
+    "users": "Users",
+    "editor": "Editor",
+    "forms": "Forms",
+    "data": "Data",
+    "list": "List",
+    "answer": "Answer",
+    "history": "History"
+  },
+
+  "navigationHeader": {
+    "formsScreens": {
+      "title": "Forms",
+      "description": "Review of forms and responses.",
+      "formScreen": {
+        "title": "Form listing",
+        "description": "A list of forms that the user has permission to process."
+      },
+      "formDataScreen": {
+        "title": "Viewing data",
+        "description": "Information e.g. the utilization rate of the forms."
+      }
+    },
+    "usersScreens": {
+      "title": "Users",
+      "description": "Help text"
+    },
+    "editorScreens": {
+      "title": "Editors",
+      "description": "Edit forms and create new forms."
+    }
+  }
 }

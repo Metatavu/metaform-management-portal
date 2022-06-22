@@ -1,3 +1,4 @@
+import { Paper } from "@mui/material";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 
@@ -6,23 +7,37 @@ import { styled } from "@mui/material/styles";
  */
 export const Root = styled(Box, {
   label: "app-layout--root"
-})(({ theme }) => ({
+})(() => ({
   height: "100vh",
   width: "100vw",
   overflow: "hidden",
-  backgroundColor: theme.palette.background.default
+  display: "grid",
+  gridTemplateRows: "auto auto auto 1fr"
+}));
+
+/**
+ * Styled content wrapper component
+ */
+export const ContentWrapper = styled(Box, {
+  label: "app-layout--content-wrapper"
+})(({ theme }) => ({
+  flex: 1,
+  width: "100%",
+  display: "flex",
+  padding: theme.spacing(4)
 }));
 
 /**
  * Styled content component
  */
-export const Content = styled(Box, {
+export const Content = styled(Paper, {
   label: "app-layout--content"
 })(({ theme }) => ({
-  backgroundColor: "rgba(218,219,205,0.1)",
   display: "flex",
   flexDirection: "column",
   flex: 1,
   width: "100%",
-  minHeight: `calc(100vh - ${theme.spacing(64)}px)`
+  borderRadius: theme.spacing(4),
+  boxShadow: "none",
+  overflow: "hidden"
 }));

@@ -12,11 +12,11 @@ export default createTheme({
 
   palette: {
     primary: {
-      main: "#000000"
+      main: "#375AA3",
+      light: "#4FA3DF"
     },
     secondary: {
-      main: "#F9473B",
-      light: "#39a849"
+      main: "#ffffff"
     },
     text: {
       primary: "#333333",
@@ -30,31 +30,29 @@ export default createTheme({
 
   typography: {
     allVariants: {
-      fontFamily: "acumin-pro, sans-serif",
-      fontWeight: 400
+      fontFamily: "poppins, sans-serif"
     },
     h1: {
-      fontFamily: "ambroise-std, serif",
-      fontWeight: 800,
-      fontSize: 42,
-      letterSpacing: "0.05em",
+      fontWeight: 600,
+      fontSize: 24,
       [breakpoints.down("sm")]: {
         fontSize: "1.75rem"
       }
     },
     h2: {
-      fontFamily: "ambroise-std, serif",
-      fontWeight: 800,
-      fontSize: 30
-    },
-    h3: {
-      fontSize: 26
-    },
-    h4: {
+      fontWeight: 600,
       fontSize: 20
     },
+    h3: {
+      fontWeight: 100,
+      fontSize: 20
+    },
+    h4: {
+      fontWeight: 100,
+      fontSize: 16
+    },
     body1: {
-      fontSize: 18
+      fontSize: 16
     },
     h5: {
       fontSize: 16
@@ -63,8 +61,12 @@ export default createTheme({
       fontSize: 12
     },
     body2: {
-      fontSize: 16,
-      lineHeight: 1.63
+      fontSize: 14
+    },
+    subtitle2: {
+      fontSize: 14,
+      color: "#fff",
+      fontWeight: 600
     }
   },
 
@@ -76,7 +78,10 @@ export default createTheme({
             textDecoration: "none"
           }
         },
-        body: palette.mode === "dark" ? darkScrollbar() : null
+        body: {
+          ...palette.mode === "dark" ? darkScrollbar() : null,
+          background: "linear-gradient(180deg, #375AA3 0%, #4FA3DF 100%)"
+        }
       }
     },
     MuiAppBar: {
@@ -120,6 +125,19 @@ export default createTheme({
         root: {
           alignItems: "center",
           justifyContent: "space-between"
+        }
+      }
+    },
+    MuiListItemText: {
+      defaultProps: {
+        primaryTypographyProps: {
+          fontSize: 24,
+          fontWeight: 600
+        },
+        secondaryTypographyProps: {
+          fontSize: 16,
+          fontWeight: 600,
+          color: palette.grey[400]
         }
       }
     }
