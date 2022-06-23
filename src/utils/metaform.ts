@@ -1,4 +1,4 @@
-import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "../generated/client";
+import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
 
 /**
  * Utility class for metaform
@@ -13,7 +13,19 @@ export default class MetaformUtils {
    */
   public static metaformToJson = (metaform: Metaform): string => {
     return metaform ? JSON.stringify(metaform, null, 2) : "";
-  }
+  };
+
+  /**
+   * Convert Object to metaform data
+   *
+   * @param metaformJson metaform data in json
+   * @returns metaform data
+   */
+  public static ObjectToMetaform = (metaformJson: Object): Metaform => {
+    return {
+      ...JSON.parse(JSON.stringify(metaformJson))
+    } as Metaform;
+  };
 
   /**
    * Convert json to metaform data
@@ -25,7 +37,7 @@ export default class MetaformUtils {
     return {
       ...JSON.parse(metaformJson)
     } as Metaform;
-  }
+  };
 
   /**
    * Create empty field for given field type
@@ -41,18 +53,18 @@ export default class MetaformUtils {
         options: [
           {
             name: "option",
-            text: "option",
-          },
+            text: "option"
+          }
         ]
-      }
+      };
     }
 
     return {
       name: fieldType,
       title: fieldType,
       type: fieldType
-    }
-  }
+    };
+  };
 
   /**
    * Create an empty section
@@ -63,6 +75,7 @@ export default class MetaformUtils {
     return {
       title: "Section",
       fields: []
-    }
-  }
+    };
+  };
+
 }
