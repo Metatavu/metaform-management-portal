@@ -8,12 +8,14 @@ export default class MetaformUtils {
   /**
    * Create new Metaform
    * 
+   * @param formTitle Title of the metaform
+   * @param allowAnonymousRule boolean to allow anonymous users to access the metaform
    * @returns new Metaform 
    */
-  public static createNewMetaform = (newTitle: string, allowAnonymousRule: boolean): Metaform => {
+  public static createNewMetaform = (formTitle: string, allowAnonymousRule: boolean): Metaform => {
     return {
       id: "new-metaform", // TODO: generate id
-      title: newTitle,
+      title: formTitle,
       replyStrategy: undefined,
       exportThemeId: undefined,
       allowAnonymous: allowAnonymousRule,
@@ -29,7 +31,9 @@ export default class MetaformUtils {
           fields: [
           ]
         }
-      ]
+      ],
+      filters: [],
+      scripts: undefined
     };
   };
 
@@ -54,9 +58,37 @@ export default class MetaformUtils {
     }
 
     return {
+      visibleIf: undefined,
+      permissionContexts: undefined,
       name: fieldType,
+      type: fieldType,
       title: fieldType,
-      type: fieldType
+      required: false,
+      contexts: [],
+      flags: undefined,
+      placeholder: undefined,
+      _class: undefined,
+      readonly: undefined,
+      help: undefined,
+      _default: undefined,
+      min: undefined,
+      max: undefined,
+      step: undefined,
+      checked: undefined,
+      printable: undefined,
+      options: [],
+      autocomplete: undefined,
+      sourceUrl: undefined,
+      singleFile: undefined,
+      onlyImages: undefined,
+      maxFileSize: undefined,
+      addRows: undefined,
+      draggable: undefined,
+      columns: [],
+      src: undefined,
+      text: undefined,
+      html: undefined,
+      source: undefined
     };
   };
 
