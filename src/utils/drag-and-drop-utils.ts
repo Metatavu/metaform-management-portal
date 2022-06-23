@@ -1,4 +1,4 @@
-import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
+import { Metaform, MetaformField } from "generated/client";
 import { DraggingMode } from "types";
 
 /**
@@ -56,7 +56,7 @@ namespace DragAndDropUtils {
    * @returns boolean for true for false
    */
   export const isMovingSection = (draggableId: string, destinationDroppableId: string): boolean =>
-    draggableId.startsWith(SECTION) && destinationDroppableId === DraggingMode.SECTION.toString()
+    draggableId.startsWith(SECTION) && destinationDroppableId === DraggingMode.SECTION.toString();
 
   /**
    * Is moving field
@@ -66,7 +66,7 @@ namespace DragAndDropUtils {
    * @returns boolean for true for false
    */
   export const isMovingField = (draggableId: string, destinationDroppableId: string): boolean =>
-    draggableId.startsWith(FIELD) && !isNaN(parseInt(destinationDroppableId));
+    draggableId.startsWith(FIELD) && !Number.isNaN(parseInt(destinationDroppableId, 10));
 
   /**
    * Is adding field
@@ -76,8 +76,8 @@ namespace DragAndDropUtils {
    * @returns boolean for true for false
    */
   export const isAddingField = (sourceDroppableId: string, destinationDroppableId: string): boolean =>
-    sourceDroppableId === DraggingMode.ADD_FIELD.toString() && !isNaN(parseInt(destinationDroppableId));
+    sourceDroppableId === DraggingMode.ADD_FIELD.toString() && !Number.isNaN(parseInt(destinationDroppableId, 10));
 
 }
 
-export default DragAndDropUtils
+export default DragAndDropUtils;

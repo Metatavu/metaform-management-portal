@@ -1,5 +1,4 @@
 import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
-import produce from "immer";
 
 /**
  * Utility class for metaform
@@ -69,4 +68,4 @@ namespace MetaformUtils {
 
 }
 
-export default MetaformUtils
+export default MetaformUtils;

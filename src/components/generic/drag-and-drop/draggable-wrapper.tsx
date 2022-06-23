@@ -21,21 +21,21 @@ const DraggableWrapper: React.FC<Props> = ({
   isDragDisabled,
   children
 }) => (
-    <Draggable
-      index={ index }
-      draggableId={ draggableId }
-      isDragDisabled={ isDragDisabled }
-    >
-      { (providedDraggable: DraggableProvided, _) => (
-        <div
-          ref={ providedDraggable.innerRef }
-          { ...providedDraggable.draggableProps }
-          { ...providedDraggable.dragHandleProps }
-        >
-          { children }
-        </div>
-      ) }
-    </Draggable>
-  );
+  <Draggable
+    index={ index }
+    draggableId={ draggableId }
+    isDragDisabled={ isDragDisabled }
+  >
+    { (providedDraggable: DraggableProvided) => (
+      <div
+        ref={ providedDraggable.innerRef }
+        { ...providedDraggable.draggableProps }
+        { ...providedDraggable.dragHandleProps }
+      >
+        { children }
+      </div>
+    ) }
+  </Draggable>
+);
 
 export default DraggableWrapper;

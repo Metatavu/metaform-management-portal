@@ -1,7 +1,6 @@
 import { matchPath } from "react-router-dom";
 import { NavigationLinks } from "types";
 
-
 namespace NavigationUtils {
 
   /**

@@ -1,9 +1,8 @@
 import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
-import strings from "localization/strings";
-import React, { useEffect } from "react";
+import React from "react";
 import { DraggingMode } from "types";
-import { DraggableLocation, DropResult, ResponderProvided, DragStart, DragDropContext } from "react-beautiful-dnd";
+import { DraggableLocation, DropResult, DragStart, DragDropContext } from "react-beautiful-dnd";
 import MetaformUtils from "utils/metaform-utils";
 import produce from "immer";
 import MetaformEditorRightDrawer from "./metaform-editor-right-drawer";
@@ -42,37 +41,36 @@ const MetaformEditor: React.FC<Props> = ({
    */
   const onGlobalClick = (event: MouseEvent) => {
     if (!editorRef.current?.contains(event.target as Node)) {
-
       setSelectedFieldIndex(undefined);
       setSelectedSectionIndex(undefined);
     }
-  }
+  };
 
   React.useEffect(() => {
     document.addEventListener("click", onGlobalClick);
 
     return () => document.removeEventListener("click", onGlobalClick);
-  }, [])
+  }, []);
 
-  /**
-   * Updates metaform field
-   *
-   * @param sectionIndex section index
-   * @param fieldIndex field index
-   */
-  const onFieldUpdate = (sectionIndex: number, fieldIndex: number) => (newMetaformField: MetaformField) => {
-    const field = pendingForm.sections?.[sectionIndex]?.fields?.[fieldIndex];
+  // /**
+  //  * Updates metaform field
+  //  *
+  //  * @param sectionIndex section index
+  //  * @param fieldIndex field index
+  //  */
+  // const onFieldUpdate = (sectionIndex: number, fieldIndex: number) => (newMetaformField: MetaformField) => {
+  //   const field = pendingForm.sections?.[sectionIndex]?.fields?.[fieldIndex];
 
-    if (!pendingForm?.sections || !field) {
-      return;
-    }
+  //   if (!pendingForm?.sections || !field) {
+  //     return;
+  //   }
 
-    const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, newMetaformField);
-    });
+  //   const updatedForm = produce(pendingForm, draftForm => {
+  //     draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, newMetaformField);
+  //   });
 
-    setPendingForm(updatedForm);
-  };
+  //   setPendingForm(updatedForm);
+  // };
 
   /**
    * Event handler for field add
@@ -82,7 +80,7 @@ const MetaformEditor: React.FC<Props> = ({
    */
   const onFieldAdd = (fieldType: MetaformFieldType, droppableDestination: DraggableLocation) => {
     const defaultField = MetaformUtils.createEmptyField(fieldType);
-    const sectionIndex = parseInt(droppableDestination.droppableId);
+    const sectionIndex = parseInt(droppableDestination.droppableId, 10);
     const fieldIndex = droppableDestination.index;
 
     if (!pendingForm?.sections || fieldIndex < 0) {
@@ -129,8 +127,8 @@ const MetaformEditor: React.FC<Props> = ({
    * @param droppableDestination droppable destination
    */
   const onSectionFieldMove = (droppableSource: DraggableLocation, droppableDestination: DraggableLocation) => {
-    const fromSectionIndex = parseInt(droppableSource.droppableId);
-    const toSectionIndex = parseInt(droppableDestination.droppableId);
+    const fromSectionIndex = parseInt(droppableSource.droppableId, 10);
+    const toSectionIndex = parseInt(droppableDestination.droppableId, 10);
 
     if (!pendingForm?.sections || fromSectionIndex < 0 || toSectionIndex < 0) {
       return;
@@ -155,20 +153,20 @@ const MetaformEditor: React.FC<Props> = ({
    *
    * @param initial drag start data
    */
-  const onDragStart = (initial: DragStart, _: ResponderProvided) => {
-    if (!isNaN(parseInt(initial.source.droppableId))) {
-      setDraggingMode(DraggingMode.FIELD)
-    };
+  const onDragStart = (initial: DragStart) => {
+    if (!Number.isNaN(parseInt(initial.source.droppableId, 10))) {
+      setDraggingMode(DraggingMode.FIELD);
+    }
 
-    setDraggingMode(initial.source.droppableId as DraggingMode)
-  } // TODO add field mode in drawer
+    setDraggingMode(initial.source.droppableId as DraggingMode);
+  }; // TODO add field mode in drawer
 
   /**
    * Event handler for drag end
    *
    * @param result drop result
    */
-  const onDragEnd = (result: DropResult, _: ResponderProvided) => {
+  const onDragEnd = (result: DropResult) => {
     const { draggableId, source, destination } = result;
 
     if (!destination) {
@@ -268,6 +266,38 @@ const MetaformEditor: React.FC<Props> = ({
   };
 
   /**
+   * Renders a single form field
+   *
+   * @param section metaform section
+   * @param sectionIndex section index
+   * @param fieldIndex field index
+   */
+  const renderFormField = (field: MetaformField, sectionIndex: number, fieldIndex: number) => {
+    const selected = selectedFieldIndex === fieldIndex && selectedSectionIndex === sectionIndex;
+
+    return (
+      <DraggableWrapper
+        index={ fieldIndex }
+        draggableId={ DragAndDropUtils.getFieldDraggableId(sectionIndex, fieldIndex) }
+        isDragDisabled={ selectedFieldIndex !== fieldIndex || selectedSectionIndex !== sectionIndex }
+      >
+        <Box onClick={ onFieldClick(sectionIndex, fieldIndex) }>
+          <FieldDragHandle
+            selected={ selected }
+            onDeleteClick={ onFieldDeleteClick(sectionIndex, fieldIndex) }
+          >
+            <RenderableComponent
+              field={ field }
+              fieldId={ DragAndDropUtils.getFieldId(pendingForm, field) }
+              fieldLabelId={ DragAndDropUtils.getFieldLabelId(pendingForm, field) }
+            />
+          </FieldDragHandle>
+        </Box>
+      </DraggableWrapper>
+    );
+  };
+
+  /**
    * Renders form section
    *
    * @param section metaform section
@@ -310,38 +340,6 @@ const MetaformEditor: React.FC<Props> = ({
       </SectionDragHandle>
     </DraggableWrapper>
   );
-
-  /**
-     * Renders a single form field
-     *
-     * @param section metaform section
-     * @param sectionIndex section index
-     * @param fieldIndex field index
-     */
-  const renderFormField = (field: MetaformField, sectionIndex: number, fieldIndex: number) => {
-    const selected = selectedFieldIndex === fieldIndex && selectedSectionIndex === sectionIndex;
-
-    return (
-      <DraggableWrapper
-        index={ fieldIndex }
-        draggableId={ DragAndDropUtils.getFieldDraggableId(sectionIndex, fieldIndex) }
-        isDragDisabled={ selectedFieldIndex !== fieldIndex || selectedSectionIndex !== sectionIndex }
-      >
-        <Box onClick={ onFieldClick(sectionIndex, fieldIndex) }>
-          <FieldDragHandle
-            selected={ selected }
-            onDeleteClick={ onFieldDeleteClick(sectionIndex, fieldIndex) }
-          >
-            <RenderableComponent
-              field={ field }
-              fieldId={ DragAndDropUtils.getFieldId(pendingForm, field) }
-              fieldLabelId={ DragAndDropUtils.getFieldLabelId(pendingForm, field) }
-            />
-          </FieldDragHandle>
-        </Box>
-      </DraggableWrapper>
-    );
-  };
 
   /**
    * Renders form editor

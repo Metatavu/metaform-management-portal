@@ -1,5 +1,5 @@
 import { Delete, DragHandle } from "@mui/icons-material";
-import { Box, IconButton, Stack } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import React from "react";
 import { SectionDraggable } from "styled/generic/drag-handles";
 
@@ -37,6 +37,5 @@ const SectionDragHandle: React.FC<Props> = ({
     </SectionDraggable>
   </Box>
 );
-
 
 export default SectionDragHandle;

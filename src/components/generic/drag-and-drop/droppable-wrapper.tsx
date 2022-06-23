@@ -7,7 +7,7 @@ import { Droppable, DroppableProvided } from "react-beautiful-dnd";
 interface Props {
   droppableId: string;
   isDropDisabled: boolean;
-};
+}
 
 /**
  * Droppable wrapper
@@ -23,10 +23,10 @@ const DroppableWrapper: React.FC<Props> = ({
     droppableId={ droppableId }
     isDropDisabled={ isDropDisabled }
   >
-    {(provided: DroppableProvided, _) => (
-        <div ref={ provided.innerRef } >
-          { children }
-        </div>
+    {(provided: DroppableProvided) => (
+      <div ref={ provided.innerRef } >
+        { children }
+      </div>
     )}
   </Droppable>
 );

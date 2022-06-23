@@ -21,13 +21,11 @@ const RenderableComponent: React.FC<Prop> = ({
    * Component render
    */
   return (
-    <>
-      <TextField
-        key={ fieldId }
-        value={ field.name }
-        label={ fieldLabelId }
-      />
-    </>
+    <TextField
+      key={ fieldId }
+      value={ field.name }
+      label={ fieldLabelId }
+    />
   );
 };
 
