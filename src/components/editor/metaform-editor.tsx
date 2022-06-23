@@ -1,18 +1,21 @@
-import { Box, Button, FormControl, InputLabel, OutlinedInput, Paper, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
 import strings from "localization/strings";
-import React from "react";
+import React, { useEffect } from "react";
 import { DraggingMode } from "types";
-import { DraggableLocation, DropResult, ResponderProvided, DragStart, DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DroppableProvided, DroppableStateSnapshot } from "react-beautiful-dnd";
-import MetaformUtils from "utils/metaform";
+import { DraggableLocation, DropResult, ResponderProvided, DragStart, DragDropContext } from "react-beautiful-dnd";
+import MetaformUtils from "utils/metaform-utils";
 import produce from "immer";
 import MetaformEditorRightDrawer from "./metaform-editor-right-drawer";
 import MetaformEditorLeftDrawer from "./metaform-editor-left-drawer";
-import metaform from "utils/metaform";
 import SectionDragHandle from "components/generic/drag-handle/section-drag-handle";
 import FieldDragHandle from "components/generic/drag-handle/field-drag-handle";
 import { Add } from "@mui/icons-material";
 import { EditorContent, EditorWrapper } from "styled/editor/metaform-editor";
+import DroppableWrapper from "components/generic/drag-and-drop/droppable-wrapper";
+import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
+import DragAndDropUtils from "utils/drag-and-drop-utils";
+import RenderableComponent from "./renderable-components/renderableComponent";
 
 /**
  * Component properties
@@ -23,45 +26,76 @@ interface Props {
 }
 
 /**
- * Draft editor screen component
+ * Metaform editor component
  */
 const MetaformEditor: React.FC<Props> = ({
   pendingForm,
   setPendingForm
 }) => {
+  const editorRef = React.useRef<HTMLDivElement>(null);
   const [ selectedFieldIndex, setSelectedFieldIndex ] = React.useState<number>();
   const [ selectedSectionIndex, setSelectedSectionIndex ] = React.useState<number>();
   const [ draggingMode, setDraggingMode ] = React.useState<DraggingMode>();
 
   /**
-   * Event handler for field add
-   *
-   * @param fieldType metaform field type
-   * @param droppableSource droppable source
-   * @param droppableDestination droppable destination
+   * Event handler for empty space click
    */
-  const onFieldAdd = (fieldType: MetaformFieldType, droppableSource: DraggableLocation, droppableDestination: DraggableLocation) => {
-    const defaultField = MetaformUtils.createEmptyField(fieldType);
-    const sectionId = parseInt(droppableDestination.droppableId);
-    const fieldId = droppableDestination.index;
+  const onGlobalClick = (event: MouseEvent) => {
+    if (!editorRef.current?.contains(event.target as Node)) {
 
-    if (!pendingForm?.sections || sectionId < 0) {
+      setSelectedFieldIndex(undefined);
+      setSelectedSectionIndex(undefined);
+    }
+  }
+
+  React.useEffect(() => {
+    document.addEventListener("click", onGlobalClick);
+
+    return () => document.removeEventListener("click", onGlobalClick);
+  }, [])
+
+  /**
+   * Updates metaform field
+   *
+   * @param sectionIndex section index
+   * @param fieldIndex field index
+   */
+  const onFieldUpdate = (sectionIndex: number, fieldIndex: number) => (newMetaformField: MetaformField) => {
+    const field = pendingForm.sections?.[sectionIndex]?.fields?.[fieldIndex];
+
+    if (!pendingForm?.sections || !field) {
       return;
     }
 
-    const updatedSection = { ...pendingForm.sections[sectionId] };
-    updatedSection.fields?.splice(fieldId, 0, defaultField);
-    const updatedSections = [ ...pendingForm.sections ];
-    updatedSections.splice(sectionId, 1, updatedSection);
+    const updatedForm = produce(pendingForm, draftForm => {
+      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, newMetaformField);
+    });
 
-    const updatedMetaform = {
-      ...pendingForm,
-      sections: updatedSections
-    } as Metaform;
+    setPendingForm(updatedForm);
+  };
 
-    setPendingForm(updatedMetaform);
-    setSelectedFieldIndex(fieldId);
-    setSelectedSectionIndex(sectionId);
+  /**
+   * Event handler for field add
+   *
+   * @param fieldType metaform field type
+   * @param droppableDestination droppable destination
+   */
+  const onFieldAdd = (fieldType: MetaformFieldType, droppableDestination: DraggableLocation) => {
+    const defaultField = MetaformUtils.createEmptyField(fieldType);
+    const sectionIndex = parseInt(droppableDestination.droppableId);
+    const fieldIndex = droppableDestination.index;
+
+    if (!pendingForm?.sections || fieldIndex < 0) {
+      return;
+    }
+
+    const updatedForm = produce(pendingForm, draftForm => {
+      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 0, defaultField);
+    });
+
+    setPendingForm(updatedForm);
+    setSelectedFieldIndex(fieldIndex);
+    setSelectedSectionIndex(sectionIndex);
   };
 
   /**
@@ -95,107 +129,61 @@ const MetaformEditor: React.FC<Props> = ({
    * @param droppableDestination droppable destination
    */
   const onSectionFieldMove = (droppableSource: DraggableLocation, droppableDestination: DraggableLocation) => {
-    const fromSectionId = parseInt(droppableSource.droppableId);
-    const toSectionId = parseInt(droppableDestination.droppableId);
+    const fromSectionIndex = parseInt(droppableSource.droppableId);
+    const toSectionIndex = parseInt(droppableDestination.droppableId);
 
-    if (!pendingForm?.sections || fromSectionId < 0 || toSectionId < 0) {
+    if (!pendingForm?.sections || fromSectionIndex < 0 || toSectionIndex < 0) {
       return;
     }
 
-    const fromFieldId = droppableSource.index;
-    const toFieldId = droppableDestination.index;
+    const fromFieldIndex = droppableSource.index;
+    const toFieldIndex = droppableDestination.index;
 
     const updatedForm = produce(pendingForm, formDraft => {
-      const draggedField = formDraft.sections?.[fromSectionId].fields?.[fromFieldId];
-      formDraft.sections?.[fromSectionId].fields?.splice(fromFieldId, 1);
-      formDraft.sections?.[toSectionId].fields?.splice(toFieldId, 0, draggedField!);
+      const draggedField = formDraft.sections?.[fromSectionIndex].fields?.[fromFieldIndex];
+      formDraft.sections?.[fromSectionIndex].fields?.splice(fromFieldIndex, 1);
+      formDraft.sections?.[toSectionIndex].fields?.splice(toFieldIndex, 0, draggedField!);
     });
 
     setPendingForm(updatedForm);
-    setSelectedFieldIndex(toFieldId);
-    setSelectedSectionIndex(toSectionId);
+    setSelectedFieldIndex(toFieldIndex);
+    setSelectedSectionIndex(toSectionIndex);
   };
 
   /**
    * Event handler for drag start
    *
    * @param initial drag start data
-   * @param provided responder provided
    */
-  const onDragStart = (initial: DragStart, provided: ResponderProvided) => {
-    const { source } = initial;
+  const onDragStart = (initial: DragStart, _: ResponderProvided) => {
+    if (!isNaN(parseInt(initial.source.droppableId))) {
+      setDraggingMode(DraggingMode.FIELD)
+    };
 
-    switch (source.droppableId) {
-      case "componentList":
-        setDraggingMode(DraggingMode.FIELD);
-        break;
-      case "sectionList":
-        setDraggingMode(DraggingMode.SECTION);
-        break;
-    }
-  };
+    setDraggingMode(initial.source.droppableId as DraggingMode)
+  } // TODO add field mode in drawer
 
   /**
    * Event handler for drag end
    *
    * @param result drop result
-   * @param provided responder provided
    */
-  const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
+  const onDragEnd = (result: DropResult, _: ResponderProvided) => {
     const { draggableId, source, destination } = result;
 
     if (!destination) {
       return;
     }
 
-    // from section list
-    if (draggableId.startsWith("section") && destination.droppableId === "sectionList") {
+    if (DragAndDropUtils.isMovingSection(draggableId, destination.droppableId)) {
       onSectionMove(source, destination);
-    // from section
-    } else if (draggableId.startsWith("field") && !isNaN(parseInt(destination.droppableId))) {
+    } else if (DragAndDropUtils.isMovingField(draggableId, destination.droppableId)) {
       onSectionFieldMove(source, destination);
-    // from component list
-    } else if (source.droppableId === "componentList" && !isNaN(parseInt(destination.droppableId))) {
-      onFieldAdd(
-        draggableId as MetaformFieldType,
-        source,
-        destination
-      );
+    } else if (DragAndDropUtils.isAddingField(source.droppableId, destination.droppableId)) {
+      onFieldAdd(draggableId as MetaformFieldType, destination);
     }
 
     setDraggingMode(undefined);
-  };
-
-  // /**
-  //  * Event handler for empty space click
-  //  */
-  // const onGlobalClick = (event: MouseEvent) => {
-  //   if (editorRef && editorRef.current && !editorRef.current.contains(event.target as Node)) {
-
-  //     setSelectedFieldIndex(undefined);
-  //     setSelectedSectionIndex(undefined);
-  //   }
-  // }
-
-  /**
-   * Returns field's id
-   *
-   * @param field metaform field
-   *
-   * @returns field's id
-   */
-  const getFieldId = (field : MetaformField) => {
-    return `${pendingForm.id}-field-${field.name}`;
-  };
-
-  /**
-   * Returns field label's id
-   *
-   * @param field metaform field
-   * @returns field label's id
-   */
-  const getFieldLabelId = (field : MetaformField) => {
-    return `${getFieldId(field)}-label`;
   };
 
   /**
@@ -255,30 +243,6 @@ const MetaformEditor: React.FC<Props> = ({
   };
 
   /**
-   * Event handler for field update
-   *
-   * @param sectionIndex  section index
-   * @param fieldIndex field index
-   */
-  const onFieldUpdate = (sectionIndex: number, fieldIndex: number) => (newMetaformField: MetaformField) => {
-    const updatedMetaform = {
-      ...metaform
-    } as Metaform;
-
-    const field = pendingForm.sections?.[sectionIndex]?.fields?.[fieldIndex];
-
-    if (!pendingForm?.sections || !field) {
-      return;
-    }
-
-    const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, newMetaformField);
-    });
-
-    setPendingForm(updatedForm);
-  };
-
-  /**
    * Event handler for field delete click
    *
    * @param sectionIndex section index
@@ -304,130 +268,47 @@ const MetaformEditor: React.FC<Props> = ({
   };
 
   /**
-  * Renders form editor components
-  *
-  * @param field metaform field
-  * @param sectionIndex section index
-  * @param fieldIndex field index
-  */
-  const renderInput = (field: MetaformField, sectionIndex: number, fieldIndex: number) => {
-    return (
-      <TextField
-        key={ getFieldId(field) }
-        value={ getFieldId(field) }
-        label={ getFieldLabelId(field) }
-      />
-    );
-    // TODO add all the component
-    // switch (field.type) {
-    //   case MetaformFieldType.Text:
-    //     return (
-    //       <MetaformTextFieldComponent
-    //         field={ field }
-    //         fieldLabelId={ getFieldLabelId(field) }
-    //         fieldId={ getFieldId(field) }
-    //         onFieldUpdate={ onFieldUpdate(sectionIndex, fieldIndex) }
-    //       />
-    //     );
-    //   case MetaformFieldType.Html:
-    //     return (
-    //       <MetaformHtmlComponent
-    //         fieldLabelId={ getFieldLabelId(field) }
-    //         fieldId={ getFieldId(field) }
-    //         field={ field }
-    //         onFieldUpdate={ onFieldUpdate(sectionIndex, fieldIndex) }
-    //       />
-    //     );
-    //   case MetaformFieldType.Radio:
-    //     return (
-    //       <MetaformRadioFieldComponent
-    //         fieldLabelId={ getFieldLabelId(field) }
-    //         fieldId={ getFieldId(field) }
-    //         field={ field }
-    //         onFieldUpdate={ onFieldUpdate(sectionIndex, fieldIndex) }
-    //       />
-    //     );
-    //   case MetaformFieldType.Submit:
-    //     return (
-    //       <MetaformSubmitFieldComponent
-    //         fieldId={ getFieldId(field) }
-    //         field={ field }
-    //         onFieldUpdate={ onFieldUpdate(sectionIndex, fieldIndex) }
-    //       />
-    //     );
-    //   case MetaformFieldType.Number:
-    //     return (
-    //       <MetaformNumberFieldComponent
-    //         fieldLabelId={ getFieldLabelId(field) }
-    //         fieldId={ getFieldId(field) }
-    //         field={ field }
-    //         onFieldUpdate={ onFieldUpdate(sectionIndex, fieldIndex) }
-    //       />
-    //     );
-    //   default:
-    //     return (
-    //       <div style={{ color: "red" }}>
-    //         `$
-    //         { strings.formEditScreen.unknownFieldType }
-    //         : $
-    //         { field.type }
-    //         `
-    //       </div>
-    //     );
-    // }
-  };
-
-  /**
    * Renders form section
    *
    * @param section metaform section
    * @param sectionIndex section index
    */
   const renderFormSection = (section: MetaformSection, sectionIndex: number) => (
-    <Draggable
-      draggableId={ `section-${sectionIndex}` }
+    <DraggableWrapper
+      draggableId={ DragAndDropUtils.getSectionDraggableId(sectionIndex) }
       index={ sectionIndex }
       isDragDisabled={ selectedSectionIndex !== sectionIndex }
     >
-      {(providedDraggable:DraggableProvided, snapshotDraggable:DraggableStateSnapshot) => (
-        <div
-          ref={ providedDraggable.innerRef }
-          { ...providedDraggable.draggableProps }
-          { ...providedDraggable.dragHandleProps }
+      <SectionDragHandle
+        selected={ selectedSectionIndex === sectionIndex }
+        onDeleteClick={ onSectionDeleteClick(sectionIndex) }
+      >
+        <DroppableWrapper
+          droppableId={ sectionIndex.toString() }
+          isDropDisabled={ draggingMode === DraggingMode.SECTION }
         >
-          <SectionDragHandle
-            selected={ selectedSectionIndex === sectionIndex }
-            onDeleteClick={ onSectionDeleteClick(sectionIndex) }
+          <Paper
+            onClick={ onSectionClick(sectionIndex) }
+            // className={
+            //   classNames(
+            //     classes.formEditorSection,
+            //     { draggingOver: !(selectedSectionIndex === sectionIndex) && snapshot.isDraggingOver },
+            //     { selected: selectedSectionIndex === sectionIndex }
+            //   )
+            // }
           >
-            <Droppable droppableId={ sectionIndex.toString() } isDropDisabled={ draggingMode !== DraggingMode.FIELD }>
-              {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
-                <Paper
-                  onClick={ onSectionClick(sectionIndex) }
-                  // className={
-                  //   classNames(
-                  //     classes.formEditorSection,
-                  //     { draggingOver: !(selectedSectionIndex === sectionIndex) && snapshot.isDraggingOver },
-                  //     { selected: selectedSectionIndex === sectionIndex }
-                  //   )
-                  // }
-                >
-                  <div ref={ provided.innerRef } >
-                    <Stack spacing={ 2 }>
-                      { (section.fields && section.fields.length > 0) ?
-                        section.fields.map((field, index) => renderFormField(field, sectionIndex, index)) :
-                        <Typography>
-                          strings.formEditScreen.emptySection
-                        </Typography>
-                      }
-                    </Stack>
-                  </div>
-                </Paper>
-              )}
-            </Droppable>
-          </SectionDragHandle>
-        </div>
-      )}
-    </Draggable>
+            <Stack spacing={ 2 }>
+              { (section.fields && section.fields.length > 0) ?
+                section.fields.map((field, index) => renderFormField(field, sectionIndex, index)) :
+                <Typography>
+                  strings.formEditScreen.emptySection
+                </Typography>
+              }
+            </Stack>
+          </Paper>
+        </DroppableWrapper>
+      </SectionDragHandle>
+    </DraggableWrapper>
   );
 
   /**
@@ -441,28 +322,24 @@ const MetaformEditor: React.FC<Props> = ({
     const selected = selectedFieldIndex === fieldIndex && selectedSectionIndex === sectionIndex;
 
     return (
-      <Draggable
+      <DraggableWrapper
         index={ fieldIndex }
-        draggableId={ `field-${sectionIndex.toString()}-${fieldIndex.toString()}` }
+        draggableId={ DragAndDropUtils.getFieldDraggableId(sectionIndex, fieldIndex) }
         isDragDisabled={ selectedFieldIndex !== fieldIndex || selectedSectionIndex !== sectionIndex }
       >
-        {(providedDraggable:DraggableProvided, snapshotDraggable:DraggableStateSnapshot) => (
-          <div
-            ref={ providedDraggable.innerRef }
-            { ...providedDraggable.draggableProps }
-            { ...providedDraggable.dragHandleProps }
+        <Box onClick={ onFieldClick(sectionIndex, fieldIndex) }>
+          <FieldDragHandle
+            selected={ selected }
+            onDeleteClick={ onFieldDeleteClick(sectionIndex, fieldIndex) }
           >
-            <Box onClick={ onFieldClick(sectionIndex, fieldIndex) }>
-              <FieldDragHandle
-                selected={ selected }
-                onDeleteClick={ onFieldDeleteClick(sectionIndex, fieldIndex) }
-              >
-                { renderInput(field, sectionIndex, fieldIndex) }
-              </FieldDragHandle>
-            </Box>
-          </div>
-        )}
-      </Draggable>
+            <RenderableComponent
+              field={ field }
+              fieldId={ DragAndDropUtils.getFieldId(pendingForm, field) }
+              fieldLabelId={ DragAndDropUtils.getFieldLabelId(pendingForm, field) }
+            />
+          </FieldDragHandle>
+        </Box>
+      </DraggableWrapper>
     );
   };
 
@@ -470,18 +347,16 @@ const MetaformEditor: React.FC<Props> = ({
    * Renders form editor
    */
   const renderFormEditor = () => (
-    <EditorContent spacing={ 2 }>
+    <EditorContent spacing={ 2 } ref={ editorRef }>
       <Typography variant="h1">{ pendingForm.title }</Typography>
-      <Droppable droppableId="sectionList" isDropDisabled={ draggingMode !== DraggingMode.SECTION }>
-        {/* TODO DND generic component? */}
-        {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
-          <div ref={ provided.innerRef } style={{ width: "100%" }}>
-            <Stack spacing={ 2 }>
-              { pendingForm.sections?.map(renderFormSection) }
-            </Stack>
-          </div>
-        )}
-      </Droppable>
+      <DroppableWrapper
+        droppableId={ DraggingMode.SECTION.toString() }
+        isDropDisabled={ draggingMode !== DraggingMode.SECTION }
+      >
+        <Stack spacing={ 2 }>
+          { pendingForm.sections?.map(renderFormSection) }
+        </Stack>
+      </DroppableWrapper>
       <Button
         variant="text"
         startIcon={ <Add/> }

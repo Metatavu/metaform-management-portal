@@ -51,6 +51,7 @@ export type ListItemData = {
  */
 export enum DraggingMode {
   FIELD = "FIELD",
+  ADD_FIELD = "ADD_FIELD",
   SECTION = "SECTION"
 }
 

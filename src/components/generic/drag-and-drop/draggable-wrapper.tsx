@@ -1,34 +1,41 @@
 import * as React from "react";
-import { Stack } from "@mui/material";
+import { Draggable, DraggableProvided } from "react-beautiful-dnd";
 
 /**
  * Component properties
  */
 interface Props {
-  value: number;
   index: number;
+  draggableId: string;
+  isDragDisabled: boolean;
 }
 
 /**
- * Tab panel component
+ * Draggable wrapper component
  *
  * @param props component properties
  */
-const TabPanel: React.FC<Props> = ({
-  value,
+const DraggableWrapper: React.FC<Props> = ({
   index,
+  draggableId,
+  isDragDisabled,
   children
-}) => {
-  if (value !== index) return null;
-
-  /**
-   * Component render
-   */
-  return (
-    <Stack>
-      { children }
-    </Stack>
+}) => (
+    <Draggable
+      index={ index }
+      draggableId={ draggableId }
+      isDragDisabled={ isDragDisabled }
+    >
+      { (providedDraggable: DraggableProvided, _) => (
+        <div
+          ref={ providedDraggable.innerRef }
+          { ...providedDraggable.draggableProps }
+          { ...providedDraggable.dragHandleProps }
+        >
+          { children }
+        </div>
+      ) }
+    </Draggable>
   );
-};
 
-export default TabPanel;
+export default DraggableWrapper;

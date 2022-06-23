@@ -1,26 +1,34 @@
 import * as React from "react";
-import { Stack } from "@mui/material";
+import { Droppable, DroppableProvided } from "react-beautiful-dnd";
 
 /**
  * Component properties
  */
 interface Props {
-}
+  droppableId: string;
+  isDropDisabled: boolean;
+};
 
 /**
- * Tab panel component
+ * Droppable wrapper
  *
  * @param props component properties
  */
 const DroppableWrapper: React.FC<Props> = ({
-}) => {
-  if (value !== index) return null;
-
-  /**
-   * Component render
-   */
-  return (
-  );
-};
+  droppableId,
+  isDropDisabled,
+  children
+}) => (
+  <Droppable
+    droppableId={ droppableId }
+    isDropDisabled={ isDropDisabled }
+  >
+    {(provided: DroppableProvided, _) => (
+        <div ref={ provided.innerRef } >
+          { children }
+        </div>
+    )}
+  </Droppable>
+);
 
 export default DroppableWrapper;

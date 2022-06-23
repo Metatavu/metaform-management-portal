@@ -1,9 +1,10 @@
 import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
+import produce from "immer";
 
 /**
  * Utility class for metaform
  */
-export default class MetaformUtils {
+namespace MetaformUtils {
 
   /**
    * Convert metaform to json format
@@ -11,7 +12,7 @@ export default class MetaformUtils {
    * @param metaform metaform data
    * @returns metaform in json format
    */
-  public static metaformToJson = (metaform: Metaform): string => {
+  export const metaformToJson = (metaform: Metaform): string => {
     return metaform ? JSON.stringify(metaform, null, 2) : "";
   };
 
@@ -21,21 +22,9 @@ export default class MetaformUtils {
    * @param metaformJson metaform data in json
    * @returns metaform data
    */
-  public static ObjectToMetaform = (metaformJson: Object): Metaform => {
+  export const jsonToMetaform = (metaformJson: Object): Metaform => {
     return {
       ...JSON.parse(JSON.stringify(metaformJson))
-    } as Metaform;
-  };
-
-  /**
-   * Convert json to metaform data
-   *
-   * @param metaformJson metaform data in json
-   * @returns metaform data
-   */
-  public static jsonToMetaform = (metaformJson: string): Metaform => {
-    return {
-      ...JSON.parse(metaformJson)
     } as Metaform;
   };
 
@@ -45,7 +34,7 @@ export default class MetaformUtils {
    * @param fieldType metaform field type
    * @returns created field
    */
-  public static createEmptyField = (fieldType: MetaformFieldType): MetaformField => {
+  export const createEmptyField = (fieldType: MetaformFieldType): MetaformField => {
     if (fieldType === MetaformFieldType.Select || fieldType === MetaformFieldType.Radio) {
       return {
         title: fieldType,
@@ -71,7 +60,7 @@ export default class MetaformUtils {
    *
    * @returns created section
    */
-  public static createEmptySection = (): MetaformSection => {
+  export const createEmptySection = (): MetaformSection => {
     return {
       title: "Section",
       fields: []
@@ -79,3 +68,5 @@ export default class MetaformUtils {
   };
 
 }
+
+export default MetaformUtils
