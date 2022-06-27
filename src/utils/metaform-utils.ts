@@ -14,7 +14,6 @@ export default class MetaformUtils {
    */
   public static createNewMetaform = (formTitle: string, allowAnonymousRule: boolean): Metaform => {
     return {
-      id: "new-metaform", // TODO: generate id
       title: formTitle,
       replyStrategy: undefined,
       exportThemeId: undefined,
