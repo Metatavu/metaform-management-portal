@@ -3,7 +3,7 @@ import { Tab, Tabs, TextField } from "@mui/material";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableWrapper from "components/generic/drag-and-drop/droppable-wrapper";
 import TabPanel from "components/generic/tab-panel";
-import { Metaform } from "generated/client";
+import { Metaform, MetaformFieldType } from "generated/client";
 import strings from "localization/strings";
 import React, { ChangeEventHandler } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
@@ -58,7 +58,7 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
     >
       <DraggableWrapper
         index={ 0 }
-        draggableId="field-temp"
+        draggableId={ MetaformFieldType.Text.toString() }
         isDragDisabled={ false }
       >
         {/* TODO populate all of this with metaform field components */}

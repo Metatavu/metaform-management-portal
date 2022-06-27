@@ -60,7 +60,6 @@ const MetaformEditor: React.FC<Props> = ({
    * @param droppableDestination droppable destination
    */
   const onFieldAdd = (fieldType: MetaformFieldType, droppableDestination: DraggableLocation) => {
-    console.log("onFieldAdd");
     const defaultField = MetaformUtils.createEmptyField(fieldType);
     const sectionIndex = parseInt(droppableDestination.droppableId, 10);
     const fieldIndex = droppableDestination.index;
