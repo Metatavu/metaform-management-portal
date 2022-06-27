@@ -15,6 +15,7 @@ import { IconActionButton } from "styled/layouts/app-layout";
  */
 const DraftEditorScreen: React.FC = () => {
   // TODO draft fetch, set logic, replace the example form
+  const editorRef = React.useRef<HTMLDivElement>(null);
   const [ draftForm, setDraftForm ] = React.useState<Metaform>(MetaformUtils.jsonToMetaform(exampleForm));
 
   /**
@@ -25,7 +26,7 @@ const DraftEditorScreen: React.FC = () => {
       <IconActionButton disabled startIcon={ <Save/> }>
         <Typography>{ strings.generic.save }</Typography>
       </IconActionButton>
-      <IconActionButton onClick={ () => {} } startIcon={ <Preview/> }>
+      <IconActionButton onClick={ () => editorRef.current?.requestFullscreen?.() } startIcon={ <Preview/> }>
         <Typography>{ strings.draftEditorScreen.preview }</Typography>
       </IconActionButton>
       <IconActionButton disabled startIcon={ <Public/> }>
@@ -44,6 +45,7 @@ const DraftEditorScreen: React.FC = () => {
       </NavigationTabContainer>
       <Divider/>
       <MetaformEditor
+        editorRef={ editorRef }
         pendingForm={ draftForm }
         setPendingForm={ setDraftForm }
       />

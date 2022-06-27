@@ -21,6 +21,7 @@ import strings from "localization/strings";
  * Component properties
  */
 interface Props {
+  editorRef: React.RefObject<HTMLDivElement>
   pendingForm: Metaform;
   setPendingForm: (metaform: Metaform) => void;
 }
@@ -30,9 +31,9 @@ interface Props {
  */
 const MetaformEditor: React.FC<Props> = ({
   pendingForm,
+  editorRef,
   setPendingForm
 }) => {
-  const editorRef = React.useRef<HTMLDivElement>(null);
   const [ selectedFieldIndex, setSelectedFieldIndex ] = React.useState<number>();
   const [ selectedSectionIndex, setSelectedSectionIndex ] = React.useState<number>();
   const [ draggingMode, setDraggingMode ] = React.useState<DraggingMode>();
@@ -49,8 +50,6 @@ const MetaformEditor: React.FC<Props> = ({
 
   React.useEffect(() => {
     document.addEventListener("click", onGlobalClick);
-    editorRef.current?.requestFullscreen();
-
     return () => document.removeEventListener("click", onGlobalClick);
   }, []);
 
