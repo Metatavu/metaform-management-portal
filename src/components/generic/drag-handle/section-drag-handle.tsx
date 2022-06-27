@@ -21,19 +21,15 @@ const SectionDragHandle: React.FC<Props> = ({
 }) => (
   <Box position="relative">
     { children }
-    <SectionDraggable sx={{ ...(!selected && { width: 0 }) }}>
-      { selected &&
-        <>
-          <DragHandle htmlColor="#fff"/>
-          <IconButton
-            disabled={ !onDeleteClick }
-            style={{ color: "#fff" }}
-            onClick={ onDeleteClick }
-          >
-            <Delete/>
-          </IconButton>
-        </>
-      }
+    <SectionDraggable visibility={ !selected ? "hidden" : "visible" }>
+      <DragHandle htmlColor="#fff"/>
+      <IconButton
+        disabled={ !onDeleteClick }
+        style={{ color: "#fff" }}
+        onClick={ onDeleteClick }
+      >
+        <Delete/>
+      </IconButton>
     </SectionDraggable>
   </Box>
 );

@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles";
 export const EditorContent = styled(Stack, {
   label: "metaform-editor-content"
 })(({ theme }) => ({
-  padding: theme.spacing(6),
+  padding: theme.spacing(8),
   overflow: "auto",
   flex: 1,
   backgroundColor: theme.palette.grey[300]
@@ -32,4 +32,14 @@ export const EditorDrawer = styled(Paper, {
 })(() => ({
   width: 300,
   height: "100%"
+}));
+
+/**
+ * Styled metaform editor section component
+ */
+export const EditorSection = styled(Paper, {
+  label: "metaform-editor-section"
+})(({ theme }) => ({
+  padding: theme.spacing(4),
+  borderRadius: 25
 }));

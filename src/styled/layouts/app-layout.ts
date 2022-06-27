@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material";
+import { Button, Paper } from "@mui/material";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 
@@ -41,4 +41,14 @@ export const Content = styled(Paper, {
   borderRadius: theme.spacing(4),
   boxShadow: "none",
   overflow: "hidden"
+}));
+
+/**
+ * Styled icon action button component
+ */
+export const IconActionButton = styled(Button, {
+  label: "icon-action-button"
+})(({ theme }) => ({
+  borderRadius: 25,
+  padding: theme.spacing(1.5)
 }));

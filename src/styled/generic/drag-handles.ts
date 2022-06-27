@@ -5,7 +5,11 @@ import { Stack } from "@mui/material";
  * Styled field draggable component
  */
 export const FieldDraggable = styled(Stack, {
-  label: "field-draggable"
+  label: "field-draggable",
+  overridesResolver: (props, styles) => [
+    styles.root,
+    props.visibility === "hidden" && styles.primary
+  ]
 })(({ theme }) => ({
   borderRadius: "0px 0px 20px 20px",
   transition: "height 0.3s ease-in, background-color 0.3s ease-in",
@@ -28,13 +32,11 @@ export const SectionDraggable = styled(Stack, {
   borderRadius: "10px 0px 0px 10px",
   transition: "background-color 0.3s ease-in",
   position: "absolute",
-  left: -48,
-  top: 0,
+  left: -56,
+  top: 25,
   justifyContent: "space-between",
   alignItems: "center",
-  padding: `${theme.spacing(1.5)}px 0px`,
-  height: 92,
-  width: 48,
+  padding: theme.spacing(1),
   backgroundColor: theme.palette.primary.light,
   cursor: "grabbing",
   boxShadow: "0px 3px 10px -1px rgb(0 0 0 / 40%)"

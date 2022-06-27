@@ -1,4 +1,4 @@
-import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
 import React from "react";
 import { DraggingMode } from "types";
@@ -10,11 +10,12 @@ import MetaformEditorLeftDrawer from "./metaform-editor-left-drawer";
 import SectionDragHandle from "components/generic/drag-handle/section-drag-handle";
 import FieldDragHandle from "components/generic/drag-handle/field-drag-handle";
 import { Add } from "@mui/icons-material";
-import { EditorContent, EditorWrapper } from "styled/editor/metaform-editor";
+import { EditorContent, EditorSection, EditorWrapper } from "styled/editor/metaform-editor";
 import DroppableWrapper from "components/generic/drag-and-drop/droppable-wrapper";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DragAndDropUtils from "utils/drag-and-drop-utils";
 import RenderableComponent from "./renderable-components/renderableComponent";
+import strings from "localization/strings";
 
 /**
  * Component properties
@@ -48,6 +49,7 @@ const MetaformEditor: React.FC<Props> = ({
 
   React.useEffect(() => {
     document.addEventListener("click", onGlobalClick);
+    editorRef.current?.requestFullscreen();
 
     return () => document.removeEventListener("click", onGlobalClick);
   }, []);
@@ -317,25 +319,18 @@ const MetaformEditor: React.FC<Props> = ({
           droppableId={ sectionIndex.toString() }
           isDropDisabled={ draggingMode === DraggingMode.SECTION }
         >
-          <Paper
+          <EditorSection
             onClick={ onSectionClick(sectionIndex) }
-            // className={
-            //   classNames(
-            //     classes.formEditorSection,
-            //     { draggingOver: !(selectedSectionIndex === sectionIndex) && snapshot.isDraggingOver },
-            //     { selected: selectedSectionIndex === sectionIndex }
-            //   )
-            // }
           >
             <Stack spacing={ 2 }>
               { (section.fields && section.fields.length > 0) ?
                 section.fields.map((field, index) => renderFormField(field, sectionIndex, index)) :
                 <Typography>
-                  strings.formEditScreen.emptySection
+                  { strings.draftEditorScreen.editor.emptySection }
                 </Typography>
               }
             </Stack>
-          </Paper>
+          </EditorSection>
         </DroppableWrapper>
       </SectionDragHandle>
     </DraggableWrapper>
@@ -361,7 +356,7 @@ const MetaformEditor: React.FC<Props> = ({
         onClick={ onAddNewSectionClick }
       >
         <Typography>
-          TODO add new section
+          { strings.draftEditorScreen.editor.addSection }
         </Typography>
       </Button>
     </EditorContent>

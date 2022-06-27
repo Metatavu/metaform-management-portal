@@ -1,5 +1,5 @@
 import { Add, Delete, DragHandle } from "@mui/icons-material";
-import { Box, Button, IconButton, Stack } from "@mui/material";
+import { Button, IconButton, Stack } from "@mui/material";
 import { FieldDraggable } from "styled/generic/drag-handles";
 import React from "react";
 
@@ -24,11 +24,17 @@ const FieldDragHandle: React.FC<Props> = ({
     <FieldDraggable sx={{ ...(!selected && { height: 0 }) }}>
       { selected &&
         <>
-          <Button disabled style={{ color: "#fff" }} startIcon={ <Add/> }/>
+          {/* TODO add option to field */}
+          <Button
+            variant="text"
+            disabled
+            sx={{ color: "#fff" }}
+            startIcon={ <Add/> }
+          />
           <DragHandle htmlColor="#fff"/>
           <IconButton
             disabled={ !onDeleteClick }
-            style={{ color: "#fff" }}
+            sx={{ color: "#fff" }}
             onClick={ onDeleteClick }
           >
             <Delete/>

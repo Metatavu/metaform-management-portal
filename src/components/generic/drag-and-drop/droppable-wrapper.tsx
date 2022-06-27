@@ -26,6 +26,7 @@ const DroppableWrapper: React.FC<Props> = ({
     {(provided: DroppableProvided) => (
       <div ref={ provided.innerRef } >
         { children }
+        { provided.placeholder }
       </div>
     )}
   </Droppable>
