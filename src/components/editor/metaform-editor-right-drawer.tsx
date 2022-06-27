@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Tab, Tabs } from "@mui/material";
 import { Metaform } from "generated/client";
 import React from "react";
@@ -19,9 +20,6 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   setPendingForm
 }) => {
   const [ tabIndex, setTabIndex ] = React.useState(0);
-
-  console.log(pendingForm);
-  console.log(setPendingForm);
 
   /**
    * Component render

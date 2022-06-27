@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles";
 export const EditorContent = styled(Stack, {
   label: "metaform-editor-content"
 })(({ theme }) => ({
-  padding: theme.spacing(8),
+  padding: `${theme.spacing(8)} ${theme.spacing(12)}`,
   overflow: "auto",
   flex: 1,
   backgroundColor: theme.palette.grey[300]

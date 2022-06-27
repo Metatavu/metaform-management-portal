@@ -317,6 +317,9 @@ const MetaformEditor: React.FC<Props> = ({
         <EditorSection
           onClick={ onSectionClick(sectionIndex) }
         >
+          <Typography variant="h1" sx={{ mb: 2 }}>
+            { section.title }
+          </Typography>
           <DroppableWrapper
             droppableId={ sectionIndex.toString() }
             isDropDisabled={ draggingMode === DraggingMode.SECTION }
