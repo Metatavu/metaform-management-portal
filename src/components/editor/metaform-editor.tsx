@@ -314,12 +314,12 @@ const MetaformEditor: React.FC<Props> = ({
         selected={ selectedSectionIndex === sectionIndex }
         onDeleteClick={ onSectionDeleteClick(sectionIndex) }
       >
-        <DroppableWrapper
-          droppableId={ sectionIndex.toString() }
-          isDropDisabled={ draggingMode === DraggingMode.SECTION }
+        <EditorSection
+          onClick={ onSectionClick(sectionIndex) }
         >
-          <EditorSection
-            onClick={ onSectionClick(sectionIndex) }
+          <DroppableWrapper
+            droppableId={ sectionIndex.toString() }
+            isDropDisabled={ draggingMode === DraggingMode.SECTION }
           >
             <Stack spacing={ 2 }>
               { (section.fields && section.fields.length > 0) ?
@@ -329,8 +329,8 @@ const MetaformEditor: React.FC<Props> = ({
                 </Typography>
               }
             </Stack>
-          </EditorSection>
-        </DroppableWrapper>
+          </DroppableWrapper>
+        </EditorSection>
       </SectionDragHandle>
     </DraggableWrapper>
   );
