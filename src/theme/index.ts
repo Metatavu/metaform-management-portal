@@ -145,6 +145,16 @@ export default createTheme({
       defaultProps: {
         variant: "outlined"
       }
+    },
+    MuiTab: {
+      styleOverrides: {
+        textColorPrimary: {
+          color: "rgba(0, 0, 0, 0.54)"
+        },
+        root: {
+          flex: 1
+        }
+      }
     }
   }
 

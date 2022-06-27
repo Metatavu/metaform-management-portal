@@ -2,6 +2,7 @@
 import { Tab, Tabs } from "@mui/material";
 import { Metaform, MetaformField, MetaformSection } from "generated/client";
 import produce from "immer";
+import strings from "localization/strings";
 import React from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
 
@@ -83,11 +84,11 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
       >
         <Tab
           value={ 0 }
-          label="TODO"
+          label={ strings.draftEditorScreen.editor.features.tabTitle }
         />
         <Tab
           value={ 1 }
-          label="TODO"
+          label={ strings.draftEditorScreen.editor.visibility.tabTitle }
         />
       </Tabs>
     </EditorDrawer>

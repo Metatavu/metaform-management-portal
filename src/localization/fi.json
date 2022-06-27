@@ -62,7 +62,21 @@
     "publish": "Julkaise",
     "editor": {
       "addSection": "Lisää osio",
-      "emptySection": "Tyhjä osa"
+      "emptySection": "Tyhjä osa",
+      "form": {
+        "tabTitle": "Lomake",
+        "formTitle": "Lomakkeen otsikko"
+      },
+      "fields": {
+        "tabTitle": "Kentät"
+      },
+      "features": {
+        "tabTitle": "Ominaisuudet",
+        "title": "Title"
+      },
+      "visibility": {
+        "tabTitle": "näkyvyys"
+      }
     }
   }
 }

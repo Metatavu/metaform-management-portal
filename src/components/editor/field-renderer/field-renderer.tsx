@@ -9,10 +9,10 @@ interface Prop {
 }
 
 /**
- * Renderable component
+ * Metaform field renderer component
  * TODO use metaform react component
  */
-const RenderableComponent: React.FC<Prop> = ({
+const FieldRenderer: React.FC<Prop> = ({
   field,
   fieldId,
   fieldLabelId
@@ -29,4 +29,4 @@ const RenderableComponent: React.FC<Prop> = ({
   );
 };
 
-export default RenderableComponent;
+export default FieldRenderer;

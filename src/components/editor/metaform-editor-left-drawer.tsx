@@ -1,15 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Tab, Tabs } from "@mui/material";
+import { Tab, Tabs, TextField } from "@mui/material";
+import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
+import DroppableWrapper from "components/generic/drag-and-drop/droppable-wrapper";
 import TabPanel from "components/generic/tab-panel";
 import { Metaform } from "generated/client";
-import React from "react";
+import strings from "localization/strings";
+import React, { ChangeEventHandler } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
+import { DraggingMode } from "types";
+import FieldAddable from "./field-addable/field-addable";
 
 /**
  * Component properties
  */
 interface Props {
-  pendingForm: Metaform;
+  pendingForm?: Metaform;
   setPendingForm: (metaform: Metaform) => void;
 }
 
@@ -23,6 +28,46 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
   const [ tabIndex, setTabIndex ] = React.useState(0);
 
   /**
+   * Event handler for metaform property change
+   *
+   * @param key metaform property key
+   */
+  const onMetaformPropertyChange = (key: keyof Metaform): ChangeEventHandler<HTMLInputElement> =>
+    ({ target: { value } }) => {
+      pendingForm && setPendingForm({ ...pendingForm, [key]: value });
+    };
+
+  /**
+   * Renders form tab
+   */
+  const renderFormTab = () => (
+    <TextField
+      label={ strings.draftEditorScreen.editor.form.formTitle }
+      value={ pendingForm?.title }
+      onChange={ onMetaformPropertyChange("title") }
+    />
+  );
+
+  /**
+   * Renders fields tab
+   */
+  const renderFieldsTab = () => (
+    <DroppableWrapper
+      isDropDisabled
+      droppableId={ DraggingMode.ADD_FIELD.toString() }
+    >
+      <DraggableWrapper
+        index={ 0 }
+        draggableId="field-temp"
+        isDragDisabled={ false }
+      >
+        {/* TODO populate all of this with metaform field components */}
+        <FieldAddable/>
+      </DraggableWrapper>
+    </DroppableWrapper>
+  );
+
+  /**
    * Component render
    */
   return (
@@ -33,15 +78,19 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
       >
         <Tab
           value={ 0 }
-          label="TODO"
+          label={ strings.draftEditorScreen.editor.form.tabTitle }
         />
         <Tab
           value={ 1 }
-          label="TODO"
+          label={ strings.draftEditorScreen.editor.fields.tabTitle }
         />
       </Tabs>
-      <TabPanel value={ tabIndex } index={ 0 }/>
-      <TabPanel value={ tabIndex } index={ 1 }/>
+      <TabPanel value={ tabIndex } index={ 0 }>
+        { renderFormTab() }
+      </TabPanel>
+      <TabPanel value={ tabIndex } index={ 1 }>
+        { renderFieldsTab() }
+      </TabPanel>
     </EditorDrawer>
   );
 };

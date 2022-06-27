@@ -25,7 +25,7 @@ const TabPanel: React.FC<Props> = ({
    * Component render
    */
   return (
-    <Stack>
+    <Stack p={ 2 } spacing={ 2 }>
       { children }
     </Stack>
   );

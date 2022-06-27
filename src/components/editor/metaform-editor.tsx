@@ -14,7 +14,7 @@ import { EditorContent, EditorSection, EditorWrapper } from "styled/editor/metaf
 import DroppableWrapper from "components/generic/drag-and-drop/droppable-wrapper";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DragAndDropUtils from "utils/drag-and-drop-utils";
-import RenderableComponent from "./renderable-components/renderableComponent";
+import FieldRenderer from "./field-renderer/field-renderer";
 import strings from "localization/strings";
 
 /**
@@ -60,6 +60,7 @@ const MetaformEditor: React.FC<Props> = ({
    * @param droppableDestination droppable destination
    */
   const onFieldAdd = (fieldType: MetaformFieldType, droppableDestination: DraggableLocation) => {
+    console.log("onFieldAdd");
     const defaultField = MetaformUtils.createEmptyField(fieldType);
     const sectionIndex = parseInt(droppableDestination.droppableId, 10);
     const fieldIndex = droppableDestination.index;
@@ -156,10 +157,10 @@ const MetaformEditor: React.FC<Props> = ({
 
     if (DragAndDropUtils.isMovingSection(draggableId, destination.droppableId)) {
       onSectionMove(source, destination);
-    } else if (DragAndDropUtils.isMovingField(draggableId, destination.droppableId)) {
-      onSectionFieldMove(source, destination);
     } else if (DragAndDropUtils.isAddingField(source.droppableId, destination.droppableId)) {
       onFieldAdd(draggableId as MetaformFieldType, destination);
+    } else if (DragAndDropUtils.isMovingField(draggableId, destination.droppableId)) {
+      onSectionFieldMove(source, destination);
     }
 
     setDraggingMode(undefined);
@@ -267,7 +268,7 @@ const MetaformEditor: React.FC<Props> = ({
             selected={ selected }
             onDeleteClick={ onFieldDeleteClick(sectionIndex, fieldIndex) }
           >
-            <RenderableComponent
+            <FieldRenderer
               field={ field }
               fieldId={ DragAndDropUtils.getFieldId(pendingForm, field) }
               fieldLabelId={ DragAndDropUtils.getFieldLabelId(pendingForm, field) }

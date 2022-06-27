@@ -62,7 +62,21 @@
     "publish": "Publish",
     "editor": {
       "addSection": "Add section",
-      "emptySection": "Empty section"
+      "emptySection": "Empty section",
+      "form": {
+        "tabTitle": "Form",
+        "formTitle": "Form title"
+      },
+      "fields": {
+        "tabTitle": "Fields"
+      },
+      "features": {
+        "tabTitle": "Features",
+        "title": "Title"
+      },
+      "visibility": {
+        "tabTitle": "Visibility"
+      }
     }
   }
 }

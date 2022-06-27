@@ -89,6 +89,20 @@ export interface Localized extends LocalizedStringsMethods {
     editor: {
       addSection: string;
       emptySection: string;
+      form: {
+        tabTitle: string;
+        formTitle: string;
+      };
+      fields: {
+        tabTitle: string;
+      };
+      features: {
+        tabTitle: string;
+        title: string;
+      };
+      visibility: {
+        tabTitle: string;
+      };
     };
   };
 }
