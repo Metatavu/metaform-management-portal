@@ -2,7 +2,6 @@ import { Divider, Stack, Typography } from "@mui/material";
 import { Metaform } from "generated/client";
 import React from "react";
 import MetaformUtils from "utils/metaform-utils";
-import exampleForm from "resources/forms/form.example.json";
 import MetaformEditor from "components/editor/metaform-editor";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
@@ -16,7 +15,7 @@ import { IconActionButton } from "styled/layouts/app-layout";
 const DraftEditorScreen: React.FC = () => {
   // TODO draft fetch, set logic, replace the example form
   const editorRef = React.useRef<HTMLDivElement>(null);
-  const [ draftForm, setDraftForm ] = React.useState<Metaform>(MetaformUtils.jsonToMetaform(exampleForm));
+  const [ draftForm, setDraftForm ] = React.useState<Metaform>(MetaformUtils.jsonToMetaform({}));
 
   /**
    * Renders draft editor actions
@@ -36,7 +35,7 @@ const DraftEditorScreen: React.FC = () => {
   );
 
   return (
-    <Stack overflow="hidden">
+    <Stack flex={ 1 } overflow="hidden">
       <NavigationTabContainer>
         <NavigationTab
           text={ strings.navigationHeader.editorScreens.draftEditorScreen }

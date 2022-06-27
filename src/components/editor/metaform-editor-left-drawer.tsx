@@ -14,7 +14,7 @@ interface Props {
 }
 
 /**
- * Draft editor screen component
+ * Draft editor left drawer component
  */
 const MetaformEditorLeftDrawer: React.FC<Props> = ({
   pendingForm,

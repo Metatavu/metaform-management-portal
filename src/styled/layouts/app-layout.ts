@@ -38,6 +38,7 @@ export const Content = styled(Paper, {
   flexDirection: "column",
   flex: 1,
   width: "100%",
+  height: "100%",
   borderRadius: theme.spacing(4),
   boxShadow: "none",
   overflow: "hidden"

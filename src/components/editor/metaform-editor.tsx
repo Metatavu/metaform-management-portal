@@ -53,26 +53,6 @@ const MetaformEditor: React.FC<Props> = ({
     return () => document.removeEventListener("click", onGlobalClick);
   }, []);
 
-  // /**
-  //  * Updates metaform field
-  //  *
-  //  * @param sectionIndex section index
-  //  * @param fieldIndex field index
-  //  */
-  // const onFieldUpdate = (sectionIndex: number, fieldIndex: number) => (newMetaformField: MetaformField) => {
-  //   const field = pendingForm.sections?.[sectionIndex]?.fields?.[fieldIndex];
-
-  //   if (!pendingForm?.sections || !field) {
-  //     return;
-  //   }
-
-  //   const updatedForm = produce(pendingForm, draftForm => {
-  //     draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, newMetaformField);
-  //   });
-
-  //   setPendingForm(updatedForm);
-  // };
-
   /**
    * Event handler for field add
    *
@@ -269,7 +249,7 @@ const MetaformEditor: React.FC<Props> = ({
   /**
    * Renders a single form field
    *
-   * @param section metaform section
+   * @param field metaform field
    * @param sectionIndex section index
    * @param fieldIndex field index
    */
