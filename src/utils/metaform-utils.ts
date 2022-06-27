@@ -6,6 +6,37 @@ import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "gen
 namespace MetaformUtils {
 
   /**
+   * Create new Metaform
+   *
+   * @param formTitle Title of the metaform
+   * @param allowAnonymousRule boolean to allow anonymous users to access the metaform
+   * @returns new Metaform
+   */
+  export const createNewMetaform = (formTitle: string, allowAnonymousRule: boolean): Metaform => {
+    return {
+      title: formTitle,
+      replyStrategy: undefined,
+      exportThemeId: undefined,
+      allowAnonymous: allowAnonymousRule,
+      allowDrafts: true, // TODO: Check if allowDrafts should be true by default
+      allowReplyOwnerKeys: undefined,
+      allowInvitations: undefined,
+      autosave: undefined,
+      slug: "form",
+      sections: [
+        {
+          title: "Osion otsikko",
+          visibleIf: undefined,
+          fields: [
+          ]
+        }
+      ],
+      filters: [],
+      scripts: undefined
+    };
+  };
+
+  /**
    * Convert metaform to json format
    *
    * @param metaform metaform data
