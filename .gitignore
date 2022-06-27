@@ -11,9 +11,6 @@
 # production
 /build
 
-# local form
-src/resources/forms
-
 # misc
 .DS_Store
 .env
