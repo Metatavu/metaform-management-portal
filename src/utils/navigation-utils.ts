@@ -9,9 +9,9 @@ namespace NavigationUtils {
    * @param navigation navigation
    */
   export const getTranslatedNavigation = (navigation: NavigationLinks): string => ({
-    [NavigationLinks.EDITOR]: "/editor",
-    [NavigationLinks.FORMS]: "/forms",
-    [NavigationLinks.USERS]: "/users"
+    [NavigationLinks.EDITOR]: "/admin/editor",
+    [NavigationLinks.FORMS]: "/admin/forms",
+    [NavigationLinks.USERS]: "/admin/users"
   })[navigation];
 
   /**

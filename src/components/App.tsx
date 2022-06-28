@@ -29,18 +29,18 @@ const App: React.FC = () => (
               />
               <Route
                 path="/admin"
-                element={ <Navigate to="/forms"/> }
+                element={ <Navigate to="/admin/forms"/> }
               />
               <Route
-                path="/users"
+                path="/admin/users"
                 element={ <UsersScreen/> }
               />
               <Route
-                path="/forms/*"
+                path="/admin/forms/*"
                 element={ <FormsRoutes/> }
               />
               <Route
-                path="/editor/*"
+                path="/admin/editor/*"
                 element={ <EditorRoutes/> }
               />
             </Routes>
