@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
-import theme from "theme";
 
 /**
  * Styled root component
@@ -13,7 +12,7 @@ export const Root = styled(Box, {
   overflow: "hidden",
   display: "grid",
   gridTemplateRows: "auto auto auto 1fr",
-  background: theme.palette.background.paper
+  background: "linear-gradient(180deg, #375AA3 0%, #4FA3DF 100%)"
 }));
 
 export default Root;

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 
 /**
- * Styled content wrapper component
+ * Styled admin content wrapper component
  */
 export const ContentWrapper = styled(Box, {
   label: "admin-layout--content-wrapper"
@@ -13,11 +13,11 @@ export const ContentWrapper = styled(Box, {
   display: "flex",
   padding: theme.spacing(4),
   overflow: "hidden",
-  background: "linear-gradient(180deg, #375AA3 0%, #4FA3DF 100%)"
+  background: "transparent"
 }));
 
 /**
- * Styled content component
+ * Styled admin content component
  */
 export const Content = styled(Paper, {
   label: "admin-layout--content"
