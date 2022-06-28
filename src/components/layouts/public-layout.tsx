@@ -1,5 +1,6 @@
 import React from "react";
-import { Content, ContentWrapper, Root } from "styled/layouts/app-layout";
+import { Content, ContentWrapper } from "styled/layouts/public-layout";
+import BasicLayout from "./basic-layout";
 
 /**
  * Public layout component
@@ -11,13 +12,13 @@ const PublicLayout: React.FC = ({ children }) => {
    * Component render
    */
   return (
-    <Root>
+    <BasicLayout>
       <ContentWrapper>
         <Content>
           { children }
         </Content>
       </ContentWrapper>
-    </Root>
+    </BasicLayout>
   );
 };
 

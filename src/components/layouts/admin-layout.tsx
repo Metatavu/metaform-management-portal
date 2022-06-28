@@ -1,6 +1,7 @@
 import Header from "components/layout-components/header";
 import React from "react";
-import { Content, ContentWrapper, Root } from "styled/layouts/app-layout";
+import { Content, ContentWrapper } from "styled/layouts/admin-layout";
+import BasicLayout from "./basic-layout";
 import Breadcrumbs from "./breadcrumbs/breadcrumbs";
 import NavigationHeader from "./navigations/navigation-header";
 
@@ -14,7 +15,7 @@ const AdminLayout: React.FC = ({ children }) => {
    * Component render
    */
   return (
-    <Root>
+    <BasicLayout>
       <Header/>
       <NavigationHeader/>
       <Breadcrumbs/>
@@ -23,7 +24,7 @@ const AdminLayout: React.FC = ({ children }) => {
           { children }
         </Content>
       </ContentWrapper>
-    </Root>
+    </BasicLayout>
   );
 };
 

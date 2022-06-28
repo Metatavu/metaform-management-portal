@@ -1,5 +1,5 @@
 import React from "react";
-import { Root } from "styled/layouts/app-layout";
+import { Root } from "styled/layouts/basic-layout";
 
 /**
  * Basic layout component
