@@ -47,6 +47,15 @@ export type ListItemData = {
 };
 
 /**
+ * React dnd dragging mode
+ */
+export enum DraggingMode {
+  FIELD = "FIELD",
+  ADD_FIELD = "ADD_FIELD",
+  SECTION = "SECTION"
+}
+
+/**
  * Enum navigation links
  */
 export enum NavigationLinks {

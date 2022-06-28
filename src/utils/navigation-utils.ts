@@ -21,7 +21,7 @@ namespace NavigationUtils {
    */
   export const matchNavigation = (path: string): NavigationLinks => (
     Object.values(NavigationLinks)
-      .find(navigation => !!matchPath(path, getTranslatedNavigation(navigation))) || NavigationLinks.FORMS
+      .find(navigation => !!matchPath(getTranslatedNavigation(navigation), `/${path.split("/")[1]}`)) || NavigationLinks.FORMS
   );
 }
 

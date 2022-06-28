@@ -73,6 +73,36 @@ export interface Localized extends LocalizedStringsMethods {
     editorScreens: {
       title: string;
       description: string;
+      draftEditorScreen: {
+        title: string;
+        description: string;
+      };
+    };
+  };
+
+  /**
+   * Translations related to metaform editor screen
+   */
+  draftEditorScreen: {
+    preview: string;
+    publish: string;
+    editor: {
+      addSection: string;
+      emptySection: string;
+      form: {
+        tabTitle: string;
+        formTitle: string;
+      };
+      fields: {
+        tabTitle: string;
+      };
+      features: {
+        tabTitle: string;
+        title: string;
+      };
+      visibility: {
+        tabTitle: string;
+      };
     };
   };
 }

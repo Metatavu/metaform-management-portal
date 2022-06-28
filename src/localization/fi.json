@@ -49,7 +49,34 @@
     },
     "editorScreens": {
       "title": "Editori",
-      "description": "Lomakkeiden muokkaus ja uusien lomakkeiden luominen."
+      "description": "Lomakkeiden muokkaus ja uusien lomakkeiden luominen.",
+      "draftEditorScreen": {
+        "title": "luonnoseditori",
+        "description": "Lomakkeen muokkaus"
+      }
+    }
+  },
+
+  "draftEditorScreen": {
+    "preview": "Esikatsele",
+    "publish": "Julkaise",
+    "editor": {
+      "addSection": "Lisää osio",
+      "emptySection": "Tyhjä osa",
+      "form": {
+        "tabTitle": "Lomake",
+        "formTitle": "Lomakkeen otsikko"
+      },
+      "fields": {
+        "tabTitle": "Kentät"
+      },
+      "features": {
+        "tabTitle": "Ominaisuudet",
+        "title": "Title"
+      },
+      "visibility": {
+        "tabTitle": "näkyvyys"
+      }
     }
   }
 }

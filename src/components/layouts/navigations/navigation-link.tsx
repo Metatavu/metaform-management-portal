@@ -28,7 +28,7 @@ const NavigationLink: React.FC<Props> = ({
   const [ title ] = LocalizationUtils.getLocalizedNavigationLink(navigation);
   const match = currentNavigation === navigation;
   const color = match ?
-    theme.palette.primary.light :
+    theme.palette.primary.main :
     theme.palette.grey[400];
 
   /**
@@ -36,6 +36,7 @@ const NavigationLink: React.FC<Props> = ({
    */
   return (
     <Button
+      variant="text"
       sx={{ padding: 0 }}
       onClick={ () => navigate(NavigationUtils.getTranslatedNavigation(navigation)) }
     >
