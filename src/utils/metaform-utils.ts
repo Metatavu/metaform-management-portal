@@ -1,18 +1,18 @@
-import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "../generated/client";
+import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
 
 /**
  * Utility class for metaform
  */
-export default class MetaformUtils {
+namespace MetaformUtils {
 
   /**
    * Create new Metaform
-   * 
+   *
    * @param formTitle Title of the metaform
    * @param allowAnonymousRule boolean to allow anonymous users to access the metaform
-   * @returns new Metaform 
+   * @returns new Metaform
    */
-  public static createNewMetaform = (formTitle: string, allowAnonymousRule: boolean): Metaform => {
+  export const createNewMetaform = (formTitle: string, allowAnonymousRule: boolean): Metaform => {
     return {
       title: formTitle,
       replyStrategy: undefined,
@@ -37,12 +37,34 @@ export default class MetaformUtils {
   };
 
   /**
+   * Convert metaform to json format
+   *
+   * @param metaform metaform data
+   * @returns metaform in json format
+   */
+  export const metaformToJson = (metaform: Metaform): string => {
+    return metaform ? JSON.stringify(metaform, null, 2) : "";
+  };
+
+  /**
+   * Convert Object to metaform data
+   *
+   * @param metaformJson metaform data in json
+   * @returns metaform data
+   */
+  export const jsonToMetaform = (metaformJson: Object): Metaform => {
+    return {
+      ...JSON.parse(JSON.stringify(metaformJson))
+    } as Metaform;
+  };
+
+  /**
    * Create empty field for given field type
-   * 
+   *
    * @param fieldType metaform field type
    * @returns created field
    */
-  public static createEmptyField = (fieldType: MetaformFieldType): MetaformField => {
+  export const createEmptyField = (fieldType: MetaformFieldType): MetaformField => {
     if (fieldType === MetaformFieldType.Select || fieldType === MetaformFieldType.Radio) {
       return {
         title: fieldType,
@@ -57,46 +79,18 @@ export default class MetaformUtils {
     }
 
     return {
-      visibleIf: undefined,
-      permissionContexts: undefined,
       name: fieldType,
-      type: fieldType,
       title: fieldType,
-      required: false,
-      contexts: [],
-      flags: undefined,
-      placeholder: undefined,
-      _class: undefined,
-      readonly: undefined,
-      help: undefined,
-      _default: undefined,
-      min: undefined,
-      max: undefined,
-      step: undefined,
-      checked: undefined,
-      printable: undefined,
-      options: [],
-      autocomplete: undefined,
-      sourceUrl: undefined,
-      singleFile: undefined,
-      onlyImages: undefined,
-      maxFileSize: undefined,
-      addRows: undefined,
-      draggable: undefined,
-      columns: [],
-      src: undefined,
-      text: undefined,
-      html: undefined,
-      source: undefined
+      type: fieldType
     };
   };
 
   /**
    * Create an empty section
-   * 
-   * @returns created section 
+   *
+   * @returns created section
    */
-  public static createEmptySection = (): MetaformSection => {
+  export const createEmptySection = (): MetaformSection => {
     return {
       title: "Section",
       fields: []
@@ -104,3 +98,5 @@ export default class MetaformUtils {
   };
 
 }
+
+export default MetaformUtils;

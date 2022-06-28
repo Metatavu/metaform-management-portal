@@ -49,7 +49,34 @@
     },
     "editorScreens": {
       "title": "Editors",
-      "description": "Edit forms and create new forms."
+      "description": "Edit forms and create new forms.",
+      "draftEditorScreen": {
+        "title": "Draft editor",
+        "description": "Editing the form"
+      }
+    }
+  },
+
+  "draftEditorScreen": {
+    "preview": "Preview",
+    "publish": "Publish",
+    "editor": {
+      "addSection": "Add section",
+      "emptySection": "Empty section",
+      "form": {
+        "tabTitle": "Form",
+        "formTitle": "Form title"
+      },
+      "fields": {
+        "tabTitle": "Fields"
+      },
+      "features": {
+        "tabTitle": "Features",
+        "title": "Title"
+      },
+      "visibility": {
+        "tabTitle": "Visibility"
+      }
     }
   }
 }

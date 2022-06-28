@@ -12,7 +12,7 @@ interface Props {
   active?: boolean;
   text: ListItemData;
   to?: string;
-  renderFilters?: () => React.ReactNode;
+  renderActions?: () => React.ReactNode;
 }
 
 /**
@@ -22,7 +22,7 @@ const NavigationTab: React.FC<Props> = ({
   active = true,
   text,
   to,
-  renderFilters
+  renderActions
 }) => {
   const { title, description } = text;
   const linkEnabled = active && !to;
@@ -46,7 +46,7 @@ const NavigationTab: React.FC<Props> = ({
           color: linkEnabled ? undefined : theme.palette.grey[400]
         }}
       />
-      { linkEnabled && renderFilters?.() }
+      { linkEnabled && renderActions?.() }
     </NavigationTabWrapper>
   );
 

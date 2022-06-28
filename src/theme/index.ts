@@ -12,8 +12,8 @@ export default createTheme({
 
   palette: {
     primary: {
-      main: "#375AA3",
-      light: "#4FA3DF"
+      main: "#4FA3DF",
+      dark: "#375AA3"
     },
     secondary: {
       main: "#ffffff"
@@ -138,6 +138,21 @@ export default createTheme({
           fontSize: 16,
           fontWeight: 600,
           color: palette.grey[400]
+        }
+      }
+    },
+    MuiButton: {
+      defaultProps: {
+        variant: "outlined"
+      }
+    },
+    MuiTab: {
+      styleOverrides: {
+        textColorPrimary: {
+          color: "rgba(0, 0, 0, 0.54)"
+        },
+        root: {
+          flex: 1
         }
       }
     }

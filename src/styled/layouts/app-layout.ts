@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material";
+import { Button, Paper } from "@mui/material";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 
@@ -24,7 +24,8 @@ export const ContentWrapper = styled(Box, {
   flex: 1,
   width: "100%",
   display: "flex",
-  padding: theme.spacing(4)
+  padding: theme.spacing(4),
+  overflow: "hidden"
 }));
 
 /**
@@ -37,7 +38,18 @@ export const Content = styled(Paper, {
   flexDirection: "column",
   flex: 1,
   width: "100%",
+  height: "100%",
   borderRadius: theme.spacing(4),
   boxShadow: "none",
   overflow: "hidden"
+}));
+
+/**
+ * Styled icon action button component
+ */
+export const IconActionButton = styled(Button, {
+  label: "icon-action-button"
+})(({ theme }) => ({
+  borderRadius: 25,
+  padding: theme.spacing(1.5)
 }));
