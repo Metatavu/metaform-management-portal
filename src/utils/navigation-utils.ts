@@ -1,4 +1,3 @@
-import { matchPath } from "react-router-dom";
 import { NavigationLinks } from "types";
 
 namespace NavigationUtils {
@@ -21,7 +20,7 @@ namespace NavigationUtils {
    */
   export const matchNavigation = (path: string): NavigationLinks => (
     Object.values(NavigationLinks)
-      .find(navigation => !!matchPath(getTranslatedNavigation(navigation), `/${path.split("/")[1]}`)) || NavigationLinks.FORMS
+      .find(navigation => !!path.startsWith(getTranslatedNavigation(navigation))) || NavigationLinks.FORMS
   );
 }
 
