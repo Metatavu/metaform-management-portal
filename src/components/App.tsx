@@ -7,7 +7,8 @@ import ApiProvider from "./providers/api-provider";
 import FormsRoutes from "./screens/forms/forms-routes";
 import UsersScreen from "./screens/users/users-screen";
 import EditorRoutes from "./screens/editor/editor-routes";
-import AppLayout from "./layouts/app-layout";
+import BasicLayout from "./layouts/basic-layout";
+import PublicFormsScreen from "./screens/public/public-forms-screen";
 
 const apiProviders: React.FC<{}>[] = [];
 
@@ -20,10 +21,14 @@ const App: React.FC = () => (
       <ConfirmHandler>
         {/* <AccessTokenRefresh> */}
         <BrowserRouter>
-          <AppLayout>
+          <BasicLayout>
             <Routes>
               <Route
                 path="/"
+                element={ <PublicFormsScreen/> }
+              />
+              <Route
+                path="/admin"
                 element={ <Navigate to="/forms"/> }
               />
               <Route
@@ -39,7 +44,7 @@ const App: React.FC = () => (
                 element={ <EditorRoutes/> }
               />
             </Routes>
-          </AppLayout>
+          </BasicLayout>
         </BrowserRouter>
         {/* </AccessTokenRefresh> */}
       </ConfirmHandler>
