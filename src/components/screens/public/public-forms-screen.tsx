@@ -3,11 +3,10 @@ import strings from "localization/strings";
 import React from "react";
 
 /**
- * Form answer screen component
+ * Public forms screen component
  */
-const FormAnswerScreen: React.FC = () => (
+const PublicFormsScreen: React.FC = () => (
   <Typography>{ strings.generic.notImplemented }</Typography>
-
 );
 
-export default FormAnswerScreen;
+export default PublicFormsScreen;

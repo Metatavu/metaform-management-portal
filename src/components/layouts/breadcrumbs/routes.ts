@@ -7,47 +7,47 @@ import DraftBreadcrumb from "./draft-breadcrumb";
  */
 const routes = [
   {
-    path: "/",
+    path: "/admin/",
     breadcrumb: strings.breadcrumb.home
   },
   {
-    path: "/users/*",
+    path: "/admin/users/*",
     breadcrumb: strings.breadcrumb.users
   },
   {
-    path: "/editor",
+    path: "/admin/editor",
     breadcrumb: strings.breadcrumb.editor
   },
   {
-    path: "/editor/:formSlug",
+    path: "/admin/editor/:formSlug",
     breadcrumb: FormBreadcrumb
   },
   {
-    path: "/editor/:formSlug/:draftId",
+    path: "/admin/editor/:formSlug/:draftId",
     breadcrumb: DraftBreadcrumb
   },
   {
-    path: "/forms",
+    path: "/admin/forms",
     breadcrumb: strings.breadcrumb.forms
   },
   {
-    path: "/forms/data",
+    path: "/admin/forms/data",
     breadcrumb: strings.breadcrumb.data
   },
   {
-    path: "/forms",
+    path: "/admin/forms",
     breadcrumb: strings.breadcrumb.list
   },
   {
-    path: "/forms/:formSlug",
+    path: "/admin/forms/:formSlug",
     breadcrumb: FormBreadcrumb
   },
   {
-    path: "/forms/:formSlug/answer",
+    path: "/admin/forms/:formSlug/answer",
     breadcrumb: strings.breadcrumb.answer
   },
   {
-    path: "/forms/:formSlug/history",
+    path: "/admin/forms/:formSlug/history",
     breadcrumb: strings.breadcrumb.history
   }
 ];
