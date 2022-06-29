@@ -7,7 +7,7 @@ import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
 import { Preview, Public, Save } from "@mui/icons-material";
-import { IconActionButton } from "styled/layouts/app-layout";
+import { IconActionButton } from "styled/layouts/admin-layout";
 import FormJson from "1c9d4662-886b-4832-84ea-34ca05f90932.json";
 
 /**

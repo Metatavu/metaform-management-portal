@@ -3,36 +3,24 @@ import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 
 /**
- * Styled root component
- */
-export const Root = styled(Box, {
-  label: "app-layout--root"
-})(() => ({
-  height: "100vh",
-  width: "100vw",
-  overflow: "hidden",
-  display: "grid",
-  gridTemplateRows: "auto auto auto 1fr"
-}));
-
-/**
- * Styled content wrapper component
+ * Styled admin content wrapper component
  */
 export const ContentWrapper = styled(Box, {
-  label: "app-layout--content-wrapper"
+  label: "admin-layout--content-wrapper"
 })(({ theme }) => ({
   flex: 1,
   width: "100%",
   display: "flex",
   padding: theme.spacing(4),
-  overflow: "hidden"
+  overflow: "hidden",
+  background: "transparent"
 }));
 
 /**
- * Styled content component
+ * Styled admin content component
  */
 export const Content = styled(Paper, {
-  label: "app-layout--content"
+  label: "admin-layout--content"
 })(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
