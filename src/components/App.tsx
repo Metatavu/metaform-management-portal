@@ -31,7 +31,7 @@ const App: React.FC = () => (
               />
               <Route
                 path="/admin"
-                element={ <AdminLayout><Navigate to="/admin/forms"/></AdminLayout> }
+                element={ <Navigate to="/admin/forms"/> }
               />
               <Route
                 path="/admin/users"
