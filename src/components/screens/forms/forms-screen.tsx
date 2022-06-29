@@ -3,13 +3,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
-import AdminLayout from "components/layouts/admin-layout";
 
 /**
  * Forms screen component
  */
 const FormsScreen: React.FC = () => (
-  <AdminLayout>
+  <>
     <NavigationTabContainer>
       <NavigationTab
         text={ strings.navigationHeader.formsScreens.formScreen }
@@ -28,7 +27,7 @@ const FormsScreen: React.FC = () => (
       disableColumnSelector
       disableSelectionOnClick
     />
-  </AdminLayout>
+  </>
 );
 
 export default FormsScreen;

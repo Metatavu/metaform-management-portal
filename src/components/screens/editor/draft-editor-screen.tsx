@@ -8,7 +8,6 @@ import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
 import { Preview, Public, Save } from "@mui/icons-material";
 import { IconActionButton } from "styled/layouts/admin-layout";
-import AdminLayout from "components/layouts/admin-layout";
 
 /**
  * Draft editor screen component
@@ -36,22 +35,20 @@ const DraftEditorScreen: React.FC = () => {
   );
 
   return (
-    <AdminLayout>
-      <Stack flex={ 1 } overflow="hidden">
-        <NavigationTabContainer>
-          <NavigationTab
-            text={ strings.navigationHeader.editorScreens.draftEditorScreen }
-            renderActions={ draftEditorActions }
-          />
-        </NavigationTabContainer>
-        <Divider/>
-        <MetaformEditor
-          editorRef={ editorRef }
-          pendingForm={ draftForm }
-          setPendingForm={ setDraftForm }
+    <Stack flex={ 1 } overflow="hidden">
+      <NavigationTabContainer>
+        <NavigationTab
+          text={ strings.navigationHeader.editorScreens.draftEditorScreen }
+          renderActions={ draftEditorActions }
         />
-      </Stack>
-    </AdminLayout>
+      </NavigationTabContainer>
+      <Divider/>
+      <MetaformEditor
+        editorRef={ editorRef }
+        pendingForm={ draftForm }
+        setPendingForm={ setDraftForm }
+      />
+    </Stack>
   );
 };
 

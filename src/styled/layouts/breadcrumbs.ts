@@ -23,7 +23,6 @@ export const Wrapper = styled(Paper, {
 export const Crumb = styled(NavLink, {
   label: "breadcrumb-link"
 })(() => ({
-  // color: theme.palette.text.primary,
   textDecoration: "none",
   "&:hover": {
     textDecoration: "underline"
