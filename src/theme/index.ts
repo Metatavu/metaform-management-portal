@@ -80,7 +80,6 @@ export default createTheme({
         },
         body: {
           ...palette.mode === "dark" ? darkScrollbar() : null
-          // background: "linear-gradient(180deg, #375AA3 0%, #4FA3DF 100%)"
         }
       }
     },
