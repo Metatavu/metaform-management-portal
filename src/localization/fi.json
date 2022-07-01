@@ -62,7 +62,7 @@
     "publish": "Julkaise",
     "editor": {
       "addSection": "Lisää osio",
-      "emptySection": "Tyhjä osa",
+      "emptySection": "Tyhjä osio",
       "form": {
         "tabTitle": "Lomake",
         "formTitle": "Lomakkeen otsikko"
