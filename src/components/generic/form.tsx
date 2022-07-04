@@ -1,26 +1,24 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-empty-pattern */
-import { Icon, LinearProgress, Slider, Typography } from "@mui/material";
-import { MetaformComponent, FieldValue } from "metaform-react";
+/* eslint-disable */
+import { LinearProgress, Slider, TextField, Typography } from "@mui/material";
 import { Metaform, MetaformField } from "generated/client";
-import { FileFieldValueItem, IconName, ValidationErrors } from "metaform-react/dist/types";
+import { FileFieldValueItem, ValidationErrors, FieldValue } from "../../metaform-react/types";
 import React from "react";
 import FormContainer from "styled/generic/form";
 import formJson from "1c9d4662-886b-4832-84ea-34ca05f90932.json";
 import MetaformUtils from "utils/metaform-utils";
 import strings from "localization/strings";
+import DatePicker from "@mui/lab/DatePicker";
+import { DateTimePicker, LocalizationProvider } from "@mui/lab";
+import fiLocale from "date-fns/locale/fi";
+import enLocale from "date-fns/locale/en-US";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import { MetaformComponent } from "metaform-react/MetaformComponent";
 
 /**
  * Component props
  */
 interface Props {
-  contexts: string[];
   // accessToken?: AccessToken; TODO: use once keycloak is implemented
-  ownerKey?: string;
-  getFieldValue: (fieldName: string) => FieldValue;
-  setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
-  onSubmit: (source: Metaform) => void;
-  onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
 }
 
 /**
@@ -131,39 +129,55 @@ const Form: React.FC = () => {
   };
 
   /**
+   * Event handler for date change
+   */
+  const handleDateChange = () => {
+    console.log("Selected date"); // TODO: implement
+  };
+
+  /**
+   * Event handler for datetime change
+   */
+  const handleDateTimeChange = () => {
+    console.log("Selected datetime"); // TODO: implement
+  };
+
+  /**
    * Method for setting date
    *
-   * @param onChange on change callback for setting date
+   * @param fieldName field name
    */
-  const renderDatePicker = (fieldName: string, onChange: (date: Date) => void) => {
+  const renderDatePicker = (fieldName: string) => {
     const value = getFieldValue(fieldName);
     return (
-      <DatePicker
-        selected={ value ? new Date(value as string) : null }
-        onChange={ onChange }
-        dateFormat="dd.MM.yyyy"
-        locale="fi"
-      />
+      <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
+        <DatePicker
+          value={ value ? new Date(value as string) : null }
+          onChange={ handleDateChange }
+          views={["day", "month", "year"]}
+          renderInput={ params =>
+            <TextField label={ strings.formComponent.dateTimePicker } { ...params }/>
+          }
+        />
+      </LocalizationProvider>
     );
   };
 
   /**
    * Method for setting datetime
-   *
-   * @param onChange on change callback for setting datetime
    */
-  const renderDatetimePicker = (fieldName: string, onChange: (date: Date) => void) => {
+  const renderDatetimePicker = (fieldName: string) => {
     const value = getFieldValue(fieldName);
     return (
-      <DatePicker
-        selected={ value ? new Date(value as string) : null }
-        onChange={ onChange }
-        dateFormat="dd.MM.yyyy"
-        showTimeSelect
-        timeFormat="HH:mm"
-        timeIntervals={ 15 }
-        locale="fi"
-      />
+      <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
+        <DateTimePicker
+          value={ value ? new Date(value as string) : null }
+          onChange={ handleDateTimeChange }
+          renderInput={ params =>
+            <TextField label={ strings.formComponent.dateTimePicker } { ...params }/>
+          }
+        />
+      </LocalizationProvider>
     );
   };
 
@@ -215,7 +229,7 @@ const Form: React.FC = () => {
       </Typography>
     );
   };
-
+  
   return (
     <FormContainer>
       <MetaformComponent

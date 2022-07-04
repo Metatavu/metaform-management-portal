@@ -2,11 +2,13 @@ import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 /**
- * Styled form container
+ * Styled metaform container
  */
 export const FormContainer = styled(Box, {
-  label: "generic-dialog--loader-container"
+  label: "metaform-container"
 })(() => ({
+  display: "flex",
+  overflow: "auto",
   "& .metaform": {
     fontSize: "1rem",
   

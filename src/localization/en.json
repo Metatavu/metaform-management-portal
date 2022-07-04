@@ -13,6 +13,10 @@
   "errorHandling": {
     "title": "Error"
   },
+  "formComponent": {
+    "datePicker": "Date",
+    "dateTimePicker": "Date and time"
+  },
 
   "header": {
     "user": "User",
