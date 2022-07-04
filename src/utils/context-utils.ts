@@ -1,8 +1,7 @@
-/* eslint-disable */ // Remove when refactoring is done
 /**
- * Utilities for field contexts
+ * Utility class for field contexts
  */
-export default class ContextUtils {
+namespace ContextUtils {
   
   /**
    * Returns whether field context is within enabled contexts
@@ -11,15 +10,17 @@ export default class ContextUtils {
    * @param fieldContexts field contexts
    * @returns whether field context is within enabled contexts
    */
-  public static isEnabledContext = (enabledContexts?: string[], fieldContexts?: string[]) => {
-    if (enabledContexts === undefined || fieldContexts === undefined) {
+  export const isEnabledContext = (enabledContexts?: string[], fieldContexts?: string[]) => {
+    if (enabledContexts === undefined || fieldContexts === undefined) {
       return true;
     }
 
-    if (enabledContexts.length === 0 || fieldContexts.length === 0) {
+    if (enabledContexts.length === 0 || fieldContexts.length === 0) {
       return true;
     }
 
     return !!enabledContexts.find(context => fieldContexts.includes(context));
-  }
+  };
 }
+
+export default ContextUtils;

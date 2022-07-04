@@ -5,7 +5,7 @@ import { MetaformSectionComponent } from './MetaformSectionComponent';
 import { FieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
 import * as EmailValidator from 'email-validator';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
-import ContextUtils from './context-utils';
+import ContextUtils from '../utils/context-utils';
 import deepEqual from "fast-deep-equal";
 
 /**
@@ -25,7 +25,7 @@ interface Props {
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
-  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
+  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
   onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;

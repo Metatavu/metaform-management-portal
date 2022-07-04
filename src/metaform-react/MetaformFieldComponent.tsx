@@ -4,7 +4,7 @@ import { FieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, Va
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import { MetaformMemoComponent } from './MetaformMemoComponent';
 import { MetaformField, MetaformFieldType } from '../generated/client/models';
-import { MetaformTextFieldComponent } from './MetaformTextFieldComponent';
+import { MetaformTextFieldComponent } from './MetaformTextFieldComponent';
 import { MetaformRadioFieldComponent } from './MetaformRadioFieldComponent';
 import { MetaformSubmitFieldComponent } from './MetaformSubmitFieldComponent';
 import { MetaformSelectFieldComponent } from './MetaformSelectFieldComponent';
@@ -21,7 +21,7 @@ import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent';
 import { MetaformSliderFieldComponent } from './MetaformSliderFieldComponent'; 
 import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent"; 
 import { MetaformChecklistFieldComponent } from "./MetaformChecklistFieldComponent";
-import ContextUtils from './context-utils';
+import ContextUtils from '../utils/context-utils';
 
 /**
  * Component props
