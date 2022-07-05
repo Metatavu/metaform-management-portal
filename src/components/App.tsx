@@ -8,9 +8,9 @@ import FormsRoutes from "./screens/forms/forms-routes";
 import UsersScreen from "./screens/users/users-screen";
 import EditorRoutes from "./screens/editor/editor-routes";
 import BasicLayout from "./layouts/basic-layout";
-import PublicFormsScreen from "./screens/public/public-forms-screen";
 import AdminLayout from "./layouts/admin-layout";
 import PublicLayout from "./layouts/public-layout";
+import PublicRoutes from "./screens/public/public-routes";
 
 const apiProviders: React.FC<{}>[] = [];
 
@@ -26,10 +26,6 @@ const App: React.FC = () => (
           <BasicLayout>
             <Routes>
               <Route
-                path="/"
-                element={ <PublicLayout><PublicFormsScreen/></PublicLayout> }
-              />
-              <Route
                 path="/admin"
                 element={ <Navigate to="/admin/forms"/> }
               />
@@ -44,6 +40,10 @@ const App: React.FC = () => (
               <Route
                 path="/admin/editor/*"
                 element={ <AdminLayout><EditorRoutes/></AdminLayout> }
+              />
+              <Route
+                path="/*"
+                element={ <PublicLayout><PublicRoutes/></PublicLayout> }
               />
             </Routes>
           </BasicLayout>
