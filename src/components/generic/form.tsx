@@ -1,20 +1,18 @@
 /* eslint-disable */
 import { LinearProgress, Slider, TextField, Typography, Snackbar } from "@mui/material";
 import { Metaform, MetaformField, Reply } from "generated/client";
-import { FileFieldValueItem, ValidationErrors, FieldValue } from "../../metaform-react/types";
+import { FileFieldValueItem, ValidationErrors, FieldValue, FileFieldValue } from "../../metaform-react/types";
 import React from "react";
 import FormContainer from "styled/generic/form";
 import formJson from "1c9d4662-886b-4832-84ea-34ca05f90932.json";
 import MetaformUtils from "utils/metaform-utils";
 import strings from "localization/strings";
 import DatePicker from "@mui/lab/DatePicker";
-import { Alert, DateTimePicker, LocalizationProvider } from "@mui/lab";
+import { DateTimePicker, LocalizationProvider } from "@mui/lab";
 import fiLocale from "date-fns/locale/fi";
-import enLocale from "date-fns/locale/en-US";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MetaformComponent } from "metaform-react/MetaformComponent";
 import { Dictionary } from "types";
-import { Link } from "react-router-dom";
 
 /**
  * Component props
@@ -111,9 +109,9 @@ const Form: React.FC = () => {
         placeholder={ field.placeholder }
         disabled={ readOnly }
         value={ value as number }
-        /* onChange={ (_event: React.ChangeEvent<{}>, value: number | number[]) => {
+        onChange={ (event: Event, value: number | number[]) => {
           setFieldValue(fieldName, value as number);
-        }} */
+        }}
       />
     );
   };
@@ -184,42 +182,115 @@ const Form: React.FC = () => {
   };
 
   /**
+   * Creates url with default format for accessing uploaded file
+   * TODO: Implement once keycloak is implemented
+   * @param id fileRef id
+   */
+  const createDefaultFileUrl = (id: string) => {
+    // return `${Api.createDefaultUploadUrl()}?fileRef=${id}`;
+  }
+
+  /**
+   * Performs file upload request
+   * 
+   * @param fieldName field name
+   * @param file file to upload
+   * @param path upload path
+   */
+  const doUpload = (fieldName: string, file: File, path: string) => {
+    setUploadingFields([...uploadingFields, fieldName]);
+    const data = new FormData();
+    data.append("file", file);
+    fetch(path, {
+      method: "POST",
+      body: data
+    })
+    .then(res => res.json())
+    .then((data) => {
+      let currentFiles = getFieldValue(fieldName);
+      if (!currentFiles) {
+        currentFiles = { files: [] };
+      }
+      const value = {
+        id: data.fileRef,
+        persisted: false,
+        name: data.fileName,
+        url: createDefaultFileUrl(data.fileRef)
+      } as FileFieldValueItem;
+      (currentFiles as FileFieldValue).files.push(value);
+      setFieldValue(fieldName, {...currentFiles as FileFieldValue});
+      setUploadingFields([...uploadingFields.filter(f => f !== fieldName)]);
+    })
+    .catch((e) => {
+      setUploadingFields([...uploadingFields.filter(f => f !== fieldName)]);
+    })
+  }
+
+  /**
    * Method for uploading a file
    *
    * @param file file
    * @param path path
    */
   const uploadFile = (fieldName: string, files: FileList | File, path: string) => {
-    console.log("Uploading file", fieldName, files, path);
-    // TODO: implement
+    if (files instanceof FileList) {
+      for (let i = 0; i < files.length; i++) {
+        let item = files.item(i);
+        if (item) {
+          doUpload(fieldName, item, path);
+        }
+      }
+    } else if (files instanceof File) {
+      doUpload(fieldName, files, path);
+    }
   };
 
   /**
    * Deletes uploaded file
    * Only unsecure (not yet persisted) files can be deleted, otherwise they are just removed from data
-   * 
+   * TODO: Implement once keycloak is implemented
    * @param fieldName field name
    * @param value uploaded value
    */
   const deleteFile = (fieldName: string, value: FileFieldValueItem) => {
-    console.log("Deleting file", fieldName, value);
-    // TODO: implement
-  };
+    let currentFiles = getFieldValue(fieldName);
+    if (!currentFiles) {
+      currentFiles = { files: [] };
+    }
+    const files = (currentFiles as FileFieldValue).files.filter(f => f.id !== value.id);
+    setFieldValue(fieldName, { files });
+    
+    //Only unsecured values can be deleted from server
+    /* if (!value.persisted) {
+      fetch(createDefaultFileUrl(value.id), { method: "DELETE" })
+        .then((res) => {
+          if (res.ok) {
+            console.log("Deleted from server");
+          }
+        })*/
+    } 
 
   /**
    * Shows uploaded file
-   * 
+   * TODO: Implement once keycloak is implemented
    * @param fieldName field name
    * @param value uploaded value
    */
   const showFile = async (fieldName: string, value: FileFieldValueItem) => {
-    console.log("Showing uploaded file", fieldName, value);
-    // TODO: implement
+    if (!value.persisted) {
+      window.open(value.url, "blank");
+      return
+    }
+    /* if (this.props.accessToken) {
+      const attachmentApi = Api.getAttachmentsApi(this.props.accessToken);
+      const data = await attachmentApi.findAttachmentData({attachmentId: value.id, ownerKey: this.props.ownerKey});
+      MetaformUtils.downloadBlob(data, value.name || "attachment");
+    } */
   };
 
   /**
    * Renders autocomplete component
-   * 
+   * TODO: Implement
    * @param field field
    * @param formReadOnly form read only
    * @param value autocomplete form value
