@@ -63,3 +63,10 @@ export enum NavigationLinks {
   USERS = "USERS",
   EDITOR = "EDITOR"
 }
+
+/**
+ * Interface describing dictionary type
+ */
+export interface Dictionary<T> {
+  [Key: string]: T;
+}

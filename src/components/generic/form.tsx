@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { LinearProgress, Slider, TextField, Typography } from "@mui/material";
-import { Metaform, MetaformField } from "generated/client";
+import { LinearProgress, Slider, TextField, Typography, Snackbar } from "@mui/material";
+import { Metaform, MetaformField, Reply } from "generated/client";
 import { FileFieldValueItem, ValidationErrors, FieldValue } from "../../metaform-react/types";
 import React from "react";
 import FormContainer from "styled/generic/form";
@@ -8,11 +8,13 @@ import formJson from "1c9d4662-886b-4832-84ea-34ca05f90932.json";
 import MetaformUtils from "utils/metaform-utils";
 import strings from "localization/strings";
 import DatePicker from "@mui/lab/DatePicker";
-import { DateTimePicker, LocalizationProvider } from "@mui/lab";
+import { Alert, DateTimePicker, LocalizationProvider } from "@mui/lab";
 import fiLocale from "date-fns/locale/fi";
 import enLocale from "date-fns/locale/en-US";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MetaformComponent } from "metaform-react/MetaformComponent";
+import { Dictionary } from "types";
+import { Link } from "react-router-dom";
 
 /**
  * Component props
@@ -30,13 +32,14 @@ const Form: React.FC = () => {
   const [ onValidationErrorsChange, setOnValidationErrorsChange ] = React.useState<(validationErrors: ValidationErrors) => void>();
   const [ uploadingFields, setUploadingFields ] = React.useState<string[]>([]);
   const [ uploading, setUploading ] = React.useState<boolean>(false);
-  const [ formValues, setFormValues ] = React.useState<{ [key: string]: FieldValue }>({});
-  /* const [ formValid, setFormValid ] = React.useState<boolean>(false);
+  const [ formValues, setFormValues ] = React.useState<Dictionary<FieldValue>>({});
+  const [ formValid, setFormValid ] = React.useState<boolean>(false);
   const [ draftSaveVisible, setDraftSaveVisible ] = React.useState<boolean>(false);
   const [ formValueChangeTimeout, setFormValueChangeTimeout ] = React.useState<number | null>(null);
   const [ autosaving, setAutosaving ] = React.useState<boolean>(false);
   const [ ownerKey, setOwnerKey ] = React.useState<string | null>(null);
-  const [ reply, setReply ] = React.useState<boolean>(false); */
+  const [ reply, setReply ] = React.useState<Reply>();
+  const [ saving, setSaving ] = React.useState<boolean>(false);
 
   /**
    * Method for getting field value
@@ -52,8 +55,7 @@ const Form: React.FC = () => {
    * Method for submitting form
    */
   const onSubmit = async () => {
-    // await this.saveReply(); TODO
-    console.log("Form submitted");
+    // await saveReply(); TODO: Implement once this can be tested
   };
 
   /**
@@ -64,9 +66,9 @@ const Form: React.FC = () => {
    */
   const setFieldValue = (fieldName: string, fieldValue: FieldValue) => {
     if (formValues[fieldName] !== fieldValue) {
-      formValues[fieldName] = fieldValue;
-      setFormValues(formValues);
-      // setDraftSaveVisible(!!metaform?.allowDrafts); TODO
+      const newFormValues = { ...formValues, [fieldName]: fieldValue };
+      setFormValues(newFormValues);
+      setDraftSaveVisible(!!metaform?.allowDrafts);
 
       /* if (formValid && metaform?.autosave) {
         scheduleAutosave();
