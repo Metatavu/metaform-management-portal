@@ -120,13 +120,11 @@ const Form: React.FC = () => {
    * Method for rendering form icons
    * TODO: Implement icons
    */
-  const renderIcon = () => {
-    return (
-      <Typography>
-        { strings.generic.notImplemented }
-      </Typography>
-    );
-  };
+  const renderIcon = () => (
+    <Typography>
+      { strings.generic.notImplemented }
+    </Typography>
+  );
 
   /**
    * Event handler for date change
