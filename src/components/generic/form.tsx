@@ -220,7 +220,7 @@ const Form: React.FC = () => {
       setUploadingFields([ ...uploadingFields.filter(f => f !== fieldName) ]);
     })
     .catch((e) => {
-      setUploadingFields([...uploadingFields.filter(f => f !== fieldName)]);
+      setUploadingFields([ ...uploadingFields.filter(f => f !== fieldName) ]);
     })
   }
 
