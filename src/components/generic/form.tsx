@@ -217,7 +217,7 @@ const Form: React.FC = () => {
       } as FileFieldValueItem;
       (currentFiles as FileFieldValue).files.push(value);
       setFieldValue(fieldName, {...currentFiles as FileFieldValue});
-      setUploadingFields([...uploadingFields.filter(f => f !== fieldName)]);
+      setUploadingFields([ ...uploadingFields.filter(f => f !== fieldName) ]);
     })
     .catch((e) => {
       setUploadingFields([...uploadingFields.filter(f => f !== fieldName)]);
