@@ -4,7 +4,6 @@ import { Metaform, MetaformField, Reply } from "generated/client";
 import { FileFieldValueItem, ValidationErrors, FieldValue, FileFieldValue } from "../../metaform-react/types";
 import React from "react";
 import FormContainer from "styled/generic/form";
-import formJson from "1c9d4662-886b-4832-84ea-34ca05f90932.json";
 import MetaformUtils from "utils/metaform-utils";
 import strings from "localization/strings";
 import DatePicker from "@mui/lab/DatePicker";
@@ -25,7 +24,7 @@ interface Props {
  * Form component
  */
 const Form: React.FC = () => {
-  const [ metaform, setMetaform ] = React.useState<Metaform>(MetaformUtils.jsonToMetaform(formJson));
+  const [ metaform, setMetaform ] = React.useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ contexts, setContexts ] = React.useState<string[]>([]);
   const [ onValidationErrorsChange, setOnValidationErrorsChange ] = React.useState<(validationErrors: ValidationErrors) => void>();
   const [ uploadingFields, setUploadingFields ] = React.useState<string[]>([]);
@@ -227,7 +226,7 @@ const Form: React.FC = () => {
   /**
    * Method for uploading a file
    *
-   * @param file file
+   * @param files files
    * @param path path
    */
   const uploadFile = (fieldName: string, files: FileList | File, path: string) => {
