@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable */ // Remove when refactoring is done
 import { LinearProgress, Slider, TextField, Typography, Snackbar } from "@mui/material";
 import { Metaform, MetaformField, Reply } from "generated/client";
 import { FileFieldValueItem, ValidationErrors, FieldValue, FileFieldValue } from "../../metaform-react/types";
