@@ -29,6 +29,14 @@ export interface Localized extends LocalizedStringsMethods {
   };
 
   /**
+   * Translations related to form component
+   */
+  formComponent: {
+    datePicker: string;
+    dateTimePicker: string;
+  };
+
+  /**
    * Translations related to header
    */
   header: {
