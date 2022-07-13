@@ -10,13 +10,20 @@ const UserSelector: React.FC = () => {
   const [firstSelector, setFirstSelector] = React.useState<string>("");
   const [secondSelector, setSecondSelector] = React.useState<string>("");
 
-  // eslint-disable-next-line require-jsdoc
+  /**
+   * We need to disable second selector if first selector is selected
+   * We read that the first selector has "" as value, so we need to check if it is empty
+   * @param event - event object
+   */
   const handleFirstSelectorChange = (event: React.ChangeEvent<{ value: string }>) => {
     setFirstSelector(event.target.value);
     setSecondSelector("");
   };
 
-  // eslint-disable-next-line require-jsdoc
+  /**
+   * We enable second selector if first selector is selected
+   * @param event - event object
+   */
   const handleSecondSelectorChange = (event: React.ChangeEvent<{ value: string }>) => {
     setSecondSelector(event.target.value);
   };
