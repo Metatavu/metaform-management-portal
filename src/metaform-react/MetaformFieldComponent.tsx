@@ -214,7 +214,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
                   field={ field }
-                  getFieldValue={ this.getFieldValue }
                 />;
       case MetaformFieldType.Email:
         return  <MetaformEmailFieldComponent
