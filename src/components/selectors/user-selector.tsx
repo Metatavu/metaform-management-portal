@@ -1,6 +1,7 @@
 import React from "react";
 import { TextField } from "@mui/material";
 import { Selector, FormControlWrapper } from "../../styled/layouts/admin-layout";
+import strings from "localization/strings";
 
 /**
  * Disable second selector by default and if first selector is selected, enable second selector
@@ -27,7 +28,7 @@ const UserSelector: React.FC = () => {
         onChange={handleFirstSelectorChange}
         disableUnderline
       >
-        <option value="">Select user</option>
+        <option value="">{ strings.userManagementScreen.selector.form }</option>
         <option value="1">User 1</option>
         <option value="2">User 2</option>
         <option value="3">User 3</option>
@@ -42,7 +43,7 @@ const UserSelector: React.FC = () => {
         }}
         disabled={firstSelector === ""}
       >
-        <option value="">Select user</option>
+        <option value="">{ strings.userManagementScreen.selector.group }</option>
         <option value="1">User 1</option>
         <option value="2">User 2</option>
         <option value="3">User 3</option>
@@ -50,7 +51,7 @@ const UserSelector: React.FC = () => {
       <Selector
         disableUnderline
       >
-        <option value="">Select user</option>
+        <option value="">{ strings.userManagementScreen.selector.user }</option>
         <option value="1">User 1</option>
         <option value="2">User 2</option>
         <option value="3">User 3</option>
