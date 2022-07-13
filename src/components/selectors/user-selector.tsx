@@ -33,6 +33,10 @@ const UserSelector: React.FC = () => {
       <Selector
         value={secondSelector}
         onChange={handleSecondSelectorChange}
+        sx={{
+          opacity: firstSelector ? 1 : 0.5,
+          borderStyle: firstSelector ? "solid" : "dotted"
+        }}
         disabled={firstSelector === ""}
       >
         <option value="">Select user</option>
