@@ -83,5 +83,12 @@
         "tabTitle": "näkyvyys"
       }
     }
+  },
+  "userManagementScreen": {
+    "selector": {
+      "form": "Valitse lomake",
+      "group": "Valitse ryhmä",
+      "user": "Valitse käyttäjä"
+    }
   }
 }

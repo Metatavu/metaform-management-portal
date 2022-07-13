@@ -113,6 +113,17 @@ export interface Localized extends LocalizedStringsMethods {
       };
     };
   };
+
+  /**
+   * Translations related to user management screen
+   */
+  userManagementScreen: {
+    selector: {
+      form: string;
+      group: string;
+      user: string;
+    };
+  };
 }
 
 /**
