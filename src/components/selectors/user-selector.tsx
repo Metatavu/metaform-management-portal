@@ -1,4 +1,5 @@
 import React from "react";
+import { TextField } from "@mui/material";
 import { Selector, FormControlWrapper } from "../../styled/layouts/admin-layout";
 
 /**
@@ -50,6 +51,7 @@ const UserSelector: React.FC = () => {
         <option value="2">User 2</option>
         <option value="3">User 3</option>
       </Selector>
+      <TextField/>
     </FormControlWrapper>
   );
 };
