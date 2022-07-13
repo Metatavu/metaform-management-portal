@@ -1,6 +1,6 @@
 import React from "react";
 import { TextField } from "@mui/material";
-import { Selector, FormControlWrapper } from "../../styled/layouts/admin-layout";
+import { FilterSelector, FormFilterWrapper } from "../../styled/layouts/admin-layout";
 import strings from "localization/strings";
 
 /**
@@ -30,8 +30,8 @@ const PermissionFilter: React.FC = () => {
   };
 
   return (
-    <FormControlWrapper>
-      <Selector
+    <FormFilterWrapper>
+      <FilterSelector
         value={ firstSelector }
         onChange={ handleFirstSelectorChange }
         disableUnderline
@@ -40,8 +40,8 @@ const PermissionFilter: React.FC = () => {
         <option value="1">User 1</option>
         <option value="2">User 2</option>
         <option value="3">User 3</option>
-      </Selector>
-      <Selector
+      </FilterSelector>
+      <FilterSelector
         value={ secondSelector }
         onChange={ handleSecondSelectorChange }
         disableUnderline
@@ -55,17 +55,17 @@ const PermissionFilter: React.FC = () => {
         <option value="1">User 1</option>
         <option value="2">User 2</option>
         <option value="3">User 3</option>
-      </Selector>
-      <Selector
+      </FilterSelector>
+      <FilterSelector
         disableUnderline
       >
         <option value="">{ strings.userManagementScreen.selector.user }</option>
         <option value="1">User 1</option>
         <option value="2">User 2</option>
         <option value="3">User 3</option>
-      </Selector>
+      </FilterSelector>
       <TextField/>
-    </FormControlWrapper>
+    </FormFilterWrapper>
   );
 };
 

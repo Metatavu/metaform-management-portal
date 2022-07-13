@@ -19,8 +19,8 @@ export const ContentWrapper = styled(Box, {
 /**
  * Styled admin selector component
  */
-export const Selector = styled(NativeSelect, {
-  label: "admin-layout--selector"
+export const FilterSelector = styled(NativeSelect, {
+  label: "admin-layout--filter-selector"
 })(({ theme }) => ({
   width: "30%",
   marginRight: "10px",
@@ -33,8 +33,8 @@ export const Selector = styled(NativeSelect, {
 /**
  * Styled form control component
  */
-export const FormControlWrapper = styled(FormControl, {
-  label: "admin-layout--form-control-wrapper"
+export const FormFilterWrapper = styled(FormControl, {
+  label: "admin-layout--form-filter-wrapper"
 })(({ theme }) => ({
   display: "flex",
   flexDirection: "row",
