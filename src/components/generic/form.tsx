@@ -11,23 +11,38 @@ import { DateTimePicker, LocalizationProvider } from "@mui/lab";
 import fiLocale from "date-fns/locale/fi";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MetaformComponent } from "metaform-react/MetaformComponent";
-import { Dictionary } from "types";
+import { AccessToken, Dictionary, SignedToken } from "types";
 import { selectKeycloak } from "features/auth-slice";
 import Api from "api";
 import { useAppSelector } from "app/hooks";
 import Config from "app/config";
 import { ErrorContext } from "components/contexts/error-handler";
-import json from "759235b4-27ff-491b-af2d-58ca8bc0db64.json";
+import json from "4f735ca3-7e94-4578-a7dd-82c7e0cb0ca1.json";
 import FormUtils from "utils/form-utils";
 
-const AUTOSAVE_COOLDOWN_IN_MILLISECONDS = 500; 
+const AUTOSAVE_COOLDOWN_IN_MILLISECONDS = 500;
+
+/**
+ * Interface for component props
+ */
+interface Props {
+  contexts: string[];
+  metaform: Metaform;
+  accessToken?: AccessToken;
+  ownerKey?: string;
+  getFieldValue: (fieldName: string) => FieldValue;
+  setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
+  onSubmit: (source: Metaform) => void;
+  onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
+  accessTokenNotValid?: boolean;
+}
 
 /**
  * Form component
  */
-const Form: React.FC = ({ children }) => {
+const Form: React.FC = (props) => {
   const errorContext = React.useContext(ErrorContext);
-  const keycloak = useAppSelector(selectKeycloak);
+  const accessToken = useAppSelector(selectKeycloak);
 
   const [ autosaving, setAutosaving ] = React.useState<boolean>(false);
   const [ contexts, setContexts ] = React.useState<string[]>(["FORM"]);
@@ -48,81 +63,119 @@ const Form: React.FC = ({ children }) => {
   const [ uploading, setUploading ] = React.useState<boolean>(false);
 
   /**
-   * Effect that initializes the form
+   * Finds a field from form by field name
+   * 
+   * @param fieldName field name
+   * @returns field or null if not found
    */
-  React.useEffect(() => {
-    initializeForm();    
-  },[]);
+  const getField = (fieldName: string) => {
+    return (metaform.sections || [])
+      .flatMap(section => section.fields || [])
+      .find(field => field.name === fieldName);
+  };
 
   /**
-   * Initializes the form
+   * Method for uploading a file
+   *
+   * @param files files
+   * @param path path
    */
-  const initializeForm = async () => {
-    if (!keycloak?.token) {
-      return;
-    };
-
-    const query = new URLSearchParams(location.search);
-
-    const draftId = query.get("draft");
-    const replyId = query.get("reply");
-    const ownerKey = query.get("owner-key");
-
-    const metaformId = Config.getMetaformId();    
-
-    try {
-
-      setLoading(true);
-      setDraftId(draftId);
-
-      const metaformsApi = Api.getMetaformsApi(keycloak?.token);
-
-      const metaform = await metaformsApi.findMetaform({
-        metaformId: metaformId,
-        replyId: replyId || undefined,
-        ownerKey: ownerKey || undefined
-      });
-      
-      document.title = metaform.title ? metaform.title : "Metaform";
-
-      const formValues = prepareFormValues(metaform);
-
-      if (replyId && ownerKey) {
-        const reply = await findReply(replyId, ownerKey);
-        if (reply) {
-          const replyData = await processReplyData(metaform, reply, ownerKey);
-          if (replyData) {
-            Object.keys(replyData as any).forEach(replyKey => {
-              formValues[replyKey] = replyData[replyKey] as any;
-            });
-          }
-
-          setReply(reply);
-          setOwnerKey(ownerKey);
-          setReplyDeleteVisible(!!ownerKey);
-        } else {
-          errorContext.setError(strings.errorHandling.form.replyNotFound);
-        }        
-      } else if (draftId) {
-        const draft = await findDraft(draftId);
-        const draftData = draft?.data || {};
-        Object.keys(draftData).forEach(draftKey => {
-          formValues[draftKey] = draftData[draftKey] as any;
-        });
+  const uploadFile = (fieldName: string, files: FileList | File, path: string) => {
+    if (files instanceof FileList) {
+      for (let i = 0; i < files.length; i++) {
+        let item = files.item(i);
+        if (item) {
+          doUpload(fieldName, item, path);
+        }
       }
-
-      setMetaform(metaform);
-      setFormValues(formValues);
-      setLoading(false);
-    } catch (error) {
-      if (error instanceof Response && error.status === 403 /* TODO implement signedToken */) {
-        setRedirectTo("/protected/form");
-      } else {
-        setLoading(false);
-        console.log(error);
-      }
+    } else if (files instanceof File) {
+      doUpload(fieldName, files, path);
     }
   };
+
+  /**
+   * Performs file upload request
+   * 
+   * @param fieldName field name
+   * @param file file to upload
+   * @param path upload path
+   */
+  const doUpload = (fieldName: string, file: File, path: string) => {
+    const { getFieldValue } = this.props;
+    
+    setUploadingFields([ ...uploadingFields, fieldName ]);
+    const data = new FormData();
+    data.append("file", file);
+    fetch(path, {
+      method: "POST",
+      body: data
+    })
+    .then(res => res.json())
+    .then((data) => {
+      let currentFiles = getFieldValue(fieldName);
+      if (!currentFiles) {
+        currentFiles = { files: [] };
+      }
+      const value = {
+        id: data.fileRef,
+        persisted: false,
+        name: data.fileName,
+        url: FormUtils.createDefaultFileUrl(data.fileRef)
+      } as FileFieldValueItem;
+      (currentFiles as FileFieldValue).files.push(value);
+      setFieldValue(fieldName, {...currentFiles as FileFieldValue});
+      setUploadingFields([ ...uploadingFields.filter(f => f !== fieldName) ]);
+    })
+    .catch((e) => {
+      setUploadingFields([ ...uploadingFields.filter(f => f !== fieldName) ]);
+    })
+  };
+
+  /**
+   * Deletes uploaded file
+   * Only unsecure (not yet persisted) files can be deleted, otherwise they are just removed from data
+   *
+   * @param fieldName field name
+   * @param value uploaded value
+   */
+  const deleteFile = (fieldName: string, value: FileFieldValueItem) => {
+    let currentFiles = getFieldValue(fieldName);
+    if (!currentFiles) {
+      currentFiles = { files: [] };
+    }
+    const files = (currentFiles as FileFieldValue).files.filter(f => f.id !== value.id);
+    setFieldValue(fieldName, { files });
+    
+    //Only unsecured values can be deleted from server
+    if (!value.persisted) {
+      fetch(FormUtils.createDefaultFileUrl(value.id), { method: "DELETE" })
+        .then((res) => {
+          if (res.ok) {
+            console.log("Deleted from server");
+          }
+        })
+      }
+    } ;
+
+  /**
+   * Shows uploaded file
+   * 
+   * @param fieldName field name
+   * @param value uploaded value
+   */
+  const showFile = async (fieldName: string, value: FileFieldValueItem) => {
+    if (!value.persisted) {
+      window.open(value.url, "blank");
+      return
+    }
+    if (accessToken) {
+      const attachmentApi = Api.getAttachmentsApi(accessToken);
+      const data = await attachmentApi.findAttachmentData({attachmentId: value.id, ownerKey: ownerKey});
+      MetaformUtils.downloadBlob(data, value.name || "attachment");
+    }
+  };
+
+  /*************************************** */
 
   /**
    * Finds the draft from API
@@ -131,14 +184,14 @@ const Form: React.FC = ({ children }) => {
    * @returns found draft or null if not found
    */
   const findDraft = async (draftId: string) => {
-    if (!keycloak?.token) {
+    if (!accessToken) {
       return null;
     };
 
     try {
       const metaformId = Config.getMetaformId();
       
-      const draftApi = Api.getDraftsApi(keycloak?.token);
+      const draftApi = Api.getDraftsApi(accessToken);
       return await draftApi.findDraft({
         metaformId: metaformId,
         draftId: draftId
@@ -149,98 +202,16 @@ const Form: React.FC = ({ children }) => {
   }
 
   /**
-   * Finds the reply from API
-   * 
-   * @param replyId reply id
-   * @param ownerKey owner key
-   * @returns found reply or null if not found
-   */
-  const findReply = async (replyId: string, ownerKey: string) => {
-    if (!keycloak?.token) {
-      return null;
-    };
-
-    try {
-      const metaformId = Config.getMetaformId();   
-
-      const replyApi = Api.getRepliesApi(keycloak?.token);
-      return await replyApi.findReply({
-        metaformId: metaformId,
-        replyId: replyId,
-        ownerKey: ownerKey
-      });
-    } catch (e) {
-      return null;
-    }
-  }
-
-  /**
-   * Prepares form values for the form. 
-   *
-   * @param metaform metaform
-   * @returns prepared form values
-   */
-  const prepareFormValues = (metaform: Metaform): Dictionary<FieldValue> => {
-    const result = { ...formValues };
-
-    metaform.sections?.forEach(section => {
-      section.fields?.forEach(field => {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        const { name, _default, options, source } = field;
-
-        if (field.type === MetaformFieldType.Files && !field.uploadUrl) {
-          field.uploadUrl = Api.createDefaultUploadUrl();
-        }
-
-        if (name) {
-          if (_default) {
-            result[name] = _default;
-          } else if (options && options.length) {
-            const selectedOption = options.find(option => option.selected || option.checked);
-            if (selectedOption) {
-              result[name] = selectedOption.name;
-            }
-          }
-
-          if (keycloak) {
-            const { tokenParsed } = keycloak;
-
-            if (source && source.type === MetaformFieldSourceType.AccessToken && tokenParsed) {
-              const accessTokenAttribute = source.options?.accessTokenAttribute;
-              const accessTokenValue = accessTokenAttribute ? (tokenParsed as any)[accessTokenAttribute] : null;
-              if (accessTokenValue) {
-                result[name] = accessTokenValue;
-              }
-            }
-          }
-        }
-      });
-    });
-
-    return result;
-  };
-
-  /**
-   * Method for getting field value
-   *
-   * @param fieldName field name
-   * @returns field value
-   */
-  const getFieldValue = (fieldName: string): FieldValue => {
-    return formValues[fieldName];
-  };
-
-  /**
    * Creates new reply
    * 
    * @param metaform metaform
    * @returns created reply
    */
   const createReply = async (metaform: Metaform) => {
-    if (!keycloak?.token) {
+    if (!accessToken) {
       return;
     }
-    const repliesApi = Api.getRepliesApi(keycloak.token);
+    const repliesApi = Api.getRepliesApi(accessToken.token);
     
     return await repliesApi.createReply({
       metaformId: Config.getMetaformId(),
@@ -261,11 +232,11 @@ const Form: React.FC = ({ children }) => {
    * @return data processes to be used by ui
    */
     const processReplyData = async (metaform: Metaform, reply: Reply, ownerKey: string) => {
-      if (!keycloak?.token) {
+      if (!accessToken) {
         return;
       }
       
-      const attachmentsApi = Api.getAttachmentsApi(keycloak?.token);
+      const attachmentsApi = Api.getAttachmentsApi(accessToken);
       let values = reply.data;
       for (let i = 0; i < (metaform.sections || []).length; i++) {
         let section = metaform.sections && metaform.sections[i] ? metaform.sections[i] : undefined;
@@ -392,11 +363,11 @@ const Form: React.FC = ({ children }) => {
    * @returns updated reply
    */
   const updateReply = async (metaform: Metaform, reply: Reply, ownerKey: string | null | undefined) => {
-    if (!keycloak?.token) {
+    if (!accessToken) {
       return;
     }
 
-    const repliesApi = Api.getRepliesApi(keycloak.token);
+    const repliesApi = Api.getRepliesApi(accessToken.token);
     
     await repliesApi.updateReply({
       metaformId: Config.getMetaformId(),
@@ -477,18 +448,6 @@ const Form: React.FC = ({ children }) => {
   };
 
   /**
-   * Finds a field from form by field name
-   * 
-   * @param fieldName field name
-   * @returns field or null if not found
-   */
-  const getField = (fieldName: string) => {
-    return (metaform.sections || [])
-      .flatMap(section => section.fields || [])
-      .find(field => field.name === fieldName);
-  };
-
-  /**
    * Event handler for date change
    */
   const handleDateChange = () => {
@@ -500,105 +459,6 @@ const Form: React.FC = ({ children }) => {
    */
   const handleDateTimeChange = () => {
     console.log("Selected datetime"); // TODO: implement
-  };
-
-  /**
-   * Performs file upload request
-   * 
-   * @param fieldName field name
-   * @param file file to upload
-   * @param path upload path
-   */
-  const doUpload = (fieldName: string, file: File, path: string) => {
-    setUploadingFields([...uploadingFields, fieldName]);
-    const data = new FormData();
-    data.append("file", file);
-    fetch(path, {
-      method: "POST",
-      body: data
-    })
-    .then(res => res.json())
-    .then((data) => {
-      let currentFiles = getFieldValue(fieldName);
-      if (!currentFiles) {
-        currentFiles = { files: [] };
-      }
-      const value = {
-        id: data.fileRef,
-        persisted: false,
-        name: data.fileName,
-        url: FormUtils.createDefaultFileUrl(data.fileRef)
-      } as FileFieldValueItem;
-      (currentFiles as FileFieldValue).files.push(value);
-      setFieldValue(fieldName, {...currentFiles as FileFieldValue});
-      setUploadingFields([ ...uploadingFields.filter(f => f !== fieldName) ]);
-    })
-    .catch((e) => {
-      setUploadingFields([ ...uploadingFields.filter(f => f !== fieldName) ]);
-    })
-  }
-
-  /**
-   * Method for uploading a file
-   *
-   * @param files files
-   * @param path path
-   */
-  const uploadFile = (fieldName: string, files: FileList | File, path: string) => {
-    if (files instanceof FileList) {
-      for (let i = 0; i < files.length; i++) {
-        let item = files.item(i);
-        if (item) {
-          doUpload(fieldName, item, path);
-        }
-      }
-    } else if (files instanceof File) {
-      doUpload(fieldName, files, path);
-    }
-  };
-
-  /**
-   * Deletes uploaded file
-   * Only unsecure (not yet persisted) files can be deleted, otherwise they are just removed from data
-   *
-   * @param fieldName field name
-   * @param value uploaded value
-   */
-  const deleteFile = (fieldName: string, value: FileFieldValueItem) => {
-    let currentFiles = getFieldValue(fieldName);
-    if (!currentFiles) {
-      currentFiles = { files: [] };
-    }
-    const files = (currentFiles as FileFieldValue).files.filter(f => f.id !== value.id);
-    setFieldValue(fieldName, { files });
-    
-    //Only unsecured values can be deleted from server
-    if (!value.persisted) {
-      fetch(FormUtils.createDefaultFileUrl(value.id), { method: "DELETE" })
-        .then((res) => {
-          if (res.ok) {
-            console.log("Deleted from server");
-          }
-        })
-      }
-    } 
-
-  /**
-   * Shows uploaded file
-   * TODO: move to files field component
-   * @param fieldName field name
-   * @param value uploaded value
-   */
-  const showFile = async (fieldName: string, value: FileFieldValueItem) => {
-    if (!value.persisted) {
-      window.open(value.url, "blank");
-      return
-    }
-    if (keycloak?.token) {
-      const attachmentApi = Api.getAttachmentsApi(keycloak?.token);
-      const data = await attachmentApi.findAttachmentData({attachmentId: value.id, ownerKey: ownerKey});
-      MetaformUtils.downloadBlob(data, value.name || "attachment");
-    }
   };
 
   /**
