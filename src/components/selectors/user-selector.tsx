@@ -31,8 +31,8 @@ const UserSelector: React.FC = () => {
   return (
     <FormControlWrapper>
       <Selector
-        value={firstSelector}
-        onChange={handleFirstSelectorChange}
+        value={ firstSelector }
+        onChange={ handleFirstSelectorChange }
         disableUnderline
       >
         <option value="">{ strings.userManagementScreen.selector.form }</option>
