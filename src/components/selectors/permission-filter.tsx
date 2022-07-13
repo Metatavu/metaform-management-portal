@@ -23,6 +23,7 @@ const PermissionFilter: React.FC = () => {
 
   /**
    * We enable second selector if first selector is selected
+   *
    * @param event - event object
    */
   const handleSecondSelectorChange = (event: React.ChangeEvent<{ value: string }>) => {
