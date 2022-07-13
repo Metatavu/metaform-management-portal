@@ -7,8 +7,8 @@ import strings from "localization/strings";
  * Disable second selector by default and if first selector is selected, enable second selector
 */
 const UserSelector: React.FC = () => {
-  const [firstSelector, setFirstSelector] = React.useState<string>("");
-  const [secondSelector, setSecondSelector] = React.useState<string>("");
+  const [ firstSelector, setFirstSelector ] = React.useState<string>("");
+  const [ secondSelector, setSecondSelector ] = React.useState<string>("");
 
   /**
    * We need to disable second selector if first selector is selected
