@@ -22,7 +22,8 @@ export const ContentWrapper = styled(Box, {
 export const Selector = styled(NativeSelect, {
   label: "admin-layout--selector"
 })(({ theme }) => ({
-  width: "auto",
+  width: "30%",
+  marginRight: "10px",
   height: theme.spacing(5),
   borderRadius: theme.spacing(1),
   border: "1px solid #ccc",
@@ -35,6 +36,8 @@ export const Selector = styled(NativeSelect, {
 export const FormControlWrapper = styled(FormControl, {
   label: "admin-layout--form-control-wrapper"
 })(({ theme }) => ({
+  display: "flex",
+  flexDirection: "row",
   BorderRadius: theme.spacing(2),
   width: "100%",
   padding: theme.spacing(2)

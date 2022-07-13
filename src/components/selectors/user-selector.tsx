@@ -34,7 +34,7 @@ const UserSelector: React.FC = () => {
         value={secondSelector}
         onChange={handleSecondSelectorChange}
         sx={{
-          opacity: firstSelector ? 1 : 0.5,
+          opacity: firstSelector ? 1 : 0.8,
           borderStyle: firstSelector ? "solid" : "dotted"
         }}
         disabled={firstSelector === ""}
