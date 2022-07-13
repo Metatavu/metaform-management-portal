@@ -10,7 +10,9 @@ const env = cleanEnv(process.env, {
   REACT_APP_KEYCLOAK_CLIENT_ID: str({ default: undefined }),
   REACT_APP_API_BASE_URL: url({ default: undefined }),
   REACT_APP_SENTRY_DSN: url({ default: undefined }),
-  REACT_APP_SENTRY_ENVIRONMENT: str({ default: "production" })
+  REACT_APP_SENTRY_ENVIRONMENT: str({ default: "production" }),
+  REACT_APP_FORM_ID: str({ default: undefined }),
+  REACT_APP_REPLY_MODE: str({ default: "CUMULATIVE", choices: ["UPDATE", "REVISION", "CUMULATIVE"] })
 });
 
 /**
@@ -33,6 +35,33 @@ export default class Config {
       baseUrl: env.REACT_APP_API_BASE_URL
     }
   });
+
+  /**
+   * Returns API base path
+   * 
+   * @returns API base path
+   */
+  public static getApiBaseUrl = () => {
+    return env.REACT_APP_API_BASE_URL;
+  };
+
+  /**
+   * Returns used metaform id
+   * 
+   * @returns metaform id
+   */
+  public static getMetaformId = () => {
+    return env.REACT_APP_FORM_ID;
+  };
+
+  /**
+   * Returns used reply mode
+   * 
+   * @returns used reply mode
+   */
+  public static getReplyMode = () => {
+    return env.REACT_APP_REPLY_MODE;
+  };
 
   /**
    * Returns sentry dsn

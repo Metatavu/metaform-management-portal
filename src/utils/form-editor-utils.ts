@@ -3,7 +3,7 @@ import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "gen
 /**
  * Utility class for metaform
  */
-namespace MetaformUtils {
+namespace FormEditorUtils {
 
   /**
    * Create new Metaform
@@ -116,4 +116,4 @@ namespace MetaformUtils {
 
 }
 
-export default MetaformUtils;
+export default FormEditorUtils;

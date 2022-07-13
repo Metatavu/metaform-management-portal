@@ -47,6 +47,33 @@ export type ListItemData = {
 };
 
 /**
+ * Interface describing dictionary type
+ */
+export type Dictionary<T> = {
+  [Key: string]: T;
+};
+
+/**
+ * Interface describing an access token
+ */
+export type AccessToken = {
+  created: Date;
+  access_token: string;
+  expires_in?: number;
+  refresh_token?: string;
+  refresh_expires_in?: number;
+  firstName?: string;
+  lastName?: string;
+  userId?: string;
+  realmRoles: string[];
+};
+
+/**
+ * Type for signed access token
+ */
+export type SignedToken = AccessToken | null;
+
+/**
  * React dnd dragging mode
  */
 export enum DraggingMode {
@@ -62,11 +89,4 @@ export enum NavigationLinks {
   FORMS = "FORMS",
   USERS = "USERS",
   EDITOR = "EDITOR"
-}
-
-/**
- * Interface describing dictionary type
- */
-export interface Dictionary<T> {
-  [Key: string]: T;
 }

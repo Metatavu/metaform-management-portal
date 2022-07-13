@@ -1,7 +1,7 @@
 import { Divider, Stack, Typography } from "@mui/material";
 import { Metaform } from "generated/client";
 import React from "react";
-import MetaformUtils from "utils/metaform-utils";
+import MetaformUtils from "utils/form-editor-utils";
 import MetaformEditor from "components/editor/metaform-editor";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";

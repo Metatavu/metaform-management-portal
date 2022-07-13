@@ -11,7 +11,11 @@
   },
 
   "errorHandling": {
-    "title": "Error"
+    "title": "Error",
+    "form": {
+      "saveReply": "There was an error saving your reply. Please try again.",
+      "replyNotFound": "Reply not found."
+    }
   },
   "formComponent": {
     "datePicker": "Date",

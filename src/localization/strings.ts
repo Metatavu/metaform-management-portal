@@ -26,6 +26,10 @@ export interface Localized extends LocalizedStringsMethods {
    */
   errorHandling: {
     title: string;
+    form: {
+      saveReply: string;
+      replyNotFound: string;
+    }
   };
 
   /**

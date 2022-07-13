@@ -11,7 +11,11 @@
   },
 
   "errorHandling": {
-    "title": "Error"
+    "title": "Error",
+    "form": {
+      "saveReply": "Vastauksen tallentamisessa tapahtui virhe. Yritä myöhemmin uudelleen.",
+      "replyNotFound": "Vastausta ei löytynyt."
+    }
   },
 
   "formComponent": {

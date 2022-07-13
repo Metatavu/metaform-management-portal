@@ -3,7 +3,7 @@ import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "gen
 import React from "react";
 import { DraggingMode } from "types";
 import { DraggableLocation, DropResult, DragStart, DragDropContext } from "react-beautiful-dnd";
-import MetaformUtils from "utils/metaform-utils";
+import MetaformUtils from "utils/form-editor-utils";
 import produce from "immer";
 import MetaformEditorRightDrawer from "./metaform-editor-right-drawer";
 import MetaformEditorLeftDrawer from "./metaform-editor-left-drawer";
