@@ -13,6 +13,7 @@ const PermissionFilter: React.FC = () => {
   /**
    * We need to disable second selector if first selector is selected
    * We read that the first selector has "" as value, so we need to check if it is empty
+   *
    * @param event - event object
    */
   const handleFirstSelectorChange = (event: React.ChangeEvent<{ value: string }>) => {
