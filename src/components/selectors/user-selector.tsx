@@ -25,6 +25,7 @@ const UserSelector: React.FC = () => {
       <Selector
         value={firstSelector}
         onChange={handleFirstSelectorChange}
+        disableUnderline
       >
         <option value="">Select user</option>
         <option value="1">User 1</option>
@@ -34,6 +35,7 @@ const UserSelector: React.FC = () => {
       <Selector
         value={secondSelector}
         onChange={handleSecondSelectorChange}
+        disableUnderline
         sx={{
           opacity: firstSelector ? 1 : 0.8,
           borderStyle: firstSelector ? "solid" : "dotted"
@@ -45,7 +47,9 @@ const UserSelector: React.FC = () => {
         <option value="2">User 2</option>
         <option value="3">User 3</option>
       </Selector>
-      <Selector>
+      <Selector
+        disableUnderline
+      >
         <option value="">Select user</option>
         <option value="1">User 1</option>
         <option value="2">User 2</option>
