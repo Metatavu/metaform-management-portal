@@ -41,14 +41,14 @@ const UserSelector: React.FC = () => {
         <option value="3">User 3</option>
       </Selector>
       <Selector
-        value={secondSelector}
-        onChange={handleSecondSelectorChange}
+        value={ secondSelector }
+        onChange={ handleSecondSelectorChange }
         disableUnderline
         sx={{
           opacity: firstSelector ? 1 : 0.8,
           borderStyle: firstSelector ? "solid" : "dotted"
         }}
-        disabled={firstSelector === ""}
+        disabled={ firstSelector === "" }
       >
         <option value="">{ strings.userManagementScreen.selector.group }</option>
         <option value="1">User 1</option>
