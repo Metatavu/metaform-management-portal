@@ -1,7 +1,6 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue } from './types';
+import React from "react";
+import { MetaformField } from "../generated/client/models";
+import HtmlAutocompleteWrapper from "styled/react-components/react-components";
 
 /**
  * Component props
@@ -11,45 +10,35 @@ interface Props {
   fieldId: string;
   fieldLabelId: string;
   formReadOnly: boolean;
-  value: FieldValue;
-  renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   onFocus: () => void;
 }
 
 /**
- * Component state
- */
-interface State {
-}
-
-/**
  * Component for Metaform autocomplete field
+ * 
+ * @param props Component props
  */
-export class MetaformAutocompleteFieldComponent extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-    };
+export const MetaformAutocompleteFieldComponent: React.FC<Props> = ({
+  field,
+  fieldId,
+  fieldLabelId,
+  formReadOnly,
+  onFocus
+}) => {
+  if (!field.name) {
+    return null;
   }
-  
-  /**
-   * Component render method
-   */
-  public render() {
-    const {
-      field,
-      formReadOnly,
-      value,
-      renderAutocomplete
-    } = this.props;
 
-    return renderAutocomplete(field, field.readonly || formReadOnly, value);
-  }
-}
+  return (
+    <HtmlAutocompleteWrapper
+      id={fieldId}
+      aria-labelledby={fieldLabelId}
+      aria-readonly={formReadOnly}
+      onFocus={onFocus}
+      options={}
+      renderInput={}
+    />
+  );
+};
+
+export default MetaformAutocompleteFieldComponent;
