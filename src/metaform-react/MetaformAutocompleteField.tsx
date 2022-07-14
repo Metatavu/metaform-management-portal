@@ -1,4 +1,5 @@
 import React from "react";
+import { TextField } from "@mui/material";
 import { MetaformField } from "../generated/client/models";
 import HtmlAutocompleteWrapper from "styled/react-components/react-components";
 
@@ -10,6 +11,7 @@ interface Props {
   fieldId: string;
   fieldLabelId: string;
   formReadOnly: boolean;
+  items : string[];
   onFocus: () => void;
 }
 
@@ -23,20 +25,21 @@ export const MetaformAutocompleteFieldComponent: React.FC<Props> = ({
   fieldId,
   fieldLabelId,
   formReadOnly,
+  items,
   onFocus
 }) => {
   if (!field.name) {
     return null;
   }
-
+  
   return (
     <HtmlAutocompleteWrapper
-      id={fieldId}
-      aria-labelledby={fieldLabelId}
-      aria-readonly={formReadOnly}
-      onFocus={onFocus}
-      options={}
-      renderInput={}
+      id={ fieldId }
+      aria-labelledby={ fieldLabelId }
+      readOnly={ formReadOnly }
+      onFocus={ onFocus }
+      options={ items }
+      renderInput={params => <TextField {...params} variant="outlined" InputProps={{ ...params.InputProps }}/> }
     />
   );
 };
