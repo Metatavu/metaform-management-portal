@@ -1,47 +1,48 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue } from './types';
+import React from "react";
+import { SliderFieldWrapper } from "styled/react-components/react-components";
+import { MetaformField } from "../generated/client/models";
+import { FieldValue } from "./types";
 
 /**
  * Component props
  */
 interface Props {
-  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   field: MetaformField;
-  fieldId: string;
-  fieldLabelId: string;
   formReadOnly: boolean;
   value: FieldValue;
-  getFieldValue: (fieldName: string) => FieldValue;
-  onValueChange: (value: FieldValue) => void;
-  onFocus: () => void;
-}
-
-/**
- * Component state
- */
-interface State {
-  
+  setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
 }
 
 /**
  * Component for Metaform slider field
  */
-export class MetaformSliderFieldComponent extends React.Component<Props, State> {
+export const MetaformSliderFieldComponent: React.FC<Props> = ({
+  field,
+  formReadOnly,
+  value,
+  setFieldValue
+}) => {
+  const fieldName = field.name;
+  const readOnly = !!(formReadOnly || field.readonly);
 
-  /**
-   * Component render method
-   */
-  public render() {
-    const { field, renderSlider, formReadOnly } = this.props;
-
-    if (!field.name || !renderSlider) {
-      return null;
-    }
-
-    const readOnly = !!(formReadOnly || field.readonly);    
-    return renderSlider(field.name, readOnly);
+  if (!fieldName) {
+    return null;
   }
 
-}
+  return (
+    <SliderFieldWrapper
+      step={ field.step }
+      max={ field.max }
+      min={ field.min }
+      name={ field.name }
+      placeholder={ field.placeholder }
+      disabled={ readOnly }
+      value={ value as number }
+      onChange={ (event: Event, newValue: number | number[]) => {
+        setFieldValue(fieldName, newValue as number);
+      }}
+    />
+  );
+};
+
+export default MetaformSliderFieldComponent;

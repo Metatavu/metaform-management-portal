@@ -192,11 +192,8 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
         return  <MetaformSubmitFieldComponent
                   validationErrors={ validationErrors }
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
                   field={ field }
                   onClick={ onSubmit }
-                  value={ this.getFieldValue() }
                 />;
       case MetaformFieldType.Boolean:
         return  <MetaformBooleanFieldComponent
@@ -306,15 +303,10 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                 />;
       case MetaformFieldType.Slider:
         return <MetaformSliderFieldComponent
-                renderSlider={ renderSlider }
+                setFieldValue={ this.props.setFieldValue }
                 formReadOnly={ formReadOnly }
-                fieldLabelId={ this.getFieldLabelId() }
-                fieldId={ this.getFieldId() }
                 field={ field }
-                onValueChange={ this.onValueChange }
                 value={ this.getFieldValue() }
-                onFocus={ this.onFocus }
-                getFieldValue={ this.getFieldValue }
               />
       case MetaformFieldType.Checklist:
         return <MetaformChecklistFieldComponent
