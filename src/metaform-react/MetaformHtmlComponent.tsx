@@ -1,5 +1,5 @@
 import React from "react";
-import HtmlFieldWrapper from "styled/react-components/react-components";
+import { HtmlFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField } from "../generated/client/models";
 
 /**

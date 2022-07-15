@@ -181,12 +181,9 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
       case MetaformFieldType.Select:
         return  <MetaformSelectFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
                   field={ field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
                 />;
       case MetaformFieldType.Submit:
         return  <MetaformSubmitFieldComponent
