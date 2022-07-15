@@ -54,6 +54,7 @@ const MetaformTextFieldComponent: React.FC<Props> = ({
       value={ value as string || "" }
       onChange={ onChange }
       onFocus={ onFocus }
+      disableUnderline
     />
   );
 };

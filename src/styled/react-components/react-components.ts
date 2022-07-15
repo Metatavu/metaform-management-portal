@@ -32,8 +32,7 @@ export const TextFieldWrapper = styled(Input, {
 })(() => ({
   flex: 1,
   width: "100%",
-  height: "auto",
-  fontSize: "15px",
+  fontSize: "1em",
   border: "1px solid rgba(0, 0, 0, .5)",
   borderRadius: "0.5rem",
   backgroundColor: "#fff"
