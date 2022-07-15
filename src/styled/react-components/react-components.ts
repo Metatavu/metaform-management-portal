@@ -18,9 +18,8 @@ export const HtmlFieldWrapper = styled(Box, {
 export const SliderFieldWrapper = styled(Slider, {
   label: "slider-field-wrapper"
 })(() => ({
-  flex: 1,
   width: "100%",
-  height: "4px",
+  height: "0.25em",
   color: "#4FA3DF"
 }));
 
@@ -30,7 +29,6 @@ export const SliderFieldWrapper = styled(Slider, {
 export const SubmitFieldWrapper = styled(Input, {
   label: "submit-field-wrapper"
 })(() => ({
-  flex: 1,
   borderRadius: "0.3rem",
   border: 0
 }));
