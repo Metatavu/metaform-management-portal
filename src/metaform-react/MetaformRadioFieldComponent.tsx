@@ -1,7 +1,8 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React, { ReactNode } from 'react';
-import { MetaformField, MetaformFieldOption } from '../generated/client/models';
-import { FieldValue, IconName } from './types';
+import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import React, { ReactNode } from "react";
+import { RadioFieldWrapper } from "styled/react-components/react-components";
+import { MetaformField, MetaformFieldOption } from "../generated/client/models";
+import { FieldValue, IconName } from "./types";
 
 /**
  * Component props
@@ -18,95 +19,22 @@ interface Props {
 }
 
 /**
- * Component state
- */
-interface State {
-  
-}
-
-/**
  * Component for radio field
  */
-export class MetaformRadioFieldComponent extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      
-    };
-  }
-
-  /**
-   * Component render method
-   */
-  public render() {
-    if (!this.props.field.name) {
-      return null;
-    }
-
-    const options = this.props.field.options || [];
-    const value = this.props.value as string;
-
-    return (
-      <div>
-        {
-          options.map((option, i) =>  (
-            <div key={ `${this.props.fieldId}-${option.name}-container` }>
-              { this.renderOption(option, value) }
-            </div>
-          ))
-        }
-      </div>
-    );
-  }
-
-  /**
-   * Renders field option's label
-   */
-  private renderOption = (option: MetaformFieldOption, value: string) => {
-    return (
-      <label className="metaform-radio-field-label" key={ `${this.props.fieldId}-${option.name}-label` } htmlFor={ `${this.props.fieldId}-${option.name}` }>
-        { this.renderOptionValue(option, value) }
-        <span> { option.text } </span>
-      </label>
-    );
-  }
-
-  /**
-   * Renders field option's value
-   */
-  private renderOptionValue = (option: MetaformFieldOption, value: string) => {
-    const readOnly = this.props.formReadOnly || this.props.field.readonly;
-    const checked: boolean = ((value && value === option.name) || (!value && option.checked)) || false;
-
-    if (readOnly) {
-      if (checked) {
-        return this.props.renderIcon("dot-circle-o", `${this.props.fieldId}-${option.name}-icon`);
-      } else { 
-        return this.props.renderIcon("circle-o", `${this.props.fieldId}-${option.name}-icon-checked`);
-      }
-    } else {
-      return <input 
-        key={ `${this.props.fieldId}-${option.name}-input` }
-        type="radio" 
-        id={ `${this.props.fieldId}-${option.name}` }  
-        aria-labelledby={ this.props.fieldLabelId } 
-        name={ this.props.field.name }
-        title={ this.props.field.title }
-        required={ this.props.field.required }
-        readOnly={ this.props.formReadOnly || this.props.field.readonly }
-        value={ option.name }
-        checked={ checked }
-        onChange={ this.onChange }
-        onFocus={ this.props.onFocus }
-        />
-    }
+export const MetaformRadioFieldComponent: React.FC<Props> = ({
+  field,
+  fieldId,
+  fieldLabelId,
+  formReadOnly,
+  value,
+  onValueChange,
+  onFocus,
+  renderIcon
+}) => {
+  const options = field.options || [];
+  
+  if (!field.name) {
+    return null;
   }
 
   /**
@@ -114,8 +42,62 @@ export class MetaformRadioFieldComponent extends React.Component<Props, State> {
    * 
    * @param event event
    */
-  private onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.onValueChange(event.target.value);
-  }
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onValueChange(event.target.value);
+  };
 
-}
+  /**
+   * Renders field options or icons if field is read-only
+   */
+  const renderOptions = (option: MetaformFieldOption, inputValue: string) => {
+    const readOnly = formReadOnly || field.readonly;
+    const checked: boolean = ((inputValue && inputValue === option.name) || (!inputValue && option.checked)) || false;
+
+    if (readOnly) {
+      if (checked) {
+        return renderIcon("dot-circle-o", `${fieldId}-${option.name}-icon`);
+      }
+      return renderIcon("circle-o", `${fieldId}-${option.name}-icon-checked`);
+    }
+
+    return (
+      <RadioGroup>
+        <FormControlLabel
+          className="metaform-radio-field-label"
+          label={ option.text }
+          key={ `${fieldId}-${option.name}-label`}
+          htmlFor={ `${fieldId}-${option.name}` }
+          value={ option.text }
+          control={ <Radio
+            size="small"
+            key={ `${fieldId}-${option.name}-input` }
+            id={ `${fieldId}-${option.name}` }
+            aria-labelledby={ fieldLabelId }
+            name={ field.name }
+            title={ field.title }
+            required={ field.required }
+            readOnly={ formReadOnly || field.readonly }
+            value={ option.name }
+            checked={ checked }
+            onChange={ onChange }
+            onFocus={ onFocus }
+          /> }
+        />
+      </RadioGroup>
+    );
+  };
+
+  return (
+    <RadioFieldWrapper>
+      {
+        options.map(option => (
+          <FormControl key={ `${fieldId}-${option.name}-container` }>
+            { renderOptions(option, value as string) }
+          </FormControl>
+        ))
+      }
+    </RadioFieldWrapper>
+  );
+};
+
+export default MetaformRadioFieldComponent;
