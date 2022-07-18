@@ -1,7 +1,7 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue } from './types';
+import React from "react";
+import { NumberFieldWrapper } from "styled/react-components/react-components";
+import { MetaformField } from "../generated/client/models";
+import { FieldValue } from "./types";
 
 /**
  * Component props
@@ -17,65 +17,52 @@ interface Props {
 }
 
 /**
- * Component state
- */
-interface State {
-  
-}
-
-/**
  * Component for Metaform number field
  */
-export class MetaformNumberFieldComponent extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      
-    };
+export const MetaformNumberFieldComponent: React.FC<Props> = ({
+  field,
+  fieldId,
+  fieldLabelId,
+  formReadOnly,
+  value,
+  onValueChange,
+  onFocus
+}) => {
+  if (!field.name) {
+    return null;
   }
 
-  /**
-   * Component render method
-   */
-  public render() {
-    if (!this.props.field.name) {
-      return null;
-    }
-
-    return (
-      <input
-        type="number"
-        placeholder={ this.props.field.placeholder }
-        id={ this.props.fieldId }
-        aria-labelledby={ this.props.fieldLabelId }
-        name={ this.props.field.name }
-        title={ this.props.field.title }
-        required={ this.props.field.required }
-        readOnly={ this.props.formReadOnly || this.props.field.readonly }
-        value={ this.props.value as number || "" }
-        min={ this.props.field.min }
-        max={ this.props.field.max }
-        step={ this.props.field.step }
-        onChange={ this.onChange }
-        onFocus={ this.props.onFocus }
-      />
-    );
-  }
-  
   /**
    * Event handler for field input change
    * 
    * @param event event
    */
-  private onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.onValueChange(event.target.value);
-  }
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onValueChange(event.target.value);
+  };
 
-}
+  return (
+    <NumberFieldWrapper
+      type="number"
+      placeholder={ field.placeholder }
+      id={ fieldId }
+      aria-labelledby={ fieldLabelId }
+      name={ field.name }
+      title={ field.title }
+      required={ field.required }
+      InputProps={{
+        readOnly: formReadOnly || field.readonly,
+        inputProps: {
+          min: field.min,
+          max: field.max,
+          step: field.step
+        }
+      }}
+      value={ value as number || "" }
+      onChange={ onChange }
+      onFocus={ onFocus }
+    />
+  );
+};
+
+export default MetaformNumberFieldComponent;
