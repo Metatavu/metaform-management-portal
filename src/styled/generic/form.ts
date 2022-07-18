@@ -37,8 +37,7 @@ export const FormContainer = styled(Box, {
     
     "& input[type='text'], & input[type='number'], & input[type='email'], & select, & textarea": {
       width: "100%",
-      padding: "10px",
-      fontSize: "15px"
+      padding: "10px"
     },
     
     "& input::placeholder, & select::placeholder": {
