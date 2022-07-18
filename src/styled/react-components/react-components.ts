@@ -1,4 +1,4 @@
-import { Box, Input } from "@mui/material";
+import { Box, Input, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 /**
@@ -13,6 +13,26 @@ export const HtmlFieldWrapper = styled(Box, {
 }));
 
 /**
+ * Styled select field component
+ */
+export const SelectFieldWrapper = styled(Box, {
+  label: "select-field-wrapper"
+})(() => ({
+  width: "100%",
+  backgroundColor: "#fff",
+  borderRadius: "1em"
+}));
+
+/**
+ * Styled radio field component
+ */
+export const RadioFieldWrapper = styled(Box, {
+  label: "radio-field-wrapper"
+})(() => ({
+  width: "100%"
+}));
+
+/*
  * Styled url field component
  */
 export const UrlFieldWrapper = styled(Input, {
@@ -31,6 +51,19 @@ export const TextFieldWrapper = styled(Input, {
   label: "text-field-wrapper"
 })(() => ({
   flex: 1,
+  width: "100%",
+  fontSize: "1em",
+  border: "1px solid rgba(0, 0, 0, .5)",
+  borderRadius: "0.5rem",
+  backgroundColor: "#fff"
+}));
+
+/**
+ * Styled number field component
+ */
+export const NumberFieldWrapper = styled(TextField, {
+  label: "number-field-wrapper"
+})(() => ({
   width: "100%",
   fontSize: "1em",
   border: "1px solid rgba(0, 0, 0, .5)",
