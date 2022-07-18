@@ -1,4 +1,4 @@
-import { Slider, Box, Input } from "@mui/material";
+import { Slider, Box, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 /**
@@ -26,7 +26,7 @@ export const SliderFieldWrapper = styled(Slider, {
 /**
  * Styled submit field component
  */
-export const SubmitFieldWrapper = styled(Input, {
+export const SubmitFieldWrapper = styled(TextField, {
   label: "submit-field-wrapper"
 })(() => ({
   borderRadius: "0.3rem",
