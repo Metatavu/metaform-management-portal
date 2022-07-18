@@ -1,4 +1,5 @@
 import { Autocomplete } from "@mui/material";
+import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 
 /**
@@ -12,4 +13,15 @@ export const HtmlAutocompleteWrapper = styled(Autocomplete, {
   height: "auto;"
 }));
 
-export default HtmlAutocompleteWrapper;
+/**
+ * Styled html field component
+ */
+export const HtmlFieldWrapper = styled(Box, {
+  label: "html-field-wrapper"
+})(() => ({
+  flex: 1,
+  width: "100%",
+  height: "auto"
+}));
+
+export default HtmlFieldWrapper, HtmlAutocompleteWrapper;
