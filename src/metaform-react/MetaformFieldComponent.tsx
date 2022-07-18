@@ -4,7 +4,7 @@ import { FieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, Va
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import { MetaformMemoComponent } from './MetaformMemoComponent';
 import { MetaformField, MetaformFieldType } from '../generated/client/models';
-import { MetaformTextFieldComponent } from './MetaformTextFieldComponent';
+import MetaformTextFieldComponent from './MetaformTextFieldComponent';
 import { MetaformRadioFieldComponent } from './MetaformRadioFieldComponent';
 import { MetaformSubmitFieldComponent } from './MetaformSubmitFieldComponent';
 import { MetaformSelectFieldComponent } from './MetaformSelectFieldComponent';
@@ -154,7 +154,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   field={ field } onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
-                  getFieldValue={ this.getFieldValue }
                 />;
       case MetaformFieldType.Memo:
         return  <MetaformMemoComponent
