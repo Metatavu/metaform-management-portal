@@ -24,4 +24,7 @@ export const HtmlFieldWrapper = styled(Box, {
   height: "auto"
 }));
 
-export default HtmlFieldWrapper, HtmlAutocompleteWrapper;
+export default {
+  HtmlAutocompleteWrapper: HtmlAutocompleteWrapper,
+  HtmlFieldWrapper: HtmlFieldWrapper
+};
