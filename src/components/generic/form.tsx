@@ -12,6 +12,7 @@ import fiLocale from "date-fns/locale/fi";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MetaformComponent } from "metaform-react/MetaformComponent";
 import { Dictionary } from "types";
+import testForm from "../../testi-lomake.json";
 
 /**
  * Component props
@@ -24,7 +25,7 @@ interface Props {
  * Form component
  */
 const Form: React.FC = () => {
-  const [ metaform, setMetaform ] = React.useState<Metaform>(MetaformUtils.jsonToMetaform({}));
+  const [ metaform, setMetaform ] = React.useState<Metaform>(MetaformUtils.jsonToMetaform(testForm));
   const [ contexts, setContexts ] = React.useState<string[]>([]);
   const [ onValidationErrorsChange, setOnValidationErrorsChange ] = React.useState<(validationErrors: ValidationErrors) => void>();
   const [ uploadingFields, setUploadingFields ] = React.useState<string[]>([]);

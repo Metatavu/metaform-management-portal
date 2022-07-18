@@ -1,4 +1,5 @@
 /* eslint-disable */ // Remove when refactoring is done
+import { TextField } from '@mui/material';
 import React from 'react';
 import { MetaformField } from '../generated/client/models';
 import { FieldValue } from './types';
@@ -39,17 +40,20 @@ export const MetaformMemoComponent: React.FC<Props> = ({
   }
 
   return (
-    <textarea
+    <TextField
+      variant="outlined"
+      multiline
       placeholder={ field.placeholder }
       id={ fieldId }
       aria-labelledby={ fieldLabelId }
       name={ field.name }
       title={ field.title }
       required={ field.required }
-      readOnly={ formReadOnly || field.readonly }
+      disabled={ formReadOnly || field.readonly }
       value={ value as string || "" }
       onChange={ onChange }
       onFocus={ onFocus }
+      style={{ backgroundColor: "white" }}
     />
   );
 };
