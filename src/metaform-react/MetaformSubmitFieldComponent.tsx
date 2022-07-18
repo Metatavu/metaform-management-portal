@@ -1,4 +1,5 @@
 import React, { CSSProperties } from "react";
+import { SubmitFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField } from "../generated/client/models";
 import { ValidationErrors } from "./types";
 
@@ -14,7 +15,6 @@ interface Props {
 
 /**
  * Component for Metaform submit field
- * TODO - Implement styled component for this
  */
 export const MetaformSubmitFieldComponent: React.FC<Props> = ({
   field,
@@ -35,9 +35,11 @@ export const MetaformSubmitFieldComponent: React.FC<Props> = ({
   }
 
   return (
-    <input
+    <SubmitFieldWrapper
       type="submit"
-      style={ style }
+      inputProps={{
+        style: style
+      }}
       disabled={ disabled }
       value={ field.text }
       onClick={ () => onClick(field) }
