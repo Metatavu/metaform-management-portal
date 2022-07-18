@@ -12,7 +12,7 @@ interface Props {
 }
 
 /**
- * Component for Metaform memo field
+ * Component for Metaform html field
  * 
  * @param props component properties
  */
