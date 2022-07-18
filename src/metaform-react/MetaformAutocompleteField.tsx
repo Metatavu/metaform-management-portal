@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField } from "@mui/material";
 import { MetaformField } from "../generated/client/models";
-import HtmlAutocompleteWrapper from "styled/react-components/react-components";
+import { HtmlAutocompleteWrapper } from "styled/react-components/react-components";
 
 /**
  * Component props
