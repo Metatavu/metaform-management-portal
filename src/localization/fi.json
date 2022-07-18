@@ -7,7 +7,16 @@
     "notImplemented": "Ei vielä toteutettu",
     "save": "Tallenna",
     "yes": "Kyllä",
-    "no": "Ei"
+    "no": "Ei",
+    "loading": "Ladataan...",
+    "confirm": "Vahvista"
+  },
+
+  "emailDialog": {
+    "title": "Otsikko",
+    "email": "Sähköposti",
+    "send": "Lähetä",
+    "cancel": "Peruuta"
   },
 
   "errorHandling": {
@@ -16,6 +25,35 @@
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe. Yritä myöhemmin uudelleen.",
       "replyNotFound": "Vastausta ei löytynyt."
     }
+  },
+
+  "formScreen": {
+    "autosaving": "Vastausta tallennetaan...",
+    "replyNotFound": "Vastausta ei löytynyt järjestelmästä",
+    "saveDraft": "Voit tallentaa lomakkeen vedoksena klikkaamalla",
+    "saveDraftLink": "tästä",
+    "draftSaved": "Lomake on tallennettu vedoksena. Ota seuraava kirjanmerkki talteen niin voit jatkaa lomakkeen täyttöä myöhemmin: ",
+    "draftEmailText": "Voit lähettää linkin itsellesi sähköpostilla klikkaamalla",
+    "draftEmailLink": "tästä",
+    "draftEmailDialogText": "Kirjoita sähköpostiosoite, johon haluat vedoksen muokkauslinkin lähetettävän",
+    "draftEmailSubject": "{0} -lomakkeen vedos",
+    "draftEmailContent": "<p>Hei!</p><p>Pääset jatkamaan {0} -lomakkeen täyttöä linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
+    "draftEmailSent": "Linkki vedokseen lähetetty!",
+    "savingReply": "Tallennetaan vastausta...",
+    "replySaved": "Lähetetty onnistuneesti!",
+    "replyEdit": "Voit muokata vastaustasi käyttämällä seuraavaa linkkiä:",
+    "replyEditEmailText": "Voit lähettää linkin itsellesi sähköpostilla klikkaamalla",
+    "replyEditEmailLink": "tästä",
+    "replyEditEmailDialogText": "Kirjoita sähköpostiosoite, johon haluat lomakkeen muokkauslinkin lähetettävän",
+    "replyEditEmailSubject": "{0} -lomakkeen muokkauslinkki",
+    "replyEditEmailContent": "<p>Hei!</p><p>Pääset muokkaamaan {0} -lomakkeen vastauksia seuraavasta linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
+    "replyEditEmailSent": "Muokkauslinkki lähetetty!",
+    "replyDeleteText": "Voit poistaa tämän vastauksen klikkaamalla",
+    "replyDeleteLink": "tästä",
+    "confirmDeleteReplyTitle": "Oletko varma?",
+    "confirmDeleteReplyText": "Oletko varma, että haluat poistaa vastauksen?",
+    "replyDeleted": "Vastaus on poistettu onnistuneesti!",
+    "logout": "Kirjaudu ulos"
   },
 
   "formComponent": {

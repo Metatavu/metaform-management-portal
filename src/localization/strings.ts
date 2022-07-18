@@ -19,6 +19,18 @@ export interface Localized extends LocalizedStringsMethods {
     save: string;
     yes: string;
     no: string;
+    loading: string;
+    confirm: string;
+  };
+
+  /**
+  * Translations related to email dialog
+  */
+  emailDialog: {
+    title: string;
+    email: string;
+    send: string;
+    cancel: string;
   };
 
   /**
@@ -30,6 +42,38 @@ export interface Localized extends LocalizedStringsMethods {
       saveReply: string;
       replyNotFound: string;
     }
+  };
+
+  /**
+   * Translations related to form screen
+   */
+  formScreen: {
+    replyNotFound: string;
+    autosaving: string;
+    saveDraft: string;
+    saveDraftLink: string;
+    draftSaved: string;
+    draftEmailText: string;
+    draftEmailLink: string;
+    draftEmailDialogText: string;
+    draftEmailContent: string;
+    draftEmailSubject: string;
+    draftEmailSent: string;
+    savingReply: string;
+    replySaved: string;
+    replyEdit: string;
+    replyEditEmailText: string;
+    replyEditEmailLink: string;
+    replyEditEmailDialogText: string;
+    replyEditEmailContent: string;
+    replyEditEmailSubject: string;
+    replyEditEmailSent: string;
+    replyDeleteText: string;
+    replyDeleteLink: string;
+    confirmDeleteReplyTitle: string;
+    confirmDeleteReplyText: string;
+    replyDeleted: string;
+    logout: string;
   };
 
   /**

@@ -17,7 +17,6 @@ import Api from "api";
 import { useAppSelector } from "app/hooks";
 import Config from "app/config";
 import { ErrorContext } from "components/contexts/error-handler";
-import json from "4f735ca3-7e94-4578-a7dd-82c7e0cb0ca1.json";
 import FormUtils from "utils/form-utils";
 
 const AUTOSAVE_COOLDOWN_IN_MILLISECONDS = 500;
@@ -40,7 +39,17 @@ interface Props {
 /**
  * Form component
  */
-const Form: React.FC = (props) => {
+const Form: React.FC<Props> = ({
+  contexts,
+  metaform,
+  accessToken,
+  ownerKey,
+  getFieldValue,
+  setFieldValue,
+  onSubmit,
+  onValidationErrorsChange,
+  accessTokenNotValid
+}) => {
   const errorContext = React.useContext(ErrorContext);
   const accessToken = useAppSelector(selectKeycloak);
 
@@ -52,7 +61,7 @@ const Form: React.FC = (props) => {
   const [ formValid, setFormValid ] = React.useState<boolean>(false);
   const [ formValueChangeTimeout, setFormValueChangeTimeout ] = React.useState<any>(null);
   const [ loading, setLoading ] = React.useState<boolean>(false);
-  const [ metaform, setMetaform ] = React.useState<Metaform>(MetaformUtils.jsonToMetaform(json));
+  const [ metaform, setMetaform ] = React.useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ ownerKey, setOwnerKey ] = React.useState<string | undefined>(undefined);
   const [ replyDeleteVisible, setReplyDeleteVisible ] = React.useState<boolean>(false);
   const [ redirectTo, setRedirectTo ] = React.useState<string>();

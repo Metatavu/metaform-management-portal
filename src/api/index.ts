@@ -1,5 +1,6 @@
 import { AttachmentsApi, Configuration, DraftsApi, MetaformsApi, RepliesApi } from "../generated/client";
 import Config from "../app/config";
+import { AccessToken } from "types";
 
 /**
  * Utility class for loading api with predefined configuration
@@ -11,7 +12,7 @@ namespace Api {
    *
    * @param accessToken access token
    */
-  export const getMetaformsApi = (accessToken: string) => {
+  export const getMetaformsApi = (accessToken: AccessToken) => {
     return new MetaformsApi(Api.getConfiguration(accessToken));
   };
 
@@ -20,7 +21,7 @@ namespace Api {
    *
    * @param accessToken access token
    */
-  export const getRepliesApi = (accessToken: string) => {
+  export const getRepliesApi = (accessToken: AccessToken) => {
     return new RepliesApi(Api.getConfiguration(accessToken));
   };
 
@@ -29,7 +30,7 @@ namespace Api {
    *
    * @param accessToken access token
    */
-  export const getDraftsApi = (accessToken: string) => {
+  export const getDraftsApi = (accessToken: AccessToken) => {
     return new DraftsApi(Api.getConfiguration(accessToken));
   };
 
@@ -38,7 +39,7 @@ namespace Api {
    * 
    * @param accessToken access token
    */
-  export const getAttachmentsApi = (accessToken: string) => {
+  export const getAttachmentsApi = (accessToken: AccessToken) => {
     return new AttachmentsApi(Api.getConfiguration(accessToken));
   };
 
@@ -54,7 +55,7 @@ namespace Api {
    *
    * @returns new configuration
    */
-  export const getConfiguration = (accessToken: string) => {
+  export const getConfiguration = (accessToken: AccessToken) => {
     return new Configuration({
       basePath: process.env.REACT_APP_API_BASE_URL,
       headers: {
