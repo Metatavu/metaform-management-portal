@@ -19,7 +19,7 @@ interface Props {
 /**
  * Component for Metaform memo field
  */
-export const MetaformMemoComponent: React.FC<Props> = ({
+const MetaformMemoComponent: React.FC<Props> = ({
   field,
   fieldId,
   fieldLabelId,
@@ -36,6 +36,10 @@ export const MetaformMemoComponent: React.FC<Props> = ({
   const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     onValueChange(event.target.value);
   };
+
+  if (!field.name) {
+    return null;
+  }
 
   return (
     <TextField

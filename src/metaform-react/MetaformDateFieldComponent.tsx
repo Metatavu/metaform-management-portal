@@ -15,7 +15,7 @@ interface Props {
 /**
  * Component for Metaform text field
  */
-export const MetaformDateFieldComponent: React.FC<Props> = ({
+const MetaformDateFieldComponent: React.FC<Props> = ({
   field,
   onValueChange,
   datePicker

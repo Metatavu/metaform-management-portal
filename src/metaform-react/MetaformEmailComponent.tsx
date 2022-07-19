@@ -19,7 +19,7 @@ interface Props {
 /**
  * Component for Metaform email field
  */
-export const MetaformEmailFieldComponent: React.FC<Props> = ({
+const MetaformEmailFieldComponent: React.FC<Props> = ({
   field,
   fieldId,
   fieldLabelId,
@@ -34,9 +34,13 @@ export const MetaformEmailFieldComponent: React.FC<Props> = ({
    * @param event event
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.target.value;
-    onValueChange(newValue);
+    const changedValue = event.target.value;
+    onValueChange(changedValue);
   };
+
+  if (!field.name) {
+    return null;
+  }
   
   return (
     <TextField

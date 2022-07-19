@@ -20,7 +20,7 @@ interface Props {
 /**
  * Component for radio field
  */
-export const MetaformBooleanFieldComponent: React.FC<Props> = ({
+const MetaformBooleanFieldComponent: React.FC<Props> = ({
   field,
   fieldId,
   fieldLabelId,
@@ -50,8 +50,10 @@ export const MetaformBooleanFieldComponent: React.FC<Props> = ({
       if (checked) {
         return renderIcon("check-square-o", `${fieldId}-${option.name}-icon`);
       }
+        
       return renderIcon("square-o", `${fieldId}-${option.name}-icon-checked`);
     }
+    
     return <Checkbox
       key={ `${fieldId}-${option.name}-input` }
       id={ `${fieldId}-${option.name}` }
@@ -69,14 +71,16 @@ export const MetaformBooleanFieldComponent: React.FC<Props> = ({
 
   const option = field;
 
+  if (!field.name) {
+    return null;
+  }
+
   return (
     <div>
       <label className="metaform-boolean-field-label" key={ `${fieldId}-${field.name}-label` } htmlFor={ `${fieldId}-${field.name}` }>
         { renderOptionValue(option, value as string) }
         <span>
-          {" "}
           { option.text }
-          {" "}
         </span>
       </label>
     </div>

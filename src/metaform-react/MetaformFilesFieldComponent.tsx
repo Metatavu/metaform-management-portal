@@ -23,7 +23,7 @@ interface Props {
 /**
  * Component for Metaform text field
  */
-export const MetaformFilesFieldComponent: React.FC<Props> = ({
+const MetaformFilesFieldComponent: React.FC<Props> = ({
   field,
   fieldId,
   fieldLabelId,
@@ -50,10 +50,10 @@ export const MetaformFilesFieldComponent: React.FC<Props> = ({
   };
 
   /**
-   * If the value is a FileFieldValue, return it, otherwise return a FileFieldValue with the value as the
-   * id of the file.
-   * @param fieldValue - The value of the field.
-   * @returns A function that takes a value and returns a boolean.
+   * Checks if contains files-array
+   * 
+   * @param fieldValue
+   * @returns 
    */
   const isFileFieldValue = (fieldValue: FieldValue): boolean => {
     if (!fieldValue) {
@@ -67,9 +67,10 @@ export const MetaformFilesFieldComponent: React.FC<Props> = ({
   };
 
   /**
-   * If the value is not a FileFieldValue, then return a FileFieldValue with an empty array of files
-   * @param fieldValue - FieldValue - The value of the field.
-   * @returns A function that takes a value and returns a FileFieldValue.
+   * Ensures file field type
+   * 
+   * @param fieldValue
+   * @returns 
    */
   const ensureFileFieldType = (fieldValue: FieldValue): FileFieldValue => {
     if (!fieldValue) {
@@ -89,15 +90,19 @@ export const MetaformFilesFieldComponent: React.FC<Props> = ({
 
   const normalizedValue = ensureFileFieldType(value);
 
-  const valueItems = normalizedValue.files.map(file => {
+  const valueItems = normalizedValue.files.map(valueItem => {
     return (
-      <div key={file.id} className="metaform-react-file-value-container">
-        <span className="metaform-react-file-field-name">{ file.name || file.id}</span>
-        <Button onClick={ () => onFileShow(field.name || "", file) } className="metaform-react-file-field-open-button">{ showButtonText }</Button>
-        <Button onClick={ () => onFileDelete(field.name || "", file) } className="metaform-react-file-field-delete-button">{ deleteButtonText }</Button>
+      <div key={valueItem.id} className="metaform-react-file-value-container">
+        <span className="metaform-react-file-field-name">{ valueItem.name || valueItem.id}</span>
+        <Button onClick={ () => onFileShow(field.name || "", valueItem) } className="metaform-react-file-field-open-button">{ showButtonText }</Button>
+        <Button onClick={ () => onFileDelete(field.name || "", valueItem) } className="metaform-react-file-field-delete-button">{ deleteButtonText }</Button>
       </div>
     );
   });
+
+  if (!field.name) {
+    return null;
+  }
 
   return (
     <>

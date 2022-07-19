@@ -25,7 +25,6 @@ interface Props {
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
-  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
   fileShowButtonText: string;
   fileDeleteButtonText: string;
@@ -36,7 +35,7 @@ interface Props {
 /**
  * Component for metaform section
  */
-export const MetaformSectionComponent: React.FC<Props> = ({
+const MetaformSectionComponent: React.FC<Props> = ({
   section,
   metaformId,
   sectionId,
@@ -47,7 +46,6 @@ export const MetaformSectionComponent: React.FC<Props> = ({
   renderBeforeField,
   uploadFile,
   renderIcon,
-  renderSlider,
   getFieldValue,
   setFieldValue,
   formReadOnly,
@@ -61,7 +59,7 @@ export const MetaformSectionComponent: React.FC<Props> = ({
   showRequiredFieldsMissingError
 }) => {
   /**
-   * Renders a section title
+   * Renders a title
    */
   const renderTitle = () => {
     if (!section.title) {
@@ -90,7 +88,6 @@ export const MetaformSectionComponent: React.FC<Props> = ({
                 renderBeforeField={renderBeforeField}
                 uploadFile={ uploadFile }
                 renderIcon={ renderIcon }
-                renderSlider={ renderSlider }
                 getFieldValue={ getFieldValue }
                 setFieldValue={ setFieldValue }
                 formReadOnly={ formReadOnly }

@@ -19,7 +19,7 @@ interface Props {
 /**
  * Component for Metaform text field
  */
-export const MetaformHiddenFieldComponent: React.FC<Props> = ({
+const MetaformHiddenFieldComponent: React.FC<Props> = ({
   field,
   fieldId,
   fieldLabelId,
@@ -36,6 +36,10 @@ export const MetaformHiddenFieldComponent: React.FC<Props> = ({
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onValueChange(event.target.value);
   };
+
+  if (!field.name) {
+    return null;
+  }
 
   return (
     <Input

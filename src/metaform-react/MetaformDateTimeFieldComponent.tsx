@@ -14,7 +14,7 @@ interface Props {
 /**
  * Component for Metaform text field
  */
-export const MetaformDateTimeFieldComponent: React.FC<Props> = ({
+const MetaformDateTimeFieldComponent: React.FC<Props> = ({
   field,
   onValueChange,
   datetimePicker
@@ -27,6 +27,10 @@ export const MetaformDateTimeFieldComponent: React.FC<Props> = ({
   const onChange = (date: Date) => {
     onValueChange(date ? date.toISOString() : null);
   };
+
+  if (!field.name) {
+    return null;
+  }
   
   return datetimePicker(field.name || "", onChange);
 };
