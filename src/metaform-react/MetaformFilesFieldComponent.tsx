@@ -83,8 +83,8 @@ export const MetaformFilesFieldComponent: React.FC<Props> = ({
     return (
       <div key={value.id} className="metaform-react-file-value-container">
         <span className="metaform-react-file-field-name">{ value.name || value.id}</span>
-        <Button onClick={() => onFileShow(field.name || "", value)} className="metaform-react-file-field-open-button">{ showButtonText }</Button>
-        <Button onClick={() => onFileDelete(field.name || "", value)} className="metaform-react-file-field-delete-button">{ deleteButtonText }</Button>
+        <Button onClick={ () => onFileShow(field.name || "", value) } className="metaform-react-file-field-open-button">{ showButtonText }</Button>
+        <Button onClick={ () => onFileDelete(field.name || "", value) } className="metaform-react-file-field-delete-button">{ deleteButtonText }</Button>
       </div>
     )
   })
