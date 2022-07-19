@@ -49,7 +49,7 @@ export const MetaformEmailFieldComponent: React.FC<Props> = ({
       title={ field.title }
       required={ field.required }
       disabled={ formReadOnly || field.readonly }
-      value={ value as string || "" }
+      value={ value as string || "" }
       onChange={ onChange }
       onFocus={ onFocus }
     />
