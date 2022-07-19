@@ -250,7 +250,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                 />;
       case MetaformFieldType.Files:
         return  <MetaformFilesFieldComponent
-                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
                   field={ field }

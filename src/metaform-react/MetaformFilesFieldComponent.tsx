@@ -13,7 +13,6 @@ interface Props {
   fieldLabelId: string,
   showButtonText: string,
   deleteButtonText: string,
-  formReadOnly: boolean,
   value: FieldValue,
   onValueChange: (value: FieldValue) => void,
   onFileUpload: (fieldName: string, file: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => void,
@@ -25,7 +24,7 @@ interface Props {
 /**
  * Component for Metaform text field
  */
-const MetaformFilesFieldComponent: React.FC<Props> = ({
+export const MetaformFilesFieldComponent: React.FC<Props> = ({
   field,
   fieldId,
   fieldLabelId,
