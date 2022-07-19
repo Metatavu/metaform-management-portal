@@ -26,7 +26,7 @@ export const FilterSelector = styled(NativeSelect, {
   marginRight: "10px",
   height: theme.spacing(5),
   borderRadius: theme.spacing(1),
-  border: "1px solid #ccc",
+  border: "0.06em solid #ccc",
   padding: theme.spacing(2)
 }));
 
