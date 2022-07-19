@@ -34,84 +34,69 @@ interface Props {
 }
 
 /**
- * Component state
- */
-interface State {
-  
-}
-
-/**
  * Component for metaform section
  */
-export class MetaformSectionComponent extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      
-    };
-  }
-
-  /**
-   * Component render method
-   */
-  public render() {
-    if (!VisibileIfEvaluator.isVisible(this.props.section.visibleIf, this.props.getFieldValue)) {
+export const MetaformSectionComponent: React.FC<Props> = ({
+  section,
+  metaformId,
+  sectionId,
+  datePicker,
+  datetimePicker,
+  renderAutocomplete,
+  validationErrors,
+  renderBeforeField,
+  uploadFile,
+  renderIcon,
+  renderSlider,
+  getFieldValue,
+  setFieldValue,
+  formReadOnly,
+  contexts,
+  onSubmit,
+  onFileDelete,
+  onFileShow,
+  fileShowButtonText,
+  fileDeleteButtonText,
+  requiredFieldsMissingError,
+  showRequiredFieldsMissingError
+}) => {
+  const renderTitle = () => {
+    if (!section.title) {
       return null;
     }
 
-    return (
-      <section className="metaform-section">
-        { this.renderTitle() }
-        { this.renderFields() }
-      </section>
-    );
+    return <h2> { section.title } </h2>; 
   }
 
-  private renderTitle = () => {
-    if (!this.props.section.title) {
-      return null;
-    }
-
-    return <h2> { this.props.section.title } </h2>; 
-  }
-
-  private renderFields = () => {
-    const { renderAutocomplete } = this.props;
+  const renderFields = () => {
 
     return (
       <fieldset>
         {
-          (this.props.section.fields || []).map((field, i) => {
+          (section.fields || []).map((field, i) => {
             return (
-              <MetaformFieldComponent key={ `${this.props.metaformId}-${this.props.sectionId}-field-${i}` } 
-                validationErrors={ this.props.validationErrors }
-                datePicker={ this.props.datePicker } 
-                datetimePicker={ this.props.datetimePicker }
+              <MetaformFieldComponent key={ `${metaformId}-${sectionId}-field-${i}` } 
+                validationErrors={ validationErrors }
+                datePicker={ datePicker } 
+                datetimePicker={ datetimePicker }
                 renderAutocomplete={ renderAutocomplete }
-                renderBeforeField={this.props.renderBeforeField}
-                uploadFile={ this.props.uploadFile }
-                renderIcon={ this.props.renderIcon } 
-                renderSlider={ this.props.renderSlider }
-                getFieldValue={ this.props.getFieldValue } 
-                setFieldValue={ this.props.setFieldValue } 
-                formReadOnly={ this.props.formReadOnly } 
+                renderBeforeField={renderBeforeField}
+                uploadFile={ uploadFile }
+                renderIcon={ renderIcon } 
+                renderSlider={ renderSlider }
+                getFieldValue={ getFieldValue } 
+                setFieldValue={ setFieldValue } 
+                formReadOnly={ formReadOnly } 
                 field={ field }
-                metaformId={ this.props.metaformId } 
-                contexts={ this.props.contexts }
-                onSubmit={ this.props.onSubmit }
-                onFileDelete={ this.props.onFileDelete }
-                onFileShow={ this.props.onFileShow }
-                fileShowButtonText={ this.props.fileShowButtonText }
-                fileDeleteButtonText={ this.props.fileDeleteButtonText }
-                requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError } 
+                metaformId={ metaformId } 
+                contexts={ contexts }
+                onSubmit={ onSubmit }
+                onFileDelete={ onFileDelete }
+                onFileShow={ onFileShow }
+                fileShowButtonText={ fileShowButtonText }
+                fileDeleteButtonText={ fileDeleteButtonText }
+                requiredFieldsMissingError={ requiredFieldsMissingError }
+                showRequiredFieldsMissingError={ showRequiredFieldsMissingError } 
               />
             )
           })
@@ -120,4 +105,14 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
     );
   }
 
+  if (!VisibileIfEvaluator.isVisible(section.visibleIf, getFieldValue)) {
+    return null;
+  }
+
+  return (
+    <section className="metaform-section">
+      { renderTitle() }
+      { renderFields() }
+    </section>
+  );
 }
