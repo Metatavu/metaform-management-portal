@@ -47,7 +47,6 @@ export const MetaformSectionComponent: React.FC<Props> = ({
   renderBeforeField,
   uploadFile,
   renderIcon,
-  renderSlider,
   getFieldValue,
   setFieldValue,
   formReadOnly,
@@ -80,22 +79,12 @@ export const MetaformSectionComponent: React.FC<Props> = ({
                 datePicker={ datePicker } 
                 datetimePicker={ datetimePicker }
                 renderAutocomplete={ renderAutocomplete }
-<<<<<<< HEAD
-                renderBeforeField={this.props.renderBeforeField}
-                uploadFile={ this.props.uploadFile }
-                renderIcon={ this.props.renderIcon } 
-                getFieldValue={ this.props.getFieldValue } 
-                setFieldValue={ this.props.setFieldValue } 
-                formReadOnly={ this.props.formReadOnly } 
-=======
                 renderBeforeField={renderBeforeField}
                 uploadFile={ uploadFile }
                 renderIcon={ renderIcon } 
-                renderSlider={ renderSlider }
                 getFieldValue={ getFieldValue } 
                 setFieldValue={ setFieldValue } 
                 formReadOnly={ formReadOnly } 
->>>>>>> origin/develop
                 field={ field }
                 metaformId={ metaformId } 
                 contexts={ contexts }

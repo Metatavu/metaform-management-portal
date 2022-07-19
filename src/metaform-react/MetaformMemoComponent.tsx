@@ -39,6 +39,10 @@ export const MetaformMemoComponent: React.FC<Props> = ({
     onValueChange(event.target.value);
   }
 
+  if (!field.name) {
+    return null;
+  }
+
   return (
     <TextField
       variant="outlined"

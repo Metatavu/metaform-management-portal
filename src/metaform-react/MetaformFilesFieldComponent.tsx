@@ -87,7 +87,11 @@ export const MetaformFilesFieldComponent: React.FC<Props> = ({
         <Button onClick={ () => onFileDelete(field.name || "", value) } className="metaform-react-file-field-delete-button">{ deleteButtonText }</Button>
       </div>
     )
-  })
+  });
+
+  if (!field.name) {
+    return null;
+  }
 
   return (
     <>

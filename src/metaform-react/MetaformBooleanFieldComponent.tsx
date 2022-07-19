@@ -72,6 +72,10 @@ export const MetaformBooleanFieldComponent: React.FC<Props> = ({
 
   const option = field;
 
+  if (!field.name) {
+    return null;
+  }
+
   return (
     <div>
       <label className="metaform-boolean-field-label" key={ `${fieldId}-${field.name}-label` } htmlFor={ `${fieldId}-${field.name}` }>

@@ -38,6 +38,10 @@ export const MetaformEmailFieldComponent: React.FC<Props> = ({
     const value = event.target.value;
     onValueChange(value);
   }
+
+  if (!field.name) {
+    return null;
+  }
   
   return (
     <TextField

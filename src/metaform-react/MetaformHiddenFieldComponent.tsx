@@ -38,6 +38,10 @@ export const MetaformHiddenFieldComponent: React.FC<Props> = ({
     onValueChange(event.target.value);
   }
 
+  if (!field.name) {
+    return null;
+  }
+
   return (
     <Input
       type="hidden"
