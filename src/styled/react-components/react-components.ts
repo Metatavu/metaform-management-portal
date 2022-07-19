@@ -91,3 +91,13 @@ export const NumberFieldWrapper = styled(TextField, {
   borderRadius: "0.5rem",
   backgroundColor: "#fff"
 }));
+
+/**
+ * Styled checklist field component
+ */
+export const ChecklistFieldWrapper = styled(Box, {
+  label: "checklistFieldWrapper-field-wrapper"
+})(() => ({
+  flex: 1,
+  width: "100%"
+}));

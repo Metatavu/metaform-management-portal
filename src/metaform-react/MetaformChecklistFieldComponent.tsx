@@ -1,115 +1,44 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React, { ReactNode } from 'react';
-import { MetaformField, MetaformFieldOption } from '../generated/client/models';
-import { FieldValue, IconName } from './types';
+import { Box, Checkbox } from "@mui/material";
+import React, { ReactNode } from "react";
+import { ChecklistFieldWrapper } from "styled/react-components/react-components";
+import { MetaformField, MetaformFieldOption } from "../generated/client/models";
+import { FieldValue, IconName } from "./types";
 
 /**
  * Component props
  */
 interface Props {
   field: MetaformField,
-  fieldId: string,
-  fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
   renderIcon: (icon: IconName, key: string) => ReactNode;
-  onValueChange: (value: FieldValue) => void,
-  onFocus: () => void
-}
-
-/**
- * Component state
- */
-interface State {
-
+  onValueChange: (value: FieldValue) => void
 }
 
 /**
  * Component for Metaform checklist field
  */
-export class MetaformChecklistFieldComponent extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-
-    };
-  }
-
-  /**
-   * Component render method
-   */
-  public render() {
-    if (!this.props.field.name) {
-      return null;
-    }
-
-    return (
-      <div key={ this.props.field.name }>
-        { this.renderChecklist() }
-      </div>
-    )
-  }
-
-  /**
-   * Checklist render method
-   */
-  private renderChecklist = () => {
-    const options = this.props.field.options || [];
-    const selectedOptions = this.getSelectedOptions();
-
-    return (
-      options.map(option => this.renderOption(option, selectedOptions))
-    )
-  }
-
-  /**
-   * Renders an option
-   * 
-   * @param option option
-   * @param selectedOptions array of selected options 
-   */
-  private renderOption = (option: MetaformFieldOption, selectedOptions: string[]) => {
-    const checked = selectedOptions.includes(option.name);
-
-    if (this.props.formReadOnly || this.props.field.readonly) {
-      return (
-        <div key={ option.name }>
-          { this.props.renderIcon(checked ? "check-square-o" : "square-o", option.name) }
-          <span style={{ verticalAlign: "super" }}>{ option.text }</span>
-        </div>
-      );
-    } else {
-      return (
-        <div key={ option.name }>
-          <input 
-            type="checkbox"
-            name={ this.props.field.name }
-            value={ option.name }
-            checked={ checked }
-            onChange={ (event: React.ChangeEvent<HTMLInputElement>) => this.onCheckboxChange(option, event.target.checked) }
-          />
-          <span>{ option.text }</span>
-        </div>
-      );
-    }
+export const MetaformChecklistFieldComponent: React.FC<Props> = ({
+  field,
+  formReadOnly,
+  value,
+  renderIcon,
+  onValueChange
+}) => {
+  if (!field.name) {
+    return null;
   }
 
   /**
    * Returns array of selected options
    */
-  private getSelectedOptions = () => {
-    if (!this.props.value) {
+  const getSelectedOptions = () => {
+    if (!value) {
       return [];
     }
     
-    return (this.props.value as string).split(",");
-  }
+    return (value as string).split(",");
+  };
 
   /**
    * Event handler for checkbox change
@@ -117,10 +46,59 @@ export class MetaformChecklistFieldComponent extends React.Component<Props, Stat
    * @param option option
    * @param checked whether checkbox was checked
    */
-  private onCheckboxChange = (option: MetaformFieldOption, checked: boolean) => {
-    const selectedOptions = this.getSelectedOptions();
-    const value = (checked ? [ ...selectedOptions, option.name ] : selectedOptions.filter(selectedOption => selectedOption !== option.name)).join(",");
-    this.props.onValueChange(value);
-  }
+  const onCheckboxChange = (option: MetaformFieldOption, checked: boolean) => {
+    const selectedOptions = getSelectedOptions();
+    const newValue = (checked ? [ ...selectedOptions, option.name ] : selectedOptions.filter(selectedOption => selectedOption !== option.name)).join(",");
+    onValueChange(newValue);
+  };
 
-}
+  /**
+   * Renders an option
+   * 
+   * @param option option
+   * @param selectedOptions array of selected options 
+   */
+  const renderOption = (option: MetaformFieldOption, selectedOptions: string[]) => {
+    const checked = selectedOptions.includes(option.name);
+
+    if (formReadOnly || field.readonly) {
+      return (
+        <div key={ option.name }>
+          { renderIcon(checked ? "check-square-o" : "square-o", option.name) }
+          <span style={{ verticalAlign: "super" }}>{ option.text }</span>
+        </div>
+      );
+    }
+    return (
+      <Box key={ option.name }>
+        <Checkbox
+          name={ field.name }
+          value={ option.name }
+          checked={ checked }
+          onChange={ (event: React.ChangeEvent<HTMLInputElement>) => onCheckboxChange(option, event.target.checked) }
+        />
+        <span>{ option.text }</span>
+      </Box>
+    );
+  };
+
+  /**
+   * Checklist render method
+   */
+  const renderChecklist = () => {
+    const options = field.options || [];
+    const selectedOptions = getSelectedOptions();
+
+    return (
+      options.map(option => renderOption(option, selectedOptions))
+    );
+  };
+
+  return (
+    <ChecklistFieldWrapper key={ field.name }>
+      { renderChecklist() }
+    </ChecklistFieldWrapper>
+  );
+};
+
+export default MetaformChecklistFieldComponent;

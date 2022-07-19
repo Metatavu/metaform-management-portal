@@ -294,13 +294,10 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
       case MetaformFieldType.Checklist:
         return <MetaformChecklistFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
                   field={ field }
                   renderIcon={ renderIcon }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
               />
       case MetaformFieldType.Table:
         return  <MetaformTableFieldComponent
