@@ -14,13 +14,6 @@ interface Props {
 }
 
 /**
- * Component state
- */
-interface State {
-  
-}
-
-/**
  * Component for Metaform text field
  */
 export const MetaformDateFieldComponent: React.FC<Props> = ({
