@@ -203,7 +203,6 @@ export const MetaformFieldComponent: React.FC<Props> = ({
                 />;
       case MetaformFieldType.Files:
         return  <MetaformFilesFieldComponent
-                  formReadOnly={ formReadOnly }
                   fieldLabelId={ getFieldLabelId() }
                   fieldId={ getFieldId() }
                   field={ field }
@@ -219,26 +218,14 @@ export const MetaformFieldComponent: React.FC<Props> = ({
       case MetaformFieldType.Date:
         return  <MetaformDateFieldComponent
                   datePicker={ datePicker }
-                  formReadOnly={ formReadOnly }
-                  fieldLabelId={ getFieldLabelId() }
-                  fieldId={ getFieldId() }
                   field={ field }
                   onValueChange={ onValueChange }
-                  value={ thisFieldValue() }
-                  onFocus={ onFocus }
-                  getFieldValue={ thisFieldValue }
                 />;
       case MetaformFieldType.DateTime:
         return  <MetaformDateTimeFieldComponent
                   datetimePicker={ datetimePicker }
-                  formReadOnly={ formReadOnly }
-                  fieldLabelId={ getFieldLabelId() }
-                  fieldId={ getFieldId() }
                   field={ field }
                   onValueChange={ onValueChange }
-                  value={ thisFieldValue() }
-                  onFocus={ onFocus }
-                  getFieldValue={ thisFieldValue }
                 />;
       case MetaformFieldType.Number:
         return  <MetaformNumberFieldComponent

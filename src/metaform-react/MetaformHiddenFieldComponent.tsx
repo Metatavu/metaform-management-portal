@@ -1,4 +1,5 @@
 /* eslint-disable */ // Remove when refactoring is done
+import { Input } from '@mui/material';
 import React from 'react';
 import { MetaformField } from '../generated/client/models';
 import { FieldValue } from './types';
@@ -17,62 +18,39 @@ interface Props {
 }
 
 /**
- * Component state
- */
-interface State {
-  
-}
-
-/**
  * Component for Metaform text field
  */
-export class MetaformHiddenFieldComponent extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      
-    };
-  }
-
-  /**
-   * Component render method
-   */
-  public render() {
-    if (!this.props.field.name) {
-      return null;
-    }
-
-    return (
-      <input
-        type="hidden"
-        placeholder={ this.props.field.placeholder }
-        id={ this.props.fieldId }
-        aria-labelledby={ this.props.fieldLabelId }
-        name={ this.props.field.name }
-        title={ this.props.field.title }
-        required={ this.props.field.required }
-        readOnly={ this.props.formReadOnly || this.props.field.readonly }
-        value={ this.props.value as string || "" }
-        onChange={ this.onChange }
-        onFocus={ this.props.onFocus }
-        />
-    );
-  }
-  
+export const MetaformHiddenFieldComponent: React.FC<Props> = ({
+  field,
+  fieldId,
+  fieldLabelId,
+  formReadOnly,
+  value,
+  onValueChange,
+  onFocus
+}) => {
   /**
    * Event handler for field input change
    * 
    * @param event event
    */
-  private onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.onValueChange(event.target.value);
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onValueChange(event.target.value);
   }
 
+  return (
+    <Input
+      type="hidden"
+      placeholder={ field.placeholder }
+      id={ fieldId }
+      aria-labelledby={ fieldLabelId }
+      name={ field.name }
+      title={ field.title }
+      required={ field.required }
+      disabled={ formReadOnly || field.readonly }
+      value={ value as string || "" }
+      onChange={ onChange }
+      onFocus={ onFocus }
+    />
+  );
 }
