@@ -266,14 +266,8 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
       case MetaformFieldType.Date:
         return  <MetaformDateFieldComponent
                   datePicker={ datePicker }
-                  formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
                   field={ field }
                   onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
-                  getFieldValue={ this.getFieldValue }
                 />;
       case MetaformFieldType.DateTime:
         return  <MetaformDateTimeFieldComponent
