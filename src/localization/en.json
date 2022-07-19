@@ -83,11 +83,19 @@
       }
     }
   },
+
   "userManagementScreen": {
     "selector": {
       "form": "Select form",
       "group": "Select group",
       "user": "Select user"
+    }
+  },
+
+  "fieldComponents": {
+    "tableField": {
+      "addNewRow": "Add new row",
+      "unknownColumnType": "Unknown column type"
     }
   }
 }

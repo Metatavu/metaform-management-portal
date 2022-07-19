@@ -124,6 +124,16 @@ export interface Localized extends LocalizedStringsMethods {
       user: string;
     };
   };
+
+  /**
+   * Translations related to field components
+   */
+  fieldComponents: {
+    tableField: {
+      addNewRow: string;
+      unknownColumnType: string;
+    };
+  };
 }
 
 /**

@@ -101,3 +101,30 @@ export const ChecklistFieldWrapper = styled(Box, {
   flex: 1,
   width: "100%"
 }));
+
+/*
+ * Styled table text cell component
+ */
+export const TableTextCellWrapper = styled(TextField, {
+  label: "table-text-cell"
+})(() => ({
+  flex: 1,
+  width: "100%",
+  fontSize: "1em",
+  border: "1px solid rgba(0, 0, 0, .5)",
+  borderRadius: "0.5rem",
+  backgroundColor: "#fff"
+}));
+
+/**
+ * Styled table number cell component
+ */
+export const TableNumberCellWrapper = styled(TextField, {
+  label: "table-number-cell"
+})(() => ({
+  width: "100%",
+  fontSize: "1em",
+  border: "1px solid rgba(0, 0, 0, .5)",
+  borderRadius: "0.5rem",
+  backgroundColor: "#fff"
+}));
