@@ -1,8 +1,7 @@
-/* eslint-disable */ // Remove when refactoring is done
-import { TextField } from '@mui/material';
-import React from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue } from './types';
+import { TextField } from "@mui/material";
+import React from "react";
+import { MetaformField } from "../generated/client/models";
+import { FieldValue } from "./types";
 
 /**
  * Component props
@@ -35,9 +34,9 @@ export const MetaformEmailFieldComponent: React.FC<Props> = ({
    * @param event event
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    onValueChange(value);
-  }
+    const newValue = event.target.value;
+    onValueChange(newValue);
+  };
   
   return (
     <TextField
@@ -54,4 +53,6 @@ export const MetaformEmailFieldComponent: React.FC<Props> = ({
       onFocus={ onFocus }
     />
   );
-}
+};
+
+export default MetaformEmailFieldComponent;

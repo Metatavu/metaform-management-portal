@@ -1,7 +1,6 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue } from './types';
+import React from "react";
+import { MetaformField } from "../generated/client/models";
+import { FieldValue } from "./types";
 
 /**
  * Component props
@@ -10,13 +9,6 @@ interface Props {
   field: MetaformField,
   onValueChange: (value: FieldValue) => void,
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element
-}
-
-/**
- * Component state
- */
-interface State {
-  
 }
 
 /**
@@ -32,9 +24,11 @@ export const MetaformDateTimeFieldComponent: React.FC<Props> = ({
    * 
    * @param date date
    */
-   const onChange = (date: Date) => {
+  const onChange = (date: Date) => {
     onValueChange(date ? date.toISOString() : null);
-  }
+  };
   
   return datetimePicker(field.name || "", onChange);
-}
+};
+
+export default MetaformDateTimeFieldComponent;

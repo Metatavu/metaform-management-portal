@@ -1,8 +1,7 @@
-/* eslint-disable */ // Remove when refactoring is done
-import { TextField } from '@mui/material';
-import React from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue } from './types';
+import { TextField } from "@mui/material";
+import React from "react";
+import { MetaformField } from "../generated/client/models";
+import { FieldValue } from "./types";
 
 /**
  * Component props
@@ -14,7 +13,6 @@ interface Props {
   formReadOnly: boolean,
   value: FieldValue,
   onValueChange: (value: FieldValue) => void,
-  getFieldValue: (fieldName: string) => FieldValue,
   onFocus: () => void
 }
 
@@ -37,7 +35,7 @@ export const MetaformMemoComponent: React.FC<Props> = ({
    */
   const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     onValueChange(event.target.value);
-  }
+  };
 
   return (
     <TextField
@@ -57,3 +55,5 @@ export const MetaformMemoComponent: React.FC<Props> = ({
     />
   );
 };
+
+export default MetaformMemoComponent;

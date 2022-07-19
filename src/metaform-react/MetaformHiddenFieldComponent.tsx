@@ -1,8 +1,7 @@
-/* eslint-disable */ // Remove when refactoring is done
-import { Input } from '@mui/material';
-import React from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue } from './types';
+import { Input } from "@mui/material";
+import React from "react";
+import { MetaformField } from "../generated/client/models";
+import { FieldValue } from "./types";
 
 /**
  * Component props
@@ -36,7 +35,7 @@ export const MetaformHiddenFieldComponent: React.FC<Props> = ({
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onValueChange(event.target.value);
-  }
+  };
 
   return (
     <Input
@@ -53,4 +52,6 @@ export const MetaformHiddenFieldComponent: React.FC<Props> = ({
       onFocus={ onFocus }
     />
   );
-}
+};
+
+export default MetaformHiddenFieldComponent;

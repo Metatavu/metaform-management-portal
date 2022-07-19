@@ -1,8 +1,7 @@
-/* eslint-disable */ // Remove when refactoring is done
-import { Button, Input } from '@mui/material';
-import React from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue, FileFieldValue, FileFieldValueItem } from './types';
+import { Button, Input } from "@mui/material";
+import React from "react";
+import { MetaformField } from "../generated/client/models";
+import { FieldValue, FileFieldValue, FileFieldValueItem } from "./types";
 
 /**
  * Component props
@@ -42,52 +41,63 @@ export const MetaformFilesFieldComponent: React.FC<Props> = ({
    * 
    * @param event event
    */
-   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && field.uploadUrl) {
       onFileUpload(field.name || "", event.target.files, field.uploadUrl, field.maxFileSize, field.singleFile);
     } else {
       onValueChange(event.target.value);
     }
-  }
+  };
 
-  const isFileFieldValue = ( value: FieldValue ): boolean => {
-    if (!value) {
+  /**
+   * If the value is a FileFieldValue, return it, otherwise return a FileFieldValue with the value as the
+   * id of the file.
+   * @param fieldValue - The value of the field.
+   * @returns A function that takes a value and returns a boolean.
+   */
+  const isFileFieldValue = (fieldValue: FieldValue): boolean => {
+    if (!fieldValue) {
       return false;
     }
-    if (Array.isArray((value as FileFieldValue).files)) {
+    if (Array.isArray((fieldValue as FileFieldValue).files)) {
       return true;
     }
 
-    return false
-  }
+    return false;
+  };
 
-  const ensureFileFieldType = ( value: FieldValue ): FileFieldValue => {
-    if (!value) {
-      return { files: [] }
+  /**
+   * If the value is not a FileFieldValue, then return a FileFieldValue with an empty array of files
+   * @param fieldValue - FieldValue - The value of the field.
+   * @returns A function that takes a value and returns a FileFieldValue.
+   */
+  const ensureFileFieldType = (fieldValue: FieldValue): FileFieldValue => {
+    if (!fieldValue) {
+      return { files: [] };
     }
-    if (isFileFieldValue(value)) return value as FileFieldValue;
+    if (isFileFieldValue(fieldValue)) return fieldValue as FileFieldValue;
 
     return {
       files: [
         {
-          id: value as string,
+          id: fieldValue as string,
           persisted: false
         }
       ]
-    }
-  }
+    };
+  };
 
-  let normalizedValue = ensureFileFieldType(value);
+  const normalizedValue = ensureFileFieldType(value);
 
-  const valueItems = normalizedValue.files.map((value) => {
+  const valueItems = normalizedValue.files.map(file => {
     return (
-      <div key={value.id} className="metaform-react-file-value-container">
-        <span className="metaform-react-file-field-name">{ value.name || value.id}</span>
-        <Button onClick={ () => onFileShow(field.name || "", value) } className="metaform-react-file-field-open-button">{ showButtonText }</Button>
-        <Button onClick={ () => onFileDelete(field.name || "", value) } className="metaform-react-file-field-delete-button">{ deleteButtonText }</Button>
+      <div key={file.id} className="metaform-react-file-value-container">
+        <span className="metaform-react-file-field-name">{ file.name || file.id}</span>
+        <Button onClick={ () => onFileShow(field.name || "", file) } className="metaform-react-file-field-open-button">{ showButtonText }</Button>
+        <Button onClick={ () => onFileDelete(field.name || "", file) } className="metaform-react-file-field-delete-button">{ deleteButtonText }</Button>
       </div>
-    )
-  })
+    );
+  });
 
   return (
     <>
@@ -95,6 +105,7 @@ export const MetaformFilesFieldComponent: React.FC<Props> = ({
       <Input
         type="file"
         value=""
+        disableUnderline
         placeholder={ field.placeholder }
         id={ fieldId }
         aria-labelledby={ fieldLabelId }
@@ -104,4 +115,6 @@ export const MetaformFilesFieldComponent: React.FC<Props> = ({
       />
     </>
   );
-}
+};
+
+export default MetaformFilesFieldComponent;

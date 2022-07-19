@@ -1,7 +1,6 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue } from './types';
+import React from "react";
+import { MetaformField } from "../generated/client/models";
+import { FieldValue } from "./types";
 import moment from "moment";
 
 /**
@@ -28,7 +27,9 @@ export const MetaformDateFieldComponent: React.FC<Props> = ({
    */
   const onChange = (date: Date) => {
     onValueChange(date ? moment(date).format("YYYY-MM-DD") : null);
-  }
+  };
 
   return datePicker(field.name || "", onChange);
-}
+};
+
+export default MetaformDateFieldComponent;
