@@ -98,7 +98,6 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
                 renderBeforeField={this.props.renderBeforeField}
                 uploadFile={ this.props.uploadFile }
                 renderIcon={ this.props.renderIcon } 
-                renderSlider={ this.props.renderSlider }
                 getFieldValue={ this.props.getFieldValue } 
                 setFieldValue={ this.props.setFieldValue } 
                 formReadOnly={ this.props.formReadOnly } 
