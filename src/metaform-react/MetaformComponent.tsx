@@ -1,5 +1,5 @@
 /* eslint-disable */ // Remove when refactoring is done
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Metaform, MetaformField, MetaformFieldType } from '../generated/client/models';
 import { MetaformSectionComponent } from './MetaformSectionComponent';
 import { FieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
@@ -43,97 +43,60 @@ interface State {
 /**
  * Component for metaform
  */
-export class MetaformComponent extends React.Component<Props, State> {
-
+export const MetaformComponent: React.FC<Props> = ({
+  form,
+  formReadOnly,
+  renderBeforeField,
+  contexts,
+  requiredFieldsMissingError,
+  showRequiredFieldsMissingError,
+  getFieldValue,
+  setFieldValue,
+  datePicker,
+  datetimePicker,
+  renderAutocomplete,
+  uploadFile,
+  renderIcon,
+  renderSlider,
+  onSubmit,
+  onFileShow,
+  onFileDelete,
+  onValidationErrorsChange
+}) => {
   /**
-   * Constructor
+   * Returns unique id
    * 
-   * @param props component props
+   * @returns unique id
    */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      metaformId: "metaform-" + (this.props.form.id ? `${this.props.form.id}-`: "") + this.getUniqueId(),
-      validationErrors: {}
-    };
+   const getUniqueId = () => {
+    return Math.random().toString(36).substr(2);
   }
 
-  /**
-   * Component did mount life-cycle method
-   */
-  public componentDidMount = () => {
-    this.validateFields();
-  }
+  const [ metaformId, setMetaformId ] = useState("metaform-" + (form.id ? `${form.id}-`: "") + getUniqueId());
+  const [ validationErrors, setValidationErrors ] = useState({});
 
-  /**
-   * Component render method
-   */
-  public render() {
-    const { form, renderAutocomplete } = this.props;
 
-    const sections = form.sections || [];
-
-    return (
-      <div className="metaform">
-        {
-          this.renderTitle()
-        }
-        {
-          sections.map((section, i) => {
-            const sectionId = `section-${i}`;
-
-            return (
-              <MetaformSectionComponent 
-                key={`${this.state.metaformId }-${sectionId}`}
-                validationErrors={ this.state.validationErrors }
-                renderBeforeField={this.props.renderBeforeField}
-                datePicker={ this.props.datePicker } 
-                datetimePicker={ this.props.datetimePicker }
-                renderAutocomplete={ renderAutocomplete } 
-                uploadFile={ this.props.uploadFile }
-                renderIcon={ this.props.renderIcon } 
-                renderSlider={ this.props.renderSlider }
-                getFieldValue={ this.props.getFieldValue } 
-                setFieldValue={ this.setFieldValue } 
-                metaformId={ this.state.metaformId } 
-                sectionId={ sectionId } 
-                formReadOnly={ this.props.formReadOnly } 
-                section={ section }
-                contexts={ this.props.contexts }
-                onSubmit={ this.props.onSubmit }
-                requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
-                onFileShow={ this.props.onFileShow }
-                onFileDelete={ this.props.onFileDelete }
-                fileShowButtonText="FileShowButtonText"
-                fileDeleteButtonText="FileDeleteButtonText"
-              />
-            )
-          })
-        }
-      </div>
-    );
-  }
+  useEffect(() => {
+    validateFields();
+  }, []);
 
   /**
    * Renders form title
    */
-  private renderTitle = () => {
-    if (!this.props.form.title) {
+  const renderTitle = () => {
+    if (!form.title) {
       return null;
     }
     
     return (
-      <h1> { this.props.form.title } </h1>
+      <h1> { form.title } </h1>
     );
   }
 
   /**
    * Validates all visible form fields
    */
-  private validateFields = () => {
-    const { form, contexts, getFieldValue, onValidationErrorsChange } = this.props;
+  const validateFields = () => {
     const validationErrors: ValidationErrors = {};
     
     (form.sections || [])
@@ -149,17 +112,15 @@ export class MetaformComponent extends React.Component<Props, State> {
           })
           .forEach(field => {
             const fieldName = field.name || "";
-            const validationError = this.validateFieldValue(field, getFieldValue(fieldName!));
+            const validationError = validateFieldValue(field, getFieldValue(fieldName!));
             if (validationError) {
               validationErrors[fieldName] = validationError;  
             }
           });
       });
 
-    if (!deepEqual(validationErrors, this.state.validationErrors)) {
-      this.setState({
-        validationErrors: validationErrors
-      });
+    if (!deepEqual(validationErrors, validationErrors)) {
+      setValidationErrors(validationErrors);
 
       if (onValidationErrorsChange) {
         onValidationErrorsChange(validationErrors);
@@ -174,7 +135,7 @@ export class MetaformComponent extends React.Component<Props, State> {
    * @param value value
    * @returns validation result
    */
-  private validateFieldValue = (field: MetaformField, value: FieldValue): ValidationStatus | null => {
+  const validateFieldValue = (field: MetaformField, value: FieldValue): ValidationStatus | null => {
     if (field.required && !value) {
       return "missing-required";
     } 
@@ -187,24 +148,57 @@ export class MetaformComponent extends React.Component<Props, State> {
   }
 
   /**
-   * Returns unique id
-   * 
-   * @returns unique id
-   */
-  private getUniqueId = () => {
-    return Math.random().toString(36).substr(2);
-  }
-
-  /**
    * Sets field value
    * 
    * @param fieldName field name
    * @param fieldValue field value
    */
-  private setFieldValue = (fieldName: string, fieldValue: FieldValue) => {
-    const { setFieldValue } = this.props;
+  const setThisFieldValue = (fieldName: string, fieldValue: FieldValue) => {
     setFieldValue(fieldName, fieldValue);
-    this.validateFields();
+    validateFields();
   }
+
+  const sections = form.sections || [];
+
+  return (
+    <div className="metaform">
+      {
+        renderTitle()
+      }
+      {
+        sections.map((section, i) => {
+          const sectionId = `section-${i}`;
+
+          return (
+            <MetaformSectionComponent 
+              key={`${metaformId }-${sectionId}`}
+              validationErrors={ validationErrors }
+              renderBeforeField={ renderBeforeField }
+              datePicker={ datePicker } 
+              datetimePicker={ datetimePicker }
+              renderAutocomplete={ renderAutocomplete } 
+              uploadFile={ uploadFile }
+              renderIcon={ renderIcon } 
+              renderSlider={ renderSlider }
+              getFieldValue={ getFieldValue } 
+              setFieldValue={ setThisFieldValue } 
+              metaformId={ metaformId } 
+              sectionId={ sectionId } 
+              formReadOnly={ formReadOnly } 
+              section={ section }
+              contexts={ contexts }
+              onSubmit={ onSubmit }
+              requiredFieldsMissingError={ requiredFieldsMissingError }
+              showRequiredFieldsMissingError={ showRequiredFieldsMissingError }
+              onFileShow={ onFileShow }
+              onFileDelete={ onFileDelete }
+              fileShowButtonText="FileShowButtonText"
+              fileDeleteButtonText="FileDeleteButtonText"
+            />
+          )
+        })
+      }
+    </div>
+  );
 
 }
