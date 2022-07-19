@@ -2,21 +2,21 @@
 import React, { ReactNode, useState } from 'react';
 import { FieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
-import { MetaformMemoComponent } from './MetaformMemoComponent';
+import MetaformMemoComponent from './MetaformMemoComponent';
 import { MetaformField, MetaformFieldType } from '../generated/client/models';
 import MetaformTextFieldComponent from './MetaformTextFieldComponent';
 import { MetaformRadioFieldComponent } from './MetaformRadioFieldComponent';
 import { MetaformSubmitFieldComponent } from './MetaformSubmitFieldComponent';
 import { MetaformSelectFieldComponent } from './MetaformSelectFieldComponent';
-import { MetaformBooleanFieldComponent } from './MetaformBooleanFieldComponent';
+import MetaformBooleanFieldComponent from './MetaformBooleanFieldComponent';
 import { MetaformHtmlComponent } from './MetaformHtmlComponent';
-import { MetaformEmailFieldComponent } from './MetaformEmailComponent';
+import MetaformEmailFieldComponent from './MetaformEmailComponent';
 import { MetaformUrlFieldComponent } from './MetaformUrlField';
 import { MetaformAutocompleteFieldComponent } from './MetaformAutocompleteField';
-import { MetaformHiddenFieldComponent } from './MetaformHiddenFieldComponent';
-import { MetaformFilesFieldComponent } from './MetaformFilesFieldComponent';
-import { MetaformDateFieldComponent } from './MetaformDateFieldComponent';
-import { MetaformDateTimeFieldComponent } from './MetaformDateTimeFieldComponent';
+import MetaformHiddenFieldComponent from './MetaformHiddenFieldComponent';
+import MetaformFilesFieldComponent from './MetaformFilesFieldComponent';
+import MetaformDateFieldComponent from './MetaformDateFieldComponent';
+import MetaformDateTimeFieldComponent from './MetaformDateTimeFieldComponent';
 import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent'; 
 import { MetaformSliderFieldComponent } from './MetaformSliderFieldComponent'; 
 import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent"; 
@@ -117,7 +117,6 @@ export const MetaformFieldComponent: React.FC<Props> = ({
                   onValueChange={ onValueChange }
                   value={ thisFieldValue() }
                   onFocus={ onFocus }
-                  getFieldValue={ thisFieldValue }
                 />;
       case MetaformFieldType.Radio:
         return  <MetaformRadioFieldComponent

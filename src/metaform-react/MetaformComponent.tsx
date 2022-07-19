@@ -1,11 +1,10 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React, { ReactNode, useEffect, useState } from 'react';
-import { Metaform, MetaformField, MetaformFieldType } from '../generated/client/models';
-import { MetaformSectionComponent } from './MetaformSectionComponent';
-import { FieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
-import * as EmailValidator from 'email-validator';
-import VisibileIfEvaluator from './VisibleIfEvaluator';
-import ContextUtils from '../utils/context-utils';
+import React, { ReactNode, useEffect, useState } from "react";
+import { Metaform, MetaformField, MetaformFieldType } from "../generated/client/models";
+import MetaformSectionComponent from "./MetaformSectionComponent";
+import { FieldValue, FileFieldValueItem, IconName, ValidationErrors, ValidationStatus } from "./types";
+import * as EmailValidator from "email-validator";
+import VisibileIfEvaluator from "./VisibleIfEvaluator";
+import ContextUtils from "../utils/context-utils";
 import deepEqual from "fast-deep-equal";
 
 /**
@@ -25,7 +24,6 @@ interface Props {
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
-  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
   onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
@@ -33,17 +31,9 @@ interface Props {
 }
 
 /**
- * Component state
- */
-interface State {
-  metaformId: string;
-  validationErrors: ValidationErrors;
-}
-
-/**
  * Component for metaform
  */
-export const MetaformComponent: React.FC<Props> = ({
+const MetaformComponent: React.FC<Props> = ({
   form,
   formReadOnly,
   renderBeforeField,
@@ -57,7 +47,6 @@ export const MetaformComponent: React.FC<Props> = ({
   renderAutocomplete,
   uploadFile,
   renderIcon,
-  renderSlider,
   onSubmit,
   onFileShow,
   onFileDelete,
@@ -68,17 +57,12 @@ export const MetaformComponent: React.FC<Props> = ({
    * 
    * @returns unique id
    */
-   const getUniqueId = () => {
+  const getUniqueId = () => {
     return Math.random().toString(36).substr(2);
-  }
+  };
 
-  const [ metaformId, setMetaformId ] = useState("metaform-" + (form.id ? `${form.id}-`: "") + getUniqueId());
+  const metaformId = `metaform-${form.id ? `${form.id}-` : ""}${getUniqueId()}`;
   const [ validationErrors, setValidationErrors ] = useState({});
-
-
-  useEffect(() => {
-    validateFields();
-  }, []);
 
   /**
    * Renders form title
@@ -89,44 +73,11 @@ export const MetaformComponent: React.FC<Props> = ({
     }
     
     return (
-      <h1> { form.title } </h1>
+      <h1>
+        { form.title }
+      </h1>
     );
-  }
-
-  /**
-   * Validates all visible form fields
-   */
-  const validateFields = () => {
-    const validationErrors: ValidationErrors = {};
-    
-    (form.sections || [])
-      .filter(section => {
-        return VisibileIfEvaluator.isVisible(section.visibleIf, getFieldValue);
-      })
-      .forEach(section => {
-        (section.fields || [])
-          .filter(field => !!field.name)
-          .filter(field => ContextUtils.isEnabledContext(contexts, field.contexts))
-          .filter(field => {
-            return VisibileIfEvaluator.isVisible(field.visibleIf, getFieldValue);
-          })
-          .forEach(field => {
-            const fieldName = field.name || "";
-            const validationError = validateFieldValue(field, getFieldValue(fieldName!));
-            if (validationError) {
-              validationErrors[fieldName] = validationError;  
-            }
-          });
-      });
-
-    if (!deepEqual(validationErrors, validationErrors)) {
-      setValidationErrors(validationErrors);
-
-      if (onValidationErrorsChange) {
-        onValidationErrorsChange(validationErrors);
-      }
-    }
-  }
+  };
 
   /**
    * Validates field value
@@ -135,17 +86,56 @@ export const MetaformComponent: React.FC<Props> = ({
    * @param value value
    * @returns validation result
    */
-  const validateFieldValue = (field: MetaformField, value: FieldValue): ValidationStatus | null => {
+  const validateFieldValue = (field: MetaformField, value: FieldValue): ValidationStatus | null => {
     if (field.required && !value) {
       return "missing-required";
-    } 
+    }
     
     if (field.type === MetaformFieldType.Email && value && !EmailValidator.validate(value as string)) {
       return "invalid-email";
     }
     
     return null;
-  }
+  };
+
+  /**
+   * Validates all visible form fields
+   */
+  const validateFields = () => {
+    const localValidationErros: ValidationErrors = {};
+    
+    (form.sections || [])
+      .filter(section => {
+        return VisibileIfEvaluator.isVisible(section.visibleIf, getFieldValue);
+      })
+      .forEach(section => {
+        (section.fields || [])
+          .filter(field => !!field.name)
+          .filter(field => ContextUtils.isEnabledContext(contexts, field.contexts))
+          .filter(field => {
+            return VisibileIfEvaluator.isVisible(field.visibleIf, getFieldValue);
+          })
+          .forEach(field => {
+            const fieldName = field.name || "";
+            const validationError = validateFieldValue(field, getFieldValue(fieldName!));
+            if (validationError) {
+              localValidationErros[fieldName] = validationError;
+            }
+          });
+      });
+
+    if (!deepEqual(localValidationErros, validationErrors)) {
+      setValidationErrors(localValidationErros);
+
+      if (onValidationErrorsChange) {
+        onValidationErrorsChange(localValidationErros);
+      }
+    }
+  };
+
+  useEffect(() => {
+    validateFields();
+  }, []);
 
   /**
    * Sets field value
@@ -156,9 +146,9 @@ export const MetaformComponent: React.FC<Props> = ({
   const setThisFieldValue = (fieldName: string, fieldValue: FieldValue) => {
     setFieldValue(fieldName, fieldValue);
     validateFields();
-  }
+  };
 
-  const sections = form.sections || [];
+  const sections = form.sections || [];
 
   return (
     <div className="metaform">
@@ -170,21 +160,20 @@ export const MetaformComponent: React.FC<Props> = ({
           const sectionId = `section-${i}`;
 
           return (
-            <MetaformSectionComponent 
-              key={`${metaformId }-${sectionId}`}
+            <MetaformSectionComponent
+              key={`${metaformId}-${sectionId}`}
               validationErrors={ validationErrors }
               renderBeforeField={ renderBeforeField }
-              datePicker={ datePicker } 
+              datePicker={ datePicker }
               datetimePicker={ datetimePicker }
-              renderAutocomplete={ renderAutocomplete } 
+              renderAutocomplete={ renderAutocomplete }
               uploadFile={ uploadFile }
-              renderIcon={ renderIcon } 
-              renderSlider={ renderSlider }
-              getFieldValue={ getFieldValue } 
-              setFieldValue={ setThisFieldValue } 
-              metaformId={ metaformId } 
-              sectionId={ sectionId } 
-              formReadOnly={ formReadOnly } 
+              renderIcon={ renderIcon }
+              getFieldValue={ getFieldValue }
+              setFieldValue={ setThisFieldValue }
+              metaformId={ metaformId }
+              sectionId={ sectionId }
+              formReadOnly={ formReadOnly }
               section={ section }
               contexts={ contexts }
               onSubmit={ onSubmit }
@@ -195,10 +184,11 @@ export const MetaformComponent: React.FC<Props> = ({
               fileShowButtonText="FileShowButtonText"
               fileDeleteButtonText="FileDeleteButtonText"
             />
-          )
+          );
         })
       }
     </div>
   );
+};
 
-}
+export default MetaformComponent;

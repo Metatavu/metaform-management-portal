@@ -1,9 +1,8 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React, { ReactNode } from 'react';
-import { MetaformSection, MetaformField } from '../generated/client/models';
-import { MetaformFieldComponent } from './MetaformFieldComponent';
-import { FieldValue, FileFieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
-import VisibileIfEvaluator from './VisibleIfEvaluator';
+import React, { ReactNode } from "react";
+import { MetaformSection, MetaformField } from "../generated/client/models";
+import { MetaformFieldComponent } from "./MetaformFieldComponent";
+import { FieldValue, FileFieldValueItem, IconName, ValidationErrors } from "./types";
+import VisibileIfEvaluator from "./VisibleIfEvaluator";
 
 /**
  * Component props
@@ -25,7 +24,6 @@ interface Props {
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
-  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
   fileShowButtonText: string;
   fileDeleteButtonText: string;
@@ -36,7 +34,7 @@ interface Props {
 /**
  * Component for metaform section
  */
-export const MetaformSectionComponent: React.FC<Props> = ({
+const MetaformSectionComponent: React.FC<Props> = ({
   section,
   metaformId,
   sectionId,
@@ -59,34 +57,44 @@ export const MetaformSectionComponent: React.FC<Props> = ({
   requiredFieldsMissingError,
   showRequiredFieldsMissingError
 }) => {
+  /**
+   * Renders a title
+   */
   const renderTitle = () => {
     if (!section.title) {
       return null;
     }
 
-    return <h2> { section.title } </h2>; 
-  }
+    return (
+      <h2>
+        { section.title }
+      </h2>);
+  };
 
+  /**
+   * Renders fields
+   */
   const renderFields = () => {
-
     return (
       <fieldset>
         {
-          (section.fields || []).map((field, i) => {
+          (section.fields || []).map((field, i) => {
             return (
-              <MetaformFieldComponent key={ `${metaformId}-${sectionId}-field-${i}` } 
+              <MetaformFieldComponent
+                // eslint-disable-next-line react/no-array-index-key
+                key={ `${metaformId}-${sectionId}-field-${i}` }
                 validationErrors={ validationErrors }
-                datePicker={ datePicker } 
+                datePicker={ datePicker }
                 datetimePicker={ datetimePicker }
                 renderAutocomplete={ renderAutocomplete }
                 renderBeforeField={renderBeforeField}
                 uploadFile={ uploadFile }
-                renderIcon={ renderIcon } 
-                getFieldValue={ getFieldValue } 
-                setFieldValue={ setFieldValue } 
-                formReadOnly={ formReadOnly } 
+                renderIcon={ renderIcon }
+                getFieldValue={ getFieldValue }
+                setFieldValue={ setFieldValue }
+                formReadOnly={ formReadOnly }
                 field={ field }
-                metaformId={ metaformId } 
+                metaformId={ metaformId }
                 contexts={ contexts }
                 onSubmit={ onSubmit }
                 onFileDelete={ onFileDelete }
@@ -94,14 +102,14 @@ export const MetaformSectionComponent: React.FC<Props> = ({
                 fileShowButtonText={ fileShowButtonText }
                 fileDeleteButtonText={ fileDeleteButtonText }
                 requiredFieldsMissingError={ requiredFieldsMissingError }
-                showRequiredFieldsMissingError={ showRequiredFieldsMissingError } 
+                showRequiredFieldsMissingError={ showRequiredFieldsMissingError }
               />
-            )
+            );
           })
         }
       </fieldset>
     );
-  }
+  };
 
   if (!VisibileIfEvaluator.isVisible(section.visibleIf, getFieldValue)) {
     return null;
@@ -113,4 +121,6 @@ export const MetaformSectionComponent: React.FC<Props> = ({
       { renderFields() }
     </section>
   );
-}
+};
+
+export default MetaformSectionComponent;
