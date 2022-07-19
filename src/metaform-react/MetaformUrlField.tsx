@@ -1,7 +1,7 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue } from './types';
+import React from "react";
+import { UrlFieldWrapper } from "styled/react-components/react-components";
+import { MetaformField } from "../generated/client/models";
+import { FieldValue } from "./types";
 
 /**
  * Component props
@@ -17,62 +17,47 @@ interface Props {
 }
 
 /**
- * Component state
- */
-interface State {
-  
-}
-
-/**
  * Component for Metaform url field
  */
-export class MetaformUrlFieldComponent extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      
-    };
-  }
-
-  /**
-   * Component render method
-   */
-  public render() {
-    if (!this.props.field.name) {
-      return null;
-    }
-
-    return (
-      <input
-        type="url"
-        placeholder={ this.props.field.placeholder }
-        id={ this.props.fieldId }
-        aria-labelledby={ this.props.fieldLabelId }
-        name={ this.props.field.name }
-        title={ this.props.field.title }
-        required={ this.props.field.required }
-        readOnly={ this.props.formReadOnly || this.props.field.readonly }
-        value={ this.props.value as string || "" }
-        onChange={ this.onChange }
-        onFocus={ this.props.onFocus }
-      />
-    );
-  }
-  
+export const MetaformUrlFieldComponent: React.FC<Props> = ({
+  field,
+  fieldId,
+  fieldLabelId,
+  formReadOnly,
+  value,
+  onValueChange,
+  onFocus
+}) => {
   /**
    * Event handler for field input change
    * 
    * @param event event
    */
-  private onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.onValueChange(event.target.value);
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onValueChange(event.target.value);
+  };
+
+  if (!field.name) {
+    return null;
   }
 
-}
+  return (
+    <UrlFieldWrapper
+      color="secondary"
+      disableUnderline
+      type="url"
+      placeholder={ field.placeholder }
+      id={ fieldId }
+      aria-labelledby={ fieldLabelId }
+      name={ field.name }
+      title={ field.title }
+      required={ field.required }
+      readOnly={ formReadOnly || field.readonly }
+      value={ value as string || "" }
+      onChange={ onChange }
+      onFocus={ onFocus }
+    />
+  );
+};
+
+export default MetaformUrlFieldComponent;

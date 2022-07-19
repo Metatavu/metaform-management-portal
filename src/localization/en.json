@@ -82,5 +82,12 @@
         "tabTitle": "Visibility"
       }
     }
+  },
+  "userManagementScreen": {
+    "selector": {
+      "form": "Select form",
+      "group": "Select group",
+      "user": "Select user"
+    }
   }
 }
