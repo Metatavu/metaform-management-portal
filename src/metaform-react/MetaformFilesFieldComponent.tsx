@@ -110,6 +110,7 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
       <Input
         type="file"
         value=""
+        disableUnderline
         placeholder={ field.placeholder }
         id={ fieldId }
         aria-labelledby={ fieldLabelId }

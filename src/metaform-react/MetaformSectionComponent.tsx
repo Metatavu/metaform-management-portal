@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import React, { ReactNode } from "react";
 import { MetaformSection, MetaformField } from "../generated/client/models";
 import { MetaformFieldComponent } from "./MetaformFieldComponent";
@@ -65,14 +66,11 @@ const MetaformSectionComponent: React.FC<Props> = ({
       return null;
     }
 
-    return (
-      <h2>
-        { section.title }
-      </h2>);
+    return <Typography variant="h2">{ section.title }</Typography>;
   };
 
   /**
-   * Renders fields
+   * Render field components
    */
   const renderFields = () => {
     return (

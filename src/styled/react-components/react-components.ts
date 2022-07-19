@@ -93,6 +93,16 @@ export const NumberFieldWrapper = styled(TextField, {
 }));
 
 /**
+ * Styled checklist field component
+ */
+export const ChecklistFieldWrapper = styled(Box, {
+  label: "checklistFieldWrapper-field-wrapper"
+})(() => ({
+  flex: 1,
+  width: "100%"
+}));
+
+/*
  * Styled table text cell component
  */
 export const TableTextCellWrapper = styled(TextField, {

@@ -246,13 +246,10 @@ export const MetaformFieldComponent: React.FC<Props> = ({
       case MetaformFieldType.Checklist:
         return <MetaformChecklistFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ getFieldLabelId() }
-                  fieldId={ getFieldId() }
                   field={ field }
                   renderIcon={ renderIcon }
                   onValueChange={ onValueChange }
                   value={ thisFieldValue() }
-                  onFocus={ onFocus }
               />
       case MetaformFieldType.Table:
         return  <MetaformTableFieldComponent
