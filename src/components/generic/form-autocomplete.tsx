@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Autocomplete, CircularProgress, TextField, Typography } from "@mui/material";
 import CodeServerClient from "../../codeserver/client";
@@ -21,76 +21,21 @@ interface Props {
 }
 
 /**
- * Interface representing component state
- */
-interface State {
-  loading: boolean;
-  items: AutocompleteItem[];
-  inputValue: string;
-  defaultValue?: AutocompleteItem;
-  errorMessage: string;
-}
-
-/**
  * React component displaying form autocomplete fields
  */
-export default class FormAutocomplete extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component properties
-   */
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loading: false,
-      items: [],
-      inputValue: "",
-      errorMessage: ""
-    };
-  }
-
-  /**
-   * Component did mount life cycle event
-   */
-  public async componentDidMount() {
-    const { value, setFieldValue } = this.props;
-
-    this.setState({
-      loading: true
-    });
-
-    try {
-      const loadedItems = await this.loadItems();
-      const defaultAutoCompleteItem = loadedItems.find(item => item.id === value as string);
-
-      this.setState({
-        items: loadedItems,
-        loading: false,
-        defaultValue: defaultAutoCompleteItem ? { ...defaultAutoCompleteItem } : defaultAutoCompleteItem
-      });
-
-      this.getSourceFields().forEach(sourceField => {
-        if (sourceField.name) {
-          const itemProperty = sourceField.source?.options?.autocompleteItemProperty;
-          const itemValue = itemProperty && defaultAutoCompleteItem ? defaultAutoCompleteItem[itemProperty] : null;
-          setFieldValue(sourceField.name, itemValue);
-        }
-      });
-    } catch (e: any) {
-      this.setState({
-        loading: false,
-        errorMessage: e.message
-      });
-    }
-  }
+const FormAutocomplete: React.FC<Props> = ({
+  metaform,
+  field,
+  disabled,
+  value,
+  setFieldValue
+}) => {
+  const [ errorMessage ] = useState("");
 
   /**
    * Renders loader
    */
-  // eslint-disable-next-line class-methods-use-this
-  private renderLoader = () => {
+  const renderLoader = () => {
     return (
       <div>
         <CircularProgress size={ 20 }/>
@@ -102,9 +47,7 @@ export default class FormAutocomplete extends React.Component<Props, State> {
   /**
    * Renders autocomplete error message
    */
-  private renderErrorMessage = () => {
-    const { errorMessage } = this.state;
-
+  const renderErrorMessage = () => {
     return (
       <div style={{ paddingLeft: "10px" }}>
         <Typography style={{ fontSize: "0.6rem" }} variant="caption" color="error">{ errorMessage }</Typography>
@@ -113,33 +56,11 @@ export default class FormAutocomplete extends React.Component<Props, State> {
   };
 
   /**
-   * Loads autocomplete items
-   * 
-   * @returns autocomplete items
-   */
-  private loadItems = async () => {
-    const { field } = this.props;
-    const { autocomplete } = field;
-    
-    if (!autocomplete) {
-      throw new Error(autocompleteErrorMessages.MISSING_AUTO_COMPLETE);
-    }
-
-    switch (autocomplete.service) {
-      case MetaformFieldAutocompleteService.CodeServerConceptCode:
-        return this.loadCodeServerConceptCodeItems();
-      default:
-        throw new Error(autocompleteErrorMessages.UNKNOWN_AUTO_COMPLETE_SERVICE);
-    }
-  };
-
-  /**
    * Loads autocomplete items for code server concept code service
    * 
    * @returns autocomplete items for code server concept code service
    */
-  private loadCodeServerConceptCodeItems = async () => {
-    const { field } = this.props;
+  const loadCodeServerConceptCodeItems = async () => {
     const { autocomplete } = field;
 
     if (!autocomplete) {
@@ -179,13 +100,33 @@ export default class FormAutocomplete extends React.Component<Props, State> {
         .filter(attribute => attribute.attributeName && attribute.attributeValue)
         .reduce((mapped: { [key: string]: string }, attribute: Attribute) => {
           const key = attribute.attributeName!!;
-          const value = (attribute.attributeValue || []).join(",");
-          mapped[key] = value;
+          const finalValue = (attribute.attributeValue || []).join(",");
+          mapped[key] = finalValue;
           return mapped;
         }, { id: conceptCodes.conceptCodeId!! }) as AutocompleteItem;
     });
 
     return items;
+  };
+  
+  /**
+   * Loads autocomplete items
+   * 
+   * @returns autocomplete items
+   */
+  const loadItems = async () => {
+    const { autocomplete } = field;
+      
+    if (!autocomplete) {
+      throw new Error(autocompleteErrorMessages.MISSING_AUTO_COMPLETE);
+    }
+  
+    switch (autocomplete.service) {
+      case MetaformFieldAutocompleteService.CodeServerConceptCode:
+        return loadCodeServerConceptCodeItems();
+      default:
+        throw new Error(autocompleteErrorMessages.UNKNOWN_AUTO_COMPLETE_SERVICE);
+    }
   };
 
   /**
@@ -194,8 +135,7 @@ export default class FormAutocomplete extends React.Component<Props, State> {
    * @param autocompleteItem autocomplete item
    * @returns label
    */
-  private getAutocompleteOptionLabel = (autocompleteItem: AutocompleteItem) => {
-    const { field } = this.props;
+  const getAutocompleteOptionLabel = (autocompleteItem: AutocompleteItem) => {
     const { autocomplete } = field;
 
     if (!autocomplete) {
@@ -215,9 +155,7 @@ export default class FormAutocomplete extends React.Component<Props, State> {
    * 
    * @returns fields that use this autocomplete field as source
    */
-  private getSourceFields = () => {
-    const { metaform, field } = this.props;
-
+  const getSourceFields = () => {
     return (metaform.sections || [])
       .flatMap(section => section.fields || [])
       .filter(sourceField => sourceField.source?.type === MetaformFieldSourceType.Autocomplete)
@@ -225,23 +163,57 @@ export default class FormAutocomplete extends React.Component<Props, State> {
   };
 
   /**
+   * Component did mount life cycle event
+   */
+  useEffect(
+    () => {
+      useState({
+        loading: true
+      });
+  
+      try {
+        const loadedItems = await loadItems();
+        const defaultAutoCompleteItem = loadedItems.find(item => item.id === value as string);
+        
+        useState({
+          items: loadedItems,
+          loading: false,
+          defaultValue: defaultAutoCompleteItem ? { ...defaultAutoCompleteItem } : defaultAutoCompleteItem
+        });
+  
+        getSourceFields().forEach(sourceField => {
+          if (sourceField.name) {
+            const itemProperty = sourceField.source?.options?.autocompleteItemProperty;
+            const itemValue = itemProperty && defaultAutoCompleteItem ? defaultAutoCompleteItem[itemProperty] : null;
+            setFieldValue(sourceField.name, itemValue);
+          }
+        });
+      } catch (e: any) {
+        useState({
+          loading: false,
+          errorMessage: e.message
+        });
+      }
+    },
+    []
+  );
+
+  /**
    * Event handler for autocomplete change
    * 
    * @param _event event
    * @param value new value
    */
-  private onAutocompleteChange = (_event: React.ChangeEvent<{}>, value: AutocompleteItem | null) => {
-    const { setFieldValue, field } = this.props;
-
+  const onAutocompleteChange = (_event: React.ChangeEvent<{}>, itemValue: AutocompleteItem | null) => {
     if (field.name) {
-      setFieldValue(field.name, value?.id || null);
+      setFieldValue(field.name, itemValue?.id || null);
     }
-    
-    this.getSourceFields().forEach(sourceField => {
+
+    getSourceFields().forEach(sourceField => {
       if (sourceField.name) {
         const itemProperty = sourceField.source?.options?.autocompleteItemProperty;
-        const itemValue = itemProperty && value ? value[itemProperty] : null;
-        setFieldValue(sourceField.name, itemValue);
+        const itemPropertyValue = itemProperty && itemValue ? itemValue[itemProperty] : null;
+        setFieldValue(sourceField.name, itemPropertyValue);
       }
     });
   };
@@ -252,8 +224,8 @@ export default class FormAutocomplete extends React.Component<Props, State> {
    * @param _event event
    * @param newInputValue new input value
    */
-  private onAutocompleteInputChange = (_event: React.ChangeEvent<{}>, newInputValue: string) => {
-    this.setState({
+  const onAutocompleteInputChange = (_event: React.ChangeEvent<{}>, newInputValue: string) => {
+    useState({
       inputValue: newInputValue
     });
   };
@@ -266,50 +238,34 @@ export default class FormAutocomplete extends React.Component<Props, State> {
    * 
    * @returns boolean representing whether a option is equal to a value
    */
-  // eslint-disable-next-line class-methods-use-this
-  private getOptionSelected = (option: AutocompleteItem, value: AutocompleteItem) => {
-    return option.id === value.id;
+  const getOptionSelected = (option: AutocompleteItem, itemValue: AutocompleteItem) => {
+    return option.id === itemValue.id;
   };
 
-  /** 
-   * Component render method
-   */
-  public render() {
-    const { field, disabled, value } = this.props;
+  const selectedAutocompleteItem = items.find(item => item.id === value as string);
 
-    const {
-      items,
-      inputValue,
-      defaultValue,
-      loading,
-      errorMessage
-    } = this.state;
-
-    const selectedAutocompleteItem = items.find(item => item.id === value as string);
-
-    if (errorMessage) {
-      return this.renderErrorMessage();
-    }
-
-    if (loading || (!items && !errorMessage)) {
-      return this.renderLoader();
-    }
-
-    return (
-      <Autocomplete<AutocompleteItem>
-        id={ field.name }
-        disabled={ disabled }
-        options={ items }
-        inputValue={ inputValue }
-        onInputChange={ this.onAutocompleteInputChange }
-        defaultValue={ defaultValue }
-        value={ selectedAutocompleteItem }
-        getOptionLabel={ this.getAutocompleteOptionLabel }
-        isOptionEqualToValue={ this.getOptionSelected }
-        onChange={ this.onAutocompleteChange }
-        renderInput={params => <TextField {...params} variant="outlined" InputProps={{ ...params.InputProps }}/> }
-      />
-    );
+  if (errorMessage) {
+    return renderErrorMessage();
   }
 
-}
+  if (loading || (!items && !errorMessage)) {
+    return renderLoader();
+  }
+
+  return (
+    <Autocomplete<AutocompleteItem>
+      id={ field.name }
+      disabled={ disabled }
+      options={ items }
+      inputValue={ inputValue }
+      onInputChange={ onAutocompleteInputChange }
+      defaultValue={ defaultValue }
+      value={ selectedAutocompleteItem }
+      getOptionLabel={ getAutocompleteOptionLabel }
+      isOptionEqualToValue={ getOptionSelected }
+      onChange={ onAutocompleteChange }
+      renderInput={params => <TextField {...params} variant="outlined" InputProps={{ ...params.InputProps }}/> }
+    />
+  );
+};
+export default FormAutocomplete;

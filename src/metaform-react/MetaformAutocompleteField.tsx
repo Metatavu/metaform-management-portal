@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { MetaformField } from "generated/client";
 import { FieldValue } from "./types";
@@ -16,42 +17,22 @@ interface Props {
 }
 
 /**
- * Component state
- */
-interface State {
-}
-
-/**
  * Component for Metaform autocomplete field
  */
-export class MetaformAutocompleteFieldComponent extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-    };
+const MetaformAutocompleteFieldComponent: React.FC<Props> = ({
+  field,
+  fieldId,
+  fieldLabelId,
+  formReadOnly,
+  value,
+  renderAutocomplete,
+  onFocus
+}) => {
+  if (!field.name) {
+    return null;
   }
-  
-  /**
-   * Component render method
-   */
-  public render() {
-    const {
-      field,
-      formReadOnly,
-      value,
-      renderAutocomplete
-    } = this.props;
 
-    return renderAutocomplete(field, field.readonly || formReadOnly, value);
-  }
-  
-}
+  return renderAutocomplete(field, field.readonly || formReadOnly, value);
+};
 
 export default MetaformAutocompleteFieldComponent;
