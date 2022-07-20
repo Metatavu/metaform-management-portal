@@ -11,6 +11,7 @@ export interface Localized extends LocalizedStringsMethods {
    * Translations related to generic words
    */
   generic: {
+    loadingAutoCompleteOptions: string;
     cancel: string;
     delete: string;
     edit: string;

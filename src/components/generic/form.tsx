@@ -12,6 +12,8 @@ import fiLocale from "date-fns/locale/fi";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import MetaformComponent from "metaform-react/MetaformComponent";
 import { Dictionary } from "types";
+import testjson from "testi-lomake.json"
+import FormAutocomplete from "./form-autocomplete";
 
 /**
  * Component props
@@ -24,7 +26,7 @@ interface Props {
  * Form component
  */
 const Form: React.FC = () => {
-  const [ metaform, setMetaform ] = React.useState<Metaform>(MetaformUtils.jsonToMetaform({}));
+  const [ metaform, setMetaform ] = React.useState<Metaform>(MetaformUtils.jsonToMetaform(testjson));
   const [ contexts, setContexts ] = React.useState<string[]>([]);
   const [ onValidationErrorsChange, setOnValidationErrorsChange ] = React.useState<(validationErrors: ValidationErrors) => void>();
   const [ uploadingFields, setUploadingFields ] = React.useState<string[]>([]);
@@ -287,18 +289,22 @@ const Form: React.FC = () => {
 
   /**
    * Renders autocomplete component
-   * TODO: Implement
+   * 
    * @param field field
    * @param formReadOnly form read only
    * @param value autocomplete form value
    */
-  const renderAutocomplete = (field: MetaformField, readOnly: boolean, value: FieldValue) => {
+   const renderAutocomplete = (field: MetaformField, readOnly: boolean, value: FieldValue) => {
     return (
-      <Typography>
-        { strings.generic.notImplemented }
-      </Typography>
+      <FormAutocomplete
+        field={ field }
+        metaform={ metaform }
+        setFieldValue={ setFieldValue }
+        disabled={ readOnly }
+        value={ value }
+      />
     );
-  };
+  }
   
   return (
     <FormContainer>

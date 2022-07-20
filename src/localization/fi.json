@@ -7,7 +7,8 @@
     "notImplemented": "Ei vielä toteutettu",
     "save": "Tallenna",
     "yes": "Kyllä",
-    "no": "Ei"
+    "no": "Ei",
+    "loadingAutoCompleteOptions": "Ladataan vaihtoehtoja..."
   },
 
   "errorHandling": {

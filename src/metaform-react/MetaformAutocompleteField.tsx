@@ -1,7 +1,6 @@
 import React from "react";
-import { TextField } from "@mui/material";
-import { MetaformField } from "../generated/client/models";
-import { HtmlAutocompleteWrapper } from "styled/react-components/react-components";
+import { MetaformField } from "generated/client";
+import { FieldValue } from "./types";
 
 /**
  * Component props
@@ -11,37 +10,48 @@ interface Props {
   fieldId: string;
   fieldLabelId: string;
   formReadOnly: boolean;
-  items : string[];
+  value: FieldValue;
+  renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   onFocus: () => void;
 }
 
 /**
- * Component for Metaform autocomplete field
- * 
- * @param props Component props
+ * Component state
  */
-export const MetaformAutocompleteFieldComponent: React.FC<Props> = ({
-  field,
-  fieldId,
-  fieldLabelId,
-  formReadOnly,
-  items,
-  onFocus
-}) => {
-  if (!field.name) {
-    return null;
+interface State {
+}
+
+/**
+ * Component for Metaform autocomplete field
+ */
+export class MetaformAutocompleteFieldComponent extends React.Component<Props, State> {
+
+  /**
+   * Constructor
+   * 
+   * @param props component props
+   */
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+    };
   }
   
-  return (
-    <HtmlAutocompleteWrapper
-      id={ fieldId }
-      aria-labelledby={ fieldLabelId }
-      readOnly={ formReadOnly }
-      onFocus={ onFocus }
-      options={ items }
-      renderInput={params => <TextField {...params} variant="outlined" InputProps={{ ...params.InputProps }}/> }
-    />
-  );
-};
+  /**
+   * Component render method
+   */
+  public render() {
+    const {
+      field,
+      formReadOnly,
+      value,
+      renderAutocomplete
+    } = this.props;
+
+    return renderAutocomplete(field, field.readonly || formReadOnly, value);
+  }
+  
+}
 
 export default MetaformAutocompleteFieldComponent;

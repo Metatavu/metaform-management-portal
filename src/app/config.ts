@@ -10,7 +10,8 @@ const env = cleanEnv(process.env, {
   REACT_APP_KEYCLOAK_CLIENT_ID: str({ default: undefined }),
   REACT_APP_API_BASE_URL: url({ default: undefined }),
   REACT_APP_SENTRY_DSN: url({ default: undefined }),
-  REACT_APP_SENTRY_ENVIRONMENT: str({ default: "production" })
+  REACT_APP_SENTRY_ENVIRONMENT: str({ default: "production" }),
+  REACT_APP_CORS_PROXY: str({ default: undefined })
 });
 
 /**
@@ -50,6 +51,15 @@ export default class Config {
    */
   public static getSentryEnvironment(): string {
     return env.REACT_APP_SENTRY_ENVIRONMENT;
+  }
+
+  /**
+   * Returns address for CORS proxy service
+   * 
+   * @returns address for CORS proxy service
+   */
+  public static getCorsProxy(): string {
+    return env.REACT_APP_CORS_PROXY;
   }
 
 }

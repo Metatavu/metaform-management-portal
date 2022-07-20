@@ -66,3 +66,21 @@ export type ValidationStatus = "missing-required" | "invalid-email";
  * Field validation error map
  */
 export type ValidationErrors = { [fieldName: string]: ValidationStatus };
+
+/**
+ * Autocomplete item
+ */
+ export type AutocompleteItem = { id: string, [key: string]: string };
+
+/**
+ * Values for filtering scopes
+ */
+
+export enum autocompleteErrorMessages {
+  MISSING_OPTIONS = "Code server autocomplete not configured",
+  MISSING_CODE_SERVER_BASE_URL = "Code server autocomplete missing codeServerBaseUrl",
+  MISSING_CODE_SERVER_CLASSIFICATION_ID = "Code server autocomplete missing codeServerClassificationId",
+  MISSING_CODE_SERVER_PARENT_CONCEPT_CODE_ID = "Code server autocomplete missing codeServerParentConceptCodeId",
+  MISSING_AUTO_COMPLETE = "Autocomplete not configured",
+  UNKNOWN_AUTO_COMPLETE_SERVICE = "UNKNOWN_AUTO_COMPLETE_SERVICE"
+}
