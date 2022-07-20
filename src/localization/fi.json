@@ -7,7 +7,8 @@
     "notImplemented": "Ei vielä toteutettu",
     "save": "Tallenna",
     "yes": "Kyllä",
-    "no": "Ei"
+    "no": "Ei",
+    "confirm": "Vahvista"
   },
 
   "errorHandling": {
@@ -98,5 +99,37 @@
       "addNewRow": "Lisää uusi rivi",
       "unknownColumnType": "Tuntematon saraketyyppi"
     }
+  },
+
+  "formScreen": {
+    "autosaving": "Vastausta tallennetaan...",
+    "replyEditEmailText": "Voit lähettää linkin itsellesi sähköpostilla klikkaamalla",
+    "replyEditEmailContent": "<p>Hei!</p><p>Pääset muokkaamaan {0} -lomakkeen vastauksia seuraavasta linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
+    "replyEditEmailSubject": "{0} -lomakkeen muokkauslinkki",
+    "replyEditEmailSent": "Muokkauslinkki lähetetty!",
+    "saveDraft": "Voit tallentaa lomakkeen vedoksena klikkaamalla",
+    "saveDraftLink": "tästä",
+    "draftEmailSubject": "{0} -lomakkeen vedos",
+    "draftEmailContent": "<p>Hei!</p><p>Pääset jatkamaan {0} -lomakkeen täyttöä linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
+    "draftEmailSent": "Linkki vedokseen lähetetty!",
+    "draftSaved": "Lomake on tallennettu vedoksena. Ota seuraava kirjanmerkki talteen niin voit jatkaa lomakkeen täyttöä myöhemmin: ",
+    "draftEmailText": "Voit lähettää linkin itsellesi sähköpostilla klikkaamalla",
+    "draftEmailLink": "tästä",
+    "draftEmailDialogText": "Kirjoita sähköpostiosoite, johon haluat vedoksen muokkauslinkin lähetettävän",
+    "replySaved": "Lähetetty onnistuneesti!",
+    "replyEdit": "Voit muokata vastaustasi käyttämällä seuraavaa linkkiä:",
+    "replyEditEmailLink": "tästä",
+    "replyEditEmailDialogText": "Kirjoita sähköpostiosoite, johon haluat lomakkeen muokkauslinkin lähetettävän",
+    "replyDeleteText": "Voit poistaa tämän vastauksen klikkaamalla",
+    "replyDeleteLink": "tästä",
+    "confirmDeleteReplyTitle": "Oletko varma?",
+    "confirmDeleteReplyText": "Oletko varma, että haluat poistaa vastauksen?"
+  },
+
+  "emailDialog": {
+    "send": "Lähetä",
+    "title": "Otsikko",
+    "email": "Sähköposti",
+    "cancel": "Peruuta"
   }
 }
