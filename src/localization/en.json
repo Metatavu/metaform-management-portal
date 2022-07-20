@@ -7,7 +7,8 @@
     "notImplemented": "Not yet implemented",
     "save": "Save",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "confirm": "Confirm"
   },
 
   "errorHandling": {
@@ -122,5 +123,12 @@
     "replyDeleteLink": "here",
     "confirmDeleteReplyTitle": "Are you sure?",
     "confirmDeleteReplyText": "Are you sure that you wish to delete the reply?"
+  },
+
+  "emailDialog": {
+    "send": "Send",
+    "title": "Title",
+    "email": "Address",
+    "cancel": "Cancel"
   }
 }

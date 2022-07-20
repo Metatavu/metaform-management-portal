@@ -1,12 +1,17 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from "react";
 import { useEffect, useState } from "react";
-import BasicLayout from "components/layouts/basic-layout";
+import BasicLayout, { SnackbarMessage } from "components/layouts/basic-layout";
 import strings from "localization/strings";
 import { Metaform, Reply } from "generated/client";
 import { FieldValue, ValidationErrors } from "metaform-react/types";
 import { Dictionary } from "@reduxjs/toolkit";
 import { Alert, Link, Snackbar } from "@mui/material";
+import MetaformUtils from "utils/metaform-utils";
+import Mail from "mail/mail";
+import ConfirmDialog from "components/generic/confirm-dialog";
+import EmailDialog from "components/generic/email-dialog";
+import Form from "components/generic/form";
 
 /**
  * Component props
@@ -49,7 +54,7 @@ const FormScreen: React.FC<Props> = () => {
       return null;
     }
 
-    return Utils.createOwnerKeyLink(reply.id, ownerKey);
+    return MetaformUtils.createOwnerKeyLink(reply.id, ownerKey);
   };
 
   /**
@@ -69,8 +74,8 @@ const FormScreen: React.FC<Props> = () => {
    *
    * @param fieldName field name
    */
-  const getFieldValue = (fieldName: string): FieldValue | undefined => {
-    return formValues[fieldName];
+  const getFieldValue = (fieldName: string): FieldValue => {
+    return formValues[fieldName] || null;
   };
 
   /**

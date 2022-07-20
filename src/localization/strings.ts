@@ -163,6 +163,16 @@ export interface Localized extends LocalizedStringsMethods {
     confirmDeleteReplyTitle: string;
     confirmDeleteReplyText: string;
   };
+
+  /**
+   * Translations related to email dialogs 
+   */
+  emailDialog: {
+    title: string;
+    email: string;
+    cancel: string;
+    send: string;
+  }
 }
 
 /**

@@ -124,5 +124,12 @@
     "replyDeleteLink": "tästä",
     "confirmDeleteReplyTitle": "Oletko varma?",
     "confirmDeleteReplyText": "Oletko varma, että haluat poistaa vastauksen?"
+  },
+
+  "emailDialog": {
+    "send": "Lähetä",
+    "title": "Otsikko",
+    "email": "Sähköposti",
+    "cancel": "Peruuta"
   }
 }

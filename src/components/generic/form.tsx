@@ -17,60 +17,45 @@ import { Dictionary } from "types";
  * Component props
  */
 interface Props {
-  // accessToken?: AccessToken; TODO: use once keycloak is implemented
+  contexts: string[];
+  metaform: Metaform;
+  accessToken?: any;
+  ownerKey?: string;
+  getFieldValue: (fieldName: string) => FieldValue;
+  setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
+  onSubmit: (source: Metaform) => void;
+  onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
+  accessTokenNotValid?: boolean;
 }
 
 /**
  * Form component
  */
-const Form: React.FC = () => {
-  const [ metaform, setMetaform ] = React.useState<Metaform>(MetaformUtils.jsonToMetaform({}));
-  const [ contexts, setContexts ] = React.useState<string[]>([]);
-  const [ onValidationErrorsChange, setOnValidationErrorsChange ] = React.useState<(validationErrors: ValidationErrors) => void>();
+const Form: React.FC<Props> = ({
+  contexts,
+  metaform,
+  accessToken,
+  ownerKey,
+  getFieldValue,
+  setFieldValue,
+  onValidationErrorsChange,
+  accessTokenNotValid
+}) => {
   const [ uploadingFields, setUploadingFields ] = React.useState<string[]>([]);
   const [ uploading, setUploading ] = React.useState<boolean>(false);
   const [ formValues, setFormValues ] = React.useState<Dictionary<FieldValue>>({});
   const [ formValid, setFormValid ] = React.useState<boolean>(false);
   const [ draftSaveVisible, setDraftSaveVisible ] = React.useState<boolean>(false);
   const [ formValueChangeTimeout, setFormValueChangeTimeout ] = React.useState<number | null>(null);
-  const [ autosaving, setAutosaving ] = React.useState<boolean>(false);
-  const [ ownerKey, setOwnerKey ] = React.useState<string | null>(null);
+  const [ autosaving, setAutosaving ] = React.useState<boolean>(false);;
   const [ reply, setReply ] = React.useState<Reply>();
   const [ saving, setSaving ] = React.useState<boolean>(false);
-
-  /**
-   * Method for getting field value
-   *
-   * @param fieldName field name
-   * @returns field value
-   */
-  const getFieldValue = (fieldName: string): FieldValue => {
-    return formValues[fieldName];
-  };
 
   /**
    * Method for submitting form
    */
   const onSubmit = async () => {
     // await saveReply(); TODO: Implement once this can be tested
-  };
-
-  /**
-   * Method for setting field value
-   *
-   * @param fieldName field name
-   * @param fieldValue field value
-   */
-  const setFieldValue = (fieldName: string, fieldValue: FieldValue) => {
-    if (formValues[fieldName] !== fieldValue) {
-      const newFormValues = { ...formValues, [fieldName]: fieldValue };
-      setFormValues(newFormValues);
-      setDraftSaveVisible(!!metaform?.allowDrafts);
-
-      /* if (formValid && metaform?.autosave) {
-        scheduleAutosave();
-      } */
-    }
   };
 
   /**
