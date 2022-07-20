@@ -84,11 +84,19 @@
       }
     }
   },
+
   "userManagementScreen": {
     "selector": {
       "form": "Valitse lomake",
       "group": "Valitse ryhmä",
       "user": "Valitse käyttäjä"
+    }
+  },
+
+  "fieldComponents": {
+    "tableField": {
+      "addNewRow": "Lisää uusi rivi",
+      "unknownColumnType": "Tuntematon saraketyyppi"
     }
   }
 }

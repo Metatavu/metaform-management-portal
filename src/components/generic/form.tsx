@@ -10,7 +10,7 @@ import DatePicker from "@mui/lab/DatePicker";
 import { DateTimePicker, LocalizationProvider } from "@mui/lab";
 import fiLocale from "date-fns/locale/fi";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { MetaformComponent } from "metaform-react/MetaformComponent";
+import MetaformComponent from "metaform-react/MetaformComponent";
 import { Dictionary } from "types";
 
 /**
@@ -315,10 +315,9 @@ const Form: React.FC = () => {
         onFileDelete={ deleteFile }
         onFileShow={ showFile }
         renderIcon={ renderIcon }
-        renderSlider={ renderSlider }
         onSubmit={ onSubmit }
         onValidationErrorsChange={ onValidationErrorsChange }
-        renderBeforeField={fieldname => {
+        renderBeforeField={(fieldname?: string) => {
           if (fieldname && uploadingFields.indexOf(fieldname) > -1) {
             return (<LinearProgress/>);
           }

@@ -1,9 +1,9 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React, { ReactNode } from 'react';
-import { MetaformSection, MetaformField } from '../generated/client/models';
-import { MetaformFieldComponent } from './MetaformFieldComponent';
-import { FieldValue, FileFieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
-import VisibileIfEvaluator from './VisibleIfEvaluator';
+import { Typography } from "@mui/material";
+import React, { ReactNode } from "react";
+import { MetaformSection, MetaformField } from "../generated/client/models";
+import { MetaformFieldComponent } from "./MetaformFieldComponent";
+import { FieldValue, FileFieldValueItem, IconName, ValidationErrors } from "./types";
+import VisibileIfEvaluator from "./VisibleIfEvaluator";
 
 /**
  * Component props
@@ -25,7 +25,6 @@ interface Props {
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
-  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
   fileShowButtonText: string;
   fileDeleteButtonText: string;
@@ -34,90 +33,92 @@ interface Props {
 }
 
 /**
- * Component state
- */
-interface State {
-  
-}
-
-/**
  * Component for metaform section
  */
-export class MetaformSectionComponent extends React.Component<Props, State> {
-
+const MetaformSectionComponent: React.FC<Props> = ({
+  section,
+  metaformId,
+  sectionId,
+  datePicker,
+  datetimePicker,
+  renderAutocomplete,
+  validationErrors,
+  renderBeforeField,
+  uploadFile,
+  renderIcon,
+  getFieldValue,
+  setFieldValue,
+  formReadOnly,
+  contexts,
+  onSubmit,
+  onFileDelete,
+  onFileShow,
+  fileShowButtonText,
+  fileDeleteButtonText,
+  requiredFieldsMissingError,
+  showRequiredFieldsMissingError
+}) => {
   /**
-   * Constructor
-   * 
-   * @param props component props
+   * Renders a title
    */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      
-    };
-  }
-
-  /**
-   * Component render method
-   */
-  public render() {
-    if (!VisibileIfEvaluator.isVisible(this.props.section.visibleIf, this.props.getFieldValue)) {
+  const renderTitle = () => {
+    if (!section.title) {
       return null;
     }
 
-    return (
-      <section className="metaform-section">
-        { this.renderTitle() }
-        { this.renderFields() }
-      </section>
-    );
-  }
+    return <Typography variant="h2">{ section.title }</Typography>;
+  };
 
-  private renderTitle = () => {
-    if (!this.props.section.title) {
-      return null;
-    }
-
-    return <h2> { this.props.section.title } </h2>; 
-  }
-
-  private renderFields = () => {
-    const { renderAutocomplete } = this.props;
-
+  /**
+   * Render field components
+   */
+  const renderFields = () => {
     return (
       <fieldset>
         {
-          (this.props.section.fields || []).map((field, i) => {
+          (section.fields || []).map((field, i) => {
             return (
-              <MetaformFieldComponent key={ `${this.props.metaformId}-${this.props.sectionId}-field-${i}` } 
-                validationErrors={ this.props.validationErrors }
-                datePicker={ this.props.datePicker } 
-                datetimePicker={ this.props.datetimePicker }
+              <MetaformFieldComponent
+                // eslint-disable-next-line react/no-array-index-key
+                key={ `${metaformId}-${sectionId}-field-${i}` }
+                validationErrors={ validationErrors }
+                datePicker={ datePicker }
+                datetimePicker={ datetimePicker }
                 renderAutocomplete={ renderAutocomplete }
-                renderBeforeField={this.props.renderBeforeField}
-                uploadFile={ this.props.uploadFile }
-                renderIcon={ this.props.renderIcon } 
-                renderSlider={ this.props.renderSlider }
-                getFieldValue={ this.props.getFieldValue } 
-                setFieldValue={ this.props.setFieldValue } 
-                formReadOnly={ this.props.formReadOnly } 
+                renderBeforeField={renderBeforeField}
+                uploadFile={ uploadFile }
+                renderIcon={ renderIcon }
+                getFieldValue={ getFieldValue }
+                setFieldValue={ setFieldValue }
+                formReadOnly={ formReadOnly }
                 field={ field }
-                metaformId={ this.props.metaformId } 
-                contexts={ this.props.contexts }
-                onSubmit={ this.props.onSubmit }
-                onFileDelete={ this.props.onFileDelete }
-                onFileShow={ this.props.onFileShow }
-                fileShowButtonText={ this.props.fileShowButtonText }
-                fileDeleteButtonText={ this.props.fileDeleteButtonText }
-                requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError } 
+                metaformId={ metaformId }
+                contexts={ contexts }
+                onSubmit={ onSubmit }
+                onFileDelete={ onFileDelete }
+                onFileShow={ onFileShow }
+                fileShowButtonText={ fileShowButtonText }
+                fileDeleteButtonText={ fileDeleteButtonText }
+                requiredFieldsMissingError={ requiredFieldsMissingError }
+                showRequiredFieldsMissingError={ showRequiredFieldsMissingError }
               />
-            )
+            );
           })
         }
       </fieldset>
     );
+  };
+
+  if (!VisibileIfEvaluator.isVisible(section.visibleIf, getFieldValue)) {
+    return null;
   }
 
-}
+  return (
+    <section className="metaform-section">
+      { renderTitle() }
+      { renderFields() }
+    </section>
+  );
+};
+
+export default MetaformSectionComponent;

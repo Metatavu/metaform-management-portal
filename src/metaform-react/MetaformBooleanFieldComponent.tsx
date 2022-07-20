@@ -1,7 +1,7 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React, { ReactNode } from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue, IconName } from './types';
+import { Checkbox } from "@mui/material";
+import React, { ReactNode } from "react";
+import { MetaformField } from "../generated/client/models";
+import { FieldValue, IconName } from "./types";
 
 /**
  * Component props
@@ -18,89 +18,73 @@ interface Props {
 }
 
 /**
- * Component state
- */
-interface State {
-  
-}
-
-/**
  * Component for radio field
  */
-export class MetaformBooleanFieldComponent extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      
-    };
-  }
-
-  /**
-   * Component render method
-   */
-  public render() {
-    if (!this.props.field.name) {
-      return null;
-    }
-
-    const option = this.props.field;
-    const value = this.props.value as string;
-
-    return (
-      <div>
-        <label className="metaform-boolean-field-label" key={ `${this.props.fieldId}-${this.props.field.name}-label` } htmlFor={ `${this.props.fieldId}-${this.props.field.name}` }>
-          { this.renderOptionValue(option, value) }
-          <span> { option.text } </span>
-        </label>
-      </div>
-    );
-  }
-
-  /**
-   * Renders field option's value
-   */
-  private renderOptionValue = (option: MetaformField, value: string) => {
-    const readOnly = this.props.formReadOnly || this.props.field.readonly;
-    const checked: boolean = value ? true : false;
-
-    if (readOnly) {
-      if (checked) {
-        return this.props.renderIcon("check-square-o", `${this.props.fieldId}-${option.name}-icon`);
-      } else { 
-        return this.props.renderIcon("square-o", `${this.props.fieldId}-${option.name}-icon-checked`);
-      }
-    } else {
-      return <input 
-        key={ `${this.props.fieldId}-${option.name}-input` }
-        type="checkbox" 
-        id={ `${this.props.fieldId}-${option.name}` }  
-        aria-labelledby={ this.props.fieldLabelId } 
-        name={ this.props.field.name }
-        title={ this.props.field.title }
-        required={ this.props.field.required }
-        readOnly={ this.props.formReadOnly || this.props.field.readonly }
-        value={ value }
-        checked={ checked }
-        onChange={ this.onChange }
-        onFocus={ this.props.onFocus }
-        />
-    }
-  }
-  
+const MetaformBooleanFieldComponent: React.FC<Props> = ({
+  field,
+  fieldId,
+  fieldLabelId,
+  formReadOnly,
+  value,
+  onValueChange,
+  onFocus,
+  renderIcon
+}) => {
   /**
    * Event handler for field input change
    * 
    * @param event event
    */
-  private onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.onValueChange(event.target.value ? "" : "checked");
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onValueChange(event.target.value ? "" : "checked");
+  };
+
+  /**
+   * Renders field option's value
+   */
+  const renderOptionValue = (option: MetaformField, optionValue: string) => {
+    const readOnly = formReadOnly || field.readonly;
+    const checked: boolean = !!optionValue;
+
+    if (readOnly) {
+      if (checked) {
+        return renderIcon("check-square-o", `${fieldId}-${option.name}-icon`);
+      }
+        
+      return renderIcon("square-o", `${fieldId}-${option.name}-icon-checked`);
+    }
+    
+    return <Checkbox
+      key={ `${fieldId}-${option.name}-input` }
+      id={ `${fieldId}-${option.name}` }
+      aria-labelledby={ fieldLabelId }
+      name={ field.name }
+      title={ field.title }
+      required={ field.required }
+      readOnly={ formReadOnly || field.readonly }
+      value={ optionValue }
+      checked={ checked }
+      onChange={ onChange }
+      onFocus={ onFocus }
+    />;
+  };
+
+  const option = field;
+
+  if (!field.name) {
+    return null;
   }
 
-}
+  return (
+    <div>
+      <label className="metaform-boolean-field-label" key={ `${fieldId}-${field.name}-label` } htmlFor={ `${fieldId}-${field.name}` }>
+        { renderOptionValue(option, value as string) }
+        <span>
+          { option.text }
+        </span>
+      </label>
+    </div>
+  );
+};
+
+export default MetaformBooleanFieldComponent;

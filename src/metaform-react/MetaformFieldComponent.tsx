@@ -1,22 +1,22 @@
 /* eslint-disable */ // Remove when refactoring is done
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { FieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
-import { MetaformMemoComponent } from './MetaformMemoComponent';
+import MetaformMemoComponent from './MetaformMemoComponent';
 import { MetaformField, MetaformFieldType } from '../generated/client/models';
-import { MetaformTextFieldComponent } from './MetaformTextFieldComponent';
+import MetaformTextFieldComponent from './MetaformTextFieldComponent';
 import { MetaformRadioFieldComponent } from './MetaformRadioFieldComponent';
 import { MetaformSubmitFieldComponent } from './MetaformSubmitFieldComponent';
 import { MetaformSelectFieldComponent } from './MetaformSelectFieldComponent';
-import { MetaformBooleanFieldComponent } from './MetaformBooleanFieldComponent';
+import MetaformBooleanFieldComponent from './MetaformBooleanFieldComponent';
 import { MetaformHtmlComponent } from './MetaformHtmlComponent';
-import { MetaformEmailFieldComponent } from './MetaformEmailComponent';
+import MetaformEmailFieldComponent from './MetaformEmailComponent';
 import { MetaformUrlFieldComponent } from './MetaformUrlField';
 import { MetaformAutocompleteFieldComponent } from './MetaformAutocompleteField';
-import { MetaformHiddenFieldComponent } from './MetaformHiddenFieldComponent';
-import { MetaformFilesFieldComponent } from './MetaformFilesFieldComponent';
-import { MetaformDateFieldComponent } from './MetaformDateFieldComponent';
-import { MetaformDateTimeFieldComponent } from './MetaformDateTimeFieldComponent';
+import MetaformHiddenFieldComponent from './MetaformHiddenFieldComponent';
+import MetaformFilesFieldComponent from './MetaformFilesFieldComponent';
+import MetaformDateFieldComponent from './MetaformDateFieldComponent';
+import MetaformDateTimeFieldComponent from './MetaformDateTimeFieldComponent';
 import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent'; 
 import { MetaformSliderFieldComponent } from './MetaformSliderFieldComponent'; 
 import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent"; 
@@ -46,71 +46,40 @@ interface Props {
   onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
-  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
-}
-
-/**
- * Component state
- */
-interface State {
-  pristine: boolean
 }
 
 /**
  * Component for metaform field
  */
-export class MetaformFieldComponent extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      pristine: true
-    };
-  }
-
-  /**
-   * Component render method
-   */
-  public render() {
-    const { contexts, field, getFieldValue, renderBeforeField } = this.props;
-
-    if (!ContextUtils.isEnabledContext(contexts, field.contexts)) {
-      return null;
-    }
-
-    if (!VisibileIfEvaluator.isVisible(field.visibleIf, getFieldValue)) {
-      return null;
-    }
-
-    const classNames = [ "metaform-field" ];
-
-    if (this.state.pristine) {
-      classNames.push("pristine");
-    }
-
-    return (
-      <div className={ classNames.join(" ") } key={ this.getFieldId() }>
-        { renderBeforeField && renderBeforeField(field.name) }
-        { this.renderTitle() }
-        { this.renderInput() }
-        { this.renderRequiredFieldMissingError() }
-        { this.renderHelp() }
-      </div>
-    );
-  }
+export const MetaformFieldComponent: React.FC<Props> = ({
+  formReadOnly,
+  metaformId,
+  field,
+  renderBeforeField,
+  contexts,
+  requiredFieldsMissingError,
+  showRequiredFieldsMissingError,
+  validationErrors,
+  getFieldValue,
+  setFieldValue,
+  datePicker,
+  datetimePicker,
+  renderAutocomplete,
+  uploadFile,
+  fileShowButtonText,
+  fileDeleteButtonText,
+  onFileShow,
+  onFileDelete,
+  renderIcon,
+  onSubmit
+}) => {
+  const [ pristine, setPrisitine ] = useState(true);
 
   /**
    * Renders field title
    */
-  private renderTitle = () => {
-    const { field } = this.props;
+  const renderTitle = () => {
 
     if (!field.title) {
       return null;
@@ -128,143 +97,118 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
   /**
    * Renders field's input
    */
-  private renderInput = () => {
-    const {
-      renderAutocomplete,
-      formReadOnly,
-      field,
-      renderIcon,
-      validationErrors,
-      onSubmit,
-      onFileDelete,
-      onFileShow,
-      datePicker,
-      datetimePicker,
-      fileDeleteButtonText,
-      fileShowButtonText,
-      renderSlider
-    } = this.props;
-
-    switch (this.props.field.type) {
+  const renderInput = () => {
+    switch (field.type) {
       case MetaformFieldType.Text:
         return  <MetaformTextFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
-                  field={ field } onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
-                  getFieldValue={ this.getFieldValue }
+                  fieldLabelId={ getFieldLabelId() }
+                  fieldId={ getFieldId() }
+                  field={ field } onValueChange={ onValueChange }
+                  value={ thisFieldValue() }
+                  onFocus={ onFocus }
                 />;
       case MetaformFieldType.Memo:
         return  <MetaformMemoComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
+                  fieldLabelId={ getFieldLabelId() }
+                  fieldId={ getFieldId() }
                   field={ field }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
-                  getFieldValue={ this.getFieldValue }
+                  onValueChange={ onValueChange }
+                  value={ thisFieldValue() }
+                  onFocus={ onFocus }
                 />;
       case MetaformFieldType.Radio:
         return  <MetaformRadioFieldComponent
                   renderIcon={ renderIcon }
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
+                  fieldLabelId={ getFieldLabelId() }
+                  fieldId={ getFieldId() }
                   field={ field }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
+                  onValueChange={ onValueChange }
+                  value={ thisFieldValue() }
+                  onFocus={ onFocus }
                 />;
       case MetaformFieldType.Select:
         return  <MetaformSelectFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
                   field={ field }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
+                  onValueChange={ onValueChange }
+                  value={ thisFieldValue() }
                 />;
       case MetaformFieldType.Submit:
         return  <MetaformSubmitFieldComponent
                   validationErrors={ validationErrors }
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
                   field={ field }
                   onClick={ onSubmit }
-                  value={ this.getFieldValue() }
                 />;
       case MetaformFieldType.Boolean:
         return  <MetaformBooleanFieldComponent
                   renderIcon={ renderIcon }
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
+                  fieldLabelId={ getFieldLabelId() }
+                  fieldId={ getFieldId() }
                   field={ field }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
+                  onValueChange={ onValueChange }
+                  value={ thisFieldValue() }
+                  onFocus={ onFocus }
                 />;
       case MetaformFieldType.Html:
         return  <MetaformHtmlComponent
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
+                  fieldLabelId={ getFieldLabelId() }
+                  fieldId={ getFieldId() }
                   field={ field }
                 />;
       case MetaformFieldType.Email:
         return  <MetaformEmailFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
+                  fieldLabelId={ getFieldLabelId() }
+                  fieldId={ getFieldId() }
                   field={ field }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
+                  onValueChange={ onValueChange }
+                  value={ thisFieldValue() }
+                  onFocus={ onFocus }
                 />;
       case MetaformFieldType.Url:
         return  <MetaformUrlFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
+                  fieldLabelId={ getFieldLabelId() }
+                  fieldId={ getFieldId() }
                   field={ field }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
+                  onValueChange={ onValueChange }
+                  value={ thisFieldValue() }
+                  onFocus={ onFocus }
                 />;
       case MetaformFieldType.Autocomplete:
         return  <MetaformAutocompleteFieldComponent
-                  formReadOnly={ this.props.formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
+                  formReadOnly={ formReadOnly }
+                  fieldLabelId={ getFieldLabelId() }
+                  fieldId={ getFieldId() }
                   renderAutocomplete={ renderAutocomplete }
-                  field={ this.props.field }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
+                  field={ field }
+                  value={ thisFieldValue() }
+                  onFocus={ onFocus }
                 />;
       case MetaformFieldType.Hidden:
         return  <MetaformHiddenFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
+                  fieldLabelId={ getFieldLabelId() }
+                  fieldId={ getFieldId() }
                   field={ field }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
+                  onValueChange={ onValueChange }
+                  value={ thisFieldValue() }
+                  onFocus={ onFocus }
                 />;
       case MetaformFieldType.Files:
         return  <MetaformFilesFieldComponent
-                  formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
+                  fieldLabelId={ getFieldLabelId() }
+                  fieldId={ getFieldId() }
                   field={ field }
-                  onFileUpload={ this.onFileUpload }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
+                  onFileUpload={ onFileUpload }
+                  onValueChange={ onValueChange }
+                  value={ thisFieldValue() }
+                  onFocus={ onFocus }
                   onFileDelete={ onFileDelete }
                   onFileShow={ onFileShow }
                   deleteButtonText={ fileDeleteButtonText }
@@ -273,79 +217,58 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
       case MetaformFieldType.Date:
         return  <MetaformDateFieldComponent
                   datePicker={ datePicker }
-                  formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
                   field={ field }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
-                  getFieldValue={ this.getFieldValue }
+                  onValueChange={ onValueChange }
                 />;
       case MetaformFieldType.DateTime:
         return  <MetaformDateTimeFieldComponent
                   datetimePicker={ datetimePicker }
-                  formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
                   field={ field }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
-                  getFieldValue={ this.getFieldValue }
+                  onValueChange={ onValueChange }
                 />;
       case MetaformFieldType.Number:
         return  <MetaformNumberFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
+                  fieldLabelId={ getFieldLabelId() }
+                  fieldId={ getFieldId() }
                   field={ field }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
+                  onValueChange={ onValueChange }
+                  value={ thisFieldValue() }
+                  onFocus={ onFocus }
                 />;
       case MetaformFieldType.Slider:
         return <MetaformSliderFieldComponent
-                renderSlider={ renderSlider }
+                setFieldValue={ setFieldValue }
                 formReadOnly={ formReadOnly }
-                fieldLabelId={ this.getFieldLabelId() }
-                fieldId={ this.getFieldId() }
                 field={ field }
-                onValueChange={ this.onValueChange }
-                value={ this.getFieldValue() }
-                onFocus={ this.onFocus }
-                getFieldValue={ this.getFieldValue }
+                value={ thisFieldValue() }
               />
       case MetaformFieldType.Checklist:
         return <MetaformChecklistFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
                   field={ field }
                   renderIcon={ renderIcon }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
+                  onValueChange={ onValueChange }
+                  value={ thisFieldValue() }
               />
       case MetaformFieldType.Table:
         return  <MetaformTableFieldComponent
                   formReadOnly={ formReadOnly }
                   field={ field }
-                  value={ this.getFieldValue() }
+                  value={ thisFieldValue() }
                   renderIcon={ renderIcon }
-                  onValueChange={ this.onValueChange }
+                  onValueChange={ onValueChange }
                 />;
       default:
-        return <div style={{ color: "red" }}> Unknown field type { this.props.field.type } </div>;
+        return <div style={{ color: "red" }}> Unknown field type { field.type } </div>;
     }
   }
 
   /**
    * Renders required field missing error
    */
-  private renderRequiredFieldMissingError = () => {
-    const { showRequiredFieldsMissingError, requiredFieldsMissingError, field } = this.props;
-    const value = this.getFieldValue();
+  const renderRequiredFieldMissingError = () => {
+    const value = thisFieldValue();
     const { required } = field;
 
     if (!required || !showRequiredFieldsMissingError || value) {
@@ -360,9 +283,7 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
   /**
    * Renders field help
    */
-  private renderHelp = () => {
-    const { field } = this.props;
-
+  const renderHelp = () => {
     if (!field.help) {
       return null;
     }
@@ -377,17 +298,15 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
   /**
    * Returns field's id
    */
-  private getFieldId = () => {
-    const { metaformId, field } = this.props;
-
+  const getFieldId = () => {
     return `${metaformId}-field-${field.name}`;
   }
 
   /**
    * Returns field label's id
    */
-  private getFieldLabelId = () => {
-    return `${this.getFieldId()}-label`;
+  const getFieldLabelId = () => {
+    return `${getFieldId()}-label`;
   }
 
   /**
@@ -395,14 +314,13 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * 
    * @returns field's value
    */
-  private getFieldValue = (): FieldValue => {
-    const { field } = this.props;
+  const thisFieldValue  = (): FieldValue => {
 
     if (!field.name) {
       return null;
     }
 
-    const result = this.props.getFieldValue(field.name);
+    const result = getFieldValue(field.name);
     if (!result && field._default) {
       return field._default;
     }
@@ -413,9 +331,7 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
   /**
    * Event handler for field value change
    */
-  private onValueChange = (value: FieldValue) => {
-    const { field, setFieldValue } = this.props;
-
+  const onValueChange = (value: FieldValue) => {
     if (!field.name) {
       return null;
     }
@@ -431,9 +347,7 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * @param maxFileSize number
    * @param uploadSingle boolean
    */
-  private onFileUpload = (fieldName: string, files: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => {
-    const { uploadFile } = this.props;
-
+  const onFileUpload = (fieldName: string, files: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => {
     if (uploadSingle) {
       const file = files[0];
       if (maxFileSize && file.size > maxFileSize) {
@@ -454,9 +368,31 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
   /**
    * Event handler for field value change
    */
-  private onFocus = () => {
-    this.setState({
-      pristine: false
-    });
+  const onFocus = () => {
+    setPrisitine(false);
   }
+
+  if (!ContextUtils.isEnabledContext(contexts, field.contexts)) {
+    return null;
+  }
+
+  if (!VisibileIfEvaluator.isVisible(field.visibleIf, getFieldValue)) {
+    return null;
+  }
+
+  const classNames = [ "metaform-field" ];
+
+  if (pristine) {
+    classNames.push("pristine");
+  }
+
+  return (
+    <div className={ classNames.join(" ") } key={ getFieldId() }>
+      { renderBeforeField && renderBeforeField(field.name) }
+      { renderTitle() }
+      { renderInput() }
+      { renderRequiredFieldMissingError() }
+      { renderHelp() }
+    </div>
+  );
 }

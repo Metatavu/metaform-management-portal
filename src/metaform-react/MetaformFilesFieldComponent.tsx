@@ -1,7 +1,7 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue, FileFieldValue, FileFieldValueItem } from './types';
+import { Button, Input } from "@mui/material";
+import React from "react";
+import { MetaformField } from "../generated/client/models";
+import { FieldValue, FileFieldValue, FileFieldValueItem } from "./types";
 
 /**
  * Component props
@@ -12,7 +12,6 @@ interface Props {
   fieldLabelId: string,
   showButtonText: string,
   deleteButtonText: string,
-  formReadOnly: boolean,
   value: FieldValue,
   onValueChange: (value: FieldValue) => void,
   onFileUpload: (fieldName: string, file: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => void,
@@ -22,106 +21,105 @@ interface Props {
 }
 
 /**
- * Component state
- */
-interface State {
-  
-}
-
-/**
  * Component for Metaform text field
  */
-export class MetaformFilesFieldComponent extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      
-    };
-  }
-
-  /**
-   * Component render method
-   */
-  public render() {
-    if (!this.props.field.name) {
-      return null;
-    }
-
-    const { value, showButtonText, deleteButtonText, onFileDelete, onFileShow } = this.props;
-    let normalizedValue = this.ensureFileFieldType(value);
-
-    const valueItems = normalizedValue.files.map((value) => {
-      return (
-        <div key={value.id} className="metaform-react-file-value-container">
-          <span className="metaform-react-file-field-name">{ value.name || value.id}</span>
-          <button onClick={() => onFileShow(this.props.field.name || "", value)} className="metaform-react-file-field-open-button">{ showButtonText }</button>
-          <button onClick={() => onFileDelete(this.props.field.name || "", value)} className="metaform-react-file-field-delete-button">{ deleteButtonText }</button>
-        </div>
-      )
-    })
-
-    return (
-      <>
-        { valueItems }
-        <input
-          type="file"
-          value=""
-          placeholder={ this.props.field.placeholder }
-          id={ this.props.fieldId }
-          aria-labelledby={ this.props.fieldLabelId }
-          name={ this.props.field.name }
-          onChange={ this.onChange }
-          onFocus={ this.props.onFocus }
-        />
-      </>
-    );
-  }
-  
+const MetaformFilesFieldComponent: React.FC<Props> = ({
+  field,
+  fieldId,
+  fieldLabelId,
+  showButtonText,
+  deleteButtonText,
+  value,
+  onValueChange,
+  onFileUpload,
+  onFileShow,
+  onFileDelete,
+  onFocus
+}) => {
   /**
    * Event handler for field input change
    * 
    * @param event event
    */
-  private onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && this.props.field.uploadUrl) {
-      this.props.onFileUpload(this.props.field.name || "", event.target.files, this.props.field.uploadUrl, this.props.field.maxFileSize, this.props.field.singleFile);
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && field.uploadUrl) {
+      onFileUpload(field.name || "", event.target.files, field.uploadUrl, field.maxFileSize, field.singleFile);
     } else {
-      this.props.onValueChange(event.target.value);
+      onValueChange(event.target.value);
     }
-  }
+  };
 
-  private isFileFieldValue = ( value: FieldValue ): boolean => {
-    if (!value) {
+  /**
+   * Checks if contains files-array
+   * 
+   * @param fieldValue
+   * @returns 
+   */
+  const isFileFieldValue = (fieldValue: FieldValue): boolean => {
+    if (!fieldValue) {
       return false;
     }
-    if (Array.isArray((value as FileFieldValue).files)) {
+    if (Array.isArray((fieldValue as FileFieldValue).files)) {
       return true;
     }
 
-    return false
-  }
+    return false;
+  };
 
-  private ensureFileFieldType = ( value: FieldValue ): FileFieldValue => {
-    if (!value) {
-      return { files: [] }
+  /**
+   * Ensures file field type
+   * 
+   * @param fieldValue
+   * @returns 
+   */
+  const ensureFileFieldType = (fieldValue: FieldValue): FileFieldValue => {
+    if (!fieldValue) {
+      return { files: [] };
     }
-    if (this.isFileFieldValue(value)) return value as FileFieldValue;
+    if (isFileFieldValue(fieldValue)) return fieldValue as FileFieldValue;
 
     return {
       files: [
         {
-          id: value as string,
+          id: fieldValue as string,
           persisted: false
         }
       ]
-    }
+    };
+  };
+
+  const normalizedValue = ensureFileFieldType(value);
+
+  const valueItems = normalizedValue.files.map(valueItem => {
+    return (
+      <div key={valueItem.id} className="metaform-react-file-value-container">
+        <span className="metaform-react-file-field-name">{ valueItem.name || valueItem.id}</span>
+        <Button onClick={ () => onFileShow(field.name || "", valueItem) } className="metaform-react-file-field-open-button">{ showButtonText }</Button>
+        <Button onClick={ () => onFileDelete(field.name || "", valueItem) } className="metaform-react-file-field-delete-button">{ deleteButtonText }</Button>
+      </div>
+    );
+  });
+
+  if (!field.name) {
+    return null;
   }
 
-}
+  return (
+    <>
+      { valueItems }
+      <Input
+        type="file"
+        value=""
+        disableUnderline
+        placeholder={ field.placeholder }
+        id={ fieldId }
+        aria-labelledby={ fieldLabelId }
+        name={ field.name }
+        onChange={ onChange }
+        onFocus={ onFocus }
+      />
+    </>
+  );
+};
+
+export default MetaformFilesFieldComponent;

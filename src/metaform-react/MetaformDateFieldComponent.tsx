@@ -1,7 +1,6 @@
-/* eslint-disable */ // Remove when refactoring is done
-import React from 'react';
-import { MetaformField } from '../generated/client/models';
-import { FieldValue } from './types';
+import React from "react";
+import { MetaformField } from "../generated/client/models";
+import { FieldValue } from "./types";
 import moment from "moment";
 
 /**
@@ -9,59 +8,28 @@ import moment from "moment";
  */
 interface Props {
   field: MetaformField,
-  fieldId: string,
-  fieldLabelId: string,
-  formReadOnly: boolean,
-  value: FieldValue,
-  getFieldValue: (fieldName: string) => FieldValue,
   onValueChange: (value: FieldValue) => void,
-  datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
-  onFocus: () => void
-}
-
-/**
- * Component state
- */
-interface State {
-  
+  datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element
 }
 
 /**
  * Component for Metaform text field
  */
-export class MetaformDateFieldComponent extends React.Component<Props, State> {
-
-  /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      
-    };
-  }
-
-  /**
-   * Component render method
-   */
-  public render() {
-    if (!this.props.field.name) {
-      return null;
-    }
-
-    return this.props.datePicker(this.props.field.name || "", this.onChange);
-  }
-  
+const MetaformDateFieldComponent: React.FC<Props> = ({
+  field,
+  onValueChange,
+  datePicker
+}) => {
   /**
    * Event handler for field input change
    * 
-   * @param event event
+   * @param date date
    */
-  private onChange = (date: Date) => {
-    this.props.onValueChange(date ? moment(date).format("YYYY-MM-DD") : null);
-  }
+  const onChange = (date: Date) => {
+    onValueChange(date ? moment(date).format("YYYY-MM-DD") : null);
+  };
 
-}
+  return datePicker(field.name || "", onChange);
+};
+
+export default MetaformDateFieldComponent;
