@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { MetaformField } from "generated/client";
 import { FieldValue } from "./types";
@@ -21,12 +20,9 @@ interface Props {
  */
 const MetaformAutocompleteFieldComponent: React.FC<Props> = ({
   field,
-  fieldId,
-  fieldLabelId,
   formReadOnly,
   value,
-  renderAutocomplete,
-  onFocus
+  renderAutocomplete
 }) => {
   if (!field.name) {
     return null;
