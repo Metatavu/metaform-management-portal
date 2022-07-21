@@ -1,4 +1,4 @@
-import { ContentWrapper, NewButton } from "styled/layouts/admin-layout";
+import { NewButton } from "styled/layouts/admin-layout";
 import strings from "localization/strings";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
@@ -18,9 +18,7 @@ const UsersScreen: React.FC = () => {
         />
         <NewButton variant="outlined" endIcon={<PersonAdd/>}>{ strings.navigationHeader.usersScreens.button.text }</NewButton>
       </NavigationTabContainer>
-      <ContentWrapper>
-        <PermissionFilter/>
-      </ContentWrapper>
+      <PermissionFilter/>
     </>
   );
 };

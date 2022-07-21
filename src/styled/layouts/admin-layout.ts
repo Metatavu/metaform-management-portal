@@ -40,7 +40,9 @@ export const FormFilterWrapper = styled(FormControl, {
   flexDirection: "row",
   BorderRadius: theme.spacing(2),
   width: "100%",
-  padding: theme.spacing(2)
+  padding: theme.spacing(2),
+  borderBottom: "0.06em solid #ccc",
+  borderTop: "0.06em solid #ccc"
 }));
 
 /**
