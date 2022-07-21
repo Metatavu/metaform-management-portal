@@ -6,13 +6,17 @@ import strings from "localization/strings";
 import { Metaform, Reply } from "generated/client";
 import { FieldValue, ValidationErrors } from "metaform-react/types";
 import { Dictionary } from "@reduxjs/toolkit";
-import { Alert, Link, Snackbar } from "@mui/material";
 import MetaformUtils from "utils/metaform-utils";
 import Mail from "mail/mail";
 import ConfirmDialog from "components/generic/confirm-dialog";
 import EmailDialog from "components/generic/email-dialog";
 import Form from "components/generic/form";
 import ReplySaved from "./form/ReplySaved";
+import ReplyEmailDialog from "./form/ReplyEmailDialog";
+import ReplyDelete from "./form/ReplyDelete";
+import Autosaving from "./form/Autosaving";
+import DraftSaveDialog from "./form/DraftSaveDialog";
+import DraftSavedDialog from "./form/DraftSavedDialog";
 
 /**
  * Component props
@@ -246,28 +250,6 @@ const FormScreen: React.FC<Props> = () => {
   };
 
   /**
-   * Renders draft save dialog
-   */
-  const renderDraftSave = () => {
-    return (
-      <Snackbar open={ draftSaveVisible } onClose={ () => setDraftSaveVisible(false) }>
-        <Alert onClose={ () => setDraftSaveVisible(false) } severity="info">
-          <span>
-            {" "}
-            { strings.formScreen.saveDraft }
-            {" "}
-          </span>
-          <Link href="#" onClick={ saveDraft }>
-            {" "}
-            { strings.formScreen.saveDraftLink }
-            {" "}
-          </Link>
-        </Alert>
-      </Snackbar>
-    );
-  };
-
-  /**
    * Returns draft link
    * 
    * @returns draft link or null if not available
@@ -342,129 +324,6 @@ const FormScreen: React.FC<Props> = () => {
   };
 
   /**
-   * Renders draft saved dialog
-   */
-  const renderDraftSaved = () => {
-    const draftLink = getDraftLink();
-
-    if (!draftLink) {
-      return null;
-    }
-
-    return (
-      <Snackbar open={ draftSavedVisible } onClose={ () => setDraftSavedVisible(false) } anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-        <Alert onClose={ () => setDraftSavedVisible(false) } severity="success">
-          <span>
-            {" "}
-            { strings.formScreen.draftSaved }
-            {" "}
-          </span>
-          <br/>
-          <br/>
-          <a href={ draftLink }>
-            {" "}
-            { draftLink }
-            {" "}
-          </a>
-          <p>
-            { strings.formScreen.draftEmailText }
-            <Link href="#" onClick={ onDraftEmailLinkClick }>
-              {" "}
-              { strings.formScreen.draftEmailLink }
-              {" "}
-            </Link>
-          </p>
-        </Alert>
-      </Snackbar>
-    );
-  };
-
-  /**
-   * Renders autosave dialog
-   */
-  const renderAutosaving = () => {
-    return (
-      <Snackbar open={ autosaving }>
-        <Alert severity="info">
-          <span>
-            {" "}
-            { strings.formScreen.autosaving }
-            {" "}
-          </span>
-        </Alert>
-      </Snackbar>
-    );
-  };
-
-  /**
-   * Finish later
-   */
-  const renderDraftEmailDialog = () => {
-    return (
-      <EmailDialog
-        text={ strings.formScreen.draftEmailDialogText }
-        open={ draftEmailDialogVisible }
-        onSend={ sendDraftEmail }
-        onCancel={ () => setDraftEmailDialogVisible(false) }
-      />
-    );
-  };
-
-  /**
-   * Renders reply email dialog
-   */
-  const renderReplyEmailDialog = () => {
-    return (
-      <EmailDialog
-        text={ strings.formScreen.replyEditEmailDialogText }
-        open={ replyEmailDialogVisible }
-        onSend={ sendReplyEmail }
-        onCancel={ () => setReplyEmailDialogVisible(false) }
-      />
-    );
-  };
-
-  /**
-   * Renders reply delete dialog
-   */
-  const renderReplyDelete = () => {
-    return (
-      <Snackbar open={ replyDeleteVisible } onClose={ () => setReplyDeleteVisible(false) }>
-        <Alert onClose={ () => setReplyDeleteVisible(false) } severity="warning">
-          <span>
-            {" "}
-            { strings.formScreen.replyDeleteText }
-            {" "}
-          </span>
-          <Link href="#" onClick={ () => setReplyConfirmVisible(true) }>
-            {" "}
-            { strings.formScreen.replyDeleteLink }
-            {" "}
-          </Link>
-        </Alert>
-      </Snackbar>
-    );
-  };
-
-  /**
-   * Renders delete reply confirm dialog
-   */
-  const renderReplyDeleteConfirm = () => {
-    return (
-      <ConfirmDialog
-        onClose={ () => setReplyConfirmVisible(false) }
-        onCancel={ () => setReplyConfirmVisible(false) }
-        onConfirm={ deleteReply }
-        cancelButtonText={ strings.generic.cancel }
-        positiveButtonText={ strings.generic.confirm }
-        title={ strings.formScreen.confirmDeleteReplyTitle }
-        text={ strings.formScreen.confirmDeleteReplyText }
-        open={ replyDeleteConfirmVisible }
-      />
-    );
-  };
-
-  /**
    * Implement later
    */
   const renderLogoutLink = () => {};
@@ -491,13 +350,44 @@ const FormScreen: React.FC<Props> = () => {
           onReplyEmailLinkClick={ onReplyEmailLinkClick }
           setReplySavedVisible={ setReplySavedVisible }
         />
-        { renderReplyEmailDialog() }
-        { renderReplyDelete() }
-        { renderReplyDeleteConfirm() }
-        { renderDraftSave() }
-        { renderDraftSaved() }
-        { renderDraftEmailDialog() }
-        { renderAutosaving() }
+        <ReplyEmailDialog
+          replyEmailDialogVisible={ replyEmailDialogVisible }
+          setReplyEmailDialogVisible={ setReplyEmailDialogVisible }
+          sendReplyEmail={ sendReplyEmail }
+        />
+        <ReplyDelete
+          replyDeleteVisible={ replyDeleteVisible }
+          setReplyConfirmVisible={ setReplyConfirmVisible }
+          setReplyDeleteVisible={ setReplyDeleteVisible }
+        />
+        <ConfirmDialog
+          onClose={ () => setReplyConfirmVisible(false) }
+          onCancel={ () => setReplyConfirmVisible(false) }
+          onConfirm={ deleteReply }
+          cancelButtonText={ strings.generic.cancel }
+          positiveButtonText={ strings.generic.confirm }
+          title={ strings.formScreen.confirmDeleteReplyTitle }
+          text={ strings.formScreen.confirmDeleteReplyText }
+          open={ replyDeleteConfirmVisible }
+        />
+        <DraftSaveDialog
+          setDraftSaveVisible={ setDraftSaveVisible }
+          draftSaveVisible={ draftSaveVisible }
+          saveDraft={ saveDraft }
+        />
+        <DraftSavedDialog
+          setDraftSavedVisible={ setDraftSavedVisible }
+          draftSavedVisible={ draftSavedVisible }
+          getDraftLink={ getDraftLink }
+          onDraftEmailLinkClick={ onDraftEmailLinkClick }
+        />
+        <EmailDialog
+          text={ strings.formScreen.draftEmailDialogText }
+          open={ draftEmailDialogVisible }
+          onSend={ sendDraftEmail }
+          onCancel={ () => setDraftEmailDialogVisible(false) }
+        />
+        <Autosaving autosaving={ autosaving }/>
         { renderLogoutLink() }
       </div>
     </BasicLayout>
