@@ -26,7 +26,7 @@ export const FilterSelector = styled(NativeSelect, {
   marginRight: "10px",
   height: theme.spacing(5),
   borderRadius: theme.spacing(1),
-  border: "1px solid #ccc",
+  border: "0.06em solid #ccc",
   padding: theme.spacing(2)
 }));
 
@@ -40,7 +40,9 @@ export const FormFilterWrapper = styled(FormControl, {
   flexDirection: "row",
   BorderRadius: theme.spacing(2),
   width: "100%",
-  padding: theme.spacing(2)
+  padding: theme.spacing(2),
+  borderBottom: "0.06em solid #ccc",
+  borderTop: "0.06em solid #ccc"
 }));
 
 /**
@@ -67,4 +69,15 @@ export const IconActionButton = styled(Button, {
 })(({ theme }) => ({
   borderRadius: 25,
   padding: theme.spacing(1.5)
+}));
+
+/**
+ * Styled new user button component
+ */
+export const NewUserButton = styled(Button, {
+  label: "new-button"
+})(() => ({
+  borderRadius: "1em",
+  margin: "2em",
+  fontWeight: "bold"
 }));
