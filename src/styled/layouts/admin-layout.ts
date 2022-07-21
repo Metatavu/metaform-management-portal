@@ -72,9 +72,9 @@ export const IconActionButton = styled(Button, {
 }));
 
 /**
- * Styled new button component
+ * Styled new user button component
  */
-export const NewButton = styled(Button, {
+export const NewUserButton = styled(Button, {
   label: "new-button"
 })(() => ({
   borderRadius: "1em",

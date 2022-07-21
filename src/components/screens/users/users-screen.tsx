@@ -1,4 +1,4 @@
-import { NewButton } from "styled/layouts/admin-layout";
+import { NewUserButton } from "styled/layouts/admin-layout";
 import strings from "localization/strings";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
@@ -16,7 +16,7 @@ const UsersScreen: React.FC = () => {
         <NavigationTab
           text={ strings.navigationHeader.usersScreens.subheader }
         />
-        <NewButton variant="outlined" endIcon={<PersonAdd/>}>{ strings.navigationHeader.usersScreens.button.text }</NewButton>
+        <NewUserButton variant="outlined" endIcon={<PersonAdd/>}>{ strings.navigationHeader.usersScreens.button.text }</NewUserButton>
       </NavigationTabContainer>
       <PermissionFilter/>
     </>
