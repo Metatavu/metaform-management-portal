@@ -203,9 +203,9 @@ const FormAutocomplete: React.FC<Props> = ({
 
   /**
    * Event handler for autocomplete change
-   * 
+   *
    * @param _event event
-   * @param value new value
+   * @param itemValue new value
    */
   const onAutocompleteChange = (_event: React.ChangeEvent<{}>, itemValue: AutocompleteItem | null) => {
     if (field.name) {
@@ -235,7 +235,7 @@ const FormAutocomplete: React.FC<Props> = ({
    * Equality check between option and value
    * 
    * @param option option
-   * @param value value
+   * @param itemValue value
    * 
    * @returns boolean representing whether a option is equal to a value
    */
