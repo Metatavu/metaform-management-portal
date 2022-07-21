@@ -1,4 +1,7 @@
 import { ContentWrapper } from "styled/layouts/admin-layout";
+import strings from "localization/strings";
+import { NavigationTabContainer } from "styled/layouts/navigations";
+import NavigationTab from "components/layouts/navigations/navigation-tab";
 import PermissionFilter from "components/selectors/permission-filter";
 import React from "react";
 
@@ -7,9 +10,16 @@ import React from "react";
  */
 const UsersScreen: React.FC = () => {
   return (
-    <ContentWrapper>
-      <PermissionFilter/>
-    </ContentWrapper>
+    <>
+      <NavigationTabContainer>
+        <NavigationTab
+          text={ strings.navigationHeader.usersScreens }
+        />
+      </NavigationTabContainer>
+      <ContentWrapper>
+        <PermissionFilter/>
+      </ContentWrapper>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, InputLabel } from "@mui/material";
+import { TextField } from "@mui/material";
 import { FilterSelector, FormFilterWrapper } from "../../styled/layouts/admin-layout";
 import strings from "localization/strings";
 
@@ -32,7 +32,6 @@ const PermissionFilter: React.FC = () => {
 
   return (
     <FormFilterWrapper>
-      <InputLabel shrink id="first-selector">Lomake</InputLabel>
       <FilterSelector
         value={ firstSelector }
         onChange={ handleFirstSelectorChange }
