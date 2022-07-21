@@ -68,3 +68,14 @@ export const IconActionButton = styled(Button, {
   borderRadius: 25,
   padding: theme.spacing(1.5)
 }));
+
+/**
+ * Styled new button component
+ */
+export const NewButton = styled(Button, {
+  label: "new-button"
+})(() => ({
+  borderRadius: "1em",
+  margin: "2em",
+  fontWeight: "bold"
+}));
