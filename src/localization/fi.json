@@ -50,7 +50,10 @@
     },
     "usersScreens": {
       "title": "Käyttäjänhallinta",
-      "description": "Ohjeteksti"
+      "description": "Ohjeteksti",
+      "button": {
+        "text": "Uusi käyttäjä"
+      }
     },
     "editorScreens": {
       "title": "Editori",

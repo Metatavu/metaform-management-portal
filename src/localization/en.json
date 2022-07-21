@@ -49,7 +49,10 @@
     },
     "usersScreens": {
       "title": "User management",
-      "description": "Help text"
+      "description": "Help text",
+      "button": {
+        "text": "New user"
+      }
     },
     "editorScreens": {
       "title": "Editors",

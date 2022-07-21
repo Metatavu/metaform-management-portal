@@ -3,6 +3,8 @@ import strings from "localization/strings";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import PermissionFilter from "components/selectors/permission-filter";
+import { Button } from "@mui/material";
+import { PersonAdd } from "@mui/icons-material";
 import React from "react";
 
 /**
@@ -15,6 +17,7 @@ const UsersScreen: React.FC = () => {
         <NavigationTab
           text={ strings.navigationHeader.usersScreens }
         />
+        <Button variant="outlined" endIcon={<PersonAdd/>}>{ strings.navigationHeader.usersScreens.button.text }</Button>
       </NavigationTabContainer>
       <ContentWrapper>
         <PermissionFilter/>
