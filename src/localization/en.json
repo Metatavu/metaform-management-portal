@@ -48,8 +48,12 @@
       }
     },
     "usersScreens": {
-      "title": "User management",
-      "description": "Help text",
+      "title": "Users",
+      "description": "View users and manage user groups.",
+      "subheader": {
+        "title": "User management",
+        "description": "Help text"
+      },
       "button": {
         "text": "New user"
       }

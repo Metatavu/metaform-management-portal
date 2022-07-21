@@ -77,6 +77,10 @@ export interface Localized extends LocalizedStringsMethods {
     usersScreens: {
       title: string;
       description: string;
+      subheader: {
+        "title": string;
+        "description": string;
+      }
       button: {
         text: string
       }

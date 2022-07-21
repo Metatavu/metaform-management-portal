@@ -15,7 +15,7 @@ const UsersScreen: React.FC = () => {
     <>
       <NavigationTabContainer>
         <NavigationTab
-          text={ strings.navigationHeader.usersScreens }
+          text={ strings.navigationHeader.usersScreens.subheader }
         />
         <Button variant="outlined" endIcon={<PersonAdd/>}>{ strings.navigationHeader.usersScreens.button.text }</Button>
       </NavigationTabContainer>

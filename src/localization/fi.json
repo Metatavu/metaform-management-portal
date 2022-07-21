@@ -49,8 +49,12 @@
       }
     },
     "usersScreens": {
-      "title": "Käyttäjänhallinta",
-      "description": "Ohjeteksti",
+      "title": "Käyttäjät",
+      "description": "Käyttäjien tarkastelu ja käyttäjäryhmien hallinta.",
+      "subheader": {
+        "title": "Käyttäjänhallinta",
+        "description": "Ohjeteksti"
+      },
       "button": {
         "text": "Uusi käyttäjä"
       }
