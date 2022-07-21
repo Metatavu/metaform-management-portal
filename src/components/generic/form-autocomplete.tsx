@@ -30,7 +30,11 @@ const FormAutocomplete: React.FC<Props> = ({
   value,
   setFieldValue
 }) => {
-  const [ errorMessage ] = useState("");
+  const [ errorMessage, setErrorMessage ] = useState("");
+  const [ loading, setLoading ] = useState(false);
+  const [ items, setItems ] = useState<AutocompleteItem[]>([]);
+  const [ defaultValue, setDefaultValue ] = useState<AutocompleteItem | undefined>(undefined);
+  const [ inputValue, setInputValue ] = useState<string>("");
 
   /**
    * Renders loader
@@ -95,7 +99,7 @@ const FormAutocomplete: React.FC<Props> = ({
       qvalue: codeServerParentConceptCodeId
     });
     
-    const items: AutocompleteItem[] = (response.conceptCodes || []).map(conceptCodes => {
+    const autoCompleteItems: AutocompleteItem[] = (response.conceptCodes || []).map(conceptCodes => {
       return (conceptCodes.attributes || [])
         .filter(attribute => attribute.attributeName && attribute.attributeValue)
         .reduce((mapped: { [key: string]: string }, attribute: Attribute) => {
@@ -106,7 +110,7 @@ const FormAutocomplete: React.FC<Props> = ({
         }, { id: conceptCodes.conceptCodeId!! }) as AutocompleteItem;
     });
 
-    return items;
+    return autoCompleteItems;
   };
   
   /**
@@ -175,11 +179,9 @@ const FormAutocomplete: React.FC<Props> = ({
         const loadedItems = await loadItems();
         const defaultAutoCompleteItem = loadedItems.find(item => item.id === value as string);
         
-        useState({
-          items: loadedItems,
-          loading: false,
-          defaultValue: defaultAutoCompleteItem ? { ...defaultAutoCompleteItem } : defaultAutoCompleteItem
-        });
+        setItems(loadedItems);
+        setLoading(false);
+        setDefaultValue(defaultAutoCompleteItem ? { ...defaultAutoCompleteItem } : defaultAutoCompleteItem);
   
         getSourceFields().forEach(sourceField => {
           if (sourceField.name) {
@@ -189,10 +191,8 @@ const FormAutocomplete: React.FC<Props> = ({
           }
         });
       } catch (e: any) {
-        useState({
-          loading: false,
-          errorMessage: e.message
-        });
+        setLoading(false);
+        setErrorMessage(e.message);
       }
     },
     []
@@ -225,9 +225,7 @@ const FormAutocomplete: React.FC<Props> = ({
    * @param newInputValue new input value
    */
   const onAutocompleteInputChange = (_event: React.ChangeEvent<{}>, newInputValue: string) => {
-    useState({
-      inputValue: newInputValue
-    });
+    setInputValue(newInputValue);
   };
 
   /**
