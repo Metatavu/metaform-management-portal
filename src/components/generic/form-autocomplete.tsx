@@ -167,36 +167,39 @@ const FormAutocomplete: React.FC<Props> = ({
   };
 
   /**
-   * Component did mount life cycle event
+   * Loading items
    */
-  useEffect(
-    () => {
-      useState({
-        loading: true
+  const loadingItems = async () => {
+    try {
+      const loadedItems = await loadItems();
+      const defaultAutoCompleteItem = loadedItems.find(item => item.id === value as string);
+
+      setItems(loadedItems);
+      setLoading(false);
+      setDefaultValue(defaultAutoCompleteItem ? { ...defaultAutoCompleteItem } : defaultAutoCompleteItem);
+      console.log(loading);
+
+      getSourceFields().forEach(sourceField => {
+        if (sourceField.name) {
+          const itemProperty = sourceField.source?.options?.autocompleteItemProperty;
+          const itemValue = itemProperty && defaultAutoCompleteItem ? defaultAutoCompleteItem[itemProperty] : null;
+          setFieldValue(sourceField.name, itemValue);
+        }
       });
-  
-      try {
-        const loadedItems = await loadItems();
-        const defaultAutoCompleteItem = loadedItems.find(item => item.id === value as string);
-        
-        setItems(loadedItems);
-        setLoading(false);
-        setDefaultValue(defaultAutoCompleteItem ? { ...defaultAutoCompleteItem } : defaultAutoCompleteItem);
-  
-        getSourceFields().forEach(sourceField => {
-          if (sourceField.name) {
-            const itemProperty = sourceField.source?.options?.autocompleteItemProperty;
-            const itemValue = itemProperty && defaultAutoCompleteItem ? defaultAutoCompleteItem[itemProperty] : null;
-            setFieldValue(sourceField.name, itemValue);
-          }
-        });
-      } catch (e: any) {
-        setLoading(false);
-        setErrorMessage(e.message);
-      }
-    },
-    []
-  );
+    } catch (e: any) {
+      setLoading(false);
+      setErrorMessage(e.message);
+    }
+  };
+
+  /**
+   * Component did mount life cycle event
+   * TODO: Infinite loading loop
+   */
+  useEffect(() => {
+    setLoading(true);
+    loadingItems();
+  }, []);
 
   /**
    * Event handler for autocomplete change
