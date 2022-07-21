@@ -78,7 +78,6 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       });
 
       await keycloakInstance.loadUserProfile();
-      console.log(keycloakInstance);
       dispatch(login(keycloakInstance));
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -96,7 +95,6 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       }
 
       await keycloak.updateToken(70);
-      console.log(keycloak.token);
       dispatch(login(keycloak));
     } catch (error) {
       // eslint-disable-next-line no-console
