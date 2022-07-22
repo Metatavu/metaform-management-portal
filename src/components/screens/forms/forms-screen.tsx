@@ -99,8 +99,8 @@ const FormsScreen: React.FC = () => (
       />
     </NavigationTabContainer>
     <DataGrid
-      rows={rows}
-      columns={columns}
+      rows={ rows }
+      columns={ columns }
       autoHeight
       disableColumnMenu
       disableColumnSelector
