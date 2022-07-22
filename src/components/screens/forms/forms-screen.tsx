@@ -3,11 +3,11 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
-import MenuIcon from "@mui/icons-material/Menu";
+import ListIcon from "@mui/icons-material/List";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Stack } from "@mui/material";
+import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 
 const columns: GridColDef[] = [
   {
@@ -16,18 +16,18 @@ const columns: GridColDef[] = [
     width: 1000,
     renderHeader: params => {
       return (
-        <Stack direction="row" alignItems="center">
-          <MenuIcon/>
-          {params.colDef.headerName}
-        </Stack>
+        <AdminFormListStack direction="row">
+          <ListIcon/>
+          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{params.colDef.headerName}</AdminFormTypographyField>
+        </AdminFormListStack>
       );
     },
     renderCell: params => {
       return (
-        <Stack direction="row" alignItems="center">
-          <MenuIcon/>
-          {params.id}
-        </Stack>
+        <AdminFormListStack direction="row">
+          <ListIcon/>
+          <AdminFormTypographyField>{params.id}</AdminFormTypographyField>
+        </AdminFormListStack>
       );
     }
   },
@@ -37,18 +37,18 @@ const columns: GridColDef[] = [
     width: 250,
     renderHeader: params => {
       return (
-        <Stack direction="row" alignItems="center">
+        <AdminFormListStack direction="row">
           <DateRangeIcon/>
-          {params.colDef.headerName}
-        </Stack>
+          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{params.colDef.headerName}</AdminFormTypographyField>
+        </AdminFormListStack>
       );
     },
     renderCell: params => {
       return (
-        <Stack direction="row" alignItems="center">
+        <AdminFormListStack direction="row">
           <DateRangeIcon/>
-          {params.row.VIIMEISIN}
-        </Stack>
+          <AdminFormTypographyField>{params.row.VIIMEISIN}</AdminFormTypographyField>
+        </AdminFormListStack>
       );
     }
   },
@@ -58,18 +58,18 @@ const columns: GridColDef[] = [
     width: 250,
     renderHeader: params => {
       return (
-        <Stack direction="row" alignItems="center">
+        <AdminFormListStack direction="row">
           <NotificationsIcon/>
-          {params.colDef.headerName}
-        </Stack>
+          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{params.colDef.headerName}</AdminFormTypographyField>
+        </AdminFormListStack>
       );
     },
     renderCell: params => {
       return (
-        <Stack direction="row" alignItems="center">
+        <AdminFormListStack direction="row">
           <NotificationsActiveIcon style={ { fill: "red " } }/>
-          {params.row.UUSIA}
-        </Stack>
+          <AdminFormTypographyField>{params.row.UUSIA}</AdminFormTypographyField>
+        </AdminFormListStack>
       );
     }
   }
@@ -108,7 +108,6 @@ const FormsScreen: React.FC = () => (
       disableColumnMenu
       disableColumnSelector
       disableSelectionOnClick
-      
     />
   </>
 );

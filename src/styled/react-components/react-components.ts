@@ -1,4 +1,4 @@
-import { Slider, Box, TextField, Input } from "@mui/material";
+import { Slider, Box, TextField, Input, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 /**
@@ -127,4 +127,26 @@ export const TableNumberCellWrapper = styled(TextField, {
   border: "1px solid rgba(0, 0, 0, .5)",
   borderRadius: "0.5rem",
   backgroundColor: "#fff"
+}));
+
+/**
+ * Styled administrator form list stack component
+ */
+export const AdminFormListStack = styled(Stack, {
+  label: "admin-form-list-stack"
+})(() => ({
+  alignItems: "center",
+  padding: "1rem"
+}));
+
+/**
+ * Styled administrator form text field component
+ */
+export const AdminFormTypographyField = styled(Typography, {
+  label: "admin-form-text-field"
+})(() => ({
+  flex: 1,
+  width: "100%",
+  fontSize: "1em",
+  margin: "0.5rem"
 }));
