@@ -1,9 +1,10 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from "react";
 import { useEffect, useState } from "react";
 import BasicLayout, { SnackbarMessage } from "components/layouts/basic-layout";
 import strings from "localization/strings";
-import { Metaform, Reply } from "generated/client";
+import { Metaform, MetaformFieldSourceType, MetaformFieldType, Reply } from "generated/client";
 import { FieldValue, ValidationErrors } from "metaform-react/types";
 import { Dictionary } from "@reduxjs/toolkit";
 import MetaformUtils from "utils/metaform-utils";
@@ -17,6 +18,10 @@ import ReplyDelete from "./form/ReplyDelete";
 import Autosaving from "./form/Autosaving";
 import DraftSaveDialog from "./form/DraftSaveDialog";
 import DraftSavedDialog from "./form/DraftSavedDialog";
+import Config from "app/config";
+import Api from "api";
+import { useApiClient, useAppSelector } from "app/hooks";
+import { selectKeycloak } from "features/auth-slice";
 
 /**
  * Component props
@@ -34,8 +39,8 @@ const FormScreen: React.FC<Props> = () => {
 
   const [ , setReplyConfirmVisible ] = useState(false);
   const [ accessTokenNotValid ] = useState(true);
-  const [ metaform ] = useState<Metaform>();
-  const [ ownerKey, setOwnerKey ] = useState<string>();
+  const [ metaform, setMetaform ] = useState<Metaform>();
+  const [ ownerKey, setOwnerKey ] = useState<string | null>();
   const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});
   const [ formValid, setFormValid ] = useState(true);
   const [ draftSaveVisible, setDraftSaveVisible ] = useState(false);
@@ -43,11 +48,14 @@ const FormScreen: React.FC<Props> = () => {
   const [ draftSavedVisible, setDraftSavedVisible ] = useState(false);
   const [ reply, setReply ] = useState<Reply>();
   const [ replySavedVisible, setReplySavedVisible ] = useState(false);
-  const [ draftId ] = useState<string | null>(null);
+  const [ draftId, setDraftId ] = useState<string | null>(null);
   const [ draftEmailDialogVisible, setDraftEmailDialogVisible ] = useState(false);
   const [ replyEmailDialogVisible, setReplyEmailDialogVisible ] = useState(false);
   const [ replyDeleteVisible, setReplyDeleteVisible ] = useState(false);
   const [ replyDeleteConfirmVisible ] = useState(false);
+
+  const apiClient = useApiClient(Api.getApiClient);
+  const keycloak = useAppSelector(selectKeycloak);
 
   /**
    * Returns reply edit link
@@ -102,13 +110,6 @@ const FormScreen: React.FC<Props> = () => {
     }
   };
 
-  /**
-   * Implement later
-   */
-  const processReplyData = async () => {
-    return {};
-  };
-
   /** 
    * Implement later
    */
@@ -121,6 +122,50 @@ const FormScreen: React.FC<Props> = () => {
    */
   const createReply = () => {
     return {};
+  };
+
+  /**
+   * Processes reply from server into form that is understood by ui
+   * 
+   * @param foundMetaform metaform that is being viewed
+   * @param foundReply reply loaded from server
+   * @param currentOwnerKey owner key for the reply
+   * 
+   * @return data processes to be used by ui
+   */
+  const processReplyData = async (foundMetaform: Metaform, foundReply: Reply, currentOwnerKey: string) => {
+    const { attachmentsApi } = apiClient;
+    const values = foundReply.data;
+    for (let i = 0; i < (foundMetaform.sections || []).length; i++) {
+      const section = foundMetaform.sections && foundMetaform.sections[i] ? foundMetaform.sections[i] : undefined;
+      if (section) {
+        for (let j = 0; j < (section.fields || []).length; j++) {
+          const field = section.fields && section.fields[j] ? section.fields[j] : undefined;
+          if (field &&
+                    field.type === MetaformFieldType.Files &&
+                    values &&
+                    field.name &&
+                    values[field.name]) {
+            const fileIds = Array.isArray(values[field.name]) ? values[field.name] : [values[field.name]];
+            const attachmentPromises = (fileIds as string[]).map(fileId => {
+              return attachmentsApi.findAttachment({ attachmentId: fileId, ownerKey: currentOwnerKey });
+            });
+              // eslint-disable-next-line no-await-in-loop
+            const attachments = await Promise.all(attachmentPromises);
+            values[field.name] = {
+              files: attachments.map(a => {
+                return {
+                  name: a.name,
+                  id: a.id,
+                  persisted: true
+                };
+              })
+            };
+          }
+        }
+      }
+    }
+    return values;
   };
 
   /**
@@ -143,7 +188,7 @@ const FormScreen: React.FC<Props> = () => {
       const updatedOwnerKey = ownerKey || reply?.ownerKey;
       let updatedValues = replyToUpdate?.data;
       if (updatedOwnerKey && reply) {
-        updatedValues = await processReplyData();
+        updatedValues = await processReplyData(metaform, replyToUpdate, updatedOwnerKey);
       }
 
       setSaving(false);
@@ -329,9 +374,156 @@ const FormScreen: React.FC<Props> = () => {
   const renderLogoutLink = () => {};
 
   /**
-   * Implement when Keycloak and API connected to the project
+   * Prepares form values for the form. 
+   *
+   * @param metaformToPrepare metaform
+   * @returns prepared form values
    */
-  const setup = async () => {};
+  const prepareFormValues = (metaformToPrepare: Metaform): Dictionary<FieldValue> => {
+    const result = { ...formValues };
+
+    metaformToPrepare.sections?.forEach(section => {
+      section.fields?.forEach(field => {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        const { name, _default, options, source } = field;
+
+        if (field.type === MetaformFieldType.Files && !field.uploadUrl) {
+          field.uploadUrl = Api.createDefaultUploadUrl();
+        }
+
+        if (name) {
+          if (_default) {
+            result[name] = _default;
+          } else if (options && options.length) {
+            const selectedOption = options.find(option => option.selected || option.checked);
+            if (selectedOption) {
+              result[name] = selectedOption.name;
+            }
+          }
+
+          if (keycloak) {
+            const { tokenParsed } = keycloak;
+
+            if (source && source.type === MetaformFieldSourceType.AccessToken && tokenParsed) {
+              const accessTokenAttribute = source.options?.accessTokenAttribute;
+              const accessTokenValue = accessTokenAttribute ? (tokenParsed as any)[accessTokenAttribute] : null;
+              if (accessTokenValue) {
+                result[name] = accessTokenValue;
+              }
+            }
+          }
+        }
+      });
+    });
+
+    return result;
+  };
+
+  /**
+   * Finds the reply from API
+   * 
+   * @param replyId reply id
+   * @param currentOwnerKey owner key
+   * @returns found reply or null if not found
+   */
+  const findReply = async (replyId: string, currentOwnerKey: string) => {
+    try {
+      const metaformId = Config.getMetaformId();
+  
+      const replyApi = apiClient.repliesApi;
+      return await replyApi.findReply({
+        metaformId: metaformId,
+        replyId: replyId,
+        ownerKey: currentOwnerKey
+      });
+    } catch (e) {
+      return null;
+    }
+  };
+
+  /**
+   * Finds the draft from API
+   * 
+   * @param draftToFindId draft id
+   * @returns found draft or null if not found
+   */
+  const findDraft = async (draftToFindId: string) => {
+    try {
+      const metaformId = Config.getMetaformId();
+        
+      const { draftsApi } = apiClient;
+      return await draftsApi.findDraft({
+        metaformId: metaformId,
+        draftId: draftToFindId
+      });
+    } catch (e) {
+      return null;
+    }
+  };
+
+  /**
+   * View setup
+   */
+  const setup = async () => {
+    const query = new URLSearchParams(location.search);
+
+    setDraftId(query.get("draft"));
+    const replyId = query.get("reply");
+    const currentOwnerKey = query.get("owner-key");
+
+    const metaformId = Config.getMetaformId();
+
+    try {
+      setLoading(true);
+      const { metaformsApi } = apiClient;
+
+      const foundMetaform = await metaformsApi.findMetaform({
+        metaformId: metaformId,
+        replyId: replyId || undefined,
+        ownerKey: currentOwnerKey || undefined
+      });
+      
+      document.title = foundMetaform.title ? foundMetaform.title : "Metaform";
+
+      const preparedFormValues = prepareFormValues(foundMetaform);
+
+      if (replyId && currentOwnerKey) {
+        const foundReply = await findReply(replyId, currentOwnerKey);
+        if (foundReply) {
+          const replyData = await processReplyData(foundMetaform, foundReply, currentOwnerKey);
+          if (replyData) {
+            Object.keys(replyData as any).forEach(replyKey => {
+              preparedFormValues[replyKey] = replyData[replyKey] as any;
+            });
+          }
+
+          setReply(foundReply);
+          setOwnerKey(currentOwnerKey);
+          setReplyDeleteVisible(!!currentOwnerKey);
+        } else {
+          setSnackbarMessage({
+            message: strings.formScreen.replyNotFound,
+            severity: "error"
+          });
+        }
+      } else if (draftId) {
+        const draft = await findDraft(draftId);
+        const draftData = draft?.data || {};
+        Object.keys(draftData).forEach(draftKey => {
+          formValues[draftKey] = draftData[draftKey] as any;
+        });
+      }
+
+      setMetaform(foundMetaform);
+      setFormValues(preparedFormValues);
+    } catch (e) {
+      /**
+       * Implement error handling
+       */
+    }
+
+    setLoading(false);
+  };
 
   useEffect(() => {
     setup();

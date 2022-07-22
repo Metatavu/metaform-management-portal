@@ -12,7 +12,8 @@ const env = cleanEnv(process.env, {
   REACT_APP_SENTRY_DSN: url({ default: undefined }),
   REACT_APP_SENTRY_ENVIRONMENT: str({ default: "production" }),
   REACT_APP_ANONYMOUS_USER: str(),
-  REACT_APP_ANONYMOUS_PASSWORD: str()
+  REACT_APP_ANONYMOUS_PASSWORD: str(),
+  REACT_APP_FORM_ID: str()
 });
 
 /**
@@ -57,5 +58,14 @@ export default class Config {
   public static getSentryEnvironment(): string {
     return env.REACT_APP_SENTRY_ENVIRONMENT;
   }
+
+  /**
+   * Returns used metaform id
+   * 
+   * @returns metaform id
+   */
+  public static getMetaformId = () => {
+    return env.REACT_APP_FORM_ID;
+  };
 
 }

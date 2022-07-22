@@ -136,7 +136,8 @@
     "replyDeleteText": "Voit poistaa tämän vastauksen klikkaamalla",
     "replyDeleteLink": "tästä",
     "confirmDeleteReplyTitle": "Oletko varma?",
-    "confirmDeleteReplyText": "Oletko varma, että haluat poistaa vastauksen?"
+    "confirmDeleteReplyText": "Oletko varma, että haluat poistaa vastauksen?",
+    "replyNotFound": "Vastausta ei löytynyt järjestelmästä"
   },
 
   "emailDialog": {
