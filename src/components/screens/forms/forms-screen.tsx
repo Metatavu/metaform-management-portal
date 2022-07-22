@@ -8,6 +8,7 @@ import DateRangeIcon from "@mui/icons-material/DateRange";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
+import { Link } from "react-router-dom";
 
 const columns: GridColDef[] = [
   {
@@ -18,7 +19,7 @@ const columns: GridColDef[] = [
       return (
         <AdminFormListStack direction="row">
           <ListIcon style={ { fill: "darkgrey" } }/>
-          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{params.colDef.headerName}</AdminFormTypographyField>
+          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
         </AdminFormListStack>
       );
     },
@@ -26,7 +27,7 @@ const columns: GridColDef[] = [
       return (
         <AdminFormListStack direction="row">
           <ListIcon style={ { fill: "darkgrey" } }/>
-          <AdminFormTypographyField><a href={`forms/${params.id}`}>{params.id}</a></AdminFormTypographyField>
+          <AdminFormTypographyField><Link to={`${params.id}`}>{ params.id }</Link></AdminFormTypographyField>
         </AdminFormListStack>
       );
     }
@@ -39,7 +40,7 @@ const columns: GridColDef[] = [
       return (
         <AdminFormListStack direction="row">
           <DateRangeIcon style={ { fill: "darkgrey" } }/>
-          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{params.colDef.headerName}</AdminFormTypographyField>
+          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
         </AdminFormListStack>
       );
     },
@@ -47,7 +48,7 @@ const columns: GridColDef[] = [
       return (
         <AdminFormListStack direction="row">
           <DateRangeIcon style={ { fill: "darkgrey" } }/>
-          <AdminFormTypographyField>{params.row.latestReply}</AdminFormTypographyField>
+          <AdminFormTypographyField>{ params.row.latestReply }</AdminFormTypographyField>
         </AdminFormListStack>
       );
     }
@@ -60,7 +61,7 @@ const columns: GridColDef[] = [
       return (
         <AdminFormListStack direction="row">
           <NotificationsIcon style={ { fill: "darkgrey" } }/>
-          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{params.colDef.headerName}</AdminFormTypographyField>
+          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
         </AdminFormListStack>
       );
     },
@@ -68,7 +69,7 @@ const columns: GridColDef[] = [
       return (
         <AdminFormListStack direction="row">
           <NotificationsActiveIcon style={ { fill: "red" } }/>
-          <AdminFormTypographyField>{params.row.newReply}</AdminFormTypographyField>
+          <AdminFormTypographyField>{ params.row.newReply }</AdminFormTypographyField>
         </AdminFormListStack>
       );
     }
