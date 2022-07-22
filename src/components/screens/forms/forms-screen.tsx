@@ -32,7 +32,7 @@ const columns: GridColDef[] = [
     }
   },
   {
-    field: "VIIMEISIN",
+    field: "latestReply",
     headerName: strings.navigationHeader.formsScreens.formScreen.form.latestReply,
     width: 250,
     renderHeader: params => {
@@ -47,13 +47,13 @@ const columns: GridColDef[] = [
       return (
         <AdminFormListStack direction="row">
           <DateRangeIcon style={ { fill: "darkgrey" } }/>
-          <AdminFormTypographyField>{params.row.VIIMEISIN}</AdminFormTypographyField>
+          <AdminFormTypographyField>{params.row.latestReply}</AdminFormTypographyField>
         </AdminFormListStack>
       );
     }
   },
   {
-    field: "UUSIA",
+    field: "newReply",
     headerName: strings.navigationHeader.formsScreens.formScreen.form.newReply,
     width: 250,
     renderHeader: params => {
@@ -68,7 +68,7 @@ const columns: GridColDef[] = [
       return (
         <AdminFormListStack direction="row">
           <NotificationsActiveIcon style={ { fill: "red" } }/>
-          <AdminFormTypographyField>{params.row.UUSIA}</AdminFormTypographyField>
+          <AdminFormTypographyField>{params.row.newReply}</AdminFormTypographyField>
         </AdminFormListStack>
       );
     }
@@ -77,10 +77,10 @@ const columns: GridColDef[] = [
 
 const rows = [
   {
-    id: "SOSTERI-Huoli-vanhuksesta", VIIMEISIN: "01.0.1.2022 16:48", UUSIA: strings.navigationHeader.formsScreens.formScreen.form.notProcessed
+    id: "SOSTERI-Huoli-vanhuksesta", latestReply: "01.0.1.2022 16:48", newReply: strings.navigationHeader.formsScreens.formScreen.form.notProcessed
   },
   {
-    id: "ESSOTE-Huoli-vanhuksesta", VIIMEISIN: "01.0.1.2022 16:48", UUSIA: "-"
+    id: "ESSOTE-Huoli-vanhuksesta", latestReply: "01.0.1.2022 16:48", newReply: "-"
   }
 ];
 
