@@ -12,7 +12,12 @@
   },
 
   "errorHandling": {
-    "title": "Error"
+    "title": "Tapahtui virhe",
+    "formScreen": {
+      "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
+      "sendReplyEmail": "Vastauslinkin lähettämisessä sähköpostiin tapahtui virhe",
+      "sendReplyDraftEmail": "Vastausluonnoksen linkin lähettämisessä sähköpostiin tapahtui virhe"
+    }
   },
 
   "formComponent": {

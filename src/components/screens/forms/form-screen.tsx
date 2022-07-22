@@ -17,6 +17,7 @@ import ReplyDelete from "./form/ReplyDelete";
 import Autosaving from "./form/Autosaving";
 import DraftSaveDialog from "./form/DraftSaveDialog";
 import DraftSavedDialog from "./form/DraftSavedDialog";
+import { ErrorContext } from "components/contexts/error-handler";
 
 /**
  * Component props
@@ -28,13 +29,14 @@ interface Props {
  * Component for exhibitions screen
  */
 const FormScreen: React.FC<Props> = () => {
+  const errorContext = React.useContext(ErrorContext);
   const [ , setLoading ] = useState(false);
   const [ , setSaving ] = useState(false);
   const [ , setSnackbarMessage ] = useState<SnackbarMessage>();
 
   const [ , setReplyConfirmVisible ] = useState(false);
   const [ accessTokenNotValid ] = useState(true);
-  const [ metaform ] = useState<Metaform>();
+  const [ metaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ ownerKey, setOwnerKey ] = useState<string>();
   const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});
   const [ formValid, setFormValid ] = useState(true);
@@ -152,7 +154,7 @@ const FormScreen: React.FC<Props> = () => {
       setFormValues(updatedValues as any);
       setReplySavedVisible(true);
     } catch (e) {
-      /** Implement error handling */
+      errorContext.setError(strings.errorHandling.formScreen.saveReply, e);
     }
   };
 
@@ -213,9 +215,7 @@ const FormScreen: React.FC<Props> = () => {
         severity: "success"
       });
     } catch (e) {
-      /**
-       * Implement error handling
-       */
+      errorContext.setError(strings.errorHandling.formScreen.sendReplyEmail, e);
     }
   };
   
@@ -317,9 +317,7 @@ const FormScreen: React.FC<Props> = () => {
         severity: "success"
       });
     } catch (e) {
-      /**
-       * Implement error handling
-       */
+      errorContext.setError(strings.errorHandling.formScreen.sendReplyEmail, e);
     }
   };
 
