@@ -1,3 +1,5 @@
+import { Attachment, CreateDraftRequest, CreateReplyRequest, DeleteReplyRequest, Draft, FindAttachmentRequest, FindDraftRequest, FindMetaformRequest, FindReplyRequest, Metaform, Reply, UpdateDraftRequest, UpdateReplyRequest } from "generated/client";
+
 /**
  * Application configuration
  */
@@ -88,4 +90,37 @@ export enum NavigationLinks {
  */
 export interface Dictionary<T> {
   [Key: string]: T;
+}
+
+/**
+ * Metaforms API context type
+ */
+export interface MetaformsApiContextType {
+  findMetaform: (request: FindMetaformRequest) => Promise<Metaform>
+}
+
+/**
+ * Attachments API context type
+ */
+export interface AttachmentsApiContextType {
+  findAttachment: (request: FindAttachmentRequest) => Promise<Attachment>
+}
+
+/**
+ * Attachments API context type
+ */
+export interface DraftsApiContextType {
+  findDraft: (request: FindDraftRequest) => Promise<Draft>,
+  createDraft: (request: CreateDraftRequest) => Promise<Draft>,
+  updateDraft: (request: UpdateDraftRequest) => Promise<Draft>
+}
+
+/**
+ * Replies API context type
+ */
+export interface RepliesApiContextType {
+  findReply: (request: FindReplyRequest) => Promise<Reply>,
+  deleteReply: (request: DeleteReplyRequest) => Promise<void>,
+  createReply: (request: CreateReplyRequest) => Promise<Reply>,
+  updateReply: (request: UpdateReplyRequest) => Promise<void>
 }
