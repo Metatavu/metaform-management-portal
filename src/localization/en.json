@@ -46,7 +46,13 @@
       "description": "Review of forms and responses.",
       "formScreen": {
         "title": "Form listing",
-        "description": "A list of forms that the user has permission to process."
+        "description": "A list of forms that the user has permission to process.",
+        "form": {
+          "form": "FORM",
+          "latestReply": "LATEST",
+          "newReply": "NEW",
+          "notProcessed": "untreated"
+        }
       },
       "formDataScreen": {
         "title": "Viewing data",
