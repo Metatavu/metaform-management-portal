@@ -70,6 +70,9 @@ export interface Localized extends LocalizedStringsMethods {
         title: string;
         description: string;
         form: {
+          form: string;
+          latest: string;
+          new: string;
           notification: string;
         }
       };

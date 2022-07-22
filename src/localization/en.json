@@ -43,6 +43,9 @@
         "title": "Form listing",
         "description": "A list of forms that the user has permission to process.",
         "form": {
+          "form": "FORM",
+          "latest": "LATEST",
+          "new": "NEW",
           "notification": "untreated"
         }
       },

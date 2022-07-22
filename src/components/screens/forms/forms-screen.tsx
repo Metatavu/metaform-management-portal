@@ -12,7 +12,7 @@ import { AdminFormListStack, AdminFormTypographyField } from "styled/react-compo
 const columns: GridColDef[] = [
   {
     field: "id",
-    headerName: "LOMAKE",
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.form,
     width: 1000,
     renderHeader: params => {
       return (
@@ -33,7 +33,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "VIIMEISIN",
-    headerName: "VIIMEISIN",
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.latest,
     width: 250,
     renderHeader: params => {
       return (
@@ -54,7 +54,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "UUSIA",
-    headerName: "UUSIA",
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.new,
     width: 250,
     renderHeader: params => {
       return (

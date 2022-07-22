@@ -44,6 +44,9 @@
         "title": "Lomakelistaus",
         "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus.",
         "form": {
+          "form": "LOMAKE",
+          "latest": "VIIMEISIN",
+          "new": "UUSIA",
           "notification": "käsittelemättömiä"
         }
       },
