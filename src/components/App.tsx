@@ -35,34 +35,36 @@ const App: React.FC = () => (
           <AttachmentsApiProvider>
             <MetaformsApiProvider>
               <DraftsApiProvider>
-                <ConfirmHandler>
-                  <BrowserRouter>
-                    <BasicLayout>
-                      <Routes>
-                        <Route
-                          path="/admin"
-                          element={ <Navigate to="/admin/forms"/> }
-                        />
-                        <Route
-                          path="/admin/users"
-                          element={ <AdminLayout><UsersScreen/></AdminLayout> }
-                        />
-                        <Route
-                          path="/admin/forms/*"
-                          element={ <AdminLayout><FormsRoutes/></AdminLayout> }
-                        />
-                        <Route
-                          path="/admin/editor/*"
-                          element={ <AdminLayout><EditorRoutes/></AdminLayout> }
-                        />
-                        <Route
-                          path="/*"
-                          element={ <PublicLayout><PublicRoutes/></PublicLayout> }
-                        />
-                      </Routes>
-                    </BasicLayout>
-                  </BrowserRouter>
-                </ConfirmHandler>
+                <RepliesApiProvider>
+                  <ConfirmHandler>
+                    <BrowserRouter>
+                      <BasicLayout>
+                        <Routes>
+                          <Route
+                            path="/admin"
+                            element={ <Navigate to="/admin/forms"/> }
+                          />
+                          <Route
+                            path="/admin/users"
+                            element={ <AdminLayout><UsersScreen/></AdminLayout> }
+                          />
+                          <Route
+                            path="/admin/forms/*"
+                            element={ <AdminLayout><FormsRoutes/></AdminLayout> }
+                          />
+                          <Route
+                            path="/admin/editor/*"
+                            element={ <AdminLayout><EditorRoutes/></AdminLayout> }
+                          />
+                          <Route
+                            path="/*"
+                            element={ <PublicLayout><PublicRoutes/></PublicLayout> }
+                          />
+                        </Routes>
+                      </BasicLayout>
+                    </BrowserRouter>
+                  </ConfirmHandler>
+                </RepliesApiProvider>
               </DraftsApiProvider>
             </MetaformsApiProvider>
           </AttachmentsApiProvider>
