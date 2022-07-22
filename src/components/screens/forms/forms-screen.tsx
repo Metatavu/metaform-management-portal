@@ -102,8 +102,6 @@ const FormsScreen: React.FC = () => (
     <DataGrid
       rows={rows}
       columns={columns}
-      pageSize={10}
-      rowsPerPageOptions={[10]}
       autoHeight
       disableColumnMenu
       disableColumnSelector
