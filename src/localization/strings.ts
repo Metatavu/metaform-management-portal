@@ -69,6 +69,9 @@ export interface Localized extends LocalizedStringsMethods {
       formScreen: {
         title: string;
         description: string;
+        form: {
+          notification: string;
+        }
       };
       formDataScreen: {
         title: string;

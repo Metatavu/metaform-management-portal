@@ -42,7 +42,10 @@
       "description": "Lomakkeiden ja vastausten tarkastelu.",
       "formScreen": {
         "title": "Lomakelistaus",
-        "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus."
+        "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus.",
+        "form": {
+          "notification": "käsittelemättömiä"
+        }
       },
       "formDataScreen": {
         "title": "Datan tarkastelu",

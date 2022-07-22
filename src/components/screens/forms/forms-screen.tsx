@@ -17,7 +17,7 @@ const columns: GridColDef[] = [
     renderHeader: params => {
       return (
         <AdminFormListStack direction="row">
-          <ListIcon/>
+          <ListIcon style={ { fill: "darkgrey" } }/>
           <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{params.colDef.headerName}</AdminFormTypographyField>
         </AdminFormListStack>
       );
@@ -25,7 +25,7 @@ const columns: GridColDef[] = [
     renderCell: params => {
       return (
         <AdminFormListStack direction="row">
-          <ListIcon/>
+          <ListIcon style={ { fill: "darkgrey" } }/>
           <AdminFormTypographyField>{params.id}</AdminFormTypographyField>
         </AdminFormListStack>
       );
@@ -38,7 +38,7 @@ const columns: GridColDef[] = [
     renderHeader: params => {
       return (
         <AdminFormListStack direction="row">
-          <DateRangeIcon/>
+          <DateRangeIcon style={ { fill: "darkgrey" } }/>
           <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{params.colDef.headerName}</AdminFormTypographyField>
         </AdminFormListStack>
       );
@@ -46,7 +46,7 @@ const columns: GridColDef[] = [
     renderCell: params => {
       return (
         <AdminFormListStack direction="row">
-          <DateRangeIcon/>
+          <DateRangeIcon style={ { fill: "darkgrey" } }/>
           <AdminFormTypographyField>{params.row.VIIMEISIN}</AdminFormTypographyField>
         </AdminFormListStack>
       );
@@ -59,7 +59,7 @@ const columns: GridColDef[] = [
     renderHeader: params => {
       return (
         <AdminFormListStack direction="row">
-          <NotificationsIcon/>
+          <NotificationsIcon style={ { fill: "darkgrey" } }/>
           <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{params.colDef.headerName}</AdminFormTypographyField>
         </AdminFormListStack>
       );
@@ -67,7 +67,7 @@ const columns: GridColDef[] = [
     renderCell: params => {
       return (
         <AdminFormListStack direction="row">
-          <NotificationsActiveIcon style={ { fill: "red " } }/>
+          <NotificationsActiveIcon style={ { fill: "red" } }/>
           <AdminFormTypographyField>{params.row.UUSIA}</AdminFormTypographyField>
         </AdminFormListStack>
       );
@@ -77,7 +77,7 @@ const columns: GridColDef[] = [
 
 const rows = [
   {
-    id: "SOSTERI-Huoli-vanhuksesta", VIIMEISIN: "01.0.1.2022 16:48", UUSIA: "käsittelämöttämiä"
+    id: "SOSTERI-Huoli-vanhuksesta", VIIMEISIN: "01.0.1.2022 16:48", UUSIA: strings.navigationHeader.formsScreens.formScreen.form.notification
   },
   {
     id: "ESSOTE-Huoli-vanhuksesta", VIIMEISIN: "01.0.1.2022 16:48", UUSIA: "-"
