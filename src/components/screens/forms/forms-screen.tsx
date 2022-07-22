@@ -26,7 +26,7 @@ const columns: GridColDef[] = [
       return (
         <AdminFormListStack direction="row">
           <ListIcon style={ { fill: "darkgrey" } }/>
-          <AdminFormTypographyField>{params.id}</AdminFormTypographyField>
+          <AdminFormTypographyField><a href={`forms/${params.id}`}>{params.id}</a></AdminFormTypographyField>
         </AdminFormListStack>
       );
     }
