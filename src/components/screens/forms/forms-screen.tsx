@@ -13,7 +13,7 @@ const columns: GridColDef[] = [
   {
     field: "id",
     headerName: strings.navigationHeader.formsScreens.formScreen.form.form,
-    width: 1000,
+    flex: 1,
     renderHeader: params => {
       return (
         <AdminFormListStack direction="row">
