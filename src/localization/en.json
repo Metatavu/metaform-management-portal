@@ -44,9 +44,9 @@
         "description": "A list of forms that the user has permission to process.",
         "form": {
           "form": "FORM",
-          "latest": "LATEST",
-          "new": "NEW",
-          "notification": "untreated"
+          "latestReply": "LATEST",
+          "newReply": "NEW",
+          "notProcessed": "untreated"
         }
       },
       "formDataScreen": {

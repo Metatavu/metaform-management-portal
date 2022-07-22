@@ -33,7 +33,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "VIIMEISIN",
-    headerName: strings.navigationHeader.formsScreens.formScreen.form.latest,
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.latestReply,
     width: 250,
     renderHeader: params => {
       return (
@@ -54,7 +54,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "UUSIA",
-    headerName: strings.navigationHeader.formsScreens.formScreen.form.new,
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.newReply,
     width: 250,
     renderHeader: params => {
       return (
@@ -77,7 +77,7 @@ const columns: GridColDef[] = [
 
 const rows = [
   {
-    id: "SOSTERI-Huoli-vanhuksesta", VIIMEISIN: "01.0.1.2022 16:48", UUSIA: strings.navigationHeader.formsScreens.formScreen.form.notification
+    id: "SOSTERI-Huoli-vanhuksesta", VIIMEISIN: "01.0.1.2022 16:48", UUSIA: strings.navigationHeader.formsScreens.formScreen.form.notProcessed
   },
   {
     id: "ESSOTE-Huoli-vanhuksesta", VIIMEISIN: "01.0.1.2022 16:48", UUSIA: "-"

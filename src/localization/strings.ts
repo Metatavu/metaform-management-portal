@@ -71,9 +71,9 @@ export interface Localized extends LocalizedStringsMethods {
         description: string;
         form: {
           form: string;
-          latest: string;
-          new: string;
-          notification: string;
+          latestReply: string;
+          newReply: string;
+          notProcessed: string;
         }
       };
       formDataScreen: {
