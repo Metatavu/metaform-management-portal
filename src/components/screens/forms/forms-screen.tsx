@@ -98,7 +98,6 @@ const FormsScreen: React.FC = () => (
         to="data"
       />
     </NavigationTabContainer>
-    {/* TODO tune datagrid */}
     <DataGrid
       rows={rows}
       columns={columns}
