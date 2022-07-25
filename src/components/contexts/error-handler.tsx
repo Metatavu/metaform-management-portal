@@ -31,6 +31,7 @@ const ErrorHandler: React.FC = ({ children }) => {
    */
   const handleError = async (message: string, err?: any) => {
     setError(message);
+    console.log(err);
     Sentry.captureException(err);
 
     if (err instanceof Response) {
@@ -70,6 +71,7 @@ const ErrorHandler: React.FC = ({ children }) => {
         { error &&
           <Typography>{ error }</Typography>
         }
+        <Typography>Test</Typography>
       </GenericDialog>
     </ErrorContext.Provider>
   );
