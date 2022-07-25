@@ -154,7 +154,7 @@ export const AdminFormTypographyField = styled(Typography, {
 /**
  * Styled administrator form answer stack component
  */
-export const AdminFormAnswerStack = styled(Stack, {
+export const AdminFormAnswerScreenStack = styled(Stack, {
   label: "admin-form-list-stack"
 })(() => ({
   alignItems: "center",
@@ -162,9 +162,9 @@ export const AdminFormAnswerStack = styled(Stack, {
 }));
 
 /**
- * Styled administrator form answer text field component
+ * Styled text for the admininstrator form answer screen
  */
-export const AdminFormAnswerTypographyField = styled(Typography, {
+export const AdminFormAnswerScreenText = styled(Typography, {
   label: "admin-form-text-field"
 })(() => ({
   flex: 1,

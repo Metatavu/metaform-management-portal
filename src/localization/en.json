@@ -51,7 +51,7 @@
             "title": "Answers",
             "description": "List of answers for the selected form.",
             "createdColumnTitle": "CREATED",
-            "changedColumnTitle": "CHANGED",
+            "modifiedColumnTitle": "MODIFIED",
             "statusColumnTitle": "STATUS",
             "nameColumnTitle": "NAME",
             "selectorShowOpen": "Show open",

@@ -78,7 +78,7 @@ export interface Localized extends LocalizedStringsMethods {
             title: string;
             description: string;
             createdColumnTitle: string;
-            changedColumnTitle: string;
+            modifiedColumnTitle: string;
             statusColumnTitle: string;
             nameColumnTitle: string;
             selectorShowOpen: string;
