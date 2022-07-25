@@ -480,7 +480,7 @@ const FormScreen: React.FC<Props> = ({
   const findReply = async (replyId: string, currentOwnerKey: string) => {
     try {
       const replyApi = apiClient.repliesApi;
-      return await replyApi.findReply({
+      return replyApi.findReply({
         metaformId: metaformId,
         replyId: replyId,
         ownerKey: currentOwnerKey
@@ -499,7 +499,7 @@ const FormScreen: React.FC<Props> = ({
   const findDraft = async (draftToFindId: string) => {
     try {
       const { draftsApi } = apiClient;
-      return await draftsApi.findDraft({
+      return draftsApi.findDraft({
         metaformId: metaformId,
         draftId: draftToFindId
       });
