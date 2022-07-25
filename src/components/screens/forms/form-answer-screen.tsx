@@ -100,7 +100,7 @@ const rows = [
 const FormAnswerSelector = () => (
   <AdminFormAnswerStack direction="row">
     <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answerScreen.selectorShowOpen }</Typography>
-    <FormControlLabel control={<Switch defaultChecked/>} label={ undefined }/>
+    <FormControlLabel control={ <Switch defaultChecked/> } label={ undefined }/>
     <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answerScreen.selectorShowAll }</Typography>
   </AdminFormAnswerStack>
 );
