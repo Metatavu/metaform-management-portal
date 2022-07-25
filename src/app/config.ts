@@ -11,7 +11,9 @@ const env = cleanEnv(process.env, {
   REACT_APP_API_BASE_URL: url({ default: undefined }),
   REACT_APP_SENTRY_DSN: url({ default: undefined }),
   REACT_APP_SENTRY_ENVIRONMENT: str({ default: "production" }),
-  REACT_APP_CORS_PROXY: str({ default: undefined })
+  REACT_APP_CORS_PROXY: str({ default: undefined }),
+  REACT_APP_ANONYMOUS_USER: str(),
+  REACT_APP_ANONYMOUS_PASSWORD: str()
 });
 
 /**
@@ -29,6 +31,10 @@ export default class Config {
       url: env.REACT_APP_KEYCLOAK_URL,
       realm: env.REACT_APP_KEYCLOAK_REALM,
       clientId: env.REACT_APP_KEYCLOAK_CLIENT_ID
+    },
+    anonymousUser: {
+      username: env.REACT_APP_ANONYMOUS_USER,
+      password: env.REACT_APP_ANONYMOUS_PASSWORD
     },
     api: {
       baseUrl: env.REACT_APP_API_BASE_URL

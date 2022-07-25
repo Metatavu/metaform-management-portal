@@ -11,6 +11,7 @@ import BasicLayout from "./layouts/basic-layout";
 import AdminLayout from "./layouts/admin-layout";
 import PublicLayout from "./layouts/public-layout";
 import PublicRoutes from "./screens/public/public-routes";
+import AuthenticationProvider from "./containers/access-token-refresh";
 
 const apiProviders: React.FC<{}>[] = [];
 
@@ -18,40 +19,40 @@ const apiProviders: React.FC<{}>[] = [];
  * Application component
  */
 const App: React.FC = () => (
-  <ErrorHandler>
-    <ApiProvider providers={ apiProviders }>
-      <ConfirmHandler>
-        {/* <AccessTokenRefresh> */}
-        <BrowserRouter>
-          <BasicLayout>
-            <Routes>
-              <Route
-                path="/admin"
-                element={ <Navigate to="/admin/forms"/> }
-              />
-              <Route
-                path="/admin/users"
-                element={ <AdminLayout><UsersScreen/></AdminLayout> }
-              />
-              <Route
-                path="/admin/forms/*"
-                element={ <AdminLayout><FormsRoutes/></AdminLayout> }
-              />
-              <Route
-                path="/admin/editor/*"
-                element={ <AdminLayout><EditorRoutes/></AdminLayout> }
-              />
-              <Route
-                path="/*"
-                element={ <PublicLayout><PublicRoutes/></PublicLayout> }
-              />
-            </Routes>
-          </BasicLayout>
-        </BrowserRouter>
-        {/* </AccessTokenRefresh> */}
-      </ConfirmHandler>
-    </ApiProvider>
-  </ErrorHandler>
+  <AuthenticationProvider>
+    <ErrorHandler>
+      <ApiProvider providers={ apiProviders }>
+        <ConfirmHandler>
+          <BrowserRouter>
+            <BasicLayout>
+              <Routes>
+                <Route
+                  path="/admin"
+                  element={ <Navigate to="/admin/forms"/> }
+                />
+                <Route
+                  path="/admin/users"
+                  element={ <AdminLayout><UsersScreen/></AdminLayout> }
+                />
+                <Route
+                  path="/admin/forms/*"
+                  element={ <AdminLayout><FormsRoutes/></AdminLayout> }
+                />
+                <Route
+                  path="/admin/editor/*"
+                  element={ <AdminLayout><EditorRoutes/></AdminLayout> }
+                />
+                <Route
+                  path="/*"
+                  element={ <PublicLayout><PublicRoutes/></PublicLayout> }
+                />
+              </Routes>
+            </BasicLayout>
+          </BrowserRouter>
+        </ConfirmHandler>
+      </ApiProvider>
+    </ErrorHandler>
+  </AuthenticationProvider>
 );
 
 export default App;

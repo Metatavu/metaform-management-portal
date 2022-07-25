@@ -1,4 +1,8 @@
-import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
+import Api from "api";
+import { AttachmentsApi, Metaform, MetaformField, MetaformFieldSourceType, MetaformFieldType, MetaformSection, Reply } from "generated/client";
+import Keycloak from "keycloak-js";
+import { FieldValue } from "metaform-react/types";
+import { Dictionary } from "types";
 
 /**
  * Utility class for metaform
@@ -114,6 +118,111 @@ namespace MetaformUtils {
     downloadLink.remove();
   };
 
+  /**
+   * Creates owner key protected reply edit link 
+   * 
+   * @param replyId reply id
+   * @param ownerKey owner key
+   * @returns owner key protected reply edit link 
+   */
+  export const createOwnerKeyLink = (replyId: string, ownerKey: string) => {
+    const { location } = window;
+    return (new URL(`${location.protocol}//${location.hostname}:${location.port}?reply=${replyId}&owner-key=${ownerKey}`)).toString();
+  };
+
+  /**
+   * Processes reply from server into form that is understood by ui
+   * 
+   * @param foundMetaform metaform that is being viewed
+   * @param foundReply reply loaded from server
+   * @param currentOwnerKey owner key for the reply
+   * @param attachmentsApi attachments api
+   * 
+   * @return data processes to be used by ui
+   */
+  export const processReplyData = async (foundMetaform: Metaform, foundReply: Reply, currentOwnerKey: string, attachmentsApi: AttachmentsApi) => {
+    const values = foundReply.data;
+    foundMetaform.sections?.forEach(async foundSection => {
+      const section = foundMetaform.sections && foundSection ? foundSection : undefined;
+      if (section) {
+        section.fields?.forEach(async foundField => {
+          const field = section.fields && foundField ? foundField : undefined;
+          if (field &&
+                    field.type === MetaformFieldType.Files &&
+                    values &&
+                    field.name &&
+                    values[field.name]) {
+            const fileIds = Array.isArray(values[field.name]) ? values[field.name] : [values[field.name]];
+            const attachmentPromises = (fileIds as string[]).map(fileId => {
+              return attachmentsApi.findAttachment({ attachmentId: fileId, ownerKey: currentOwnerKey });
+            });
+              // eslint-disable-next-line no-await-in-loop
+            const attachments = await Promise.all(attachmentPromises);
+            values[field.name] = {
+              files: attachments.map(a => {
+                return {
+                  name: a.name,
+                  id: a.id,
+                  persisted: true
+                };
+              })
+            };
+          }
+        });
+      }
+    });
+    return values;
+  };
+
+  /**
+   * Prepares form values for the form. 
+   *
+   * @param metaformToPrepare metaform
+   * @returns prepared form values
+   */
+  export const prepareFormValues = (
+    metaformToPrepare: Metaform,
+    formValues: Dictionary<FieldValue>,
+    keycloak: Keycloak.KeycloakInstance | undefined
+  ): Dictionary<FieldValue> => {
+    const result = { ...formValues };
+
+    metaformToPrepare.sections?.forEach(section => {
+      section.fields?.forEach(field => {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        const { name, _default, options, source } = field;
+
+        if (field.type === MetaformFieldType.Files && !field.uploadUrl) {
+          field.uploadUrl = Api.createDefaultUploadUrl();
+        }
+
+        if (name) {
+          if (_default) {
+            result[name] = _default;
+          } else if (options && options.length) {
+            const selectedOption = options.find(option => option.selected || option.checked);
+            if (selectedOption) {
+              result[name] = selectedOption.name;
+            }
+          }
+
+          if (keycloak) {
+            const { tokenParsed } = keycloak;
+
+            if (source && source.type === MetaformFieldSourceType.AccessToken && tokenParsed) {
+              const accessTokenAttribute = source.options?.accessTokenAttribute;
+              const accessTokenValue = accessTokenAttribute ? (tokenParsed as any)[accessTokenAttribute] : null;
+              if (accessTokenValue) {
+                result[name] = accessTokenValue;
+              }
+            }
+          }
+        }
+      });
+    });
+
+    return result;
+  };
 }
 
 export default MetaformUtils;

@@ -7,9 +7,28 @@ export interface Configuration {
     realm: string;
     clientId: string;
   };
+  anonymousUser: {
+    username: string;
+    password: string;
+  };
   api: {
     baseUrl: string;
   };
+}
+
+/**
+ * Interface describing an access token
+ */
+export interface AccessToken {
+  created: Date;
+  access_token: string;
+  expires_in?: number;
+  refresh_token?: string;
+  refresh_expires_in?: number;
+  firstName?: string;
+  lastName?: string;
+  userId?: string;
+  realmRoles: string[];
 }
 
 /**

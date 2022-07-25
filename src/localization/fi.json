@@ -8,7 +8,8 @@
     "save": "Tallenna",
     "yes": "Kyllä",
     "no": "Ei",
-    "loadingAutoCompleteOptions": "Ladataan vaihtoehtoja..."
+    "loadingAutoCompleteOptions": "Ladataan vaihtoehtoja...",
+    "confirm": "Vahvista"
   },
 
   "errorHandling": {
@@ -42,7 +43,26 @@
       "description": "Lomakkeiden ja vastausten tarkastelu.",
       "formScreen": {
         "title": "Lomakelistaus",
-        "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus."
+        "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus.",
+        "form": {
+          "form": "LOMAKE",
+          "latestReply": "VIIMEISIN",
+          "newReply": "UUSIA",
+          "notProcessed": "käsittelemättömiä",
+          "answerScreen": {
+            "title": "Vastaukset",
+            "description": "Valitun lomakkeen vastaukset.",
+            "createdColumnTitle": "LUOTU",
+            "modifiedColumnTitle": "MUOKATTU",
+            "statusColumnTitle": "TILA",
+            "nameColumnTitle": "NIMI",
+            "selectorShowOpen": "Näytä avoimet",
+            "selectorShowAll": "Näytä kaikki",
+            "statusWaiting": "Odottaa",
+            "statusInProgress": "Käsittelyssä",
+            "statusProgressed": "Käsitelty"
+          }
+        }
       },
       "formDataScreen": {
         "title": "Datan tarkastelu",
@@ -51,7 +71,14 @@
     },
     "usersScreens": {
       "title": "Käyttäjät",
-      "description": "Ohjeteksti"
+      "description": "Käyttäjien tarkastelu ja käyttäjäryhmien hallinta.",
+      "subheader": {
+        "title": "Käyttäjänhallinta",
+        "description": "Ohjeteksti"
+      },
+      "button": {
+        "text": "Uusi käyttäjä"
+      }
     },
     "editorScreens": {
       "title": "Editori",
@@ -99,5 +126,38 @@
       "addNewRow": "Lisää uusi rivi",
       "unknownColumnType": "Tuntematon saraketyyppi"
     }
+  },
+
+  "formScreen": {
+    "autosaving": "Vastausta tallennetaan...",
+    "replyEditEmailText": "Voit lähettää linkin itsellesi sähköpostilla klikkaamalla",
+    "replyEditEmailContent": "<p>Hei!</p><p>Pääset muokkaamaan {0} -lomakkeen vastauksia seuraavasta linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
+    "replyEditEmailSubject": "{0} -lomakkeen muokkauslinkki",
+    "replyEditEmailSent": "Muokkauslinkki lähetetty!",
+    "saveDraft": "Voit tallentaa lomakkeen vedoksena klikkaamalla",
+    "saveDraftLink": "tästä",
+    "draftEmailSubject": "{0} -lomakkeen vedos",
+    "draftEmailContent": "<p>Hei!</p><p>Pääset jatkamaan {0} -lomakkeen täyttöä linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
+    "draftEmailSent": "Linkki vedokseen lähetetty!",
+    "draftSaved": "Lomake on tallennettu vedoksena. Ota seuraava kirjanmerkki talteen niin voit jatkaa lomakkeen täyttöä myöhemmin: ",
+    "draftEmailText": "Voit lähettää linkin itsellesi sähköpostilla klikkaamalla",
+    "draftEmailLink": "tästä",
+    "draftEmailDialogText": "Kirjoita sähköpostiosoite, johon haluat vedoksen muokkauslinkin lähetettävän",
+    "replySaved": "Lähetetty onnistuneesti!",
+    "replyEdit": "Voit muokata vastaustasi käyttämällä seuraavaa linkkiä:",
+    "replyEditEmailLink": "tästä",
+    "replyEditEmailDialogText": "Kirjoita sähköpostiosoite, johon haluat lomakkeen muokkauslinkin lähetettävän",
+    "replyDeleteText": "Voit poistaa tämän vastauksen klikkaamalla",
+    "replyDeleteLink": "tästä",
+    "confirmDeleteReplyTitle": "Oletko varma?",
+    "confirmDeleteReplyText": "Oletko varma, että haluat poistaa vastauksen?",
+    "replyNotFound": "Vastausta ei löytynyt järjestelmästä"
+  },
+
+  "emailDialog": {
+    "send": "Lähetä",
+    "title": "Otsikko",
+    "email": "Sähköposti",
+    "cancel": "Peruuta"
   }
 }

@@ -20,6 +20,7 @@ export interface Localized extends LocalizedStringsMethods {
     save: string;
     yes: string;
     no: string;
+    confirm: string;
   };
 
   /**
@@ -69,6 +70,25 @@ export interface Localized extends LocalizedStringsMethods {
       formScreen: {
         title: string;
         description: string;
+        form: {
+          form: string;
+          latestReply: string;
+          newReply: string;
+          notProcessed: string;
+          answerScreen: {
+            title: string;
+            description: string;
+            createdColumnTitle: string;
+            modifiedColumnTitle: string;
+            statusColumnTitle: string;
+            nameColumnTitle: string;
+            selectorShowOpen: string;
+            selectorShowAll: string;
+            statusWaiting: string;
+            statusInProgress: string;
+            statusProgressed: string;
+          }
+        }
       };
       formDataScreen: {
         title: string;
@@ -78,6 +98,13 @@ export interface Localized extends LocalizedStringsMethods {
     usersScreens: {
       title: string;
       description: string;
+      subheader: {
+        "title": string;
+        "description": string;
+      }
+      button: {
+        text: string
+      }
     };
     editorScreens: {
       title: string;
@@ -135,6 +162,45 @@ export interface Localized extends LocalizedStringsMethods {
       unknownColumnType: string;
     };
   };
+
+  /**
+   * Translations related to form screen
+   */
+  formScreen: {
+    replyEditEmailSubject: string;
+    replyEditEmailContent: string;
+    replyEditEmailSent: string;
+    saveDraft: string;
+    saveDraftLink: string;
+    draftEmailSubject: string;
+    draftEmailContent: string;
+    draftEmailSent: string;
+    draftSaved: string;
+    draftEmailText: string;
+    draftEmailLink: string;
+    autosaving: string;
+    draftEmailDialogText: string;
+    replySaved: string;
+    replyEdit: string;
+    replyEditEmailText: string;
+    replyEditEmailLink: string;
+    replyEditEmailDialogText: string;
+    replyDeleteText: string;
+    replyDeleteLink: string;
+    confirmDeleteReplyTitle: string;
+    confirmDeleteReplyText: string;
+    replyNotFound: string;
+  };
+
+  /**
+   * Translations related to email dialogs 
+   */
+  emailDialog: {
+    title: string;
+    email: string;
+    cancel: string;
+    send: string;
+  }
 }
 
 /**

@@ -1,0 +1,495 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import * as React from "react";
+import { useEffect, useState } from "react";
+import BasicLayout, { SnackbarMessage } from "components/layouts/basic-layout";
+import strings from "localization/strings";
+import { Metaform, Reply } from "generated/client";
+import { FieldValue, ValidationErrors } from "metaform-react/types";
+import MetaformUtils from "utils/metaform-utils";
+import Mail from "mail/mail";
+import ConfirmDialog from "components/generic/confirm-dialog";
+import EmailDialog from "components/generic/email-dialog";
+import Form from "components/generic/form";
+import ReplySaved from "./form/ReplySaved";
+import ReplyEmailDialog from "./form/ReplyEmailDialog";
+import ReplyDelete from "./form/ReplyDelete";
+import Autosaving from "./form/Autosaving";
+import DraftSaveDialog from "./form/DraftSaveDialog";
+import DraftSavedDialog from "./form/DraftSavedDialog";
+import Api from "api";
+import { useApiClient, useAppSelector } from "app/hooks";
+import { selectKeycloak } from "features/auth-slice";
+import { Dictionary } from "types";
+
+/**
+ * Component props
+ */
+interface Props {
+  metaformId: string;
+}
+
+/**
+ * Component for exhibitions screen
+ */
+const FormScreen: React.FC<Props> = ({
+  metaformId
+}) => {
+  const [ , setLoading ] = useState(false);
+  const [ , setSaving ] = useState(false);
+  const [ , setSnackbarMessage ] = useState<SnackbarMessage>();
+
+  const [ , setReplyConfirmVisible ] = useState(false);
+  const [ accessTokenNotValid ] = useState(true);
+  const [ metaform, setMetaform ] = useState<Metaform>();
+  const [ ownerKey, setOwnerKey ] = useState<string | null>();
+  const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});
+  const [ formValid, setFormValid ] = useState(true);
+  const [ draftSaveVisible, setDraftSaveVisible ] = useState(false);
+  const [ autosaving ] = useState(false);
+  const [ draftSavedVisible, setDraftSavedVisible ] = useState(false);
+  const [ reply, setReply ] = useState<Reply>();
+  const [ replySavedVisible, setReplySavedVisible ] = useState(false);
+  const [ draftId, setDraftId ] = useState<string | null>(null);
+  const [ draftEmailDialogVisible, setDraftEmailDialogVisible ] = useState(false);
+  const [ replyEmailDialogVisible, setReplyEmailDialogVisible ] = useState(false);
+  const [ replyDeleteVisible, setReplyDeleteVisible ] = useState(false);
+  const [ replyDeleteConfirmVisible ] = useState(false);
+
+  const apiClient = useApiClient(Api.getApiClient);
+  const keycloak = useAppSelector(selectKeycloak);
+
+  /**
+   * Returns reply edit link
+   * 
+   * @returns reply edit link or null if not available
+   */
+  const getReplyEditLink = () => {
+    if (!reply?.id || !ownerKey) {
+      return null;
+    }
+
+    return MetaformUtils.createOwnerKeyLink(reply.id, ownerKey);
+  };
+
+  /**
+   * Implement later
+   */
+  const saveDraft = async () => {};
+
+  /**
+   * Implement later
+   */
+  const getAccessToken = () => {
+    return undefined;
+  };
+
+  /**
+   * Method for getting field value
+   *
+   * @param fieldName field name
+   */
+  const getFieldValue = (fieldName: string): FieldValue => {
+    return formValues[fieldName] || null;
+  };
+
+  /**
+   * Method for setting field value
+   *
+   * @param fieldName field name
+   * @param fieldValue field value
+   */
+  const setFieldValue = (fieldName: string, fieldValue: FieldValue) => {
+    if (formValues[fieldName] !== fieldValue) {
+      formValues[fieldName] = fieldValue;
+      
+      setFormValues(formValues);
+      setDraftSaveVisible(!!metaform?.allowDrafts);
+
+      if (formValid && metaform?.autosave) {
+        /** Implement autosave */
+      }
+    }
+  };
+
+  /** 
+   * Implement later
+   */
+  const updateReply = () => {
+    return {};
+  };
+
+  /** 
+   * Implement later
+   */
+  const createReply = () => {
+    return {};
+  };
+
+  /**
+   * Saves the reply
+   */
+  const saveReply = async () => {
+    if (!metaform || !metaform.id) {
+      return;
+    }
+    let replyToUpdate: Reply;
+    setSaving(true);
+
+    try {
+      if (reply && reply.id && ownerKey) {
+        replyToUpdate = await updateReply();
+      } else {
+        replyToUpdate = await createReply();
+      }
+
+      const updatedOwnerKey = ownerKey || reply?.ownerKey;
+      let updatedValues = replyToUpdate?.data;
+      if (updatedOwnerKey && reply) {
+        updatedValues = await MetaformUtils.processReplyData(metaform, replyToUpdate, updatedOwnerKey, apiClient.attachmentsApi);
+      }
+
+      setSaving(false);
+      setReply(reply);
+      setOwnerKey(updatedOwnerKey);
+      setFormValues(updatedValues as any);
+      setReplySavedVisible(true);
+    } catch (e) {
+      /** Implement error handling */
+    }
+  };
+
+  /**
+   * Event handler for validation errors change
+   * 
+   * @param validationErrors validation errors
+   */
+  const onValidationErrorsChange = (validationErrors: ValidationErrors) => {
+    const isFormValid = Object.keys(validationErrors).length === 0;
+
+    if (isFormValid !== formValid) {
+      setFormValid(isFormValid);
+
+      if (formValid && metaform?.autosave) {
+        /**
+         * Implement autosave later
+         */
+      }
+    }
+  };
+
+  /**
+   * Sends reply link to given email
+   * 
+   * @param email email
+   */
+  const sendReplyEmail = async (email: string) => {
+    const { REACT_APP_EMAIL_FROM } = process.env;
+    const replyEditLink = getReplyEditLink();
+    
+    if (!replyEditLink || !metaform) {
+      return;
+    }
+
+    try {
+      setReplyEmailDialogVisible(false);
+      setLoading(true);
+
+      if (!REACT_APP_EMAIL_FROM) {
+        throw new Error("Missing REACT_APP_EMAIL_FROM env");
+      }
+
+      const formTitle = metaform.title || "";
+      const subject = strings.formatString(strings.formScreen.replyEditEmailSubject, formTitle) as string;
+      const html = strings.formatString(strings.formScreen.replyEditEmailContent, formTitle, replyEditLink) as string;
+
+      await Mail.sendMail({
+        from: REACT_APP_EMAIL_FROM,
+        html: html,
+        subject: subject,
+        to: email
+      });
+
+      setLoading(false);
+      setSnackbarMessage({
+        message: strings.formScreen.replyEditEmailSent,
+        severity: "success"
+      });
+    } catch (e) {
+      /**
+       * Implement error handling
+       */
+    }
+  };
+  
+  /**
+   * Implement later
+   */
+  const deleteReply = async () => {};
+
+  /**
+   * Renders the form
+   */
+  const renderForm = () => {
+    if (!metaform) {
+      return null;
+    }
+
+    const accessToken = getAccessToken();
+
+    return (
+      <Form
+        accessToken={ accessToken }
+        ownerKey={ ownerKey || "" }
+        contexts={ ["FORM"] }
+        metaform={ metaform }
+        getFieldValue={ getFieldValue }
+        setFieldValue={ setFieldValue }
+        onSubmit={ saveReply }
+        onValidationErrorsChange={ onValidationErrorsChange }
+        accessTokenNotValid={ accessTokenNotValid }
+      />
+    );
+  };
+
+  /**
+   * Returns draft link
+   * 
+   * @returns draft link or null if not available
+   */
+  const getDraftLink = () => {
+    if (!draftId) {
+      return null;
+    }
+
+    const windowLocation = window.location;
+    return (new URL(`${windowLocation.protocol}//${windowLocation.hostname}:${windowLocation.port}${windowLocation.pathname}?draft=${draftId}`)).toString();
+  };
+
+  /**
+   * Event handler for draft email link click
+   */
+  const onDraftEmailLinkClick = () => {
+    setDraftSavedVisible(false);
+    setDraftEmailDialogVisible(true);
+  };
+
+  /**
+   * Event handler for reply email link click
+   */
+  const onReplyEmailLinkClick = () => {
+    setReplySavedVisible(false);
+    setReplyEmailDialogVisible(true);
+  };
+
+  /**
+   * Sends draft link to given email
+   * 
+   * @param email email
+   */
+  const sendDraftEmail = async (email: string) => {
+    const { REACT_APP_EMAIL_FROM } = process.env;
+    const draftLink = getDraftLink();
+  
+    if (!draftLink || !metaform) {
+      return;
+    }
+
+    try {
+      setDraftEmailDialogVisible(false);
+      setLoading(true);
+
+      if (!REACT_APP_EMAIL_FROM) {
+        throw new Error("Missing REACT_APP_EMAIL_FROM env");
+      }
+
+      const formTitle = metaform.title || "";
+      const subject = strings.formatString(strings.formScreen.draftEmailSubject, formTitle) as string;
+      const html = strings.formatString(strings.formScreen.draftEmailContent, formTitle, draftLink) as string;
+
+      await Mail.sendMail({
+        from: REACT_APP_EMAIL_FROM,
+        html: html,
+        subject: subject,
+        to: email
+      });
+
+      setLoading(false);
+      setSnackbarMessage({
+        message: strings.formScreen.draftEmailSent,
+        severity: "success"
+      });
+    } catch (e) {
+      /**
+       * Implement error handling
+       */
+    }
+  };
+
+  /**
+   * Implement later
+   */
+  const renderLogoutLink = () => {};
+
+  /**
+   * Finds the reply from API
+   * 
+   * @param replyId reply id
+   * @param currentOwnerKey owner key
+   * @returns found reply or null if not found
+   */
+  const findReply = async (replyId: string, currentOwnerKey: string) => {
+    try {
+      const replyApi = apiClient.repliesApi;
+      return await replyApi.findReply({
+        metaformId: metaformId,
+        replyId: replyId,
+        ownerKey: currentOwnerKey
+      });
+    } catch (e) {
+      return null;
+    }
+  };
+
+  /**
+   * Finds the draft from API
+   * 
+   * @param draftToFindId draft id
+   * @returns found draft or null if not found
+   */
+  const findDraft = async (draftToFindId: string) => {
+    try {
+      const { draftsApi } = apiClient;
+      return await draftsApi.findDraft({
+        metaformId: metaformId,
+        draftId: draftToFindId
+      });
+    } catch (e) {
+      return null;
+    }
+  };
+
+  /**
+   * View setup
+   */
+  const setup = async () => {
+    const query = new URLSearchParams(location.search);
+
+    setDraftId(query.get("draft"));
+    const replyId = query.get("reply");
+    const currentOwnerKey = query.get("owner-key");
+
+    try {
+      setLoading(true);
+      const { metaformsApi } = apiClient;
+
+      const foundMetaform = await metaformsApi.findMetaform({
+        metaformId: metaformId,
+        replyId: replyId || undefined,
+        ownerKey: currentOwnerKey || undefined
+      });
+      
+      document.title = foundMetaform.title ? foundMetaform.title : "Metaform";
+
+      const preparedFormValues = MetaformUtils.prepareFormValues(foundMetaform, formValues, keycloak);
+
+      if (replyId && currentOwnerKey) {
+        const foundReply = await findReply(replyId, currentOwnerKey);
+        if (foundReply) {
+          const replyData = await MetaformUtils.processReplyData(foundMetaform, foundReply, currentOwnerKey, apiClient.attachmentsApi);
+          if (replyData) {
+            Object.keys(replyData as any).forEach(replyKey => {
+              preparedFormValues[replyKey] = replyData[replyKey] as any;
+            });
+          }
+
+          setReply(foundReply);
+          setOwnerKey(currentOwnerKey);
+          setReplyDeleteVisible(!!currentOwnerKey);
+        } else {
+          setSnackbarMessage({
+            message: strings.formScreen.replyNotFound,
+            severity: "error"
+          });
+        }
+      } else if (draftId) {
+        const draft = await findDraft(draftId);
+        const draftData = draft?.data || {};
+        Object.keys(draftData).forEach(draftKey => {
+          formValues[draftKey] = draftData[draftKey] as any;
+        });
+      }
+
+      setMetaform(foundMetaform);
+      setFormValues(preparedFormValues);
+    } catch (e) {
+      /**
+       * Implement error handling
+       */
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    setup();
+  }, []);
+
+  return (
+    /**
+     * Implement layout later
+     */
+    <BasicLayout>
+      <div>
+        { renderForm() }
+        <ReplySaved
+          getReplyEditLink={ getReplyEditLink }
+          replySavedVisible={ replySavedVisible }
+          onReplyEmailLinkClick={ onReplyEmailLinkClick }
+          setReplySavedVisible={ setReplySavedVisible }
+        />
+        <ReplyEmailDialog
+          replyEmailDialogVisible={ replyEmailDialogVisible }
+          setReplyEmailDialogVisible={ setReplyEmailDialogVisible }
+          sendReplyEmail={ sendReplyEmail }
+        />
+        <ReplyDelete
+          replyDeleteVisible={ replyDeleteVisible }
+          setReplyConfirmVisible={ setReplyConfirmVisible }
+          setReplyDeleteVisible={ setReplyDeleteVisible }
+        />
+        <ConfirmDialog
+          onClose={ () => setReplyConfirmVisible(false) }
+          onCancel={ () => setReplyConfirmVisible(false) }
+          onConfirm={ deleteReply }
+          cancelButtonText={ strings.generic.cancel }
+          positiveButtonText={ strings.generic.confirm }
+          title={ strings.formScreen.confirmDeleteReplyTitle }
+          text={ strings.formScreen.confirmDeleteReplyText }
+          open={ replyDeleteConfirmVisible }
+        />
+        <DraftSaveDialog
+          setDraftSaveVisible={ setDraftSaveVisible }
+          draftSaveVisible={ draftSaveVisible }
+          saveDraft={ saveDraft }
+        />
+        <DraftSavedDialog
+          setDraftSavedVisible={ setDraftSavedVisible }
+          draftSavedVisible={ draftSavedVisible }
+          getDraftLink={ getDraftLink }
+          onDraftEmailLinkClick={ onDraftEmailLinkClick }
+        />
+        <EmailDialog
+          text={ strings.formScreen.draftEmailDialogText }
+          open={ draftEmailDialogVisible }
+          onSend={ sendDraftEmail }
+          onCancel={ () => setDraftEmailDialogVisible(false) }
+        />
+        <Autosaving autosaving={ autosaving }/>
+        { renderLogoutLink() }
+      </div>
+    </BasicLayout>
+  );
+};
+
+export default FormScreen;

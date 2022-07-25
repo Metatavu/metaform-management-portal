@@ -1,3 +1,4 @@
+import { selectKeycloak } from "features/auth-slice";
 import React from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "./store";
@@ -57,4 +58,15 @@ export const useDebounce = (value: string, delay: number) => {
   }, [ value, delay ]);
 
   return debouncedValue;
+};
+
+/**
+ * Custom hook that provides API client from given getter method with up-to-date authentication from Redux.
+ * Can only be used in components under Redux store provider.
+ *
+ * @param apiClientFactory factory function for creating API client
+ */
+export const useApiClient = <T extends {}>(apiClientFactory: (accessToken?: string) => T): T => {
+  const { token } = useAppSelector(selectKeycloak) || {};
+  return React.useMemo(() => apiClientFactory(token), [ token ]);
 };
