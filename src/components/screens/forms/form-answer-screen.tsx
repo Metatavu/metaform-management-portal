@@ -6,8 +6,6 @@ import React from "react";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 
-// TODO: Use flex to have the columns as same width but causes a infinite loop at the moment
-
 const columns: GridColDef[] = [
   {
     field: "created",
@@ -31,7 +29,7 @@ const columns: GridColDef[] = [
   {
     field: "changed",
     headerName: strings.navigationHeader.formsScreens.formScreen.form.answers.changedTitle,
-    width: 450,
+    flex: 1,
     renderHeader: params => {
       return (
         <AdminFormListStack direction="row">
@@ -50,7 +48,7 @@ const columns: GridColDef[] = [
   {
     field: "status",
     headerName: strings.navigationHeader.formsScreens.formScreen.form.answers.statusTitle,
-    width: 450,
+    flex: 1,
     renderHeader: params => {
       return (
         <AdminFormListStack direction="row">
@@ -69,7 +67,7 @@ const columns: GridColDef[] = [
   {
     field: "name",
     headerName: strings.navigationHeader.formsScreens.formScreen.form.answers.nameTitle,
-    width: 450,
+    flex: 1,
     renderHeader: params => {
       return (
         <AdminFormListStack direction="row">
@@ -102,7 +100,7 @@ const rows = [
 const FormAnswerSelector = () => (
   <AdminFormListStack direction="row">
     <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answers.selectorShowOpen }</Typography>
-    <FormControlLabel control={<Switch defaultChecked/>} label={undefined}/>
+    <FormControlLabel control={<Switch defaultChecked/>} label={ undefined }/>
     <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answers.selectorShowAll }</Typography>
   </AdminFormListStack>
 );
