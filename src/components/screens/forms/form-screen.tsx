@@ -55,7 +55,7 @@ const FormScreen: React.FC<Props> = ({
   const [ draftEmailDialogVisible, setDraftEmailDialogVisible ] = useState(false);
   const [ replyEmailDialogVisible, setReplyEmailDialogVisible ] = useState(false);
   const [ replyDeleteVisible, setReplyDeleteVisible ] = useState(false);
-  const [ replyDeleteConfirmVisible ] = useState(false);
+  const [ replyDeleteConfirmVisible, setReplyDeleteConfirmVisble ] = useState(false);
   const [ formValueChangeTimeout, setFormValueChangeTimeout ] = useState<NodeJS.Timeout>();
 
   const apiClient = useApiClient(Api.getApiClient);
@@ -227,16 +227,26 @@ const FormScreen: React.FC<Props> = ({
       setDraftSaveVisible(!!metaform?.allowDrafts);
 
       if (formValid && metaform?.autosave) {
-        /** Implement autosave */
+        scheduleAutosave();
       }
     }
   };
 
-  /** 
-   * Implement later
+  /**
+   * Creates new reply
+   * 
+   * @param currentMetaform metaform
    */
-  const createReply = () => {
-    return {};
+  const createReply = async (currentMetaform: Metaform) => {
+    const { repliesApi } = apiClient;
+
+    return repliesApi.createReply({
+      metaformId: metaformId,
+      reply: {
+        data: getFormValues(currentMetaform)
+      },
+      replyMode: "CUMULATIVE"
+    });
   };
 
   /**
@@ -253,7 +263,7 @@ const FormScreen: React.FC<Props> = ({
       if (reply && reply.id && ownerKey) {
         replyToUpdate = await updateReply(metaform, reply, ownerKey);
       } else {
-        replyToUpdate = await createReply();
+        replyToUpdate = await createReply(metaform);
       }
 
       const updatedOwnerKey = ownerKey || reply?.ownerKey;
@@ -267,9 +277,8 @@ const FormScreen: React.FC<Props> = ({
       setOwnerKey(updatedOwnerKey);
       setFormValues(updatedValues as any);
       setReplySavedVisible(true);
-    } catch (e) {
-      /** Implement error handling */
-    }
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
   };
 
   /**
@@ -284,9 +293,7 @@ const FormScreen: React.FC<Props> = ({
       setFormValid(isFormValid);
 
       if (formValid && metaform?.autosave) {
-        /**
-         * Implement autosave later
-         */
+        scheduleAutosave();
       }
     }
   };
@@ -328,17 +335,42 @@ const FormScreen: React.FC<Props> = ({
         message: strings.formScreen.replyEditEmailSent,
         severity: "success"
       });
-    } catch (e) {
-      /**
-       * Implement error handling
-       */
-    }
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
   };
   
   /**
-   * Implement later
+   * Deletes the reply
    */
-  const deleteReply = async () => {};
+  const deleteReply = async () => {
+    try {
+      setReplyDeleteConfirmVisble(false);
+      setLoading(true);
+
+      const { repliesApi } = apiClient;
+
+      if (reply && reply.id && ownerKey) {
+        await repliesApi.deleteReply({
+          metaformId: metaformId,
+          replyId: reply.id,
+          ownerKey: ownerKey
+        });
+      } else {
+        throw new Error("Missing parameters, failed to delete reply");
+      }
+
+      setReplyDeleteVisible(false);
+      setReply(undefined);
+      setOwnerKey(null);
+      setSnackbarMessage({
+        message: strings.formScreen.replyDeleted,
+        severity: "success"
+      });
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
+
+    setLoading(false);
+  };
 
   /**
    * Renders the form
@@ -529,11 +561,8 @@ const FormScreen: React.FC<Props> = ({
 
       setMetaform(foundMetaform);
       setFormValues(preparedFormValues);
-    } catch (e) {
-      /**
-       * Implement error handling
-       */
-    }
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
 
     setLoading(false);
   };
