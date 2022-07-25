@@ -19,13 +19,11 @@ import { Dictionary } from "types";
 interface Props {
   contexts: string[];
   metaform: Metaform;
-  accessToken?: any;
   ownerKey?: string;
   getFieldValue: (fieldName: string) => FieldValue;
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   onSubmit: (source: Metaform) => void;
   onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
-  accessTokenNotValid?: boolean;
 }
 
 /**
@@ -34,12 +32,10 @@ interface Props {
 const Form: React.FC<Props> = ({
   contexts,
   metaform,
-  accessToken,
   ownerKey,
   getFieldValue,
   setFieldValue,
-  onValidationErrorsChange,
-  accessTokenNotValid
+  onValidationErrorsChange
 }) => {
   const [ uploadingFields, setUploadingFields ] = React.useState<string[]>([]);
   const [ uploading, setUploading ] = React.useState<boolean>(false);
