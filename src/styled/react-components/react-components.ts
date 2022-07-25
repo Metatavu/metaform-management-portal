@@ -165,7 +165,7 @@ export const AdminFormAnswerScreenStack = styled(Stack, {
  * Styled text for the admininstrator form answer screen
  */
 export const AdminFormAnswerScreenText = styled(Typography, {
-  label: "admin-form-text-field"
+  label: "admin-form-answer-screen-text"
 })(() => ({
   flex: 1,
   width: "100%",
