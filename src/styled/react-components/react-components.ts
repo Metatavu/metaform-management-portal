@@ -150,3 +150,25 @@ export const AdminFormTypographyField = styled(Typography, {
   fontSize: "1em",
   margin: "0.5rem"
 }));
+
+/**
+ * Styled administrator form answer stack component
+ */
+export const AdminFormAnswerStack = styled(Stack, {
+  label: "admin-form-list-stack"
+})(() => ({
+  alignItems: "center",
+  padding: "1rem"
+}));
+
+/**
+ * Styled administrator form answer text field component
+ */
+export const AdminFormAnswerTypographyField = styled(Typography, {
+  label: "admin-form-text-field"
+})(() => ({
+  flex: 1,
+  width: "100%",
+  fontSize: "1em",
+  margin: "0.5rem"
+}));

@@ -4,7 +4,7 @@ import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
 import React from "react";
 import { NavigationTabContainer } from "styled/layouts/navigations";
-import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
+import { AdminFormAnswerStack, AdminFormAnswerTypographyField } from "styled/react-components/react-components";
 
 const columns: GridColDef[] = [
   {
@@ -13,16 +13,16 @@ const columns: GridColDef[] = [
     flex: 1,
     renderHeader: params => {
       return (
-        <AdminFormListStack direction="row">
-          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
-        </AdminFormListStack>
+        <AdminFormAnswerStack direction="row">
+          <AdminFormAnswerTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormAnswerTypographyField>
+        </AdminFormAnswerStack>
       );
     },
     renderCell: params => {
       return (
-        <AdminFormListStack direction="row">
-          <AdminFormTypographyField>{ params.row.created }</AdminFormTypographyField>
-        </AdminFormListStack>
+        <AdminFormAnswerStack direction="row">
+          <AdminFormAnswerTypographyField>{ params.row.created }</AdminFormAnswerTypographyField>
+        </AdminFormAnswerStack>
       );
     }
   },
@@ -32,16 +32,16 @@ const columns: GridColDef[] = [
     flex: 1,
     renderHeader: params => {
       return (
-        <AdminFormListStack direction="row">
-          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
-        </AdminFormListStack>
+        <AdminFormAnswerStack direction="row">
+          <AdminFormAnswerTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormAnswerTypographyField>
+        </AdminFormAnswerStack>
       );
     },
     renderCell: params => {
       return (
-        <AdminFormListStack direction="row">
-          <AdminFormTypographyField>{ params.row.changed }</AdminFormTypographyField>
-        </AdminFormListStack>
+        <AdminFormAnswerStack direction="row">
+          <AdminFormAnswerTypographyField>{ params.row.changed }</AdminFormAnswerTypographyField>
+        </AdminFormAnswerStack>
       );
     }
   },
@@ -51,16 +51,16 @@ const columns: GridColDef[] = [
     flex: 1,
     renderHeader: params => {
       return (
-        <AdminFormListStack direction="row">
-          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
-        </AdminFormListStack>
+        <AdminFormAnswerStack direction="row">
+          <AdminFormAnswerTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormAnswerTypographyField>
+        </AdminFormAnswerStack>
       );
     },
     renderCell: params => {
       return (
-        <AdminFormListStack direction="row">
-          <AdminFormTypographyField>{ params.row.status }</AdminFormTypographyField>
-        </AdminFormListStack>
+        <AdminFormAnswerStack direction="row">
+          <AdminFormAnswerTypographyField>{ params.row.status }</AdminFormAnswerTypographyField>
+        </AdminFormAnswerStack>
       );
     }
   },
@@ -70,16 +70,16 @@ const columns: GridColDef[] = [
     flex: 1,
     renderHeader: params => {
       return (
-        <AdminFormListStack direction="row">
-          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
-        </AdminFormListStack>
+        <AdminFormAnswerStack direction="row">
+          <AdminFormAnswerTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormAnswerTypographyField>
+        </AdminFormAnswerStack>
       );
     },
     renderCell: params => {
       return (
-        <AdminFormListStack direction="row">
-          <AdminFormTypographyField>{ params.row.name }</AdminFormTypographyField>
-        </AdminFormListStack>
+        <AdminFormAnswerStack direction="row">
+          <AdminFormAnswerTypographyField>{ params.row.name }</AdminFormAnswerTypographyField>
+        </AdminFormAnswerStack>
       );
     }
   }
@@ -87,10 +87,10 @@ const columns: GridColDef[] = [
 
 const rows = [
   {
-    id: "1", created: "01.01.2022", changed: "01.01.2022", status: strings.navigationHeader.formsScreens.formScreen.form.answers.statusProgressed, name: "Nimi"
+    id: "1", created: "01.01.2022", changed: "01.01.2022", status: strings.navigationHeader.formsScreens.formScreen.form.answers.statusProgressed, name: "Name asd"
   },
   {
-    id: "2", created: "01.01.2022", changed: "01.01.2022", status: strings.navigationHeader.formsScreens.formScreen.form.answers.statusInProgress, name: "Nimi"
+    id: "2", created: "01.01.2022", changed: "01.01.2022", status: strings.navigationHeader.formsScreens.formScreen.form.answers.statusInProgress, name: "Name xyz"
   }
 ];
 
@@ -98,11 +98,11 @@ const rows = [
  * Form answer selector
  */
 const FormAnswerSelector = () => (
-  <AdminFormListStack direction="row">
+  <AdminFormAnswerStack direction="row">
     <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answers.selectorShowOpen }</Typography>
     <FormControlLabel control={<Switch defaultChecked/>} label={ undefined }/>
     <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answers.selectorShowAll }</Typography>
-  </AdminFormListStack>
+  </AdminFormAnswerStack>
 );
 
 /**
