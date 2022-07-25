@@ -47,11 +47,13 @@
           "latestReply": "LATEST",
           "newReply": "NEW",
           "notProcessed": "untreated",
-          "answers": {
-            "createdTitle": "CREATED",
-            "changedTitle": "CHANGED",
-            "statusTitle": "STATUS",
-            "nameTitle": "NAME",
+          "answerScreen": {
+            "title": "Answers",
+            "description": "List of answers for the selected form.",
+            "createdColumnTitle": "CREATED",
+            "changedColumnTitle": "CHANGED",
+            "statusColumnTitle": "STATUS",
+            "nameColumnTitle": "NAME",
             "selectorShowOpen": "Show open",
             "selectorShowAll": "Show all",
             "statusWaiting": "Waiting",

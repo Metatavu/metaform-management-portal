@@ -9,7 +9,7 @@ import { AdminFormAnswerStack, AdminFormAnswerTypographyField } from "styled/rea
 const columns: GridColDef[] = [
   {
     field: "created",
-    headerName: strings.navigationHeader.formsScreens.formScreen.form.answers.createdTitle,
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.answerScreen.createdColumnTitle,
     flex: 1,
     renderHeader: params => {
       return (
@@ -28,7 +28,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "changed",
-    headerName: strings.navigationHeader.formsScreens.formScreen.form.answers.changedTitle,
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.answerScreen.changedColumnTitle,
     flex: 1,
     renderHeader: params => {
       return (
@@ -47,7 +47,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "status",
-    headerName: strings.navigationHeader.formsScreens.formScreen.form.answers.statusTitle,
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.answerScreen.statusColumnTitle,
     flex: 1,
     renderHeader: params => {
       return (
@@ -66,7 +66,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "name",
-    headerName: strings.navigationHeader.formsScreens.formScreen.form.answers.nameTitle,
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.answerScreen.nameColumnTitle,
     flex: 1,
     renderHeader: params => {
       return (
@@ -87,10 +87,10 @@ const columns: GridColDef[] = [
 
 const rows = [
   {
-    id: "1", created: "01.01.2022", changed: "01.01.2022", status: strings.navigationHeader.formsScreens.formScreen.form.answers.statusProgressed, name: "Name asd"
+    id: "1", created: "01.01.2022", changed: "01.01.2022", status: strings.navigationHeader.formsScreens.formScreen.form.answerScreen.statusProgressed, name: "Name asd"
   },
   {
-    id: "2", created: "01.01.2022", changed: "01.01.2022", status: strings.navigationHeader.formsScreens.formScreen.form.answers.statusInProgress, name: "Name xyz"
+    id: "2", created: "01.01.2022", changed: "01.01.2022", status: strings.navigationHeader.formsScreens.formScreen.form.answerScreen.statusInProgress, name: "Name xyz"
   }
 ];
 
@@ -99,9 +99,9 @@ const rows = [
  */
 const FormAnswerSelector = () => (
   <AdminFormAnswerStack direction="row">
-    <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answers.selectorShowOpen }</Typography>
+    <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answerScreen.selectorShowOpen }</Typography>
     <FormControlLabel control={<Switch defaultChecked/>} label={ undefined }/>
-    <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answers.selectorShowAll }</Typography>
+    <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answerScreen.selectorShowAll }</Typography>
   </AdminFormAnswerStack>
 );
 
@@ -112,7 +112,7 @@ const FormAnswerScreen: React.FC = () => (
   <>
     <NavigationTabContainer>
       <NavigationTab
-        text={ strings.navigationHeader.formsScreens.formScreen }
+        text={ strings.navigationHeader.formsScreens.formScreen.form.answerScreen }
         renderActions={ FormAnswerSelector }
       />
       <NavigationTab

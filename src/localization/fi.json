@@ -48,11 +48,13 @@
           "latestReply": "VIIMEISIN",
           "newReply": "UUSIA",
           "notProcessed": "käsittelemättömiä",
-          "answers": {
-            "createdTitle": "LUOTU",
-            "changedTitle": "MUOKATTU",
-            "statusTitle": "TILA",
-            "nameTitle": "NIMI",
+          "answerScreen": {
+            "title": "Vastaukset",
+            "description": "Valitun lomakkeen vastaukset.",
+            "createdColumnTitle": "LUOTU",
+            "changedColumnTitle": "MUOKATTU",
+            "statusColumnTitle": "TILA",
+            "nameColumnTitle": "NIMI",
             "selectorShowOpen": "Näytä avoimet",
             "selectorShowAll": "Show all",
             "statusWaiting": "Odottaa",

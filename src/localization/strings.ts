@@ -74,11 +74,13 @@ export interface Localized extends LocalizedStringsMethods {
           latestReply: string;
           newReply: string;
           notProcessed: string;
-          answers: {
-            createdTitle: string;
-            changedTitle: string;
-            statusTitle: string;
-            nameTitle: string;
+          answerScreen: {
+            title: string;
+            description: string;
+            createdColumnTitle: string;
+            changedColumnTitle: string;
+            statusColumnTitle: string;
+            nameColumnTitle: string;
             selectorShowOpen: string;
             selectorShowAll: string;
             statusWaiting: string;
