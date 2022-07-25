@@ -47,7 +47,20 @@
           "form": "LOMAKE",
           "latestReply": "VIIMEISIN",
           "newReply": "UUSIA",
-          "notProcessed": "käsittelemättömiä"
+          "notProcessed": "käsittelemättömiä",
+          "answerScreen": {
+            "title": "Vastaukset",
+            "description": "Valitun lomakkeen vastaukset.",
+            "createdColumnTitle": "LUOTU",
+            "modifiedColumnTitle": "MUOKATTU",
+            "statusColumnTitle": "TILA",
+            "nameColumnTitle": "NIMI",
+            "selectorShowOpen": "Näytä avoimet",
+            "selectorShowAll": "Näytä kaikki",
+            "statusWaiting": "Odottaa",
+            "statusInProgress": "Käsittelyssä",
+            "statusProgressed": "Käsitelty"
+          }
         }
       },
       "formDataScreen": {
