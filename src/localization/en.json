@@ -120,6 +120,7 @@
 
   "formScreen": {
     "autosaving": "Saving reply...",
+    "replyNotFound": "Reply could not be found from the system",
     "replyEditEmailText": "You can send the link to your email by clicking",
     "replyEditEmailContent": "<p>Hi!</p><p>You can edit form {0} reply from following link:</p><p><a href='{1}'>{1}</a></p><hr/><p>This is an automated message, please do not reply.</p>",
     "replyEditEmailSubject": "{0} -form edit link",
