@@ -6,7 +6,6 @@ import BasicLayout, { SnackbarMessage } from "components/layouts/basic-layout";
 import strings from "localization/strings";
 import { Metaform, Reply } from "generated/client";
 import { FieldValue, ValidationErrors } from "metaform-react/types";
-import { Dictionary } from "@reduxjs/toolkit";
 import MetaformUtils from "utils/metaform-utils";
 import Mail from "mail/mail";
 import ConfirmDialog from "components/generic/confirm-dialog";
@@ -21,6 +20,7 @@ import DraftSavedDialog from "./form/DraftSavedDialog";
 import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
+import { Dictionary } from "types";
 
 /**
  * Component props
