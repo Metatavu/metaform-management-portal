@@ -4,9 +4,9 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import BasicLayout, { SnackbarMessage } from "components/layouts/basic-layout";
 import strings from "localization/strings";
-import { Metaform, MetaformFieldSourceType, MetaformFieldType, Reply } from "generated/client";
+import { Metaform, MetaformFieldType, Reply } from "generated/client";
 import { FieldValue, FileFieldValue, ValidationErrors } from "metaform-react/types";
-import { Dictionary } from "@reduxjs/toolkit";
+
 import MetaformUtils from "utils/metaform-utils";
 import Mail from "mail/mail";
 import ConfirmDialog from "components/generic/confirm-dialog";
@@ -18,23 +18,25 @@ import ReplyDelete from "./form/ReplyDelete";
 import Autosaving from "./form/Autosaving";
 import DraftSaveDialog from "./form/DraftSaveDialog";
 import DraftSavedDialog from "./form/DraftSavedDialog";
-import Config from "app/config";
 import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
+import { Dictionary } from "types";
 
 /**
  * Component props
  */
 interface Props {
+  metaformId: string;
 }
 
 /**
  * Component for exhibitions screen
  */
-const FormScreen: React.FC<Props> = () => {
+const FormScreen: React.FC<Props> = ({
+  metaformId
+}) => {
   const AUTOSAVE_COOLDOWN = 500;
-
   const [ , setLoading ] = useState(false);
   const [ , setSaving ] = useState(false);
   const [ , setSnackbarMessage ] = useState<SnackbarMessage>();
@@ -152,7 +154,7 @@ const FormScreen: React.FC<Props> = () => {
     const { repliesApi } = apiClient;
     
     await repliesApi.updateReply({
-      metaformId: Config.getMetaformId(),
+      metaformId: metaformId,
       replyId: currentReply.id!,
       ownerKey: currentOwnerKey || undefined,
       reply: {
@@ -161,7 +163,7 @@ const FormScreen: React.FC<Props> = () => {
     });
 
     return repliesApi.findReply({
-      metaformId: Config.getMetaformId(),
+      metaformId: metaformId,
       replyId: currentReply.id!,
       ownerKey: currentOwnerKey || undefined
     });
@@ -238,50 +240,6 @@ const FormScreen: React.FC<Props> = () => {
   };
 
   /**
-   * Processes reply from server into form that is understood by ui
-   * 
-   * @param foundMetaform metaform that is being viewed
-   * @param foundReply reply loaded from server
-   * @param currentOwnerKey owner key for the reply
-   * 
-   * @return data processes to be used by ui
-   */
-  const processReplyData = async (foundMetaform: Metaform, foundReply: Reply, currentOwnerKey: string) => {
-    const { attachmentsApi } = apiClient;
-    const values = foundReply.data;
-    for (let i = 0; i < (foundMetaform.sections || []).length; i++) {
-      const section = foundMetaform.sections && foundMetaform.sections[i] ? foundMetaform.sections[i] : undefined;
-      if (section) {
-        for (let j = 0; j < (section.fields || []).length; j++) {
-          const field = section.fields && section.fields[j] ? section.fields[j] : undefined;
-          if (field &&
-                    field.type === MetaformFieldType.Files &&
-                    values &&
-                    field.name &&
-                    values[field.name]) {
-            const fileIds = Array.isArray(values[field.name]) ? values[field.name] : [values[field.name]];
-            const attachmentPromises = (fileIds as string[]).map(fileId => {
-              return attachmentsApi.findAttachment({ attachmentId: fileId, ownerKey: currentOwnerKey });
-            });
-              // eslint-disable-next-line no-await-in-loop
-            const attachments = await Promise.all(attachmentPromises);
-            values[field.name] = {
-              files: attachments.map(a => {
-                return {
-                  name: a.name,
-                  id: a.id,
-                  persisted: true
-                };
-              })
-            };
-          }
-        }
-      }
-    }
-    return values;
-  };
-
-  /**
    * Saves the reply
    */
   const saveReply = async () => {
@@ -301,7 +259,7 @@ const FormScreen: React.FC<Props> = () => {
       const updatedOwnerKey = ownerKey || reply?.ownerKey;
       let updatedValues = replyToUpdate?.data;
       if (updatedOwnerKey && reply) {
-        updatedValues = await processReplyData(metaform, replyToUpdate, updatedOwnerKey);
+        updatedValues = await MetaformUtils.processReplyData(metaform, replyToUpdate, updatedOwnerKey, apiClient.attachmentsApi);
       }
 
       setSaving(false);
@@ -481,52 +439,6 @@ const FormScreen: React.FC<Props> = () => {
   const renderLogoutLink = () => {};
 
   /**
-   * Prepares form values for the form. 
-   *
-   * @param metaformToPrepare metaform
-   * @returns prepared form values
-   */
-  const prepareFormValues = (metaformToPrepare: Metaform): Dictionary<FieldValue> => {
-    const result = { ...formValues };
-
-    metaformToPrepare.sections?.forEach(section => {
-      section.fields?.forEach(field => {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        const { name, _default, options, source } = field;
-
-        if (field.type === MetaformFieldType.Files && !field.uploadUrl) {
-          field.uploadUrl = Api.createDefaultUploadUrl();
-        }
-
-        if (name) {
-          if (_default) {
-            result[name] = _default;
-          } else if (options && options.length) {
-            const selectedOption = options.find(option => option.selected || option.checked);
-            if (selectedOption) {
-              result[name] = selectedOption.name;
-            }
-          }
-
-          if (keycloak) {
-            const { tokenParsed } = keycloak;
-
-            if (source && source.type === MetaformFieldSourceType.AccessToken && tokenParsed) {
-              const accessTokenAttribute = source.options?.accessTokenAttribute;
-              const accessTokenValue = accessTokenAttribute ? (tokenParsed as any)[accessTokenAttribute] : null;
-              if (accessTokenValue) {
-                result[name] = accessTokenValue;
-              }
-            }
-          }
-        }
-      });
-    });
-
-    return result;
-  };
-
-  /**
    * Finds the reply from API
    * 
    * @param replyId reply id
@@ -535,8 +447,6 @@ const FormScreen: React.FC<Props> = () => {
    */
   const findReply = async (replyId: string, currentOwnerKey: string) => {
     try {
-      const metaformId = Config.getMetaformId();
-  
       const replyApi = apiClient.repliesApi;
       return await replyApi.findReply({
         metaformId: metaformId,
@@ -556,8 +466,6 @@ const FormScreen: React.FC<Props> = () => {
    */
   const findDraft = async (draftToFindId: string) => {
     try {
-      const metaformId = Config.getMetaformId();
-        
       const { draftsApi } = apiClient;
       return await draftsApi.findDraft({
         metaformId: metaformId,
@@ -578,8 +486,6 @@ const FormScreen: React.FC<Props> = () => {
     const replyId = query.get("reply");
     const currentOwnerKey = query.get("owner-key");
 
-    const metaformId = Config.getMetaformId();
-
     try {
       setLoading(true);
       const { metaformsApi } = apiClient;
@@ -592,12 +498,12 @@ const FormScreen: React.FC<Props> = () => {
       
       document.title = foundMetaform.title ? foundMetaform.title : "Metaform";
 
-      const preparedFormValues = prepareFormValues(foundMetaform);
+      const preparedFormValues = MetaformUtils.prepareFormValues(foundMetaform, formValues, keycloak);
 
       if (replyId && currentOwnerKey) {
         const foundReply = await findReply(replyId, currentOwnerKey);
         if (foundReply) {
-          const replyData = await processReplyData(foundMetaform, foundReply, currentOwnerKey);
+          const replyData = await MetaformUtils.processReplyData(foundMetaform, foundReply, currentOwnerKey, apiClient.attachmentsApi);
           if (replyData) {
             Object.keys(replyData as any).forEach(replyKey => {
               preparedFormValues[replyKey] = replyData[replyKey] as any;
