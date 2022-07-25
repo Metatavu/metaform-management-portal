@@ -46,7 +46,18 @@
           "form": "FORM",
           "latestReply": "LATEST",
           "newReply": "NEW",
-          "notProcessed": "untreated"
+          "notProcessed": "untreated",
+          "answers": {
+            "createdTitle": "CREATED",
+            "changedTitle": "CHANGED",
+            "statusTitle": "STATUS",
+            "nameTitle": "NAME",
+            "selectorShowOpen": "Show open",
+            "selectorShowAll": "Show all",
+            "statusWaiting": "Waiting",
+            "statusInProgress": "In progress",
+            "statusProgressed": "Progressed"
+          }
         }
       },
       "formDataScreen": {

@@ -47,7 +47,18 @@
           "form": "LOMAKE",
           "latestReply": "VIIMEISIN",
           "newReply": "UUSIA",
-          "notProcessed": "käsittelemättömiä"
+          "notProcessed": "käsittelemättömiä",
+          "answers": {
+            "createdTitle": "LUOTU",
+            "changedTitle": "MUOKATTU",
+            "statusTitle": "TILA",
+            "nameTitle": "NIMI",
+            "selectorShowOpen": "Näytä avoimet",
+            "selectorShowAll": "Show all",
+            "statusWaiting": "Odottaa",
+            "statusInProgress": "Käsittelyssä",
+            "statusProgressed": "Käsitelty"
+          }
         }
       },
       "formDataScreen": {

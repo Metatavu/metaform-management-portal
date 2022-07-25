@@ -74,6 +74,17 @@ export interface Localized extends LocalizedStringsMethods {
           latestReply: string;
           newReply: string;
           notProcessed: string;
+          answers: {
+            createdTitle: string;
+            changedTitle: string;
+            statusTitle: string;
+            nameTitle: string;
+            selectorShowOpen: string;
+            selectorShowAll: string;
+            statusWaiting: string;
+            statusInProgress: string;
+            statusProgressed: string;
+          }
         }
       };
       formDataScreen: {

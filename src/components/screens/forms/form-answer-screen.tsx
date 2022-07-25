@@ -10,9 +10,9 @@ import { AdminFormListStack, AdminFormTypographyField } from "styled/react-compo
 
 const columns: GridColDef[] = [
   {
-    field: "id",
-    headerName: "LUOTU",
-    width: 250,
+    field: "created",
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.answers.createdTitle,
+    flex: 1,
     renderHeader: params => {
       return (
         <AdminFormListStack direction="row">
@@ -23,15 +23,15 @@ const columns: GridColDef[] = [
     renderCell: params => {
       return (
         <AdminFormListStack direction="row">
-          <AdminFormTypographyField>{ params.id }</AdminFormTypographyField>
+          <AdminFormTypographyField>{ params.row.created }</AdminFormTypographyField>
         </AdminFormListStack>
       );
     }
   },
   {
-    field: "latestReply",
-    headerName: "MUOKATTU",
-    width: 250,
+    field: "changed",
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.answers.changedTitle,
+    width: 450,
     renderHeader: params => {
       return (
         <AdminFormListStack direction="row">
@@ -42,15 +42,15 @@ const columns: GridColDef[] = [
     renderCell: params => {
       return (
         <AdminFormListStack direction="row">
-          <AdminFormTypographyField>{ params.row.latestReply }</AdminFormTypographyField>
+          <AdminFormTypographyField>{ params.row.changed }</AdminFormTypographyField>
         </AdminFormListStack>
       );
     }
   },
   {
-    field: "newReply",
-    headerName: "TILA",
-    width: 250,
+    field: "status",
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.answers.statusTitle,
+    width: 450,
     renderHeader: params => {
       return (
         <AdminFormListStack direction="row">
@@ -61,15 +61,15 @@ const columns: GridColDef[] = [
     renderCell: params => {
       return (
         <AdminFormListStack direction="row">
-          <AdminFormTypographyField>{ params.row.newReply }</AdminFormTypographyField>
+          <AdminFormTypographyField>{ params.row.status }</AdminFormTypographyField>
         </AdminFormListStack>
       );
     }
   },
   {
-    field: "newReply",
-    headerName: "NIMI",
-    width: 250,
+    field: "name",
+    headerName: strings.navigationHeader.formsScreens.formScreen.form.answers.nameTitle,
+    width: 450,
     renderHeader: params => {
       return (
         <AdminFormListStack direction="row">
@@ -80,7 +80,7 @@ const columns: GridColDef[] = [
     renderCell: params => {
       return (
         <AdminFormListStack direction="row">
-          <AdminFormTypographyField>{ params.row.newReply }</AdminFormTypographyField>
+          <AdminFormTypographyField>{ params.row.name }</AdminFormTypographyField>
         </AdminFormListStack>
       );
     }
@@ -89,10 +89,10 @@ const columns: GridColDef[] = [
 
 const rows = [
   {
-    id: "01.01.2022", latestReply: "01.01.2022", newReply: strings.navigationHeader.formsScreens.formScreen.form.notProcessed
+    id: "1", created: "01.01.2022", changed: "01.01.2022", status: strings.navigationHeader.formsScreens.formScreen.form.answers.statusProgressed, name: "Nimi"
   },
   {
-    id: "01.01.2022", latestReply: "01.01.2022", newReply: "Käsittelyssä"
+    id: "2", created: "01.01.2022", changed: "01.01.2022", status: strings.navigationHeader.formsScreens.formScreen.form.answers.statusInProgress, name: "Nimi"
   }
 ];
 
@@ -101,9 +101,9 @@ const rows = [
  */
 const FormAnswerSelector = () => (
   <AdminFormListStack direction="row">
-    <Typography>Näytä avoimet</Typography>
+    <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answers.selectorShowOpen }</Typography>
     <FormControlLabel control={<Switch defaultChecked/>} label={undefined}/>
-    <Typography>Näytä kaikki</Typography>
+    <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answers.selectorShowAll }</Typography>
   </AdminFormListStack>
 );
 
