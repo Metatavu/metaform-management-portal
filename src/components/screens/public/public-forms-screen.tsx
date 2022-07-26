@@ -15,8 +15,7 @@ const PublicFormsScreen: React.FC = () => {
    * Fetch metaforms from the API
    */
   const fetchForms = async () => {
-    const forms = await metaformsApi.listMetaforms();
-    return forms;
+    return metaformsApi.listMetaforms();
   };
 
   const [forms, setForms] = React.useState<any[]>([]);
