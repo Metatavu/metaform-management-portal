@@ -1,6 +1,5 @@
-/* eslint-disable */ // Remove when refactoring is done
-import { LinearProgress, Slider, TextField, Typography, Snackbar } from "@mui/material";
-import { Metaform, MetaformField, Reply } from "generated/client";
+import { LinearProgress, TextField, Typography } from "@mui/material";
+import { Metaform, MetaformField } from "generated/client";
 import { FileFieldValueItem, ValidationErrors, FieldValue, FileFieldValue } from "../../metaform-react/types";
 import React from "react";
 import FormContainer from "styled/generic/form";
@@ -10,7 +9,10 @@ import { DateTimePicker, LocalizationProvider } from "@mui/lab";
 import fiLocale from "date-fns/locale/fi";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import MetaformComponent from "metaform-react/MetaformComponent";
-import { Dictionary } from "types";
+import Api from "api";
+import { useApiClient } from "app/hooks";
+import moment from "moment";
+import MetaformUtils from "utils/metaform-utils";
 import FormAutocomplete from "./form-autocomplete";
 
 /**
@@ -19,13 +21,11 @@ import FormAutocomplete from "./form-autocomplete";
 interface Props {
   contexts: string[];
   metaform: Metaform;
-  accessToken?: any;
   ownerKey?: string;
   getFieldValue: (fieldName: string) => FieldValue;
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   onSubmit: (source: Metaform) => void;
   onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
-  accessTokenNotValid?: boolean;
 }
 
 /**
@@ -34,71 +34,15 @@ interface Props {
 const Form: React.FC<Props> = ({
   contexts,
   metaform,
-  accessToken,
   ownerKey,
   getFieldValue,
   setFieldValue,
   onValidationErrorsChange,
-  accessTokenNotValid
+  onSubmit
 }) => {
   const [ uploadingFields, setUploadingFields ] = React.useState<string[]>([]);
-  const [ uploading, setUploading ] = React.useState<boolean>(false);
-  const [ formValues, setFormValues ] = React.useState<Dictionary<FieldValue>>({});
-  const [ formValid, setFormValid ] = React.useState<boolean>(false);
-  const [ draftSaveVisible, setDraftSaveVisible ] = React.useState<boolean>(false);
-  const [ formValueChangeTimeout, setFormValueChangeTimeout ] = React.useState<number | null>(null);
-  const [ autosaving, setAutosaving ] = React.useState<boolean>(false);;
-  const [ reply, setReply ] = React.useState<Reply>();
-  const [ saving, setSaving ] = React.useState<boolean>(false);
 
-  /**
-   * Method for submitting form
-   */
-  const onSubmit = async () => {
-    // await saveReply(); TODO: Implement once this can be tested
-  };
-
-  /**
-   * Finds a field from form by field name
-   * 
-   * @param fieldName field name
-   * @returns field or null if not found
-   */
-  const getField = (fieldName: string) => {
-    return (metaform.sections || [])
-      .flatMap(section => section.fields || [])
-      .find(field => field.name === fieldName);
-  };
-
-  /**
-   * Renders slider field
-   * 
-   * @param fieldName field name
-   * @param readOnly whether the field is read only
-   */
-  const renderSlider = (fieldName: string, readOnly: boolean) => {
-    const field = getField(fieldName);
-    if (!field) {
-      return null;
-    }
-
-    const value = getFieldValue(fieldName);
-    
-    return (
-      <Slider
-        step={ field.step }
-        max={ field.max }
-        min={ field.min }
-        name={ field.name }
-        placeholder={ field.placeholder }
-        disabled={ readOnly }
-        value={ value as number }
-        onChange={ (event: Event, value: number | number[]) => {
-          setFieldValue(fieldName, value as number);
-        }}
-      />
-    );
-  };
+  const apiClient = useApiClient(Api.getApiClient);
 
   /**
    * Method for rendering form icons
@@ -113,15 +57,15 @@ const Form: React.FC<Props> = ({
   /**
    * Event handler for date change
    */
-  const handleDateChange = () => {
-    console.log("Selected date"); // TODO: implement
+  const handleDateChange = (date: Date | null, fieldName: string) => {
+    setFieldValue(fieldName, date ? moment(date).format("YYYY-MM-DD") : null);
   };
 
   /**
    * Event handler for datetime change
    */
-  const handleDateTimeChange = () => {
-    console.log("Selected datetime"); // TODO: implement
+  const handleDateTimeChange = (date: Date | null, fieldName: string) => {
+    setFieldValue(fieldName, date ? moment(date).toISOString() : null);
   };
 
   /**
@@ -135,7 +79,7 @@ const Form: React.FC<Props> = ({
       <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
         <DatePicker
           value={ value ? new Date(value as string) : null }
-          onChange={ handleDateChange }
+          onChange={ (date: Date | null) => handleDateChange(date, fieldName) }
           views={["day", "month", "year"]}
           renderInput={ params =>
             <TextField label={ strings.formComponent.dateTimePicker } { ...params }/>
@@ -154,7 +98,7 @@ const Form: React.FC<Props> = ({
       <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
         <DateTimePicker
           value={ value ? new Date(value as string) : null }
-          onChange={ handleDateTimeChange }
+          onChange={ (date: Date | null) => handleDateTimeChange(date, fieldName) }
           renderInput={ params =>
             <TextField label={ strings.formComponent.dateTimePicker } { ...params }/>
           }
@@ -165,12 +109,11 @@ const Form: React.FC<Props> = ({
 
   /**
    * Creates url with default format for accessing uploaded file
-   * TODO: Implement once keycloak is implemented
    * @param id fileRef id
    */
   const createDefaultFileUrl = (id: string) => {
-    // return `${Api.createDefaultUploadUrl()}?fileRef=${id}`;
-  }
+    return `${Api.createDefaultUploadUrl()}?fileRef=${id}`;
+  };
 
   /**
    * Performs file upload request
@@ -187,26 +130,26 @@ const Form: React.FC<Props> = ({
       method: "POST",
       body: data
     })
-    .then(res => res.json())
-    .then((data) => {
-      let currentFiles = getFieldValue(fieldName);
-      if (!currentFiles) {
-        currentFiles = { files: [] };
-      }
-      const value = {
-        id: data.fileRef,
-        persisted: false,
-        name: data.fileName,
-        url: createDefaultFileUrl(data.fileRef)
-      } as FileFieldValueItem;
-      (currentFiles as FileFieldValue).files.push(value);
-      setFieldValue(fieldName, {...currentFiles as FileFieldValue});
-      setUploadingFields([ ...uploadingFields.filter(f => f !== fieldName) ]);
-    })
-    .catch((e) => {
-      setUploadingFields([ ...uploadingFields.filter(f => f !== fieldName) ]);
-    })
-  }
+      .then(res => res.json())
+      .then(responseData => {
+        let currentFiles = getFieldValue(fieldName);
+        if (!currentFiles) {
+          currentFiles = { files: [] };
+        }
+        const value = {
+          id: responseData.fileRef,
+          persisted: false,
+          name: responseData.fileName,
+          url: createDefaultFileUrl(responseData.fileRef)
+        } as FileFieldValueItem;
+        (currentFiles as FileFieldValue).files.push(value);
+        setFieldValue(fieldName, { ...currentFiles as FileFieldValue });
+        setUploadingFields([ ...uploadingFields.filter(f => f !== fieldName) ]);
+      })
+      .catch(() => {
+        setUploadingFields([ ...uploadingFields.filter(f => f !== fieldName) ]);
+      });
+  };
 
   /**
    * Method for uploading a file
@@ -217,7 +160,7 @@ const Form: React.FC<Props> = ({
   const uploadFile = (fieldName: string, files: FileList | File, path: string) => {
     if (files instanceof FileList) {
       for (let i = 0; i < files.length; i++) {
-        let item = files.item(i);
+        const item = files.item(i);
         if (item) {
           doUpload(fieldName, item, path);
         }
@@ -230,7 +173,6 @@ const Form: React.FC<Props> = ({
   /**
    * Deletes uploaded file
    * Only unsecure (not yet persisted) files can be deleted, otherwise they are just removed from data
-   * TODO: Implement once keycloak is implemented
    * @param fieldName field name
    * @param value uploaded value
    */
@@ -240,34 +182,26 @@ const Form: React.FC<Props> = ({
       currentFiles = { files: [] };
     }
     const files = (currentFiles as FileFieldValue).files.filter(f => f.id !== value.id);
-    setFieldValue(fieldName, { files });
+    setFieldValue(fieldName, { files: files });
     
-    //Only unsecured values can be deleted from server
-    /* if (!value.persisted) {
-      fetch(createDefaultFileUrl(value.id), { method: "DELETE" })
-        .then((res) => {
-          if (res.ok) {
-            console.log("Deleted from server");
-          }
-        })*/
-    } 
+    if (!value.persisted) {
+      fetch(createDefaultFileUrl(value.id), { method: "DELETE" });
+    }
+  };
 
   /**
    * Shows uploaded file
-   * TODO: Implement once keycloak is implemented
-   * @param fieldName field name
    * @param value uploaded value
    */
-  const showFile = async (fieldName: string, value: FileFieldValueItem) => {
+  const showFile = async (value: FileFieldValueItem) => {
     if (!value.persisted) {
       window.open(value.url, "blank");
-      return
+      return;
     }
-    /* if (this.props.accessToken) {
-      const attachmentApi = Api.getAttachmentsApi(this.props.accessToken);
-      const data = await attachmentApi.findAttachmentData({attachmentId: value.id, ownerKey: this.props.ownerKey});
-      MetaformUtils.downloadBlob(data, value.name || "attachment");
-    } */
+
+    const { attachmentsApi } = apiClient;
+    const data = await attachmentsApi.findAttachmentData({ attachmentId: value.id, ownerKey: ownerKey });
+    MetaformUtils.downloadBlob(data, value.name || "attachment");
   };
 
   /**
@@ -277,6 +211,7 @@ const Form: React.FC<Props> = ({
    * @param formReadOnly form read only
    * @param value autocomplete form value
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, require-jsdoc
   const renderAutocomplete = (field: MetaformField, readOnly: boolean, value: FieldValue) => {
     return (
       <FormAutocomplete
@@ -287,7 +222,7 @@ const Form: React.FC<Props> = ({
         value={ value }
       />
     );
-  }
+  };
   
   return (
     <FormContainer>

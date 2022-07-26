@@ -15,7 +15,7 @@ interface Props {
   value: FieldValue,
   onValueChange: (value: FieldValue) => void,
   onFileUpload: (fieldName: string, file: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => void,
-  onFileShow: (fieldName: string, value: FileFieldValueItem) => void,
+  onFileShow: (value: FileFieldValueItem) => void,
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void,
   onFocus: () => void
 }
@@ -94,7 +94,7 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
     return (
       <div key={valueItem.id} className="metaform-react-file-value-container">
         <span className="metaform-react-file-field-name">{ valueItem.name || valueItem.id}</span>
-        <Button onClick={ () => onFileShow(field.name || "", valueItem) } className="metaform-react-file-field-open-button">{ showButtonText }</Button>
+        <Button onClick={ () => onFileShow(valueItem) } className="metaform-react-file-field-open-button">{ showButtonText }</Button>
         <Button onClick={ () => onFileDelete(field.name || "", valueItem) } className="metaform-react-file-field-delete-button">{ deleteButtonText }</Button>
       </div>
     );

@@ -4,8 +4,9 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import BasicLayout, { SnackbarMessage } from "components/layouts/basic-layout";
 import strings from "localization/strings";
-import { Metaform, Reply } from "generated/client";
-import { FieldValue, ValidationErrors } from "metaform-react/types";
+import { Metaform, MetaformFieldType, Reply } from "generated/client";
+import { FieldValue, FileFieldValue, ValidationErrors } from "metaform-react/types";
+
 import MetaformUtils from "utils/metaform-utils";
 import Mail from "mail/mail";
 import ConfirmDialog from "components/generic/confirm-dialog";
@@ -35,18 +36,18 @@ interface Props {
 const FormScreen: React.FC<Props> = ({
   metaformId
 }) => {
+  const AUTOSAVE_COOLDOWN = 500;
   const [ , setLoading ] = useState(false);
   const [ , setSaving ] = useState(false);
   const [ , setSnackbarMessage ] = useState<SnackbarMessage>();
 
   const [ , setReplyConfirmVisible ] = useState(false);
-  const [ accessTokenNotValid ] = useState(true);
   const [ metaform, setMetaform ] = useState<Metaform>();
   const [ ownerKey, setOwnerKey ] = useState<string | null>();
   const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});
   const [ formValid, setFormValid ] = useState(true);
   const [ draftSaveVisible, setDraftSaveVisible ] = useState(false);
-  const [ autosaving ] = useState(false);
+  const [ autosaving, setAutosaving ] = useState(false);
   const [ draftSavedVisible, setDraftSavedVisible ] = useState(false);
   const [ reply, setReply ] = useState<Reply>();
   const [ replySavedVisible, setReplySavedVisible ] = useState(false);
@@ -54,7 +55,8 @@ const FormScreen: React.FC<Props> = ({
   const [ draftEmailDialogVisible, setDraftEmailDialogVisible ] = useState(false);
   const [ replyEmailDialogVisible, setReplyEmailDialogVisible ] = useState(false);
   const [ replyDeleteVisible, setReplyDeleteVisible ] = useState(false);
-  const [ replyDeleteConfirmVisible ] = useState(false);
+  const [ replyDeleteConfirmVisible, setReplyDeleteConfirmVisble ] = useState(false);
+  const [ formValueChangeTimeout, setFormValueChangeTimeout ] = useState<NodeJS.Timeout>();
 
   const apiClient = useApiClient(Api.getApiClient);
   const keycloak = useAppSelector(selectKeycloak);
@@ -73,15 +75,43 @@ const FormScreen: React.FC<Props> = ({
   };
 
   /**
-   * Implement later
+   * Saves the current draft
    */
-  const saveDraft = async () => {};
+  const saveDraft = async () => {
+    try {
+      if (!metaform || !metaform.id) {
+        return;
+      }
 
-  /**
-   * Implement later
-   */
-  const getAccessToken = () => {
-    return undefined;
+      setLoading(true);
+      setDraftSaveVisible(false);
+
+      const { draftsApi } = apiClient;
+      let draft;
+
+      if (draftId) {
+        draft = await draftsApi.updateDraft({
+          metaformId: metaform.id,
+          draftId: draftId,
+          draft: {
+            data: formValues as any
+          }
+        });
+      } else {
+        draft = await draftsApi.createDraft({
+          metaformId: metaform.id,
+          draft: {
+            data: formValues as any
+          }
+        });
+      }
+
+      setDraftId(draft.id!);
+      setDraftSaveVisible(true);
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
+
+    setLoading(false);
   };
 
   /**
@@ -91,6 +121,96 @@ const FormScreen: React.FC<Props> = ({
    */
   const getFieldValue = (fieldName: string): FieldValue => {
     return formValues[fieldName] || null;
+  };
+
+  /**
+   * Returns form values as map
+   * 
+   * @param currentMetaform metaform
+   * @returns form values as map
+   */
+  const getFormValues = (currentMetaform: Metaform): { [ key: string]: object } => {
+    const values = { ...formValues };
+
+    currentMetaform.sections?.forEach(section => {
+      section.fields?.forEach(field => {
+        if (field.type === MetaformFieldType.Files) {
+          let value = getFieldValue(field.name as string);
+          if (!value) {
+            value = { files: [] };
+          }
+          values[field.name as string] = (value as FileFieldValue).files.map(file => file.id);
+        }
+      });
+    });
+
+    return values as { [ key: string]: object };
+  };
+
+  /** 
+   * Implement later
+   */
+  const updateReply = async (currentMetaform: Metaform, currentReply: Reply, currentOwnerKey: string | null | undefined) => {
+    const { repliesApi } = apiClient;
+    
+    await repliesApi.updateReply({
+      metaformId: metaformId,
+      replyId: currentReply.id!,
+      ownerKey: currentOwnerKey || undefined,
+      reply: {
+        data: getFormValues(currentMetaform)
+      }
+    });
+
+    return repliesApi.findReply({
+      metaformId: metaformId,
+      replyId: currentReply.id!,
+      ownerKey: currentOwnerKey || undefined
+    });
+  };
+
+  /**
+   * Autosaves the form
+   */
+  const autosave = async () => {
+    setFormValueChangeTimeout(undefined);
+
+    if (!formValid) {
+      return;
+    }
+
+    if (autosaving) {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      scheduleAutosave();
+      return;
+    }
+
+    if (!metaform || !metaform.id || !reply || ownerKey) {
+      return;
+    }
+
+    try {
+      setAutosaving(true);
+
+      await updateReply(metaform, reply, ownerKey);
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
+
+    setAutosaving(false);
+  };
+
+  /**
+   * Schedules an autosave. If new autosave is scheduled before given cooldown period 
+   * the old autosave is cancelled and replaced with the new one
+   */
+  const scheduleAutosave = () => {
+    if (formValueChangeTimeout) {
+      clearTimeout(formValueChangeTimeout);
+      setFormValueChangeTimeout(undefined);
+    }
+
+    const timeout = setTimeout(autosave, AUTOSAVE_COOLDOWN);
+    setFormValueChangeTimeout(timeout);
   };
 
   /**
@@ -107,23 +227,26 @@ const FormScreen: React.FC<Props> = ({
       setDraftSaveVisible(!!metaform?.allowDrafts);
 
       if (formValid && metaform?.autosave) {
-        /** Implement autosave */
+        scheduleAutosave();
       }
     }
   };
 
-  /** 
-   * Implement later
+  /**
+   * Creates new reply
+   * 
+   * @param currentMetaform metaform
    */
-  const updateReply = () => {
-    return {};
-  };
+  const createReply = async (currentMetaform: Metaform) => {
+    const { repliesApi } = apiClient;
 
-  /** 
-   * Implement later
-   */
-  const createReply = () => {
-    return {};
+    return repliesApi.createReply({
+      metaformId: metaformId,
+      reply: {
+        data: getFormValues(currentMetaform)
+      },
+      replyMode: "CUMULATIVE"
+    });
   };
 
   /**
@@ -138,9 +261,9 @@ const FormScreen: React.FC<Props> = ({
 
     try {
       if (reply && reply.id && ownerKey) {
-        replyToUpdate = await updateReply();
+        replyToUpdate = await updateReply(metaform, reply, ownerKey);
       } else {
-        replyToUpdate = await createReply();
+        replyToUpdate = await createReply(metaform);
       }
 
       const updatedOwnerKey = ownerKey || reply?.ownerKey;
@@ -154,9 +277,8 @@ const FormScreen: React.FC<Props> = ({
       setOwnerKey(updatedOwnerKey);
       setFormValues(updatedValues as any);
       setReplySavedVisible(true);
-    } catch (e) {
-      /** Implement error handling */
-    }
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
   };
 
   /**
@@ -171,9 +293,7 @@ const FormScreen: React.FC<Props> = ({
       setFormValid(isFormValid);
 
       if (formValid && metaform?.autosave) {
-        /**
-         * Implement autosave later
-         */
+        scheduleAutosave();
       }
     }
   };
@@ -215,17 +335,42 @@ const FormScreen: React.FC<Props> = ({
         message: strings.formScreen.replyEditEmailSent,
         severity: "success"
       });
-    } catch (e) {
-      /**
-       * Implement error handling
-       */
-    }
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
   };
   
   /**
-   * Implement later
+   * Deletes the reply
    */
-  const deleteReply = async () => {};
+  const deleteReply = async () => {
+    try {
+      setReplyDeleteConfirmVisble(false);
+      setLoading(true);
+
+      const { repliesApi } = apiClient;
+
+      if (reply && reply.id && ownerKey) {
+        await repliesApi.deleteReply({
+          metaformId: metaformId,
+          replyId: reply.id,
+          ownerKey: ownerKey
+        });
+      } else {
+        throw new Error("Missing parameters, failed to delete reply");
+      }
+
+      setReplyDeleteVisible(false);
+      setReply(undefined);
+      setOwnerKey(null);
+      setSnackbarMessage({
+        message: strings.formScreen.replyDeleted,
+        severity: "success"
+      });
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
+
+    setLoading(false);
+  };
 
   /**
    * Renders the form
@@ -235,11 +380,8 @@ const FormScreen: React.FC<Props> = ({
       return null;
     }
 
-    const accessToken = getAccessToken();
-
     return (
       <Form
-        accessToken={ accessToken }
         ownerKey={ ownerKey || "" }
         contexts={ ["FORM"] }
         metaform={ metaform }
@@ -247,7 +389,6 @@ const FormScreen: React.FC<Props> = ({
         setFieldValue={ setFieldValue }
         onSubmit={ saveReply }
         onValidationErrorsChange={ onValidationErrorsChange }
-        accessTokenNotValid={ accessTokenNotValid }
       />
     );
   };
@@ -314,16 +455,14 @@ const FormScreen: React.FC<Props> = ({
         to: email
       });
 
-      setLoading(false);
       setSnackbarMessage({
         message: strings.formScreen.draftEmailSent,
         severity: "success"
       });
-    } catch (e) {
-      /**
-       * Implement error handling
-       */
-    }
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
+
+    setLoading(false);
   };
 
   /**
@@ -341,7 +480,7 @@ const FormScreen: React.FC<Props> = ({
   const findReply = async (replyId: string, currentOwnerKey: string) => {
     try {
       const replyApi = apiClient.repliesApi;
-      return await replyApi.findReply({
+      return replyApi.findReply({
         metaformId: metaformId,
         replyId: replyId,
         ownerKey: currentOwnerKey
@@ -360,7 +499,7 @@ const FormScreen: React.FC<Props> = ({
   const findDraft = async (draftToFindId: string) => {
     try {
       const { draftsApi } = apiClient;
-      return await draftsApi.findDraft({
+      return draftsApi.findDraft({
         metaformId: metaformId,
         draftId: draftToFindId
       });
@@ -422,11 +561,8 @@ const FormScreen: React.FC<Props> = ({
 
       setMetaform(foundMetaform);
       setFormValues(preparedFormValues);
-    } catch (e) {
-      /**
-       * Implement error handling
-       */
-    }
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
 
     setLoading(false);
   };
