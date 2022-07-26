@@ -43,7 +43,7 @@ interface Props {
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   fileShowButtonText: string;
   fileDeleteButtonText: string;
-  onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
+  onFileShow: (value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
   onSubmit: (source: MetaformField) => void;

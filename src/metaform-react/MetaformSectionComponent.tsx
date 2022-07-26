@@ -28,7 +28,7 @@ interface Props {
   onSubmit: (source: MetaformField) => void;
   fileShowButtonText: string;
   fileDeleteButtonText: string;
-  onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
+  onFileShow: (value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
 }
 

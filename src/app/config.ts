@@ -57,5 +57,5 @@ export default class Config {
   public static getSentryEnvironment(): string {
     return env.REACT_APP_SENTRY_ENVIRONMENT;
   }
-
+  
 }

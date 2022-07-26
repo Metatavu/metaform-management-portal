@@ -51,7 +51,20 @@
           "form": "FORM",
           "latestReply": "LATEST",
           "newReply": "NEW",
-          "notProcessed": "untreated"
+          "notProcessed": "untreated",
+          "answerScreen": {
+            "title": "Answers",
+            "description": "List of answers for the selected form.",
+            "createdColumnTitle": "CREATED",
+            "modifiedColumnTitle": "MODIFIED",
+            "statusColumnTitle": "STATUS",
+            "nameColumnTitle": "NAME",
+            "selectorShowOpen": "Show open",
+            "selectorShowAll": "Show all",
+            "statusWaiting": "Waiting",
+            "statusInProgress": "In progress",
+            "statusProgressed": "Progressed"
+          }
         }
       },
       "formDataScreen": {
@@ -120,6 +133,7 @@
 
   "formScreen": {
     "autosaving": "Saving reply...",
+    "replyNotFound": "Reply could not be found from the system",
     "replyEditEmailText": "You can send the link to your email by clicking",
     "replyEditEmailContent": "<p>Hi!</p><p>You can edit form {0} reply from following link:</p><p><a href='{1}'>{1}</a></p><hr/><p>This is an automated message, please do not reply.</p>",
     "replyEditEmailSubject": "{0} -form edit link",
@@ -140,7 +154,8 @@
     "replyDeleteText": "You can delete this reply by clicking",
     "replyDeleteLink": "here",
     "confirmDeleteReplyTitle": "Are you sure?",
-    "confirmDeleteReplyText": "Are you sure that you wish to delete the reply?"
+    "confirmDeleteReplyText": "Are you sure that you wish to delete the reply?",
+    "replyDeleted": "Reply deleted"
   },
 
   "emailDialog": {

@@ -79,6 +79,19 @@ export interface Localized extends LocalizedStringsMethods {
           latestReply: string;
           newReply: string;
           notProcessed: string;
+          answerScreen: {
+            title: string;
+            description: string;
+            createdColumnTitle: string;
+            modifiedColumnTitle: string;
+            statusColumnTitle: string;
+            nameColumnTitle: string;
+            selectorShowOpen: string;
+            selectorShowAll: string;
+            statusWaiting: string;
+            statusInProgress: string;
+            statusProgressed: string;
+          }
         }
       };
       formDataScreen: {
@@ -180,6 +193,8 @@ export interface Localized extends LocalizedStringsMethods {
     replyDeleteLink: string;
     confirmDeleteReplyTitle: string;
     confirmDeleteReplyText: string;
+    replyNotFound: string;
+    replyDeleted: string;
   };
 
   /**
