@@ -25,7 +25,7 @@ interface Props {
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
   onSubmit: (source: MetaformField) => void;
-  onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
+  onFileShow: (value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
   onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
 }
