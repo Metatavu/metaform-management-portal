@@ -1,27 +1,50 @@
-import { Grid, List, ListItem, ListItemText, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
+import { Grid, List, ListItem, ListItemText, Typography } from "@mui/material";
+import Api from "api";
+import { useApiClient } from "app/hooks";
 
 /**
  * Public forms screen component
  */
-const PublicFormsScreen: React.FC = () => (
-  <Grid container spacing={ 2 }>
-    <Grid item xs={ 12 }>
-      <Typography>
-        Public forms
-      </Typography>
-      <List>
-        <ListItem>
-          <ListItemText primary={
-            <Typography>
-              <Link to="/1">Form 1</Link>
-            </Typography>}
-          />
-        </ListItem>
-      </List>
+const PublicFormsScreen: React.FC = () => {
+  const apiClient = useApiClient(Api.getApiClient);
+  const { metaformsApi } = apiClient;
+
+  /**
+   * Fetch metaforms from the API
+   */
+  const fetchForms = async () => {
+    const forms = await metaformsApi.listMetaforms();
+    return forms;
+  };
+
+  const [forms, setForms] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    fetchForms().then(setForms);
+  }, []);
+
+  return (
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Typography variant="h4">
+          Public forms
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <List>
+          {forms.map(form => (
+            <ListItem key={form.id}>
+              <Link to={`/${form.id}`}>
+                <ListItemText primary={form.name}/>
+              </Link>
+            </ListItem>
+          ))}
+        </List>
+      </Grid>
     </Grid>
-  </Grid>
-);
+  );
+};
 
 export default PublicFormsScreen;
