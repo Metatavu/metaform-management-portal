@@ -4,7 +4,6 @@ import { Metaform, MetaformField, Reply } from "generated/client";
 import { FileFieldValueItem, ValidationErrors, FieldValue, FileFieldValue } from "../../metaform-react/types";
 import React from "react";
 import FormContainer from "styled/generic/form";
-import MetaformUtils from "utils/metaform-utils";
 import strings from "localization/strings";
 import DatePicker from "@mui/lab/DatePicker";
 import { DateTimePicker, LocalizationProvider } from "@mui/lab";
@@ -12,7 +11,6 @@ import fiLocale from "date-fns/locale/fi";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import MetaformComponent from "metaform-react/MetaformComponent";
 import { Dictionary } from "types";
-import testjson from "testi-lomake.json"
 import FormAutocomplete from "./form-autocomplete";
 
 /**

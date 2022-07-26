@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Autocomplete, CircularProgress, TextField, Typography } from "@mui/material";
 import CodeServerClient from "../../codeserver/client";
 import { Metaform, MetaformField, MetaformFieldAutocompleteService, MetaformFieldSourceType } from "../../generated/client";
-import { Attribute, Qfield } from "../../generated/codeserver-client";
 import { FieldValue } from "metaform-react/types";
 import Config from "app/config";
 import strings from "../../localization/strings";
 import { autocompleteErrorMessages, AutocompleteItem } from "../../metaform-react/types";
+import { Attribute, Qfield } from "generated/client/codeserver-client";
 
 /**
  * Interface representing component properties
