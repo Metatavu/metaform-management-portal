@@ -150,7 +150,8 @@
     "replyDeleteLink": "tästä",
     "confirmDeleteReplyTitle": "Oletko varma?",
     "confirmDeleteReplyText": "Oletko varma, että haluat poistaa vastauksen?",
-    "replyNotFound": "Vastausta ei löytynyt järjestelmästä"
+    "replyNotFound": "Vastausta ei löytynyt järjestelmästä",
+    "replyDeleted": "Vastaus poistettu"
   },
 
   "emailDialog": {
