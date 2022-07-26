@@ -1,4 +1,4 @@
-import { ConceptCodeApi, Configuration } from "generated/client/codeserver-client";
+import { ConceptCodeApi, Configuration } from "generated/codeserver-client";
 
 /**
  * Client for code server

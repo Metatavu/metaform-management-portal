@@ -7,7 +7,7 @@ import { FieldValue } from "metaform-react/types";
 import Config from "app/config";
 import strings from "../../localization/strings";
 import { autocompleteErrorMessages, AutocompleteItem } from "../../metaform-react/types";
-import { Attribute, Qfield } from "generated/client/codeserver-client";
+import { Attribute, Qfield } from "generated/codeserver-client";
 
 /**
  * Interface representing component properties
@@ -95,7 +95,7 @@ const FormAutocomplete: React.FC<Props> = ({
     
     const response = await conceptCodeApi.getConceptCodesFromDefaultVersion({
       classificationId: codeServerClassificationId,
-      qfield: [ Qfield.PARENTID ],
+      qfield: [ Qfield.Parentid ],
       qvalue: codeServerParentConceptCodeId
     });
     
