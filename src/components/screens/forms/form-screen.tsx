@@ -148,7 +148,11 @@ const FormScreen: React.FC<Props> = ({
   };
 
   /** 
-   * Implement later
+   * Updates a reply
+   * 
+   * @param currentMetaform current Metaform
+   * @param currentReply current reply
+   * @param currentOwnerKey current owner key
    */
   const updateReply = async (currentMetaform: Metaform, currentReply: Reply, currentOwnerKey: string | null | undefined) => {
     const { repliesApi } = apiClient;
