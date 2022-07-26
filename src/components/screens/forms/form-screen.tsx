@@ -42,7 +42,7 @@ const FormScreen: React.FC<Props> = ({
   const [ , setSnackbarMessage ] = useState<SnackbarMessage>();
 
   const [ , setReplyConfirmVisible ] = useState(false);
-  const [ metaform, setMetaform ] = useState<Metaform>();
+  const [ metaform, setMetaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ ownerKey, setOwnerKey ] = useState<string | null>();
   const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});
   const [ formValid, setFormValid ] = useState(true);
@@ -480,11 +480,11 @@ const FormScreen: React.FC<Props> = ({
   const findReply = async (replyId: string, currentOwnerKey: string) => {
     try {
       const replyApi = apiClient.repliesApi;
-      return replyApi.findReply({
+      return await Promise.resolve(replyApi.findReply({
         metaformId: metaformId,
         replyId: replyId,
         ownerKey: currentOwnerKey
-      });
+      }));
     } catch (e) {
       return null;
     }
@@ -499,10 +499,10 @@ const FormScreen: React.FC<Props> = ({
   const findDraft = async (draftToFindId: string) => {
     try {
       const { draftsApi } = apiClient;
-      return draftsApi.findDraft({
+      return await Promise.resolve(draftsApi.findDraft({
         metaformId: metaformId,
         draftId: draftToFindId
-      });
+      }));
     } catch (e) {
       return null;
     }

@@ -170,6 +170,8 @@ const FormAutocomplete: React.FC<Props> = ({
    * Loading items
    */
   const loadingItems = async () => {
+    setLoading(true);
+
     try {
       const loadedItems = await loadItems();
       const defaultAutoCompleteItem = loadedItems.find(item => item.id === value as string);
@@ -177,7 +179,6 @@ const FormAutocomplete: React.FC<Props> = ({
       setItems(loadedItems);
       setLoading(false);
       setDefaultValue(defaultAutoCompleteItem ? { ...defaultAutoCompleteItem } : defaultAutoCompleteItem);
-      console.log(loading);
 
       getSourceFields().forEach(sourceField => {
         if (sourceField.name) {
@@ -194,10 +195,8 @@ const FormAutocomplete: React.FC<Props> = ({
 
   /**
    * Component did mount life cycle event
-   * TODO: Infinite loading loop
    */
   useEffect(() => {
-    setLoading(true);
     loadingItems();
   }, []);
 
