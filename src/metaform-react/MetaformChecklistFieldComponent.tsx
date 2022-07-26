@@ -12,7 +12,7 @@ interface Props {
   formReadOnly: boolean,
   value: FieldValue,
   renderIcon: (icon: IconName, key: string) => ReactNode;
-  onValueChange: (value: FieldValue) => void
+  onValueChange?: (value: FieldValue) => void
 }
 
 /**
@@ -49,7 +49,7 @@ export const MetaformChecklistFieldComponent: React.FC<Props> = ({
   const onCheckboxChange = (option: MetaformFieldOption, checked: boolean) => {
     const selectedOptions = getSelectedOptions();
     const newValue = (checked ? [ ...selectedOptions, option.name ] : selectedOptions.filter(selectedOption => selectedOption !== option.name)).join(",");
-    onValueChange(newValue);
+    onValueChange && onValueChange(newValue);
   };
 
   /**

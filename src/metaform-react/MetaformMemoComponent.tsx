@@ -12,8 +12,8 @@ interface Props {
   fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
-  onValueChange: (value: FieldValue) => void,
-  onFocus: () => void
+  onValueChange?: (value: FieldValue) => void,
+  onFocus?: () => void
 }
 
 /**
@@ -34,7 +34,7 @@ const MetaformMemoComponent: React.FC<Props> = ({
    * @param event event
    */
   const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    onValueChange(event.target.value);
+    onValueChange && onValueChange(event.target.value);
   };
 
   if (!field.name) {

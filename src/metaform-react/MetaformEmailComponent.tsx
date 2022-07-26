@@ -12,8 +12,8 @@ interface Props {
   fieldLabelId: string;
   formReadOnly: boolean;
   value: FieldValue;
-  onValueChange: (value: FieldValue) => void;
-  onFocus: () => void;
+  onValueChange?: (value: FieldValue) => void;
+  onFocus?: () => void;
 }
 
 /**
@@ -35,7 +35,7 @@ const MetaformEmailFieldComponent: React.FC<Props> = ({
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const changedValue = event.target.value;
-    onValueChange(changedValue);
+    onValueChange && onValueChange(changedValue);
   };
 
   if (!field.name) {

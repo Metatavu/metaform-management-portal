@@ -12,8 +12,8 @@ interface Props {
   fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
-  onValueChange: (value: FieldValue) => void,
-  onFocus: () => void,
+  onValueChange?: (value: FieldValue) => void,
+  onFocus?: () => void,
   renderIcon: (icon: IconName, key: string) => ReactNode
 }
 
@@ -36,7 +36,7 @@ const MetaformBooleanFieldComponent: React.FC<Props> = ({
    * @param event event
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onValueChange(event.target.value ? "" : "checked");
+    onValueChange && onValueChange(event.target.value ? "" : "checked");
   };
 
   /**
