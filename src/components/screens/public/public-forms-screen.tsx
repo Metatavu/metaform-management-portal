@@ -15,7 +15,7 @@ const PublicFormsScreen: React.FC = () => (
         <ListItem>
           <ListItemText primary={
             <Typography>
-              <Link to="/forms/1">Form 1</Link>
+              <Link to="/1">Form 1</Link>
             </Typography>}
           />
         </ListItem>
