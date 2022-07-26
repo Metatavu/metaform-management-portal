@@ -223,7 +223,8 @@ const FormScreen: React.FC<Props> = ({
     if (formValues[fieldName] !== fieldValue) {
       formValues[fieldName] = fieldValue;
       
-      setFormValues(formValues);
+      const newFormValues = { ...formValues };
+      setFormValues(newFormValues);
       setDraftSaveVisible(!!metaform?.allowDrafts);
 
       if (formValid && metaform?.autosave) {
@@ -273,7 +274,7 @@ const FormScreen: React.FC<Props> = ({
       }
 
       setSaving(false);
-      setReply(reply);
+      setReply(replyToUpdate);
       setOwnerKey(updatedOwnerKey);
       setFormValues(updatedValues as any);
       setReplySavedVisible(true);
