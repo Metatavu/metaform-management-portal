@@ -13,7 +13,7 @@ interface Props {
   formReadOnly: boolean,
   value: FieldValue,
   renderIcon: (icon: IconName, key: string) => ReactNode;
-  onValueChange: (value: FieldValue) => void;
+  onValueChange?: (value: FieldValue) => void;
 }
 
 /**
@@ -40,7 +40,7 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
   const onTableValueChange = (newRowValues: TableFieldValue) => {
     const newTableValues = newRowValues as TableFieldValue;
     setRowValues(newTableValues);
-    onValueChange(newTableValues);
+    onValueChange && onValueChange(newTableValues);
   };
 
   /**
