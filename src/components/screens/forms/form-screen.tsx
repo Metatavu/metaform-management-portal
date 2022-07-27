@@ -273,7 +273,7 @@ const FormScreen: React.FC<Props> = ({
       }
 
       setSaving(false);
-      setReply(reply);
+      setReply(replyToUpdate);
       setOwnerKey(updatedOwnerKey);
       setFormValues(updatedValues as any);
       setReplySavedVisible(true);
