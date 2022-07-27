@@ -6,7 +6,7 @@ import { Metaform, MetaformField, MetaformFieldAutocompleteService, MetaformFiel
 import { FieldValue } from "metaform-react/types";
 import Config from "app/config";
 import strings from "../../localization/strings";
-import { autocompleteErrorMessages, AutocompleteItem } from "../../metaform-react/types";
+import { AutocompleteItem } from "../../metaform-react/types";
 import { Attribute, Qfield } from "generated/codeserver-client";
 
 /**
@@ -64,26 +64,26 @@ const FormAutocomplete: React.FC<Props> = ({
     const { autocomplete } = field;
 
     if (!autocomplete) {
-      throw new Error(autocompleteErrorMessages.MISSING_AUTO_COMPLETE);
+      throw new Error(strings.autoComplete.missingAutocomplete);
     }
 
     const { options } = autocomplete;
     
     if (!options) {
-      throw new Error(autocompleteErrorMessages.MISSING_OPTIONS);
+      throw new Error(strings.autoComplete.missingOptions);
     }
 
     const { codeServerBaseUrl, codeServerClassificationId, codeServerParentConceptCodeId } = options;
     if (!codeServerBaseUrl) {
-      throw new Error(autocompleteErrorMessages.MISSING_CODE_SERVER_BASE_URL);
+      throw new Error(strings.autoComplete.missingCodeServerBaseUrl);
     }
 
     if (!codeServerClassificationId) {
-      throw new Error(autocompleteErrorMessages.MISSING_CODE_SERVER_CLASSIFICATION_ID);
+      throw new Error(strings.autoComplete.missingCodeServerClassificiationId);
     }
 
     if (!codeServerParentConceptCodeId) {
-      throw new Error(autocompleteErrorMessages.MISSING_CODE_SERVER_PARENT_CONCEPT_CODE_ID);
+      throw new Error(strings.autoComplete.missingCodeServerParentConceptCodeId);
     }
 
     const corsProxy = Config.getCorsProxy();
@@ -118,14 +118,14 @@ const FormAutocomplete: React.FC<Props> = ({
     const { autocomplete } = field;
       
     if (!autocomplete) {
-      throw new Error(autocompleteErrorMessages.MISSING_AUTO_COMPLETE);
+      throw new Error(strings.autoComplete.missingAutocomplete);
     }
   
     switch (autocomplete.service) {
       case MetaformFieldAutocompleteService.CodeServerConceptCode:
         return loadCodeServerConceptCodeItems();
       default:
-        throw new Error(autocompleteErrorMessages.UNKNOWN_AUTO_COMPLETE_SERVICE);
+        throw new Error(strings.autoComplete.unknownAutocompleteService);
     }
   };
 
@@ -139,14 +139,14 @@ const FormAutocomplete: React.FC<Props> = ({
     const { autocomplete } = field;
 
     if (!autocomplete) {
-      return "Unknown";
+      return strings.autoComplete.genericUnknown;
     }
 
     switch (autocomplete.service) {
       case MetaformFieldAutocompleteService.CodeServerConceptCode:
         return autocompleteItem.Abbreviation;
       default:
-        return "Unknown";
+        return strings.autoComplete.genericUnknown;
     }
   };
 
