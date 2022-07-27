@@ -485,11 +485,11 @@ const FormScreen: React.FC<Props> = ({
   const findReply = async (replyId: string, currentOwnerKey: string) => {
     try {
       const replyApi = apiClient.repliesApi;
-      return await replyApi.findReply({
+      return await Promise.resolve(replyApi.findReply({
         metaformId: metaformId,
         replyId: replyId,
         ownerKey: currentOwnerKey
-      });
+      }));
     } catch (e) {
       return null;
     }
@@ -504,10 +504,10 @@ const FormScreen: React.FC<Props> = ({
   const findDraft = async (draftToFindId: string) => {
     try {
       const { draftsApi } = apiClient;
-      return await draftsApi.findDraft({
+      return await Promise.resolve(draftsApi.findDraft({
         metaformId: metaformId,
         draftId: draftToFindId
-      });
+      }));
     } catch (e) {
       return null;
     }

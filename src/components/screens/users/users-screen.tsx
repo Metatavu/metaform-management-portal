@@ -16,7 +16,7 @@ const UsersScreen: React.FC = () => {
    * generate error message
    */
   const generateErrorMessage = () => {
-    errorContext.setError("Let there be errors");
+    errorContext.setError("Let there be errors", "Testivirhe 5, error message");
   };
   return (
     <>
