@@ -14,7 +14,8 @@ interface Props {
   value: FieldValue,
   onValueChange?: (value: FieldValue) => void,
   onFocus?: () => void,
-  renderIcon: (icon: IconName, key: string) => ReactNode
+  renderIcon: (icon: IconName, key: string) => ReactNode,
+  notInteractive?: boolean
 }
 
 /**
@@ -28,7 +29,8 @@ const MetaformBooleanFieldComponent: React.FC<Props> = ({
   value,
   onValueChange,
   onFocus,
-  renderIcon
+  renderIcon,
+  notInteractive
 }) => {
   /**
    * Event handler for field input change
@@ -55,6 +57,7 @@ const MetaformBooleanFieldComponent: React.FC<Props> = ({
     }
     
     return <Checkbox
+      style={ notInteractive ? { pointerEvents: "none" } : {}}
       key={ `${fieldId}-${option.name}-input` }
       id={ `${fieldId}-${option.name}` }
       aria-labelledby={ fieldLabelId }

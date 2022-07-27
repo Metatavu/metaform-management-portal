@@ -199,6 +199,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Memo:
       return (
         <MetaformMemoComponent
+          notInteractive={ true }
           field={ field }
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
@@ -209,6 +210,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Boolean:
       return (
         <MetaformBooleanFieldComponent
+          notInteractive={ true }
           renderIcon={ renderIcon }
           field={ field }
           fieldId={ fieldId }
@@ -220,6 +222,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     default:
       return (
         <TextField
+          style={{ pointerEvents: "none" }}
           disabled={ true }
           key={ fieldId }
           value={ field.name }
