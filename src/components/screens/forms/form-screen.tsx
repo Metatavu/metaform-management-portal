@@ -42,7 +42,7 @@ const FormScreen: React.FC<Props> = ({
   const [ , setSnackbarMessage ] = useState<SnackbarMessage>();
 
   const [ , setReplyConfirmVisible ] = useState(false);
-  const [ metaform, setMetaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
+  const [ metaform, setMetaform ] = useState<Metaform>();
   const [ ownerKey, setOwnerKey ] = useState<string | null>();
   const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});
   const [ formValid, setFormValid ] = useState(true);
@@ -223,8 +223,7 @@ const FormScreen: React.FC<Props> = ({
     if (formValues[fieldName] !== fieldValue) {
       formValues[fieldName] = fieldValue;
       
-      const newFormValues = { ...formValues };
-      setFormValues(newFormValues);
+      setFormValues({ ...formValues });
       setDraftSaveVisible(!!metaform?.allowDrafts);
 
       if (formValid && metaform?.autosave) {
@@ -481,11 +480,11 @@ const FormScreen: React.FC<Props> = ({
   const findReply = async (replyId: string, currentOwnerKey: string) => {
     try {
       const replyApi = apiClient.repliesApi;
-      return await Promise.resolve(replyApi.findReply({
+      return await replyApi.findReply({
         metaformId: metaformId,
         replyId: replyId,
         ownerKey: currentOwnerKey
-      }));
+      });
     } catch (e) {
       return null;
     }
@@ -500,10 +499,10 @@ const FormScreen: React.FC<Props> = ({
   const findDraft = async (draftToFindId: string) => {
     try {
       const { draftsApi } = apiClient;
-      return await Promise.resolve(draftsApi.findDraft({
+      return await draftsApi.findDraft({
         metaformId: metaformId,
         draftId: draftToFindId
-      }));
+      });
     } catch (e) {
       return null;
     }

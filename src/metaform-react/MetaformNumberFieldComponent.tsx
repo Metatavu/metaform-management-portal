@@ -12,8 +12,8 @@ interface Props {
   fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
-  onValueChange: (value: FieldValue) => void,
-  onFocus: () => void
+  onValueChange?: (value: FieldValue) => void,
+  onFocus?: () => void
 }
 
 /**
@@ -38,7 +38,7 @@ export const MetaformNumberFieldComponent: React.FC<Props> = ({
    * @param event event
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onValueChange(event.target.value);
+    onValueChange && onValueChange(event.target.value);
   };
 
   return (

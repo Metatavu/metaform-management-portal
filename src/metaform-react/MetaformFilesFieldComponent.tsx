@@ -13,11 +13,11 @@ interface Props {
   showButtonText: string,
   deleteButtonText: string,
   value: FieldValue,
-  onValueChange: (value: FieldValue) => void,
-  onFileUpload: (fieldName: string, file: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => void,
-  onFileShow: (value: FileFieldValueItem) => void,
-  onFileDelete: (fieldName: string, value: FileFieldValueItem) => void,
-  onFocus: () => void
+  onValueChange?: (value: FieldValue) => void,
+  onFileUpload?: (fieldName: string, file: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => void,
+  onFileShow?: (value: FileFieldValueItem) => void,
+  onFileDelete?: (fieldName: string, value: FileFieldValueItem) => void,
+  onFocus?: () => void
 }
 
 /**
@@ -43,9 +43,9 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && field.uploadUrl) {
-      onFileUpload(field.name || "", event.target.files, field.uploadUrl, field.maxFileSize, field.singleFile);
+      onFileUpload && onFileUpload(field.name || "", event.target.files, field.uploadUrl, field.maxFileSize, field.singleFile);
     } else {
-      onValueChange(event.target.value);
+      onValueChange && onValueChange(event.target.value);
     }
   };
 
@@ -94,8 +94,8 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
     return (
       <div key={valueItem.id} className="metaform-react-file-value-container">
         <span className="metaform-react-file-field-name">{ valueItem.name || valueItem.id}</span>
-        <Button onClick={ () => onFileShow(valueItem) } className="metaform-react-file-field-open-button">{ showButtonText }</Button>
-        <Button onClick={ () => onFileDelete(field.name || "", valueItem) } className="metaform-react-file-field-delete-button">{ deleteButtonText }</Button>
+        <Button onClick={ () => onFileShow && onFileShow(valueItem) } className="metaform-react-file-field-open-button">{ showButtonText }</Button>
+        <Button onClick={ () => onFileDelete && onFileDelete(field.name || "", valueItem) } className="metaform-react-file-field-delete-button">{ deleteButtonText }</Button>
       </div>
     );
   });

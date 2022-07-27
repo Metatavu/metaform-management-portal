@@ -10,7 +10,7 @@ interface Props {
   field: MetaformField;
   formReadOnly: boolean;
   validationErrors: ValidationErrors;
-  onClick: (source: MetaformField) => void;
+  onClick?: (source: MetaformField) => void;
 }
 
 /**
@@ -42,7 +42,7 @@ export const MetaformSubmitFieldComponent: React.FC<Props> = ({
       }}
       disabled={ disabled }
       value={ field.text }
-      onClick={ () => onClick(field) }
+      onClick={ () => onClick && onClick(field) }
     />
   );
 };

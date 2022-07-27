@@ -8,7 +8,7 @@ import moment from "moment";
  */
 interface Props {
   field: MetaformField,
-  onValueChange: (value: FieldValue) => void,
+  onValueChange?: (value: FieldValue) => void,
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element
 }
 
@@ -26,7 +26,7 @@ const MetaformDateFieldComponent: React.FC<Props> = ({
    * @param date date
    */
   const onChange = (date: Date) => {
-    onValueChange(date ? moment(date).format("YYYY-MM-DD") : null);
+    onValueChange && onValueChange(date ? moment(date).format("YYYY-MM-DD") : null);
   };
 
   return datePicker(field.name || "", onChange);
