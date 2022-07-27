@@ -14,7 +14,7 @@ import { EditorContent, EditorSection, EditorWrapper } from "styled/editor/metaf
 import DroppableWrapper from "components/generic/drag-and-drop/droppable-wrapper";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DragAndDropUtils from "utils/drag-and-drop-utils";
-import AddableFieldRenderer from "./field-renderer/field-renderer";
+import AddableFieldRenderer from "./field-renderer/addable-field-renderer";
 import strings from "localization/strings";
 
 /**
