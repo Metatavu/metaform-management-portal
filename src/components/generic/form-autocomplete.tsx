@@ -183,6 +183,7 @@ const FormAutocomplete: React.FC<Props> = ({
           setFieldValue(sourceField.name, itemValue);
         }
       });
+    // TODO: Add proper error handling, once error handler is implemented
     } catch (e: any) {
       setLoading(false);
       setErrorMessage(e.message);
