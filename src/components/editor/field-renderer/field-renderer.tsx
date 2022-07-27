@@ -93,7 +93,7 @@ const FieldRenderer: React.FC<Prop> = ({
         <MetaformTableFieldComponent
           field={ field }
           formReadOnly={ true }
-          value={ field.name || "" }
+          value={ [{}] }
           renderIcon={ renderIcon }
         />
       );
