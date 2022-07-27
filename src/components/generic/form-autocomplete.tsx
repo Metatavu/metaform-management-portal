@@ -33,7 +33,7 @@ const FormAutocomplete: React.FC<Props> = ({
   const [ errorMessage, setErrorMessage ] = useState("");
   const [ loading, setLoading ] = useState(false);
   const [ items, setItems ] = useState<AutocompleteItem[]>([]);
-  const [ defaultValue, setDefaultValue ] = useState<AutocompleteItem | undefined>(undefined);
+  const [ defaultValue, setDefaultValue ] = useState<AutocompleteItem>();
   const [ inputValue, setInputValue ] = useState<string>("");
 
   /**
