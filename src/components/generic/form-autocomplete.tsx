@@ -39,25 +39,21 @@ const FormAutocomplete: React.FC<Props> = ({
   /**
    * Renders loader
    */
-  const renderLoader = () => {
-    return (
-      <div>
-        <CircularProgress size={ 20 }/>
-        <Typography>{ strings.generic.loadingAutoCompleteOptions }</Typography>
-      </div>
-    );
-  };
+  const renderLoader = () => (
+    <div>
+      <CircularProgress size={ 20 }/>
+      <Typography>{ strings.generic.loadingAutoCompleteOptions }</Typography>
+    </div>
+  );
 
   /**
    * Renders autocomplete error message
    */
-  const renderErrorMessage = () => {
-    return (
-      <div style={{ paddingLeft: "10px" }}>
-        <Typography style={{ fontSize: "0.6rem" }} variant="caption" color="error">{ errorMessage }</Typography>
-      </div>
-    );
-  };
+  const renderErrorMessage = () => (
+    <div style={{ paddingLeft: "10px" }}>
+      <Typography style={{ fontSize: "0.6rem" }} variant="caption" color="error">{ errorMessage }</Typography>
+    </div>
+  );
 
   /**
    * Loads autocomplete items for code server concept code service
