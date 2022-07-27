@@ -220,6 +220,7 @@ const FieldRenderer: React.FC<Prop> = ({
     default:
       return (
         <TextField
+          disabled={ true }
           key={ fieldId }
           value={ field.name }
           label={ fieldLabelId }
