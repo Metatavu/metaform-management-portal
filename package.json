@@ -20,6 +20,7 @@
     "@types/node": "^17.0.14",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
+    "codemirror": "^5.60.0",
     "email-validator": "^2.0.4",
     "envalid": "^7.3.1",
     "eslint-config-airbnb-typescript": "^16.1.0",
@@ -42,10 +43,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run build-client && react-scripts build",
+    "build": "npm run build-client && npm run build-codeserver-client && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .ts,.tsx ./src",
+    "build-codeserver-client": "openapi-generator-cli generate -i https://koodistopalvelu.kanta.fi/codeserver/resources/apidocs/v3/openapi.yaml -o src/generated/codeserver-client -c generator-config.json -g typescript-fetch",
     "build-client": "openapi-generator-cli generate -i metaform-api-spec/swagger.yaml -o src/generated/client -c generator-config.json -g typescript-fetch"
   },
   "eslintConfig": {

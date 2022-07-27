@@ -8,6 +8,7 @@
     "save": "Save",
     "yes": "Yes",
     "no": "No",
+    "loadingAutoCompleteOptions": "Loading options..",
     "confirm": "Confirm"
   },
 
@@ -158,5 +159,15 @@
     "title": "Title",
     "email": "Address",
     "cancel": "Cancel"
+  },
+
+  "autoComplete": {
+    "genericUnknown": "Unknown",
+    "missingOptions": "Code server autocomplete not configured",
+    "missingCodeServerBaseUrl": "Code server autocomplete missing codeServerBaseUrl",
+    "missingCodeServerClassificiationId": "Code server autocomplete missing codeServerClassificationId",
+    "missingCodeServerParentConceptCodeId": "Code server autocomplete missing codeServerParentConceptCodeId",
+    "missingAutocomplete": "Autocomplete not configured",
+    "unknownAutocompleteService": "UNKNOWN_AUTO_COMPLETE_SERVICE"
   }
 }

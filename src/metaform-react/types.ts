@@ -66,3 +66,8 @@ export type ValidationStatus = "missing-required" | "invalid-email";
  * Field validation error map
  */
 export type ValidationErrors = { [fieldName: string]: ValidationStatus };
+
+/**
+ * Autocomplete item
+ */
+ export type AutocompleteItem = { id: string, [key: string]: string };

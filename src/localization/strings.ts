@@ -11,6 +11,7 @@ export interface Localized extends LocalizedStringsMethods {
    * Translations related to generic words
    */
   generic: {
+    loadingAutoCompleteOptions: string;
     cancel: string;
     delete: string;
     edit: string;
@@ -201,8 +202,20 @@ export interface Localized extends LocalizedStringsMethods {
     cancel: string;
     send: string;
   }
-}
 
+  /**
+ * Autocomplete related messages
+ */
+  autoComplete: {
+    genericUnknown: string;
+    missingOptions: string;
+    missingCodeServerBaseUrl: string;
+    missingCodeServerClassificiationId: string;
+    missingCodeServerParentConceptCodeId: string;
+    missingAutocomplete: string;
+    unknownAutocompleteService: string;
+  }
+}
 /**
  * Initialized localized strings
  */

@@ -1,5 +1,16 @@
-import { Slider, Box, TextField, Input, Stack, Typography } from "@mui/material";
+import { Slider, Box, TextField, Input, Autocomplete, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+
+/**
+ * Styled autocomplete field component
+ */
+export const HtmlAutocompleteWrapper = styled(Autocomplete, {
+  label: "HtmlAutocompleteWrapper"
+})(() => ({
+  flex: 1,
+  width: "100%",
+  height: "auto;"
+}));
 
 /**
  * Styled html field component

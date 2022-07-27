@@ -3,7 +3,6 @@ import { Metaform, MetaformField } from "generated/client";
 import { FileFieldValueItem, ValidationErrors, FieldValue, FileFieldValue } from "../../metaform-react/types";
 import React from "react";
 import FormContainer from "styled/generic/form";
-import MetaformUtils from "utils/metaform-utils";
 import strings from "localization/strings";
 import DatePicker from "@mui/lab/DatePicker";
 import { DateTimePicker, LocalizationProvider } from "@mui/lab";
@@ -13,6 +12,8 @@ import MetaformComponent from "metaform-react/MetaformComponent";
 import Api from "api";
 import { useApiClient } from "app/hooks";
 import moment from "moment";
+import MetaformUtils from "utils/metaform-utils";
+import FormAutocomplete from "./form-autocomplete";
 
 /**
  * Component props
@@ -205,7 +206,7 @@ const Form: React.FC<Props> = ({
 
   /**
    * Renders autocomplete component
-   * TODO: Implement
+   * 
    * @param field field
    * @param formReadOnly form read only
    * @param value autocomplete form value
@@ -213,9 +214,13 @@ const Form: React.FC<Props> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, require-jsdoc
   const renderAutocomplete = (field: MetaformField, readOnly: boolean, value: FieldValue) => {
     return (
-      <Typography>
-        { strings.generic.notImplemented }
-      </Typography>
+      <FormAutocomplete
+        field={ field }
+        metaform={ metaform }
+        setFieldValue={ setFieldValue }
+        disabled={ readOnly }
+        value={ value }
+      />
     );
   };
   
