@@ -3,12 +3,14 @@ import { Tab, Tabs, TextField } from "@mui/material";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableWrapper from "components/generic/drag-and-drop/droppable-wrapper";
 import TabPanel from "components/generic/tab-panel";
-import { Metaform, MetaformFieldType } from "generated/client";
+import { Metaform, MetaformField, MetaformFieldType } from "generated/client";
 import strings from "localization/strings";
 import React, { ChangeEventHandler } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
 import { DraggingMode } from "types";
+import MetaformUtils from "utils/metaform-utils";
 import FieldAddable from "./field-addable/field-addable";
+import AddableFieldRenderer from "./field-renderer/addable-field-renderer";
 
 /**
  * Component properties
@@ -51,18 +53,22 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
   /**
    * Renders fields tab
    */
-  const renderFieldsTab = () => (
+  const renderFieldsTab = (field: MetaformField) => (
     <DroppableWrapper
       isDropDisabled
       droppableId={ DraggingMode.ADD_FIELD.toString() }
     >
       <DraggableWrapper
         index={ 0 }
-        draggableId={ MetaformFieldType.Text.toString() }
+        draggableId={ field.type.toString() }
         isDragDisabled={ false }
       >
         {/* TODO populate all of this with metaform field components */}
-        <FieldAddable/>
+        <AddableFieldRenderer
+          field={ field }
+          fieldLabelId=""
+          fieldId=""
+        />
       </DraggableWrapper>
     </DroppableWrapper>
   );
@@ -89,7 +95,22 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
         { renderFormTab() }
       </TabPanel>
       <TabPanel value={ tabIndex } index={ 1 }>
-        { renderFieldsTab() }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Text)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Boolean)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Memo)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Number)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Email)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Url)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Slider)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Checklist)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Radio)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Date)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.DateTime)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Html)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Files)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Select)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Submit)) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Table)) }
       </TabPanel>
     </EditorDrawer>
   );

@@ -7,7 +7,7 @@ import { FieldValue } from "./types";
  */
 interface Props {
   field: MetaformField,
-  onValueChange: (value: FieldValue) => void,
+  onValueChange?: (value: FieldValue) => void,
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element
 }
 
@@ -25,7 +25,7 @@ const MetaformDateTimeFieldComponent: React.FC<Props> = ({
    * @param date date
    */
   const onChange = (date: Date) => {
-    onValueChange(date ? date.toISOString() : null);
+    onValueChange && onValueChange(date ? date.toISOString() : null);
   };
 
   if (!field.name) {

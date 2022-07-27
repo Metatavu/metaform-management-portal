@@ -10,7 +10,7 @@ interface Props {
   field: MetaformField;
   formReadOnly: boolean;
   value: FieldValue;
-  setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
+  setFieldValue?: (fieldName: string, fieldValue: FieldValue) => void;
 }
 
 /**
@@ -39,7 +39,7 @@ export const MetaformSliderFieldComponent: React.FC<Props> = ({
       disabled={ readOnly }
       value={ value as number }
       onChange={ (event: Event, newValue: number | number[]) => {
-        setFieldValue(fieldName, newValue as number);
+        setFieldValue && setFieldValue(fieldName, newValue as number);
       }}
     />
   );

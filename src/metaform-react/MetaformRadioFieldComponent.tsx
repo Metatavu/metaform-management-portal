@@ -13,8 +13,8 @@ interface Props {
   fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
-  onValueChange: (value: FieldValue) => void,
-  onFocus: () => void,
+  onValueChange?: (value: FieldValue) => void,
+  onFocus?: () => void,
   renderIcon: (icon: IconName, key: string) => ReactNode
 }
 
@@ -43,7 +43,7 @@ export const MetaformRadioFieldComponent: React.FC<Props> = ({
    * @param event event
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onValueChange(event.target.value);
+    onValueChange && onValueChange(event.target.value);
   };
 
   /**

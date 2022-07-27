@@ -11,7 +11,7 @@ interface Props {
   field: MetaformField,
   formReadOnly: boolean,
   value: FieldValue,
-  onValueChange: (value: FieldValue) => void
+  onValueChange?: (value: FieldValue) => void
 }
 
 /**
@@ -36,7 +36,7 @@ export const MetaformSelectFieldComponent: React.FC<Props> = ({
     const selectedValue = event.target.value as string;
 
     if (event.target.value) {
-      onValueChange(selectedValue);
+      onValueChange && onValueChange(selectedValue);
     }
   };
 
