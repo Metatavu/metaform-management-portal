@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import * as React from "react";
-import { DialogContent, DialogContentText, Typography } from "@mui/material";
+import { DialogContent, Typography } from "@mui/material";
 import strings from "localization/strings";
 import type { ErrorContextType } from "types";
 import GenericDialog from "components/generic/generic-dialog";
@@ -91,35 +91,29 @@ const ErrorHandler: React.FC = ({ children }) => {
         { error &&
           <Typography>{ error }</Typography>
         }
-        <DialogContent>
-          <DialogContentText id="error-dialog-description">
-            
-            {" "}
+        <DialogContent id="error-dialog-description">
+          <Typography>
             { strings.errorHandling.dialog.reloadPage }
-            {" "}
+          </Typography>
             
-            {" "}
+          <Typography>
             { strings.errorHandling.dialog.unsavedContents }
-            {" "}
+          </Typography>
             
-            {" "}
+          <Typography>
             { strings.errorHandling.dialog.reportIssue }
-            {" "}
-            
-            { strings.errorHandling.dialog.technicalDetails }
-            <br/>
-            <br/>
-            { strings.formatString(strings.errorHandling.dialog.time, getTime()) }
-            <br/>
-            { strings.formatString(strings.errorHandling.dialog.url, getURL()) }
-            <br/>
-            { strings.errorHandling.dialog.errorMessage }
-            <br/>
-            <br/>
-            <code style={{ fontSize: "10px" }}>{ errorMessage || "" }</code>
-          </DialogContentText>
+          </Typography>
+          <br/>
+          { strings.errorHandling.dialog.technicalDetails }
+          <br/>
+          { strings.formatString(strings.errorHandling.dialog.time, getTime()) }
+          <br/>
+          { strings.formatString(strings.errorHandling.dialog.url, getURL()) }
+          <br/>
+          { strings.errorHandling.dialog.errorMessage }
+          <br/>
+          <code style={{ fontSize: "12px" }}>{ errorMessage || "" }</code>
         </DialogContent>
-        <Typography>{ errorMessage }</Typography>
       </GenericDialog>
     </ErrorContext.Provider>
   );
