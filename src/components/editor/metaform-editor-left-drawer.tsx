@@ -10,7 +10,7 @@ import { EditorDrawer } from "styled/editor/metaform-editor";
 import { DraggingMode } from "types";
 import MetaformUtils from "utils/metaform-utils";
 import FieldAddable from "./field-addable/field-addable";
-import FieldRenderer from "./field-renderer/field-renderer";
+import AddableFieldRenderer from "./field-renderer/field-renderer";
 
 /**
  * Component properties
@@ -64,7 +64,7 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
         isDragDisabled={ false }
       >
         {/* TODO populate all of this with metaform field components */}
-        <FieldRenderer
+        <AddableFieldRenderer
           field={ field }
           fieldLabelId=""
           fieldId=""

@@ -31,7 +31,7 @@ interface Prop {
  * Metaform field renderer component
  * TODO use metaform react component
  */
-const FieldRenderer: React.FC<Prop> = ({
+const AddableFieldRenderer: React.FC<Prop> = ({
   field,
   fieldId,
   fieldLabelId
@@ -229,4 +229,4 @@ const FieldRenderer: React.FC<Prop> = ({
   }
 };
 
-export default FieldRenderer;
+export default AddableFieldRenderer;
