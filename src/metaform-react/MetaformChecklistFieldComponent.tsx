@@ -12,7 +12,8 @@ interface Props {
   formReadOnly: boolean,
   value: FieldValue,
   renderIcon: (icon: IconName, key: string) => ReactNode;
-  onValueChange?: (value: FieldValue) => void
+  onValueChange?: (value: FieldValue) => void,
+  notInteractive?: boolean
 }
 
 /**
@@ -23,7 +24,8 @@ export const MetaformChecklistFieldComponent: React.FC<Props> = ({
   formReadOnly,
   value,
   renderIcon,
-  onValueChange
+  onValueChange,
+  notInteractive
 }) => {
   if (!field.name) {
     return null;
@@ -72,6 +74,7 @@ export const MetaformChecklistFieldComponent: React.FC<Props> = ({
     return (
       <Box key={ option.name }>
         <Checkbox
+          style={ notInteractive ? { pointerEvents: "none" } : {}}
           name={ field.name }
           value={ option.name }
           checked={ checked }

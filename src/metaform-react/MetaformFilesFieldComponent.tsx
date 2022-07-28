@@ -17,7 +17,8 @@ interface Props {
   onFileUpload?: (fieldName: string, file: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => void,
   onFileShow?: (value: FileFieldValueItem) => void,
   onFileDelete?: (fieldName: string, value: FileFieldValueItem) => void,
-  onFocus?: () => void
+  onFocus?: () => void,
+  notInteractive?: boolean
 }
 
 /**
@@ -34,7 +35,8 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
   onFileUpload,
   onFileShow,
   onFileDelete,
-  onFocus
+  onFocus,
+  notInteractive
 }) => {
   /**
    * Event handler for field input change
@@ -108,6 +110,7 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
     <>
       { valueItems }
       <Input
+        style={ notInteractive ? { pointerEvents: "none" } : {}}
         type="file"
         value=""
         disableUnderline

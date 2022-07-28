@@ -55,7 +55,11 @@ const AddableFieldRenderer: React.FC<Prop> = ({
         value={ new Date() }
         views={["day", "month", "year"]}
         renderInput={ params =>
-          <TextField label={ strings.formComponent.dateTimePicker } { ...params }/>
+          <TextField
+            style={{ pointerEvents: "none" }}
+            label={ strings.formComponent.dateTimePicker }
+            { ...params }
+          />
         }
       />
     </LocalizationProvider>
@@ -70,7 +74,11 @@ const AddableFieldRenderer: React.FC<Prop> = ({
         onChange={ () => {} }
         value={ new Date() }
         renderInput={ params =>
-          <TextField label={ strings.formComponent.dateTimePicker } { ...params }/>
+          <TextField
+            style={{ pointerEvents: "none" }}
+            label={ strings.formComponent.dateTimePicker }
+            { ...params }
+          />
         }
       />
     </LocalizationProvider>
@@ -83,6 +91,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Submit:
       return (
         <MetaformSubmitFieldComponent
+          notInteractive={ true }
           field={ field }
           formReadOnly={ true }
           validationErrors={{}}
@@ -91,6 +100,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Table:
       return (
         <MetaformTableFieldComponent
+          notInteractive={ true }
           field={ field }
           formReadOnly={ true }
           value={ [{}] }
@@ -100,6 +110,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Select:
       return (
         <MetaformSelectFieldComponent
+          notInteractive={ true }
           field={ field }
           formReadOnly={ true }
           value={ field.name || "" }
@@ -108,6 +119,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Files:
       return (
         <MetaformFilesFieldComponent
+          notInteractive={ true }
           showButtonText="FileShowButtonText"
           deleteButtonText="FileDeleteButtonText"
           field={ field }
@@ -119,6 +131,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Html:
       return (
         <MetaformHtmlComponent
+          notInteractive={ true }
           field={ field }
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
@@ -141,6 +154,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Checklist:
       return (
         <MetaformChecklistFieldComponent
+          notInteractive={ true }
           value={ field.name || "" }
           field={ field }
           formReadOnly={ true }
@@ -150,6 +164,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Radio:
       return (
         <MetaformRadioFieldComponent
+          notInteractive={ true }
           renderIcon={ renderIcon }
           value={ field.name || "" }
           field={ field }
@@ -161,6 +176,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Slider:
       return (
         <MetaformSliderFieldComponent
+          notInteractive={ true }
           field={ field }
           formReadOnly={ true }
           value={ field.max && field.min ? (field.max - field.min) / 2 : 0 }
@@ -169,6 +185,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Url:
       return (
         <MetaformUrlFieldComponent
+          notInteractive={ true }
           field={ field }
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
@@ -179,6 +196,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Email:
       return (
         <MetaformEmailFieldComponent
+          notInteractive={ true }
           field={ field }
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
@@ -189,6 +207,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Number:
       return (
         <MetaformNumberFieldComponent
+          notInteractive={ true }
           field={ field }
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }

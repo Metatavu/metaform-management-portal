@@ -14,6 +14,7 @@ interface Props {
   value: FieldValue;
   onValueChange?: (value: FieldValue) => void;
   onFocus?: () => void;
+  notInteractive?: boolean;
 }
 
 /**
@@ -26,7 +27,8 @@ const MetaformEmailFieldComponent: React.FC<Props> = ({
   formReadOnly,
   value,
   onValueChange,
-  onFocus
+  onFocus,
+  notInteractive
 }) => {
   /**
    * Event handler for field input change
@@ -44,6 +46,7 @@ const MetaformEmailFieldComponent: React.FC<Props> = ({
   
   return (
     <TextField
+      style={ notInteractive ? { pointerEvents: "none" } : {}}
       type="email"
       placeholder={ field.placeholder }
       id={ fieldId }
