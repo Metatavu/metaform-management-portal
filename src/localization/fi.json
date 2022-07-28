@@ -8,6 +8,7 @@
     "save": "Tallenna",
     "yes": "Kyllä",
     "no": "Ei",
+    "loadingAutoCompleteOptions": "Ladataan vaihtoehtoja...",
     "confirm": "Vahvista"
   },
 
@@ -176,5 +177,15 @@
     "title": "Otsikko",
     "email": "Sähköposti",
     "cancel": "Peruuta"
+  },
+
+  "autoComplete": {
+    "genericUnknown": "Tuntematon",
+    "missingOptions": "Code server autocomplete ei ole määritelty",
+    "missingCodeServerBaseUrl": "Code server autocomplete puuttuu codeServerBaseUrl",
+    "missingCodeServerClassificiationId": "Code server autocomplete puuttuu codeServerClassificationId",
+    "missingCodeServerParentConceptCodeId": "Code server autocomplete puuttuu codeServerParentConceptCodeId",
+    "missingAutocomplete": "Autocomplete ei ole määritelty",
+    "unknownAutocompleteService": "TUNTEMATON_AUTO_COMPLETE_SERVICE"
   }
 }

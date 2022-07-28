@@ -13,7 +13,8 @@ interface Props {
   formReadOnly: boolean,
   value: FieldValue,
   onValueChange?: (value: FieldValue) => void,
-  onFocus?: () => void
+  onFocus?: () => void,
+  notInteractive?: boolean
 }
 
 /**
@@ -26,7 +27,8 @@ export const MetaformNumberFieldComponent: React.FC<Props> = ({
   formReadOnly,
   value,
   onValueChange,
-  onFocus
+  onFocus,
+  notInteractive
 }) => {
   if (!field.name) {
     return null;
@@ -43,6 +45,7 @@ export const MetaformNumberFieldComponent: React.FC<Props> = ({
 
   return (
     <NumberFieldWrapper
+      style={ notInteractive ? { pointerEvents: "none" } : {}}
       type="number"
       placeholder={ field.placeholder }
       id={ fieldId }

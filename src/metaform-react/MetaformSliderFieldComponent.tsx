@@ -11,6 +11,7 @@ interface Props {
   formReadOnly: boolean;
   value: FieldValue;
   setFieldValue?: (fieldName: string, fieldValue: FieldValue) => void;
+  notInteractive?: boolean;
 }
 
 /**
@@ -20,7 +21,8 @@ export const MetaformSliderFieldComponent: React.FC<Props> = ({
   field,
   formReadOnly,
   value,
-  setFieldValue
+  setFieldValue,
+  notInteractive
 }) => {
   const fieldName = field.name;
   const readOnly = !!(formReadOnly || field.readonly);
@@ -31,6 +33,7 @@ export const MetaformSliderFieldComponent: React.FC<Props> = ({
 
   return (
     <SliderFieldWrapper
+      style={ notInteractive ? { pointerEvents: "none" } : {}}
       step={ field.step }
       max={ field.max }
       min={ field.min }

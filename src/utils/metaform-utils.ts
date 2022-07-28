@@ -19,7 +19,6 @@ namespace MetaformUtils {
   export const createNewMetaform = (formTitle: string, allowAnonymousRule: boolean): Metaform => {
     return {
       title: formTitle,
-      replyStrategy: undefined,
       exportThemeId: undefined,
       allowAnonymous: allowAnonymousRule,
       allowDrafts: true, // TODO: Check if allowDrafts should be true by default

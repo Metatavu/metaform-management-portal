@@ -12,7 +12,7 @@ import MetaformBooleanFieldComponent from './MetaformBooleanFieldComponent';
 import { MetaformHtmlComponent } from './MetaformHtmlComponent';
 import MetaformEmailFieldComponent from './MetaformEmailComponent';
 import { MetaformUrlFieldComponent } from './MetaformUrlField';
-import { MetaformAutocompleteFieldComponent } from './MetaformAutocompleteField';
+import MetaformAutocompleteFieldComponent from './MetaformAutocompleteField';
 import MetaformHiddenFieldComponent from './MetaformHiddenFieldComponent';
 import MetaformFilesFieldComponent from './MetaformFilesFieldComponent';
 import MetaformDateFieldComponent from './MetaformDateFieldComponent';

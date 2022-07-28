@@ -25,7 +25,7 @@ const TabPanel: React.FC<Props> = ({
    * Component render
    */
   return (
-    <Stack p={ 2 } spacing={ 2 }>
+    <Stack style={{ overflowY: "scroll", height: "100%" }} pl={ 2 } pr={ 2 } pt={ 2 } pb={ 7 } spacing={ 2 }>
       { children }
     </Stack>
   );
