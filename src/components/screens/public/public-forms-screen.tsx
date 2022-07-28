@@ -11,6 +11,8 @@ import { MetaformVisibility } from "generated/client";
 const PublicFormsScreen: React.FC = () => {
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi } = apiClient;
+  
+  const [forms, setForms] = React.useState<any[]>([]);
 
   /**
    * Fetch metaforms from the API
@@ -18,8 +20,6 @@ const PublicFormsScreen: React.FC = () => {
   const fetchForms = async () => {
     return metaformsApi.listMetaforms({ visibility: MetaformVisibility.Public });
   };
-
-  const [forms, setForms] = React.useState<any[]>([]);
 
   React.useEffect(() => {
     fetchForms().then(setForms);
