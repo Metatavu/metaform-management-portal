@@ -127,7 +127,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   const location = useLocation();
 
   React.useEffect(() => {
-    if (location.pathname.includes("/admin")) {
+    if (location.pathname.startsWith("/admin")) {
       initializeLogin();
     }
   }, [location]);
