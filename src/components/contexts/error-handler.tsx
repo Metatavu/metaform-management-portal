@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import * as React from "react";
-import { DialogContent, Typography } from "@mui/material";
+import { DialogContent, Divider, Typography } from "@mui/material";
 import strings from "localization/strings";
 import type { ErrorContextType } from "types";
 import GenericDialog from "components/generic/generic-dialog";
@@ -62,7 +62,7 @@ const ErrorHandler: React.FC = ({ children }) => {
    * @returns current time
    */
   const getTime = () => {
-    return moment.now();
+    return moment().format("DD.MM.YYYY HH:mm:ss");
   };
   
   /**
@@ -88,24 +88,22 @@ const ErrorHandler: React.FC = ({ children }) => {
         title={ strings.errorHandling.title }
         positiveButtonText="OK"
       >
-        { error &&
-          <Typography>{ error }</Typography>
-        }
         <DialogContent id="error-dialog-description">
-          <Typography>
+          { error &&
+            <Typography marginBottom={ 3 } variant="h4">{ error }</Typography>
+          }
+          <Typography marginBottom={ 2 }>
             { strings.errorHandling.dialog.reloadPage }
           </Typography>
-            
-          <Typography>
+          <Typography marginBottom={ 2 }>
             { strings.errorHandling.dialog.unsavedContents }
           </Typography>
-            
-          <Typography>
+          <Typography marginBottom={ 2 }>
             { strings.errorHandling.dialog.reportIssue }
           </Typography>
-          <br/>
-          { strings.errorHandling.dialog.technicalDetails }
-          <br/>
+          <Typography>
+            { strings.errorHandling.dialog.technicalDetails }
+          </Typography>
           { strings.formatString(strings.errorHandling.dialog.time, getTime()) }
           <br/>
           { strings.formatString(strings.errorHandling.dialog.url, getURL()) }
@@ -114,6 +112,7 @@ const ErrorHandler: React.FC = ({ children }) => {
           <br/>
           <code style={{ fontSize: "12px" }}>{ errorMessage || "" }</code>
         </DialogContent>
+        <Divider/>
       </GenericDialog>
     </ErrorContext.Provider>
   );

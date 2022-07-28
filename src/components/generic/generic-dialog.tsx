@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, Divider } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 /**
@@ -65,14 +65,16 @@ const GenericDialog: React.FC<Props> = ({
       fullWidth={ fullWidth }
       disableEnforceFocus={ disableEnforceFocus }
     >
-      <DialogTitle>
+      <DialogTitle align="center" sx={{ fontSize: 18, fontWeight: "bold" }}>
         { title }
         <IconButton
+          style={{ float: "right" }}
           size="small"
           onClick={ onCancel }
         >
           <CloseIcon/>
         </IconButton>
+        <Divider/>
       </DialogTitle>
       <DialogContent>
         { children }
