@@ -17,7 +17,8 @@ interface Props {
   onFileUpload?: (fieldName: string, file: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => void,
   onFileShow?: (value: FileFieldValueItem) => void,
   onFileDelete?: (fieldName: string, value: FileFieldValueItem) => void,
-  onFocus?: () => void
+  onFocus?: () => void,
+  notInteractive?: boolean
 }
 
 /**
@@ -34,7 +35,8 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
   onFileUpload,
   onFileShow,
   onFileDelete,
-  onFocus
+  onFocus,
+  notInteractive
 }) => {
   /**
    * Event handler for field input change
@@ -94,8 +96,20 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
     return (
       <div key={valueItem.id} className="metaform-react-file-value-container">
         <span className="metaform-react-file-field-name">{ valueItem.name || valueItem.id}</span>
-        <Button onClick={ () => onFileShow && onFileShow(valueItem) } className="metaform-react-file-field-open-button">{ showButtonText }</Button>
-        <Button onClick={ () => onFileDelete && onFileDelete(field.name || "", valueItem) } className="metaform-react-file-field-delete-button">{ deleteButtonText }</Button>
+        <Button
+          onClick={ () => onFileShow && onFileShow(valueItem) }
+          className="metaform-react-file-field-open-button"
+          style={ notInteractive ? { pointerEvents: "none" } : {}}
+        >
+          { showButtonText }
+        </Button>
+        <Button
+          onClick={ () => onFileDelete && onFileDelete(field.name || "", valueItem) }
+          className="metaform-react-file-field-delete-button"
+          style={ notInteractive ? { pointerEvents: "none" } : {}}
+        >
+          { deleteButtonText }
+        </Button>
       </div>
     );
   });
@@ -108,6 +122,7 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
     <>
       { valueItems }
       <Input
+        style={ notInteractive ? { pointerEvents: "none" } : {}}
         type="file"
         value=""
         disableUnderline

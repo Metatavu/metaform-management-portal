@@ -13,7 +13,8 @@ interface Props {
   formReadOnly: boolean,
   value: FieldValue,
   onValueChange?: (value: FieldValue) => void,
-  onFocus?: () => void
+  onFocus?: () => void,
+  notInteractive?: boolean
 }
 
 /**
@@ -26,7 +27,8 @@ const MetaformMemoComponent: React.FC<Props> = ({
   formReadOnly,
   value,
   onValueChange,
-  onFocus
+  onFocus,
+  notInteractive
 }) => {
   /**
    * Event handler for field input change
@@ -39,6 +41,11 @@ const MetaformMemoComponent: React.FC<Props> = ({
 
   if (!field.name) {
     return null;
+  }
+
+  const style: React.CSSProperties = { backgroundColor: "white" };
+  if (notInteractive) {
+    style.pointerEvents = "none";
   }
 
   return (
@@ -55,7 +62,7 @@ const MetaformMemoComponent: React.FC<Props> = ({
       value={ value as string || "" }
       onChange={ onChange }
       onFocus={ onFocus }
-      style={{ backgroundColor: "white" }}
+      style={ style }
     />
   );
 };

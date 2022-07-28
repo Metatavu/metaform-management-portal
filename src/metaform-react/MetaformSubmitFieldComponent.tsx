@@ -11,6 +11,7 @@ interface Props {
   formReadOnly: boolean;
   validationErrors: ValidationErrors;
   onClick?: (source: MetaformField) => void;
+  notInteractive?: boolean;
 }
 
 /**
@@ -20,7 +21,8 @@ export const MetaformSubmitFieldComponent: React.FC<Props> = ({
   field,
   formReadOnly,
   validationErrors,
-  onClick
+  onClick,
+  notInteractive
 }) => {
   if (!field.name) {
     return null;
@@ -32,6 +34,10 @@ export const MetaformSubmitFieldComponent: React.FC<Props> = ({
 
   if (disabled) {
     style.background = "#aaa";
+  }
+
+  if (notInteractive) {
+    style.pointerEvents = "none";
   }
 
   return (

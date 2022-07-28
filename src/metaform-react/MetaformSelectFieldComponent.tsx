@@ -11,7 +11,8 @@ interface Props {
   field: MetaformField,
   formReadOnly: boolean,
   value: FieldValue,
-  onValueChange?: (value: FieldValue) => void
+  onValueChange?: (value: FieldValue) => void,
+  notInteractive?: boolean
 }
 
 /**
@@ -21,7 +22,8 @@ export const MetaformSelectFieldComponent: React.FC<Props> = ({
   field,
   formReadOnly,
   value,
-  onValueChange
+  onValueChange,
+  notInteractive
 }) => {
   if (!field.name) {
     return null;
@@ -47,7 +49,12 @@ export const MetaformSelectFieldComponent: React.FC<Props> = ({
   return (
     <SelectFieldWrapper>
       <FormControl fullWidth>
-        <Select onChange={ onChange } value={ selected } disabled={ readOnly }>
+        <Select
+          style={ notInteractive ? { pointerEvents: "none" } : {}}
+          onChange={ onChange }
+          value={ selected }
+          disabled={ readOnly }
+        >
           { options.map(option => <MenuItem key={ option.name } value={ option.name }>{ option.text }</MenuItem>) }
         </Select>
       </FormControl>

@@ -14,6 +14,7 @@ interface Props {
   value: FieldValue,
   renderIcon: (icon: IconName, key: string) => ReactNode;
   onValueChange?: (value: FieldValue) => void;
+  notInteractive?: boolean;
 }
 
 /**
@@ -24,7 +25,8 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
   formReadOnly,
   value,
   renderIcon,
-  onValueChange
+  onValueChange,
+  notInteractive
 }) => {
   const [ rowValues, setRowValues ] = React.useState<TableFieldValue>(value as TableFieldValue || [{}]);
 
@@ -117,11 +119,13 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
    * @param cellValue value
    */
   const renderCellInputText = (rowNumber: number, column: MetaformTableColumn, cellValue: TableFieldCellValue) => {
+    const style: React.CSSProperties = notInteractive ? { pointerEvents: "none" } : {};
     return (
       <TableTextCellWrapper
         value={ cellValue || "" }
         key={ column.name }
         InputProps={{
+          style: style,
           readOnly: formReadOnly || field.readonly,
           disableUnderline: true
         }}

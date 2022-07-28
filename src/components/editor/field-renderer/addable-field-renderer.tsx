@@ -1,7 +1,7 @@
 import { DatePicker, DateTimePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { TextField, Typography } from "@mui/material";
-import { MetaformField, MetaformFieldType } from "generated/client";
+import { MetaformField, MetaformFieldType, MetaformTableColumnType } from "generated/client";
 import strings from "localization/strings";
 import MetaformBooleanFieldComponent from "metaform-react/MetaformBooleanFieldComponent";
 import MetaformChecklistFieldComponent from "metaform-react/MetaformChecklistFieldComponent";
@@ -11,7 +11,6 @@ import MetaformMemoComponent from "metaform-react/MetaformMemoComponent";
 import MetaformNumberFieldComponent from "metaform-react/MetaformNumberFieldComponent";
 import MetaformRadioFieldComponent from "metaform-react/MetaformRadioFieldComponent";
 import MetaformSliderFieldComponent from "metaform-react/MetaformSliderFieldComponent";
-import MetaformUrlFieldComponent from "metaform-react/MetaformUrlField";
 import React from "react";
 import fiLocale from "date-fns/locale/fi";
 import MetaformDateTimeFieldComponent from "metaform-react/MetaformDateTimeFieldComponent";
@@ -55,7 +54,11 @@ const AddableFieldRenderer: React.FC<Prop> = ({
         value={ new Date() }
         views={["day", "month", "year"]}
         renderInput={ params =>
-          <TextField label={ strings.formComponent.dateTimePicker } { ...params }/>
+          <TextField
+            style={{ pointerEvents: "none" }}
+            label={ strings.formComponent.dateTimePicker }
+            { ...params }
+          />
         }
       />
     </LocalizationProvider>
@@ -70,7 +73,11 @@ const AddableFieldRenderer: React.FC<Prop> = ({
         onChange={ () => {} }
         value={ new Date() }
         renderInput={ params =>
-          <TextField label={ strings.formComponent.dateTimePicker } { ...params }/>
+          <TextField
+            style={{ pointerEvents: "none" }}
+            label={ strings.formComponent.dateTimePicker }
+            { ...params }
+          />
         }
       />
     </LocalizationProvider>
@@ -83,6 +90,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Submit:
       return (
         <MetaformSubmitFieldComponent
+          notInteractive={ true }
           field={ field }
           formReadOnly={ true }
           validationErrors={{}}
@@ -91,23 +99,46 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Table:
       return (
         <MetaformTableFieldComponent
-          field={ field }
-          formReadOnly={ true }
-          value={ [{}] }
+          notInteractive={ true }
+          field={{
+            ...field,
+            name: "Table",
+            columns: [ { name: "a", type: MetaformTableColumnType.Text }, { name: "b", type: MetaformTableColumnType.Text }, { name: "c", type: MetaformTableColumnType.Text } ],
+            addRows: true
+          }}
+          formReadOnly={ false }
           renderIcon={ renderIcon }
+          value={[
+            {
+              a: "a",
+              b: "b",
+              c: "c"
+            },
+            {
+              a: "a",
+              b: "b",
+              c: "c"
+            }
+          ]}
         />
       );
     case MetaformFieldType.Select:
       return (
         <MetaformSelectFieldComponent
-          field={ field }
-          formReadOnly={ true }
-          value={ field.name || "" }
+          value="a"
+          field={{
+            ...field,
+            name: "Select",
+            options: [ { name: "a", text: "a" }, { name: "b", text: "b" }, { name: "c", text: "c" } ]
+          }}
+          formReadOnly={ false }
+          notInteractive={ true }
         />
       );
     case MetaformFieldType.Files:
       return (
         <MetaformFilesFieldComponent
+          notInteractive={ true }
           showButtonText="FileShowButtonText"
           deleteButtonText="FileDeleteButtonText"
           field={ field }
@@ -119,9 +150,14 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Html:
       return (
         <MetaformHtmlComponent
-          field={ field }
+          notInteractive={ true }
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
+          field={{
+            ...field,
+            name: "Custom HTML",
+            html: "<b>You can replace this with custom HTML</b>"
+          }}
         />
       );
     case MetaformFieldType.DateTime:
@@ -141,26 +177,37 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Checklist:
       return (
         <MetaformChecklistFieldComponent
-          value={ field.name || "" }
-          field={ field }
-          formReadOnly={ true }
+          notInteractive={ true }
+          value="a"
+          field={{
+            ...field,
+            name: "Checklist",
+            options: [ { name: "a", text: "a" }, { name: "b", text: "b" }, { name: "c", text: "c" } ]
+          }}
+          formReadOnly={ false }
           renderIcon={ renderIcon }
         />
       );
     case MetaformFieldType.Radio:
       return (
         <MetaformRadioFieldComponent
+          notInteractive={ true }
           renderIcon={ renderIcon }
-          value={ field.name || "" }
-          field={ field }
+          value="a"
+          field={{
+            ...field,
+            name: "Radio",
+            options: [ { name: "a", text: "a" }, { name: "b", text: "b" }, { name: "c", text: "c" } ]
+          }}
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
-          formReadOnly={ true }
+          formReadOnly={ false }
         />
       );
     case MetaformFieldType.Slider:
       return (
         <MetaformSliderFieldComponent
+          notInteractive={ true }
           field={ field }
           formReadOnly={ true }
           value={ field.max && field.min ? (field.max - field.min) / 2 : 0 }
@@ -168,17 +215,19 @@ const AddableFieldRenderer: React.FC<Prop> = ({
       );
     case MetaformFieldType.Url:
       return (
-        <MetaformUrlFieldComponent
-          field={ field }
-          fieldId={ fieldId }
-          fieldLabelId={ fieldLabelId }
-          formReadOnly={ true }
-          value={ field.name || "" }
+        <TextField
+          style={{ pointerEvents: "none" }}
+          type="url"
+          disabled={ true }
+          key={ fieldId }
+          value="https://google.com"
+          label={ fieldLabelId }
         />
       );
     case MetaformFieldType.Email:
       return (
         <MetaformEmailFieldComponent
+          notInteractive={ true }
           field={ field }
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
@@ -189,6 +238,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Number:
       return (
         <MetaformNumberFieldComponent
+          notInteractive={ true }
           field={ field }
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
@@ -199,6 +249,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Memo:
       return (
         <MetaformMemoComponent
+          notInteractive={ true }
           field={ field }
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
@@ -209,17 +260,19 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Boolean:
       return (
         <MetaformBooleanFieldComponent
+          notInteractive={ true }
           renderIcon={ renderIcon }
           field={ field }
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
-          formReadOnly={ true }
+          formReadOnly={ false }
           value="true"
         />
       );
     default:
       return (
         <TextField
+          style={{ pointerEvents: "none" }}
           disabled={ true }
           key={ fieldId }
           value={ field.name }
