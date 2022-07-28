@@ -1,5 +1,5 @@
 import { Box, Checkbox } from "@mui/material";
-import React, { ReactNode } from "react";
+import React, { CSSProperties, ReactNode } from "react";
 import { ChecklistFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField, MetaformFieldOption } from "../generated/client/models";
 import { FieldValue, IconName } from "./types";
@@ -71,10 +71,18 @@ export const MetaformChecklistFieldComponent: React.FC<Props> = ({
         </div>
       );
     }
+
+    const style: CSSProperties = {};
+
+    if (notInteractive) {
+      style.pointerEvents = "none";
+      style.color = "black";
+    }
+
     return (
       <Box key={ option.name }>
         <Checkbox
-          style={ notInteractive ? { pointerEvents: "none" } : {}}
+          style={ style }
           name={ field.name }
           value={ option.name }
           checked={ checked }

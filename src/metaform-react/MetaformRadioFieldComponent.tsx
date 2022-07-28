@@ -1,5 +1,5 @@
 import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import React, { ReactNode } from "react";
+import React, { CSSProperties, ReactNode } from "react";
 import { RadioFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField, MetaformFieldOption } from "../generated/client/models";
 import { FieldValue, IconName } from "./types";
@@ -34,7 +34,6 @@ export const MetaformRadioFieldComponent: React.FC<Props> = ({
   notInteractive
 }) => {
   const options = field.options || [];
-  
   if (!field.name) {
     return null;
   }
@@ -62,6 +61,13 @@ export const MetaformRadioFieldComponent: React.FC<Props> = ({
       return renderIcon("circle-o", `${fieldId}-${option.name}-icon-checked`);
     }
 
+    const style: CSSProperties = {};
+
+    if (notInteractive) {
+      style.pointerEvents = "none";
+      style.color = "black";
+    }
+
     return (
       <RadioGroup>
         <FormControlLabel
@@ -71,7 +77,7 @@ export const MetaformRadioFieldComponent: React.FC<Props> = ({
           htmlFor={ `${fieldId}-${option.name}` }
           value={ option.text }
           control={ <Radio
-            style={ notInteractive ? { pointerEvents: "none" } : {}}
+            style={ style }
             size="small"
             key={ `${fieldId}-${option.name}-input` }
             id={ `${fieldId}-${option.name}` }

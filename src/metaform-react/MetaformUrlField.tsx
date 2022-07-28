@@ -13,8 +13,7 @@ interface Props {
   formReadOnly: boolean,
   value: FieldValue,
   onValueChange?: (value: FieldValue) => void,
-  onFocus?: () => void,
-  notInteractive?: boolean
+  onFocus?: () => void
 }
 
 /**
@@ -27,8 +26,7 @@ export const MetaformUrlFieldComponent: React.FC<Props> = ({
   formReadOnly,
   value,
   onValueChange,
-  onFocus,
-  notInteractive
+  onFocus
 }) => {
   /**
    * Event handler for field input change
@@ -45,7 +43,6 @@ export const MetaformUrlFieldComponent: React.FC<Props> = ({
 
   return (
     <UrlFieldWrapper
-      style={ notInteractive ? { pointerEvents: "none" } : {}}
       color="secondary"
       disableUnderline
       type="url"
