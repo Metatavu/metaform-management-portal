@@ -37,7 +37,7 @@ const PublicFormsScreen: React.FC = () => {
           {forms.map(form => (
             <ListItem key={form.id}>
               <Link to={`/${form.id}`}>
-                <ListItemText primary={form.name}/>
+                <ListItemText primary={form.title}/>
               </Link>
             </ListItem>
           ))}
