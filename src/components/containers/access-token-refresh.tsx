@@ -7,6 +7,7 @@ import Config from "app/config";
 import jwt_decode from "jwt-decode";
 import { AccessToken } from "types";
 import * as querystring from "query-string";
+import { useLocation } from "react-router-dom";
 
 /**
  * Interface representing a decoded access token
@@ -48,9 +49,9 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   };
   
   /**
-   * Initializes Keycloak authentication
+   * Initializes Anonymous Keycloak authentication. Used for non-admin routes.
    */
-  const initializeAuthentication = async () => {
+  const initializeAnonymousAuthentication = async () => {
     try {
       const anonymousLogin = Config.get().anonymousUser;
       const authConfig = Config.get().auth;
@@ -86,6 +87,22 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   };
 
   /**
+   * Starts the login process. Used for /admin routes.
+   */
+  const initializeLogin = async () => {
+    try {
+      const authConfig = Config.get().auth;
+      const keycloakInstance = Keycloak(authConfig);
+      await keycloakInstance.init({ onLoad: "login-required", checkLoginIframe: false });
+      await keycloakInstance.loadUserProfile();
+      dispatch(login(keycloakInstance));
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+  };
+
+  /**
    * Refreshes authentication
    */
   const refreshAuthentication = async () => {
@@ -105,7 +122,15 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   /**
    * Initializes authentication
    */
-  React.useEffect(() => { initializeAuthentication(); }, []);
+  React.useEffect(() => { initializeAnonymousAuthentication(); }, []);
+
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (location.pathname.startsWith("/admin")) {
+      initializeLogin();
+    }
+  }, [location]);
 
   /**
    * Begins token refresh interval

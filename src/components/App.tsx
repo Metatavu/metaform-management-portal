@@ -19,11 +19,11 @@ const apiProviders: React.FC<{}>[] = [];
  * Application component
  */
 const App: React.FC = () => (
-  <AuthenticationProvider>
-    <ErrorHandler>
-      <ApiProvider providers={ apiProviders }>
-        <ConfirmHandler>
-          <BrowserRouter>
+  <BrowserRouter>
+    <AuthenticationProvider>
+      <ErrorHandler>
+        <ApiProvider providers={ apiProviders }>
+          <ConfirmHandler>
             <BasicLayout>
               <Routes>
                 <Route
@@ -48,11 +48,11 @@ const App: React.FC = () => (
                 />
               </Routes>
             </BasicLayout>
-          </BrowserRouter>
-        </ConfirmHandler>
-      </ApiProvider>
-    </ErrorHandler>
-  </AuthenticationProvider>
+          </ConfirmHandler>
+        </ApiProvider>
+      </ErrorHandler>
+    </AuthenticationProvider>
+  </BrowserRouter>
 );
 
 export default App;
