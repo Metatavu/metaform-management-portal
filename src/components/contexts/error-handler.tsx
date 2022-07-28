@@ -25,8 +25,7 @@ const ErrorHandler: React.FC = ({ children }) => {
 
   /**
    * Handles error message and tries to print any given error to logs
-   * Sends error message to sentry'
-   * TODO: Figure out proper way to log errors with sentry
+   * Sends error message to sentry
    *
    * @param message error message
    * @param err any error
@@ -35,6 +34,7 @@ const ErrorHandler: React.FC = ({ children }) => {
     setError(message);
     setErrorMessage(err);
     console.log(err);
+    
     Sentry.captureException(err);
 
     if (err instanceof Response) {
@@ -73,6 +73,7 @@ const ErrorHandler: React.FC = ({ children }) => {
   const getURL = () => {
     return window.location.href;
   };
+
   /**
    * Component render
    */
@@ -86,11 +87,14 @@ const ErrorHandler: React.FC = ({ children }) => {
         onCancel={ () => setError(undefined) }
         onConfirm={ () => setError(undefined) }
         title={ strings.errorHandling.title }
-        positiveButtonText="OK"
+        closeButtonText={ strings.generic.close }
+        reloadButtonText={ strings.generic.reload }
       >
         <DialogContent id="error-dialog-description">
           { error &&
-            <Typography marginBottom={ 3 } variant="h4">{ error }</Typography>
+            <Typography marginBottom={ 3 } sx={{ fontSize: 16, fontWeight: "bold" }}>
+              { error }
+            </Typography>
           }
           <Typography marginBottom={ 2 }>
             { strings.errorHandling.dialog.reloadPage }
@@ -104,12 +108,15 @@ const ErrorHandler: React.FC = ({ children }) => {
           <Typography>
             { strings.errorHandling.dialog.technicalDetails }
           </Typography>
-          { strings.formatString(strings.errorHandling.dialog.time, getTime()) }
-          <br/>
-          { strings.formatString(strings.errorHandling.dialog.url, getURL()) }
-          <br/>
-          { strings.errorHandling.dialog.errorMessage }
-          <br/>
+          <Typography>
+            { strings.formatString(strings.errorHandling.dialog.time, getTime()) }
+          </Typography>
+          <Typography >
+            { strings.formatString(strings.errorHandling.dialog.url, getURL()) }
+          </Typography>
+          <Typography>
+            { strings.errorHandling.dialog.errorMessage }
+          </Typography>
           <code style={{ fontSize: "12px" }}>{ errorMessage || "" }</code>
         </DialogContent>
         <Divider/>

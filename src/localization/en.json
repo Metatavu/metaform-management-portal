@@ -9,7 +9,9 @@
     "yes": "Yes",
     "no": "No",
     "loadingAutoCompleteOptions": "Loading options..",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "close": "Close",
+    "reload": "Reload"
   },
 
   "errorHandling": {
@@ -23,13 +25,22 @@
       "time": "Time: {0}",
       "url": "URL: {0}",
       "errorMessage": "Error message: ",
-      "close": "Close",
-      "reload": "Reload"
+      "close": "Close"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
       "sendReplyEmail": "Error when trying to send reply to email",
-      "sendReplyDraftEmail": "Error when trying to send reply draft to email"
+      "sendReplyDraftEmail": "Error when trying to send reply draft to email",
+      "saveDraft": "Saving form draft failed",
+      "autosave": "Autosave failed",
+      "deleteReply": "Deleting reply failed",
+      "findMetaform": "Finding Metaform failed"
+    },
+    "formAutoComplete": {
+      "autocompleteField": "Fetching autocomplete field options failed. You can still fill and submit the form by closing this dialog." 
+    },
+    "publicFormsScreen": {
+      "fetchForms": "Fetching forms failed"
     }
   },
   "formComponent": {
@@ -105,6 +116,11 @@
       }
     }
   },
+
+  "publicFormsScreen": {
+    "title": "Lomakkeet"
+  },
+
 
   "draftEditorScreen": {
     "preview": "Preview",

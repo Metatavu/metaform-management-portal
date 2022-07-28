@@ -7,8 +7,8 @@ import CloseIcon from "@mui/icons-material/Close";
  */
 interface Props {
   title: string;
-  positiveButtonText?: string;
-  cancelButtonText?: string;
+  closeButtonText?: string;
+  reloadButtonText?: string;
   onClose: () => void;
   onCancel: () => void;
   onConfirm: () => void | Promise<void>;
@@ -28,8 +28,8 @@ interface Props {
  */
 const GenericDialog: React.FC<Props> = ({
   open,
-  positiveButtonText,
-  cancelButtonText,
+  closeButtonText,
+  reloadButtonText,
   onClose,
   onCancel,
   title,
@@ -52,6 +52,13 @@ const GenericDialog: React.FC<Props> = ({
     if (!ignoreOutsideClicks || (reason !== "backdropClick" && reason !== "escapeKeyDown")) {
       onClose();
     }
+  };
+
+  /**
+   * Reload button click event handler
+   */
+  const onReloadClick = () => {
+    window.location.reload();
   };
 
   /**
@@ -80,22 +87,23 @@ const GenericDialog: React.FC<Props> = ({
         { children }
       </DialogContent>
       <DialogActions>
-        { cancelButtonText &&
+        { reloadButtonText &&
           <Button
-            onClick={ onCancel }
-            color="secondary"
+            onClick={ onReloadClick }
+            color="error"
+            style={{ float: "left" }}
           >
-            { cancelButtonText }
+            { reloadButtonText }
           </Button>
         }
-        { positiveButtonText &&
+        { closeButtonText &&
           <Button
             disabled={ error || disabled }
             onClick={ onConfirm }
             color="primary"
             autoFocus
           >
-            { positiveButtonText }
+            { closeButtonText }
           </Button>
         }
       </DialogActions>

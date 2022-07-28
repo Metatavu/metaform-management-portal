@@ -8,6 +8,7 @@ import Config from "app/config";
 import strings from "../../localization/strings";
 import { AutocompleteItem } from "../../metaform-react/types";
 import { Attribute, Qfield } from "generated/codeserver-client";
+import { ErrorContext } from "components/contexts/error-handler";
 
 /**
  * Interface representing component properties
@@ -30,6 +31,8 @@ const FormAutocomplete: React.FC<Props> = ({
   value,
   setFieldValue
 }) => {
+  const errorContext = React.useContext(ErrorContext);
+  
   const [ errorMessage, setErrorMessage ] = useState("");
   const [ loading, setLoading ] = useState(false);
   const [ items, setItems ] = useState<AutocompleteItem[]>([]);
@@ -183,10 +186,10 @@ const FormAutocomplete: React.FC<Props> = ({
           setFieldValue(sourceField.name, itemValue);
         }
       });
-    // TODO: Add proper error handling, once error handler is implemented
     } catch (e: any) {
       setLoading(false);
       setErrorMessage(e.message);
+      errorContext.setError(strings.errorHandling.formAutoComplete.autocompleteField, e);
     }
   };
 

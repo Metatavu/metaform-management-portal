@@ -112,8 +112,9 @@ const FormScreen: React.FC<Props> = ({
 
       setDraftId(draft.id!);
       setDraftSaveVisible(true);
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.saveDraft, e);
+    }
 
     setLoading(false);
   };
@@ -197,8 +198,9 @@ const FormScreen: React.FC<Props> = ({
       setAutosaving(true);
 
       await updateReply(metaform, reply, ownerKey);
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.autosave, e);
+    }
 
     setAutosaving(false);
   };
@@ -372,8 +374,9 @@ const FormScreen: React.FC<Props> = ({
         message: strings.formScreen.replyDeleted,
         severity: "success"
       });
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.deleteReply, e);
+    }
 
     setLoading(false);
   };
@@ -566,8 +569,9 @@ const FormScreen: React.FC<Props> = ({
 
       setMetaform(foundMetaform);
       setFormValues(preparedFormValues);
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.findMetaform, e);
+    }
 
     setLoading(false);
   };
