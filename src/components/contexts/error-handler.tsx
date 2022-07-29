@@ -21,7 +21,7 @@ export const ErrorContext = React.createContext<ErrorContextType>({
  */
 const ErrorHandler: React.FC = ({ children }) => {
   const [ error, setError ] = React.useState<string>();
-  const [ errorMessage, setErrorMessage ] = React.useState<Response>();
+  const [ errorMessage, setErrorMessage ] = React.useState<string>();
 
   /**
    * Handles error message and tries to print any given error to logs
