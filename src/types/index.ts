@@ -89,3 +89,10 @@ export enum NavigationLinks {
 export interface Dictionary<T> {
   [Key: string]: T;
 }
+
+export enum ApplicationRoles {
+  ADMIN = "admin",
+  MANAGER = "manager",
+  USER = "user",
+  ANONYMOUS = "anonymous"
+}
