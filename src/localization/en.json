@@ -9,11 +9,39 @@
     "yes": "Yes",
     "no": "No",
     "loadingAutoCompleteOptions": "Loading options..",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "close": "Close",
+    "reload": "Reload"
   },
 
   "errorHandling": {
-    "title": "Error"
+    "title": "Error",
+    "dialog": {
+      "title": "Whoops! Something went wrong",
+      "reloadPage": "Try reloading the page.",
+      "unsavedContents": "Please note that unsaved content will not be saved when reloading. If you have unsaved content on this page, you can close this message and copy the content to the clipboard before reloading.",
+      "reportIssue": "If the problem persists, contact support@metatavu.fi by email. Please include technical details in the email to speed up resolution of the problem.",
+      "technicalDetails": "Technical details:",
+      "time": "Time: {0}",
+      "url": "URL: {0}",
+      "errorMessage": "Error message: ",
+      "close": "Close"
+    },
+    "formScreen": {
+      "saveReply": "Error when saving reply",
+      "sendReplyEmail": "Error when trying to send reply to email",
+      "sendReplyDraftEmail": "Error when trying to send reply draft to email",
+      "saveDraft": "Saving form draft failed",
+      "autosave": "Autosave failed",
+      "deleteReply": "Deleting reply failed",
+      "findMetaform": "Finding Metaform failed"
+    },
+    "formAutoComplete": {
+      "autocompleteField": "Fetching autocomplete field options failed. You can still fill and submit the form by closing this dialog." 
+    },
+    "publicFormsScreen": {
+      "fetchForms": "Fetching forms failed"
+    }
   },
   "formComponent": {
     "datePicker": "Date",
@@ -88,6 +116,11 @@
       }
     }
   },
+
+  "publicFormsScreen": {
+    "title": "Lomakkeet"
+  },
+
 
   "draftEditorScreen": {
     "preview": "Preview",

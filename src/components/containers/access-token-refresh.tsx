@@ -27,6 +27,7 @@ interface DecodedAccessToken {
 const AuthenticationProvider: React.FC = ({ children }) => {
   const keycloak = useAppSelector(selectKeycloak);
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   /**
    * Builds access token object from login data
@@ -124,10 +125,8 @@ const AuthenticationProvider: React.FC = ({ children }) => {
    */
   React.useEffect(() => { initializeAnonymousAuthentication(); }, []);
 
-  const location = useLocation();
-
   React.useEffect(() => {
-    if (location.pathname.startsWith("/admin")) {
+    if (!keycloak && location.pathname.startsWith("/admin")) {
       initializeLogin();
     }
   }, [location]);
