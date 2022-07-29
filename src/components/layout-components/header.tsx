@@ -35,7 +35,7 @@ const Header: React.FC<Props> = ({
             backgroundColor: theme.palette.background.paper,
             borderRadius: theme.shape.borderRadius
           }}
-          label={ keycloak?.tokenParsed.email}
+          label={ keycloak?.tokenParsed.email }
           select
         />
       </HeaderToolbar>
