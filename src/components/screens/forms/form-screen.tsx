@@ -570,7 +570,7 @@ const FormScreen: React.FC<Props> = () => {
         });
       }
 
-      setMetaformId(metaformId);
+      setMetaformId(foundMetaform.id);
       setMetaform(foundMetaform);
       setFormValues(preparedFormValues);
     } catch (e) {
