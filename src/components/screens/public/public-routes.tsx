@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import PublicFormScreen from "./public-form-screen";
+import FormScreen from "../forms/form-screen";
 import PublicFormsScreen from "./public-forms-screen";
 
 /**
@@ -13,8 +13,8 @@ const PublicRoutes: React.FC = () => (
       element={ <PublicFormsScreen/> }
     />
     <Route
-      path="/:formSlug"
-      element={ <PublicFormScreen/> }
+      path="/:metaformSlug"
+      element={ <FormScreen/> }
     />
   </Routes>
 );

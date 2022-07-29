@@ -35,8 +35,8 @@ const PublicFormsScreen: React.FC = () => {
       <Grid item xs={12}>
         <List>
           {forms.map(form => (
-            <ListItem key={form.id}>
-              <Link to={`/${form.id}`}>
+            <ListItem key={form.slug}>
+              <Link to={`/${form.slug}`}>
                 <ListItemText primary={form.title}/>
               </Link>
             </ListItem>

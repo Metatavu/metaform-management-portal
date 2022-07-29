@@ -22,20 +22,18 @@ import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
 import { Dictionary } from "types";
+import { useParams } from "react-router-dom";
 
 /**
  * Component props
  */
 interface Props {
-  metaformId: string;
 }
 
 /**
  * Component for exhibitions screen
  */
-const FormScreen: React.FC<Props> = ({
-  metaformId
-}) => {
+const FormScreen: React.FC<Props> = () => {
   const AUTOSAVE_COOLDOWN = 500;
   const [ , setLoading ] = useState(false);
   const [ , setSaving ] = useState(false);
@@ -57,6 +55,9 @@ const FormScreen: React.FC<Props> = ({
   const [ replyDeleteVisible, setReplyDeleteVisible ] = useState(false);
   const [ replyDeleteConfirmVisible, setReplyDeleteConfirmVisble ] = useState(false);
   const [ formValueChangeTimeout, setFormValueChangeTimeout ] = useState<NodeJS.Timeout>();
+  const [ metaformId, setMetaformId ] = useState<string>();
+  const params = useParams();
+  const { metaformSlug } = params;
 
   const apiClient = useApiClient(Api.getApiClient);
   const keycloak = useAppSelector(selectKeycloak);
@@ -154,7 +155,7 @@ const FormScreen: React.FC<Props> = ({
     const { repliesApi } = apiClient;
     
     await repliesApi.updateReply({
-      metaformId: metaformId,
+      metaformId: metaformId!!,
       replyId: currentReply.id!,
       ownerKey: currentOwnerKey || undefined,
       reply: {
@@ -163,7 +164,7 @@ const FormScreen: React.FC<Props> = ({
     });
 
     return repliesApi.findReply({
-      metaformId: metaformId,
+      metaformId: metaformId!!,
       replyId: currentReply.id!,
       ownerKey: currentOwnerKey || undefined
     });
@@ -241,7 +242,7 @@ const FormScreen: React.FC<Props> = ({
     const { repliesApi } = apiClient;
 
     return repliesApi.createReply({
-      metaformId: metaformId,
+      metaformId: metaformId!!,
       reply: {
         data: getFormValues(currentMetaform)
       },
@@ -351,7 +352,7 @@ const FormScreen: React.FC<Props> = ({
 
       if (reply && reply.id && ownerKey) {
         await repliesApi.deleteReply({
-          metaformId: metaformId,
+          metaformId: metaformId!!,
           replyId: reply.id,
           ownerKey: ownerKey
         });
@@ -481,7 +482,7 @@ const FormScreen: React.FC<Props> = ({
     try {
       const replyApi = apiClient.repliesApi;
       return await replyApi.findReply({
-        metaformId: metaformId,
+        metaformId: metaformId!!,
         replyId: replyId,
         ownerKey: currentOwnerKey
       });
@@ -500,7 +501,7 @@ const FormScreen: React.FC<Props> = ({
     try {
       const { draftsApi } = apiClient;
       return await draftsApi.findDraft({
-        metaformId: metaformId,
+        metaformId: metaformId!!,
         draftId: draftToFindId
       });
     } catch (e) {
@@ -518,14 +519,16 @@ const FormScreen: React.FC<Props> = ({
     const replyId = query.get("reply");
     const currentOwnerKey = query.get("owner-key");
 
+    if (!metaformSlug) {
+      return;
+    }
+
     try {
       setLoading(true);
       const { metaformsApi } = apiClient;
 
-      const foundMetaform = await metaformsApi.findMetaform({
-        metaformId: metaformId,
-        replyId: replyId || undefined,
-        ownerKey: currentOwnerKey || undefined
+      const foundMetaform = await metaformsApi.findMetaformBySlug({
+        metaformSlug: metaformSlug
       });
       
       document.title = foundMetaform.title ? foundMetaform.title : "Metaform";
@@ -559,6 +562,7 @@ const FormScreen: React.FC<Props> = ({
         });
       }
 
+      setMetaformId(metaformId);
       setMetaform(foundMetaform);
       setFormValues(preparedFormValues);
     // eslint-disable-next-line no-empty
