@@ -9,7 +9,7 @@ export const Root = styled(Box, {
 })(() => ({
   height: "100vh",
   width: "100vw",
-  overflow: "hidden",
+  overflow: "scroll",
   display: "grid",
   gridTemplateRows: "auto auto auto 1fr",
   background: "linear-gradient(180deg, #375AA3 0%, #4FA3DF 100%)"
