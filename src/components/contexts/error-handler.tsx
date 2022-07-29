@@ -21,7 +21,7 @@ export const ErrorContext = React.createContext<ErrorContextType>({
  */
 const ErrorHandler: React.FC = ({ children }) => {
   const [ error, setError ] = React.useState<string>();
-  const [ errorMessage, setErrorMessage ] = React.useState<any>();
+  const [ errorMessage, setErrorMessage ] = React.useState<Response>();
 
   /**
    * Handles error message and tries to print any given error to logs
@@ -32,7 +32,6 @@ const ErrorHandler: React.FC = ({ children }) => {
    */
   const handleError = async (message: string, err?: any) => {
     setError(message);
-    setErrorMessage(err);
     console.log(err);
     
     Sentry.captureException(err);
@@ -46,6 +45,7 @@ const ErrorHandler: React.FC = ({ children }) => {
       return;
     }
 
+    setErrorMessage(err.message);
     console.error(err);
   };
 
