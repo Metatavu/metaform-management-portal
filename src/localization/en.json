@@ -21,7 +21,7 @@
       "reloadPage": "Try reloading the page.",
       "unsavedContents": "Please note that unsaved content will not be saved when reloading. If you have unsaved content on this page, you can close this message and copy the content to the clipboard before reloading.",
       "reportIssue": "If the problem persists, contact support@metatavu.fi by email. Please include technical details in the email to speed up resolution of the problem.",
-      "technicalDetails": "technical details:",
+      "technicalDetails": "Technical details:",
       "time": "Time: {0}",
       "url": "URL: {0}",
       "errorMessage": "Error message: ",
