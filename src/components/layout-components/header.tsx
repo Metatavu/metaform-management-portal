@@ -1,9 +1,10 @@
 import { TextField } from "@mui/material";
-import strings from "localization/strings";
 import React from "react";
 import { HeaderToolbar, Logo, LogoContainer, Root } from "styled/layout-components/header";
 import theme from "theme";
 import EssoteLogoPath from "resources/svg/essote-logo.svg";
+import { selectKeycloak } from "features/auth-slice";
+import { useAppSelector } from "app/hooks";
 
 /**
  * Component properties
@@ -19,6 +20,8 @@ interface Props {
 const Header: React.FC<Props> = ({
   children
 }) => {
+  const keycloak = useAppSelector(selectKeycloak);
+
   return (
     <Root position="static">
       <HeaderToolbar>
@@ -32,7 +35,7 @@ const Header: React.FC<Props> = ({
             backgroundColor: theme.palette.background.paper,
             borderRadius: theme.shape.borderRadius
           }}
-          label={ strings.header.user }
+          label={ keycloak?.tokenParsed.email}
           select
         />
       </HeaderToolbar>
