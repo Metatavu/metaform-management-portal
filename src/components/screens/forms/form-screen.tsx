@@ -493,7 +493,7 @@ const FormScreen: React.FC<Props> = () => {
         metaformId: metaformId!!,
         replyId: replyId,
         ownerKey: currentOwnerKey
-      }));
+      });
     } catch (e) {
       return null;
     }
@@ -511,7 +511,7 @@ const FormScreen: React.FC<Props> = () => {
       return await draftsApi.findDraft({
         metaformId: metaformId!!,
         draftId: draftToFindId
-      }));
+      });
     } catch (e) {
       return null;
     }
