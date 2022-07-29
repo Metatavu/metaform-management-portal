@@ -18,6 +18,7 @@ import ReplyDelete from "./form/ReplyDelete";
 import Autosaving from "./form/Autosaving";
 import DraftSaveDialog from "./form/DraftSaveDialog";
 import DraftSavedDialog from "./form/DraftSavedDialog";
+import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
@@ -37,12 +38,15 @@ const FormScreen: React.FC<Props> = ({
   metaformId
 }) => {
   const AUTOSAVE_COOLDOWN = 500;
+
+  const errorContext = React.useContext(ErrorContext);
+
   const [ , setLoading ] = useState(false);
   const [ , setSaving ] = useState(false);
   const [ , setSnackbarMessage ] = useState<SnackbarMessage>();
 
   const [ , setReplyConfirmVisible ] = useState(false);
-  const [ metaform, setMetaform ] = useState<Metaform>();
+  const [ metaform, setMetaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ ownerKey, setOwnerKey ] = useState<string | null>();
   const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});
   const [ formValid, setFormValid ] = useState(true);
@@ -108,8 +112,9 @@ const FormScreen: React.FC<Props> = ({
 
       setDraftId(draft.id!);
       setDraftSaveVisible(true);
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.saveDraft, e);
+    }
 
     setLoading(false);
   };
@@ -193,8 +198,9 @@ const FormScreen: React.FC<Props> = ({
       setAutosaving(true);
 
       await updateReply(metaform, reply, ownerKey);
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.autosave, e);
+    }
 
     setAutosaving(false);
   };
@@ -277,8 +283,9 @@ const FormScreen: React.FC<Props> = ({
       setOwnerKey(updatedOwnerKey);
       setFormValues(updatedValues as any);
       setReplySavedVisible(true);
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.saveReply, e);
+    }
   };
 
   /**
@@ -335,8 +342,9 @@ const FormScreen: React.FC<Props> = ({
         message: strings.formScreen.replyEditEmailSent,
         severity: "success"
       });
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.sendReplyEmail, e);
+    }
   };
   
   /**
@@ -366,8 +374,9 @@ const FormScreen: React.FC<Props> = ({
         message: strings.formScreen.replyDeleted,
         severity: "success"
       });
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.deleteReply, e);
+    }
 
     setLoading(false);
   };
@@ -459,10 +468,9 @@ const FormScreen: React.FC<Props> = ({
         message: strings.formScreen.draftEmailSent,
         severity: "success"
       });
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
-
-    setLoading(false);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.sendReplyEmail, e);
+    }
   };
 
   /**
@@ -480,11 +488,11 @@ const FormScreen: React.FC<Props> = ({
   const findReply = async (replyId: string, currentOwnerKey: string) => {
     try {
       const replyApi = apiClient.repliesApi;
-      return await replyApi.findReply({
+      return await Promise.resolve(replyApi.findReply({
         metaformId: metaformId,
         replyId: replyId,
         ownerKey: currentOwnerKey
-      });
+      }));
     } catch (e) {
       return null;
     }
@@ -499,10 +507,10 @@ const FormScreen: React.FC<Props> = ({
   const findDraft = async (draftToFindId: string) => {
     try {
       const { draftsApi } = apiClient;
-      return await draftsApi.findDraft({
+      return await Promise.resolve(draftsApi.findDraft({
         metaformId: metaformId,
         draftId: draftToFindId
-      });
+      }));
     } catch (e) {
       return null;
     }
@@ -561,8 +569,9 @@ const FormScreen: React.FC<Props> = ({
 
       setMetaform(foundMetaform);
       setFormValues(preparedFormValues);
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.findMetaform, e);
+    }
 
     setLoading(false);
   };

@@ -4,11 +4,15 @@ import { Grid, List, ListItem, ListItemText, Typography } from "@mui/material";
 import Api from "api";
 import { useApiClient } from "app/hooks";
 import { MetaformVisibility } from "generated/client";
+import strings from "localization/strings";
+import { ErrorContext } from "components/contexts/error-handler";
 
 /**
  * Public forms screen component
  */
 const PublicFormsScreen: React.FC = () => {
+  const errorContext = React.useContext(ErrorContext);
+
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi } = apiClient;
   
@@ -18,26 +22,30 @@ const PublicFormsScreen: React.FC = () => {
    * Fetch metaforms from the API
    */
   const fetchForms = async () => {
-    return metaformsApi.listMetaforms({ visibility: MetaformVisibility.Public });
+    try {
+      setForms(await metaformsApi.listMetaforms({ visibility: MetaformVisibility.Public }));
+    } catch (err) {
+      errorContext.setError(strings.errorHandling.publicFormsScreen.fetchForms, err);
+    }
   };
 
   React.useEffect(() => {
-    fetchForms().then(setForms);
+    fetchForms();
   }, []);
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
+    <Grid container spacing={ 3 }>
+      <Grid item xs={ 12 }>
         <Typography variant="h4">
-          Public forms
+          { strings.publicFormsScreen.title }
         </Typography>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={ 12 }>
         <List>
           {forms.map(form => (
-            <ListItem key={form.id}>
+            <ListItem key={ form.id }>
               <Link to={`/${form.id}`}>
-                <ListItemText primary={form.title}/>
+                <ListItemText primary={ form.title }/>
               </Link>
             </ListItem>
           ))}

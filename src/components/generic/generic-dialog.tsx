@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, Divider } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 /**
@@ -7,8 +7,8 @@ import CloseIcon from "@mui/icons-material/Close";
  */
 interface Props {
   title: string;
-  positiveButtonText?: string;
-  cancelButtonText?: string;
+  closeButtonText?: string;
+  reloadButtonText?: string;
   onClose: () => void;
   onCancel: () => void;
   onConfirm: () => void | Promise<void>;
@@ -28,8 +28,8 @@ interface Props {
  */
 const GenericDialog: React.FC<Props> = ({
   open,
-  positiveButtonText,
-  cancelButtonText,
+  closeButtonText,
+  reloadButtonText,
   onClose,
   onCancel,
   title,
@@ -55,6 +55,13 @@ const GenericDialog: React.FC<Props> = ({
   };
 
   /**
+   * Reload button click event handler
+   */
+  const onReloadClick = () => {
+    window.location.reload();
+  };
+
+  /**
    * Component render
    */
   return (
@@ -65,35 +72,38 @@ const GenericDialog: React.FC<Props> = ({
       fullWidth={ fullWidth }
       disableEnforceFocus={ disableEnforceFocus }
     >
-      <DialogTitle>
+      <DialogTitle align="center" sx={{ fontSize: 18, fontWeight: "bold" }}>
         { title }
         <IconButton
+          style={{ float: "right" }}
           size="small"
           onClick={ onCancel }
         >
           <CloseIcon/>
         </IconButton>
+        <Divider/>
       </DialogTitle>
       <DialogContent>
         { children }
       </DialogContent>
       <DialogActions>
-        { cancelButtonText &&
+        { reloadButtonText &&
           <Button
-            onClick={ onCancel }
-            color="secondary"
+            onClick={ onReloadClick }
+            color="error"
+            style={{ float: "left" }}
           >
-            { cancelButtonText }
+            { reloadButtonText }
           </Button>
         }
-        { positiveButtonText &&
+        { closeButtonText &&
           <Button
             disabled={ error || disabled }
             onClick={ onConfirm }
             color="primary"
             autoFocus
           >
-            { positiveButtonText }
+            { closeButtonText }
           </Button>
         }
       </DialogActions>

@@ -21,6 +21,8 @@ export interface Localized extends LocalizedStringsMethods {
     yes: string;
     no: string;
     confirm: string;
+    close: string;
+    reload: string;
   };
 
   /**
@@ -28,6 +30,30 @@ export interface Localized extends LocalizedStringsMethods {
    */
   errorHandling: {
     title: string;
+    dialog: {
+      reloadPage: string;
+      unsavedContents: string;
+      reportIssue: string;
+      technicalDetails: string;
+      time: string;
+      url: string;
+      errorMessage: string;
+    },
+    formScreen: {
+      saveReply: string;
+      sendReplyEmail: string;
+      sendReplyDraftEmail: string;
+      saveDraft: string;
+      autosave: string;
+      deleteReply: string;
+      findMetaform: string;
+    },
+    formAutoComplete: {
+      autocompleteField: string;
+    },
+    publicFormsScreen: {
+      fetchForms: string;
+    }
   };
 
   /**
@@ -38,6 +64,13 @@ export interface Localized extends LocalizedStringsMethods {
     dateTimePicker: string;
   };
 
+  /**
+   * Translations related to public forms screen
+   */
+  publicFormsScreen: {
+    title: string;
+  }
+  
   /**
    * Translations related to header
    */

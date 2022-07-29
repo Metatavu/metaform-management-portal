@@ -9,11 +9,39 @@
     "yes": "Kyllä",
     "no": "Ei",
     "loadingAutoCompleteOptions": "Ladataan vaihtoehtoja...",
-    "confirm": "Vahvista"
+    "confirm": "Vahvista",
+    "close": "Sulje",
+    "reload": "Lataa uudelleen"
   },
 
   "errorHandling": {
-    "title": "Error"
+    "title": "Tapahtui virhe",
+    "dialog": {
+      "title": "Hups! Jokin meni pieleen",
+      "reloadPage": "Kokeile ladata sivu uudelleen.",
+      "unsavedContents": "Huomaathan, että tallentamattomat sisällöt häviävät uudelleenladattaessa. Mikäli sinulla on sivulla tallentamattomia sisältöjä, voit sulkea tämän ilmoituksen ja kopioida sisällöt leikepöydälle ennen uudelleenlatausta.",
+      "reportIssue": "Mikäli ongelma jatkuu, ota sähköpostilla yhteyttä osoitteeseen support@metatavu.fi. Liitä tekniset lisätiedot osaksi sähköpostia nopeuttaaksesi ongelman selvittelyä.",
+      "technicalDetails": "Teknisiä lisätietoja:",
+      "time": "Aika: {0}",
+      "url": "Osoite: {0}",
+      "errorMessage": "Virheilmoitus: ",
+      "close": "Sulje"
+    },
+    "formScreen": {
+      "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
+      "sendReplyEmail": "Vastauslinkin lähettämisessä sähköpostiin tapahtui virhe",
+      "sendReplyDraftEmail": "Vastausluonnoksen linkin lähettämisessä sähköpostiin tapahtui virhe",
+      "saveDraft": "Lomakkeen vedoksen tallennus epäonnistui",
+      "autosave": "Lomakkeen automaattinen tallennus epäonnistui",
+      "deleteReply": "Vastauksen poistaminen epäonnistui",
+      "findMetaform": "Lomakkeen hakemisessa tapahtui virhe"
+    },
+    "formAutoComplete": {
+      "autocompleteField": "Automaattisen täytön asetusten haku epäonnistui, voit kuitenkin jatkaa lomakkeen täyttöä sulkemalla tämän ilmoituksen."
+    },
+    "publicFormsScreen": {
+      "fetchForms": "Lomakkeiden hakemisessa tapahtui virhe"
+    }
   },
 
   "formComponent": {
@@ -88,6 +116,10 @@
         "description": "Lomakkeen muokkaus"
       }
     }
+  },
+
+  "publicFormsScreen": {
+    "title": "Lomakkeet"
   },
 
   "draftEditorScreen": {
