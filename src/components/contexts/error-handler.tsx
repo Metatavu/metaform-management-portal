@@ -30,9 +30,8 @@ const ErrorHandler: React.FC = ({ children }) => {
    * @param message error message
    * @param err any error
    */
-  const handleError = async (message: string, err?: any) => {
+  const handleError = async (message: string) => {
     setError(message);
-    console.log(err);
     
     Sentry.captureException(err);
 
