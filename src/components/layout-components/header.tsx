@@ -21,7 +21,10 @@ const Header: React.FC<Props> = ({
   children
 }) => {
   const keycloak = useAppSelector(selectKeycloak);
-
+  if (!keycloak?.tokenParsed?.email) {
+    return null;
+  }
+  
   return (
     <Root position="static">
       <HeaderToolbar>
