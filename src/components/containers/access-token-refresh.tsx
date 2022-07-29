@@ -126,12 +126,8 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   React.useEffect(() => { initializeAnonymousAuthentication(); }, []);
 
   React.useEffect(() => {
-    if (keycloak && keycloak.realmAccess) {
-      const { roles } = keycloak.realmAccess;
-
-      if (roles.includes("anonymous") && location.pathname.startsWith("/admin")) {
-        initializeLogin();
-      }
+    if (!keycloak && location.pathname.startsWith("/admin")) {
+      initializeLogin();
     }
   }, [location]);
 
