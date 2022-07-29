@@ -65,10 +65,10 @@ const ErrorHandler: React.FC = ({ children }) => {
   };
   
   /**
-     * Returns current window URL
-     * 
-     * @returns current window URL
-     */
+   * Returns current window URL
+   * 
+   * @returns current window URL
+   */
   const getURL = () => {
     return window.location.href;
   };
