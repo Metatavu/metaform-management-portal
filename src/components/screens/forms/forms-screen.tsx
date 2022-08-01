@@ -11,6 +11,7 @@ import { AdminFormListStack, AdminFormTypographyField } from "styled/react-compo
 import { Link } from "react-router-dom";
 import { useApiClient } from "app/hooks";
 import Api from "api";
+import { Reply } from "generated/client";
 
 interface Row {
   id: string;
@@ -95,6 +96,21 @@ const FormsScreen: React.FC = () => {
   const [ loading, setLoading ] = useState(false);
 
   /**
+   * Gets the latest reply date of a Metaform
+   */
+  const getLatestReplyDate = (replies: Reply[]) => {
+    if (replies.length < 1) {
+      return "";
+    }
+
+    if (!replies[0].modifiedAt) {
+      return "";
+    }
+
+    return replies[0].modifiedAt.toLocaleString().slice(0, -3);
+  };
+
+  /**
    * View setup
    */
   const setup = async () => {
@@ -103,11 +119,10 @@ const FormsScreen: React.FC = () => {
       const forms = await metaformsApi.listMetaforms({});
       const builtRows = await Promise.all(forms.map(async form => {
         const replies = await repliesApi.listReplies({ metaformId: form.id!! });
-        const latestReply = replies.length > 0 ? (replies[0].modifiedAt?.toISOString() || "") : "";
   
         return {
           id: form.title || strings.formScreen.noTitle,
-          latestReply: latestReply,
+          latestReply: getLatestReplyDate(replies),
           newReply: strings.navigationHeader.formsScreens.formScreen.form.notProcessed
         };
       }));
