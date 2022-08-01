@@ -123,7 +123,11 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   /**
    * Initializes authentication
    */
-  React.useEffect(() => { initializeAnonymousAuthentication(); }, []);
+  React.useEffect(() => {
+    if (!location.pathname.startsWith("/admin")) {
+      initializeAnonymousAuthentication();
+    }
+  }, []);
 
   React.useEffect(() => {
     if (!keycloak && location.pathname.startsWith("/admin")) {

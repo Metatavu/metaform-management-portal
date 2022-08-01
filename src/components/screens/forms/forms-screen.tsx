@@ -115,20 +115,21 @@ const FormsScreen: React.FC = () => {
    */
   const setup = async () => {
     setLoading(true);
+
     try {
       const forms = await metaformsApi.listMetaforms({});
-      const builtRows = await Promise.all(forms.map(async form => {
-        const replies = await repliesApi.listReplies({ metaformId: form.id!! });
-  
-        return {
-          id: form.title || strings.formScreen.noTitle,
-          latestReply: getLatestReplyDate(replies),
-          newReply: strings.navigationHeader.formsScreens.formScreen.form.notProcessed
-        };
+      const replies = await Promise.all(forms.map(form => repliesApi.listReplies({ metaformId: form.id!! })));
+
+      const builtRows = forms.map((form, i) => ({
+        id: form.title || strings.formScreen.noTitle,
+        latestReply: getLatestReplyDate(replies[i]),
+        newReply: strings.navigationHeader.formsScreens.formScreen.form.notProcessed
       }));
+
       setRows(builtRows);
     // eslint-disable-next-line no-empty
     } catch (e) {}
+
     setLoading(false);
   };
 
