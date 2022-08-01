@@ -92,29 +92,34 @@ const FormsScreen: React.FC = () => {
   ];
 
   const [ rows, setRows ] = useState<Row[]>([]);
+  const [ loading, setLoading ] = useState(false);
 
   /**
    * View setup
    */
   const setup = async () => {
-    const forms = await metaformsApi.listMetaforms({});
-    const builtRows = await Promise.all(forms.map(async form => {
-      const replies = await repliesApi.listReplies({ metaformId: form.id!! });
-      const latestReply = replies.length > 0 ? (replies[0].modifiedAt?.toISOString() || "") : "";
-
-      return {
-        id: form.title || strings.formScreen.noTitle,
-        latestReply: latestReply,
-        newReply: strings.navigationHeader.formsScreens.formScreen.form.notProcessed
-      };
-    }));
-
-    setRows(builtRows);
+    setLoading(true);
+    try {
+      const forms = await metaformsApi.listMetaforms({});
+      const builtRows = await Promise.all(forms.map(async form => {
+        const replies = await repliesApi.listReplies({ metaformId: form.id!! });
+        const latestReply = replies.length > 0 ? (replies[0].modifiedAt?.toISOString() || "") : "";
+  
+        return {
+          id: form.title || strings.formScreen.noTitle,
+          latestReply: latestReply,
+          newReply: strings.navigationHeader.formsScreens.formScreen.form.notProcessed
+        };
+      }));
+      setRows(builtRows);
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
+    setLoading(false);
   };
 
   useEffect(() => {
     setup();
-  });
+  }, []);
 
   return (
     <>
@@ -128,6 +133,7 @@ const FormsScreen: React.FC = () => {
         />
       </NavigationTabContainer>
       <DataGrid
+        loading={ loading }
         rows={ rows }
         columns={ columns }
         autoHeight
