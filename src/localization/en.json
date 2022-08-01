@@ -184,7 +184,8 @@
     "replyDeleteLink": "here",
     "confirmDeleteReplyTitle": "Are you sure?",
     "confirmDeleteReplyText": "Are you sure that you wish to delete the reply?",
-    "replyDeleted": "Reply deleted"
+    "replyDeleted": "Reply deleted",
+    "noTitle": "No title"
   },
 
   "emailDialog": {

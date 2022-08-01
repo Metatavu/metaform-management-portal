@@ -224,6 +224,7 @@ export interface Localized extends LocalizedStringsMethods {
     confirmDeleteReplyText: string;
     replyNotFound: string;
     replyDeleted: string;
+    noTitle: string;
   };
 
   /**
