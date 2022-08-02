@@ -81,3 +81,14 @@ export const NewUserButton = styled(Button, {
   margin: "2em",
   fontWeight: "bold"
 }));
+
+/**
+ * Styled new member group button component
+ */
+export const NewMemberGroupButton = styled(Button, {
+  label: "new-button"
+})(() => ({
+  borderRadius: "1em",
+  margin: "2em",
+  fontWeight: "bold"
+}));

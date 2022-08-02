@@ -41,6 +41,11 @@
     },
     "publicFormsScreen": {
       "fetchForms": "Fetching forms failed"
+    },
+    "usersScreen": {
+      "loadMetaforms": "Error occurred while loading metaforms",
+      "loadMemberGroups": "Error occurred while loading user groups",
+      "createMemberGroup": "Error occurred while creating a user group"
     }
   },
   "formComponent": {

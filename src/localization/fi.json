@@ -41,6 +41,11 @@
     },
     "publicFormsScreen": {
       "fetchForms": "Lomakkeiden hakemisessa tapahtui virhe"
+    },
+    "usersScreen": {
+      "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",
+      "loadMemberGroups": "Käyttäjäryhmien latauksessa tapahtui virhe",
+      "createMemberGroup": "Käyttäjäryhmän luonnissa tapahtui virhe"
     }
   },
 

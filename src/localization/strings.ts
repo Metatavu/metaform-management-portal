@@ -54,6 +54,11 @@ export interface Localized extends LocalizedStringsMethods {
     publicFormsScreen: {
       fetchForms: string;
     }
+    usersScreen: {
+      loadMetaforms: string;
+      loadMemberGroups: string;
+      createMemberGroup: string;
+    }
   };
 
   /**
