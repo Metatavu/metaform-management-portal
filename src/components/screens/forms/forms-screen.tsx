@@ -29,7 +29,7 @@ const FormsScreen: React.FC = () => {
   const columns: GridColDef[] = [
     {
       field: "id",
-      headerName: strings.navigationHeader.formsScreens.formScreen.form.form,
+      headerName: strings.navigationHeader.formsScreens.formScreen.formListing.form,
       flex: 1,
       renderHeader: params => {
         return (
