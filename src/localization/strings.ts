@@ -135,8 +135,14 @@ export interface Localized extends LocalizedStringsMethods {
         "title": string;
         "description": string;
       }
-      button: {
+      addMemberButton: string
+      addMemberGroupButton: string
+      addMemberGroupDialog: {
+        title: string
         text: string
+        displayNameLabel: string
+        createButton: string
+        cancelButton: string
       }
     };
     editorScreens: {

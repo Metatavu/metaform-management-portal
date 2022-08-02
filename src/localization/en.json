@@ -103,8 +103,14 @@
         "title": "User management",
         "description": "Help text"
       },
-      "button": {
-        "text": "New user"
+      "addMemberButton": "New member",
+      "addMemberGroupButton": "New group",
+      "addMemberGroupDialog": {
+        "title": "New group",
+        "text": "Add new group to the form",
+        "displayNameLabel": "Group's name",
+        "createButton": "Create group",
+        "cancelButton": "Cancel"
       }
     },
     "editorScreens": {

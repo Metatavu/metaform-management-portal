@@ -104,8 +104,14 @@
         "title": "Käyttäjänhallinta",
         "description": "Ohjeteksti"
       },
-      "button": {
-        "text": "Uusi käyttäjä"
+      "addMemberButton": "Uusi käyttäjä",
+      "addMemberGroupButton": "Uusi käyttäjäryhmä",
+      "addMemberGroupDialog": {
+        "title": "Uusi käyttäjäryhmä",
+        "text": "Lisää uusi käyttäjäryhmä lomakkeelle",
+        "displayNameLabel": "Ryhmän nimi",
+        "createButton": "Luo ryhmä",
+        "cancelButton": "Peruuta"
       }
     },
     "editorScreens": {
