@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import { HeaderToolbar, Logo, LogoContainer, Root } from "styled/layout-components/header";
 import theme from "theme";
 import EssoteLogoPath from "resources/svg/essote-logo.svg";
-import { selectKeycloak } from "features/auth-slice";
-import { useAppSelector } from "app/hooks";
-import { useNavigate } from "react-router-dom";
+import { logout, selectKeycloak } from "features/auth-slice";
+import { useAppDispatch, useAppSelector } from "app/hooks";
+import strings from "localization/strings";
 
 /**
  * Header component
@@ -17,28 +17,22 @@ const Header: React.FC = ({
 }) => {
   const keycloak = useAppSelector(selectKeycloak);
 
-  const [ userEmail, setUserEmail ] = React.useState<string>("Testikäyttäjä");
-  const usenavigte = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const [ userEmail, setUserEmail ] = React.useState<string>("");
+  
   useEffect(() => {
     if (keycloak?.tokenParsed?.email) {
       setUserEmail(keycloak.tokenParsed.email);
     }
-    console.log("userEamail", userEmail);
   }, []);
-
-  /**
-   * Logout keycloak user
-   */
-  const logout = () => {
-    keycloak?.logout().then(() => { usenavigte("/"); });
-  };
 
   /**
    * Renders logout button
    */
   const renderLogoutButton = () => {
     return (
-      <Button onClick={ logout }>Kirjadu ulos</Button>
+      <Button color="error" onClick={ () => dispatch(logout()) }>{ strings.generic.logout }</Button>
     );
   };
 
@@ -49,18 +43,20 @@ const Header: React.FC = ({
           {/* TODO replace the logo to higher resolution */}
           <Logo alt="Essote logo" src={ EssoteLogoPath }/>
         </LogoContainer>
-        <FormControl>
-          <InputLabel color="info" id="user-email">Käyttäjä</InputLabel>
+        <FormControl style={{ color: "white" }}>
+          <InputLabel style={{ color: "white" }} id="user-email">{ strings.header.user }</InputLabel>
           <Select
-            id="user-email"
+            label={ strings.header.user }
             value={ userEmail }
+            id="user-email"
             sx={{
-              width: 300,
+              color: "white",
+              minWidth: 300,
               backgroundColor: "transparent",
               borderRadius: theme.shape.borderRadius
             }}
+            renderValue={ () => userEmail }
           >
-            <MenuItem>{ userEmail }</MenuItem>
             <MenuItem>{ renderLogoutButton() }</MenuItem>
           </Select>
         </FormControl>
