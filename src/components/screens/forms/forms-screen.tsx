@@ -11,12 +11,12 @@ import { AdminFormListStack, AdminFormTypographyField } from "styled/react-compo
 import { Link } from "react-router-dom";
 import { useApiClient } from "app/hooks";
 import Api from "api";
-import { Reply } from "generated/client";
+import { Metaform, Reply } from "generated/client";
 
 interface Row {
   id: string;
   latestReply: string;
-  newReply: string;
+  newReply?: string;
 }
 
 /**
@@ -84,7 +84,7 @@ const FormsScreen: React.FC = () => {
       renderCell: params => {
         return (
           <AdminFormListStack direction="row">
-            <NotificationsActiveIcon style={ { fill: "red" } }/>
+            { params.row.newReply && <NotificationsActiveIcon style={ { fill: "red" } }/> }
             <AdminFormTypographyField>{ params.row.newReply }</AdminFormTypographyField>
           </AdminFormListStack>
         );
@@ -106,8 +106,30 @@ const FormsScreen: React.FC = () => {
     if (!replies[0].modifiedAt) {
       return "";
     }
-
+    
     return replies[0].modifiedAt.toLocaleString().slice(0, -3);
+  };
+
+  /**
+   * Counts amount of waiting replies to be displayed in the row
+   * @param replies
+   */
+  const countWaitingReplies = (replies: Reply[]) => replies.filter(reply => reply.data?.status as (string | undefined) === "waiting").length;
+
+  /**
+   * Builds a row for the table
+   * 
+   * @param form form
+   * @param replies replies
+   */
+  const buildRow = (form: Metaform, replies: Reply[]) => {
+    const amountWaiting = countWaitingReplies(replies);
+
+    return {
+      id: form.title || strings.formScreen.noTitle,
+      latestReply: getLatestReplyDate(replies),
+      newReply: amountWaiting > 0 ? `${strings.navigationHeader.formsScreens.formScreen.form.notProcessed} (${amountWaiting})` : undefined
+    };
   };
 
   /**
@@ -119,12 +141,7 @@ const FormsScreen: React.FC = () => {
     try {
       const forms = await metaformsApi.listMetaforms({});
       const replies = await Promise.all(forms.map(form => repliesApi.listReplies({ metaformId: form.id!! })));
-
-      const builtRows = forms.map((form, i) => ({
-        id: form.title || strings.formScreen.noTitle,
-        latestReply: getLatestReplyDate(replies[i]),
-        newReply: strings.navigationHeader.formsScreens.formScreen.form.notProcessed
-      }));
+      const builtRows = forms.map((form, i) => buildRow(form, replies[i]));
 
       setRows(builtRows);
     // eslint-disable-next-line no-empty
