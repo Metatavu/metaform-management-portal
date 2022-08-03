@@ -75,7 +75,7 @@ const FormsScreen: React.FC = () => {
     setLoading(true);
   
     try {
-      const forms = await metaformsApi.listMetaforms();
+      const forms = await metaformsApi.listMetaforms({});
       const replies = await Promise.all(forms.map(form => repliesApi.listReplies({ metaformId: form.id!! })));
       const builtRows = forms.map((form, i) => buildRow(form, replies[i]));
   
