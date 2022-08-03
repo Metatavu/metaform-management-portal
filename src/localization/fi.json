@@ -11,7 +11,8 @@
     "loadingAutoCompleteOptions": "Ladataan vaihtoehtoja...",
     "confirm": "Vahvista",
     "close": "Sulje",
-    "reload": "Lataa uudelleen"
+    "reload": "Lataa uudelleen",
+    "show": "Näytä"
   },
 
   "errorHandling": {
