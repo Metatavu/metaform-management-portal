@@ -33,7 +33,6 @@ const Header: React.FC<Props> = ({
             borderRadius: theme.shape.borderRadius
           }}
           label={ strings.header.user }
-          select
         />
       </HeaderToolbar>
       { children }
