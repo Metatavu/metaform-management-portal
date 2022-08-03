@@ -12,6 +12,7 @@ import { Metaform, MetaformMember, MetaformMemberGroup } from "generated/client"
 import UsersFilter from "components/users/users-filter";
 import AddMemberGroupDialog from "components/users/add-member-group-dialog";
 import UsersTable from "components/users/users-table";
+import AddMemberDialog from "components/users/add-member-dialog";
 
 /**
  * Users screen component
@@ -29,6 +30,7 @@ const UsersScreen: React.FC = () => {
   const [ selectedMetaformId, setSelectedMetaformId ] = React.useState<string>();
   const [ selectedMemberGroupId, setSelectedMemberGroupId ] = React.useState<string>();
   const [ addMemberGroupOpen, setAddMemberGroupOpen ] = React.useState<boolean>(false);
+  const [ addMemberOpen, setAddMemberOpen ] = React.useState<boolean>(false);
 
   /**
    * Load metaforms from the API
@@ -180,6 +182,44 @@ const UsersScreen: React.FC = () => {
     setAddMemberGroupOpen(false);
   };
 
+  /**
+   * New member button click listener
+   */
+  const onNewMemberButtonClick = () => {
+    setAddMemberOpen(true);
+  };
+
+  /**
+   * Event handler for member dialog cancel 
+   */
+  const onAddMemberDialogCancel = () => {
+    setAddMemberOpen(false);
+  };
+
+  /**
+   * Event handler for member dialog create 
+   * 
+   * @param member member's details
+   */
+  const onAddMemberDialogCreate = async (member: MetaformMember) => {
+    if (!selectedMetaformId) {
+      return;
+    }
+
+    try {
+      const createdMember = await metaformMembersApi.createMetaformMember({
+        metaformId: selectedMetaformId,
+        metaformMember: member
+      });
+
+      setMembers([ ...members, createdMember ]);
+    } catch (err) {
+      errorContext.setError(strings.errorHandling.usersScreen.createMember, err);
+    }
+
+    setAddMemberOpen(false);
+  };
+
   React.useEffect(() => {
     loadMetaforms();
   }, []);
@@ -191,6 +231,11 @@ const UsersScreen: React.FC = () => {
 
   return (
     <>
+      <AddMemberDialog
+        open={ addMemberOpen }
+        onCreate={ onAddMemberDialogCreate }
+        onCancel={ onAddMemberDialogCancel }
+      />
       <AddMemberGroupDialog
         open={ addMemberGroupOpen }
         onCreate={ onAddMemberGroupDialogCreate }
@@ -205,6 +250,7 @@ const UsersScreen: React.FC = () => {
           disabled={ !selectedMetaformId }
           variant="outlined"
           endIcon={ <PersonAdd/> }
+          onClick={ onNewMemberButtonClick }
         >
           { strings.userManagementScreen.addMemberButton }
         </NewUserButton>

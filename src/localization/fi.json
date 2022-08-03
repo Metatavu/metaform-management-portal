@@ -45,6 +45,7 @@
     "usersScreen": {
       "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",
       "loadMemberGroups": "Käyttäjäryhmien latauksessa tapahtui virhe",
+      "createMember": "Käyttäjän luonnissa tapahtui virhe",
       "createMemberGroup": "Käyttäjäryhmän luonnissa tapahtui virhe",
       "loadMembers": "Käyttäjien latauksessa tapahtui virhe",
       "removeMemberNotFound": "Ryhmän poistossa tapahtui virhe, käyttäjää ei löytynyt",
@@ -158,6 +159,17 @@
     },
     "addMemberButton": "Uusi käyttäjä",
     "addMemberGroupButton": "Uusi käyttäjäryhmä",
+    "addMemberDialog": {
+      "title": "Uusi käyttäjä",
+      "text": "Lisää uusi käyttäjä lomakkeelle",
+      "emailLabel": "Sähköpostiosoite",
+      "firstNameLabel": "Etunimi",
+      "lastNameLabel": "Sukunimi",
+      "createButton": "Luo käyttäjä",
+      "cancelButton": "Peruuta",
+      "roleAdministrator": "Ylläpitäjä",
+      "roleManager": "Ammattilainen"
+    },
     "addMemberGroupDialog": {
       "title": "Uusi käyttäjäryhmä",
       "text": "Lisää uusi käyttäjäryhmä lomakkeelle",

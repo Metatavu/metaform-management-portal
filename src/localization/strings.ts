@@ -57,6 +57,7 @@ export interface Localized extends LocalizedStringsMethods {
     usersScreen: {
       loadMetaforms: string;
       loadMemberGroups: string;
+      createMember: string;
       createMemberGroup: string;
       loadMembers: string;
       removeMemberNotFound: string;
@@ -192,6 +193,17 @@ export interface Localized extends LocalizedStringsMethods {
 
     addMemberButton: string
     addMemberGroupButton: string
+    addMemberDialog: {
+      title: string
+      text: string
+      emailLabel: string
+      firstNameLabel: string
+      lastNameLabel: string
+      createButton: string
+      cancelButton: string
+      roleAdministrator: string
+      roleManager: string
+    }
     addMemberGroupDialog: {
       title: string
       text: string
