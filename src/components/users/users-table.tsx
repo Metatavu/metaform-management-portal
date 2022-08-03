@@ -8,26 +8,44 @@ import UsersTableGroups from "./users-table-groups";
  * Component props
  */
 interface Props {
-  metaformMembers: MetaformMember[];
-  metaformMemberGroups: MetaformMemberGroup[];
-  onMetaformGroupMembershipAdd: (metaformMember: MetaformMember, groupId: string) => void;
-  onMetaformGroupMembershipRemove: (metaformMember: MetaformMember, groupId: string) => void;
+  members: MetaformMember[];
+  memberGroups: MetaformMemberGroup[];
+  selectedMemberGroupId: string | undefined;
+  onGroupMembershipAdd: (metaformMember: MetaformMember, groupId: string) => void;
+  onGroupMembershipRemove: (metaformMember: MetaformMember, groupId: string) => void;
 }
 
 /**
  * Users table
 */
-const UsersTable: FC<Props> = ({ metaformMembers, metaformMemberGroups, onMetaformGroupMembershipAdd, onMetaformGroupMembershipRemove }: Props) => {
-  const data = metaformMembers.map(metaformMember => {
-    return {
-      name: `${metaformMember.lastName}, ${metaformMember.firstName}`,
-      email: metaformMember.email,
-      metaformMember: metaformMember
-    };
-  });
+const UsersTable: FC<Props> = ({
+  members,
+  memberGroups,
+  selectedMemberGroupId,
+  onGroupMembershipAdd,
+  onGroupMembershipRemove
+}: Props) => {
+  const selectedGroup = selectedMemberGroupId ? memberGroups.find(group => group.id === selectedMemberGroupId) : null;
+
+  const data = members
+    .filter(member => {
+      if (!selectedGroup) {
+        return true;
+      }
+
+      return selectedGroup.memberIds.includes(member.id!!);
+    })
+    .map(member => {
+      return {
+        name: `${member.lastName}, ${member.firstName}`,
+        email: member.email,
+        member: member
+      };
+    });
 
   return (
     <MaterialTable
+      title=""
       columns={[
         {
           title: strings.userManagementScreen.usersTable.nameColumn.label,
@@ -40,14 +58,15 @@ const UsersTable: FC<Props> = ({ metaformMembers, metaformMemberGroups, onMetafo
         {
           title: strings.userManagementScreen.usersTable.groupsColumn.label,
           field: "groups",
+          sorting: false,
           render: rowData => {
             return (
               <UsersTableGroups
-                key={ `${rowData.metaformMember.id}-groups` }
-                metaformMember={ rowData.metaformMember }
-                metaformMemberGroups={ metaformMemberGroups }
-                onMetaformGroupMembershipAdd={ onMetaformGroupMembershipAdd }
-                onMetaformGroupMembershipRemove={ onMetaformGroupMembershipRemove }
+                key={ `${rowData.member.id}-groups` }
+                metaformMember={ rowData.member }
+                metaformMemberGroups={ memberGroups }
+                onMetaformGroupMembershipAdd={ onGroupMembershipAdd }
+                onMetaformGroupMembershipRemove={ onGroupMembershipRemove }
               />
             );
           }

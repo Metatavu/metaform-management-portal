@@ -24,9 +24,10 @@ const UsersScreen: React.FC = () => {
   const { metaformsApi, metaformMemberGroupsApi, metaformMembersApi } = apiClient;
 
   const [ metaforms, setMetaforms ] = React.useState<Metaform[]>([]);
-  const [ metaformMemberGroups, setMetaformMemberGroups ] = React.useState<MetaformMemberGroup[]>([]);
-  const [ metaformMembers, setMetaformMembers ] = React.useState<MetaformMember[]>([]);
+  const [ memberGroups, setMemberGroups ] = React.useState<MetaformMemberGroup[]>([]);
+  const [ members, setMembers ] = React.useState<MetaformMember[]>([]);
   const [ selectedMetaformId, setSelectedMetaformId ] = React.useState<string>();
+  const [ selectedMemberGroupId, setSelectedMemberGroupId ] = React.useState<string>();
   const [ addMemberGroupOpen, setAddMemberGroupOpen ] = React.useState<boolean>(false);
 
   /**
@@ -43,14 +44,14 @@ const UsersScreen: React.FC = () => {
   /**
    * Load metaform member groups from the API
    */
-  const loadMetaformMemberGroups = async () => {
+  const loadMemberGroups = async () => {
     if (!selectedMetaformId) {
-      setMetaformMemberGroups([]);
+      setMemberGroups([]);
       return;
     }
 
     try {
-      setMetaformMemberGroups(await metaformMemberGroupsApi.listMetaformMemberGroups({
+      setMemberGroups(await metaformMemberGroupsApi.listMetaformMemberGroups({
         metaformId: selectedMetaformId
       }));
     } catch (err) {
@@ -63,12 +64,12 @@ const UsersScreen: React.FC = () => {
    */
   const loadMetaformMembers = async () => {
     if (!selectedMetaformId) {
-      setMetaformMembers([]);
+      setMembers([]);
       return;
     }
 
     try {
-      setMetaformMembers(await metaformMembersApi.listMetaformMembers({
+      setMembers(await metaformMembersApi.listMetaformMembers({
         metaformId: selectedMetaformId
       }));
     } catch (err) {
@@ -81,13 +82,13 @@ const UsersScreen: React.FC = () => {
    * @param metaformMember metaform member
    * @param groupIds group ids
    */
-  const onMetaformGroupMembershipRemove = async (metaformMember: MetaformMember, groupId: string) => {
+  const onGroupMembershipRemove = async (metaformMember: MetaformMember, groupId: string) => {
     if (!selectedMetaformId) {
       return;
     }
 
     try {
-      const memberGroup = metaformMemberGroups.find(metaformMemberGroup => metaformMemberGroup.id === groupId);
+      const memberGroup = memberGroups.find(metaformMemberGroup => metaformMemberGroup.id === groupId);
       if (!memberGroup) {
         errorContext.setError(strings.errorHandling.usersScreen.removeMemberNotFound);
         return;
@@ -99,9 +100,9 @@ const UsersScreen: React.FC = () => {
         metaformMemberGroup: { ...memberGroup, memberIds: memberGroup.memberIds.filter(memberId => memberId !== metaformMember.id) }
       });
 
-      const otherGroups = metaformMemberGroups.filter(metaformMemberGroup => metaformMemberGroup.id !== groupId);
+      const otherGroups = memberGroups.filter(metaformMemberGroup => metaformMemberGroup.id !== groupId);
 
-      setMetaformMemberGroups([ ...otherGroups, updatedGroup ]);
+      setMemberGroups([ ...otherGroups, updatedGroup ]);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.loadMembers, err);
     }
@@ -112,13 +113,13 @@ const UsersScreen: React.FC = () => {
    * @param metaformMember metaform member
    * @param groupIds group ids
    */
-  const onMetaformGroupMembershipAdd = async (metaformMember: MetaformMember, groupId: string) => {
+  const onGroupMembershipAdd = async (metaformMember: MetaformMember, groupId: string) => {
     if (!selectedMetaformId) {
       return;
     }
 
     try {
-      const memberGroup = metaformMemberGroups.find(metaformMemberGroup => metaformMemberGroup.id === groupId);
+      const memberGroup = memberGroups.find(metaformMemberGroup => metaformMemberGroup.id === groupId);
       if (!memberGroup) {
         errorContext.setError(strings.errorHandling.usersScreen.addMemberNotFound);
         return;
@@ -130,9 +131,9 @@ const UsersScreen: React.FC = () => {
         metaformMemberGroup: { ...memberGroup, memberIds: [ ...memberGroup.memberIds, metaformMember.id!! ] }
       });
 
-      const otherGroups = metaformMemberGroups.filter(metaformMemberGroup => metaformMemberGroup.id !== groupId);
+      const otherGroups = memberGroups.filter(metaformMemberGroup => metaformMemberGroup.id !== groupId);
 
-      setMetaformMemberGroups([ ...otherGroups, updatedGroup ]);
+      setMemberGroups([ ...otherGroups, updatedGroup ]);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.loadMembers, err);
     }
@@ -164,7 +165,7 @@ const UsersScreen: React.FC = () => {
         }
       });
 
-      setMetaformMemberGroups([ ...metaformMemberGroups, createdMemberGroup ]);
+      setMemberGroups([ ...memberGroups, createdMemberGroup ]);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.createMemberGroup, err);
     }
@@ -184,7 +185,7 @@ const UsersScreen: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    loadMetaformMemberGroups();
+    loadMemberGroups();
     loadMetaformMembers();
   }, [ selectedMetaformId, metaforms ]);
 
@@ -218,15 +219,18 @@ const UsersScreen: React.FC = () => {
       </NavigationTabContainer>
       <UsersFilter
         metaforms={ metaforms }
-        metaformMemberGroups={ metaformMemberGroups }
+        memberGroups={ memberGroups }
         selectedMetaformId={ selectedMetaformId }
+        selectedMemberGroupId={ selectedMemberGroupId }
         setSelectedMetaformId={ setSelectedMetaformId }
+        setSelectedMemberGroupId={ setSelectedMemberGroupId }
       />
       <UsersTable
-        metaformMemberGroups={ metaformMemberGroups }
-        metaformMembers={ metaformMembers }
-        onMetaformGroupMembershipAdd={ onMetaformGroupMembershipAdd }
-        onMetaformGroupMembershipRemove={ onMetaformGroupMembershipRemove }
+        memberGroups={ memberGroups }
+        members={ members }
+        selectedMemberGroupId={ selectedMemberGroupId }
+        onGroupMembershipAdd={ onGroupMembershipAdd }
+        onGroupMembershipRemove={ onGroupMembershipRemove }
       />
     </>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { FC } from "react";
 import { TextField } from "@mui/material";
 import { FilterSelector, FormFilterWrapper } from "../../styled/layouts/admin-layout";
@@ -9,17 +10,24 @@ import { Metaform, MetaformMemberGroup } from "generated/client";
  */
 interface Props {
   metaforms: Metaform[];
-  metaformMemberGroups: MetaformMemberGroup[];
+  memberGroups: MetaformMemberGroup[];
   selectedMetaformId: string | undefined;
+  selectedMemberGroupId: string | undefined;
   setSelectedMetaformId: (metaformId: string | undefined) => void;
+  setSelectedMemberGroupId: (memberGroupId: string | undefined) => void;
 }
 
 /**
  * Users filter
 */
-const UsersFilter: FC<Props> = ({ metaforms, metaformMemberGroups, selectedMetaformId, setSelectedMetaformId }: Props) => {
-  const [ secondSelector, setSecondSelector ] = React.useState<string>("");
-
+const UsersFilter: FC<Props> = ({ 
+  metaforms, 
+  memberGroups, 
+  selectedMetaformId, 
+  selectedMemberGroupId, 
+  setSelectedMetaformId, 
+  setSelectedMemberGroupId 
+}: Props) => {
   /**
    * Handle selected metaform change
    * 
@@ -27,37 +35,43 @@ const UsersFilter: FC<Props> = ({ metaforms, metaformMemberGroups, selectedMetaf
    */
   const handleMetaformSelectorChange = (event: React.ChangeEvent<{ value: string }>) => {
     setSelectedMetaformId(event.target.value || undefined);
-    setSecondSelector("");
+    setSelectedMemberGroupId("");
   };
 
   /**
-   * We enable second selector if first selector is selected
+   * Hanndle member group selection change
    *
    * @param event - event object
    */
-  const handleSecondSelectorChange = (event: React.ChangeEvent<{ value: string }>) => {
-    setSecondSelector(event.target.value);
+  const onMemberGroupSelectorChange = (event: React.ChangeEvent<{ value: string }>) => {
+    setSelectedMemberGroupId(event.target.value);
   };
 
   return (
     <FormFilterWrapper>
       <FilterSelector
+        key="metaform-select-container"
         value={ selectedMetaformId }
         onChange={ handleMetaformSelectorChange }
         disableUnderline
       >
-        <option value="">{ strings.userManagementScreen.selector.form }</option>
+        <option value="" key="no-metaform-selected">{ strings.userManagementScreen.selector.form }</option>
         {
           metaforms.map(metaform => {
             return (
-              <option value={ metaform.id }>{ metaform.title }</option>
+              <option 
+                key={ `${metaform.id}-metaform`}
+                value={ metaform.id }
+              >
+                  { metaform.title }
+              </option>
             );
           })
         }
       </FilterSelector>
       <FilterSelector
-        value={ secondSelector }
-        onChange={ handleSecondSelectorChange }
+        value={ selectedMemberGroupId }
+        onChange={ onMemberGroupSelectorChange }
         disableUnderline
         sx={{
           opacity: selectedMetaformId ? 1 : 0.8,
@@ -67,9 +81,14 @@ const UsersFilter: FC<Props> = ({ metaforms, metaformMemberGroups, selectedMetaf
       >
         <option value="">{ strings.userManagementScreen.selector.group }</option>
         {
-          metaformMemberGroups.map(metaformMemberGroup => {
+          memberGroups.map(metaformMemberGroup => {
             return (
-              <option value={ metaformMemberGroup.id }>{ metaformMemberGroup.displayName }</option>
+              <option 
+                key={ `${metaformMemberGroup.id}-metaform-member-group`}
+                value={ metaformMemberGroup.id }
+              >
+                  { metaformMemberGroup.displayName }
+                </option>
             );
           })
         }
