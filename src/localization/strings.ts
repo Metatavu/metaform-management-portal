@@ -53,6 +53,9 @@ export interface Localized extends LocalizedStringsMethods {
     },
     publicFormsScreen: {
       fetchForms: string;
+    },
+    formsScreen: {
+      fetchData: string;
     }
   };
 
@@ -122,6 +125,9 @@ export interface Localized extends LocalizedStringsMethods {
             statusProgressed: string;
           }
         }
+      };
+      formListing: {
+        form: string;
       };
       formDataScreen: {
         title: string;

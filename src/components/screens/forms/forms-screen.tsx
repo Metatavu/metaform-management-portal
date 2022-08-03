@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useApiClient } from "app/hooks";
 import Api from "api";
 import { Metaform, Reply } from "generated/client";
+import { ErrorContext } from "components/contexts/error-handler";
 
 interface Row {
   id: string;
@@ -25,11 +26,76 @@ interface Row {
 const FormsScreen: React.FC = () => {
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, repliesApi } = apiClient;
+  const errorContext = useContext(ErrorContext);
+
+  const [ rows, setRows ] = useState<Row[]>([]);
+  const [ loading, setLoading ] = useState(false);
+
+  /**
+   * Gets the latest reply date of a Metaform
+   */
+  const getLatestReplyDate = (replies: Reply[]) => {
+    if (replies.length < 1) {
+      return "";
+    }
+  
+    if (!replies[0].modifiedAt) {
+      return "";
+    }
+      
+    return replies[0].modifiedAt.toLocaleString().slice(0, -3);
+  };
+  
+  /**
+     * Counts amount of waiting replies to be displayed in the row
+     * @param replies
+     */
+  const countWaitingReplies = (replies: Reply[]) => replies.filter(reply => reply.data?.status as (string | undefined) === "waiting").length;
+  
+  /**
+     * Builds a row for the table
+     * 
+     * @param form form
+     * @param replies replies
+     */
+  const buildRow = (form: Metaform, replies: Reply[]) => {
+    const amountWaiting = countWaitingReplies(replies);
+  
+    return {
+      id: form.title || strings.formScreen.noTitle,
+      latestReply: getLatestReplyDate(replies),
+      newReply: amountWaiting > 0 ? `${strings.navigationHeader.formsScreens.formScreen.form.notProcessed} (${amountWaiting})` : undefined
+    };
+  };
+  
+  /**
+     * View setup
+     */
+  const setup = async () => {
+    setLoading(true);
+  
+    try {
+      const forms = await metaformsApi.listMetaforms();
+      const replies = await Promise.all(forms.map(form => repliesApi.listReplies({ metaformId: form.id!! })));
+      const builtRows = forms.map((form, i) => buildRow(form, replies[i]));
+  
+      setRows(builtRows);
+      // eslint-disable-next-line no-empty
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.publicFormsScreen.fetchForms, e);
+    }
+  
+    setLoading(false);
+  };
+  
+  useEffect(() => {
+    setup();
+  }, []);
 
   const columns: GridColDef[] = [
     {
       field: "id",
-      headerName: strings.navigationHeader.formsScreens.formScreen.formListing.form,
+      headerName: strings.navigationHeader.formsScreens.formListing.form,
       flex: 1,
       renderHeader: params => {
         return (
@@ -91,68 +157,6 @@ const FormsScreen: React.FC = () => {
       }
     }
   ];
-
-  const [ rows, setRows ] = useState<Row[]>([]);
-  const [ loading, setLoading ] = useState(false);
-
-  /**
-   * Gets the latest reply date of a Metaform
-   */
-  const getLatestReplyDate = (replies: Reply[]) => {
-    if (replies.length < 1) {
-      return "";
-    }
-
-    if (!replies[0].modifiedAt) {
-      return "";
-    }
-    
-    return replies[0].modifiedAt.toLocaleString().slice(0, -3);
-  };
-
-  /**
-   * Counts amount of waiting replies to be displayed in the row
-   * @param replies
-   */
-  const countWaitingReplies = (replies: Reply[]) => replies.filter(reply => reply.data?.status as (string | undefined) === "waiting").length;
-
-  /**
-   * Builds a row for the table
-   * 
-   * @param form form
-   * @param replies replies
-   */
-  const buildRow = (form: Metaform, replies: Reply[]) => {
-    const amountWaiting = countWaitingReplies(replies);
-
-    return {
-      id: form.title || strings.formScreen.noTitle,
-      latestReply: getLatestReplyDate(replies),
-      newReply: amountWaiting > 0 ? `${strings.navigationHeader.formsScreens.formScreen.form.notProcessed} (${amountWaiting})` : undefined
-    };
-  };
-
-  /**
-   * View setup
-   */
-  const setup = async () => {
-    setLoading(true);
-
-    try {
-      const forms = await metaformsApi.listMetaforms({});
-      const replies = await Promise.all(forms.map(form => repliesApi.listReplies({ metaformId: form.id!! })));
-      const builtRows = forms.map((form, i) => buildRow(form, replies[i]));
-
-      setRows(builtRows);
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
-
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    setup();
-  }, []);
 
   return (
     <>

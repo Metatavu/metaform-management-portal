@@ -41,6 +41,9 @@
     },
     "publicFormsScreen": {
       "fetchForms": "Lomakkeiden hakemisessa tapahtui virhe"
+    },
+    "formsScreen": {
+      "fetchData": "Virhe haettaessa tietoja palvelimelta"
     }
   },
 
@@ -91,6 +94,9 @@
             "statusProgressed": "Käsitelty"
           }
         }
+      },
+      "formListing": {
+        "form": "LOMAKE"
       },
       "formDataScreen": {
         "title": "Datan tarkastelu",
