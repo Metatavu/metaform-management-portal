@@ -2,7 +2,7 @@ import * as React from "react";
 
 import strings from "../../localization/strings";
 import { useState } from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, Select, SelectChangeEvent, Stack, TextField } from "@mui/material";
 import { MetaformMember, MetaformMemberRole, MetaformMemberRoleFromJSON } from "generated/client";
 import * as EmailValidator from "email-validator";
 
@@ -69,48 +69,52 @@ const AddMemberGroupDialog: React.FC<Props> = ({
 
   return (
     <Dialog open={ true } onClose={ onCancel }>
-      <DialogTitle>{ strings.userManagementScreen.addMemberDialog.title }</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          <p>
-            { strings.userManagementScreen.addMemberDialog.text }
-          </p>
+      <DialogTitle variant="h2">{ strings.userManagementScreen.addMemberDialog.title }</DialogTitle>
+      <DialogContent style={{ width: 500 }}>
+        <DialogContentText variant="body1" color="#ccc" style={{ paddingBottom: 16 }}>
+          { strings.userManagementScreen.addMemberDialog.text }
         </DialogContentText>
-        <TextField
-          style={{ width: "100%" }}
-          required={ true }
-          value={ member.email }
-          type="email"
-          name="email"
-          label={ strings.userManagementScreen.addMemberDialog.emailLabel }
-          onChange={ onTextFieldChange }
-        />
-        <TextField
-          style={{ width: "100%" }}
-          required={ true }
-          value={ member.firstName }
-          name="firstName"
-          label={ strings.userManagementScreen.addMemberDialog.firstNameLabel }
-          onChange={ onTextFieldChange }
-        />
-        <TextField
-          style={{ width: "100%" }}
-          required={ true }
-          name="lastName"
-          value={ member.lastName }
-          label={ strings.userManagementScreen.addMemberDialog.lastNameLabel }
-          onChange={ onTextFieldChange }
-        />
-        <Select
-          value={ member.role }
-          label="Age"
-          onChange={ onRoleFieldChange }
-        >
-          <MenuItem value={ MetaformMemberRole.Administrator }>{ strings.userManagementScreen.addMemberDialog.roleAdministrator }</MenuItem>
-          <MenuItem value={ MetaformMemberRole.Manager }>{ strings.userManagementScreen.addMemberDialog.roleManager }</MenuItem>
-        </Select>
+        <Stack spacing={ 1 }>
+          <TextField
+            style={{ width: "100%" }}
+            size="medium"
+            required={ true }
+            value={ member.email }
+            type="email"
+            name="email"
+            label={ strings.userManagementScreen.addMemberDialog.emailLabel }
+            onChange={ onTextFieldChange }
+          />
+          <TextField
+            style={{ width: "100%" }}
+            size="medium"
+            required={ true }
+            value={ member.firstName }
+            name="firstName"
+            label={ strings.userManagementScreen.addMemberDialog.firstNameLabel }
+            onChange={ onTextFieldChange }
+          />
+          <TextField
+            style={{ width: "100%" }}
+            size="medium"
+            required={ true }
+            name="lastName"
+            value={ member.lastName }
+            label={ strings.userManagementScreen.addMemberDialog.lastNameLabel }
+            onChange={ onTextFieldChange }
+          />
+          <Select
+            value={ member.role }
+            label="Age"
+            fullWidth
+            onChange={ onRoleFieldChange }
+          >
+            <MenuItem value={ MetaformMemberRole.Administrator }>{ strings.userManagementScreen.addMemberDialog.roleAdministrator }</MenuItem>
+            <MenuItem value={ MetaformMemberRole.Manager }>{ strings.userManagementScreen.addMemberDialog.roleManager }</MenuItem>
+          </Select>
+        </Stack>
       </DialogContent>
-      <DialogActions>
+      <DialogActions style={{ padding: 24, paddingTop: 0 }}>
         <Button disableElevation variant="contained" onClick={ onCancel } color="secondary" autoFocus>
           { strings.userManagementScreen.addMemberDialog.cancelButton }
         </Button>

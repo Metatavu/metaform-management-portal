@@ -123,7 +123,8 @@ export default createTheme({
       styleOverrides: {
         root: {
           alignItems: "center",
-          justifyContent: "space-between"
+          justifyContent: "space-between",
+          paddingInline: "16px !important"
         }
       }
     },
@@ -152,6 +153,25 @@ export default createTheme({
         },
         root: {
           flex: 1
+        }
+      }
+    },
+    MuiTable: {
+      styleOverrides: {
+        root: {
+          display: "flex",
+          flex: 1,
+          flexDirection: "column",
+          justifyContent: "flex-end"
+        }
+      }
+    },
+    MuiTableBody: {
+      styleOverrides: {
+        root: {
+          flex: 1,
+          display: "flex",
+          flexDirection: "column"
         }
       }
     }

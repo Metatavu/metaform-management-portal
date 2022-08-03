@@ -40,54 +40,53 @@ const UsersTableGroups: FC<Props> = ({ metaformMember, metaformMemberGroups, onM
   };
 
   return (
-    <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <Select
-          id={ `${metaformMember.id}-groups` }
-          multiple
-          value={ selectedGroupIds }
-          onChange={ handleChange }
-          input={
-            <OutlinedInput
-              id={ `${metaformMember.id}-groups-select-multiple-chip` }
-            />
-          }
-          renderValue={selected => (
-            <Box sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 0.5
-            }}
-            >
-              {
-                selected.map(value => {
-                  const selectedGroup = metaformMemberGroups.find(metaformMemberGroup => metaformMemberGroup.id === value);
-                  if (!selectedGroup) {
-                    return null;
-                  }
+    <FormControl sx={{ flex: 2, display: "flex" }}>
+      <Select
+        id={ `${metaformMember.id}-groups` }
+        multiple
+        size="small"
+        value={ selectedGroupIds }
+        onChange={ handleChange }
+        input={
+          <OutlinedInput
+            id={ `${metaformMember.id}-groups-select-multiple-chip` }
+          />
+        }
+        renderValue={selected => (
+          <Box sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 0.5
+          }}
+          >
+            {
+              selected.map(value => {
+                const selectedGroup = metaformMemberGroups.find(metaformMemberGroup => metaformMemberGroup.id === value);
+                if (!selectedGroup) {
+                  return null;
+                }
 
-                  return (
-                    <Chip
-                      key={ selectedGroup.id }
-                      label={ selectedGroup.displayName }
-                    />
-                  );
-                })
-              }
-            </Box>
-          )}
-        >
-          {metaformMemberGroups.map(metaformMemberGroup => (
-            <MenuItem
-              key={ metaformMemberGroup.id }
-              value={ metaformMemberGroup.id }
-            >
-              { metaformMemberGroup.displayName }
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+                return (
+                  <Chip
+                    key={ selectedGroup.id }
+                    label={ selectedGroup.displayName }
+                  />
+                );
+              })
+            }
+          </Box>
+        )}
+      >
+        {metaformMemberGroups.map(metaformMemberGroup => (
+          <MenuItem
+            key={ metaformMemberGroup.id }
+            value={ metaformMemberGroup.id }
+          >
+            { metaformMemberGroup.displayName }
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };
 

@@ -1,27 +1,36 @@
 import React, { FC } from "react";
 import strings from "localization/strings";
-import { MetaformMember, MetaformMemberGroup } from "generated/client";
+import { Metaform, MetaformMember, MetaformMemberGroup } from "generated/client";
 import MaterialTable from "material-table";
 import UsersTableGroups from "./users-table-groups";
+import UsersFilter from "./users-filter";
 
 /**
  * Component props
  */
 interface Props {
+  metaforms: Metaform[];
   members: MetaformMember[];
   memberGroups: MetaformMemberGroup[];
+  selectedMetaformId: string | undefined;
   selectedMemberGroupId: string | undefined;
-  onGroupMembershipAdd: (metaformMember: MetaformMember, groupId: string) => void;
-  onGroupMembershipRemove: (metaformMember: MetaformMember, groupId: string) => void;
+  setSelectedMetaformId: (metaformId: string | undefined) => void;
+  setSelectedMemberGroupId: (memberGroupId: string | undefined) => void;
+  onGroupMembershipAdd: (member: MetaformMember, groupId: string) => void;
+  onGroupMembershipRemove: (member: MetaformMember, groupId: string) => void;
 }
 
 /**
  * Users table
 */
 const UsersTable: FC<Props> = ({
+  metaforms,
   members,
   memberGroups,
+  selectedMetaformId,
   selectedMemberGroupId,
+  setSelectedMetaformId,
+  setSelectedMemberGroupId,
   onGroupMembershipAdd,
   onGroupMembershipRemove
 }: Props) => {
@@ -45,7 +54,21 @@ const UsersTable: FC<Props> = ({
 
   return (
     <MaterialTable
-      title=""
+      title={
+        <UsersFilter
+          metaforms={ metaforms }
+          memberGroups={ memberGroups }
+          selectedMetaformId={ selectedMetaformId }
+          selectedMemberGroupId={ selectedMemberGroupId }
+          setSelectedMetaformId={ setSelectedMetaformId }
+          setSelectedMemberGroupId={ setSelectedMemberGroupId }
+        />
+      }
+      style={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column"
+      }}
       columns={[
         {
           title: strings.userManagementScreen.usersTable.nameColumn.label,
@@ -73,6 +96,18 @@ const UsersTable: FC<Props> = ({
         }
       ]}
       data={ data }
+      options={{
+        padding: "dense",
+        searchFieldStyle: {
+          flex: 1,
+          minWidth: 400
+        },
+        headerStyle: {
+          backgroundColor: "rgba(0,0,0,0.05)",
+          fontWeight: "bold",
+          borderTop: "0.5px solid rgba(0,0,0,0.2)"
+        }
+      }}
     />
   );
 };

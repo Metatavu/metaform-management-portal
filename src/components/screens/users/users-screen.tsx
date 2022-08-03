@@ -9,7 +9,6 @@ import { PersonAdd, GroupAdd } from "@mui/icons-material";
 import { ErrorContext } from "components/contexts/error-handler";
 import { useApiClient } from "app/hooks";
 import { Metaform, MetaformMember, MetaformMemberGroup } from "generated/client";
-import UsersFilter from "components/users/users-filter";
 import AddMemberGroupDialog from "components/users/add-member-group-dialog";
 import UsersTable from "components/users/users-table";
 import AddMemberDialog from "components/users/add-member-dialog";
@@ -241,7 +240,6 @@ const UsersScreen: React.FC = () => {
         onCreate={ onAddMemberGroupDialogCreate }
         onCancel={ onAddMemberGroupDialogCancel }
       />
-
       <NavigationTabContainer>
         <NavigationTab
           text={ strings.navigationHeader.usersScreens.subheader }
@@ -263,18 +261,14 @@ const UsersScreen: React.FC = () => {
           { strings.userManagementScreen.addMemberGroupButton }
         </NewMemberGroupButton>
       </NavigationTabContainer>
-      <UsersFilter
+      <UsersTable
         metaforms={ metaforms }
         memberGroups={ memberGroups }
+        members={ members }
         selectedMetaformId={ selectedMetaformId }
         selectedMemberGroupId={ selectedMemberGroupId }
         setSelectedMetaformId={ setSelectedMetaformId }
         setSelectedMemberGroupId={ setSelectedMemberGroupId }
-      />
-      <UsersTable
-        memberGroups={ memberGroups }
-        members={ members }
-        selectedMemberGroupId={ selectedMemberGroupId }
         onGroupMembershipAdd={ onGroupMembershipAdd }
         onGroupMembershipRemove={ onGroupMembershipRemove }
       />
