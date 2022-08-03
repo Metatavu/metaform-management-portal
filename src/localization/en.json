@@ -41,6 +41,9 @@
     },
     "publicFormsScreen": {
       "fetchForms": "Fetching forms failed"
+    }, 
+    "formsScreen": {
+      "fetchData": "Error when loading data from the server"
     }
   },
   "formComponent": {
@@ -122,9 +125,6 @@
 
   "publicFormsScreen": {
     "title": "Forms"
-  },
-  "formsScreen": {
-    "fetchData": "Error when loading data from the server"
   },
 
 
