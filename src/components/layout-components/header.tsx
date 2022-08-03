@@ -3,7 +3,7 @@ import strings from "localization/strings";
 import React from "react";
 import { HeaderToolbar, Logo, LogoContainer, Root } from "styled/layout-components/header";
 import theme from "theme";
-import EssoteLogoPath from "resources/svg/essote-logo.svg";
+// import EssoteLogoPath from "resources/svg/essote-logo.svg";
 
 /**
  * Component properties
@@ -24,7 +24,7 @@ const Header: React.FC<Props> = ({
       <HeaderToolbar>
         <LogoContainer>
           {/* TODO replace the logo to higher resolution */}
-          <Logo alt="Essote logo" src={ EssoteLogoPath }/>
+          <Logo alt="Essote logo"/>
         </LogoContainer>
         <TextField
           sx={{

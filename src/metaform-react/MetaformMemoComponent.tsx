@@ -43,7 +43,14 @@ const MetaformMemoComponent: React.FC<Props> = ({
     return null;
   }
 
-  const style: React.CSSProperties = { backgroundColor: "white" };
+  const style: React.CSSProperties = {
+    backgroundColor: "white",
+    border: "1px solid rgba(0, 0, 0, .5)",
+    borderRadius: "0.5rem",
+    width: "100%",
+    padding: "0.5rem 1rem",
+    minHeight: "5rem"
+  };
   if (notInteractive) {
     style.pointerEvents = "none";
   }

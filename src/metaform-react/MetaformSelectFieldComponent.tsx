@@ -47,10 +47,10 @@ export const MetaformSelectFieldComponent: React.FC<Props> = ({
   const readOnly = formReadOnly || field.readonly;
 
   return (
-    <SelectFieldWrapper>
+    <SelectFieldWrapper >
       <FormControl fullWidth>
         <Select
-          style={ notInteractive ? { pointerEvents: "none" } : {}}
+          style={ notInteractive ? { pointerEvents: "none" } : { maxHeight: 50, backgroundColor: "transparent" }}
           onChange={ onChange }
           value={ selected }
           disabled={ readOnly }

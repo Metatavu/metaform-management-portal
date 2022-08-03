@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import theme from "theme";
 
 /**
  * Styled metaform container
@@ -9,82 +10,49 @@ export const FormContainer = styled(Box, {
 })(() => ({
   display: "flex",
   overflow: "auto",
+  justifyContent: "center",
+  
   "& .metaform": {
-    fontSize: "1rem",
-  
-    "& p": {
-      marginTop: 0
-    },
-  
-    "& h1, & h2, & h3, & h4, & h5, & h6": {
-      marginBottom: ".5rem",
-      fontWeight: 500,
-      lineHeight: 1.2
-    },
-    
-    "& h3": {
-      fontSize: "1.75rem"
-    },
-  
-    "& .metaform-field": {
-      marginTop: 10
-    },
-  
-    "& fieldset": {
+    maxWidth: "50vw",
+    flexDirection: "column",
+    display: "flex",
+
+    "& section": {
       border: "none",
-      padding: 0
+      borderRadius: "0.5rem",
+      padding: theme.spacing(2),
+      marginBottom: theme.spacing(2),
+      backgroundColor: "#fff",
+      boxShadow: "5px 5px 5px rgba(0,0,0,0.5)"
     },
-    
-    "& input[type='text'], & input[type='number'], & input[type='email'], & select, & textarea": {
-      width: "100%",
-      padding: "10px"
+
+    "& fieldset": {
+      padding: 0,
+      border: "none"
     },
-    
-    "& input::placeholder, & select::placeholder": {
-      color: "#6c757d"
+
+    "& .metaform-field": {
+      marginBottom: theme.spacing(1)
     },
-  
-    "& .metaform-react-file-value-container": {
-      paddingTop: "10px",
-      paddingBottom: "10px",
-      borderBottom: "1px solid #aaa",
-      marginBottom: "10px",
-      display: "flex"
+
+    "& .metaform-field-label": {
+      color: "rgba(0,0,0,.5)"
     },
-  
-    "& .metaform-react-file-field-open-button": {
-      marginLeft: "auto",
-      padding: "5px",
-      marginRight: "10px"
+
+    "& h1": {
+      textAlign: "center",
+      color: theme.palette.secondary.dark
     },
-  
-    "& .metaform-react-file-field-delete-button": {
-      padding: "5px"
+
+    "& h2": {
+      fontWeight: 600,
+      fontSize: 20,
+      paddingBottom: theme.spacing(1)
     },
-        
-    "& input[type='submit']": {
-      padding: "10px 20px",
-      fontSize: "18px",
-      borderRadius: "0.3rem",
-      border: 0,
-      background: "#007bff",
-      color: "#fff"
-    },
-  
-    "& input[type='submit']:hover": {
-      background: "#0069d9"
-    },
-  
-    "& .MuiAutocomplete-inputRoot[class*='MuiOutlinedInput-root']": {
-      padding: 0
-    },
-  
-    "& .MuiAutocomplete-input:first-child": {
-      paddingLeft: "10px"
-    },
-  
-    "& .MuiAutocomplete-endAdornment": {
-      background: "#fff"
+
+    "& h3": {
+      fontWeight: 100,
+      fontSize: 20
     }
   }
 }));

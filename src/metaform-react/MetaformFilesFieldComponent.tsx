@@ -1,5 +1,7 @@
-import { Button, Input } from "@mui/material";
+import { Input } from "@mui/material";
+import strings from "localization/strings";
 import React from "react";
+import { FilesButtonWrapper, FilesRowWrapper, HtmlFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField } from "../generated/client/models";
 import { FieldValue, FileFieldValue, FileFieldValueItem } from "./types";
 
@@ -10,8 +12,6 @@ interface Props {
   field: MetaformField,
   fieldId: string,
   fieldLabelId: string,
-  showButtonText: string,
-  deleteButtonText: string,
   value: FieldValue,
   onValueChange?: (value: FieldValue) => void,
   onFileUpload?: (fieldName: string, file: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => void,
@@ -28,8 +28,6 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
   field,
   fieldId,
   fieldLabelId,
-  showButtonText,
-  deleteButtonText,
   value,
   onValueChange,
   onFileUpload,
@@ -94,23 +92,26 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
 
   const valueItems = normalizedValue.files.map(valueItem => {
     return (
-      <div key={valueItem.id} className="metaform-react-file-value-container">
-        <span className="metaform-react-file-field-name">{ valueItem.name || valueItem.id}</span>
-        <Button
+      <FilesRowWrapper direction="row" spacing={ 1 } key={valueItem.id}>
+        <HtmlFieldWrapper>
+          { valueItem.name || valueItem.id }
+        </HtmlFieldWrapper>
+        <FilesButtonWrapper
+          variant="contained"
+          size="small"
           onClick={ () => onFileShow && onFileShow(valueItem) }
-          className="metaform-react-file-field-open-button"
-          style={ notInteractive ? { pointerEvents: "none" } : {}}
         >
-          { showButtonText }
-        </Button>
-        <Button
+          { strings.generic.show }
+        </FilesButtonWrapper>
+        <FilesButtonWrapper
+          variant="contained"
+          size="small"
+          color="error"
           onClick={ () => onFileDelete && onFileDelete(field.name || "", valueItem) }
-          className="metaform-react-file-field-delete-button"
-          style={ notInteractive ? { pointerEvents: "none" } : {}}
         >
-          { deleteButtonText }
-        </Button>
-      </div>
+          { strings.generic.delete }
+        </FilesButtonWrapper>
+      </FilesRowWrapper>
     );
   });
 

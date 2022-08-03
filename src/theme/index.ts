@@ -16,11 +16,12 @@ export default createTheme({
       dark: "#375AA3"
     },
     secondary: {
-      main: "#ffffff"
+      main: "#4FA3DF",
+      dark: "#fff"
     },
     text: {
       primary: "#333333",
-      secondary: "#ffffff"
+      secondary: "#222"
     },
     background: {
       default: "#405da3",
@@ -152,6 +153,39 @@ export default createTheme({
         },
         root: {
           flex: 1
+        }
+      }
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        root: {
+          padding: "0.5rem 0",
+          borderRadius: "0.5rem",
+          border: "1px solid rgba(0, 0, 0, .5)",
+          maxHeight: 50,
+          display: "flex",
+          alignItems: "center"
+        }
+      }
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          width: "100%"
+        }
+      }
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          padding: 0
+        }
+      }
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          borderBottom: "none"
         }
       }
     }
