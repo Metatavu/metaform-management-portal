@@ -58,6 +58,9 @@ export interface Localized extends LocalizedStringsMethods {
       loadMetaforms: string;
       loadMemberGroups: string;
       createMemberGroup: string;
+      loadMembers: string;
+      removeMemberNotFound: string;
+      addMemberNotFound: string;
     }
   };
 
@@ -140,15 +143,6 @@ export interface Localized extends LocalizedStringsMethods {
         "title": string;
         "description": string;
       }
-      addMemberButton: string
-      addMemberGroupButton: string
-      addMemberGroupDialog: {
-        title: string
-        text: string
-        displayNameLabel: string
-        createButton: string
-        cancelButton: string
-      }
     };
     editorScreens: {
       title: string;
@@ -195,6 +189,27 @@ export interface Localized extends LocalizedStringsMethods {
       group: string;
       user: string;
     };
+
+    addMemberButton: string
+    addMemberGroupButton: string
+    addMemberGroupDialog: {
+      title: string
+      text: string
+      displayNameLabel: string
+      createButton: string
+      cancelButton: string
+    }
+    usersTable: {
+      nameColumn: {
+        label: string
+      }
+      emailColumn: {
+        label: string
+      }
+      groupsColumn: {
+        label: string
+      }
+    }
   };
 
   /**

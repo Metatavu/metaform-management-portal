@@ -45,26 +45,26 @@ const AddMemberGroupDialog: React.FC<Props> = ({
 
   return (
     <Dialog open={ true } onClose={ onCancel }>
-      <DialogTitle>{ strings.navigationHeader.usersScreens.addMemberGroupDialog.title }</DialogTitle>
+      <DialogTitle>{ strings.userManagementScreen.addMemberGroupDialog.title }</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <p>
-            { strings.navigationHeader.usersScreens.addMemberGroupDialog.text }
+            { strings.userManagementScreen.addMemberGroupDialog.text }
           </p>
         </DialogContentText>
         <TextField
           style={{ width: "100%" }}
           required={ true }
-          label={ strings.navigationHeader.usersScreens.addMemberGroupDialog.displayNameLabel }
+          label={ strings.userManagementScreen.addMemberGroupDialog.displayNameLabel }
           onChange={ onDisplayNameChange }
         />
       </DialogContent>
       <DialogActions>
         <Button disableElevation variant="contained" onClick={ onCancel } color="secondary" autoFocus>
-          { strings.navigationHeader.usersScreens.addMemberGroupDialog.cancelButton }
+          { strings.userManagementScreen.addMemberGroupDialog.cancelButton }
         </Button>
         <Button onClick={ onCreateClick } color="primary" disabled={ !displayName }>
-          { strings.navigationHeader.usersScreens.addMemberGroupDialog.createButton }
+          { strings.userManagementScreen.addMemberGroupDialog.createButton }
         </Button>
       </DialogActions>
     </Dialog>

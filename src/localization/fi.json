@@ -45,7 +45,10 @@
     "usersScreen": {
       "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",
       "loadMemberGroups": "Käyttäjäryhmien latauksessa tapahtui virhe",
-      "createMemberGroup": "Käyttäjäryhmän luonnissa tapahtui virhe"
+      "createMemberGroup": "Käyttäjäryhmän luonnissa tapahtui virhe",
+      "loadMembers": "Käyttäjien latauksessa tapahtui virhe",
+      "removeMemberNotFound": "Ryhmän poistossa tapahtui virhe, käyttäjää ei löytynyt",
+      "addMemberNotFound": "Ryhmän lisäämisessä tapahtui virhe, käyttäjää ei löytynyt"
     }
   },
 
@@ -108,15 +111,6 @@
       "subheader": {
         "title": "Käyttäjänhallinta",
         "description": "Ohjeteksti"
-      },
-      "addMemberButton": "Uusi käyttäjä",
-      "addMemberGroupButton": "Uusi käyttäjäryhmä",
-      "addMemberGroupDialog": {
-        "title": "Uusi käyttäjäryhmä",
-        "text": "Lisää uusi käyttäjäryhmä lomakkeelle",
-        "displayNameLabel": "Ryhmän nimi",
-        "createButton": "Luo ryhmä",
-        "cancelButton": "Peruuta"
       }
     },
     "editorScreens": {
@@ -161,6 +155,26 @@
       "form": "Valitse lomake",
       "group": "Valitse ryhmä",
       "user": "Valitse käyttäjä"
+    },
+    "addMemberButton": "Uusi käyttäjä",
+    "addMemberGroupButton": "Uusi käyttäjäryhmä",
+    "addMemberGroupDialog": {
+      "title": "Uusi käyttäjäryhmä",
+      "text": "Lisää uusi käyttäjäryhmä lomakkeelle",
+      "displayNameLabel": "Ryhmän nimi",
+      "createButton": "Luo ryhmä",
+      "cancelButton": "Peruuta"
+    },
+    "usersTable": {
+      "nameColumn": {
+        "label": "Nimi"
+      },
+      "emailColumn": {
+        "label": "Sähköposti"
+      },
+      "groupsColumn": {
+        "label": "Ryhmät"
+      }
     }
   },
 
