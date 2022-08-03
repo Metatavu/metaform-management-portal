@@ -93,15 +93,6 @@ const UsersFilter: FC<Props> = ({
           })
         }
       </FilterSelector>
-      <FilterSelector
-        disableUnderline
-      >
-        <option value="">{ strings.userManagementScreen.selector.user }</option>
-        <option value="1">User 1</option>
-        <option value="2">User 2</option>
-        <option value="3">User 3</option>
-      </FilterSelector>
-      <TextField/>
     </FormFilterWrapper>
   );
 };
