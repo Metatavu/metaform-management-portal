@@ -46,7 +46,8 @@ export const SubmitFieldWrapper = styled(Button, {
   borderRadius: "0.5rem",
   border: 0,
   width: "100%",
-  color: "#fff"
+  color: "#fff",
+  marginTop: "0.5rem"
 }));
 
 /**
