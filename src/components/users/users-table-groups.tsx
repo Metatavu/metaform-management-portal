@@ -49,7 +49,7 @@ const UsersTableGroups: FC<Props> = ({ metaformMember, metaformMemberGroups, onM
           display: "flex",
           justifyItems: "center",
           border: "none",
-          marginLeft: 20
+          marginLeft: 10
         }}
         size="small"
         value={ selectedGroupIds }

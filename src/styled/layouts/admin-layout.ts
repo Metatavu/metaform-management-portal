@@ -35,11 +35,11 @@ export const FilterSelector = styled(NativeSelect, {
  */
 export const FormFilterWrapper = styled(FormControl, {
   label: "admin-layout--form-filter-wrapper"
-})(({ theme }) => ({
+})(() => ({
   display: "flex",
   flexDirection: "row",
   gap: "0.5rem",
-  padding: theme.spacing(1),
+  padding: "1rem",
   borderTop: "0.5px solid #ccc",
   borderBottom: "0.5px solid #ccc"
 }));
