@@ -123,7 +123,7 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
     <>
       { valueItems }
       <Input
-        style={ notInteractive ? { pointerEvents: "none" } : {}}
+        style={ notInteractive ? { pointerEvents: "none" } : { marginTop: "0.5rem" }}
         type="file"
         value=""
         disableUnderline
