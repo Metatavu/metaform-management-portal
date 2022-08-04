@@ -12,6 +12,7 @@ import { Metaform, MetaformMember, MetaformMemberGroup } from "generated/client"
 import AddMemberGroupDialog from "components/users/add-member-group-dialog";
 import UsersTable from "components/users/users-table";
 import AddMemberDialog from "components/users/add-member-dialog";
+import UsersFilter from "components/users/users-filter";
 
 /**
  * Users screen component
@@ -261,14 +262,18 @@ const UsersScreen: React.FC = () => {
           { strings.userManagementScreen.addMemberGroupButton }
         </NewMemberGroupButton>
       </NavigationTabContainer>
-      <UsersTable
+      <UsersFilter
         metaforms={ metaforms }
         memberGroups={ memberGroups }
-        members={ members }
         selectedMetaformId={ selectedMetaformId }
         selectedMemberGroupId={ selectedMemberGroupId }
         setSelectedMetaformId={ setSelectedMetaformId }
         setSelectedMemberGroupId={ setSelectedMemberGroupId }
+      />
+      <UsersTable
+        memberGroups={ memberGroups }
+        members={ members }
+        selectedMemberGroupId={ selectedMemberGroupId }
         onGroupMembershipAdd={ onGroupMembershipAdd }
         onGroupMembershipRemove={ onGroupMembershipRemove }
       />
