@@ -14,6 +14,9 @@ import Api from "api";
 import { Metaform, Reply } from "generated/client";
 import { ErrorContext } from "components/contexts/error-handler";
 
+/**
+ * Interface for single form row
+ */
 interface Row {
   id: string;
   latestReply: string;
@@ -47,17 +50,18 @@ const FormsScreen: React.FC = () => {
   };
   
   /**
-     * Counts amount of waiting replies to be displayed in the row
-     * @param replies
-     */
+   * Counts amount of waiting replies to be displayed in the row
+   * @param replies replies
+   * @return count of waiting replies
+   */
   const countWaitingReplies = (replies: Reply[]) => replies.filter(reply => reply.data?.status as (string | undefined) === "waiting").length;
   
   /**
-     * Builds a row for the table
-     * 
-     * @param form form
-     * @param replies replies
-     */
+   * Builds a row for the table
+   * 
+   * @param form form
+   * @param replies replies
+   */
   const buildRow = (form: Metaform, replies: Reply[]) => {
     const amountWaiting = countWaitingReplies(replies);
   
@@ -69,8 +73,8 @@ const FormsScreen: React.FC = () => {
   };
   
   /**
-     * View setup
-     */
+   * View setup
+   */
   const setup = async () => {
     setLoading(true);
   
@@ -80,7 +84,6 @@ const FormsScreen: React.FC = () => {
       const builtRows = forms.map((form, i) => buildRow(form, replies[i]));
   
       setRows(builtRows);
-      // eslint-disable-next-line no-empty
     } catch (e) {
       errorContext.setError(strings.errorHandling.publicFormsScreen.fetchForms, e);
     }
@@ -148,9 +151,10 @@ const FormsScreen: React.FC = () => {
         );
       },
       renderCell: params => {
+        const fill = params.row.newReply ? "red" : "gray";
         return (
           <AdminFormListStack direction="row">
-            { params.row.newReply && <NotificationsActiveIcon style={ { fill: "red" } }/> }
+            <NotificationsActiveIcon style={{ fill: fill }}/>
             <AdminFormTypographyField>{ params.row.newReply }</AdminFormTypographyField>
           </AdminFormListStack>
         );
