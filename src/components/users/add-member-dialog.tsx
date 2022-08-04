@@ -76,7 +76,7 @@ const AddMemberGroupDialog: React.FC<Props> = ({
         </DialogContentText>
         <Stack spacing={ 1 }>
           <TextField
-            style={{ width: "100%" }}
+            fullWidth
             size="medium"
             required={ true }
             value={ member.email }
@@ -86,7 +86,7 @@ const AddMemberGroupDialog: React.FC<Props> = ({
             onChange={ onTextFieldChange }
           />
           <TextField
-            style={{ width: "100%" }}
+            fullWidth
             size="medium"
             required={ true }
             value={ member.firstName }
@@ -95,7 +95,7 @@ const AddMemberGroupDialog: React.FC<Props> = ({
             onChange={ onTextFieldChange }
           />
           <TextField
-            style={{ width: "100%" }}
+            fullWidth
             size="medium"
             required={ true }
             name="lastName"

@@ -45,21 +45,20 @@ const AddMemberGroupDialog: React.FC<Props> = ({
 
   return (
     <Dialog open={ true } onClose={ onCancel }>
-      <DialogTitle>{ strings.userManagementScreen.addMemberGroupDialog.title }</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          <p>
-            { strings.userManagementScreen.addMemberGroupDialog.text }
-          </p>
+      <DialogTitle variant="h2">{ strings.userManagementScreen.addMemberGroupDialog.title }</DialogTitle>
+      <DialogContent style={{ width: 500 }}>
+        <DialogContentText variant="body1" color="#ccc" style={{ paddingBottom: 16 }}>
+          { strings.userManagementScreen.addMemberGroupDialog.text }
         </DialogContentText>
         <TextField
-          style={{ width: "100%" }}
+          size="medium"
+          fullWidth
           required={ true }
           label={ strings.userManagementScreen.addMemberGroupDialog.displayNameLabel }
           onChange={ onDisplayNameChange }
         />
       </DialogContent>
-      <DialogActions>
+      <DialogActions style={{ padding: 24, paddingTop: 0 }}>
         <Button disableElevation variant="contained" onClick={ onCancel } color="secondary" autoFocus>
           { strings.userManagementScreen.addMemberGroupDialog.cancelButton }
         </Button>

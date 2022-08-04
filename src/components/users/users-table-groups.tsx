@@ -40,10 +40,17 @@ const UsersTableGroups: FC<Props> = ({ metaformMember, metaformMemberGroups, onM
   };
 
   return (
-    <FormControl sx={{ flex: 2, display: "flex" }}>
+    <FormControl fullWidth>
       <Select
         id={ `${metaformMember.id}-groups` }
         multiple
+        style={{
+          height: 40,
+          display: "flex",
+          justifyItems: "center",
+          border: "none",
+          marginLeft: 20
+        }}
         size="small"
         value={ selectedGroupIds }
         onChange={ handleChange }

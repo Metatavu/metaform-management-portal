@@ -3,6 +3,10 @@ import strings from "localization/strings";
 import { MetaformMember, MetaformMemberGroup } from "generated/client";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import UsersTableGroups from "./users-table-groups";
+import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
+import PersonIcon from "@mui/icons-material/Person";
+import GroupIcon from "@mui/icons-material/Group";
+import EmailIcon from "@mui/icons-material/Email";
 
 /**
  * Component props
@@ -47,27 +51,73 @@ const UsersTable: FC<Props> = ({
   const columns: GridColDef[] = [
     {
       headerName: strings.userManagementScreen.usersTable.nameColumn.label,
-      field: "name"
+      field: "name",
+      flex: 1,
+      renderHeader: params => {
+        return (
+          <AdminFormListStack direction="row">
+            <PersonIcon style={ { fill: "darkgrey" } }/>
+            <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
+          </AdminFormListStack>
+        );
+      },
+      renderCell: params => {
+        return (
+          <AdminFormListStack direction="row">
+            <PersonIcon style={ { fill: "darkgrey" } }/>
+            <AdminFormTypographyField>{ params.row.name }</AdminFormTypographyField>
+          </AdminFormListStack>
+        );
+      }
     },
     {
       headerName: strings.userManagementScreen.usersTable.emailColumn.label,
-      field: "email"
+      field: "email",
+      flex: 1,
+      renderHeader: params => {
+        return (
+          <AdminFormListStack direction="row">
+            <EmailIcon style={ { fill: "darkgrey" } }/>
+            <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
+          </AdminFormListStack>
+        );
+      },
+      renderCell: params => {
+        return (
+          <AdminFormListStack direction="row">
+            <EmailIcon style={ { fill: "darkgrey" } }/>
+            <AdminFormTypographyField>{ params.row.email }</AdminFormTypographyField>
+          </AdminFormListStack>
+        );
+      }
     },
     {
       headerName: strings.userManagementScreen.usersTable.groupsColumn.label,
       field: "groups",
+      flex: 2,
       sortable: false,
       filterable: false,
+      renderHeader: params => {
+        return (
+          <AdminFormListStack direction="row">
+            <GroupIcon style={ { fill: "darkgrey" } }/>
+            <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
+          </AdminFormListStack>
+        );
+      },
       renderCell: params => {
         const { row } = params;
         return (
-          <UsersTableGroups
-            key={ `${row.id}-groups` }
-            metaformMember={ row.member }
-            metaformMemberGroups={ memberGroups }
-            onMetaformGroupMembershipAdd={ onGroupMembershipAdd }
-            onMetaformGroupMembershipRemove={ onGroupMembershipRemove }
-          />
+          <AdminFormListStack direction="row">
+            <GroupIcon style={ { fill: "darkgrey" } }/>
+            <UsersTableGroups
+              key={ `${row.id}-groups` }
+              metaformMember={ row.member }
+              metaformMemberGroups={ memberGroups }
+              onMetaformGroupMembershipAdd={ onGroupMembershipAdd }
+              onMetaformGroupMembershipRemove={ onGroupMembershipRemove }
+            />
+          </AdminFormListStack>
         );
       }
     }
@@ -75,13 +125,15 @@ const UsersTable: FC<Props> = ({
 
   return (
     <DataGrid
-      style={{
-        flex: 1,
-        display: "flex",
-        flexDirection: "column"
-      }}
       columns={ columns }
       rows={ data }
+      autoHeight
+      disableColumnMenu
+      disableColumnSelector
+      disableSelectionOnClick
+      sx={{
+        border: "none"
+      }}
     />
   );
 };
