@@ -1,4 +1,4 @@
-import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import React from "react";
 import { SelectFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField } from "../generated/client/models";
@@ -47,18 +47,15 @@ export const MetaformSelectFieldComponent: React.FC<Props> = ({
   const readOnly = formReadOnly || field.readonly;
 
   return (
-    <SelectFieldWrapper >
-      <FormControl fullWidth>
-        <Select
-          style={ notInteractive ? { pointerEvents: "none" } : { maxHeight: 50, backgroundColor: "transparent" }}
-          onChange={ onChange }
-          value={ selected }
-          disabled={ readOnly }
-        >
-          { options.map(option => <MenuItem key={ option.name } value={ option.name }>{ option.text }</MenuItem>) }
-        </Select>
-      </FormControl>
-      
+    <SelectFieldWrapper fullWidth>
+      <Select
+        style={ notInteractive ? { pointerEvents: "none" } : {} }
+        onChange={ onChange }
+        value={ selected }
+        disabled={ readOnly }
+      >
+        { options.map(option => <MenuItem key={ option.name } value={ option.name }>{ option.text }</MenuItem>) }
+      </Select>
     </SelectFieldWrapper>
   );
 };

@@ -1,4 +1,4 @@
-import { Slider, Box, TextField, Input, Autocomplete, Stack, Typography, Button } from "@mui/material";
+import { Slider, Box, TextField, Input, Autocomplete, Stack, Typography, Button, FormControl } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import theme from "theme";
 
@@ -78,12 +78,14 @@ export const FilesButtonWrapper = styled(Button, {
 /**
  * Styled select field component
  */
-export const SelectFieldWrapper = styled(Box, {
+export const SelectFieldWrapper = styled(FormControl, {
   label: "select-field-wrapper"
 })(() => ({
   width: "100%",
   borderRadius: "0.5em",
-  border: "1px solid rgba(0, 0, 0, .5)"
+  border: "1px solid rgba(0, 0, 0, .5)",
+  maxHeight: 50,
+  justifyContent: "center"
 }));
 
 /**
@@ -119,6 +121,20 @@ export const TextFieldWrapper = styled(Input, {
   borderRadius: "0.5rem",
   backgroundColor: "#fff",
   padding: "0.5rem 1rem"
+}));
+
+/**
+ * Styled memo field component
+ */
+export const MemoFieldWrapper = styled(TextField, {
+  label: "memo-field-wrapper"
+})(() => ({
+  backgroundColor: "white",
+  border: "1px solid rgba(0, 0, 0, .5)",
+  borderRadius: "0.5rem",
+  width: "100%",
+  padding: "0.5rem 1rem",
+  minHeight: "5rem"
 }));
 
 /**

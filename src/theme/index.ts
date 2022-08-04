@@ -114,6 +114,13 @@ export default createTheme({
         }
       }
     },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        root: {
+          marginLeft: 0
+        }
+      }
+    },
     MuiTextField: {
       defaultProps: {
         variant: "outlined",

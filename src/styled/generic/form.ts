@@ -13,9 +13,14 @@ export const FormContainer = styled(Box, {
   justifyContent: "center",
   
   "& .metaform": {
-    maxWidth: "50vw",
+    maxWidth: 1000,
+    flex: 1,
+    marginInline: theme.spacing(4),
     flexDirection: "column",
     display: "flex",
+    "@media(max-width: 800px)": {
+      marginInline: theme.spacing(2)
+    },
 
     "& section": {
       border: "none",
