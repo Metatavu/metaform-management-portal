@@ -17,6 +17,7 @@
 
   "errorHandling": {
     "title": "Tapahtui virhe",
+    "authentication": "Tunnistautumisessa tapahtui virhe",
     "dialog": {
       "title": "Hups! Jokin meni pieleen",
       "reloadPage": "Kokeile ladata sivu uudelleen.",

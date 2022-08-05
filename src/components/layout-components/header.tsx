@@ -51,7 +51,7 @@ const Header: React.FC = ({
             id="user-email"
             sx={{
               color: "white",
-              minWidth: 300,
+              maxWidth: 300,
               backgroundColor: "transparent",
               borderRadius: theme.shape.borderRadius
             }}

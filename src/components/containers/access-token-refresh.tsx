@@ -8,6 +8,8 @@ import jwt_decode from "jwt-decode";
 import { AccessToken } from "types";
 import * as querystring from "query-string";
 import { useLocation } from "react-router-dom";
+import { ErrorContext } from "components/contexts/error-handler";
+import strings from "localization/strings";
 
 const MIN_VALIDITY_IN_SECONDS = 70;
 
@@ -27,6 +29,8 @@ interface DecodedAccessToken {
  * Component for handling authentication with Keycloak
  */
 const AuthenticationProvider: React.FC = ({ children }) => {
+  const errorContext = React.useContext(ErrorContext);
+  
   const keycloak = useAppSelector(selectKeycloak);
   const anonymousKeycloak = useAppSelector(selectAnonymousKeycloak);
   const dispatch = useAppDispatch();
@@ -85,8 +89,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       await keycloakInstance.loadUserProfile();
       dispatch(anonymousLogin(keycloakInstance));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
+      errorContext.setError(strings.errorHandling.authentication, error);
     }
   };
 
@@ -101,8 +104,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       await keycloakInstance.loadUserProfile();
       dispatch(login(keycloakInstance));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
+      errorContext.setError(strings.errorHandling.authentication, error);
     }
   };
 
@@ -118,8 +120,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       await keycloak.updateToken(MIN_VALIDITY_IN_SECONDS);
       dispatch(login(keycloak));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
+      errorContext.setError(strings.errorHandling.authentication, error);
     }
   };
 
@@ -135,8 +136,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       await anonymousKeycloak.updateToken(MIN_VALIDITY_IN_SECONDS);
       dispatch(login(anonymousKeycloak));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
+      errorContext.setError(strings.errorHandling.authentication, error);
     }
   };
 
