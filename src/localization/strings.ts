@@ -41,6 +41,9 @@ export interface Localized extends LocalizedStringsMethods {
       url: string;
       errorMessage: string;
     },
+    adminFormsScreen: {
+      listForms: string;
+    },
     formScreen: {
       saveReply: string;
       sendReplyEmail: string;
@@ -124,6 +127,9 @@ export interface Localized extends LocalizedStringsMethods {
             statusProgressed: string;
           }
         }
+      };
+      formListing: {
+        form: string;
       };
       formDataScreen: {
         title: string;
@@ -226,6 +232,7 @@ export interface Localized extends LocalizedStringsMethods {
     confirmDeleteReplyText: string;
     replyNotFound: string;
     replyDeleted: string;
+    noTitle: string;
   };
 
   /**

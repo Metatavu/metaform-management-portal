@@ -29,6 +29,9 @@
       "errorMessage": "Error message: ",
       "close": "Close"
     },
+    "adminFormsScreen": {
+      "listForms": "Fetching forms failed"
+    },
     "formScreen": {
       "saveReply": "Error when saving reply",
       "sendReplyEmail": "Error when trying to send reply to email",
@@ -94,6 +97,9 @@
           }
         }
       },
+      "formListing": {
+          "form": "FORM"
+      },
       "formDataScreen": {
         "title": "Viewing data",
         "description": "Information e.g. the utilization rate of the forms."
@@ -121,7 +127,7 @@
   },
 
   "publicFormsScreen": {
-    "title": "Lomakkeet"
+    "title": "Forms"
   },
 
 
@@ -187,7 +193,8 @@
     "replyDeleteLink": "here",
     "confirmDeleteReplyTitle": "Are you sure?",
     "confirmDeleteReplyText": "Are you sure that you wish to delete the reply?",
-    "replyDeleted": "Reply deleted"
+    "replyDeleted": "Reply deleted",
+    "noTitle": "No title"
   },
 
   "emailDialog": {

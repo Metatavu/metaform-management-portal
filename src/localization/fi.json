@@ -29,6 +29,9 @@
       "errorMessage": "Virheilmoitus: ",
       "close": "Sulje"
     },
+    "adminFormsScreen": {
+      "listForms": "Lomakkeiden haku epäonnistui"
+    },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
       "sendReplyEmail": "Vastauslinkin lähettämisessä sähköpostiin tapahtui virhe",
@@ -93,6 +96,9 @@
             "statusProgressed": "Käsitelty"
           }
         }
+      },
+      "formListing": {
+        "form": "LOMAKE"
       },
       "formDataScreen": {
         "title": "Datan tarkastelu",
@@ -186,7 +192,8 @@
     "confirmDeleteReplyTitle": "Oletko varma?",
     "confirmDeleteReplyText": "Oletko varma, että haluat poistaa vastauksen?",
     "replyNotFound": "Vastausta ei löytynyt järjestelmästä",
-    "replyDeleted": "Vastaus poistettu"
+    "replyDeleted": "Vastaus poistettu",
+    "noTitle": "Ei otsikkoa"
   },
 
   "emailDialog": {
