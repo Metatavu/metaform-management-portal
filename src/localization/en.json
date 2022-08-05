@@ -46,6 +46,9 @@
     },
     "publicFormsScreen": {
       "fetchForms": "Fetching forms failed"
+    }, 
+    "formsScreen": {
+      "fetchData": "Error when loading data from the server"
     }
   },
 
@@ -97,6 +100,9 @@
           }
         }
       },
+      "formListing": {
+          "form": "FORM"
+      },
       "formDataScreen": {
         "title": "Viewing data",
         "description": "Information e.g. the utilization rate of the forms."
@@ -124,7 +130,7 @@
   },
 
   "publicFormsScreen": {
-    "title": "Lomakkeet"
+    "title": "Forms"
   },
 
 
