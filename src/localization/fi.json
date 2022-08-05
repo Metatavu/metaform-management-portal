@@ -46,9 +46,6 @@
     },
     "publicFormsScreen": {
       "fetchForms": "Lomakkeiden hakemisessa tapahtui virhe"
-    },
-    "formsScreen": {
-      "fetchData": "Virhe haettaessa tietoja palvelimelta"
     }
   },
 

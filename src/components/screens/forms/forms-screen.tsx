@@ -86,7 +86,7 @@ const FormsScreen: React.FC = () => {
   
       setRows(builtRows);
     } catch (e) {
-      errorContext.setError(strings.errorHandling.publicFormsScreen.fetchForms, e);
+      errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
   
     setLoading(false);

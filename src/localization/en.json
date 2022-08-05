@@ -46,9 +46,6 @@
     },
     "publicFormsScreen": {
       "fetchForms": "Fetching forms failed"
-    }, 
-    "formsScreen": {
-      "fetchData": "Error when loading data from the server"
     }
   },
 
