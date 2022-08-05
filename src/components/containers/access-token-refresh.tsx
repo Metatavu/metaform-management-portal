@@ -9,6 +9,8 @@ import { AccessToken } from "types";
 import * as querystring from "query-string";
 import { useLocation } from "react-router-dom";
 
+const MIN_VALIDITY_IN_SECONDS = 70;
+
 /**
  * Interface representing a decoded access token
  */
@@ -113,7 +115,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
         throw new Error("Not authenticated");
       }
 
-      await keycloak.updateToken(70);
+      await keycloak.updateToken(MIN_VALIDITY_IN_SECONDS);
       dispatch(login(keycloak));
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -130,7 +132,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
         throw new Error("Not authenticated");
       }
 
-      await anonymousKeycloak.updateToken(70);
+      await anonymousKeycloak.updateToken(MIN_VALIDITY_IN_SECONDS);
       dispatch(login(anonymousKeycloak));
     } catch (error) {
       // eslint-disable-next-line no-console
