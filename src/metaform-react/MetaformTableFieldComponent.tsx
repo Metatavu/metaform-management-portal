@@ -1,7 +1,7 @@
 import { TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import strings from "localization/strings";
 import React, { ReactNode } from "react";
-import { SubmitFieldWrapper, TableNumberCellWrapper, TableTextCellWrapper } from "styled/react-components/react-components";
+import { AddRowButtonWrapper, TableNumberCellWrapper, TableTextCellWrapper } from "styled/react-components/react-components";
 import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "../generated/client/models";
 import { FieldValue, IconName, TableFieldValue, TableFieldRowValue, TableFieldCellValue } from "./types";
 
@@ -104,14 +104,14 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
     }
     
     return (
-      <SubmitFieldWrapper
+      <AddRowButtonWrapper
         onClick={ onAddRowButtonClick }
         variant="contained"
         size="small"
       >
         { strings.fieldComponents.tableField.addNewRow }
         { renderIcon("add", "add") }
-      </SubmitFieldWrapper>
+      </AddRowButtonWrapper>
     );
   };
 

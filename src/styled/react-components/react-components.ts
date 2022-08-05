@@ -46,6 +46,18 @@ export const SubmitFieldWrapper = styled(Button, {
   borderRadius: "0.5rem",
   border: 0,
   width: "100%",
+  color: "#fff"
+}));
+
+/**
+ * Styled add row button component
+ */
+export const AddRowButtonWrapper = styled(Button, {
+  label: "submit-field-wrapper"
+})(() => ({
+  borderRadius: "0.5rem",
+  border: 0,
+  width: "100%",
   color: "#fff",
   marginTop: "0.5rem"
 }));
