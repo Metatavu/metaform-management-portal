@@ -30,11 +30,7 @@ export const MetaformSubmitFieldComponent: React.FC<Props> = ({
 
   const hasValidationErrors = Object.keys(validationErrors).length > 0;
   const disabled = hasValidationErrors || formReadOnly || field.readonly;
-  const style: CSSProperties = {};
-
-  if (disabled) {
-    style.background = "#aaa";
-  }
+  const style: CSSProperties = { };
 
   if (notInteractive) {
     style.pointerEvents = "none";
@@ -42,14 +38,13 @@ export const MetaformSubmitFieldComponent: React.FC<Props> = ({
 
   return (
     <SubmitFieldWrapper
-      type="submit"
-      inputProps={{
-        style: style
-      }}
+      variant="contained"
+      style={ style }
       disabled={ disabled }
-      value={ field.text }
       onClick={ () => onClick && onClick(field) }
-    />
+    >
+      { field.text }
+    </SubmitFieldWrapper>
   );
 };
 

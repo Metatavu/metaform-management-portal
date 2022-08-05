@@ -12,7 +12,6 @@ export const ContentWrapper = styled(Box, {
   width: "100%",
   height: "100vh",
   display: "flex",
-  padding: theme.spacing(4),
   overflow: "hidden",
   background: theme.palette.background.paper
 }));

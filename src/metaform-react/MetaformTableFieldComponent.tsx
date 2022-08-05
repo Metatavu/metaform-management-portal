@@ -1,7 +1,7 @@
-import { Button, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import strings from "localization/strings";
 import React, { ReactNode } from "react";
-import { TableNumberCellWrapper, TableTextCellWrapper } from "styled/react-components/react-components";
+import { AddRowButtonWrapper, TableNumberCellWrapper, TableTextCellWrapper } from "styled/react-components/react-components";
 import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "../generated/client/models";
 import { FieldValue, IconName, TableFieldValue, TableFieldRowValue, TableFieldCellValue } from "./types";
 
@@ -104,10 +104,14 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
     }
     
     return (
-      <Button style={{ cursor: "pointer" }} onClick={ onAddRowButtonClick }>
+      <AddRowButtonWrapper
+        onClick={ onAddRowButtonClick }
+        variant="contained"
+        size="small"
+      >
+        { strings.fieldComponents.tableField.addNewRow }
         { renderIcon("add", "add") }
-        <span style={{ verticalAlign: "super" }}>{ strings.fieldComponents.tableField.addNewRow }</span>
-      </Button>
+      </AddRowButtonWrapper>
     );
   };
 

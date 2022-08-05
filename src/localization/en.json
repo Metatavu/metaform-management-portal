@@ -11,7 +11,8 @@
     "loadingAutoCompleteOptions": "Loading options..",
     "confirm": "Confirm",
     "close": "Close",
-    "reload": "Reload"
+    "reload": "Reload",
+    "show": "Show"
   },
 
   "errorHandling": {
