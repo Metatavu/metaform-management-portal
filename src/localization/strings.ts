@@ -23,6 +23,7 @@ export interface Localized extends LocalizedStringsMethods {
     confirm: string;
     close: string;
     reload: string;
+    show: string;
   };
 
   /**
@@ -30,6 +31,7 @@ export interface Localized extends LocalizedStringsMethods {
    */
   errorHandling: {
     title: string;
+    authentication: string;
     dialog: {
       reloadPage: string;
       unsavedContents: string;

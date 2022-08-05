@@ -1,13 +1,17 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from "react";
 import Keycloak from "keycloak-js";
-import { login, selectKeycloak } from "features/auth-slice";
+import { anonymousLogin, login, selectAnonymousKeycloak, selectKeycloak } from "features/auth-slice";
 import { useAppDispatch, useAppSelector, useInterval } from "app/hooks";
 import Config from "app/config";
 import jwt_decode from "jwt-decode";
 import { AccessToken } from "types";
 import * as querystring from "query-string";
 import { useLocation } from "react-router-dom";
+import { ErrorContext } from "components/contexts/error-handler";
+import strings from "localization/strings";
+
+const MIN_VALIDITY_IN_SECONDS = 70;
 
 /**
  * Interface representing a decoded access token
@@ -25,7 +29,10 @@ interface DecodedAccessToken {
  * Component for handling authentication with Keycloak
  */
 const AuthenticationProvider: React.FC = ({ children }) => {
+  const errorContext = React.useContext(ErrorContext);
+  
   const keycloak = useAppSelector(selectKeycloak);
+  const anonymousKeycloak = useAppSelector(selectAnonymousKeycloak);
   const dispatch = useAppDispatch();
   const location = useLocation();
 
@@ -54,16 +61,16 @@ const AuthenticationProvider: React.FC = ({ children }) => {
    */
   const initializeAnonymousAuthentication = async () => {
     try {
-      const anonymousLogin = Config.get().anonymousUser;
+      const { username, password } = Config.get().anonymousUser;
       const authConfig = Config.get().auth;
-      const keycloakInstance = Keycloak(authConfig);
+      const keycloakInstance = new Keycloak(authConfig);
       
       const response = await fetch(`${authConfig.url}/realms/${authConfig.realm}/protocol/openid-connect/token`, {
         method: "POST",
         body: querystring.stringify({
           grant_type: "password",
-          username: anonymousLogin.username,
-          password: anonymousLogin.password,
+          username: username,
+          password: password,
           client_id: authConfig.clientId
         }),
         headers: {
@@ -80,10 +87,9 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       });
 
       await keycloakInstance.loadUserProfile();
-      dispatch(login(keycloakInstance));
+      dispatch(anonymousLogin(keycloakInstance));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
+      errorContext.setError(strings.errorHandling.authentication, error);
     }
   };
 
@@ -93,18 +99,17 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   const initializeLogin = async () => {
     try {
       const authConfig = Config.get().auth;
-      const keycloakInstance = Keycloak(authConfig);
+      const keycloakInstance = new Keycloak(authConfig);
       await keycloakInstance.init({ onLoad: "login-required", checkLoginIframe: false });
       await keycloakInstance.loadUserProfile();
       dispatch(login(keycloakInstance));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
+      errorContext.setError(strings.errorHandling.authentication, error);
     }
   };
 
   /**
-   * Refreshes authentication
+   * Refreshes signed authentication
    */
   const refreshAuthentication = async () => {
     try {
@@ -112,11 +117,26 @@ const AuthenticationProvider: React.FC = ({ children }) => {
         throw new Error("Not authenticated");
       }
 
-      await keycloak.updateToken(70);
+      await keycloak.updateToken(MIN_VALIDITY_IN_SECONDS);
       dispatch(login(keycloak));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
+      errorContext.setError(strings.errorHandling.authentication, error);
+    }
+  };
+
+  /**
+   * Refreshes anonymous authentication
+   */
+  const refreshAnonymousAuthentication = async () => {
+    try {
+      if (!anonymousKeycloak?.authenticated) {
+        throw new Error("Not authenticated");
+      }
+
+      await anonymousKeycloak.updateToken(MIN_VALIDITY_IN_SECONDS);
+      dispatch(login(anonymousKeycloak));
+    } catch (error) {
+      errorContext.setError(strings.errorHandling.authentication, error);
     }
   };
 
@@ -139,6 +159,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
    * Begins token refresh interval
    */
   useInterval(refreshAuthentication, 1000 * 60);
+  useInterval(refreshAnonymousAuthentication, 1000 * 60);
 
   if (!keycloak?.token) return null;
 

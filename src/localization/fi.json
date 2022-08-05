@@ -11,11 +11,13 @@
     "loadingAutoCompleteOptions": "Ladataan vaihtoehtoja...",
     "confirm": "Vahvista",
     "close": "Sulje",
-    "reload": "Lataa uudelleen"
+    "reload": "Lataa uudelleen",
+    "show": "Näytä"
   },
 
   "errorHandling": {
     "title": "Tapahtui virhe",
+    "authentication": "Tunnistautumisessa tapahtui virhe",
     "dialog": {
       "title": "Hups! Jokin meni pieleen",
       "reloadPage": "Kokeile ladata sivu uudelleen.",

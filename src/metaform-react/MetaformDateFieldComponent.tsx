@@ -2,6 +2,7 @@ import React from "react";
 import { MetaformField } from "../generated/client/models";
 import { FieldValue } from "./types";
 import moment from "moment";
+import { DateFieldWrapper } from "styled/react-components/react-components";
 
 /**
  * Component props
@@ -29,7 +30,11 @@ const MetaformDateFieldComponent: React.FC<Props> = ({
     onValueChange && onValueChange(date ? moment(date).format("YYYY-MM-DD") : null);
   };
 
-  return datePicker(field.name || "", onChange);
+  return (
+    <DateFieldWrapper>
+      { datePicker(field.name || "", onChange) }
+    </DateFieldWrapper>
+  );
 };
 
 export default MetaformDateFieldComponent;
