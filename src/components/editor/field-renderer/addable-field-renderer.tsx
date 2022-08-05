@@ -1,6 +1,6 @@
 import { DatePicker, DateTimePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { MetaformField, MetaformFieldType, MetaformTableColumnType } from "generated/client";
 import strings from "localization/strings";
 import MetaformBooleanFieldComponent from "metaform-react/MetaformBooleanFieldComponent";
@@ -137,13 +137,18 @@ const AddableFieldRenderer: React.FC<Prop> = ({
       );
     case MetaformFieldType.Files:
       return (
-        <MetaformFilesFieldComponent
-          notInteractive={ true }
-          field={ field }
-          fieldId={ fieldId }
-          value={ field.name || "" }
-          fieldLabelId={ fieldLabelId }
-        />
+        <>
+          <Box>
+            Files
+          </Box>
+          <MetaformFilesFieldComponent
+            notInteractive={ true }
+            field={ field }
+            fieldId={ fieldId }
+            value={ field.name || "" }
+            fieldLabelId={ fieldLabelId }
+          />
+        </>
       );
     case MetaformFieldType.Html:
       return (
