@@ -108,19 +108,6 @@ export interface Localized extends LocalizedStringsMethods {
           latestReply: string;
           newReply: string;
           notProcessed: string;
-          answerScreen: {
-            title: string;
-            description: string;
-            createdColumnTitle: string;
-            modifiedColumnTitle: string;
-            statusColumnTitle: string;
-            nameColumnTitle: string;
-            selectorShowOpen: string;
-            selectorShowAll: string;
-            statusWaiting: string;
-            statusInProgress: string;
-            statusProgressed: string;
-          }
         }
       };
       formDataScreen: {
@@ -132,8 +119,8 @@ export interface Localized extends LocalizedStringsMethods {
       title: string;
       description: string;
       subheader: {
-        "title": string;
-        "description": string;
+        title: string;
+        description: string;
       }
       button: {
         text: string
@@ -148,6 +135,23 @@ export interface Localized extends LocalizedStringsMethods {
       };
     };
   };
+
+  /**
+   * Translations related to metaform replies screen
+   */
+  repliesScreen: {
+    title: string;
+    description: string;
+    createdColumnTitle: string;
+    modifiedColumnTitle: string;
+    statusColumnTitle: string;
+    nameColumnTitle: string;
+    selectorShowOpen: string;
+    selectorShowAll: string;
+    statusWaiting: string;
+    statusInProgress: string;
+    statusProgressed: string;
+  }
 
   /**
    * Translations related to metaform editor screen

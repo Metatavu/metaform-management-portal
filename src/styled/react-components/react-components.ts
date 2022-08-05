@@ -163,20 +163,20 @@ export const AdminFormTypographyField = styled(Typography, {
 }));
 
 /**
- * Styled administrator form answer stack component
+ * Styled administrator form replies stack component
  */
-export const AdminFormAnswerScreenStack = styled(Stack, {
-  label: "admin-form-list-stack"
+export const AdminFormRepliesScreenStack = styled(Stack, {
+  label: "admin-form-replies-list-stack"
 })(() => ({
   alignItems: "center",
   padding: "1rem"
 }));
 
 /**
- * Styled text for the admininstrator form answer screen
+ * Styled text for the administrator form replies screen
  */
-export const AdminFormAnswerScreenText = styled(Typography, {
-  label: "admin-form-answer-screen-text"
+export const AdminFormRepliesScreenText = styled(Typography, {
+  label: "admin-form-replies-screen-text"
 })(() => ({
   flex: 1,
   width: "100%",
