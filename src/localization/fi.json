@@ -29,6 +29,9 @@
       "errorMessage": "Virheilmoitus: ",
       "close": "Sulje"
     },
+    "adminFormsScreen": {
+      "listForms": "Lomakkeiden haku epäonnistui"
+    },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
       "sendReplyEmail": "Vastauslinkin lähettämisessä sähköpostiin tapahtui virhe",

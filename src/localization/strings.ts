@@ -41,6 +41,9 @@ export interface Localized extends LocalizedStringsMethods {
       url: string;
       errorMessage: string;
     },
+    adminFormsScreen: {
+      listForms: string;
+    },
     formScreen: {
       saveReply: string;
       sendReplyEmail: string;

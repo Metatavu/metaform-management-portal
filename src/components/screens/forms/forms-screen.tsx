@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useApiClient } from "app/hooks";
 import Api from "api";
 import { Reply } from "generated/client";
+import { ErrorContext } from "components/contexts/error-handler";
 
 interface Row {
   id: string;
@@ -23,8 +24,56 @@ interface Row {
  * Forms screen component
  */
 const FormsScreen: React.FC = () => {
+  const errorContext = React.useContext(ErrorContext);
+  
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, repliesApi } = apiClient;
+
+  const [ rows, setRows ] = useState<Row[]>([]);
+  const [ loading, setLoading ] = useState(false);
+
+  /**
+   * Gets the latest reply date of a Metaform
+   */
+  const getLatestReplyDate = (replies: Reply[]) => {
+    if (replies.length < 1) {
+      return "";
+    }
+
+    if (!replies[0].modifiedAt) {
+      return "";
+    }
+
+    return replies[0].modifiedAt.toLocaleString().slice(0, -3);
+  };
+
+  /**
+   * View setup
+   */
+  const setup = async () => {
+    setLoading(true);
+
+    try {
+      const forms = await metaformsApi.listMetaforms({});
+      const replies = await Promise.all(forms.map(form => repliesApi.listReplies({ metaformId: form.id!! })));
+
+      const builtRows = forms.map((form, i) => ({
+        id: form.title || strings.formScreen.noTitle,
+        latestReply: getLatestReplyDate(replies[i]),
+        newReply: strings.navigationHeader.formsScreens.formScreen.form.notProcessed
+      }));
+
+      setRows(builtRows);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    setup();
+  }, []);
 
   const columns: GridColDef[] = [
     {
@@ -91,51 +140,6 @@ const FormsScreen: React.FC = () => {
       }
     }
   ];
-
-  const [ rows, setRows ] = useState<Row[]>([]);
-  const [ loading, setLoading ] = useState(false);
-
-  /**
-   * Gets the latest reply date of a Metaform
-   */
-  const getLatestReplyDate = (replies: Reply[]) => {
-    if (replies.length < 1) {
-      return "";
-    }
-
-    if (!replies[0].modifiedAt) {
-      return "";
-    }
-
-    return replies[0].modifiedAt.toLocaleString().slice(0, -3);
-  };
-
-  /**
-   * View setup
-   */
-  const setup = async () => {
-    setLoading(true);
-
-    try {
-      const forms = await metaformsApi.listMetaforms({});
-      const replies = await Promise.all(forms.map(form => repliesApi.listReplies({ metaformId: form.id!! })));
-
-      const builtRows = forms.map((form, i) => ({
-        id: form.title || strings.formScreen.noTitle,
-        latestReply: getLatestReplyDate(replies[i]),
-        newReply: strings.navigationHeader.formsScreens.formScreen.form.notProcessed
-      }));
-
-      setRows(builtRows);
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
-
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    setup();
-  }, []);
 
   return (
     <>
