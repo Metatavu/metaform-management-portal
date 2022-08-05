@@ -43,7 +43,7 @@ const Header: React.FC = ({
           {/* TODO replace the logo to higher resolution */}
           <Logo alt="Essote logo" src={ EssoteLogoPath }/>
         </LogoContainer>
-        <FormControl style={{ color: "white" }}>
+        <FormControl>
           <InputLabel style={{ color: "white" }} id="user-email">{ strings.header.user }</InputLabel>
           <Select
             label={ strings.header.user }

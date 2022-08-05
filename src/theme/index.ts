@@ -154,6 +154,23 @@ export default createTheme({
           flex: 1
         }
       }
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        notchedOutline: {
+          borderColor: "#fff !important",
+          ":hover": {
+            borderColor: "#fff"
+          }
+        }
+      }
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          color: "#fff !important"
+        }
+      }
     }
   }
 
