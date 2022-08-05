@@ -17,6 +17,7 @@
 
   "errorHandling": {
     "title": "Error",
+    "authentication": "User authentication failed",
     "dialog": {
       "title": "Whoops! Something went wrong",
       "reloadPage": "Try reloading the page.",
@@ -44,6 +45,7 @@
       "fetchForms": "Fetching forms failed"
     }
   },
+
   "formComponent": {
     "datePicker": "Date",
     "dateTimePicker": "Date and time"

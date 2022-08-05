@@ -163,6 +163,26 @@ export default createTheme({
         }
       }
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          padding: 0
+        },
+        notchedOutline: {
+          borderColor: "#fff !important",
+          ":hover": {
+            borderColor: "#fff"
+          }
+        }
+      }
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          color: "#fff !important"
+        }
+      }
+    },
     MuiAutocomplete: {
       styleOverrides: {
         root: {
@@ -179,13 +199,6 @@ export default createTheme({
       styleOverrides: {
         root: {
           width: "100%"
-        }
-      }
-    },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        root: {
-          padding: 0
         }
       }
     },
