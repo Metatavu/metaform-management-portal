@@ -139,8 +139,6 @@ const AddableFieldRenderer: React.FC<Prop> = ({
       return (
         <MetaformFilesFieldComponent
           notInteractive={ true }
-          showButtonText="FileShowButtonText"
-          deleteButtonText="FileDeleteButtonText"
           field={ field }
           fieldId={ fieldId }
           value={ field.name || "" }

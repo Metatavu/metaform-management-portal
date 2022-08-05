@@ -181,8 +181,6 @@ const MetaformComponent: React.FC<Props> = ({
               showRequiredFieldsMissingError={ showRequiredFieldsMissingError }
               onFileShow={ onFileShow }
               onFileDelete={ onFileDelete }
-              fileShowButtonText="FileShowButtonText"
-              fileDeleteButtonText="FileDeleteButtonText"
             />
           );
         })
