@@ -1,5 +1,6 @@
-import { Slider, Box, TextField, Input, Autocomplete, Stack, Typography } from "@mui/material";
+import { Slider, Box, TextField, Input, Autocomplete, Stack, Typography, Button, FormControl } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import theme from "theme";
 
 /**
  * Styled autocomplete field component
@@ -9,7 +10,10 @@ export const HtmlAutocompleteWrapper = styled(Autocomplete, {
 })(() => ({
   flex: 1,
   width: "100%",
-  height: "auto;"
+  height: "auto;",
+  borderRadius: "0.5em",
+  border: "1px solid rgba(0, 0, 0, .5)",
+  padding: "0.5rem 1rem"
 }));
 
 /**
@@ -19,7 +23,6 @@ export const HtmlFieldWrapper = styled(Box, {
   label: "html-field-wrapper"
 })(() => ({
   flex: 1,
-  width: "100%",
   height: "auto"
 }));
 
@@ -31,28 +34,70 @@ export const SliderFieldWrapper = styled(Slider, {
 })(() => ({
   width: "100%",
   height: "0.25em",
-  color: "#4FA3DF"
+  color: theme.palette.primary.main
 }));
 
 /**
  * Styled submit field component
  */
-export const SubmitFieldWrapper = styled(TextField, {
+export const SubmitFieldWrapper = styled(Button, {
   label: "submit-field-wrapper"
 })(() => ({
-  borderRadius: "0.3rem",
-  border: 0
+  borderRadius: "0.5rem",
+  border: 0,
+  width: "100%",
+  color: "#fff"
+}));
+
+/**
+ * Styled add row button component
+ */
+export const AddRowButtonWrapper = styled(Button, {
+  label: "add-row-button-wrapper"
+})(() => ({
+  borderRadius: "0.5rem",
+  border: 0,
+  width: "100%",
+  color: "#fff",
+  marginTop: "0.5rem"
+}));
+
+/**
+ * Styled files row component
+ */
+export const FilesRowWrapper = styled(Stack, {
+  label: "files-row-wrapper"
+})(() => ({
+  display: "flex",
+  paddingTop: "0.5rem",
+  paddingBottom: "0.5rem",
+  alignItems: "center",
+  borderBottom: "1px dashed #aaa"
+}));
+
+/**
+ * Styled files button component
+ */
+export const FilesButtonWrapper = styled(Button, {
+  label: "files-button-wrapper"
+})(() => ({
+  borderRadius: "0.5rem",
+  border: 0,
+  flex: 0.5,
+  color: "#fff"
 }));
 
 /**
  * Styled select field component
  */
-export const SelectFieldWrapper = styled(Box, {
+export const SelectFieldWrapper = styled(FormControl, {
   label: "select-field-wrapper"
 })(() => ({
   width: "100%",
-  backgroundColor: "#fff",
-  borderRadius: "1em"
+  borderRadius: "0.5em",
+  border: "1px solid rgba(0, 0, 0, .5)",
+  maxHeight: 50,
+  justifyContent: "center"
 }));
 
 /**
@@ -84,10 +129,41 @@ export const TextFieldWrapper = styled(Input, {
 })(() => ({
   flex: 1,
   width: "100%",
-  fontSize: "1em",
   border: "1px solid rgba(0, 0, 0, .5)",
   borderRadius: "0.5rem",
-  backgroundColor: "#fff"
+  backgroundColor: "#fff",
+  padding: "0.5rem 1rem"
+}));
+
+/**
+ * Styled memo field component
+ */
+export const MemoFieldWrapper = styled(TextField, {
+  label: "memo-field-wrapper"
+})(() => ({
+  backgroundColor: "white",
+  border: "1px solid rgba(0, 0, 0, .5)",
+  borderRadius: "0.5rem",
+  width: "100%",
+  padding: "0.5rem 1rem",
+  minHeight: "5rem"
+}));
+
+/**
+ * Styled date field component
+ */
+export const DateFieldWrapper = styled(Box, {
+  label: "date-field-wrapper"
+})(() => ({
+  flex: 1,
+  width: "100%",
+  height: "auto",
+  border: "1px solid rgba(0, 0, 0, .5)",
+  borderRadius: "0.5rem",
+  paddingRight: "1rem",
+  minHeight: 50,
+  display: "flex",
+  alignItems: "center"
 }));
 
 /**
