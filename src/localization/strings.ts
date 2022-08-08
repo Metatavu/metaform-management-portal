@@ -58,6 +58,9 @@ export interface Localized extends LocalizedStringsMethods {
     },
     publicFormsScreen: {
       fetchForms: string;
+    },
+    adminRepliesScreen: {
+      fetchReplies: string;
     }
   };
 
@@ -157,8 +160,8 @@ export interface Localized extends LocalizedStringsMethods {
     selectorShowOpen: string;
     selectorShowAll: string;
     statusWaiting: string;
-    statusInProgress: string;
-    statusProgressed: string;
+    statusProcessing: string;
+    statusDone: string;
   }
 
   /**

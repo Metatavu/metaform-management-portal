@@ -96,3 +96,9 @@ export enum ApplicationRoles {
   USER = "user",
   ANONYMOUS = "anonymous"
 }
+
+export enum ReplyStatus {
+  WAITING = "waiting",
+  PROCESSING = "processing",
+  DONE = "done"
+}

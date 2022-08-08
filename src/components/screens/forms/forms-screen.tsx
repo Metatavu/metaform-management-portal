@@ -19,6 +19,7 @@ import { ErrorContext } from "components/contexts/error-handler";
  */
 interface Row {
   id: string;
+  title: string;
   latestReply: string;
   newReply?: string;
 }
@@ -65,9 +66,10 @@ const FormsScreen: React.FC = () => {
    */
   const buildRow = (form: Metaform, replies: Reply[]) => {
     const amountWaiting = countWaitingReplies(replies);
-  
+
     return {
-      id: form.title || strings.formScreen.noTitle,
+      id: form.id || "",
+      title: form.title || strings.formScreen.noTitle,
       latestReply: getLatestReplyDate(replies),
       newReply: amountWaiting > 0 ? `${strings.navigationHeader.formsScreens.formScreen.form.notProcessed} (${amountWaiting})` : undefined
     };
@@ -98,7 +100,7 @@ const FormsScreen: React.FC = () => {
 
   const columns: GridColDef[] = [
     {
-      field: "id",
+      field: "title",
       headerName: strings.navigationHeader.formsScreens.formListing.form,
       flex: 1,
       renderHeader: params => {
@@ -113,7 +115,7 @@ const FormsScreen: React.FC = () => {
         return (
           <AdminFormListStack direction="row">
             <ListIcon style={ { fill: "darkgrey" } }/>
-            <AdminFormTypographyField><Link to={`${params.id}/answers`}>{ params.id }</Link></AdminFormTypographyField>
+            <AdminFormTypographyField><Link to={`${params.id}/answers`}>{ params.row.title }</Link></AdminFormTypographyField>
           </AdminFormListStack>
         );
       }

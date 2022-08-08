@@ -46,6 +46,9 @@
     },
     "publicFormsScreen": {
       "fetchForms": "Lomakkeiden hakemisessa tapahtui virhe"
+    },
+    "adminRepliesScreen": {
+      "fetchReplies": "Vastauksien hakemisessa tapahtui virhe"
     }
   },
 
@@ -123,8 +126,8 @@
     "selectorShowOpen": "Näytä avoimet",
     "selectorShowAll": "Näytä kaikki",
     "statusWaiting": "Odottaa",
-    "statusInProgress": "Käsittelyssä",
-    "statusProgressed": "Käsitelty"
+    "statusProcessing": "Käsittelyssä",
+    "statusDone": "Käsitelty"
   },
 
   "publicFormsScreen": {

@@ -1,6 +1,6 @@
 import strings from "localization/strings";
 import moment from "moment";
-import { NavigationLinks } from "types";
+import { NavigationLinks, ReplyStatus } from "types";
 
 namespace LocalizationUtils {
 
@@ -28,6 +28,17 @@ namespace LocalizationUtils {
     [NavigationLinks.FORMS]: [ strings.navigationHeader.formsScreens.title, strings.navigationHeader.formsScreens.description ],
     [NavigationLinks.USERS]: [ strings.navigationHeader.usersScreens.title, strings.navigationHeader.usersScreens.description ]
   })[navigationLink];
+
+  /**
+   * Returns localized status of reply
+   *
+   * @param status status of reply
+   */
+  export const getLocalizedStatusOfReply = (status: string) => ({
+    [ReplyStatus.WAITING]: strings.repliesScreen.statusWaiting,
+    [ReplyStatus.PROCESSING]: strings.repliesScreen.statusProcessing,
+    [ReplyStatus.DONE]: strings.repliesScreen.statusDone
+  })[status];
 
   /**
    * Returns localized name boolean value

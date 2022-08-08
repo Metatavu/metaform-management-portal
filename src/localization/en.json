@@ -46,6 +46,9 @@
     },
     "publicFormsScreen": {
       "fetchForms": "Fetching forms failed"
+    },
+    "adminRepliesScreen": {
+      "fetchReplies": "Fetching replies failed"
     }
   },
 
@@ -123,8 +126,8 @@
     "selectorShowOpen": "Show open",
     "selectorShowAll": "Show all",
     "statusWaiting": "Waiting",
-    "statusInProgress": "In progress",
-    "statusProgressed": "Progressed"
+    "statusProcessing": "Processing",
+    "statusDone": "Done"
   },
 
   "publicFormsScreen": {

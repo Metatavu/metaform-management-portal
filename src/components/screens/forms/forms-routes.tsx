@@ -19,7 +19,7 @@ const FormsRoutes: React.FC = () => (
       element={ <FormsDataScreen/> }
     />
     <Route
-      path="/:formSlug/answers"
+      path="/:formId/answers"
       element={ <FormAnswerScreen/> }
     />
     <Route
