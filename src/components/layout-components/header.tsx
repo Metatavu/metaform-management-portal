@@ -1,11 +1,11 @@
 import { Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useEffect } from "react";
-import { HeaderToolbar, Logo, LogoContainer, Root } from "styled/layout-components/header";
+import { HeaderToolbar, Logo, Root } from "styled/layout-components/header";
 import theme from "theme";
-import EssoteLogoPath from "resources/svg/essote-logo.svg";
 import { logout, selectKeycloak } from "features/auth-slice";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import strings from "localization/strings";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 /**
  * Header component
@@ -32,31 +32,41 @@ const Header: React.FC = ({
    */
   const renderLogoutButton = () => {
     return (
-      <Button color="error" onClick={ () => dispatch(logout()) }>{ strings.generic.logout }</Button>
+      <Button
+        variant="text"
+        onClick={ () => dispatch(logout()) }
+        endIcon={ <LogoutIcon/> }
+        style={{
+          textTransform: "none",
+          flex: 1,
+          display: "flex",
+          justifyContent: "space-between"
+        }}
+      >
+        { strings.generic.logout }
+      </Button>
     );
   };
 
   return (
     <Root position="static">
       <HeaderToolbar>
-        <LogoContainer>
-          {/* TODO replace the logo to higher resolution */}
-        </LogoContainer>
-        <FormControl>
+        <Logo/>
+        <FormControl sx={{ maxWidth: 300 }}>
           <InputLabel style={{ color: "white" }} id="user-email">{ strings.header.user }</InputLabel>
           <Select
             label={ strings.header.user }
             value={ userEmail }
+            IconComponent={ () => null }
             id="user-email"
             sx={{
               color: "white",
-              maxWidth: 300,
               backgroundColor: "transparent",
               borderRadius: theme.shape.borderRadius
             }}
             renderValue={ () => userEmail }
           >
-            <MenuItem>{ renderLogoutButton() }</MenuItem>
+            <MenuItem style={{ backgroundColor: "#fff" }}>{ renderLogoutButton() }</MenuItem>
           </Select>
         </FormControl>
       </HeaderToolbar>
