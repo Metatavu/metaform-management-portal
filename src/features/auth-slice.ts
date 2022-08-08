@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "app/store";
-import { KeycloakInstance } from "keycloak-js";
+import Keycloak from "keycloak-js";
 
 /**
  * Authentication state in Redux
  */
 export interface AuthState {
-  keycloak?: KeycloakInstance;
+  keycloak?: Keycloak;
+  anonymousKeycloak?: Keycloak;
 }
 
 /**
@@ -23,7 +24,10 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
   reducers: {
-    login: (state, { payload }: PayloadAction<KeycloakInstance | undefined>) => {
+    anonymousLogin: (state, { payload }: PayloadAction<Keycloak | undefined>) => {
+      state.anonymousKeycloak = payload;
+    },
+    login: (state, { payload }: PayloadAction<Keycloak | undefined>) => {
       state.keycloak = payload;
     },
     logout: state => {
@@ -37,7 +41,7 @@ export const authSlice = createSlice({
 /**
  * Authentication actions from created authentication slice
  */
-export const { login, logout } = authSlice.actions;
+export const { anonymousLogin, login, logout } = authSlice.actions;
 
 /**
  * Select Keycloak selector
@@ -45,7 +49,20 @@ export const { login, logout } = authSlice.actions;
  * @param state Redux store root state
  * @returns keycloak instance from Redux store
  */
-export const selectKeycloak = (state: RootState) => state.auth.keycloak;
+export const selectKeycloak = (state: RootState) => {
+  const { auth } = state;
+  if (auth.keycloak) return auth.keycloak;
+
+  return auth.anonymousKeycloak;
+};
+
+/**
+ * Select Keycloak selector
+ *
+ * @param state Redux store root state
+ * @returns keycloak instance from Redux store
+ */
+export const selectAnonymousKeycloak = (state: RootState) => state.auth.anonymousKeycloak;
 
 /**
  * Reducer from authentication slice

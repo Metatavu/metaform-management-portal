@@ -17,6 +17,7 @@
 
   "errorHandling": {
     "title": "Error",
+    "authentication": "User authentication failed",
     "dialog": {
       "title": "Whoops! Something went wrong",
       "reloadPage": "Try reloading the page.",
@@ -27,6 +28,9 @@
       "url": "URL: {0}",
       "errorMessage": "Error message: ",
       "close": "Close"
+    },
+    "adminFormsScreen": {
+      "listForms": "Fetching forms failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -44,6 +48,7 @@
       "fetchForms": "Fetching forms failed"
     }
   },
+
   "formComponent": {
     "datePicker": "Date",
     "dateTimePicker": "Date and time"
@@ -92,6 +97,9 @@
           }
         }
       },
+      "formListing": {
+          "form": "FORM"
+      },
       "formDataScreen": {
         "title": "Viewing data",
         "description": "Information e.g. the utilization rate of the forms."
@@ -119,7 +127,7 @@
   },
 
   "publicFormsScreen": {
-    "title": "Lomakkeet"
+    "title": "Forms"
   },
 
 
@@ -185,7 +193,8 @@
     "replyDeleteLink": "here",
     "confirmDeleteReplyTitle": "Are you sure?",
     "confirmDeleteReplyText": "Are you sure that you wish to delete the reply?",
-    "replyDeleted": "Reply deleted"
+    "replyDeleted": "Reply deleted",
+    "noTitle": "No title"
   },
 
   "emailDialog": {

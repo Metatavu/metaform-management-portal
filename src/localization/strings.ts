@@ -31,6 +31,7 @@ export interface Localized extends LocalizedStringsMethods {
    */
   errorHandling: {
     title: string;
+    authentication: string;
     dialog: {
       reloadPage: string;
       unsavedContents: string;
@@ -39,6 +40,9 @@ export interface Localized extends LocalizedStringsMethods {
       time: string;
       url: string;
       errorMessage: string;
+    },
+    adminFormsScreen: {
+      listForms: string;
     },
     formScreen: {
       saveReply: string;
@@ -123,6 +127,9 @@ export interface Localized extends LocalizedStringsMethods {
             statusProgressed: string;
           }
         }
+      };
+      formListing: {
+        form: string;
       };
       formDataScreen: {
         title: string;
@@ -225,6 +232,7 @@ export interface Localized extends LocalizedStringsMethods {
     confirmDeleteReplyText: string;
     replyNotFound: string;
     replyDeleted: string;
+    noTitle: string;
   };
 
   /**
