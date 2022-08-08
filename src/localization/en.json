@@ -142,7 +142,25 @@
         "formTitle": "Form title"
       },
       "fields": {
-        "tabTitle": "Fields"
+        "tabTitle": "Fields",
+        "staticFields": "Static fields",
+        "selectorFields": "Selector fields",
+        "inputFields": "Input fields",
+        "url": "Url",
+        "html": "Html",
+        "boolean": "Boolean",
+        "select": "Dropdown",
+        "slider": "Slider",
+        "checklist": "Checklist",
+        "radio": "Radio",
+        "text": "Text",
+        "number": "Number",
+        "email": "Email",
+        "memo": "Memo",
+        "date": "Date",
+        "dateAndTime": "Date & time",
+        "files": "Files",
+        "table": "Table"
       },
       "features": {
         "tabTitle": "Features",
