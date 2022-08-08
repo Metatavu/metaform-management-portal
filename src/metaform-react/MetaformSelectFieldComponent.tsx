@@ -47,17 +47,12 @@ export const MetaformSelectFieldComponent: React.FC<Props> = ({
   const readOnly = formReadOnly || field.readonly;
 
   return (
-    <SelectFieldWrapper
-      style={ notInteractive ? { border: "none" } : {} }
-    >
+    <SelectFieldWrapper>
       <Select
         style={ notInteractive ? { pointerEvents: "none" } : {} }
         onChange={ onChange }
         value={ selected }
         disabled={ readOnly }
-        sx={{
-          border: "none"
-        }}
       >
         { options.map(option => <MenuItem key={ option.name } value={ option.name }>{ option.text }</MenuItem>) }
       </Select>

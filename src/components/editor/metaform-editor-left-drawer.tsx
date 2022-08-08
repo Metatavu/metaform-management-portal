@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Box, Icon, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Icon, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
 import TabPanel from "components/generic/tab-panel";
@@ -63,9 +63,9 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
         draggableId={ field.type.toString() }
         isDragDisabled={ false }
       >
-        <Stack style={{ alignItems: "center" }}>
+        <Stack style={{ alignItems: "center", textAlign: "center" }}>
           <Icon>{ icon }</Icon>
-          <Box>{ name }</Box>
+          <Typography variant="caption">{ name }</Typography>
         </Stack>
       </DraggableWrapper>
     </DroppableComponentWrapper>
@@ -102,24 +102,24 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
         { renderFormTab() }
       </TabPanel>
       <TabPanel value={ tabIndex } index={ 1 }>
-        { renderFieldsCategorytitle("Static elements") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Url), "Url", "http") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Html), "Html", "html") }
-        { renderFieldsCategorytitle("Selectors") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Boolean), "Boolean", "checkbox") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Select), "Select", "expand_circle_down") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Slider), "Slider", "linear_scale") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Checklist), "Checklist", "fact_check") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Radio), "Radio", "radio_button_checked") }
-        { renderFieldsCategorytitle("Inputs") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Text), "Text", "text_fields") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Number), "Number", "looks_one") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Email), "Email", "email") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Memo), "Notes", "notes") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Date), "Date", "today") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.DateTime), "Date & time", "today") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Files), "Files", "attachment") }
-        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Table), "Table", "table_chart") }
+        { renderFieldsCategorytitle(strings.draftEditorScreen.editor.fields.staticFields) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Url), strings.draftEditorScreen.editor.fields.url, "http") }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Html), strings.draftEditorScreen.editor.fields.html, "html") }
+        { renderFieldsCategorytitle(strings.draftEditorScreen.editor.fields.selectorFields) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Boolean), strings.draftEditorScreen.editor.fields.boolean, "checkbox") }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Select), strings.draftEditorScreen.editor.fields.select, "expand_circle_down") }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Slider), strings.draftEditorScreen.editor.fields.slider, "linear_scale") }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Checklist), strings.draftEditorScreen.editor.fields.checklist, "fact_check") }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Radio), strings.draftEditorScreen.editor.fields.radio, "radio_button_checked") }
+        { renderFieldsCategorytitle(strings.draftEditorScreen.editor.fields.inputFields) }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Text), strings.draftEditorScreen.editor.fields.text, "text_fields") }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Number), strings.draftEditorScreen.editor.fields.number, "looks_one") }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Email), strings.draftEditorScreen.editor.fields.email, "email") }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Memo), strings.draftEditorScreen.editor.fields.memo, "notes") }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Date), strings.draftEditorScreen.editor.fields.date, "today") }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.DateTime), strings.draftEditorScreen.editor.fields.dateAndTime, "today") }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Files), strings.draftEditorScreen.editor.fields.files, "attachment") }
+        { renderFieldsTab(MetaformUtils.createEmptyField(MetaformFieldType.Table), strings.draftEditorScreen.editor.fields.table, "table_chart") }
       </TabPanel>
     </EditorDrawer>
   );
