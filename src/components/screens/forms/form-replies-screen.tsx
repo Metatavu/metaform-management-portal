@@ -4,13 +4,13 @@ import Api from "api";
 import { useApiClient } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
-import { Reply } from "generated/client";
+import { MetaformField, Reply } from "generated/client";
 import strings from "localization/strings";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import { AdminFormRepliesScreenStack, AdminFormRepliesScreenText } from "styled/react-components/react-components";
-import LocalizationUtils from "utils/localization-utils";
+// import LocalizationUtils from "utils/localization-utils";
 
 /**
  * Interface for single reply row
@@ -29,10 +29,13 @@ const FormRepliesScreen: React.FC = () => {
   const errorContext = useContext(ErrorContext);
   
   const apiClient = useApiClient(Api.getApiClient);
-  const { repliesApi } = apiClient;
+  const { repliesApi, metaformsApi } = apiClient;
 
   const [ rows, setRows ] = useState<ReplyRow[]>([]);
   const [ loading, setLoading ] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [ managementListColumns, setManagementListColumns ] = useState<MetaformField[]>();
+
   const useparams = useParams();
   const { formId } = useparams;
 
@@ -51,14 +54,30 @@ const FormRepliesScreen: React.FC = () => {
   };
 
   /**
+   * Return fields that include context "MANAGEMENT_LIST" 
+   * 
+   */
+  const getManagementListFields = async () => {
+    try {
+      const metaform = await metaformsApi.findMetaform({ metaformId: formId! });
+      const fieldData = (metaform.sections || [])
+        .flatMap(section => section.fields || [])
+        .filter(field => (field.contexts || []).includes("MANAGEMENT_LIST"));
+      setManagementListColumns(fieldData);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchFields, e);
+    }
+  };
+
+  /**
    * View setup
    */
   const setup = async () => {
     setLoading(true);
+    getManagementListFields();
   
     try {
-      const replies = await repliesApi.listReplies({ metaformId: formId!! });
-      console.log(replies);
+      const replies = await repliesApi.listReplies({ metaformId: formId! });
       if (replies) {
         const replyRows = replies.map(reply => (buildRow(reply)));
         setRows(replyRows);
@@ -74,84 +93,25 @@ const FormRepliesScreen: React.FC = () => {
     setup();
   }, []);
 
-  const columns: GridColDef[] = [
-    {
-      field: "created",
-      headerName: strings.repliesScreen.createdColumnTitle,
-      flex: 1,
-      renderHeader: params => {
-        return (
-          <AdminFormRepliesScreenStack direction="row">
-            <AdminFormRepliesScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormRepliesScreenText>
-          </AdminFormRepliesScreenStack>
-        );
-      },
-      renderCell: params => {
-        return (
-          <AdminFormRepliesScreenStack direction="row">
-            <AdminFormRepliesScreenText>{ params.row.created }</AdminFormRepliesScreenText>
-          </AdminFormRepliesScreenStack>
-        );
-      }
+  const gridColumns = managementListColumns?.map<GridColDef>(column => ({
+    field: column.name || "",
+    headerName: column.title,
+    flex: 1,
+    renderHeader: params => {
+      return (
+        <AdminFormRepliesScreenStack direction="row">
+          <AdminFormRepliesScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormRepliesScreenText>
+        </AdminFormRepliesScreenStack>
+      );
     },
-    {
-      field: "modified",
-      headerName: strings.repliesScreen.modifiedColumnTitle,
-      flex: 1,
-      renderHeader: params => {
-        return (
-          <AdminFormRepliesScreenStack direction="row">
-            <AdminFormRepliesScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormRepliesScreenText>
-          </AdminFormRepliesScreenStack>
-        );
-      },
-      renderCell: params => {
-        return (
-          <AdminFormRepliesScreenStack direction="row">
-            <AdminFormRepliesScreenText>{ params.row.modified }</AdminFormRepliesScreenText>
-          </AdminFormRepliesScreenStack>
-        );
-      }
-    },
-    {
-      field: "status",
-      headerName: strings.repliesScreen.statusColumnTitle,
-      flex: 1,
-      renderHeader: params => {
-        return (
-          <AdminFormRepliesScreenStack direction="row">
-            <AdminFormRepliesScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormRepliesScreenText>
-          </AdminFormRepliesScreenStack>
-        );
-      },
-      renderCell: params => {
-        return (
-          <AdminFormRepliesScreenStack direction="row">
-            <AdminFormRepliesScreenText>{ LocalizationUtils.getLocalizedStatusOfReply(params.row.status) }</AdminFormRepliesScreenText>
-          </AdminFormRepliesScreenStack>
-        );
-      }
-    },
-    {
-      field: "name",
-      headerName: strings.repliesScreen.nameColumnTitle,
-      flex: 1,
-      renderHeader: params => {
-        return (
-          <AdminFormRepliesScreenStack direction="row">
-            <AdminFormRepliesScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormRepliesScreenText>
-          </AdminFormRepliesScreenStack>
-        );
-      },
-      renderCell: params => {
-        return (
-          <AdminFormRepliesScreenStack direction="row">
-            <AdminFormRepliesScreenText>{ params.row.name }</AdminFormRepliesScreenText>
-          </AdminFormRepliesScreenStack>
-        );
-      }
+    renderCell: params => {
+      return (
+        <AdminFormRepliesScreenStack direction="row">
+          <AdminFormRepliesScreenText>{ column.name ? params.row[column.name] : "" }</AdminFormRepliesScreenText>
+        </AdminFormRepliesScreenStack>
+      );
     }
-  ];
+  }));
   
   /**
    * Render toggle switch for not processed/all replies
@@ -179,7 +139,7 @@ const FormRepliesScreen: React.FC = () => {
       <DataGrid
         loading={ loading }
         rows={ rows }
-        columns={ columns }
+        columns={ gridColumns ?? [] }
         getRowId={row => row.created}
         autoHeight
         disableColumnMenu

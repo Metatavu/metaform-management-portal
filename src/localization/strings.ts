@@ -61,6 +61,7 @@ export interface Localized extends LocalizedStringsMethods {
     },
     adminRepliesScreen: {
       fetchReplies: string;
+      fetchFields: string;
     }
   };
 
