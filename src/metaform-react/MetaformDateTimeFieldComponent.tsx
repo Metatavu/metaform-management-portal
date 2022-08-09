@@ -1,4 +1,5 @@
 import React from "react";
+import { DateFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField } from "../generated/client/models";
 import { FieldValue } from "./types";
 
@@ -32,7 +33,11 @@ const MetaformDateTimeFieldComponent: React.FC<Props> = ({
     return null;
   }
   
-  return datetimePicker(field.name || "", onChange);
+  return (
+    <DateFieldWrapper>
+      { datetimePicker(field.name || "", onChange) }
+    </DateFieldWrapper>
+  );
 };
 
 export default MetaformDateTimeFieldComponent;

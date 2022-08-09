@@ -1,5 +1,5 @@
-import { TextField } from "@mui/material";
 import React from "react";
+import { MemoFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField } from "../generated/client/models";
 import { FieldValue } from "./types";
 
@@ -43,13 +43,13 @@ const MetaformMemoComponent: React.FC<Props> = ({
     return null;
   }
 
-  const style: React.CSSProperties = { backgroundColor: "white" };
+  const style: React.CSSProperties = {};
   if (notInteractive) {
     style.pointerEvents = "none";
   }
 
   return (
-    <TextField
+    <MemoFieldWrapper
       variant="outlined"
       multiline
       placeholder={ field.placeholder }

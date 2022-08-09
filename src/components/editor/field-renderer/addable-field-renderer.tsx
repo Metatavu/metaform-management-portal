@@ -19,6 +19,8 @@ import MetaformFilesFieldComponent from "metaform-react/MetaformFilesFieldCompon
 import MetaformSelectFieldComponent from "metaform-react/MetaformSelectFieldComponent";
 import MetaformTableFieldComponent from "metaform-react/MetaformTableFieldComponent";
 import MetaformSubmitFieldComponent from "metaform-react/MetaformSubmitFieldComponent";
+import MetaformUrlFieldComponent from "metaform-react/MetaformUrlField";
+import MetaformTextFieldComponent from "metaform-react/MetaformTextFieldComponent";
 
 interface Prop {
   field: MetaformField;
@@ -139,8 +141,6 @@ const AddableFieldRenderer: React.FC<Prop> = ({
       return (
         <MetaformFilesFieldComponent
           notInteractive={ true }
-          showButtonText="FileShowButtonText"
-          deleteButtonText="FileDeleteButtonText"
           field={ field }
           fieldId={ fieldId }
           value={ field.name || "" }
@@ -215,13 +215,12 @@ const AddableFieldRenderer: React.FC<Prop> = ({
       );
     case MetaformFieldType.Url:
       return (
-        <TextField
-          style={{ pointerEvents: "none" }}
-          type="url"
-          disabled={ true }
-          key={ fieldId }
+        <MetaformUrlFieldComponent
           value="https://google.com"
-          label={ fieldLabelId }
+          field={ field }
+          fieldId={ fieldId }
+          fieldLabelId={ fieldLabelId }
+          formReadOnly={ true }
         />
       );
     case MetaformFieldType.Email:
@@ -271,12 +270,13 @@ const AddableFieldRenderer: React.FC<Prop> = ({
       );
     default:
       return (
-        <TextField
-          style={{ pointerEvents: "none" }}
-          disabled={ true }
+        <MetaformTextFieldComponent
           key={ fieldId }
-          value={ field.name }
-          label={ fieldLabelId }
+          field={ field }
+          fieldId={ fieldId }
+          fieldLabelId={ fieldLabelId }
+          formReadOnly={ true }
+          value={ field.name || "" }
         />
       );
   }

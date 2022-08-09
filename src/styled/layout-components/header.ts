@@ -1,5 +1,6 @@
 import { AppBar, Box, Toolbar } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import EssoteLogoPath from "../../resources/png/essote_logo.png";
 
 /**
  * Styled header
@@ -37,10 +38,14 @@ export const LogoContainer = styled(Box, {
 /**
  * Styled logo container component
  */
-export const Logo = styled("img", {
+export const Logo = styled(Box, {
   label: "logo"
 })(() => ({
-  width: "100%"
+  width: "100%",
+  backgroundImage: `url(${EssoteLogoPath})`,
+  backgroundSize: "contain",
+  backgroundRepeat: "no-repeat",
+  height: 62
 }));
 
 export default Root;

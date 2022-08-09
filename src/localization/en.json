@@ -11,11 +11,13 @@
     "loadingAutoCompleteOptions": "Loading options..",
     "confirm": "Confirm",
     "close": "Close",
-    "reload": "Reload"
+    "reload": "Reload",
+    "show": "Show"
   },
 
   "errorHandling": {
     "title": "Error",
+    "authentication": "User authentication failed",
     "dialog": {
       "title": "Whoops! Something went wrong",
       "reloadPage": "Try reloading the page.",
@@ -26,6 +28,9 @@
       "url": "URL: {0}",
       "errorMessage": "Error message: ",
       "close": "Close"
+    },
+    "adminFormsScreen": {
+      "listForms": "Fetching forms failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -52,6 +57,7 @@
       "addMemberNotFound": "Could not add user to the group. User was not found"
     }
   },
+
   "formComponent": {
     "datePicker": "Date",
     "dateTimePicker": "Date and time"
@@ -100,6 +106,9 @@
           }
         }
       },
+      "formListing": {
+          "form": "FORM"
+      },
       "formDataScreen": {
         "title": "Viewing data",
         "description": "Information e.g. the utilization rate of the forms."
@@ -124,7 +133,7 @@
   },
 
   "publicFormsScreen": {
-    "title": "Lomakkeet"
+    "title": "Forms"
   },
 
 
@@ -139,7 +148,25 @@
         "formTitle": "Form title"
       },
       "fields": {
-        "tabTitle": "Fields"
+        "tabTitle": "Fields",
+        "staticFields": "Static fields",
+        "selectorFields": "Selector fields",
+        "inputFields": "Input fields",
+        "url": "Url",
+        "html": "Html",
+        "boolean": "Boolean",
+        "select": "Dropdown",
+        "slider": "Slider",
+        "checklist": "Checklist",
+        "radio": "Radio",
+        "text": "Text",
+        "number": "Number",
+        "email": "Email",
+        "memo": "Memo",
+        "date": "Date",
+        "dateAndTime": "Date & time",
+        "files": "Files",
+        "table": "Table"
       },
       "features": {
         "tabTitle": "Features",
@@ -221,7 +248,8 @@
     "replyDeleteLink": "here",
     "confirmDeleteReplyTitle": "Are you sure?",
     "confirmDeleteReplyText": "Are you sure that you wish to delete the reply?",
-    "replyDeleted": "Reply deleted"
+    "replyDeleted": "Reply deleted",
+    "noTitle": "No title"
   },
 
   "emailDialog": {

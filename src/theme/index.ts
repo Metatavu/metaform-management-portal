@@ -16,11 +16,12 @@ export default createTheme({
       dark: "#375AA3"
     },
     secondary: {
-      main: "#ffffff"
+      main: "#fff",
+      dark: "#fff"
     },
     text: {
       primary: "#333333",
-      secondary: "#ffffff"
+      secondary: "#222"
     },
     background: {
       default: "#405da3",
@@ -113,6 +114,13 @@ export default createTheme({
         }
       }
     },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        root: {
+          marginLeft: 0
+        }
+      }
+    },
     MuiTextField: {
       defaultProps: {
         variant: "outlined",
@@ -156,22 +164,39 @@ export default createTheme({
         }
       }
     },
-    MuiTable: {
+    MuiOutlinedInput: {
       styleOverrides: {
-        root: {
-          display: "flex",
-          flex: 1,
-          flexDirection: "column",
-          justifyContent: "flex-end"
+        notchedOutline: {
+          borderColor: "#fff !important",
+          ":hover": {
+            borderColor: "#fff"
+          }
         }
       }
     },
-    MuiTableBody: {
+    MuiAutocomplete: {
       styleOverrides: {
         root: {
-          flex: 1,
+          padding: "0.5rem 0",
+          borderRadius: "0.5rem",
+          border: "1px solid rgba(0, 0, 0, .5)",
+          maxHeight: 50,
           display: "flex",
-          flexDirection: "column"
+          alignItems: "center"
+        }
+      }
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          width: "100%"
+        }
+      }
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          borderBottom: "none"
         }
       }
     }

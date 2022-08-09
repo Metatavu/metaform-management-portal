@@ -41,8 +41,6 @@ interface Props {
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
-  fileShowButtonText: string;
-  fileDeleteButtonText: string;
   onFileShow: (value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
@@ -67,8 +65,6 @@ export const MetaformFieldComponent: React.FC<Props> = ({
   datetimePicker,
   renderAutocomplete,
   uploadFile,
-  fileShowButtonText,
-  fileDeleteButtonText,
   onFileShow,
   onFileDelete,
   renderIcon,
@@ -211,8 +207,6 @@ export const MetaformFieldComponent: React.FC<Props> = ({
                   onFocus={ onFocus }
                   onFileDelete={ onFileDelete }
                   onFileShow={ onFileShow }
-                  deleteButtonText={ fileDeleteButtonText }
-                  showButtonText={ fileShowButtonText }
                 />;
       case MetaformFieldType.Date:
         return  <MetaformDateFieldComponent

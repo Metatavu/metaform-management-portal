@@ -23,6 +23,7 @@ export interface Localized extends LocalizedStringsMethods {
     confirm: string;
     close: string;
     reload: string;
+    show: string;
   };
 
   /**
@@ -30,6 +31,7 @@ export interface Localized extends LocalizedStringsMethods {
    */
   errorHandling: {
     title: string;
+    authentication: string;
     dialog: {
       reloadPage: string;
       unsavedContents: string;
@@ -38,6 +40,9 @@ export interface Localized extends LocalizedStringsMethods {
       time: string;
       url: string;
       errorMessage: string;
+    },
+    adminFormsScreen: {
+      listForms: string;
     },
     formScreen: {
       saveReply: string;
@@ -132,6 +137,9 @@ export interface Localized extends LocalizedStringsMethods {
           }
         }
       };
+      formListing: {
+        form: string;
+      };
       formDataScreen: {
         title: string;
         description: string;
@@ -170,6 +178,24 @@ export interface Localized extends LocalizedStringsMethods {
       };
       fields: {
         tabTitle: string;
+        staticFields: string;
+        selectorFields: string;
+        inputFields: string;
+        url: string;
+        html: string;
+        boolean: string;
+        select: string;
+        slider: string;
+        checklist: string;
+        radio: string;
+        text: string;
+        number: string;
+        email: string;
+        memo: string;
+        date: string;
+        dateAndTime: string;
+        files: string;
+        table: string;
       };
       features: {
         tabTitle: string;
@@ -262,6 +288,7 @@ export interface Localized extends LocalizedStringsMethods {
     confirmDeleteReplyText: string;
     replyNotFound: string;
     replyDeleted: string;
+    noTitle: string;
   };
 
   /**

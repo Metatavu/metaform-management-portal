@@ -26,8 +26,6 @@ interface Props {
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
   onSubmit: (source: MetaformField) => void;
-  fileShowButtonText: string;
-  fileDeleteButtonText: string;
   onFileShow: (value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
 }
@@ -53,8 +51,6 @@ const MetaformSectionComponent: React.FC<Props> = ({
   onSubmit,
   onFileDelete,
   onFileShow,
-  fileShowButtonText,
-  fileDeleteButtonText,
   requiredFieldsMissingError,
   showRequiredFieldsMissingError
 }) => {
@@ -97,8 +93,6 @@ const MetaformSectionComponent: React.FC<Props> = ({
                 onSubmit={ onSubmit }
                 onFileDelete={ onFileDelete }
                 onFileShow={ onFileShow }
-                fileShowButtonText={ fileShowButtonText }
-                fileDeleteButtonText={ fileDeleteButtonText }
                 requiredFieldsMissingError={ requiredFieldsMissingError }
                 showRequiredFieldsMissingError={ showRequiredFieldsMissingError }
               />
