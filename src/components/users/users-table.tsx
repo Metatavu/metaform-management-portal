@@ -12,6 +12,7 @@ import EmailIcon from "@mui/icons-material/Email";
  * Component props
  */
 interface Props {
+  loading: boolean;
   members: MetaformMember[];
   memberGroups: MetaformMemberGroup[];
   selectedMemberGroupId: string | undefined;
@@ -23,6 +24,7 @@ interface Props {
  * Users table
 */
 const UsersTable: FC<Props> = ({
+  loading,
   members,
   memberGroups,
   selectedMemberGroupId,
@@ -31,7 +33,7 @@ const UsersTable: FC<Props> = ({
 }: Props) => {
   const selectedGroup = selectedMemberGroupId ? memberGroups.find(group => group.id === selectedMemberGroupId) : null;
 
-  const data = members
+  const data = loading ? [] : members
     .filter(member => {
       if (!selectedGroup) {
         return true;
@@ -125,6 +127,7 @@ const UsersTable: FC<Props> = ({
 
   return (
     <DataGrid
+      loading={ loading }
       columns={ columns }
       rows={ data }
       autoHeight

@@ -24,6 +24,7 @@ const UsersScreen: React.FC = () => {
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, metaformMemberGroupsApi, metaformMembersApi } = apiClient;
 
+  const [ loading, setLoading ] = React.useState<boolean>(false);
   const [ metaforms, setMetaforms ] = React.useState<Metaform[]>([]);
   const [ memberGroups, setMemberGroups ] = React.useState<MetaformMemberGroup[]>([]);
   const [ members, setMembers ] = React.useState<MetaformMember[]>([]);
@@ -37,7 +38,9 @@ const UsersScreen: React.FC = () => {
    */
   const loadMetaforms = async () => {
     try {
+      setLoading(true);
       setMetaforms(await metaformsApi.listMetaforms({ }));
+      setLoading(false);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.loadMetaforms, err);
     }
@@ -77,6 +80,20 @@ const UsersScreen: React.FC = () => {
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.loadMembers, err);
     }
+  };
+
+  /**
+   * Loads members and groups
+   */
+  const loadMembersAndGroups = async () => {
+    setLoading(true);
+    
+    await Promise.all([
+      loadMemberGroups(),
+      loadMetaformMembers()
+    ]);
+    
+    setLoading(false);
   };
 
   /**
@@ -225,8 +242,7 @@ const UsersScreen: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    loadMemberGroups();
-    loadMetaformMembers();
+    loadMembersAndGroups();
   }, [ selectedMetaformId, metaforms ]);
 
   return (
@@ -271,6 +287,7 @@ const UsersScreen: React.FC = () => {
         setSelectedMemberGroupId={ setSelectedMemberGroupId }
       />
       <UsersTable
+        loading={ loading }
         memberGroups={ memberGroups }
         members={ members }
         selectedMemberGroupId={ selectedMemberGroupId }
