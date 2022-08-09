@@ -16,7 +16,7 @@ export default createTheme({
       dark: "#375AA3"
     },
     secondary: {
-      main: "#4FA3DF",
+      main: "#fff",
       dark: "#fff"
     },
     text: {
@@ -165,21 +165,11 @@ export default createTheme({
     },
     MuiOutlinedInput: {
       styleOverrides: {
-        root: {
-          padding: 0
-        },
         notchedOutline: {
           borderColor: "#fff !important",
           ":hover": {
             borderColor: "#fff"
           }
-        }
-      }
-    },
-    MuiSvgIcon: {
-      styleOverrides: {
-        root: {
-          color: "#fff !important"
         }
       }
     },
