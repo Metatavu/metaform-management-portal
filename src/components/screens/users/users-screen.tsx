@@ -97,6 +97,7 @@ const UsersScreen: React.FC = () => {
   };
 
   /**
+   * Event handler for group membership removal from member
    * 
    * @param metaformMember metaform member
    * @param groupIds group ids
@@ -128,6 +129,7 @@ const UsersScreen: React.FC = () => {
   };
 
   /**
+   * Event handler for group membership add to member
    * 
    * @param metaformMember metaform member
    * @param groupIds group ids
