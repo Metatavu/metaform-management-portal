@@ -10,6 +10,10 @@ const { breakpoints, palette } = createTheme();
  */
 export default createTheme({
 
+  logo: {
+    logoPath: "/images/essote_logo.png"
+  },
+
   palette: {
     primary: {
       main: "#4FA3DF",
@@ -21,10 +25,10 @@ export default createTheme({
     },
     text: {
       primary: "#333333",
-      secondary: "#222"
+      secondary: "#bdbdbd"
     },
     background: {
-      default: "#405da3",
+      default: "#375AA3",
       paper: "#ffffff"
     }
   },
@@ -63,6 +67,10 @@ export default createTheme({
     },
     body2: {
       fontSize: 14
+    },
+    subtitle1: {
+      color: palette.text.secondary,
+      fontWeight: 600
     },
     subtitle2: {
       fontSize: 14,

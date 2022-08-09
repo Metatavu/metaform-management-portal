@@ -41,7 +41,9 @@ const NavigationTab: React.FC<Props> = ({
       <ListItemText
         primary={ title }
         secondary={ description }
+        secondaryTypographyProps={{ variant: "subtitle1" }}
         primaryTypographyProps={{
+          variant: "h1",
           ...theme.components?.MuiListItemText?.defaultProps?.primaryTypographyProps,
           color: linkEnabled ? undefined : theme.palette.grey[400]
         }}
