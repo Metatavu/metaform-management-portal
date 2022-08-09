@@ -1,5 +1,5 @@
-import { TextField } from "@mui/material";
 import React from "react";
+import { EmailFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField } from "../generated/client/models";
 import { FieldValue } from "./types";
 
@@ -45,7 +45,7 @@ const MetaformEmailFieldComponent: React.FC<Props> = ({
   }
   
   return (
-    <TextField
+    <EmailFieldWrapper
       style={ notInteractive ? { pointerEvents: "none" } : {}}
       type="email"
       placeholder={ field.placeholder }
