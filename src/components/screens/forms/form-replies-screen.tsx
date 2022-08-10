@@ -4,23 +4,14 @@ import Api from "api";
 import { useApiClient } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
-import { MetaformField, Reply } from "generated/client";
+import { MetaformField, MetaformFieldType, Reply } from "generated/client";
 import strings from "localization/strings";
+import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import { AdminFormRepliesScreenStack, AdminFormRepliesScreenText } from "styled/react-components/react-components";
 // import LocalizationUtils from "utils/localization-utils";
-
-/**
- * Interface for single reply row
- */
-interface ReplyRow {
-  created: string;
-  modified?: string;
-  status: string;
-  name: string;
-}
 
 /**
  * Form replies screen component
@@ -31,9 +22,8 @@ const FormRepliesScreen: React.FC = () => {
   const apiClient = useApiClient(Api.getApiClient);
   const { repliesApi, metaformsApi } = apiClient;
 
-  const [ rows, setRows ] = useState<ReplyRow[]>([]);
+  const [ rows, setRows ] = useState<any[]>([]);
   const [ loading, setLoading ] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ managementListColumns, setManagementListColumns ] = useState<MetaformField[]>();
 
   const useparams = useParams();
@@ -44,13 +34,35 @@ const FormRepliesScreen: React.FC = () => {
    * 
    * @param reply reply 
    */
-  const buildRow = (reply: Reply) => {
-    return {
-      created: reply.createdAt?.toLocaleString().slice(0, -3) || "",
-      modified: reply.modifiedAt?.toLocaleString().slice(0, -3) || "",
-      status: reply.data?.status as (string | undefined) || "",
-      name: reply.data?.name as (string | undefined) || ""
-    };
+  const buildRow = (reply: Reply, fields: MetaformField[]) => {
+    const replyData = reply.data;
+    console.log("replyData", replyData);
+    fields.forEach(field => {
+      const fieldName = field.name;
+      console.log("fieldName", fieldName);
+      if (!replyData || !fieldName) {
+        return "";
+      }
+
+      const fieldValue = replyData[fieldName];
+      if (!fieldValue) {
+        return "";
+      }
+
+      const fieldOptions = field.options || [];
+
+      switch (field.type) {
+        case MetaformFieldType.Date:
+          return moment(fieldValue).format("L");
+        case MetaformFieldType.DateTime:
+          return moment(fieldValue).format("LL");
+        case MetaformFieldType.Select:
+        case MetaformFieldType.Radio:
+          return fieldOptions.find(fieldOption => fieldOption.name === fieldValue.toString())?.text || fieldValue;
+        default:
+          return fieldValue;
+      }
+    });
   };
 
   /**
@@ -64,6 +76,7 @@ const FormRepliesScreen: React.FC = () => {
         .flatMap(section => section.fields || [])
         .filter(field => (field.contexts || []).includes("MANAGEMENT_LIST"));
       setManagementListColumns(fieldData);
+      return fieldData;
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchFields, e);
     }
@@ -74,12 +87,12 @@ const FormRepliesScreen: React.FC = () => {
    */
   const setup = async () => {
     setLoading(true);
-    getManagementListFields();
   
     try {
       const replies = await repliesApi.listReplies({ metaformId: formId! });
-      if (replies) {
-        const replyRows = replies.map(reply => (buildRow(reply)));
+      const fields = await getManagementListFields();
+      if (replies && fields) {
+        const replyRows = replies.map(reply => (buildRow(reply, fields)));
         setRows(replyRows);
       }
     } catch (e) {
@@ -138,9 +151,9 @@ const FormRepliesScreen: React.FC = () => {
       </NavigationTabContainer>
       <DataGrid
         loading={ loading }
-        rows={ rows }
+        rows={ rows ?? [] }
         columns={ gridColumns ?? [] }
-        getRowId={row => row.created}
+        getRowId={ row => (row ? row.created : 1) }
         autoHeight
         disableColumnMenu
         disableColumnSelector
