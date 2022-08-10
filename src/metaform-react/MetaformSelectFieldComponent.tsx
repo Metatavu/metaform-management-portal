@@ -47,7 +47,7 @@ export const MetaformSelectFieldComponent: React.FC<Props> = ({
   const readOnly = formReadOnly || field.readonly;
 
   return (
-    <SelectFieldWrapper fullWidth>
+    <SelectFieldWrapper>
       <Select
         style={ notInteractive ? { pointerEvents: "none" } : {} }
         onChange={ onChange }

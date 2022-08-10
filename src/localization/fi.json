@@ -145,7 +145,25 @@
         "formTitle": "Lomakkeen otsikko"
       },
       "fields": {
-        "tabTitle": "Kentät"
+        "tabTitle": "Kentät",
+        "staticFields": "Staattiset kentät",
+        "selectorFields": "Valintakentät",
+        "inputFields": "Syötekentät",
+        "url": "Url",
+        "html": "Html",
+        "boolean": "Totuusarvo",
+        "select": "Pudotusvalikko",
+        "slider": "Liukuvalinta",
+        "checklist": "Valintalista",
+        "radio": "Radiovalinta",
+        "text": "Teksti",
+        "number": "Numero",
+        "email": "Sähköposti",
+        "memo": "Memo",
+        "date": "Päivämäärä",
+        "dateAndTime": "Päivämäärä & aika",
+        "files": "Liitteet",
+        "table": "Taulukko"
       },
       "features": {
         "tabTitle": "Ominaisuudet",

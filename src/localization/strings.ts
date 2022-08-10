@@ -179,6 +179,24 @@ export interface Localized extends LocalizedStringsMethods {
       };
       fields: {
         tabTitle: string;
+        staticFields: string;
+        selectorFields: string;
+        inputFields: string;
+        url: string;
+        html: string;
+        boolean: string;
+        select: string;
+        slider: string;
+        checklist: string;
+        radio: string;
+        text: string;
+        number: string;
+        email: string;
+        memo: string;
+        date: string;
+        dateAndTime: string;
+        files: string;
+        table: string;
       };
       features: {
         tabTitle: string;

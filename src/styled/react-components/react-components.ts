@@ -22,8 +22,7 @@ export const HtmlAutocompleteWrapper = styled(Autocomplete, {
 export const HtmlFieldWrapper = styled(Box, {
   label: "html-field-wrapper"
 })(() => ({
-  flex: 1,
-  height: "auto"
+  flex: 1
 }));
 
 /**
@@ -97,7 +96,8 @@ export const SelectFieldWrapper = styled(FormControl, {
   borderRadius: "0.5em",
   border: "1px solid rgba(0, 0, 0, .5)",
   maxHeight: 50,
-  justifyContent: "center"
+  justifyContent: "center",
+  overflow: "hidden"
 }));
 
 /**
@@ -116,9 +116,9 @@ export const UrlFieldWrapper = styled(Input, {
   label: "url-field-wrapper"
 })(() => ({
   flex: 1,
-  width: "80%",
-  height: "auto",
-  backgroundColor: "#fff"
+  border: "1px solid rgba(0, 0, 0, .5)",
+  borderRadius: "0.5rem",
+  padding: "0.5rem 1rem"
 }));
 
 /**
@@ -160,7 +160,6 @@ export const DateFieldWrapper = styled(Box, {
   height: "auto",
   border: "1px solid rgba(0, 0, 0, .5)",
   borderRadius: "0.5rem",
-  paddingRight: "1rem",
   minHeight: 50,
   display: "flex",
   alignItems: "center"
@@ -176,7 +175,25 @@ export const NumberFieldWrapper = styled(TextField, {
   fontSize: "1em",
   border: "1px solid rgba(0, 0, 0, .5)",
   borderRadius: "0.5rem",
-  backgroundColor: "#fff"
+  padding: "0.5 rem 1 rem",
+  overflow: "hidden",
+  minHeight: 50
+}));
+
+/**
+ * Styled email field component
+ */
+export const EmailFieldWrapper = styled(TextField, {
+  label: "email-field-wrapper"
+})(() => ({
+  width: "100%",
+  fontSize: "1em",
+  border: "1px solid rgba(0, 0, 0, .5)",
+  borderRadius: "0.5rem",
+  padding: "0.5 rem 1 rem",
+  overflow: "hidden",
+  minHeight: 50,
+  justifyContent: "center"
 }));
 
 /**
@@ -198,9 +215,9 @@ export const TableTextCellWrapper = styled(TextField, {
   flex: 1,
   width: "100%",
   fontSize: "1em",
-  border: "1px solid rgba(0, 0, 0, .5)",
-  borderRadius: "0.5rem",
-  backgroundColor: "#fff"
+  border: "none",
+  backgroundColor: "rgba(0,0,0,0.07)",
+  overflow: "auto"
 }));
 
 /**
@@ -211,9 +228,9 @@ export const TableNumberCellWrapper = styled(TextField, {
 })(() => ({
   width: "100%",
   fontSize: "1em",
-  border: "1px solid rgba(0, 0, 0, .5)",
-  borderRadius: "0.5rem",
-  backgroundColor: "#fff"
+  border: "1px dashed rgba(0, 0, 0, .3)",
+  backgroundColor: "rgba(0,0,0,0.07)",
+  overflow: "auto"
 }));
 
 /**
