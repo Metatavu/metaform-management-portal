@@ -48,7 +48,8 @@
       "fetchForms": "Fetching forms failed"
     },
     "adminRepliesScreen": {
-      "fetchReplies": "Fetching replies failed"
+      "fetchReplies": "Fetching replies failed",
+      "fetchFields": "Fetching column fields failed"
     }
   },
 
