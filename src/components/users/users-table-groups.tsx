@@ -24,7 +24,7 @@ const UsersTableGroups: FC<Props> = ({
 }) => {
   const memberId = metaformMember.id!;
   const selectedGroups = metaformMemberGroups.filter(metaformMemberGroup => metaformMemberGroup.memberIds.includes(memberId));
-  const selectedGroupIds = selectedGroups.map(selectedGroup => selectedGroup.id!!);
+  const selectedGroupIds = selectedGroups.map(selectedGroup => selectedGroup.id!);
 
   /**
    * Handle change event listener
