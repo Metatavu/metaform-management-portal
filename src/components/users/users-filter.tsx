@@ -39,7 +39,7 @@ const UsersFilter: FC<Props> = ({
   };
 
   /**
-   * Hanndle member group selection change
+   * Handle member group selection change
    *
    * @param event - event object
    */
