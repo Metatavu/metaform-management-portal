@@ -37,7 +37,7 @@ const UsersFilter: FC<Props> = ({
   };
 
   /**
-   * Hanndle member group selection change
+   * Handle member group selection change
    *
    * @param event - event object
    */
@@ -57,8 +57,8 @@ const UsersFilter: FC<Props> = ({
         {
           metaforms.map(metaform => {
             return (
-              <option
-                key={ `${metaform.id}-metaform`}
+              <option 
+                key={ `${metaform.id}-metaform` }
                 value={ metaform.id }
               >
                 { metaform.title }
@@ -82,7 +82,7 @@ const UsersFilter: FC<Props> = ({
           memberGroups.map(metaformMemberGroup => {
             return (
               <option
-                key={ `${metaformMemberGroup.id}-metaform-member-group`}
+                key={ `${metaformMemberGroup.id}-metaform-member-group` }
                 value={ metaformMemberGroup.id }
               >
                 { metaformMemberGroup.displayName }

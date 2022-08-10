@@ -16,10 +16,15 @@ interface Props {
 /**
  * Users table
 */
-const UsersTableGroups: FC<Props> = ({ metaformMember, metaformMemberGroups, onMetaformGroupMembershipAdd, onMetaformGroupMembershipRemove }: Props) => {
-  const memberId = metaformMember.id!!;
+const UsersTableGroups: FC<Props> = ({
+  metaformMember,
+  metaformMemberGroups,
+  onMetaformGroupMembershipAdd,
+  onMetaformGroupMembershipRemove
+}) => {
+  const memberId = metaformMember.id!;
   const selectedGroups = metaformMemberGroups.filter(metaformMemberGroup => metaformMemberGroup.memberIds.includes(memberId));
-  const selectedGroupIds = selectedGroups.map(selectedGroup => selectedGroup.id!!);
+  const selectedGroupIds = selectedGroups.map(selectedGroup => selectedGroup.id!);
 
   /**
    * Handle change event listener
