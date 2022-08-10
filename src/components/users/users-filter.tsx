@@ -60,7 +60,7 @@ const UsersFilter: FC<Props> = ({
           metaforms.map(metaform => {
             return (
               <option 
-                key={ `${metaform.id}-metaform`}
+                key={ `${metaform.id}-metaform` }
                 value={ metaform.id }
               >
                   { metaform.title }
