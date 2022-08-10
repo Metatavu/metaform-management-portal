@@ -84,7 +84,7 @@ const UsersFilter: FC<Props> = ({
           memberGroups.map(metaformMemberGroup => {
             return (
               <option 
-                key={ `${metaformMemberGroup.id}-metaform-member-group`}
+                key={ `${metaformMemberGroup.id}-metaform-member-group` }
                 value={ metaformMemberGroup.id }
               >
                   { metaformMemberGroup.displayName }
