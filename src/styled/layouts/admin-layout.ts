@@ -22,12 +22,12 @@ export const ContentWrapper = styled(Box, {
 export const FilterSelector = styled(NativeSelect, {
   label: "admin-layout--filter-selector"
 })(({ theme }) => ({
-  width: "30%",
-  marginRight: "10px",
   height: theme.spacing(5),
   borderRadius: theme.spacing(1),
   border: "0.06em solid #ccc",
-  padding: theme.spacing(2)
+  padding: theme.spacing(2),
+  minWidth: 400,
+  flex: 1
 }));
 
 /**
@@ -35,14 +35,13 @@ export const FilterSelector = styled(NativeSelect, {
  */
 export const FormFilterWrapper = styled(FormControl, {
   label: "admin-layout--form-filter-wrapper"
-})(({ theme }) => ({
+})(() => ({
   display: "flex",
   flexDirection: "row",
-  BorderRadius: theme.spacing(2),
-  width: "100%",
-  padding: theme.spacing(2),
-  borderBottom: "0.06em solid #ccc",
-  borderTop: "0.06em solid #ccc"
+  gap: "0.5rem",
+  padding: "1rem",
+  borderTop: "0.5px solid #ccc",
+  borderBottom: "0.5px solid #ccc"
 }));
 
 /**
@@ -76,8 +75,27 @@ export const IconActionButton = styled(Button, {
  */
 export const NewUserButton = styled(Button, {
   label: "new-button"
-})(() => ({
+})(({ theme }) => ({
   borderRadius: "1em",
-  margin: "2em",
-  fontWeight: "bold"
+  fontWeight: "bold",
+  height: "fit-content",
+  padding: theme.spacing(1.5),
+  paddingInline: theme.spacing(2),
+  alignSelf: "center",
+  marginRight: theme.spacing(2)
+}));
+
+/**
+ * Styled new member group button component
+ */
+export const NewMemberGroupButton = styled(Button, {
+  label: "new-button"
+})(({ theme }) => ({
+  borderRadius: "1em",
+  fontWeight: "bold",
+  height: "fit-content",
+  padding: theme.spacing(1.5),
+  paddingInline: theme.spacing(2),
+  alignSelf: "center",
+  marginRight: theme.spacing(2)
 }));
