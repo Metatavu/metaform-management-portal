@@ -46,6 +46,15 @@
     },
     "publicFormsScreen": {
       "fetchForms": "Fetching forms failed"
+    },
+    "usersScreen": {
+      "loadMetaforms": "Error occurred while loading metaforms",
+      "loadMemberGroups": "Error occurred while loading user groups",
+      "createMember": "Error occurred while creating a metaform member",
+      "createMemberGroup": "Error occurred while creating a user group",
+      "loadMembers": "Error occurred while loading users",
+      "removeMemberNotFound": "Could not remove user from the group. User was not found",
+      "addMemberNotFound": "Could not add user to the group. User was not found"
     }
   },
 
@@ -111,9 +120,6 @@
       "subheader": {
         "title": "User management",
         "description": "Help text"
-      },
-      "button": {
-        "text": "New user"
       }
     },
     "editorScreens": {
@@ -177,6 +183,37 @@
       "form": "Select form",
       "group": "Select group",
       "user": "Select user"
+    },
+    "addMemberButton": "New member",
+    "addMemberGroupButton": "New group",
+    "addMemberDialog": {
+      "title": "New member",
+      "text": "Add new member to the form",
+      "emailLabel": "Email",
+      "firstNameLabel": "First name",
+      "lastNameLabel": "Last name",
+      "createButton": "Add member",
+      "cancelButton": "Cancel",
+      "roleAdministrator": "Administrator",
+      "roleManager": "Manager"
+    },
+    "addMemberGroupDialog": {
+      "title": "New group",
+      "text": "Add new group to the form",
+      "displayNameLabel": "Group's name",
+      "createButton": "Add group",
+      "cancelButton": "Cancel"
+    },
+    "usersTable": {
+      "nameColumn": {
+        "label": "Name"
+      },
+      "emailColumn": {
+        "label": "Email"
+      },
+      "groupsColumn": {
+        "label": "Groups"
+      }
     }
   },
 

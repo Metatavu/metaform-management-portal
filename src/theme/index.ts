@@ -131,7 +131,8 @@ export default createTheme({
       styleOverrides: {
         root: {
           alignItems: "center",
-          justifyContent: "space-between"
+          justifyContent: "space-between",
+          paddingInline: "16px !important"
         }
       }
     },
