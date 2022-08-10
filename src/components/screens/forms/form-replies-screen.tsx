@@ -4,6 +4,7 @@ import Api from "api";
 import { useApiClient } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { MetaformField, MetaformFieldType, Reply } from "generated/client";
 import strings from "localization/strings";
 import moment from "moment";
@@ -35,34 +36,41 @@ const FormRepliesScreen: React.FC = () => {
    * @param reply reply 
    */
   const buildRow = (reply: Reply, fields: MetaformField[]) => {
-    const replyData = reply.data;
-    console.log("replyData", replyData);
+    const row : { [key: string]: string | number } = {};
+
     fields.forEach(field => {
+      const replyData = reply.data;
       const fieldName = field.name;
-      console.log("fieldName", fieldName);
+
       if (!replyData || !fieldName) {
-        return "";
+        return;
       }
 
       const fieldValue = replyData[fieldName];
+
       if (!fieldValue) {
-        return "";
+        return;
       }
 
       const fieldOptions = field.options || [];
 
       switch (field.type) {
         case MetaformFieldType.Date:
-          return moment(fieldValue).format("L");
+          row[fieldName] = moment(replyData[fieldName]).format("LLL");
+          break;
         case MetaformFieldType.DateTime:
-          return moment(fieldValue).format("LL");
+          row[fieldName] = moment(replyData[fieldName]).format("LLL");
+          break;
         case MetaformFieldType.Select:
         case MetaformFieldType.Radio:
-          return fieldOptions.find(fieldOption => fieldOption.name === fieldValue.toString())?.text || fieldValue;
+          row[fieldName] = fieldOptions.find(fieldOption => fieldOption.name === fieldValue.toString())?.text || fieldValue.toString();
+          break;
         default:
-          return fieldValue;
+          row[fieldName] = replyData[fieldName].toString();
       }
     });
+
+    return row;
   };
 
   /**
@@ -146,15 +154,14 @@ const FormRepliesScreen: React.FC = () => {
         />
         <NavigationTab
           text={ strings.navigationHeader.formsScreens.formDataScreen }
-          to=":formSlug/history"
+          to=":formId/history"
         />
       </NavigationTabContainer>
       <DataGrid
         loading={ loading }
         rows={ rows ?? [] }
         columns={ gridColumns ?? [] }
-        getRowId={ row => (row ? row.created : 1) }
-        autoHeight
+        getRowId={ row => (row.created) }
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
