@@ -31,7 +31,7 @@ const UsersTableGroups: FC<Props> = ({
    * 
    * @param event event
    */
-  const handleChange = (event: SelectChangeEvent<string[]>) => {
+  const handleMemberGroupSelectChange = (event: SelectChangeEvent<string[]>) => {
     const { target: { value } } = event;
     const newIds = typeof value === "string" ? value.split(",") : value;
     const removedIds = selectedGroupIds.filter(groupId => !newIds.includes(groupId));
@@ -58,7 +58,7 @@ const UsersTableGroups: FC<Props> = ({
         }}
         size="small"
         value={ selectedGroupIds }
-        onChange={ handleChange }
+        onChange={ handleMemberGroupSelectChange }
         input={
           <OutlinedInput
             id={ `${metaformMember.id}-groups-select-multiple-chip` }
