@@ -62,6 +62,7 @@ export interface Localized extends LocalizedStringsMethods {
     adminRepliesScreen: {
       fetchReplies: string;
       fetchFields: string;
+      deleteReply: string;
     }
     usersScreen: {
       loadMetaforms: string;
@@ -169,6 +170,8 @@ export interface Localized extends LocalizedStringsMethods {
     statusWaiting: string;
     statusProcessing: string;
     statusDone: string;
+    confirmDeleteReplyTitle: string;
+    confirmDeleteReplyText: string;
   }
 
   /**

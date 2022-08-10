@@ -49,7 +49,8 @@
     },
     "adminRepliesScreen": {
       "fetchReplies": "Fetching replies failed",
-      "fetchFields": "Fetching column fields failed"
+      "fetchFields": "Fetching column fields failed",
+      "deleteReply":"Deleting reply failed"
     },
     "usersScreen": {
       "loadMetaforms": "Error occurred while loading metaforms",
@@ -134,7 +135,9 @@
     "selectorShowAll": "Show all",
     "statusWaiting": "Waiting",
     "statusProcessing": "Processing",
-    "statusDone": "Done"
+    "statusDone": "Done",
+    "confirmDeleteReplyTitle": "Delete answer",
+    "confirmDeleteReplyText":"Are you sure you want to delete this answer?"
   },
 
   "publicFormsScreen": {

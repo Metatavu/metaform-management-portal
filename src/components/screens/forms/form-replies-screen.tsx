@@ -3,16 +3,15 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Api from "api";
 import { useApiClient } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
+import ConfirmDialog from "components/generic/confirm-dialog";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { MetaformField, MetaformFieldType, Reply } from "generated/client";
+import { Metaform, MetaformField, MetaformFieldType, Reply } from "generated/client";
 import strings from "localization/strings";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import { AdminFormRepliesScreenStack, AdminFormRepliesScreenText } from "styled/react-components/react-components";
-// import LocalizationUtils from "utils/localization-utils";
 
 /**
  * Form replies screen component
@@ -26,6 +25,10 @@ const FormRepliesScreen: React.FC = () => {
   const [ rows, setRows ] = useState<any[]>([]);
   const [ loading, setLoading ] = useState(false);
   const [ managementListColumns, setManagementListColumns ] = useState<MetaformField[]>();
+  const [ metaform, setMetaform ] = useState<Metaform>();
+  const [ replies, setReplies ] = useState<Reply[]>();
+  const [ deletableReplyId, setDeletableReplyId ] = useState<string | undefined>(undefined);
+  const [ showAllReplies, setShowAllReplies ] = useState(false);
 
   const useparams = useParams();
   const { formId } = useparams;
@@ -77,10 +80,13 @@ const FormRepliesScreen: React.FC = () => {
    * Return fields that include context "MANAGEMENT_LIST" 
    * 
    */
-  const getManagementListFields = async () => {
+  const getManagementListFields = async (metaformData: Metaform) => {
+    if (!metaformData) {
+      return;
+    }
+
     try {
-      const metaform = await metaformsApi.findMetaform({ metaformId: formId! });
-      const fieldData = (metaform.sections || [])
+      const fieldData = (metaformData.sections || [])
         .flatMap(section => section.fields || [])
         .filter(field => (field.contexts || []).includes("MANAGEMENT_LIST"));
       setManagementListColumns(fieldData);
@@ -91,17 +97,75 @@ const FormRepliesScreen: React.FC = () => {
   };
 
   /**
+   * Deletes a reply
+   * 
+   * @param replyId reply id
+   */
+  const deleteReply = async (replyId: string) => {
+    try {
+      if (!metaform || !metaform.id || !replyId) {
+        return;
+      }
+  
+      await repliesApi.deleteReply({
+        metaformId: metaform.id,
+        replyId: replyId
+      });
+
+      setReplies(replies?.filter(reply => reply.id !== replyId));
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminRepliesScreen.deleteReply, e);
+    }
+  };
+
+  /**
+ * Event handler for reply confirm dialog confirm
+ */
+  const onReplyDeleteConfirm = async () => {
+    if (deletableReplyId) {
+      deleteReply(deletableReplyId);
+    }
+
+    setDeletableReplyId(undefined);
+  };
+
+  /**
+   * Renders delete reply confirm dialog
+   */
+  const renderDeleteReplyConfirm = () => {
+    return (
+      <ConfirmDialog
+        onClose={ () => setDeletableReplyId(undefined) }
+        onCancel={ () => setDeletableReplyId(undefined) }
+        onConfirm={ onReplyDeleteConfirm }
+        cancelButtonText={ strings.generic.cancel }
+        positiveButtonText={ strings.generic.confirm }
+        title={ strings.repliesScreen.confirmDeleteReplyTitle }
+        text={ strings.repliesScreen.confirmDeleteReplyText }
+        open={ !!deletableReplyId }
+      />
+    );
+  };
+
+  /**
    * View setup
    */
   const setup = async () => {
     setLoading(true);
-  
+
     try {
-      const replies = await repliesApi.listReplies({ metaformId: formId! });
-      const fields = await getManagementListFields();
-      if (replies && fields) {
-        const replyRows = replies.map(reply => (buildRow(reply, fields)));
-        setRows(replyRows);
+      const metaformData = await metaformsApi.findMetaform({ metaformId: formId! });
+      const repliesData = await repliesApi.listReplies({ metaformId: formId! });
+      setMetaform(metaformData);
+      setReplies(repliesData);
+      const fields = await getManagementListFields(metaformData);
+      if (repliesData && fields) {
+        const replyRows = repliesData.map(reply => (buildRow(reply, fields)));
+        if (showAllReplies) {
+          setRows(replyRows);
+        } else {
+          setRows(replyRows.filter(row => row.status === "Odottaa"));
+        }
       }
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchReplies, e);
@@ -112,7 +176,7 @@ const FormRepliesScreen: React.FC = () => {
 
   useEffect(() => {
     setup();
-  }, []);
+  }, [showAllReplies]);
 
   const gridColumns = managementListColumns?.map<GridColDef>(column => ({
     field: column.name || "",
@@ -130,6 +194,7 @@ const FormRepliesScreen: React.FC = () => {
         <AdminFormRepliesScreenStack direction="row">
           <AdminFormRepliesScreenText>{ column.name ? params.row[column.name] : "" }</AdminFormRepliesScreenText>
         </AdminFormRepliesScreenStack>
+
       );
     }
   }));
@@ -140,7 +205,7 @@ const FormRepliesScreen: React.FC = () => {
   const renderToggleSwitch = () => (
     <AdminFormRepliesScreenStack direction="row">
       <Typography>{ strings.repliesScreen.selectorShowOpen }</Typography>
-      <FormControlLabel control={ <Switch defaultChecked/> } label={ undefined }/>
+      <FormControlLabel control={ <Switch onChange={() => { setShowAllReplies(!showAllReplies); }}/> } label={ undefined }/>
       <Typography>{ strings.repliesScreen.selectorShowAll }</Typography>
     </AdminFormRepliesScreenStack>
   );
@@ -166,6 +231,7 @@ const FormRepliesScreen: React.FC = () => {
         disableColumnSelector
         disableSelectionOnClick
       />
+      { renderDeleteReplyConfirm() }
     </>
   );
 };

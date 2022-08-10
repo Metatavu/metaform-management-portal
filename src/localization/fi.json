@@ -49,7 +49,8 @@
     },
     "adminRepliesScreen": {
       "fetchReplies": "Vastauksien hakemisessa tapahtui virhe",
-      "fetchFields": "Lomakekenttien hakemisessa tapahtui virhe"
+      "fetchFields": "Lomakekenttien hakemisessa tapahtui virhe",
+      "deleteReply":"Vastauksen poistaminen epäonnistui"
     },
     "usersScreen": {
       "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",
@@ -134,7 +135,9 @@
     "selectorShowAll": "Näytä kaikki",
     "statusWaiting": "Odottaa",
     "statusProcessing": "Käsittelyssä",
-    "statusDone": "Käsitelty"
+    "statusDone": "Käsitelty",
+    "confirmDeleteReplyTitle": "Vastauksen poistaminen",
+    "confirmDeleteReplyText":"Oletko varma, että haluat poistaa vastauksen?"
   },
 
   "publicFormsScreen": {
