@@ -1,6 +1,4 @@
-/* eslint-disable */
 import React, { FC } from "react";
-import { TextField } from "@mui/material";
 import { FilterSelector, FormFilterWrapper } from "../../styled/layouts/admin-layout";
 import strings from "localization/strings";
 import { Metaform, MetaformMemberGroup } from "generated/client";
@@ -20,13 +18,13 @@ interface Props {
 /**
  * Users filter
 */
-const UsersFilter: FC<Props> = ({ 
-  metaforms, 
-  memberGroups, 
-  selectedMetaformId, 
-  selectedMemberGroupId, 
-  setSelectedMetaformId, 
-  setSelectedMemberGroupId 
+const UsersFilter: FC<Props> = ({
+  metaforms,
+  memberGroups,
+  selectedMetaformId,
+  selectedMemberGroupId,
+  setSelectedMetaformId,
+  setSelectedMemberGroupId
 }: Props) => {
   /**
    * Handle selected metaform change
@@ -59,11 +57,11 @@ const UsersFilter: FC<Props> = ({
         {
           metaforms.map(metaform => {
             return (
-              <option 
+              <option
                 key={ `${metaform.id}-metaform`}
                 value={ metaform.id }
               >
-                  { metaform.title }
+                { metaform.title }
               </option>
             );
           })
@@ -83,12 +81,12 @@ const UsersFilter: FC<Props> = ({
         {
           memberGroups.map(metaformMemberGroup => {
             return (
-              <option 
+              <option
                 key={ `${metaformMemberGroup.id}-metaform-member-group`}
                 value={ metaformMemberGroup.id }
               >
-                  { metaformMemberGroup.displayName }
-                </option>
+                { metaformMemberGroup.displayName }
+              </option>
             );
           })
         }
