@@ -39,7 +39,7 @@ const UsersTable: FC<Props> = ({
         return true;
       }
 
-      return selectedGroup.memberIds.includes(member.id!!);
+      return selectedGroup.memberIds.includes(member.id!);
     })
     .map(member => {
       return {
