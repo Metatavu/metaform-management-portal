@@ -9,8 +9,6 @@ import React, { ChangeEventHandler } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
 import { DraggingMode } from "types";
 import MetaformUtils from "utils/metaform-utils";
-import FieldAddable from "./field-addable/field-addable";
-import AddableFieldRenderer from "./field-renderer/addable-field-renderer";
 
 /**
  * Component properties
