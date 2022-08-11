@@ -5,11 +5,13 @@ import { useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, Select, SelectChangeEvent, Stack, TextField } from "@mui/material";
 import { MetaformMember, MetaformMemberRole, MetaformMemberRoleFromJSON } from "generated/client";
 import * as EmailValidator from "email-validator";
+import GenericLoaderWrapper from "components/generic/generic-loader";
 
 /**
  * Interface representing component properties
  */
 interface Props {
+  loading: boolean;
   open: boolean;
   onCancel: () => void;
   onCreate: (member: MetaformMember) => void;
@@ -19,6 +21,7 @@ interface Props {
  * React component for add member dialog
  */
 const AddMemberGroupDialog: React.FC<Props> = ({
+  loading,
   open,
   onCancel,
   onCreate
@@ -118,9 +121,11 @@ const AddMemberGroupDialog: React.FC<Props> = ({
         <Button disableElevation variant="contained" onClick={ onCancel } color="secondary" autoFocus>
           { strings.userManagementScreen.addMemberDialog.cancelButton }
         </Button>
-        <Button onClick={ onCreateClick } color="primary" disabled={ !valid }>
-          { strings.userManagementScreen.addMemberDialog.createButton }
-        </Button>
+        <GenericLoaderWrapper loading={ loading }>
+          <Button onClick={ onCreateClick } color="primary" disabled={ !valid }>
+            { strings.userManagementScreen.addMemberDialog.createButton }
+          </Button>
+        </GenericLoaderWrapper>
       </DialogActions>
     </Dialog>
   );
