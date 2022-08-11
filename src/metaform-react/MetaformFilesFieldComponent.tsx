@@ -2,6 +2,7 @@ import { Box, FormControl, Input, InputLabel } from "@mui/material";
 import strings from "localization/strings";
 import React from "react";
 import { FilesButtonWrapper, FilesRowWrapper, HtmlFieldWrapper } from "styled/react-components/react-components";
+import theme from "theme";
 import { MetaformField } from "../generated/client/models";
 import { FieldValue, FileFieldValue, FileFieldValueItem } from "./types";
 
@@ -122,7 +123,7 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
   return (
     <Box
       style={{
-        border: "1px dashed rgba(0,0,0,0.5)",
+        border: `1px dashed ${theme.palette.grey[400]}`,
         width: "100%",
         borderRadius: "0.5rem",
         overflow: "hidden"
@@ -133,9 +134,9 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
         sx={{
           display: "flex",
           flex: 1,
-          backgroundColor: "rgba(0,0,0,0.1)",
+          backgroundColor: "rgba(0,0,0,0.07)",
           "&:hover": {
-            backgroundColor: "rgba(0,0,0,0.2)"
+            backgroundColor: "rgba(0,0,0,0.1)"
           }
         }}
       >
@@ -154,7 +155,8 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
           style={ notInteractive ?
             {
               pointerEvents: "none",
-              opacity: 0
+              opacity: 0,
+              height: 80
             } :
             {
               padding: 0,

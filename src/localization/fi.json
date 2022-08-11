@@ -13,7 +13,7 @@
     "close": "Sulje",
     "reload": "Lataa uudelleen",
     "show": "Näytä",
-    "addFilesText": "Tiputa tähän tai klikkaa tästä lisätäksesi liitteitä."
+    "addFilesText": "Tiputa tiedosto tähän, tai klikkaa tästä lisätäksesi liitteitä."
   },
 
   "errorHandling": {
