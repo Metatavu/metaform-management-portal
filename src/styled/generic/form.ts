@@ -13,7 +13,7 @@ export const FormContainer = styled(Box, {
   justifyContent: "center",
   
   "& .metaform": {
-    maxWidth: 1000,
+    maxWidth: 800,
     flex: 1,
     marginInline: theme.spacing(4),
     flexDirection: "column",

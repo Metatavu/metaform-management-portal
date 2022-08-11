@@ -1,7 +1,7 @@
 import { TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import strings from "localization/strings";
 import React, { ReactNode } from "react";
-import { AddRowButtonWrapper, TableNumberCellWrapper, TableTextCellWrapper } from "styled/react-components/react-components";
+import { AddRowButtonWrapper, TableNumberCellWrapper, TableTextCellWrapper, TableWrapper } from "styled/react-components/react-components";
 import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "../generated/client/models";
 import { FieldValue, IconName, TableFieldValue, TableFieldRowValue, TableFieldCellValue } from "./types";
 
@@ -131,7 +131,18 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
         InputProps={{
           style: style,
           readOnly: formReadOnly || field.readonly,
-          disableUnderline: true
+          disableUnderline: true,
+          sx: {
+            ".MuiOutlinedInput-notchedOutline": {
+              border: "none"
+            },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              border: "none"
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              border: "none"
+            }
+          }
         }}
         onChange={ (event: React.ChangeEvent<HTMLInputElement>) => onCellInputTextChange(rowNumber, column, event.target.value) }
       />
@@ -153,7 +164,18 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
         key={ column.name }
         InputProps={{
           readOnly: formReadOnly || field.readonly,
-          disableUnderline: true
+          disableUnderline: true,
+          sx: {
+            ".MuiOutlinedInput-notchedOutline": {
+              border: "none"
+            },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              border: "none"
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              border: "none"
+            }
+          }
         }}
         onChange={ (event: React.ChangeEvent<HTMLInputElement>) => onCellInputNumberChange(rowNumber, column, event.target.value) }
       />
@@ -249,7 +271,14 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
    */
   const renderHeaderColumn = (column: MetaformTableColumn) => {
     return (
-      <TableCell sx={{ textAlign: "left", padding: 0 }} key={ column.name }>
+      <TableCell
+        sx={{
+          textAlign: "left",
+          padding: 0,
+          borderBottom: "none"
+        }}
+        key={ column.name }
+      >
         { column.title }
       </TableCell>
     );
@@ -271,7 +300,7 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
   };
 
   return (
-    <div>
+    <TableWrapper>
       <table style={{ width: "100%" }}>
         { renderHeader() }
         { renderBody() }
@@ -279,7 +308,7 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
       <div>
         { renderAddRowButton() }
       </div>
-    </div>
+    </TableWrapper>
   );
 };
 

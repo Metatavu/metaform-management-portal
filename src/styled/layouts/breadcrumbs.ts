@@ -12,7 +12,7 @@ export const Wrapper = styled(Paper, {
   alignItems: "center",
   flex: 1,
   zIndex: theme.zIndex.drawer,
-  padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
+  padding: `${theme.spacing(1)} ${theme.spacing(4)}`,
   backgroundColor: theme.palette.primary.light,
   borderRadius: 0
 }));

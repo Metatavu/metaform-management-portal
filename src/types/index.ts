@@ -102,3 +102,13 @@ export enum ReplyStatus {
   PROCESSING = "processing",
   DONE = "done"
 }
+declare module "@mui/material/styles" {
+  interface CustomTheme {
+    logo: {
+      logoPath: string;
+    };
+  }
+
+  interface Theme extends CustomTheme {}
+  interface ThemeOptions extends CustomTheme {}
+}

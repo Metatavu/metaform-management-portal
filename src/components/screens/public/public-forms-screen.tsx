@@ -45,7 +45,10 @@ const PublicFormsScreen: React.FC = () => {
           {forms.map(form => (
             <ListItem key={form.slug}>
               <Link to={`/${form.slug}`}>
-                <ListItemText primary={form.title}/>
+                <ListItemText
+                  primary={form.title}
+                  primaryTypographyProps={{ variant: "h1" }}
+                />
               </Link>
             </ListItem>
           ))}
