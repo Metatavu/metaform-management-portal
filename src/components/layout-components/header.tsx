@@ -1,7 +1,6 @@
 import { Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useEffect } from "react";
 import { HeaderToolbar, Logo, Root } from "styled/layout-components/header";
-import theme from "theme";
 import { logout, selectKeycloak } from "features/auth-slice";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import strings from "localization/strings";
@@ -52,17 +51,34 @@ const Header: React.FC = ({
     <Root position="static">
       <HeaderToolbar>
         <Logo/>
-        <FormControl sx={{ maxWidth: 300 }}>
-          <InputLabel style={{ color: "white" }} id="user-email">{ strings.header.user }</InputLabel>
+        <FormControl sx={{ minWidth: 300 }}>
+          <InputLabel
+            style={{
+              color: "white"
+            }}
+            id="user-email"
+          >
+            { strings.header.user }
+          </InputLabel>
           <Select
             label={ strings.header.user }
             value={ userEmail }
-            IconComponent={ () => null }
             id="user-email"
             sx={{
-              color: "white",
-              backgroundColor: "transparent",
-              borderRadius: theme.shape.borderRadius
+              ".MuiSvgIcon-root": {
+                fill: "white !important"
+              },
+              ".MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(228, 219, 233, 0.5)"
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(228, 219, 233, 0.5)"
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(228, 219, 233, 0.5)"
+              },
+              color: "#fff",
+              borderRadius: "1rem"
             }}
             renderValue={ () => userEmail }
           >

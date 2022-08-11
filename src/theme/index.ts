@@ -159,16 +159,6 @@ export default createTheme({
         }
       }
     },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        notchedOutline: {
-          borderColor: "#fff !important",
-          ":hover": {
-            borderColor: "#fff"
-          }
-        }
-      }
-    },
     MuiAutocomplete: {
       styleOverrides: {
         root: {
@@ -178,13 +168,6 @@ export default createTheme({
           maxHeight: 50,
           display: "flex",
           alignItems: "center"
-        }
-      }
-    },
-    MuiFormControl: {
-      styleOverrides: {
-        root: {
-          width: "100%"
         }
       }
     }
