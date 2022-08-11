@@ -129,7 +129,8 @@
       "draftEditorScreen": {
         "title": "Draft editor",
         "description": "Editing the form"
-      }
+      },
+      "newFormButton": "Create new form"
     }
   },
 
@@ -251,6 +252,14 @@
     "confirmDeleteReplyText": "Are you sure that you wish to delete the reply?",
     "replyDeleted": "Reply deleted",
     "noTitle": "No title"
+  },
+
+  "editorScreen": {
+    "noMetaforms": "No Metaforms found",
+    "formVersion": "Form version",
+    "formCreatedAt": "Created at",
+    "formModifiedAt": "Modified at",
+    "formLastModifier": "Last modifier"
   },
 
   "emailDialog": {

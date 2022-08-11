@@ -170,6 +170,16 @@ export default createTheme({
           alignItems: "center"
         }
       }
+    },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          width: "100%"
+        }
+      },
+      defaultProps: {
+        elevation: 0
+      }
     }
   }
 

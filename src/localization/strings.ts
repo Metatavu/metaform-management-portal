@@ -161,6 +161,7 @@ export interface Localized extends LocalizedStringsMethods {
         title: string;
         description: string;
       };
+      newFormButton: string;
     };
   };
 
@@ -290,6 +291,17 @@ export interface Localized extends LocalizedStringsMethods {
     replyNotFound: string;
     replyDeleted: string;
     noTitle: string;
+  };
+
+  /**
+   * Translations related to editor screen
+   */
+  editorScreen: {
+    noMetaforms: string;
+    formVersion: string;
+    formCreatedAt: string;
+    formModifiedAt: string;
+    formLastModifier: string;
   };
 
   /**

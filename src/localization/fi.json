@@ -129,7 +129,8 @@
       "draftEditorScreen": {
         "title": "luonnoseditori",
         "description": "Lomakkeen muokkaus"
-      }
+      },
+      "newFormButton": "Luo uusi lomake"
     }
   },
 
@@ -250,6 +251,14 @@
     "replyNotFound": "Vastausta ei löytynyt järjestelmästä",
     "replyDeleted": "Vastaus poistettu",
     "noTitle": "Ei otsikkoa"
+  },
+
+  "editorScreen": {
+    "noMetaforms": "Metaformeja ei löytynyt",
+    "formVersion": "Lomakeversio",
+    "formCreatedAt": "Luotu",
+    "formModifiedAt": "Muokattu",
+    "formLastModifier": "Viimeisin muokkaaja"
   },
 
   "emailDialog": {
