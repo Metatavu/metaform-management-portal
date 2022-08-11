@@ -54,6 +54,17 @@ export const MetaformNumberFieldComponent: React.FC<Props> = ({
       title={ field.title }
       required={ field.required }
       InputProps={{
+        sx: {
+          ".MuiOutlinedInput-notchedOutline": {
+            border: "none"
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            border: "none"
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            border: "none"
+          }
+        },
         readOnly: formReadOnly || field.readonly,
         inputProps: {
           min: field.min,

@@ -10,6 +10,10 @@ const { breakpoints, palette } = createTheme();
  */
 export default createTheme({
 
+  logo: {
+    logoPath: "/images/essote_logo.png"
+  },
+
   palette: {
     primary: {
       main: "#4FA3DF",
@@ -21,10 +25,10 @@ export default createTheme({
     },
     text: {
       primary: "#333333",
-      secondary: "#222"
+      secondary: "#bdbdbd"
     },
     background: {
-      default: "#405da3",
+      default: "#375AA3",
       paper: "#ffffff"
     }
   },
@@ -63,6 +67,10 @@ export default createTheme({
     },
     body2: {
       fontSize: 14
+    },
+    subtitle1: {
+      color: palette.text.secondary,
+      fontWeight: 600
     },
     subtitle2: {
       fontSize: 14,
@@ -136,19 +144,6 @@ export default createTheme({
         }
       }
     },
-    MuiListItemText: {
-      defaultProps: {
-        primaryTypographyProps: {
-          fontSize: 24,
-          fontWeight: 600
-        },
-        secondaryTypographyProps: {
-          fontSize: 16,
-          fontWeight: 600,
-          color: palette.grey[400]
-        }
-      }
-    },
     MuiButton: {
       defaultProps: {
         variant: "outlined"
@@ -164,16 +159,6 @@ export default createTheme({
         }
       }
     },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        notchedOutline: {
-          borderColor: "#fff !important",
-          ":hover": {
-            borderColor: "#fff"
-          }
-        }
-      }
-    },
     MuiAutocomplete: {
       styleOverrides: {
         root: {
@@ -183,20 +168,6 @@ export default createTheme({
           maxHeight: 50,
           display: "flex",
           alignItems: "center"
-        }
-      }
-    },
-    MuiFormControl: {
-      styleOverrides: {
-        root: {
-          width: "100%"
-        }
-      }
-    },
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          borderBottom: "none"
         }
       }
     }

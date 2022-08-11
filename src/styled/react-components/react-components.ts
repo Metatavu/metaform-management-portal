@@ -12,7 +12,7 @@ export const HtmlAutocompleteWrapper = styled(Autocomplete, {
   width: "100%",
   height: "auto;",
   borderRadius: "0.5em",
-  border: "1px solid rgba(0, 0, 0, .5)",
+  border: `1px solid ${theme.palette.grey[400]}`,
   padding: "0.5rem 1rem"
 }));
 
@@ -68,10 +68,18 @@ export const FilesRowWrapper = styled(Stack, {
   label: "files-row-wrapper"
 })(() => ({
   display: "flex",
-  paddingTop: "0.5rem",
-  paddingBottom: "0.5rem",
+  padding: "0.5rem",
   alignItems: "center",
   borderBottom: "1px dashed #aaa"
+}));
+
+/**
+ * Styled table component
+ */
+export const TableWrapper = styled(Stack, {
+  label: "table-wrapper"
+})(() => ({
+  display: "flex"
 }));
 
 /**
@@ -94,7 +102,7 @@ export const SelectFieldWrapper = styled(FormControl, {
 })(() => ({
   width: "100%",
   borderRadius: "0.5em",
-  border: "1px solid rgba(0, 0, 0, .5)",
+  border: `1px solid ${theme.palette.grey[400]}`,
   maxHeight: 50,
   justifyContent: "center",
   overflow: "hidden"
@@ -106,7 +114,9 @@ export const SelectFieldWrapper = styled(FormControl, {
 export const RadioFieldWrapper = styled(Box, {
   label: "radio-field-wrapper"
 })(() => ({
-  width: "100%"
+  width: "100%",
+  display: "flex",
+  flexDirection: "column"
 }));
 
 /*
@@ -116,7 +126,7 @@ export const UrlFieldWrapper = styled(Input, {
   label: "url-field-wrapper"
 })(() => ({
   flex: 1,
-  border: "1px solid rgba(0, 0, 0, .5)",
+  border: `1px solid ${theme.palette.grey[400]}`,
   borderRadius: "0.5rem",
   padding: "0.5rem 1rem"
 }));
@@ -129,7 +139,7 @@ export const TextFieldWrapper = styled(Input, {
 })(() => ({
   flex: 1,
   width: "100%",
-  border: "1px solid rgba(0, 0, 0, .5)",
+  border: `1px solid ${theme.palette.grey[400]}`,
   borderRadius: "0.5rem",
   backgroundColor: "#fff",
   padding: "0.5rem 1rem"
@@ -142,10 +152,9 @@ export const MemoFieldWrapper = styled(TextField, {
   label: "memo-field-wrapper"
 })(() => ({
   backgroundColor: "white",
-  border: "1px solid rgba(0, 0, 0, .5)",
+  border: `1px solid ${theme.palette.grey[400]}`,
   borderRadius: "0.5rem",
   width: "100%",
-  padding: "0.5rem 1rem",
   minHeight: "5rem"
 }));
 
@@ -158,11 +167,13 @@ export const DateFieldWrapper = styled(Box, {
   flex: 1,
   width: "100%",
   height: "auto",
-  border: "1px solid rgba(0, 0, 0, .5)",
+  border: `1px solid ${theme.palette.grey[400]}`,
   borderRadius: "0.5rem",
   minHeight: 50,
   display: "flex",
-  alignItems: "center"
+  flexDirection: "column",
+  alignItems: "space-between",
+  justifyContent: "center"
 }));
 
 /**
@@ -173,7 +184,7 @@ export const NumberFieldWrapper = styled(TextField, {
 })(() => ({
   width: "100%",
   fontSize: "1em",
-  border: "1px solid rgba(0, 0, 0, .5)",
+  border: `1px solid ${theme.palette.grey[400]}`,
   borderRadius: "0.5rem",
   padding: "0.5 rem 1 rem",
   overflow: "hidden",
@@ -188,7 +199,7 @@ export const EmailFieldWrapper = styled(TextField, {
 })(() => ({
   width: "100%",
   fontSize: "1em",
-  border: "1px solid rgba(0, 0, 0, .5)",
+  border: `1px solid ${theme.palette.grey[400]}`,
   borderRadius: "0.5rem",
   padding: "0.5 rem 1 rem",
   overflow: "hidden",
@@ -228,7 +239,6 @@ export const TableNumberCellWrapper = styled(TextField, {
 })(() => ({
   width: "100%",
   fontSize: "1em",
-  border: "1px dashed rgba(0, 0, 0, .3)",
   backgroundColor: "rgba(0,0,0,0.07)",
   overflow: "auto"
 }));

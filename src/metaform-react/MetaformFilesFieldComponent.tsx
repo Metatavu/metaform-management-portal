@@ -1,7 +1,8 @@
-import { Input } from "@mui/material";
+import { Box, FormControl, Input, InputLabel } from "@mui/material";
 import strings from "localization/strings";
 import React from "react";
 import { FilesButtonWrapper, FilesRowWrapper, HtmlFieldWrapper } from "styled/react-components/react-components";
+import theme from "theme";
 import { MetaformField } from "../generated/client/models";
 import { FieldValue, FileFieldValue, FileFieldValueItem } from "./types";
 
@@ -120,21 +121,63 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
   }
 
   return (
-    <>
+    <Box
+      style={{
+        border: `1px dashed ${theme.palette.grey[400]}`,
+        width: "100%",
+        borderRadius: "0.5rem",
+        overflow: "hidden"
+      }}
+    >
       { valueItems }
-      <Input
-        style={ notInteractive ? { pointerEvents: "none" } : { marginTop: "0.5rem" }}
-        type="file"
-        value=""
-        disableUnderline
-        placeholder={ field.placeholder }
-        id={ fieldId }
-        aria-labelledby={ fieldLabelId }
-        name={ field.name }
-        onChange={ onChange }
-        onFocus={ onFocus }
-      />
-    </>
+      <FormControl
+        sx={{
+          display: "flex",
+          flex: 1,
+          backgroundColor: "rgba(0,0,0,0.07)",
+          "&:hover": {
+            backgroundColor: "rgba(0,0,0,0.1)"
+          }
+        }}
+      >
+        <InputLabel
+          shrink={ false }
+          style={{
+            width: "100%",
+            textAlign: "center",
+            height: "100%",
+            paddingTop: 15
+          }}
+        >
+          { strings.generic.addFilesText }
+        </InputLabel>
+        <Input
+          style={ notInteractive ?
+            {
+              pointerEvents: "none",
+              opacity: 0,
+              height: 80
+            } :
+            {
+              padding: 0,
+              margin: 0,
+              opacity: 0,
+              width: "100%",
+              height: 80
+            }
+          }
+          type="file"
+          value=""
+          disableUnderline
+          placeholder={ field.placeholder }
+          id={ fieldId }
+          aria-labelledby={ fieldLabelId }
+          name={ field.name }
+          onChange={ onChange }
+          onFocus={ onFocus }
+        />
+      </FormControl>
+    </Box>
   );
 };
 

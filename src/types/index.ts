@@ -96,3 +96,14 @@ export enum ApplicationRoles {
   USER = "user",
   ANONYMOUS = "anonymous"
 }
+
+declare module "@mui/material/styles" {
+  interface CustomTheme {
+    logo: {
+      logoPath: string;
+    };
+  }
+
+  interface Theme extends CustomTheme {}
+  interface ThemeOptions extends CustomTheme {}
+}

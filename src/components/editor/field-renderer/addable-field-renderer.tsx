@@ -57,7 +57,19 @@ const AddableFieldRenderer: React.FC<Prop> = ({
         views={["day", "month", "year"]}
         renderInput={ params =>
           <TextField
-            style={{ pointerEvents: "none" }}
+            sx={{
+              pointerEvents: "none",
+              width: "100%",
+              ".MuiOutlinedInput-notchedOutline": {
+                border: "none"
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                border: "none"
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                border: "none"
+              }
+            }}
             label={ strings.formComponent.dateTimePicker }
             { ...params }
           />
@@ -76,7 +88,19 @@ const AddableFieldRenderer: React.FC<Prop> = ({
         value={ new Date() }
         renderInput={ params =>
           <TextField
-            style={{ pointerEvents: "none" }}
+            sx={{
+              pointerEvents: "none",
+              width: "100%",
+              ".MuiOutlinedInput-notchedOutline": {
+                border: "none"
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                border: "none"
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                border: "none"
+              }
+            }}
             label={ strings.formComponent.dateTimePicker }
             { ...params }
           />

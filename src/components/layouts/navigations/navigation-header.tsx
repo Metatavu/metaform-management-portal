@@ -48,7 +48,9 @@ const NavigationHeader: React.FC = () => {
     <HeaderNavigationWrapper direction="row">
       <ListItemText
         primary={ title }
+        primaryTypographyProps={{ variant: "h1" }}
         secondary={ description }
+        secondaryTypographyProps={{ variant: "subtitle1" }}
       />
       { renderNavigationLinks() }
     </HeaderNavigationWrapper>
