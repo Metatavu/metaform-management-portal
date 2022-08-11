@@ -143,19 +143,6 @@ export default createTheme({
         }
       }
     },
-    MuiListItemText: {
-      defaultProps: {
-        primaryTypographyProps: {
-          fontSize: 24,
-          fontWeight: 600
-        },
-        secondaryTypographyProps: {
-          fontSize: 16,
-          fontWeight: 600,
-          color: palette.grey[400]
-        }
-      }
-    },
     MuiButton: {
       defaultProps: {
         variant: "outlined"
@@ -197,13 +184,6 @@ export default createTheme({
       styleOverrides: {
         root: {
           width: "100%"
-        }
-      }
-    },
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          borderBottom: "none"
         }
       }
     }
