@@ -1,5 +1,6 @@
+/* eslint-disable react/no-unstable-nested-components */
 import { FormControlLabel, Switch, Typography } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Api from "api";
 import { useApiClient } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
@@ -12,6 +13,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import { AdminFormRepliesScreenStack, AdminFormRepliesScreenText } from "styled/react-components/react-components";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 /**
  * Form replies screen component
@@ -73,12 +75,13 @@ const FormRepliesScreen: React.FC = () => {
       }
     });
 
+    row.replyId = reply.id!;
+
     return row;
   };
 
   /**
    * Return fields that include context "MANAGEMENT_LIST" 
-   * 
    */
   const getManagementListFields = async (metaformData: Metaform) => {
     if (!metaformData) {
@@ -94,57 +97,6 @@ const FormRepliesScreen: React.FC = () => {
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchFields, e);
     }
-  };
-
-  /**
-   * Deletes a reply
-   * 
-   * @param replyId reply id
-   */
-  const deleteReply = async (replyId: string) => {
-    try {
-      if (!metaform || !metaform.id || !replyId) {
-        return;
-      }
-  
-      await repliesApi.deleteReply({
-        metaformId: metaform.id,
-        replyId: replyId
-      });
-
-      setReplies(replies?.filter(reply => reply.id !== replyId));
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.adminRepliesScreen.deleteReply, e);
-    }
-  };
-
-  /**
- * Event handler for reply confirm dialog confirm
- */
-  const onReplyDeleteConfirm = async () => {
-    if (deletableReplyId) {
-      deleteReply(deletableReplyId);
-    }
-
-    setDeletableReplyId(undefined);
-  };
-
-  /**
-   * Renders delete reply confirm dialog
-   */
-  const renderDeleteReplyConfirm = () => {
-    return (
-      <ConfirmDialog
-        onClose={ () => setDeletableReplyId(undefined) }
-        onCancel={ () => setDeletableReplyId(undefined) }
-        onConfirm={ onReplyDeleteConfirm }
-        cancelButtonText={ strings.generic.cancel }
-        positiveButtonText={ strings.generic.confirm }
-        title={ strings.repliesScreen.confirmDeleteReplyTitle }
-        text={ strings.repliesScreen.confirmDeleteReplyText }
-        open={ !!deletableReplyId }
-      />
-    );
   };
 
   /**
@@ -178,26 +130,106 @@ const FormRepliesScreen: React.FC = () => {
     setup();
   }, [showAllReplies]);
 
-  const gridColumns = managementListColumns?.map<GridColDef>(column => ({
-    field: column.name || "",
-    headerName: column.title,
-    flex: 1,
-    renderHeader: params => {
-      return (
-        <AdminFormRepliesScreenStack direction="row">
-          <AdminFormRepliesScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormRepliesScreenText>
-        </AdminFormRepliesScreenStack>
-      );
-    },
-    renderCell: params => {
-      return (
-        <AdminFormRepliesScreenStack direction="row">
-          <AdminFormRepliesScreenText>{ column.name ? params.row[column.name] : "" }</AdminFormRepliesScreenText>
-        </AdminFormRepliesScreenStack>
-
-      );
+  /**
+   * Returns a list of columns
+   * 
+   * @returns management list columns
+   */
+  const getGridColumns = () => {
+    if (!managementListColumns) {
+      return;
     }
-  }));
+
+    const gridColumns = managementListColumns.map<GridColDef>(column => ({
+      field: column.name || "",
+      headerName: column.title,
+      allowProps: true,
+      flex: 1,
+      renderHeader: params => {
+        return (
+          <AdminFormRepliesScreenStack direction="row">
+            <AdminFormRepliesScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormRepliesScreenText>
+          </AdminFormRepliesScreenStack>
+        );
+      },
+      renderCell: params => {
+        return (
+          <AdminFormRepliesScreenStack direction="row">
+            <AdminFormRepliesScreenText>{ column.name ? params.row[column.name] : "" }</AdminFormRepliesScreenText>
+          </AdminFormRepliesScreenStack>
+  
+        );
+      }
+    }));
+
+    gridColumns.push({
+      field: "actions",
+      type: "actions",
+      width: 80,
+      getActions: (params: { row: any; }) => [
+        <GridActionsCellItem
+          icon={ <DeleteIcon/> }
+          onClick={ () => setDeletableReplyId(params.row.replyId) }
+          label={ strings.generic.delete }
+          showInMenu
+        />
+      ]
+    } as GridColDef);
+
+    return gridColumns;
+  };
+
+  /**
+   * Deletes a reply
+   * 
+   * @param replyId reply id
+   */
+  const deleteReply = async (replyId: string) => {
+    try {
+      if (!metaform || !metaform.id || !replyId) {
+        return;
+      }
+    
+      await repliesApi.deleteReply({
+        metaformId: metaform.id,
+        replyId: replyId
+      });
+  
+      setReplies(replies?.filter(reply => reply.id !== replyId));
+      getGridColumns();
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminRepliesScreen.deleteReply, e);
+    }
+  };
+  
+  /**
+   * Event handler for reply confirm dialog confirm
+   */
+  const onReplyDeleteConfirm = async () => {
+    if (deletableReplyId) {
+      deleteReply(deletableReplyId);
+    }
+  
+    setDeletableReplyId(undefined);
+  };
+  
+  /**
+     * Renders delete reply confirm dialog
+     */
+  const renderDeleteReplyConfirm = () => {
+    return (
+      <ConfirmDialog
+        onClose={ () => setDeletableReplyId(undefined) }
+        onCancel={ () => setDeletableReplyId(undefined) }
+        onConfirm={ onReplyDeleteConfirm }
+        cancelButtonText={ strings.generic.cancel }
+        positiveButtonText={ strings.generic.confirm }
+        title={ strings.repliesScreen.confirmDeleteReplyTitle }
+        text={ strings.repliesScreen.confirmDeleteReplyText }
+        open={ !!deletableReplyId }
+      />
+    );
+  };
   
   /**
    * Render toggle switch for not processed/all replies
@@ -225,7 +257,7 @@ const FormRepliesScreen: React.FC = () => {
       <DataGrid
         loading={ loading }
         rows={ rows ?? [] }
-        columns={ gridColumns ?? [] }
+        columns={ getGridColumns() ?? [] }
         getRowId={ row => (row.created) }
         disableColumnMenu
         disableColumnSelector
