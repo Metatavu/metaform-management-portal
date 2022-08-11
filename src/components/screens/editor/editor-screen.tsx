@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Button, Divider, List, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, Box, AccordionSummary, Button, Divider, List, Typography } from "@mui/material";
 import ListIcon from "@mui/icons-material/List";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -15,7 +15,6 @@ import NavigationTab from "components/layouts/navigations/navigation-tab";
 import { Metaform, MetaformVersion } from "generated/client";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Box } from "@mui/system";
 
 /**
  * Interface for single Metaform row
@@ -240,9 +239,7 @@ const EditorScreen: React.FC = () => {
             text={ strings.navigationHeader.editorScreens }
           />
           <Button
-            sx={{
-              height: "50%", width: "50%", textAlign: "flex-end"
-            }}
+            sx={{ height: "50%", width: "50%" }}
             onClick={ handleSettingsClick }
           >
             { strings.navigationHeader.editorScreens.newFormButton }
