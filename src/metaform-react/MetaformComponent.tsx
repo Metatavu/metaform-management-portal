@@ -52,7 +52,7 @@ const MetaformComponent: React.FC<Props> = ({
   onFileDelete,
   onValidationErrorsChange
 }) => {
-  const metaformId = form.id ? `${form.id}-` : "";
+  const metaformId = form.id ? `${form.id}` : "";
   const metaformSectionKeyPrefix = `metaform-${metaformId}`;
 
   const [ validationErrors, setValidationErrors ] = useState({});
