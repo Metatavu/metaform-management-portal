@@ -2,7 +2,7 @@
 import { FormControlLabel, Switch, Typography } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Api from "api";
-import { useApiClient } from "app/hooks";
+import { useApiClient, useAppSelector } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
 import ConfirmDialog from "components/generic/confirm-dialog";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
@@ -14,12 +14,15 @@ import { useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import { AdminFormRepliesScreenStack, AdminFormRepliesScreenText } from "styled/react-components/react-components";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { selectKeycloak } from "features/auth-slice";
+import { ApplicationRoles, ReplyStatus } from "types";
 
 /**
  * Form replies screen component
  */
 const FormRepliesScreen: React.FC = () => {
   const errorContext = useContext(ErrorContext);
+  const keycloak = useAppSelector(selectKeycloak);
   
   const apiClient = useApiClient(Api.getApiClient);
   const { repliesApi, metaformsApi } = apiClient;
@@ -28,7 +31,6 @@ const FormRepliesScreen: React.FC = () => {
   const [ loading, setLoading ] = useState(false);
   const [ managementListColumns, setManagementListColumns ] = useState<MetaformField[]>();
   const [ metaform, setMetaform ] = useState<Metaform>();
-  const [ replies, setReplies ] = useState<Reply[]>();
   const [ deletableReplyId, setDeletableReplyId ] = useState<string | undefined>(undefined);
   const [ showAllReplies, setShowAllReplies ] = useState(false);
 
@@ -42,6 +44,8 @@ const FormRepliesScreen: React.FC = () => {
    */
   const buildRow = (reply: Reply, fields: MetaformField[]) => {
     const row : { [key: string]: string | number } = {};
+    
+    row.replyId = reply.id!;
 
     fields.forEach(field => {
       const replyData = reply.data;
@@ -75,8 +79,6 @@ const FormRepliesScreen: React.FC = () => {
       }
     });
 
-    row.replyId = reply.id!;
-
     return row;
   };
 
@@ -100,38 +102,8 @@ const FormRepliesScreen: React.FC = () => {
   };
 
   /**
-   * View setup
-   */
-  const setup = async () => {
-    setLoading(true);
-
-    try {
-      const metaformData = await metaformsApi.findMetaform({ metaformId: formId! });
-      const repliesData = await repliesApi.listReplies({ metaformId: formId! });
-      setMetaform(metaformData);
-      setReplies(repliesData);
-      const fields = await getManagementListFields(metaformData);
-      if (repliesData && fields) {
-        const replyRows = repliesData.map(reply => (buildRow(reply, fields)));
-        if (showAllReplies) {
-          setRows(replyRows);
-        } else {
-          setRows(replyRows.filter(row => row.status === "Odottaa"));
-        }
-      }
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchReplies, e);
-    }
-  
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    setup();
-  }, [showAllReplies]);
-
-  /**
    * Returns a list of columns
+   * Adds delete button column if user has realm role metaform-admin
    * 
    * @returns management list columns
    */
@@ -162,20 +134,22 @@ const FormRepliesScreen: React.FC = () => {
       }
     }));
 
-    gridColumns.push({
-      field: "actions",
-      type: "actions",
-      width: 80,
-      getActions: (params: { row: any; }) => [
-        <GridActionsCellItem
-          icon={ <DeleteIcon/> }
-          onClick={ () => setDeletableReplyId(params.row.replyId) }
-          label={ strings.generic.delete }
-          showInMenu
-        />
-      ]
-    } as GridColDef);
-
+    if (keycloak?.hasRealmRole(ApplicationRoles.METAFORM_ADMIN)) {
+      gridColumns.push({
+        field: "actions",
+        type: "actions",
+        width: 80,
+        getActions: (params: { row: any; }) => [
+          <GridActionsCellItem
+            icon={ <DeleteIcon/> }
+            onClick={ () => setDeletableReplyId(params.row.replyId) }
+            label={ strings.generic.delete }
+            showInMenu
+          />
+        ]
+      } as GridColDef);
+    }
+    
     return gridColumns;
   };
 
@@ -185,6 +159,8 @@ const FormRepliesScreen: React.FC = () => {
    * @param replyId reply id
    */
   const deleteReply = async (replyId: string) => {
+    setLoading(true);
+
     try {
       if (!metaform || !metaform.id || !replyId) {
         return;
@@ -195,15 +171,16 @@ const FormRepliesScreen: React.FC = () => {
         replyId: replyId
       });
   
-      setReplies(replies?.filter(reply => reply.id !== replyId));
-      getGridColumns();
+      setRows(rows?.filter(row => row.replyId !== replyId));
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.deleteReply, e);
     }
+
+    setLoading(false);
   };
   
   /**
-   * Event handler for reply confirm dialog confirm
+   * Event handler for delete reply dialog confirm
    */
   const onReplyDeleteConfirm = async () => {
     if (deletableReplyId) {
@@ -212,6 +189,36 @@ const FormRepliesScreen: React.FC = () => {
   
     setDeletableReplyId(undefined);
   };
+
+  /**
+   * Replies screen setup
+   */
+  const setup = async () => {
+    setLoading(true);
+
+    try {
+      const metaformData = await metaformsApi.findMetaform({ metaformId: formId! });
+      const repliesData = await repliesApi.listReplies({ metaformId: formId! });
+      setMetaform(metaformData);
+      const fields = await getManagementListFields(metaformData);
+      if (repliesData && fields) {
+        const replyRows = repliesData.map(reply => (buildRow(reply, fields)));
+        if (showAllReplies) {
+          setRows(replyRows);
+        } else {
+          setRows(replyRows.filter(row => row.status === ReplyStatus.WAITING));
+        }
+      }
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchReplies, e);
+    }
+  
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    setup();
+  }, [showAllReplies]);
   
   /**
      * Renders delete reply confirm dialog
