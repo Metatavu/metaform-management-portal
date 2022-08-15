@@ -6,7 +6,6 @@ import * as EmailValidator from "email-validator";
 import VisibileIfEvaluator from "./VisibleIfEvaluator";
 import ContextUtils from "../utils/context-utils";
 import deepEqual from "fast-deep-equal";
-import { v4 as uuid } from "uuid";
 
 /**
  * Component props
@@ -53,13 +52,7 @@ const MetaformComponent: React.FC<Props> = ({
   onFileDelete,
   onValidationErrorsChange
 }) => {
-  const [ metaformId, setMetaformId ] = React.useState("");
-  
-  useEffect(() => {
-    const prefix = `metaform-${form.id ? `${form.id}-` : ""}`;
-    setMetaformId(`${prefix}${uuid()}`);
-  }, [ form.id ]);
-
+  const metaformId = `metaform-${form.id ? `${form.id}-` : ""}`;
   const [ validationErrors, setValidationErrors ] = useState({});
 
   /**
