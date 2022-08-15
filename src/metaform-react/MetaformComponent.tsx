@@ -52,7 +52,9 @@ const MetaformComponent: React.FC<Props> = ({
   onFileDelete,
   onValidationErrorsChange
 }) => {
-  const metaformId = `metaform-${form.id ? `${form.id}-` : ""}`;
+  const metaformId = form.id ? `${form.id}-` : "";
+  const metaformSectionKeyPrefix = `metaform-${metaformId}`;
+
   const [ validationErrors, setValidationErrors ] = useState({});
 
   /**
@@ -152,7 +154,7 @@ const MetaformComponent: React.FC<Props> = ({
 
           return (
             <MetaformSectionComponent
-              key={`${metaformId}-${sectionId}`}
+              key={`${metaformSectionKeyPrefix}-${sectionId}`}
               validationErrors={ validationErrors }
               renderBeforeField={ renderBeforeField }
               datePicker={ datePicker }
