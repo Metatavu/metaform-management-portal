@@ -126,6 +126,10 @@
     "editorScreens": {
       "title": "Editors",
       "description": "Edit forms and create new forms.",
+      "editorScreen": {
+        "title": "Select form",
+        "description": "Select form to edit, or create new form."
+      },
       "draftEditorScreen": {
         "title": "Draft editor",
         "description": "Editing the form"

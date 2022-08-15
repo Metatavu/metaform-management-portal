@@ -126,6 +126,10 @@
     "editorScreens": {
       "title": "Editori",
       "description": "Lomakkeiden muokkaus ja uusien lomakkeiden luominen.",
+      "editorScreen": {
+        "title": "Valitse lomake",
+        "description": "Valitse editoitava lomake, tai luo uusi lomake."
+      },
       "draftEditorScreen": {
         "title": "luonnoseditori",
         "description": "Lomakkeen muokkaus"

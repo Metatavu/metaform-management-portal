@@ -157,6 +157,10 @@ export interface Localized extends LocalizedStringsMethods {
     editorScreens: {
       title: string;
       description: string;
+      editorScreen: {
+        title: string;
+        description: string;
+      },
       draftEditorScreen: {
         title: string;
         description: string;

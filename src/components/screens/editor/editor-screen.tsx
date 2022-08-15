@@ -1,4 +1,5 @@
-import { Accordion, AccordionDetails, Box, AccordionSummary, Button, Divider, List, Typography } from "@mui/material";
+/* eslint-disable */
+import { Accordion, AccordionDetails, AccordionSummary, Divider, List, Typography } from "@mui/material";
 import ListIcon from "@mui/icons-material/List";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -12,9 +13,11 @@ import React, { useContext, useEffect, useState } from "react";
 import Api from "api";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
-import { Metaform, MetaformVersion } from "generated/client";
+import { Metaform, MetaformVersion, MetaformVersionType } from "generated/client";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { NewUserButton } from "styled/layouts/admin-layout";
+import { StarBorderRounded } from "@mui/icons-material";
 
 /**
  * Interface for single Metaform row
@@ -59,13 +62,6 @@ const EditorScreen: React.FC = () => {
     setLoading(false);
   };
 
-  /**
-   * Handles settings button click
-   */
-  const handleSettingsClick = () => {
-
-  };
-
   const columns: GridColDef[] = [
     {
       field: "version",
@@ -75,14 +71,17 @@ const EditorScreen: React.FC = () => {
         return (
           <AdminFormListStack direction="row">
             <ListIcon style={{ fill: "darkgrey" }}/>
-            <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
+            <AdminFormTypographyField>{ params.colDef.headerName }</AdminFormTypographyField>
           </AdminFormListStack>
         );
       },
       renderCell: params => {
         return (
           <AdminFormListStack direction="row">
-            <ListIcon style={{ fill: "darkgrey" }}/>
+            { params.row.type === MetaformVersionType.Archived
+              ? <ListIcon style={{ fill: "darkgrey" }}/>
+              : <StarBorderRounded style={{ fill: "darkgrey" }}/>
+            }
             <AdminFormTypographyField>{ params.row.type.toString() }</AdminFormTypographyField>
           </AdminFormListStack>
         );
@@ -153,17 +152,6 @@ const EditorScreen: React.FC = () => {
     }
   ];
 
-  /**
-   * Sorts MetaformVersions by date descending
-   * 
-   * @param metaformVersions MetaformVersion[]
-   * @returns MetaformVersion
-   */
-  const sortMetaformVersions = (metaformVersions: MetaformVersion[]) => {
-    const sortedMetaformVersions = metaformVersions.sort((versionA, versionB) => Number(versionB.createdAt!) - Number(versionA.createdAt!));
-    return sortedMetaformVersions;
-  };
-
   useEffect(() => {
     loadMetaforms();
   }, []);
@@ -182,17 +170,16 @@ const EditorScreen: React.FC = () => {
             disableGutters
           >
             <AccordionSummary>
-              <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ metaformRow.metaform.title ?? "No title on Metaform" }</AdminFormTypographyField>
+              <AdminFormTypographyField>{ metaformRow.metaform.title ?? "No title on Metaform" }</AdminFormTypographyField>
               <SettingsIcon
                 style={{ fill: "darkgrey" }}
-                onClick={ handleSettingsClick }
               />
               <KeyboardArrowDownIcon style={{ fill: "darkgrey " }}/>
             </AccordionSummary>
             <AccordionDetails>
               <DataGrid
                 loading={ loading }
-                rows={ sortMetaformVersions(metaformRow.versions) }
+                rows={ metaformRow.versions }
                 columns={ columns }
                 autoHeight
                 disableColumnMenu
@@ -234,18 +221,14 @@ const EditorScreen: React.FC = () => {
   return (
     <>
       <NavigationTabContainer>
-        <Box sx={{ display: "flex" }}>
-          <NavigationTab
-            text={ strings.navigationHeader.editorScreens }
-          />
-          <Button
-            sx={{ height: "50%", width: "50%" }}
-            onClick={ handleSettingsClick }
-          >
-            { strings.navigationHeader.editorScreens.newFormButton }
-            <AddIcon/>
-          </Button>
-        </Box>
+        <NavigationTab
+          text={ strings.navigationHeader.editorScreens.editorScreen }
+        />
+        <NewUserButton
+          endIcon={ <AddIcon/> }
+        >
+          { strings.navigationHeader.editorScreens.newFormButton }
+        </NewUserButton>
       </NavigationTabContainer>
       <Divider/>
       { renderMetaformList() }
