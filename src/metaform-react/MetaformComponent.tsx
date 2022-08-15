@@ -52,16 +52,21 @@ const MetaformComponent: React.FC<Props> = ({
   onFileDelete,
   onValidationErrorsChange
 }) => {
+  const [ metaformId, setMetaformId ] = React.useState("");
   /**
    * Returns unique id
    * 
    * @returns unique id
    */
   const getUniqueId = () => {
-    return Math.random().toString(36).substr(2);
+    return Math.random().toString(36).substring(2);
   };
 
-  const metaformId = `metaform-${form.id ? `${form.id}-` : ""}${getUniqueId()}`;
+  useEffect(() => {
+    const prefix = `metaform-${form.id ? `${form.id}-` : ""}`;
+    setMetaformId(`${prefix}${getUniqueId()}`);
+  }, [ form.id ]);
+
   const [ validationErrors, setValidationErrors ] = useState({});
 
   /**

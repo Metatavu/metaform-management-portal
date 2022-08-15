@@ -228,9 +228,7 @@ const FormScreen: React.FC<Props> = () => {
    */
   const setFieldValue = (fieldName: string, fieldValue: FieldValue) => {
     if (formValues[fieldName] !== fieldValue) {
-      formValues[fieldName] = fieldValue;
-      
-      setFormValues({ ...formValues });
+      setFormValues({ ...formValues, [fieldName]: fieldValue }); // aiheuttaa renderöinnin [fieldName]: fieldValue
       setDraftSaveVisible(!!metaform?.allowDrafts);
 
       if (formValid && metaform?.autosave) {
