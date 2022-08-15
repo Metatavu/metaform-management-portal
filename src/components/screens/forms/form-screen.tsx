@@ -40,7 +40,7 @@ const FormScreen: React.FC<Props> = () => {
   const errorContext = React.useContext(ErrorContext);
 
   const [ , setLoading ] = useState(false);
-  const [ , setSaving ] = useState(false);
+  const [ savingReply, setSaving ] = useState(false);
   const [ , setSnackbarMessage ] = useState<SnackbarMessage>();
 
   const [ , setReplyConfirmVisible ] = useState(false);
@@ -399,6 +399,7 @@ const FormScreen: React.FC<Props> = () => {
         setFieldValue={ setFieldValue }
         onSubmit={ saveReply }
         onValidationErrorsChange={ onValidationErrorsChange }
+        saving={ savingReply }
       />
     );
   };

@@ -91,16 +91,16 @@ export interface Dictionary<T> {
 }
 
 export enum ApplicationRoles {
-  ADMIN = "admin",
-  MANAGER = "manager",
-  USER = "user",
+  METAFORM_ADMIN = "metaform-admin",
+  METAFORM_MANAGER = "metaform-manager",
+  METAFORM_USER = "metaform-user",
   ANONYMOUS = "anonymous"
 }
 
 export enum ReplyStatus {
-  WAITING = "waiting",
-  PROCESSING = "processing",
-  DONE = "done"
+  WAITING = "Odottaa",
+  PROCESSING = "Käsittelyssä",
+  DONE = "Käsitelty"
 }
 declare module "@mui/material/styles" {
   interface CustomTheme {
