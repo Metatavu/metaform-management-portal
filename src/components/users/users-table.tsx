@@ -7,12 +7,14 @@ import { AdminFormListStack, AdminFormTypographyField } from "styled/react-compo
 import PersonIcon from "@mui/icons-material/Person";
 import GroupIcon from "@mui/icons-material/Group";
 import EmailIcon from "@mui/icons-material/Email";
+import GenericLoaderWrapper from "components/generic/generic-loader";
 
 /**
  * Component props
  */
 interface Props {
   loading: boolean;
+  loadingMemberId?: string;
   members: MetaformMember[];
   memberGroups: MetaformMemberGroup[];
   selectedMemberGroupId: string | undefined;
@@ -25,6 +27,7 @@ interface Props {
 */
 const UsersTable: FC<Props> = ({
   loading,
+  loadingMemberId,
   members,
   memberGroups,
   selectedMemberGroupId,
@@ -112,13 +115,15 @@ const UsersTable: FC<Props> = ({
         return (
           <AdminFormListStack direction="row">
             <GroupIcon style={ { fill: "darkgrey" } }/>
-            <UsersTableGroups
-              key={ `${row.id}-groups` }
-              metaformMember={ row.member }
-              metaformMemberGroups={ memberGroups }
-              onMetaformGroupMembershipAdd={ onGroupMembershipAdd }
-              onMetaformGroupMembershipRemove={ onGroupMembershipRemove }
-            />
+            <GenericLoaderWrapper loading={ loadingMemberId === row.id }>
+              <UsersTableGroups
+                key={ `${row.id}-groups` }
+                metaformMember={ row.member }
+                metaformMemberGroups={ memberGroups }
+                onMetaformGroupMembershipAdd={ onGroupMembershipAdd }
+                onMetaformGroupMembershipRemove={ onGroupMembershipRemove }
+              />
+            </GenericLoaderWrapper>
           </AdminFormListStack>
         );
       }

@@ -18,13 +18,12 @@ import UsersFilter from "components/users/users-filter";
  * Users screen component
  */
 const UsersScreen: React.FC = () => {
-  // TODO: add loaders
-
   const errorContext = React.useContext(ErrorContext);
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, metaformMemberGroupsApi, metaformMembersApi } = apiClient;
 
   const [ loading, setLoading ] = React.useState<boolean>(false);
+  const [ loadingMemberId, setLoadingMemberId ] = React.useState<string>();
   const [ metaforms, setMetaforms ] = React.useState<Metaform[]>([]);
   const [ memberGroups, setMemberGroups ] = React.useState<MetaformMemberGroup[]>([]);
   const [ members, setMembers ] = React.useState<MetaformMember[]>([]);
@@ -100,12 +99,14 @@ const UsersScreen: React.FC = () => {
    * Event handler for group membership removal from member
    * 
    * @param metaformMember metaform member
-   * @param groupIds group ids
+   * @param groupId group id
    */
   const onGroupMembershipRemove = async (metaformMember: MetaformMember, groupId: string) => {
     if (!selectedMetaformId) {
       return;
     }
+
+    setLoadingMemberId(metaformMember.id);
 
     try {
       const memberGroup = memberGroups.find(metaformMemberGroup => metaformMemberGroup.id === groupId);
@@ -120,24 +121,28 @@ const UsersScreen: React.FC = () => {
         metaformMemberGroup: { ...memberGroup, memberIds: memberGroup.memberIds.filter(memberId => memberId !== metaformMember.id) }
       });
 
-      const otherGroups = memberGroups.filter(metaformMemberGroup => metaformMemberGroup.id !== groupId);
+      const updatedGroups = memberGroups.map(metaformMemberGroup => (metaformMemberGroup.id === updatedGroup.id ? updatedGroup : metaformMemberGroup));
 
-      setMemberGroups([ ...otherGroups, updatedGroup ]);
+      setMemberGroups(updatedGroups);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.loadMembers, err);
     }
+
+    setLoadingMemberId(undefined);
   };
 
   /**
    * Event handler for group membership add to member
    * 
    * @param metaformMember metaform member
-   * @param groupIds group ids
+   * @param groupId group id
    */
   const onGroupMembershipAdd = async (metaformMember: MetaformMember, groupId: string) => {
     if (!selectedMetaformId) {
       return;
     }
+
+    setLoadingMemberId(metaformMember.id);
 
     try {
       const memberGroup = memberGroups.find(metaformMemberGroup => metaformMemberGroup.id === groupId);
@@ -149,15 +154,17 @@ const UsersScreen: React.FC = () => {
       const updatedGroup = await metaformMemberGroupsApi.updateMetaformMemberGroup({
         metaformId: selectedMetaformId,
         metaformMemberGroupId: groupId,
-        metaformMemberGroup: { ...memberGroup, memberIds: [ ...memberGroup.memberIds, metaformMember.id!! ] }
+        metaformMemberGroup: { ...memberGroup, memberIds: [ ...memberGroup.memberIds, metaformMember.id! ] }
       });
 
-      const otherGroups = memberGroups.filter(metaformMemberGroup => metaformMemberGroup.id !== groupId);
+      const updatedGroups = memberGroups.map(metaformMemberGroup => (metaformMemberGroup.id === updatedGroup.id ? updatedGroup : metaformMemberGroup));
 
-      setMemberGroups([ ...otherGroups, updatedGroup ]);
+      setMemberGroups(updatedGroups);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.loadMembers, err);
     }
+
+    setLoadingMemberId(undefined);
   };
 
   /**
@@ -172,10 +179,12 @@ const UsersScreen: React.FC = () => {
    * 
    * @param displayName group's display name
    */
-  const onAddMemberGroupDialogCreate = async (displayName: string) => {
-    if (!selectedMetaformId) {
+  const onAddMemberGroupDialogCreate = async (displayName: string | undefined) => {
+    if (!selectedMetaformId || !displayName) {
       return;
     }
+
+    setLoading(true);
 
     try {
       const createdMemberGroup = await metaformMemberGroupsApi.createMetaformMemberGroup({
@@ -192,6 +201,7 @@ const UsersScreen: React.FC = () => {
     }
 
     setAddMemberGroupOpen(false);
+    setLoading(false);
   };
 
   /**
@@ -225,6 +235,8 @@ const UsersScreen: React.FC = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
       const createdMember = await metaformMembersApi.createMetaformMember({
         metaformId: selectedMetaformId,
@@ -237,6 +249,7 @@ const UsersScreen: React.FC = () => {
     }
 
     setAddMemberOpen(false);
+    setLoading(false);
   };
 
   React.useEffect(() => {
@@ -250,11 +263,13 @@ const UsersScreen: React.FC = () => {
   return (
     <>
       <AddMemberDialog
+        loading={ loading }
         open={ addMemberOpen }
         onCreate={ onAddMemberDialogCreate }
         onCancel={ onAddMemberDialogCancel }
       />
       <AddMemberGroupDialog
+        loading={ loading }
         open={ addMemberGroupOpen }
         onCreate={ onAddMemberGroupDialogCreate }
         onCancel={ onAddMemberGroupDialogCancel }
@@ -281,6 +296,7 @@ const UsersScreen: React.FC = () => {
         </NewMemberGroupButton>
       </NavigationTabContainer>
       <UsersFilter
+        loading={ loading }
         metaforms={ metaforms }
         memberGroups={ memberGroups }
         selectedMetaformId={ selectedMetaformId }
@@ -290,6 +306,7 @@ const UsersScreen: React.FC = () => {
       />
       <UsersTable
         loading={ loading }
+        loadingMemberId={ loadingMemberId }
         memberGroups={ memberGroups }
         members={ members }
         selectedMemberGroupId={ selectedMemberGroupId }
