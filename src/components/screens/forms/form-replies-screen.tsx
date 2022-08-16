@@ -16,6 +16,7 @@ import { AdminFormRepliesScreenStack, AdminFormRepliesScreenText } from "styled/
 import DeleteIcon from "@mui/icons-material/Delete";
 import { selectKeycloak } from "features/auth-slice";
 import { ApplicationRoles, ReplyStatus } from "types";
+import { uuid4 } from "@sentry/utils";
 
 /**
  * Form replies screen component
@@ -28,8 +29,9 @@ const FormRepliesScreen: React.FC = () => {
   const { repliesApi, metaformsApi } = apiClient;
 
   const [ rows, setRows ] = useState<any[]>([]);
+  const [ filteredRows, setFilteredRows] = useState<any[]>([]);
+  const [ columns, setColumns ] = useState<GridColDef[]>([]);
   const [ loading, setLoading ] = useState(false);
-  const [ managementListColumns, setManagementListColumns ] = useState<MetaformField[]>();
   const [ metaform, setMetaform ] = useState<Metaform>();
   const [ deletableReplyId, setDeletableReplyId ] = useState<string | undefined>(undefined);
   const [ showAllReplies, setShowAllReplies ] = useState(false);
@@ -47,7 +49,11 @@ const FormRepliesScreen: React.FC = () => {
     
     row.replyId = reply.id!;
 
-    fields.forEach(field => {
+    row.replyStatus = reply?.data?.status.toString()!;
+
+    row.id = uuid4();
+    // eslint-disable-next-line array-callback-return
+    fields.map(field => {
       const replyData = reply.data;
       const fieldName = field.name;
 
@@ -94,7 +100,6 @@ const FormRepliesScreen: React.FC = () => {
       const fieldData = (metaformData.sections || [])
         .flatMap(section => section.fields || [])
         .filter(field => (field.contexts || []).includes("MANAGEMENT_LIST"));
-      setManagementListColumns(fieldData);
       return fieldData;
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchFields, e);
@@ -102,12 +107,18 @@ const FormRepliesScreen: React.FC = () => {
   };
 
   /**
-   * Returns a list of columns
+   * Builds the columns for the table
    * Adds delete button column if user has realm role metaform-admin
    * 
    * @returns management list columns
    */
-  const getGridColumns = () => {
+  const setGridColumns = async (metaformData: Metaform) => {
+    if (!metaformData) {
+      return;
+    }
+
+    const managementListColumns = await getManagementListFields(metaformData);
+
     if (!managementListColumns) {
       return;
     }
@@ -150,7 +161,7 @@ const FormRepliesScreen: React.FC = () => {
       } as GridColDef);
     }
     
-    return gridColumns;
+    setColumns(gridColumns);
   };
 
   /**
@@ -191,23 +202,43 @@ const FormRepliesScreen: React.FC = () => {
   };
 
   /**
+   * Filter replies
+   */
+  const filterRows = () => {
+    if (!rows) {
+      return;
+    }
+
+    const filterableRows = [ ...rows ];
+  
+    if (!showAllReplies) {
+      setFilteredRows(filterableRows.filter(row => row.replyStatus === ReplyStatus.WAITING));
+    } else {
+      setFilteredRows(filterableRows);
+    }
+  };
+
+  /**
    * Replies screen setup
    */
   const setup = async () => {
+    if (!formId) {
+      return;
+    }
+    
     setLoading(true);
 
     try {
       const metaformData = await metaformsApi.findMetaform({ metaformId: formId! });
-      const repliesData = await repliesApi.listReplies({ metaformId: formId! });
       setMetaform(metaformData);
+      const repliesData = await repliesApi.listReplies({ metaformId: formId! });
       const fields = await getManagementListFields(metaformData);
+      
       if (repliesData && fields) {
         const replyRows = repliesData.map(reply => (buildRow(reply, fields)));
-        if (showAllReplies) {
-          setRows(replyRows);
-        } else {
-          setRows(replyRows.filter(row => row.status === ReplyStatus.WAITING));
-        }
+        setRows(replyRows);
+        filterRows();
+        await setGridColumns(metaformData);
       }
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchReplies, e);
@@ -218,6 +249,10 @@ const FormRepliesScreen: React.FC = () => {
 
   useEffect(() => {
     setup();
+  }, []);
+
+  useEffect(() => {
+    filterRows();
   }, [showAllReplies]);
   
   /**
@@ -263,9 +298,9 @@ const FormRepliesScreen: React.FC = () => {
       </NavigationTabContainer>
       <DataGrid
         loading={ loading }
-        rows={ rows ?? [] }
-        columns={ getGridColumns() ?? [] }
-        getRowId={ row => (row.created) }
+        rows={ filteredRows }
+        columns={ columns }
+        getRowId={ row => (row.id) }
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
