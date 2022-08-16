@@ -1,134 +1,315 @@
+/* eslint-disable react/no-unstable-nested-components */
 import { FormControlLabel, Switch, Typography } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import Api from "api";
+import { useApiClient, useAppSelector } from "app/hooks";
+import { ErrorContext } from "components/contexts/error-handler";
+import ConfirmDialog from "components/generic/confirm-dialog";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
+import { Metaform, MetaformField, MetaformFieldType, Reply } from "generated/client";
 import strings from "localization/strings";
-import React from "react";
+import moment from "moment";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
-import { AdminFormAnswerScreenStack, AdminFormAnswerScreenText } from "styled/react-components/react-components";
-
-const columns: GridColDef[] = [
-  {
-    field: "created",
-    headerName: strings.navigationHeader.formsScreens.formScreen.form.answerScreen.createdColumnTitle,
-    flex: 1,
-    renderHeader: params => {
-      return (
-        <AdminFormAnswerScreenStack direction="row">
-          <AdminFormAnswerScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormAnswerScreenText>
-        </AdminFormAnswerScreenStack>
-      );
-    },
-    renderCell: params => {
-      return (
-        <AdminFormAnswerScreenStack direction="row">
-          <AdminFormAnswerScreenText>{ params.row.created }</AdminFormAnswerScreenText>
-        </AdminFormAnswerScreenStack>
-      );
-    }
-  },
-  {
-    field: "modified",
-    headerName: strings.navigationHeader.formsScreens.formScreen.form.answerScreen.modifiedColumnTitle,
-    flex: 1,
-    renderHeader: params => {
-      return (
-        <AdminFormAnswerScreenStack direction="row">
-          <AdminFormAnswerScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormAnswerScreenText>
-        </AdminFormAnswerScreenStack>
-      );
-    },
-    renderCell: params => {
-      return (
-        <AdminFormAnswerScreenStack direction="row">
-          <AdminFormAnswerScreenText>{ params.row.modified }</AdminFormAnswerScreenText>
-        </AdminFormAnswerScreenStack>
-      );
-    }
-  },
-  {
-    field: "status",
-    headerName: strings.navigationHeader.formsScreens.formScreen.form.answerScreen.statusColumnTitle,
-    flex: 1,
-    renderHeader: params => {
-      return (
-        <AdminFormAnswerScreenStack direction="row">
-          <AdminFormAnswerScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormAnswerScreenText>
-        </AdminFormAnswerScreenStack>
-      );
-    },
-    renderCell: params => {
-      return (
-        <AdminFormAnswerScreenStack direction="row">
-          <AdminFormAnswerScreenText>{ params.row.status }</AdminFormAnswerScreenText>
-        </AdminFormAnswerScreenStack>
-      );
-    }
-  },
-  {
-    field: "name",
-    headerName: strings.navigationHeader.formsScreens.formScreen.form.answerScreen.nameColumnTitle,
-    flex: 1,
-    renderHeader: params => {
-      return (
-        <AdminFormAnswerScreenStack direction="row">
-          <AdminFormAnswerScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormAnswerScreenText>
-        </AdminFormAnswerScreenStack>
-      );
-    },
-    renderCell: params => {
-      return (
-        <AdminFormAnswerScreenStack direction="row">
-          <AdminFormAnswerScreenText>{ params.row.name }</AdminFormAnswerScreenText>
-        </AdminFormAnswerScreenStack>
-      );
-    }
-  }
-];
-
-const rows = [
-  {
-    id: "1", created: "01.01.2022", modified: "01.01.2022", status: strings.navigationHeader.formsScreens.formScreen.form.answerScreen.statusProgressed, name: "Name asd"
-  },
-  {
-    id: "2", created: "01.01.2022", modified: "01.01.2022", status: strings.navigationHeader.formsScreens.formScreen.form.answerScreen.statusInProgress, name: "Name xyz"
-  }
-];
+import { AdminFormRepliesScreenStack, AdminFormRepliesScreenText } from "styled/react-components/react-components";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { selectKeycloak } from "features/auth-slice";
+import { ApplicationRoles, ReplyStatus } from "types";
+import { uuid4 } from "@sentry/utils";
 
 /**
- * Form answer selector
+ * Form replies screen component
  */
-const FormAnswerSelector = () => (
-  <AdminFormAnswerScreenStack direction="row">
-    <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answerScreen.selectorShowOpen }</Typography>
-    <FormControlLabel control={ <Switch defaultChecked/> } label={ undefined }/>
-    <Typography>{ strings.navigationHeader.formsScreens.formScreen.form.answerScreen.selectorShowAll }</Typography>
-  </AdminFormAnswerScreenStack>
-);
+const FormRepliesScreen: React.FC = () => {
+  const errorContext = useContext(ErrorContext);
+  const keycloak = useAppSelector(selectKeycloak);
+  
+  const apiClient = useApiClient(Api.getApiClient);
+  const { repliesApi, metaformsApi } = apiClient;
 
-/**
- * Form answer screen component
- */
-const FormAnswerScreen: React.FC = () => (
-  <>
-    <NavigationTabContainer>
-      <NavigationTab
-        text={ strings.navigationHeader.formsScreens.formScreen.form.answerScreen }
-        renderActions={ FormAnswerSelector }
-      />
-      <NavigationTab
-        text={ strings.navigationHeader.formsScreens.formDataScreen }
-        to="../data"
-      />
-    </NavigationTabContainer>
-    <DataGrid
-      rows={ rows }
-      columns={ columns }
-      autoHeight
-      disableColumnMenu
-      disableColumnSelector
-      disableSelectionOnClick
-    />
-  </>
-);
+  const [ rows, setRows ] = useState<any[]>([]);
+  const [ filteredRows, setFilteredRows] = useState<any[]>([]);
+  const [ columns, setColumns ] = useState<GridColDef[]>([]);
+  const [ loading, setLoading ] = useState(false);
+  const [ metaform, setMetaform ] = useState<Metaform>();
+  const [ deletableReplyId, setDeletableReplyId ] = useState<string | undefined>(undefined);
+  const [ showAllReplies, setShowAllReplies ] = useState(false);
 
-export default FormAnswerScreen;
+  const useparams = useParams();
+  const { formId } = useparams;
+
+  /**
+   * Builds a row for the table
+   * 
+   * @param reply reply 
+   */
+  const buildRow = (reply: Reply, fields: MetaformField[]) => {
+    const row : { [key: string]: string | number } = {};
+    
+    row.replyId = reply.id!;
+    row.replyStatus = reply?.data?.status.toString()!;
+    row.id = uuid4();
+
+    fields.forEach(field => {
+      const replyData = reply.data;
+      const fieldName = field.name;
+
+      if (!replyData || !fieldName) {
+        return;
+      }
+
+      const fieldValue = replyData[fieldName];
+
+      if (!fieldValue) {
+        return;
+      }
+
+      const fieldOptions = field.options || [];
+
+      switch (field.type) {
+        case MetaformFieldType.Date:
+          row[fieldName] = moment(replyData[fieldName]).format("LLL");
+          break;
+        case MetaformFieldType.DateTime:
+          row[fieldName] = moment(replyData[fieldName]).format("LLL");
+          break;
+        case MetaformFieldType.Select:
+        case MetaformFieldType.Radio:
+          row[fieldName] = fieldOptions.find(fieldOption => fieldOption.name === fieldValue.toString())?.text || fieldValue.toString();
+          break;
+        default:
+          row[fieldName] = replyData[fieldName].toString();
+      }
+    });
+
+    return row;
+  };
+
+  /**
+   * Return fields that include context "MANAGEMENT_LIST" 
+   */
+  const getManagementListFields = async (metaformData: Metaform) => {
+    if (!metaformData) {
+      return;
+    }
+
+    try {
+      const fieldData = (metaformData.sections || [])
+        .flatMap(section => section.fields || [])
+        .filter(field => (field.contexts || []).includes("MANAGEMENT_LIST"));
+      return fieldData;
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchFields, e);
+    }
+  };
+
+  /**
+   * Builds the columns for the table
+   * Adds delete button column if user has realm role metaform-admin
+   * 
+   * @returns management list columns
+   */
+  const setGridColumns = async (metaformData: Metaform) => {
+    if (!metaformData) {
+      return;
+    }
+
+    const managementListColumns = await getManagementListFields(metaformData);
+
+    if (!managementListColumns) {
+      return;
+    }
+
+    const gridColumns = managementListColumns.map<GridColDef>(column => ({
+      field: column.name || "",
+      headerName: column.title,
+      allowProps: true,
+      flex: 1,
+      renderHeader: params => {
+        return (
+          <AdminFormRepliesScreenStack direction="row">
+            <AdminFormRepliesScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormRepliesScreenText>
+          </AdminFormRepliesScreenStack>
+        );
+      },
+      renderCell: params => {
+        return (
+          <AdminFormRepliesScreenStack direction="row">
+            <AdminFormRepliesScreenText>{ column.name ? params.row[column.name] : "" }</AdminFormRepliesScreenText>
+          </AdminFormRepliesScreenStack>
+  
+        );
+      }
+    }));
+
+    if (keycloak?.hasRealmRole(ApplicationRoles.METAFORM_ADMIN)) {
+      gridColumns.push({
+        field: "actions",
+        type: "actions",
+        width: 80,
+        getActions: (params: { row: any; }) => [
+          <GridActionsCellItem
+            icon={ <DeleteIcon/> }
+            onClick={ () => setDeletableReplyId(params.row.replyId) }
+            label={ strings.generic.delete }
+            showInMenu
+          />
+        ]
+      } as GridColDef);
+    }
+    
+    setColumns(gridColumns);
+  };
+
+  /**
+   * Deletes a reply
+   * 
+   * @param replyId reply id
+   */
+  const deleteReply = async (replyId: string) => {
+    setLoading(true);
+
+    try {
+      if (!metaform || !metaform.id || !replyId) {
+        return;
+      }
+    
+      await repliesApi.deleteReply({
+        metaformId: metaform.id,
+        replyId: replyId
+      });
+  
+      setRows(rows?.filter(row => row.replyId !== replyId));
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminRepliesScreen.deleteReply, e);
+    }
+
+    setLoading(false);
+  };
+  
+  /**
+   * Event handler for delete reply dialog confirm
+   */
+  const onReplyDeleteConfirm = async () => {
+    if (deletableReplyId) {
+      deleteReply(deletableReplyId);
+    }
+  
+    setDeletableReplyId(undefined);
+  };
+
+  /**
+   * Filter replies
+   */
+  const filterRows = () => {
+    if (!rows) {
+      return;
+    }
+
+    const filterableRows = [ ...rows ];
+  
+    if (!showAllReplies) {
+      setFilteredRows(filterableRows.filter(row => row.replyStatus === ReplyStatus.WAITING));
+    } else {
+      setFilteredRows(filterableRows);
+    }
+  };
+
+  /**
+   * Replies screen setup
+   */
+  const setup = async () => {
+    if (!formId) {
+      return;
+    }
+    
+    setLoading(true);
+
+    try {
+      const metaformData = await metaformsApi.findMetaform({ metaformId: formId });
+      setMetaform(metaformData);
+
+      const [ repliesData, fields ] = await Promise.all([
+        repliesApi.listReplies({ metaformId: formId }),
+        getManagementListFields(metaformData)
+      ]);
+      
+      if (!repliesData || !fields) {
+        return;
+      }
+
+      const replyRows = repliesData.map(reply => buildRow(reply, fields));
+      setRows(replyRows);
+      await setGridColumns(metaformData);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchReplies, e);
+    }
+  
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    setup();
+  }, []);
+
+  useEffect(() => {
+    filterRows();
+  }, [showAllReplies, rows]);
+  
+  /**
+     * Renders delete reply confirm dialog
+     */
+  const renderDeleteReplyConfirm = () => {
+    return (
+      <ConfirmDialog
+        onClose={ () => setDeletableReplyId(undefined) }
+        onCancel={ () => setDeletableReplyId(undefined) }
+        onConfirm={ onReplyDeleteConfirm }
+        cancelButtonText={ strings.generic.cancel }
+        positiveButtonText={ strings.generic.confirm }
+        title={ strings.repliesScreen.confirmDeleteReplyTitle }
+        text={ strings.repliesScreen.confirmDeleteReplyText }
+        open={ !!deletableReplyId }
+      />
+    );
+  };
+  
+  /**
+   * Render toggle switch for not processed/all replies
+   */
+  const renderToggleSwitch = () => (
+    <AdminFormRepliesScreenStack direction="row">
+      <Typography>{ strings.repliesScreen.selectorShowOpen }</Typography>
+      <FormControlLabel control={ <Switch onChange={() => { setShowAllReplies(!showAllReplies); }}/> } label={ undefined }/>
+      <Typography>{ strings.repliesScreen.selectorShowAll }</Typography>
+    </AdminFormRepliesScreenStack>
+  );
+  
+  return (
+    <>
+      <NavigationTabContainer>
+        <NavigationTab
+          text={ strings.repliesScreen }
+          renderActions={ renderToggleSwitch }
+        />
+        <NavigationTab
+          text={ strings.navigationHeader.formsScreens.formDataScreen }
+          to=":formId/history"
+        />
+      </NavigationTabContainer>
+      <DataGrid
+        loading={ loading }
+        rows={ filteredRows }
+        columns={ columns }
+        getRowId={ row => (row.id) }
+        disableColumnMenu
+        disableColumnSelector
+        disableSelectionOnClick
+      />
+      { renderDeleteReplyConfirm() }
+    </>
+  );
+};
+
+export default FormRepliesScreen;

@@ -1,3 +1,4 @@
+import GenericLoaderWrapper from "components/generic/generic-loader";
 import React, { CSSProperties } from "react";
 import { SubmitFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField } from "../generated/client/models";
@@ -12,6 +13,7 @@ interface Props {
   validationErrors: ValidationErrors;
   onClick?: (source: MetaformField) => void;
   notInteractive?: boolean;
+  saving?: boolean;
 }
 
 /**
@@ -22,7 +24,8 @@ export const MetaformSubmitFieldComponent: React.FC<Props> = ({
   formReadOnly,
   validationErrors,
   onClick,
-  notInteractive
+  notInteractive,
+  saving
 }) => {
   if (!field.name) {
     return null;
@@ -37,14 +40,16 @@ export const MetaformSubmitFieldComponent: React.FC<Props> = ({
   }
 
   return (
-    <SubmitFieldWrapper
-      variant="contained"
-      style={ style }
-      disabled={ disabled }
-      onClick={ () => onClick && onClick(field) }
-    >
-      { field.text }
-    </SubmitFieldWrapper>
+    <GenericLoaderWrapper loading={ saving }>
+      <SubmitFieldWrapper
+        variant="contained"
+        style={ style }
+        disabled={ disabled }
+        onClick={ () => onClick && onClick(field) }
+      >
+        { field.text }
+      </SubmitFieldWrapper>
+    </GenericLoaderWrapper>
   );
 };
 
