@@ -229,17 +229,21 @@ const FormRepliesScreen: React.FC = () => {
     setLoading(true);
 
     try {
-      const metaformData = await metaformsApi.findMetaform({ metaformId: formId! });
+      const metaformData = await metaformsApi.findMetaform({ metaformId: formId });
       setMetaform(metaformData);
-      const repliesData = await repliesApi.listReplies({ metaformId: formId! });
-      const fields = await getManagementListFields(metaformData);
+
+      const [ repliesData, fields ] = await Promise.all([
+        repliesApi.listReplies({ metaformId: formId }),
+        getManagementListFields(metaformData)
+      ]);
       
-      if (repliesData && fields) {
-        const replyRows = repliesData.map(reply => (buildRow(reply, fields)));
-        setRows(replyRows);
-        filterRows();
-        await setGridColumns(metaformData);
+      if (!repliesData || !fields) {
+        return;
       }
+
+      const replyRows = repliesData.map(reply => buildRow(reply, fields));
+      setRows(replyRows);
+      await setGridColumns(metaformData);
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchReplies, e);
     }
@@ -253,7 +257,7 @@ const FormRepliesScreen: React.FC = () => {
 
   useEffect(() => {
     filterRows();
-  }, [showAllReplies]);
+  }, [showAllReplies, rows]);
   
   /**
      * Renders delete reply confirm dialog
