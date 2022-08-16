@@ -54,16 +54,9 @@ const MetaformComponent: React.FC<Props> = ({
   onValidationErrorsChange,
   saving
 }) => {
-  /**
-   * Returns unique id
-   * 
-   * @returns unique id
-   */
-  const getUniqueId = () => {
-    return Math.random().toString(36).substr(2);
-  };
+  const metaformId = form.id ? `${form.id}` : "";
+  const metaformSectionKeyPrefix = `metaform-${metaformId}`;
 
-  const metaformId = `metaform-${form.id ? `${form.id}-` : ""}${getUniqueId()}`;
   const [ validationErrors, setValidationErrors ] = useState({});
 
   /**
@@ -163,7 +156,7 @@ const MetaformComponent: React.FC<Props> = ({
 
           return (
             <MetaformSectionComponent
-              key={`${metaformId}-${sectionId}`}
+              key={`${metaformSectionKeyPrefix}-${sectionId}`}
               validationErrors={ validationErrors }
               renderBeforeField={ renderBeforeField }
               datePicker={ datePicker }
