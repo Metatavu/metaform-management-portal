@@ -13,12 +13,14 @@ import { useApiClient } from "app/hooks";
 import Api from "api";
 import { Metaform, Reply } from "generated/client";
 import { ErrorContext } from "components/contexts/error-handler";
+import { ReplyStatus } from "types";
 
 /**
  * Interface for single form row
  */
 interface Row {
   id: string;
+  slug?: string;
   title: string;
   latestReply: string;
   newReply?: string;
@@ -56,7 +58,7 @@ const FormsScreen: React.FC = () => {
    * @param replies replies
    * @return count of waiting replies
    */
-  const countWaitingReplies = (replies: Reply[]) => replies.filter(reply => reply.data?.status as (string | undefined) === "waiting").length;
+  const countWaitingReplies = (replies: Reply[]) => replies.filter(reply => reply.data?.status as (string | undefined) === ReplyStatus.WAITING).length;
   
   /**
    * Builds a row for the table
@@ -69,6 +71,7 @@ const FormsScreen: React.FC = () => {
 
     return {
       id: form.id || "",
+      slug: form.slug || "",
       title: form.title || strings.formScreen.noTitle,
       latestReply: getLatestReplyDate(replies),
       newReply: amountWaiting > 0 ? `${strings.navigationHeader.formsScreens.formScreen.form.notProcessed} (${amountWaiting})` : undefined
@@ -115,7 +118,7 @@ const FormsScreen: React.FC = () => {
         return (
           <AdminFormListStack direction="row">
             <ListIcon style={ { fill: "darkgrey" } }/>
-            <AdminFormTypographyField><Link to={`${params.id}/answers`}>{ params.row.title }</Link></AdminFormTypographyField>
+            <AdminFormTypographyField><Link to={`${params.row.slug}/answers`}>{ params.row.title }</Link></AdminFormTypographyField>
           </AdminFormListStack>
         );
       }

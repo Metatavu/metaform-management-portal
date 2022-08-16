@@ -127,6 +127,7 @@
 
   "repliesScreen": {
     "title": "Vastaukset",
+    "open": "Avaa",
     "description": "Valitun lomakkeen vastaukset.",
     "createdColumnTitle": "LUOTU",
     "modifiedColumnTitle": "MUOKATTU",

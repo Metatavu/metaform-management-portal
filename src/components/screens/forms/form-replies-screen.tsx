@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { FormControlLabel, Switch, Typography } from "@mui/material";
+import { Button, FormControlLabel, Switch, Typography } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
@@ -10,7 +10,7 @@ import { Metaform, MetaformField, MetaformFieldType, Reply } from "generated/cli
 import strings from "localization/strings";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import { AdminFormRepliesScreenStack, AdminFormRepliesScreenText } from "styled/react-components/react-components";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -37,7 +37,7 @@ const FormRepliesScreen: React.FC = () => {
   const [ showAllReplies, setShowAllReplies ] = useState(false);
 
   const useparams = useParams();
-  const { formId } = useparams;
+  const { formSlug } = useparams;
 
   /**
    * Builds a row for the table
@@ -147,14 +147,21 @@ const FormRepliesScreen: React.FC = () => {
       gridColumns.push({
         field: "actions",
         type: "actions",
-        width: 80,
+        width: 140,
         getActions: (params: { row: any; }) => [
           <GridActionsCellItem
             icon={ <DeleteIcon/> }
             onClick={ () => setDeletableReplyId(params.row.replyId) }
             label={ strings.generic.delete }
             showInMenu
-          />
+          />,
+          <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+          >
+            <Link to={params.row.replyId}>{ strings.generic.show }</Link>
+          </Button>
         ]
       } as GridColDef);
     }
@@ -220,18 +227,18 @@ const FormRepliesScreen: React.FC = () => {
    * Replies screen setup
    */
   const setup = async () => {
-    if (!formId) {
+    if (!formSlug) {
       return;
     }
     
     setLoading(true);
 
     try {
-      const metaformData = await metaformsApi.findMetaform({ metaformId: formId });
+      const metaformData = await metaformsApi.findMetaformBySlug({ metaformSlug: formSlug });
       setMetaform(metaformData);
 
       const [ repliesData, fields ] = await Promise.all([
-        repliesApi.listReplies({ metaformId: formId }),
+        repliesApi.listReplies({ metaformId: metaformData.id! }),
         getManagementListFields(metaformData)
       ]);
       

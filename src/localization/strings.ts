@@ -161,6 +161,7 @@ export interface Localized extends LocalizedStringsMethods {
    */
   repliesScreen: {
     title: string;
+    open: string;
     description: string;
     createdColumnTitle: string;
     modifiedColumnTitle: string;

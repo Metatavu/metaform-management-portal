@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC, useContext, useEffect, useState } from "react";
-import BasicLayout, { SnackbarMessage } from "components/layouts/basic-layout";
+import { SnackbarMessage } from "components/layouts/basic-layout";
 import strings from "localization/strings";
 import { Metaform, MetaformFieldType, Reply } from "generated/client";
 import { FieldValue, FileFieldValue, ValidationErrors } from "metaform-react/types";
@@ -21,6 +21,7 @@ import { useApiClient, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
 import { Dictionary } from "types";
 import { useParams } from "react-router-dom";
+import GenericLoaderWrapper from "components/generic/generic-loader";
 
 /**
  * Component for exhibitions screen
@@ -30,7 +31,7 @@ const ReplyScreen: FC = () => {
 
   const errorContext = useContext(ErrorContext);
 
-  const [ , setLoading ] = useState(false);
+  const [ loading, setLoading ] = useState(false);
   const [ , setSaving ] = useState(false);
   const [ , setSnackbarMessage ] = useState<SnackbarMessage>();
 
@@ -49,7 +50,7 @@ const ReplyScreen: FC = () => {
   const [ formValueChangeTimeout, setFormValueChangeTimeout ] = useState<NodeJS.Timeout>();
   const [ metaformId, setMetaformId ] = useState<string>();
   const params = useParams();
-  const { metaformSlug, replyId } = params;
+  const { formSlug, replyId } = params;
 
   const apiClient = useApiClient(Api.getApiClient);
   const keycloak = useAppSelector(selectKeycloak);
@@ -445,7 +446,7 @@ const ReplyScreen: FC = () => {
         ownerKey: currentOwnerKey
       });
     } catch (e) {
-      return null;
+      errorContext.setError(strings.errorHandling.formScreen.saveDraft, e);
     }
   };
 
@@ -458,7 +459,7 @@ const ReplyScreen: FC = () => {
     setDraftId(query.get("draft"));
     const currentOwnerKey = query.get("owner-key");
 
-    if (!metaformSlug) {
+    if (!formSlug) {
       return;
     }
 
@@ -467,7 +468,7 @@ const ReplyScreen: FC = () => {
       const { metaformsApi } = apiClient;
 
       const foundMetaform = await metaformsApi.findMetaformBySlug({
-        metaformSlug: metaformSlug
+        metaformSlug: formSlug
       });
       
       document.title = foundMetaform.title ? foundMetaform.title : "Metaform";
@@ -476,6 +477,7 @@ const ReplyScreen: FC = () => {
 
       if (replyId && currentOwnerKey) {
         const foundReply = await findReply(currentOwnerKey);
+        console.log(foundReply);
         if (foundReply) {
           const replyData = await MetaformUtils.processReplyData(foundMetaform, foundReply, currentOwnerKey, apiClient.attachmentsApi);
           if (replyData) {
@@ -509,11 +511,8 @@ const ReplyScreen: FC = () => {
   }, []);
 
   return (
-    /**
-     * Implement layout later
-     */
-    <BasicLayout>
-      <div>
+    <GenericLoaderWrapper loading={ loading }>
+      <div style={{ height: 500 }}>
         { renderForm() }
         <ReplySaved
           getReplyEditLink={ getReplyEditLink }
@@ -546,7 +545,7 @@ const ReplyScreen: FC = () => {
         <Autosaving autosaving={ autosaving }/>
         { renderLogoutLink() }
       </div>
-    </BasicLayout>
+    </GenericLoaderWrapper>
   );
 };
 
