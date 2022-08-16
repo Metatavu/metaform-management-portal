@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import FormAnswerScreen from "./form-answer-screen";
 import FormHistoryScreen from "./form-history-screen";
+import FormReplyScreen from "./form-reply-screen";
 import FormsDataScreen from "./forms-data-screen";
 import FormsScreen from "./forms-screen";
 
@@ -25,6 +26,10 @@ const FormsRoutes: React.FC = () => (
     <Route
       path="/:formSlug/history"
       element={ <FormHistoryScreen/> }
+    />
+    <Route
+      path="/:formSlug/:replyId"
+      element={ <FormReplyScreen/> }
     />
   </Routes>
 );
