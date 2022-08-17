@@ -19,6 +19,8 @@ import MetaformFilesFieldComponent from "metaform-react/MetaformFilesFieldCompon
 import MetaformSelectFieldComponent from "metaform-react/MetaformSelectFieldComponent";
 import MetaformTableFieldComponent from "metaform-react/MetaformTableFieldComponent";
 import MetaformSubmitFieldComponent from "metaform-react/MetaformSubmitFieldComponent";
+import MetaformUrlFieldComponent from "metaform-react/MetaformUrlField";
+import MetaformTextFieldComponent from "metaform-react/MetaformTextFieldComponent";
 
 interface Prop {
   field: MetaformField;
@@ -55,7 +57,19 @@ const AddableFieldRenderer: React.FC<Prop> = ({
         views={["day", "month", "year"]}
         renderInput={ params =>
           <TextField
-            style={{ pointerEvents: "none" }}
+            sx={{
+              pointerEvents: "none",
+              width: "100%",
+              ".MuiOutlinedInput-notchedOutline": {
+                border: "none"
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                border: "none"
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                border: "none"
+              }
+            }}
             label={ strings.formComponent.dateTimePicker }
             { ...params }
           />
@@ -74,7 +88,19 @@ const AddableFieldRenderer: React.FC<Prop> = ({
         value={ new Date() }
         renderInput={ params =>
           <TextField
-            style={{ pointerEvents: "none" }}
+            sx={{
+              pointerEvents: "none",
+              width: "100%",
+              ".MuiOutlinedInput-notchedOutline": {
+                border: "none"
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                border: "none"
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                border: "none"
+              }
+            }}
             label={ strings.formComponent.dateTimePicker }
             { ...params }
           />
@@ -213,13 +239,12 @@ const AddableFieldRenderer: React.FC<Prop> = ({
       );
     case MetaformFieldType.Url:
       return (
-        <TextField
-          style={{ pointerEvents: "none" }}
-          type="url"
-          disabled={ true }
-          key={ fieldId }
+        <MetaformUrlFieldComponent
           value="https://google.com"
-          label={ fieldLabelId }
+          field={ field }
+          fieldId={ fieldId }
+          fieldLabelId={ fieldLabelId }
+          formReadOnly={ true }
         />
       );
     case MetaformFieldType.Email:
@@ -269,12 +294,13 @@ const AddableFieldRenderer: React.FC<Prop> = ({
       );
     default:
       return (
-        <TextField
-          style={{ pointerEvents: "none" }}
-          disabled={ true }
+        <MetaformTextFieldComponent
           key={ fieldId }
-          value={ field.name }
-          label={ fieldLabelId }
+          field={ field }
+          fieldId={ fieldId }
+          fieldLabelId={ fieldLabelId }
+          formReadOnly={ true }
+          value={ field.name || "" }
         />
       );
   }
