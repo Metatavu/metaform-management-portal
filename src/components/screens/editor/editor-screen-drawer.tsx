@@ -52,7 +52,7 @@ const EditorScreenDrawer: React.FC<Props> = ({
   };
 
   /**
-   * Gets current URL path
+   * Handles Save icon click
    */
   const handleFormSubmit = () => {
     createMetaform({
@@ -230,8 +230,14 @@ const EditorScreenDrawer: React.FC<Props> = ({
 
   useEffect(() => {
     const templateSectionValid = formSettings.formTemplate ? formSettings.formTemplate && !!formSettings.formSchema : !formSettings.formTemplate;
-    setValid(!!formSettings.formId && !!formSettings.formName && templateSectionValid);
+    setValid(!!formSettings.formName && templateSectionValid);
   }, [formSettings]);
+
+  useEffect(() => {
+    if (!formSettings.formTemplate) {
+      setFormSettings({ ...formSettings, formSchema: "" });
+    }
+  }, [formSettings.formTemplate]);
 
   return (
     <Drawer
