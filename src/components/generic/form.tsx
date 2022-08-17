@@ -1,4 +1,4 @@
-import { LinearProgress, TextField } from "@mui/material";
+import { LinearProgress, TextField, Icon } from "@mui/material";
 import { Metaform, MetaformField } from "generated/client";
 import { FileFieldValueItem, ValidationErrors, FieldValue, FileFieldValue, IconName } from "../../metaform-react/types";
 import React from "react";
@@ -14,7 +14,6 @@ import { useApiClient } from "app/hooks";
 import moment from "moment";
 import MetaformUtils from "utils/metaform-utils";
 import FormAutocomplete from "./form-autocomplete";
-import Icon from "@mui/material/Icon";
 
 /**
  * Component props
@@ -48,6 +47,7 @@ const Form: React.FC<Props> = ({
   /**
    * Method for rendering form icons
    * @param IconName Icon
+   * @param key IconKey
    */
   const renderIcon = (icon: IconName, key: string) => {
     return (
