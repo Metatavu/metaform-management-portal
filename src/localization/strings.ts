@@ -306,6 +306,25 @@ export interface Localized extends LocalizedStringsMethods {
     formCreatedAt: string;
     formModifiedAt: string;
     formLastModifier: string;
+    formVersionArchived: string;
+    formVersionDraft: string;
+    drawer: {
+      newForm: string;
+      helper: string;
+      formInfo: string;
+      formName: string;
+      formUrl: string;
+      formTemplate: string;
+      formTemplateCustom: string;
+      formTemplateCustomHelper: string;
+      formTemplateSosmeta: string;
+      formTemplateSosmetaHelper: string;
+      formTemplateSchema: string;
+      formIdentification: string;
+      formIdentificationService: string;
+      formIdentificationHelper: string;
+      formIdentificationNone: String;
+    };
   };
 
   /**
