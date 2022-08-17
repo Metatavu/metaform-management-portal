@@ -51,7 +51,7 @@ const Form: React.FC<Props> = ({
    */
   const renderIcon = (icon: IconName, key: string) => {
     return (
-      <Icon key={key}>{icon}</Icon>
+      <Icon key={ key }>{ icon }</Icon>
     );
   };
     
