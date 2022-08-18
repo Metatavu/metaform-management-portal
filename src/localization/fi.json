@@ -31,7 +31,8 @@
       "close": "Sulje"
     },
     "adminFormsScreen": {
-      "listForms": "Lomakkeiden haku epäonnistui"
+      "listForms": "Lomakkeiden haku epäonnistui",
+      "createForm": "Lomakkeen luominen epäonnistui"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -258,7 +259,7 @@
   },
 
   "editorScreen": {
-    "noMetaforms": "Metaformeja ei löytynyt",
+    "noMetaforms": "Lomakkeita ei löytynyt",
     "formVersion": "LOMAKEVERSIO",
     "formCreatedAt": "LUOTU",
     "formModifiedAt": "MUOKATTU",

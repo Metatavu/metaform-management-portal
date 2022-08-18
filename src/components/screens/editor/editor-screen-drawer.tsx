@@ -1,7 +1,7 @@
 import { Box, Divider, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography } from "@mui/material";
 import { Save, Clear } from "@mui/icons-material";
 import strings from "localization/strings";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import theme from "theme";
 import { Metaform } from "generated/client";
 
@@ -23,13 +23,13 @@ interface FormSettings {
   formUrl: string;
   formTemplate: boolean;
   formSchema: string;
-  formIdentification: boolean;
+  formAuthentication: boolean;
 }
 
 /**
  * Editor Screen Drawer component 
  */
-const EditorScreenDrawer: React.FC<Props> = ({
+const EditorScreenDrawer: FC<Props> = ({
   open,
   setOpen,
   createMetaform
@@ -40,7 +40,7 @@ const EditorScreenDrawer: React.FC<Props> = ({
     formUrl: "",
     formTemplate: true,
     formSchema: "",
-    formIdentification: true
+    formAuthentication: true
   });
   const [ valid, setValid ] = useState<boolean>(false);
 
@@ -56,26 +56,27 @@ const EditorScreenDrawer: React.FC<Props> = ({
    */
   const handleFormSubmit = () => {
     createMetaform({
-      allowAnonymous: !formSettings.formIdentification,
+      allowAnonymous: !formSettings.formAuthentication,
       title: formSettings.formName
     });
   };
 
-  /* eslint-disable no-unneeded-ternary */
   /**
    * Event handler for input element change
+   * This method is being used by not only textfields but also radio buttons that return a boolean value.
+   * Radio buttons do not return boolean, but rather true or false as a string.
+   * Therefore that is being converterd to boolean.
    * 
    * @param event event
    */
   const onInputFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target: { name, value } } = event;
-    const updatedForm: any = { ...formSettings };
-    if (name === "formTemplate" || name === "formIdentification") {
-      updatedForm[name] = value === "true" ? true : false;
+    if (name === "formTemplate" || name === "formAuthentication") {
+      setFormSettings({ ...formSettings, [name]: value === "true" });
     } else {
-      updatedForm[name] = value;
+      setFormSettings({ ...formSettings, [name]: value });
     }
-    setFormSettings(updatedForm);
+    console.log(formSettings);
   };
 
   /**
@@ -141,7 +142,7 @@ const EditorScreenDrawer: React.FC<Props> = ({
       <Box
         sx={{ padding: 2 }}
       >
-        <Stack spacing={2}>
+        <Stack spacing={ 2 }>
           <FormLabel required>{ strings.editorScreen.drawer.formInfo }</FormLabel>
           <TextField
             fullWidth
@@ -171,7 +172,7 @@ const EditorScreenDrawer: React.FC<Props> = ({
       <Box
         sx={{ padding: 2 }}
       >
-        <Stack spacing={2}>
+        <Stack spacing={ 2 }>
           <FormLabel required>{ strings.editorScreen.drawer.formTemplate }</FormLabel>
           <RadioGroup
             value={ formSettings.formTemplate }
@@ -202,20 +203,20 @@ const EditorScreenDrawer: React.FC<Props> = ({
   };
 
   /**
-   * Renders Drawer identification section
+   * Renders Drawer authentication section
    */
-  const renderDrawerIdentificationSection = () => {
+  const renderDrawerAuthenticationSection = () => {
     return (
       <Box
         sx={{ padding: 2 }}
       >
-        <Stack spacing={2}>
+        <Stack spacing={ 2 }>
           <FormLabel required>{ strings.editorScreen.drawer.formIdentification }</FormLabel>
           <RadioGroup
-            value={ formSettings.formIdentification }
+            value={ formSettings.formAuthentication }
             defaultValue={ true }
             onChange={ onInputFieldChange }
-            name="formIdentification"
+            name="formAuthentication"
           >
             <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationService }/>
             <FormHelperText>
@@ -228,15 +229,30 @@ const EditorScreenDrawer: React.FC<Props> = ({
     );
   };
 
-  useEffect(() => {
+  /**
+   * Checks if form settings are correctly set
+   * If so, allows clicking of Save icon e.g. moving to form editor screen
+   */
+  const validateFormSettings = () => {
     const templateSectionValid = formSettings.formTemplate ? formSettings.formTemplate && !!formSettings.formSchema : !formSettings.formTemplate;
     setValid(!!formSettings.formName && templateSectionValid);
-  }, [formSettings]);
+  };
 
-  useEffect(() => {
+  /**
+   * Resets formSchema field if user un-checks "Sosmeta template" -field.
+   */
+  const resetFormSchema = () => {
     if (!formSettings.formTemplate) {
       setFormSettings({ ...formSettings, formSchema: "" });
     }
+  };
+
+  useEffect(() => {
+    validateFormSettings();
+  }, [formSettings]);
+
+  useEffect(() => {
+    resetFormSchema();
   }, [formSettings.formTemplate]);
 
   return (
@@ -250,7 +266,7 @@ const EditorScreenDrawer: React.FC<Props> = ({
       open={ open }
       onClose={ toggleDrawerOpen }
     >
-      <Stack spacing={2} direction="column">
+      <Stack spacing={ 2 } direction="column">
         <FormControl
           fullWidth
         >
@@ -260,7 +276,7 @@ const EditorScreenDrawer: React.FC<Props> = ({
           <Divider/>
           { renderDrawerTemplateSection() }
           <Divider/>
-          { renderDrawerIdentificationSection() }
+          { renderDrawerAuthenticationSection() }
         </FormControl>
       </Stack>
     </Drawer>

@@ -31,7 +31,8 @@
       "close": "Close"
     },
     "adminFormsScreen": {
-      "listForms": "Fetching forms failed"
+      "listForms": "Fetching forms failed",
+      "createForm": "Creating form failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -259,7 +260,7 @@
   },
 
   "editorScreen": {
-    "noMetaforms": "No Metaforms found",
+    "noMetaforms": "No forms found",
     "formVersion": "FORM VERSION",
     "formCreatedAt": "CREATED AT",
     "formModifiedAt": "MODIFIED AT",

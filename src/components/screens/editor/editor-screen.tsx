@@ -33,7 +33,7 @@ const EditorScreen: React.FC = () => {
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, versionsApi } = apiClient;
 
-  const [ metaforms, setMetaforms ] = useState<Row[]>([]);
+  const [ metaformRows, setMetaformRows ] = useState<Row[]>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
 
   const [ drawerOpen, setDrawerOpen ] = useState<boolean>(false);
@@ -49,13 +49,13 @@ const EditorScreen: React.FC = () => {
       const rows: Row[] = await Promise.all(forms.map(async form => {
         return {
           metaform: form,
-          versions: await versionsApi.listMetaformVersions({ metaformId: form.id!! })
+          versions: await versionsApi.listMetaformVersions({ metaformId: form.id! })
         };
       }));
 
-      setMetaforms(rows);
-    } catch (e: any) {
-      errorContext.setError("Error while listing forms.");
+      setMetaformRows(rows);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
 
     setLoading(false);
@@ -68,7 +68,7 @@ const EditorScreen: React.FC = () => {
     try {
       const newMetaform = await metaformsApi.createMetaform({ metaform: metaform });
       const newMetaformVersion = await versionsApi.createMetaformVersion({
-        metaformId: newMetaform.id!!,
+        metaformId: newMetaform.id!,
         metaformVersion: {
           type: MetaformVersionType.Draft,
           data: { ...newMetaform } as any
@@ -76,8 +76,8 @@ const EditorScreen: React.FC = () => {
       });
       const currentPath = window.location.pathname;
       navigate(`${currentPath}/${newMetaform.slug}/${newMetaformVersion.id}`);
-    } catch (e: any) {
-      errorContext.setError("Error while creating new Metaform.");
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
   };
 
@@ -87,7 +87,7 @@ const EditorScreen: React.FC = () => {
    * @param metaform metaform
    */
   const buildVersionRows = (metaform: Metaform) => {
-    const versions = metaforms.find(x => x.metaform.id === metaform.id)?.versions;
+    const versions = metaformRows.find(x => x.metaform.id === metaform.id)?.versions;
     if (!versions) {
       return;
     }
@@ -95,7 +95,7 @@ const EditorScreen: React.FC = () => {
     return versions.map((version: MetaformVersion) => {
       return (
         <ListItem
-          key={ version.id!! }
+          key={ version.id! }
           sx={{
             width: "100%",
             padding: 0,
@@ -173,7 +173,7 @@ const EditorScreen: React.FC = () => {
    * Toggles drawer
    */
   const toggleEditorDrawer = () => {
-    setDrawerOpen((prevState: boolean) => !prevState);
+    setDrawerOpen(!drawerOpen);
   };
 
   const columns: GridColDef[] = [
@@ -237,7 +237,7 @@ const EditorScreen: React.FC = () => {
    * Renders DataGrid containing available Metaforms
    */
   const renderMetaformList = () => {
-    if (metaforms.length === 0) {
+    if (metaformRows.length === 0) {
       return (
         <Typography variant="body1">
           { strings.editorScreen.noMetaforms }
@@ -256,7 +256,7 @@ const EditorScreen: React.FC = () => {
           padding: 2
         }}
         loading={ loading }
-        rows={ metaforms.map(metaform => metaform.metaform) }
+        rows={ metaformRows.map(metaform => metaform.metaform) }
         columns={ columns }
         disableColumnMenu
         disableColumnSelector
