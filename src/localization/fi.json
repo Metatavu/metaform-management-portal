@@ -53,6 +53,10 @@
       "fetchFields": "Lomakekenttien hakemisessa tapahtui virhe",
       "deleteReply":"Vastauksen poistaminen epäonnistui"
     },
+    "adminReplyScreen": {
+      "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
+      "exportPdf": "PDF:n lataamisessa tapahtui virhe"
+    },
     "usersScreen": {
       "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",
       "loadMemberGroups": "Käyttäjäryhmien latauksessa tapahtui virhe",
@@ -140,6 +144,10 @@
     "statusDone": "Käsitelty",
     "confirmDeleteReplyTitle": "Vastauksen poistaminen",
     "confirmDeleteReplyText":"Oletko varma, että haluat poistaa vastauksen?"
+  },
+
+  "replyScreen": {
+    "exportPdf": "Lataa PDF"
   },
 
   "publicFormsScreen": {

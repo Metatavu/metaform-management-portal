@@ -53,6 +53,10 @@
       "fetchFields": "Fetching column fields failed",
       "deleteReply":"Deleting reply failed"
     },
+    "adminReplyScreen": {
+      "saveReply": "Saving reply failed",
+      "exportPdf": "Exporting PDF failed"
+    },
     "usersScreen": {
       "loadMetaforms": "Error occurred while loading metaforms",
       "loadMemberGroups": "Error occurred while loading user groups",
@@ -140,6 +144,10 @@
     "statusDone": "Done",
     "confirmDeleteReplyTitle": "Delete answer",
     "confirmDeleteReplyText":"Are you sure you want to delete this answer?"
+  },
+
+  "replyScreen": {
+    "exportPdf": "Export PDF"
   },
 
   "publicFormsScreen": {

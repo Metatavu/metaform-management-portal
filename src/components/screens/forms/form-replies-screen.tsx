@@ -160,7 +160,7 @@ const FormRepliesScreen: React.FC = () => {
             color="primary"
             size="small"
           >
-            <Link to={params.row.replyId}>{ strings.generic.show }</Link>
+            <Link to={params.row.replyId}>{ strings.repliesScreen.open }</Link>
           </Button>
         ]
       } as GridColDef);

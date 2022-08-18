@@ -64,7 +64,11 @@ export interface Localized extends LocalizedStringsMethods {
       fetchReplies: string;
       fetchFields: string;
       deleteReply: string;
-    }
+    },
+    adminReplyScreen: {
+      saveReply: string;
+      exportPdf: string;
+    },
     usersScreen: {
       loadMetaforms: string;
       loadMemberGroups: string;
@@ -174,6 +178,13 @@ export interface Localized extends LocalizedStringsMethods {
     statusDone: string;
     confirmDeleteReplyTitle: string;
     confirmDeleteReplyText: string;
+  }
+
+  /**
+   * Translations related to admin single reply screen
+   */
+  replyScreen: {
+    exportPdf: string;
   }
 
   /**
