@@ -104,25 +104,25 @@ const EditorScreen: React.FC = () => {
         >
           <AdminFormListStack direction="row">
             <Grid container>
-              <Grid item md={6}>
+              <Grid item md={ 6 }>
                 <AdminFormTypographyField>
                   <ListRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
                   { version.type === MetaformVersionType.Archived ? strings.editorScreen.formVersionArchived : strings.editorScreen.formVersionDraft }
                 </AdminFormTypographyField>
               </Grid>
-              <Grid item md={2}>
+              <Grid item md={ 2 }>
                 <AdminFormTypographyField>
                   <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
                   { moment(version.createdAt).format("DD.MM.yyyy HH:mm") }
                 </AdminFormTypographyField>
               </Grid>
-              <Grid item md={2}>
+              <Grid item md={ 2 }>
                 <AdminFormTypographyField>
                   <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
                   { moment(version.modifiedAt).format("DD.MM.yyyy HH:mm") }
                 </AdminFormTypographyField>
               </Grid>
-              <Grid item md={2}>
+              <Grid item md={ 2 }>
                 <AdminFormTypographyField>
                   <PersonRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
                   placeholder_email
@@ -141,25 +141,25 @@ const EditorScreen: React.FC = () => {
   const renderVersionListHeader = () => {
     return (
       <VersionListHeader container>
-        <Grid item md={6}>
+        <Grid item md={ 6 }>
           <AdminFormTypographyField sx={{ fontWeight: "bold" }}>
             <ListRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
             { strings.editorScreen.formVersion }
           </AdminFormTypographyField>
         </Grid>
-        <Grid item md={2}>
+        <Grid item md={ 2 }>
           <AdminFormTypographyField sx={{ fontWeight: "bold" }}>
             <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
             { strings.editorScreen.formCreatedAt }
           </AdminFormTypographyField>
         </Grid>
-        <Grid item md={2}>
+        <Grid item md={ 2 }>
           <AdminFormTypographyField sx={{ fontWeight: "bold" }}>
             <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
             { strings.editorScreen.formModifiedAt }
           </AdminFormTypographyField>
         </Grid>
-        <Grid item md={2}>
+        <Grid item md={ 2 }>
           <AdminFormTypographyField sx={{ fontWeight: "bold" }}>
             <PersonRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
             { strings.editorScreen.formLastModifier }
