@@ -48,7 +48,8 @@ const FormRepliesScreen: React.FC = () => {
     const row : { [key: string]: string | number } = {};
     
     row.replyId = reply.id!;
-    row.replyStatus = reply?.data?.status.toString()!;
+    
+    row.replyStatus = reply.data?.status?.toString() || "";
     row.id = uuid4();
 
     fields.forEach(field => {
