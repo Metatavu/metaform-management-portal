@@ -170,7 +170,7 @@ const EditorScreen: React.FC = () => {
    * Toggles drawer
    */
   const toggleEditorDrawer = () => {
-    setDrawerOpen(!drawerOpen);
+    setDrawerOpen((prevState: boolean) => !prevState);
   };
 
   const columns: GridColDef[] = [
