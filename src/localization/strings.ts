@@ -323,7 +323,7 @@ export interface Localized extends LocalizedStringsMethods {
       formIdentification: string;
       formIdentificationService: string;
       formIdentificationHelper: string;
-      formIdentificationNone: String;
+      formIdentificationNone: string;
     };
   };
 
