@@ -8,7 +8,7 @@ import Api from "api";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import { Metaform, MetaformVersion, MetaformVersionType } from "generated/client";
-import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
+import { AdminFormListStack, AdminFormTypographyField, VersionListHeader } from "styled/react-components/react-components";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { NewUserButton } from "styled/layouts/admin-layout";
 import moment from "moment";
@@ -96,31 +96,35 @@ const EditorScreen: React.FC = () => {
       return (
         <ListItem
           key={ version.id!! }
-          sx={{ width: "100%" }}
+          sx={{
+            width: "100%",
+            padding: 0,
+            height: "60px"
+          }}
         >
           <AdminFormListStack direction="row">
             <Grid container>
-              <Grid item md={9}>
+              <Grid item md={6}>
                 <AdminFormTypographyField>
-                  <ListRounded style={{ fill: "darkgrey" }}/>
+                  <ListRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
                   { version.type === MetaformVersionType.Archived ? strings.editorScreen.formVersionArchived : strings.editorScreen.formVersionDraft }
                 </AdminFormTypographyField>
               </Grid>
-              <Grid item md={1}>
+              <Grid item md={2}>
                 <AdminFormTypographyField>
-                  <DateRangeRounded style={{ fill: "darkgrey" }}/>
+                  <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
                   { moment(version.createdAt).format("DD.MM.yyyy HH:mm") }
                 </AdminFormTypographyField>
               </Grid>
-              <Grid item md={1}>
+              <Grid item md={2}>
                 <AdminFormTypographyField>
-                  <DateRangeRounded style={{ fill: "darkgrey" }}/>
+                  <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
                   { moment(version.modifiedAt).format("DD.MM.yyyy HH:mm") }
                 </AdminFormTypographyField>
               </Grid>
-              <Grid item md={1}>
+              <Grid item md={2}>
                 <AdminFormTypographyField>
-                  <PersonRounded style={{ fill: "darkgrey" }}/>
+                  <PersonRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
                   placeholder_email
                 </AdminFormTypographyField>
               </Grid>
@@ -136,33 +140,32 @@ const EditorScreen: React.FC = () => {
    */
   const renderVersionListHeader = () => {
     return (
-      <Grid container>
-        <Grid item md={9}>
+      <VersionListHeader container>
+        <Grid item md={6}>
           <AdminFormTypographyField sx={{ fontWeight: "bold" }}>
-            <ListRounded style={{ fill: "darkgrey" }}/>
+            <ListRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
             { strings.editorScreen.formVersion }
           </AdminFormTypographyField>
         </Grid>
-        <Grid item md={1}>
+        <Grid item md={2}>
           <AdminFormTypographyField sx={{ fontWeight: "bold" }}>
-            <DateRangeRounded style={{ fill: "darkgrey" }}/>
+            <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
             { strings.editorScreen.formCreatedAt }
           </AdminFormTypographyField>
         </Grid>
-        <Grid item md={1}>
+        <Grid item md={2}>
           <AdminFormTypographyField sx={{ fontWeight: "bold" }}>
-            <DateRangeRounded style={{ fill: "darkgrey" }}/>
+            <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
             { strings.editorScreen.formModifiedAt }
           </AdminFormTypographyField>
         </Grid>
-        <Grid item md={1}>
+        <Grid item md={2}>
           <AdminFormTypographyField sx={{ fontWeight: "bold" }}>
-            <PersonRounded style={{ fill: "darkgrey" }}/>
+            <PersonRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
             { strings.editorScreen.formLastModifier }
           </AdminFormTypographyField>
         </Grid>
-        <Divider/>
-      </Grid>
+      </VersionListHeader>
     );
   };
 
@@ -182,19 +185,35 @@ const EditorScreen: React.FC = () => {
           <AdminFormListStack direction="row">
             <Accordion
               disableGutters
+              sx={{
+                backgroundColor: "rgba(0,0,0,0.03)",
+                padding: "0px"
+              }}
             >
               <AccordionSummary
-                sx={{ height: 45 }}
+                sx={{
+                  backgroundColor: "white",
+                  padding: 0
+                }}
                 expandIcon={ <KeyboardArrowDown style={{ fill: "darkgrey" }}/> }
               >
-                <AdminFormTypographyField>{ params.row.title ?? "No title on Metaform" }</AdminFormTypographyField>
-                <Settings style={{ fill: "darkgrey" }}/>
+                <AdminFormTypographyField variant="h3">{ params.row.title ?? "No title on Metaform" }</AdminFormTypographyField>
+                <Settings
+                  style={{
+                    fill: "darkgrey",
+                    alignSelf: "center",
+                    marginRight: "0.5rem"
+                  }}
+                />
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails sx={{ padding: 0 }}>
                 <List sx={{ padding: 0 }}>
                   <ListItem
                     key={ params.row.id }
-                    sx={{ width: "100%" }}
+                    sx={{
+                      width: "100%",
+                      padding: 0
+                    }}
                   >
                     <AdminFormListStack direction="row">
                       { renderVersionListHeader() }
@@ -233,7 +252,8 @@ const EditorScreen: React.FC = () => {
           "& .MuiDataGrid-virtualScroller": { marginTop: "0!important" },
           "& .MuiDataGrid-columnHeaders:focus-within, & .MuiDataGrid-cell:focus-within": { outline: "none" },
           "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-cell:focus": { outline: "none" },
-          "& .MuiDataGrid-cell": { p: 0 }
+          "& .MuiDataGrid-cell": { p: 0 },
+          padding: 2
         }}
         loading={ loading }
         rows={ metaforms.map(metaform => metaform.metaform) }
