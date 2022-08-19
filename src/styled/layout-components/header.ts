@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles";
 export const Root = styled(AppBar, {
   label: "header-root"
 })(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1,
+  zIndex: theme.zIndex.drawer,
   backgroundColor: "transparent",
   padding: `${theme.spacing(2)} 0`
 }));

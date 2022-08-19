@@ -1,4 +1,4 @@
-import { Slider, Box, TextField, Input, Autocomplete, Stack, Typography, Button, FormControl } from "@mui/material";
+import { Slider, Box, TextField, Input, Autocomplete, Stack, Typography, Button, FormControl, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import theme from "theme";
 
@@ -250,7 +250,6 @@ export const AdminFormListStack = styled(Stack, {
   label: "admin-form-list-stack"
 })(() => ({
   alignItems: "center",
-  padding: "0.5rem",
   flex: 1
 }));
 
@@ -260,10 +259,12 @@ export const AdminFormListStack = styled(Stack, {
 export const AdminFormTypographyField = styled(Typography, {
   label: "admin-form-text-field"
 })(() => ({
+  display: "flex",
   flex: 1,
   width: "100%",
   fontSize: "1em",
-  margin: "0.5rem"
+  margin: "0.5rem",
+  alignItems: "center"
 }));
 
 /**
@@ -286,4 +287,17 @@ export const AdminFormRepliesScreenText = styled(Typography, {
   width: "100%",
   fontSize: "1em",
   margin: "0.5rem"
+}));
+
+/**
+ * Styled text for the version list header
+ */
+export const VersionListHeader = styled(Grid, {
+  label: "version-list-header"
+})(() => ({
+  borderTop: "1px solid rgba(0,0,0,0.1)",
+  borderBottom: "1px solid rgba(0,0,0,0.1)",
+  padding: 0,
+  height: "60px",
+  alignContent: "center"
 }));
