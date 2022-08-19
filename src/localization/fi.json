@@ -51,7 +51,8 @@
     "adminRepliesScreen": {
       "fetchReplies": "Vastauksien hakemisessa tapahtui virhe",
       "fetchFields": "Lomakekenttien hakemisessa tapahtui virhe",
-      "deleteReply":"Vastauksen poistaminen epäonnistui"
+      "deleteReply":"Vastauksen poistaminen epäonnistui",
+      "formIdNotFound": "Lomakkeen ID:tä ei löytynyt"
     },
     "usersScreen": {
       "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",

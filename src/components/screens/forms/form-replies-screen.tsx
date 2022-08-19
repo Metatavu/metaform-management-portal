@@ -37,6 +37,10 @@ const FormRepliesScreen: React.FC = () => {
   const useparams = useParams();
   const { formId } = useparams;
 
+  if (!formId) {
+    errorContext.setError(strings.errorHandling.adminRepliesScreen.formIdNotFound);
+  }
+
   /**
    * Builds a row for the table
    * 
