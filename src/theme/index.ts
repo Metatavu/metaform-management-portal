@@ -49,8 +49,8 @@ export default createTheme({
       fontSize: 20
     },
     h3: {
-      fontWeight: 100,
-      fontSize: 20
+      fontWeight: 400,
+      fontSize: 18
     },
     h4: {
       fontWeight: 100,
@@ -169,6 +169,16 @@ export default createTheme({
           display: "flex",
           alignItems: "center"
         }
+      }
+    },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          width: "100%"
+        }
+      },
+      defaultProps: {
+        elevation: 0
       }
     }
   }

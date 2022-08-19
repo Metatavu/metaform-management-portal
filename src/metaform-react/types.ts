@@ -41,7 +41,7 @@ export type FileFieldValue = {
 /**
  * Type for icon name
  */
-export type IconName = "dot-circle-o" | "circle-o" | "check-square-o" | "square-o" | "add";
+export type IconName = "dot-circle-o" | "circle-o" | "check-square-o" | "square-o" | "add";
 
 /**
  * Interface describing localized strings

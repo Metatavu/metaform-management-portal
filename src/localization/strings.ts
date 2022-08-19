@@ -44,6 +44,7 @@ export interface Localized extends LocalizedStringsMethods {
     },
     adminFormsScreen: {
       listForms: string;
+      createForm: string;
     },
     formScreen: {
       saveReply: string;
@@ -154,10 +155,15 @@ export interface Localized extends LocalizedStringsMethods {
     editorScreens: {
       title: string;
       description: string;
+      editorScreen: {
+        title: string;
+        description: string;
+      },
       draftEditorScreen: {
         title: string;
         description: string;
       };
+      newFormButton: string;
     };
   };
 
@@ -314,6 +320,36 @@ export interface Localized extends LocalizedStringsMethods {
     replyNotFound: string;
     replyDeleted: string;
     noTitle: string;
+  };
+
+  /**
+   * Translations related to editor screen
+   */
+  editorScreen: {
+    noMetaforms: string;
+    formVersion: string;
+    formCreatedAt: string;
+    formModifiedAt: string;
+    formLastModifier: string;
+    formVersionArchived: string;
+    formVersionDraft: string;
+    drawer: {
+      newForm: string;
+      helper: string;
+      formInfo: string;
+      formName: string;
+      formUrl: string;
+      formTemplate: string;
+      formTemplateCustom: string;
+      formTemplateCustomHelper: string;
+      formTemplateSosmeta: string;
+      formTemplateSosmetaHelper: string;
+      formTemplateSchema: string;
+      formIdentification: string;
+      formIdentificationService: string;
+      formIdentificationHelper: string;
+      formIdentificationNone: string;
+    };
   };
 
   /**

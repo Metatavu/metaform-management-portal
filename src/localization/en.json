@@ -31,7 +31,8 @@
       "close": "Close"
     },
     "adminFormsScreen": {
-      "listForms": "Fetching forms failed"
+      "listForms": "Fetching forms failed",
+      "createForm": "Creating form failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -123,10 +124,15 @@
     "editorScreens": {
       "title": "Editors",
       "description": "Edit forms and create new forms.",
+      "editorScreen": {
+        "title": "Select form",
+        "description": "Select form to edit, or create new form."
+      },
       "draftEditorScreen": {
         "title": "Draft editor",
         "description": "Editing the form"
-      }
+      },
+      "newFormButton": "Create new form"
     }
   },
 
@@ -269,6 +275,33 @@
     "confirmDeleteReplyText": "Are you sure that you wish to delete the reply?",
     "replyDeleted": "Reply deleted",
     "noTitle": "No title"
+  },
+
+  "editorScreen": {
+    "noMetaforms": "No forms found",
+    "formVersion": "FORM VERSION",
+    "formCreatedAt": "CREATED AT",
+    "formModifiedAt": "MODIFIED AT",
+    "formLastModifier": "LAST MODIFIER",
+    "formVersionArchived": "archived",
+    "formVersionDraft": "draft",
+    "drawer": {
+      "newForm": "Create new form",
+      "helper": "Forms general settings that affect all versions of form.",
+      "formInfo": "Form info",
+      "formName": "Name",
+      "formUrl": "Url-address",
+      "formTemplate": "Form template",
+      "formTemplateCustom": "Custom template",
+      "formTemplateCustomHelper": "Create new form with empty template. Recommended only if Sosmeta doesn't contain a suitable form template.",
+      "formTemplateSosmeta": "Sosmeta template",
+      "formTemplateSosmetaHelper": "Create new form with Sosmetas structure. Sosmeta is a service maintained by the Finnish Institute for Health and Welfare. Templates can be found at https://sosmeta.thl.fi/document-definitions/list.",
+      "formTemplateSchema": "Schema",
+      "formIdentification": "Repliers identification",
+      "formIdentificationService": "Suomi.fi -service",
+      "formIdentificationHelper": "Form replier needs to identificate themself through the Suomi.fi -service when submitting reply.",
+      "formIdentificationNone": "No identification"
+    }
   },
 
   "emailDialog": {
