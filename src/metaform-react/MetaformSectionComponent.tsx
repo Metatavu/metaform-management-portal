@@ -28,6 +28,7 @@ interface Props {
   onSubmit: (source: MetaformField) => void;
   onFileShow: (value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
+  saving?: boolean;
 }
 
 /**
@@ -52,7 +53,8 @@ const MetaformSectionComponent: React.FC<Props> = ({
   onFileDelete,
   onFileShow,
   requiredFieldsMissingError,
-  showRequiredFieldsMissingError
+  showRequiredFieldsMissingError,
+  saving
 }) => {
   /**
    * Renders a title
@@ -95,6 +97,7 @@ const MetaformSectionComponent: React.FC<Props> = ({
                 onFileShow={ onFileShow }
                 requiredFieldsMissingError={ requiredFieldsMissingError }
                 showRequiredFieldsMissingError={ showRequiredFieldsMissingError }
+                saving={ saving }
               />
             );
           })

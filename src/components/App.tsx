@@ -10,6 +10,10 @@ import AdminLayout from "./layouts/admin-layout";
 import PublicLayout from "./layouts/public-layout";
 import PublicRoutes from "./screens/public/public-routes";
 import AuthenticationProvider from "./containers/access-token-refresh";
+import moment from "moment";
+import "moment/locale/fi";
+
+moment.locale("fi");
 
 /**
  * Application component

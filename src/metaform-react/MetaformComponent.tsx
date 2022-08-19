@@ -28,6 +28,7 @@ interface Props {
   onFileShow: (value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
   onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
+  saving?: boolean;
 }
 
 /**
@@ -50,7 +51,8 @@ const MetaformComponent: React.FC<Props> = ({
   onSubmit,
   onFileShow,
   onFileDelete,
-  onValidationErrorsChange
+  onValidationErrorsChange,
+  saving
 }) => {
   const metaformId = form.id ? `${form.id}` : "";
   const metaformSectionKeyPrefix = `metaform-${metaformId}`;
@@ -174,6 +176,7 @@ const MetaformComponent: React.FC<Props> = ({
               showRequiredFieldsMissingError={ showRequiredFieldsMissingError }
               onFileShow={ onFileShow }
               onFileDelete={ onFileDelete }
+              saving={ saving }
             />
           );
         })

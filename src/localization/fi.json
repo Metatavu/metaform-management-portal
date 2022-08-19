@@ -48,6 +48,12 @@
     "publicFormsScreen": {
       "fetchForms": "Lomakkeiden hakemisessa tapahtui virhe"
     },
+    "adminRepliesScreen": {
+      "fetchReplies": "Vastauksien hakemisessa tapahtui virhe",
+      "fetchFields": "Lomakekenttien hakemisessa tapahtui virhe",
+      "deleteReply":"Vastauksen poistaminen epäonnistui",
+      "formIdNotFound": "Lomakkeen ID:tä ei löytynyt"
+    },
     "usersScreen": {
       "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",
       "loadMemberGroups": "Käyttäjäryhmien latauksessa tapahtui virhe",
@@ -91,20 +97,7 @@
           "form": "LOMAKE",
           "latestReply": "VIIMEISIN",
           "newReply": "UUSIA",
-          "notProcessed": "käsittelemättömiä",
-          "answerScreen": {
-            "title": "Vastaukset",
-            "description": "Valitun lomakkeen vastaukset.",
-            "createdColumnTitle": "LUOTU",
-            "modifiedColumnTitle": "MUOKATTU",
-            "statusColumnTitle": "TILA",
-            "nameColumnTitle": "NIMI",
-            "selectorShowOpen": "Näytä avoimet",
-            "selectorShowAll": "Näytä kaikki",
-            "statusWaiting": "Odottaa",
-            "statusInProgress": "Käsittelyssä",
-            "statusProgressed": "Käsitelty"
-          }
+          "notProcessed": "käsittelemättömiä"
         }
       },
       "formListing": {
@@ -131,6 +124,22 @@
         "description": "Lomakkeen muokkaus"
       }
     }
+  },
+
+  "repliesScreen": {
+    "title": "Vastaukset",
+    "description": "Valitun lomakkeen vastaukset.",
+    "createdColumnTitle": "LUOTU",
+    "modifiedColumnTitle": "MUOKATTU",
+    "statusColumnTitle": "TILA",
+    "nameColumnTitle": "NIMI",
+    "selectorShowOpen": "Näytä avoimet",
+    "selectorShowAll": "Näytä kaikki",
+    "statusWaiting": "Odottaa",
+    "statusProcessing": "Käsittelyssä",
+    "statusDone": "Käsitelty",
+    "confirmDeleteReplyTitle": "Vastauksen poistaminen",
+    "confirmDeleteReplyText":"Oletko varma, että haluat poistaa vastauksen?"
   },
 
   "publicFormsScreen": {

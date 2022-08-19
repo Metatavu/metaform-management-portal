@@ -48,6 +48,12 @@
     "publicFormsScreen": {
       "fetchForms": "Fetching forms failed"
     },
+    "adminRepliesScreen": {
+      "fetchReplies": "Fetching replies failed",
+      "fetchFields": "Fetching column fields failed",
+      "deleteReply":"Deleting reply failed",
+      "formIdNotFound": "Form id not found"
+    },
     "usersScreen": {
       "loadMetaforms": "Error occurred while loading metaforms",
       "loadMemberGroups": "Error occurred while loading user groups",
@@ -91,20 +97,7 @@
           "form": "FORM",
           "latestReply": "LATEST",
           "newReply": "NEW",
-          "notProcessed": "untreated",
-          "answerScreen": {
-            "title": "Answers",
-            "description": "List of answers for the selected form.",
-            "createdColumnTitle": "CREATED",
-            "modifiedColumnTitle": "MODIFIED",
-            "statusColumnTitle": "STATUS",
-            "nameColumnTitle": "NAME",
-            "selectorShowOpen": "Show open",
-            "selectorShowAll": "Show all",
-            "statusWaiting": "Waiting",
-            "statusInProgress": "In progress",
-            "statusProgressed": "Progressed"
-          }
+          "notProcessed": "untreated"
         }
       },
       "formListing": {
@@ -131,6 +124,22 @@
         "description": "Editing the form"
       }
     }
+  },
+
+  "repliesScreen": {
+    "title": "Answers",
+    "description": "List of answers for the selected form.",
+    "createdColumnTitle": "CREATED",
+    "modifiedColumnTitle": "MODIFIED",
+    "statusColumnTitle": "STATUS",
+    "nameColumnTitle": "NAME",
+    "selectorShowOpen": "Show open",
+    "selectorShowAll": "Show all",
+    "statusWaiting": "Waiting",
+    "statusProcessing": "Processing",
+    "statusDone": "Done",
+    "confirmDeleteReplyTitle": "Delete answer",
+    "confirmDeleteReplyText":"Are you sure you want to delete this answer?"
   },
 
   "publicFormsScreen": {

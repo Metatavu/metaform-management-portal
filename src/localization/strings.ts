@@ -59,6 +59,12 @@ export interface Localized extends LocalizedStringsMethods {
     },
     publicFormsScreen: {
       fetchForms: string;
+    },
+    adminRepliesScreen: {
+      fetchReplies: string;
+      fetchFields: string;
+      deleteReply: string;
+      formIdNotFound: string;
     }
     usersScreen: {
       loadMetaforms: string;
@@ -123,19 +129,6 @@ export interface Localized extends LocalizedStringsMethods {
           latestReply: string;
           newReply: string;
           notProcessed: string;
-          answerScreen: {
-            title: string;
-            description: string;
-            createdColumnTitle: string;
-            modifiedColumnTitle: string;
-            statusColumnTitle: string;
-            nameColumnTitle: string;
-            selectorShowOpen: string;
-            selectorShowAll: string;
-            statusWaiting: string;
-            statusInProgress: string;
-            statusProgressed: string;
-          }
         }
       };
       formListing: {
@@ -150,8 +143,8 @@ export interface Localized extends LocalizedStringsMethods {
       title: string;
       description: string;
       subheader: {
-        "title": string;
-        "description": string;
+        title: string;
+        description: string;
       }
     };
     editorScreens: {
@@ -163,6 +156,25 @@ export interface Localized extends LocalizedStringsMethods {
       };
     };
   };
+
+  /**
+   * Translations related to metaform replies screen
+   */
+  repliesScreen: {
+    title: string;
+    description: string;
+    createdColumnTitle: string;
+    modifiedColumnTitle: string;
+    statusColumnTitle: string;
+    nameColumnTitle: string;
+    selectorShowOpen: string;
+    selectorShowAll: string;
+    statusWaiting: string;
+    statusProcessing: string;
+    statusDone: string;
+    confirmDeleteReplyTitle: string;
+    confirmDeleteReplyText: string;
+  }
 
   /**
    * Translations related to metaform editor screen
