@@ -1,4 +1,4 @@
-import { Box, Checkbox } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import React, { CSSProperties, ReactNode } from "react";
 import { ChecklistFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField, MetaformFieldOption } from "../generated/client/models";
@@ -81,14 +81,21 @@ export const MetaformChecklistFieldComponent: React.FC<Props> = ({
 
     return (
       <Box key={ option.name }>
-        <Checkbox
-          style={ style }
-          name={ field.name }
-          value={ option.name }
-          checked={ checked }
-          onChange={ (event: React.ChangeEvent<HTMLInputElement>) => onCheckboxChange(option, event.target.checked) }
-        />
-        <span>{ option.text }</span>
+        <FormGroup>
+          <FormControlLabel
+            value={ option.name }
+            control={
+              <Checkbox
+                style={ style }
+                name={ field.name }
+                value={ option.name }
+                checked={ checked }
+                onChange={ (event: any) => onCheckboxChange(option, event.target.checked) }
+              />
+            }
+            label={ option.text }
+          />
+        </FormGroup>
       </Box>
     );
   };
