@@ -113,13 +113,13 @@ const EditorScreen: React.FC = () => {
               <Grid item md={ 2 }>
                 <AdminFormTypographyField>
                   <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
-                  { moment(version.createdAt).format("DD.MM.yyyy HH:mm") }
+                  { moment(version.createdAt).format("LLL") }
                 </AdminFormTypographyField>
               </Grid>
               <Grid item md={ 2 }>
                 <AdminFormTypographyField>
                   <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
-                  { moment(version.modifiedAt).format("DD.MM.yyyy HH:mm") }
+                  { moment(version.modifiedAt).format("LLL") }
                 </AdminFormTypographyField>
               </Grid>
               <Grid item md={ 2 }>
@@ -197,7 +197,7 @@ const EditorScreen: React.FC = () => {
                 }}
                 expandIcon={ <KeyboardArrowDown style={{ fill: "darkgrey" }}/> }
               >
-                <AdminFormTypographyField variant="h3">{ params.row.title ?? "No title on Metaform" }</AdminFormTypographyField>
+                <AdminFormTypographyField variant="h3">{ params.row.title }</AdminFormTypographyField>
                 <Settings
                   style={{
                     fill: "darkgrey",

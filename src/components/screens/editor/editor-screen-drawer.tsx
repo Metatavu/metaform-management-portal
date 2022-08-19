@@ -76,7 +76,6 @@ const EditorScreenDrawer: FC<Props> = ({
     } else {
       setFormSettings({ ...formSettings, [name]: value });
     }
-    console.log(formSettings);
   };
 
   /**
@@ -93,7 +92,12 @@ const EditorScreenDrawer: FC<Props> = ({
     return (
       <Stack>
         <Box sx={{
-          padding: 2, height: 72, backgroundColor: "#F5F5F5", display: "flex", flexDirection: "row", justifyContent: "space-between"
+          padding: 2,
+          height: 72,
+          backgroundColor: "#F5F5F5",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between"
         }}
         >
           <Typography variant="h4" fontWeight="bold" textAlign="start">
@@ -123,9 +127,7 @@ const EditorScreenDrawer: FC<Props> = ({
             </IconButton>
           </Box>
         </Box>
-        <Box
-          sx={{ height: 42, justifyContent: "center" }}
-        >
+        <Box sx={{ height: 42, justifyContent: "center" }}>
           <Typography sx={{ fontSize: 12 }} align="center">
             { strings.editorScreen.drawer.helper }
           </Typography>
@@ -139,9 +141,7 @@ const EditorScreenDrawer: FC<Props> = ({
    */
   const renderDrawerInfoSection = () => {
     return (
-      <Box
-        sx={{ padding: 2 }}
-      >
+      <Box sx={{ padding: 2 }}>
         <Stack spacing={ 2 }>
           <FormLabel required>{ strings.editorScreen.drawer.formInfo }</FormLabel>
           <TextField
@@ -207,9 +207,7 @@ const EditorScreenDrawer: FC<Props> = ({
    */
   const renderDrawerAuthenticationSection = () => {
     return (
-      <Box
-        sx={{ padding: 2 }}
-      >
+      <Box sx={{ padding: 2 }}>
         <Stack spacing={ 2 }>
           <FormLabel required>{ strings.editorScreen.drawer.formIdentification }</FormLabel>
           <RadioGroup
@@ -259,7 +257,8 @@ const EditorScreenDrawer: FC<Props> = ({
     <Drawer
       PaperProps={{
         sx: {
-          width: "400px", borderRadius: "15px 0 0 15px"
+          width: "400px",
+          borderRadius: "15px 0 0 15px"
         }
       }}
       anchor="right"
