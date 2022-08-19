@@ -51,7 +51,8 @@
     "adminRepliesScreen": {
       "fetchReplies": "Fetching replies failed",
       "fetchFields": "Fetching column fields failed",
-      "deleteReply":"Deleting reply failed"
+      "deleteReply":"Deleting reply failed",
+      "formSlugNotFound": "Form slug not found"
     },
     "adminReplyScreen": {
       "saveReply": "Saving reply failed",

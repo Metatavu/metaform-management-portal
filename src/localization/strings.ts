@@ -64,6 +64,7 @@ export interface Localized extends LocalizedStringsMethods {
       fetchReplies: string;
       fetchFields: string;
       deleteReply: string;
+      formSlugNotFound: string;
     },
     adminReplyScreen: {
       saveReply: string;

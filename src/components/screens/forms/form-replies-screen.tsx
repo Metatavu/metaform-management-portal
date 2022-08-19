@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unstable-nested-components */
 import { Button, FormControlLabel, Switch, Typography } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Api from "api";
@@ -16,7 +15,6 @@ import { AdminFormRepliesScreenStack, AdminFormRepliesScreenText } from "styled/
 import DeleteIcon from "@mui/icons-material/Delete";
 import { selectKeycloak } from "features/auth-slice";
 import { ApplicationRoles, ReplyStatus } from "types";
-import { uuid4 } from "@sentry/utils";
 
 /**
  * Form replies screen component
@@ -39,6 +37,10 @@ const FormRepliesScreen: React.FC = () => {
   const useparams = useParams();
   const { formSlug } = useparams;
 
+  if (!formSlug) {
+    errorContext.setError(strings.errorHandling.adminRepliesScreen.formSlugNotFound);
+  }
+
   /**
    * Builds a row for the table
    * 
@@ -47,9 +49,9 @@ const FormRepliesScreen: React.FC = () => {
   const buildRow = (reply: Reply, fields: MetaformField[]) => {
     const row : { [key: string]: string | number } = {};
     
-    row.replyId = reply.id!;
+    row.id = reply.id!;
+    
     row.replyStatus = reply.data?.status?.toString() || "";
-    row.id = uuid4();
 
     fields.forEach(field => {
       const replyData = reply.data;
@@ -147,11 +149,12 @@ const FormRepliesScreen: React.FC = () => {
       gridColumns.push({
         field: "actions",
         type: "actions",
-        width: 140,
+        width: 80,
+        // eslint-disable-next-line react/no-unstable-nested-components
         getActions: (params: { row: any; }) => [
           <GridActionsCellItem
             icon={ <DeleteIcon/> }
-            onClick={ () => setDeletableReplyId(params.row.replyId) }
+            onClick={ () => setDeletableReplyId(params.row.id) }
             label={ strings.generic.delete }
             showInMenu
           />,
@@ -187,7 +190,7 @@ const FormRepliesScreen: React.FC = () => {
         replyId: replyId
       });
   
-      setRows(rows?.filter(row => row.replyId !== replyId));
+      setRows(rows?.filter(row => row.id !== replyId));
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.deleteReply, e);
     }
