@@ -45,6 +45,7 @@ interface Props {
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
   onSubmit: (source: MetaformField) => void;
+  saving?: boolean;
 }
 
 /**
@@ -68,9 +69,10 @@ export const MetaformFieldComponent: React.FC<Props> = ({
   onFileShow,
   onFileDelete,
   renderIcon,
-  onSubmit
+  onSubmit,
+  saving
 }) => {
-  const [ pristine, setPrisitine ] = useState(true);
+  const [ pristine, setPristine ] = useState(true);
 
   /**
    * Renders field title
@@ -138,6 +140,7 @@ export const MetaformFieldComponent: React.FC<Props> = ({
                   formReadOnly={ formReadOnly }
                   field={ field }
                   onClick={ onSubmit }
+                  saving={ saving }
                 />;
       case MetaformFieldType.Boolean:
         return  <MetaformBooleanFieldComponent
@@ -363,7 +366,7 @@ export const MetaformFieldComponent: React.FC<Props> = ({
    * Event handler for field value change
    */
   const onFocus = () => {
-    setPrisitine(false);
+    setPristine(false);
   }
 
   if (!ContextUtils.isEnabledContext(contexts, field.contexts)) {

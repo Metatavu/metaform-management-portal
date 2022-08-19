@@ -26,6 +26,7 @@ interface Props {
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   onSubmit: (source: Metaform) => void;
   onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
+  saving?: boolean;
 }
 
 /**
@@ -38,7 +39,8 @@ const Form: React.FC<Props> = ({
   getFieldValue,
   setFieldValue,
   onValidationErrorsChange,
-  onSubmit
+  onSubmit,
+  saving
 }) => {
   const [ uploadingFields, setUploadingFields ] = React.useState<string[]>([]);
 
@@ -240,6 +242,7 @@ const Form: React.FC<Props> = ({
         onFileShow={ showFile }
         renderIcon={ renderIcon }
         onSubmit={ onSubmit }
+        saving={ saving }
         onValidationErrorsChange={ onValidationErrorsChange }
         renderBeforeField={(fieldname?: string) => {
           if (fieldname && uploadingFields.indexOf(fieldname) > -1) {
