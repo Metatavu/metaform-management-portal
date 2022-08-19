@@ -149,7 +149,7 @@ const FormRepliesScreen: React.FC = () => {
       gridColumns.push({
         field: "actions",
         type: "actions",
-        width: 80,
+        width: 140,
         // eslint-disable-next-line react/no-unstable-nested-components
         getActions: (params: { row: any; }) => [
           <GridActionsCellItem
@@ -163,7 +163,7 @@ const FormRepliesScreen: React.FC = () => {
             color="primary"
             size="small"
           >
-            <Link to={params.row.replyId}>{ strings.repliesScreen.open }</Link>
+            <Link to={params.row.id}>{ strings.repliesScreen.open }</Link>
           </Button>
         ]
       } as GridColDef);
@@ -239,7 +239,6 @@ const FormRepliesScreen: React.FC = () => {
     try {
       const metaformData = await metaformsApi.findMetaformBySlug({ metaformSlug: formSlug });
       setMetaform(metaformData);
-
       const [ repliesData, fields ] = await Promise.all([
         repliesApi.listReplies({ metaformId: metaformData.id! }),
         getManagementListFields(metaformData)
