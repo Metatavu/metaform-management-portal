@@ -32,7 +32,8 @@
     },
     "adminFormsScreen": {
       "listForms": "Fetching forms failed",
-      "createForm": "Creating form failed"
+      "createForm": "Creating form failed",
+      "deleteVersion": "Deleting form failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -292,7 +293,11 @@
       "formIdentificationService": "Suomi.fi -service",
       "formIdentificationHelper": "Form replier needs to identificate themself through the Suomi.fi -service when submitting reply.",
       "formIdentificationNone": "No identification"
-    }
+    },
+    "confirmDeleteVersionTitle": "Are you sure?",
+    "confirmDeleteVersionText": "Are you sure that you wish to delete the form version?",
+    "createFormDuplicateNameError": "Form with that name already exists!",
+    "formProductionVersion": "production"
   },
 
   "emailDialog": {

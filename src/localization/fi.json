@@ -32,7 +32,8 @@
     },
     "adminFormsScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",
-      "createForm": "Lomakkeen luominen epäonnistui"
+      "createForm": "Lomakkeen luominen epäonnistui",
+      "deleteVersion": "Lomakeversion poistaminen epäonnistui"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -291,7 +292,11 @@
       "formIdentificationService": "Suomi.fi -palvelu",
       "formIdentificationHelper": "Lomakkeen vastaajan täytyy tunnistatutua Suomi.fi -palvelun kautta vastauksen lähettämisen yhteydessä.",
       "formIdentificationNone": "Ei vaadi tunnistautumista"
-    }
+    },
+    "confirmDeleteVersionTitle": "Oletko varma?",
+    "confirmDeleteVersionText": "Oletko varma, että haluat poistaa lomakeversion?",
+    "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
+    "formProductionVersion": "tuotanto"
   },
 
   "emailDialog": {
