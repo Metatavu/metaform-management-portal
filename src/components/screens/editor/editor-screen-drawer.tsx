@@ -1,4 +1,4 @@
-import { Box, Divider, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography } from "@mui/material";
+import { Box, Divider, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography, Link } from "@mui/material";
 import { Save, Clear } from "@mui/icons-material";
 import strings from "localization/strings";
 import React, { FC, useEffect, useState } from "react";
@@ -187,6 +187,10 @@ const EditorScreenDrawer: FC<Props> = ({
             <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateSosmeta }/>
             <FormHelperText>
               { strings.editorScreen.drawer.formTemplateSosmetaHelper }
+              <Link href="https://sosmeta.thl.fi/document-definitions/list" target="_blank">
+                { strings.editorScreen.drawer.formTemplateSosmetaLink }
+              </Link>
+              { strings.editorScreen.drawer.formTemplateSosmetaDot }
             </FormHelperText>
           </RadioGroup>
           <TextField

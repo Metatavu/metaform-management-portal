@@ -332,6 +332,8 @@ export interface Localized extends LocalizedStringsMethods {
       formTemplateCustomHelper: string;
       formTemplateSosmeta: string;
       formTemplateSosmetaHelper: string;
+      formTemplateSosmetaLink: string;
+      formTemplateSosmetaDot: string;
       formTemplateSchema: string;
       formIdentification: string;
       formIdentificationService: string;
