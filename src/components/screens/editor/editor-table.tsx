@@ -196,7 +196,7 @@ const EditorScreenTable: FC<Props> = ({
     return versions.map((version: MetaformVersionRow) => {
       return (
         <ListItem
-          key={ version.id! }
+          key={ version.id }
           sx={{
             width: "100%",
             padding: 0,

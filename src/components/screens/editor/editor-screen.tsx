@@ -42,10 +42,10 @@ const EditorScreen: React.FC = () => {
     
     try {
       const forms = await metaformsApi.listMetaforms({});
-      const versions = (await Promise.all(forms.map(async form => await versionsApi.listMetaformVersions({ metaformId: form.id! })))).flat();
+      const versions = await Promise.all(forms.map(form => versionsApi.listMetaformVersions({ metaformId: form.id! })));
 
       setMetaforms(forms);
-      setMetaformVersions(versions);
+      setMetaformVersions(versions.flat());
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
@@ -80,20 +80,20 @@ const EditorScreen: React.FC = () => {
    * Deletes a Metaform or MetaformVersion
    */
   const deleteMetaformOrVersion = async () => {
-    const id = selectedId;
+    const id = selectedId!;
     setLoading(true);
 
     try {
       const deleteMetaform = !!metaforms.find(metaform => metaform.id === id);
 
       if (deleteMetaform) {
-        await metaformsApi.deleteMetaform({ metaformId: id! });
+        await metaformsApi.deleteMetaform({ metaformId: id });
         setMetaforms(metaforms.filter(metaform => metaform.id !== id));
       } else {
         const metaformToDelete = metaformVersions.find(version => version.id === id)?.data as Metaform;
         await versionsApi.deleteMetaformVersion({
           metaformId: metaformToDelete.id!,
-          versionId: selectedId!
+          versionId: id
         });
         setMetaformVersions(metaformVersions.filter(version => version.id !== id));
       }
