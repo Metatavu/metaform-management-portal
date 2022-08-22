@@ -9,10 +9,10 @@ import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import { Metaform, MetaformVersion, MetaformVersionType } from "generated/client";
 import { NewUserButton } from "styled/layouts/admin-layout";
-import EditorScreenDrawer from "./editor-screen-drawer";
+import EditorScreenDrawer from "../../editor/editor-screen-drawer";
 import { useNavigate } from "react-router-dom";
 import GenericLoaderWrapper from "components/generic/generic-loader";
-import EditorScreenTable from "./editor-table";
+import EditorScreenTable from "../../editor/editor-screen-table";
 
 /**
  * Editor screen component
@@ -27,7 +27,6 @@ const EditorScreen: React.FC = () => {
 
   const [ metaforms, setMetaforms ] = useState<Metaform[]>([]);
   const [ metaformVersions, setMetaformVersions ] = useState<MetaformVersion[]>([]);
-  const [ selectedId, setSelectedId ] = useState<string | undefined>();
 
   const [ loading, setLoading ] = useState<boolean>(false);
 
@@ -79,14 +78,11 @@ const EditorScreen: React.FC = () => {
   /**
    * Deletes a Metaform or MetaformVersion
    */
-  const deleteMetaformOrVersion = async () => {
-    const id = selectedId!;
+  const deleteMetaformOrVersion = async (id: string) => {
     setLoading(true);
 
     try {
-      const deleteMetaform = !!metaforms.find(metaform => metaform.id === id);
-
-      if (deleteMetaform) {
+      if (metaforms.find(metaform => metaform.id === id)) {
         await metaformsApi.deleteMetaform({ metaformId: id });
         setMetaforms(metaforms.filter(metaform => metaform.id !== id));
       } else {
@@ -95,30 +91,35 @@ const EditorScreen: React.FC = () => {
           metaformId: metaformToDelete.id!,
           versionId: id
         });
+
         setMetaformVersions(metaformVersions.filter(version => version.id !== id));
       }
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.deleteVersion, e);
     }
 
-    setSelectedId(undefined);
     setLoading(false);
   };
 
   /**
    * If selected version is in production, navigates to FormEditorScreen, else to DraftEditorScreen
+   * 
+   * @returns URL path to correct editor
    */
-  const editMetaformOrDraft = async () => {
-    const id = selectedId;
+  const editMetaformOrDraft = async (id: string): Promise<string> => {
     let slug;
+    let path = currentPath;
     const editMetaform = metaforms.find(metaform => metaform.id === id);
-
+    
     if (editMetaform) {
       slug = editMetaform.slug;
-      navigate(`${currentPath}/${slug}`);
+      path += `/${slug}`;
     } else {
-      navigate(`${currentPath}/${slug}/${id}`);
+      slug = (metaformVersions.find(version => version.id === id)?.data as Metaform).slug;
+      path += `/${slug}/${id}`;
     }
+
+    return path;
   };
 
   /**
@@ -157,8 +158,7 @@ const EditorScreen: React.FC = () => {
           metaforms={ metaforms }
           metaformVersions={ metaformVersions }
           deleteMetaformOrVersion={ deleteMetaformOrVersion }
-          setSelectedId={ setSelectedId }
-          editMetaform={ editMetaformOrDraft }
+          editMetaformOrDraft={ editMetaformOrDraft }
         />
       </GenericLoaderWrapper>
     </>

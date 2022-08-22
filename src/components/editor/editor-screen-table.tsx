@@ -6,6 +6,7 @@ import { Metaform, MetaformVersion, MetaformVersionType } from "generated/client
 import strings from "localization/strings";
 import moment from "moment";
 import React, { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AdminFormListStack, AdminFormTypographyField, VersionListHeader } from "styled/react-components/react-components";
 import theme from "theme";
 
@@ -16,9 +17,8 @@ interface Props {
   loading: boolean;
   metaforms: Metaform[];
   metaformVersions: MetaformVersion[];
-  deleteMetaformOrVersion: () => void;
-  setSelectedId: (id: string | undefined) => void;
-  editMetaform: () => void;
+  deleteMetaformOrVersion: (id: string) => void;
+  editMetaformOrDraft: (id: string) => Promise<string>;
 }
 
 /**
@@ -41,14 +41,15 @@ const EditorScreenTable: FC<Props> = ({
   metaforms,
   metaformVersions,
   deleteMetaformOrVersion,
-  setSelectedId,
-  editMetaform
+  editMetaformOrDraft
 }) => {
   // TODO: Currently API doesn't return metadata (created/modified dates etc) for Metaforms. 
   // That needs to be changed and after that, this components version row functionality need slight refactoring.
+  const navigate = useNavigate();
   const [ popoverAnchorElement, setPopoverAnchorElement ] = useState<HTMLButtonElement | null>(null);
   const [ deleteDialogOpen, setDeleteDialogOpen ] = useState<boolean>(false);
   const [ popoverOpen, setPopoverOpen ] = useState<boolean>(false);
+  const [ selectedId, setSelectedId ] = useState<string | undefined>();
 
   /**
    * Handles popover menu opening
@@ -72,7 +73,7 @@ const EditorScreenTable: FC<Props> = ({
    * Handles delete confirmation
    */
   const handleDelete = () => {
-    deleteMetaformOrVersion();
+    deleteMetaformOrVersion(selectedId!);
     setSelectedId(undefined);
     setDeleteDialogOpen(false);
     handleMenuClose();
@@ -97,9 +98,9 @@ const EditorScreenTable: FC<Props> = ({
   /**
    * Handles edit button click
    */
-  const handleEditClick = () => {
+  const handleEditClick = async () => {
     handleMenuClose();
-    editMetaform();
+    navigate(await editMetaformOrDraft(selectedId!));
   };
   
   /**
