@@ -69,6 +69,7 @@ const EditorScreen: React.FC = () => {
           data: { ...newMetaform } as any
         }
       });
+      
       navigate(`${currentPath}/${newMetaform.slug}/${newMetaformVersion.id}`);
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.createForm, e);
@@ -84,6 +85,7 @@ const EditorScreen: React.FC = () => {
     try {
       if (metaforms.find(metaform => metaform.id === id)) {
         await metaformsApi.deleteMetaform({ metaformId: id });
+
         setMetaforms(metaforms.filter(metaform => metaform.id !== id));
       } else {
         const metaformToDelete = metaformVersions.find(version => version.id === id)?.data as Metaform;
@@ -102,24 +104,20 @@ const EditorScreen: React.FC = () => {
   };
 
   /**
-   * If selected version is in production, navigates to FormEditorScreen, else to DraftEditorScreen
+   * Gets correct URL path to MetaformEditor
    * 
-   * @returns URL path to correct editor
+   * @returns URL path
    */
-  const editMetaformOrDraft = async (id: string): Promise<string> => {
-    let slug;
-    let path = currentPath;
-    const editMetaform = metaforms.find(metaform => metaform.id === id);
+  const getPathToEditor = async (id: string): Promise<string> => {
+    const metaformToEdit = metaforms.find(metaform => metaform.id === id);
     
-    if (editMetaform) {
-      slug = editMetaform.slug;
-      path += `/${slug}`;
-    } else {
-      slug = (metaformVersions.find(version => version.id === id)?.data as Metaform).slug;
-      path += `/${slug}/${id}`;
+    if (metaformToEdit) {
+      return `${currentPath}/${metaformToEdit.slug}/${id}`;
     }
 
-    return path;
+    const { slug } = (metaformVersions.find(version => version.id === id)?.data as Metaform);
+
+    return `${currentPath}/${slug}/${id}`;
   };
 
   /**
@@ -158,7 +156,7 @@ const EditorScreen: React.FC = () => {
           metaforms={ metaforms }
           metaformVersions={ metaformVersions }
           deleteMetaformOrVersion={ deleteMetaformOrVersion }
-          editMetaformOrDraft={ editMetaformOrDraft }
+          getPathToEditor={ getPathToEditor }
         />
       </GenericLoaderWrapper>
     </>

@@ -5,8 +5,8 @@ import ConfirmDialog from "components/generic/confirm-dialog";
 import { Metaform, MetaformVersion, MetaformVersionType } from "generated/client";
 import strings from "localization/strings";
 import moment from "moment";
-import React, { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { FC, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { AdminFormListStack, AdminFormTypographyField, VersionListHeader } from "styled/react-components/react-components";
 import theme from "theme";
 
@@ -18,7 +18,7 @@ interface Props {
   metaforms: Metaform[];
   metaformVersions: MetaformVersion[];
   deleteMetaformOrVersion: (id: string) => void;
-  editMetaformOrDraft: (id: string) => Promise<string>;
+  getPathToEditor: (id: string) => Promise<string>;
 }
 
 /**
@@ -41,15 +41,15 @@ const EditorScreenTable: FC<Props> = ({
   metaforms,
   metaformVersions,
   deleteMetaformOrVersion,
-  editMetaformOrDraft
+  getPathToEditor
 }) => {
   // TODO: Currently API doesn't return metadata (created/modified dates etc) for Metaforms. 
   // That needs to be changed and after that, this components version row functionality need slight refactoring.
-  const navigate = useNavigate();
   const [ popoverAnchorElement, setPopoverAnchorElement ] = useState<HTMLButtonElement | null>(null);
   const [ deleteDialogOpen, setDeleteDialogOpen ] = useState<boolean>(false);
   const [ popoverOpen, setPopoverOpen ] = useState<boolean>(false);
   const [ selectedId, setSelectedId ] = useState<string | undefined>();
+  const [ linkToEditor, setLinkToEditor ] = useState<string | undefined>();
 
   /**
    * Handles popover menu opening
@@ -94,14 +94,6 @@ const EditorScreenTable: FC<Props> = ({
       open={ deleteDialogOpen }
     />
   );
-
-  /**
-   * Handles edit button click
-   */
-  const handleEditClick = async () => {
-    handleMenuClose();
-    navigate(await editMetaformOrDraft(selectedId!));
-  };
   
   /**
    * Renders version menu
@@ -135,7 +127,8 @@ const EditorScreenTable: FC<Props> = ({
         <ListItem sx={{ p: theme.spacing(0.5) }}>
           <ListItemButton
             sx={{ p: 0 }}
-            onClick={ handleEditClick }
+            component={ Link }
+            to={ linkToEditor ?? "#" }
           >
             <ListItemIcon sx={{ minWidth: 0, mr: theme.spacing(1) }}>
               <Settings/>
@@ -181,6 +174,17 @@ const EditorScreenTable: FC<Props> = ({
 
     return versionRows;
   };
+
+  useEffect(() => {
+    /**
+     * Handles correct link to editor for edit button
+     */
+    const handleEditorLink = async () => !!selectedId && setLinkToEditor(await getPathToEditor(selectedId));
+
+    if (selectedId) {
+      handleEditorLink();
+    }
+  }, [selectedId]);
 
   /**
    * Renders MetaformVersions Listing
