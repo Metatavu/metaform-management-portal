@@ -289,7 +289,6 @@
       "formTemplateSosmetaHelper": "Create new form with Sosmetas structure. Sosmeta is a service maintained by the Finnish Institute for Health and Welfare. Templates can be found at: ",
       "formTemplateSosmetaLink": "https://sosmeta.thl.fi/document-definitions/list",
       "formTemplateSchema": "Schema",
-      "formTemplateSosmetaDot": ".",
       "formIdentification": "Repliers identification",
       "formIdentificationService": "Suomi.fi -service",
       "formIdentificationHelper": "Form replier needs to identificate themself through the Suomi.fi -service when submitting reply.",

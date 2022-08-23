@@ -190,7 +190,6 @@ const EditorScreenDrawer: FC<Props> = ({
               <Link href="https://sosmeta.thl.fi/document-definitions/list" target="_blank">
                 { strings.editorScreen.drawer.formTemplateSosmetaLink }
               </Link>
-              { strings.editorScreen.drawer.formTemplateSosmetaDot }
             </FormHelperText>
           </RadioGroup>
           <TextField

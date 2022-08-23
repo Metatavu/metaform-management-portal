@@ -287,7 +287,6 @@
       "formTemplateSosmeta": "Sosmetan pohja",
       "formTemplateSosmetaHelper": "Luo uusi lomake Sosmetan rakenteiden mukaisesti. Sosmeta on Terveyden ja Hyvinvoinnin laitoksen ylläpitä palvelu. Rakennepohjat löytyvät osoitteesta: ",
       "formTemplateSosmetaLink": "https://sosmeta.thl.fi/document-definitions/list",
-      "formTemplateSosmetaDot": ".",
       "formTemplateSchema": "Schema",
       "formIdentification": "Vastaajan tunnistautuminen",
       "formIdentificationService": "Suomi.fi -palvelu",
