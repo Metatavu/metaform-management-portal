@@ -47,6 +47,10 @@ export interface Localized extends LocalizedStringsMethods {
       createForm: string;
       deleteVersion: string;
     },
+    draftEditorScreen: {
+      findDraft: string;
+      saveDraft: string;
+    },
     formScreen: {
       saveReply: string;
       sendReplyEmail: string;
@@ -195,6 +199,11 @@ export interface Localized extends LocalizedStringsMethods {
       form: {
         tabTitle: string;
         formTitle: string;
+        versionInfo: string;
+        formVersion: string;
+        formStyling: string;
+        backgroundImage: string;
+        backgroundColor: string;
       };
       fields: {
         tabTitle: string;

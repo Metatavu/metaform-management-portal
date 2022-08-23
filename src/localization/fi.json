@@ -35,6 +35,10 @@
       "createForm": "Lomakkeen luominen epäonnistui",
       "deleteVersion": "Lomakeversion poistaminen epäonnistui"
     },
+    "draftEditorScreen": {
+      "findDraft": "Lomakeversion haku epäoonistui",
+      "saveDraft": "Lomakeversion tallentaminen epäonnistui"
+    },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
       "sendReplyEmail": "Vastauslinkin lähettämisessä sähköpostiin tapahtui virhe",
@@ -161,7 +165,12 @@
       "emptySection": "Tyhjä osio",
       "form": {
         "tabTitle": "Lomake",
-        "formTitle": "Lomakkeen otsikko"
+        "formTitle": "Lomakkeen otsikko",
+        "versionInfo": "Version tiedot",
+        "formVersion": "Versio",
+        "formStyling": "Lomakkeen ulkoasu",
+        "backgroundImage": "Taustakuva",
+        "backgroundColor": "Taustaväri"
       },
       "fields": {
         "tabTitle": "Kentät",

@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Icon, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
+/* eslint-disable */
+import { Box, Divider, FormControl, FormLabel, Icon, MenuItem, Select, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
 import TabPanel from "components/generic/tab-panel";
@@ -41,11 +41,30 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
    * Renders form tab
    */
   const renderFormTab = () => (
-    <TextField
-      label={ strings.draftEditorScreen.editor.form.formTitle }
-      value={ pendingForm?.title }
-      onChange={ onMetaformPropertyChange("title") }
-    />
+    <FormControl fullWidth>
+      <Stack spacing={ 2 } padding={ 1 }>
+        <FormLabel>{ strings.draftEditorScreen.editor.form.versionInfo }</FormLabel>
+        <TextField
+          label={ strings.draftEditorScreen.editor.form.formTitle }
+          value={ pendingForm?.title }
+          onChange={ onMetaformPropertyChange("title") }
+        />
+      </Stack>
+      <Stack spacing={ 2 } padding={ 1 }>
+        <FormLabel>{ strings.draftEditorScreen.editor.form.formStyling }</FormLabel>
+        <TextField
+          select
+          label={ strings.draftEditorScreen.editor.form.backgroundImage }
+        >
+        </TextField>
+        <TextField
+          select
+          label={ strings.draftEditorScreen.editor.form.backgroundColor }
+        >
+        </TextField>
+      </Stack>
+      <Divider/>
+    </FormControl>
   );
 
   /**
@@ -96,7 +115,7 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
           label={ strings.draftEditorScreen.editor.fields.tabTitle }
         />
       </Tabs>
-      <TabPanel value={ tabIndex } index={ 0 }>
+      <TabPanel value={ tabIndex } index={ 0 } padding={ 0 }>
         { renderFormTab() }
       </TabPanel>
       <TabPanel value={ tabIndex } index={ 1 }>

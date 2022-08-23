@@ -35,6 +35,10 @@
       "createForm": "Creating form failed",
       "deleteVersion": "Deleting form failed"
     },
+    "draftEditorScreen": {
+      "findDraft": "Fetching form version failed",
+      "saveDraft": "Saving form version failed"
+    },
     "formScreen": {
       "saveReply": "Error when saving reply",
       "sendReplyEmail": "Error when trying to send reply to email",
@@ -162,7 +166,12 @@
       "emptySection": "Empty section",
       "form": {
         "tabTitle": "Form",
-        "formTitle": "Form title"
+        "formTitle": "Form title",
+        "versionInfo": "Version info",
+        "formVersion": "Version",
+        "formStyling": "Form outfit",
+        "backgroundImage": "Background image",
+        "backgroundColor": "Background color"
       },
       "fields": {
         "tabTitle": "Fields",
