@@ -36,6 +36,14 @@ const ReplyScreen: FC = () => {
   const keycloak = useAppSelector(selectKeycloak);
   const { metaformsApi, repliesApi, attachmentsApi } = apiClient;
 
+  if (!formSlug) {
+    errorContext.setError(strings.errorHandling.adminRepliesScreen.formSlugNotFound);
+  }
+
+  if (!replyId) {
+    errorContext.setError(strings.errorHandling.adminReplyScreen.replyIdNotFound);
+  }
+
   /**
    * Method for getting field value
    *
@@ -150,15 +158,11 @@ const ReplyScreen: FC = () => {
    * View setup
    */
   const setup = async () => {
-    if (!formSlug) {
-      return;
-    }
-
     setLoading(true);
 
     try {
       const foundMetaform = await metaformsApi.findMetaformBySlug({
-        metaformSlug: formSlug
+        metaformSlug: formSlug!
       });
 
       const replyData = await repliesApi.findReply({
@@ -175,7 +179,7 @@ const ReplyScreen: FC = () => {
         setReply(replyData);
       }
     } catch (e) {
-      errorContext.setError(strings.errorHandling.formScreen.findMetaform, e);
+      errorContext.setError(strings.errorHandling.adminReplyScreen.fetchReply, e);
     }
 
     setLoading(false);
@@ -189,12 +193,17 @@ const ReplyScreen: FC = () => {
     <GenericLoaderWrapper loading={ loading }>
       <BasicLayout>
         <Stack>
-          <Button color="primary" variant="contained" onClick={ onExportPdfClick }>{ strings.replyScreen.exportPdf }</Button>
+          <Stack sx={{
+            width: 100,
+            margin: 5
+          }}
+          >
+            <Button color="primary" variant="contained" onClick={ onExportPdfClick }>{ strings.replyScreen.exportPdf }</Button>
+          </Stack>
+          <Stack>
+            { renderForm() }
+          </Stack>
         </Stack>
-        <Stack>
-          { renderForm() }
-        </Stack>
-      
         <ReplySaved
           replySavedVisible={ replySavedVisible }
           setReplySavedVisible={ setReplySavedVisible }

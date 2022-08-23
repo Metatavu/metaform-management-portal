@@ -57,7 +57,10 @@
     },
     "adminReplyScreen": {
       "saveReply": "Saving reply failed",
-      "exportPdf": "Exporting PDF failed"
+      "exportPdf": "Exporting PDF failed",
+      "replyIdNotFound": "Reply id not found",
+      "fetchReply": "Error occurred when trying to fetch reply"
+
     },
     "usersScreen": {
       "loadMetaforms": "Error occurred while loading metaforms",

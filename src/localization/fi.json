@@ -57,7 +57,9 @@
     },
     "adminReplyScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
-      "exportPdf": "PDF:n lataamisessa tapahtui virhe"
+      "exportPdf": "PDF:n lataamisessa tapahtui virhe",
+      "replyIdNotFound": "Vastauksen ID:tä ei löytynyt",
+      "fetchReply": "Vastauksen hakemisessa tapahtui virhe"
     },
     "usersScreen": {
       "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",

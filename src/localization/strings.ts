@@ -70,6 +70,8 @@ export interface Localized extends LocalizedStringsMethods {
     adminReplyScreen: {
       saveReply: string;
       exportPdf: string;
+      replyIdNotFound: string;
+      fetchReply: string;
     },
     usersScreen: {
       loadMetaforms: string;
