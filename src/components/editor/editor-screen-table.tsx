@@ -80,6 +80,11 @@ const EditorScreenTable: FC<Props> = ({
   };
 
   /**
+   * Handles correct link to editor for edit button
+   */
+  const handleEditorLink = async () => !!selectedId && setLinkToEditor(await getPathToEditor(selectedId));
+
+  /**
    * Renders delete confirm dialog
    */
   const renderDeleteConfirm = () => (
@@ -176,11 +181,6 @@ const EditorScreenTable: FC<Props> = ({
   };
 
   useEffect(() => {
-    /**
-     * Handles correct link to editor for edit button
-     */
-    const handleEditorLink = async () => !!selectedId && setLinkToEditor(await getPathToEditor(selectedId));
-
     if (selectedId) {
       handleEditorLink();
     }
@@ -231,7 +231,7 @@ const EditorScreenTable: FC<Props> = ({
               <Grid item md={ 1 }>
                 <AdminFormTypographyField>
                   <PersonRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
-                  placeholder_email
+                  { strings.generic.notImplemented }
                 </AdminFormTypographyField>
               </Grid>
               <Grid item md={ 1 } textAlign="right">

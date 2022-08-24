@@ -34,7 +34,7 @@ const EditorScreen: React.FC = () => {
 
   /* eslint-disable @typescript-eslint/return-await */
   /**
-   * Gets Metaforms and MetaformVersions 
+   * Gets Metaforms and Metaform Versions 
    */
   const loadMetaforms = async () => {
     setLoading(true);
@@ -59,7 +59,7 @@ const EditorScreen: React.FC = () => {
   const createMetaform = async (metaform: Metaform) => {
     try {
       if (metaforms.find(existingForm => existingForm.title === metaform.title)) {
-        throw new Error(strings.editorScreen.createFormDuplicateNameError);
+        throw new Error(strings.errorHandling.adminFormsScreen.createFormDuplicateNameError);
       }
       const newMetaform = await metaformsApi.createMetaform({ metaform: metaform });
       const newMetaformVersion = await versionsApi.createMetaformVersion({

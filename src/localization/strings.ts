@@ -46,6 +46,7 @@ export interface Localized extends LocalizedStringsMethods {
       listForms: string;
       createForm: string;
       deleteVersion: string;
+      createFormDuplicateNameError: string;
     },
     draftEditorScreen: {
       findDraft: string;
@@ -342,6 +343,7 @@ export interface Localized extends LocalizedStringsMethods {
       formTemplateCustomHelper: string;
       formTemplateSosmeta: string;
       formTemplateSosmetaHelper: string;
+      formTemplateSosmetaLink: string;
       formTemplateSchema: string;
       formIdentification: string;
       formIdentificationService: string;
@@ -350,7 +352,6 @@ export interface Localized extends LocalizedStringsMethods {
     };
     confirmDeleteVersionTitle: string;
     confirmDeleteVersionText: string;
-    createFormDuplicateNameError: string;
     formProductionVersion: string;
   };
 
