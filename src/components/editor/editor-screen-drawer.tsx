@@ -1,9 +1,10 @@
-import { Box, Divider, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography } from "@mui/material";
+import { Box, Divider, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography, Link } from "@mui/material";
 import { Save, Clear } from "@mui/icons-material";
 import strings from "localization/strings";
 import React, { FC, useEffect, useState } from "react";
 import theme from "theme";
 import { Metaform } from "generated/client";
+import slugify from "slugify";
 
 /**
  * Component props
@@ -18,8 +19,8 @@ interface Props {
  * Interface for Metaforms settings
  */
 interface FormSettings {
-  formId: string;
   formName: string;
+  formSlug: string;
   formUrl: string;
   formTemplate: boolean;
   formSchema: string;
@@ -35,8 +36,8 @@ const EditorScreenDrawer: FC<Props> = ({
   createMetaform
 }) => {
   const [ formSettings, setFormSettings ] = useState<FormSettings>({
-    formId: "",
     formName: "",
+    formSlug: "",
     formUrl: "",
     formTemplate: true,
     formSchema: "",
@@ -57,7 +58,8 @@ const EditorScreenDrawer: FC<Props> = ({
   const handleFormSubmit = () => {
     createMetaform({
       allowAnonymous: !formSettings.formAuthentication,
-      title: formSettings.formName
+      title: formSettings.formName,
+      slug: formSettings.formSlug
     });
   };
 
@@ -154,9 +156,9 @@ const EditorScreenDrawer: FC<Props> = ({
           />
           <TextField
             fullWidth
+            disabled
             label={ strings.editorScreen.drawer.formUrl }
             value={ formSettings.formUrl }
-            onChange={ onInputFieldChange }
             name="formUrl"
           />
         </Stack>
@@ -187,6 +189,9 @@ const EditorScreenDrawer: FC<Props> = ({
             <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateSosmeta }/>
             <FormHelperText>
               { strings.editorScreen.drawer.formTemplateSosmetaHelper }
+              <Link href="https://sosmeta.thl.fi/document-definitions/list" target="_blank">
+                { strings.editorScreen.drawer.formTemplateSosmetaLink }
+              </Link>
             </FormHelperText>
           </RadioGroup>
           <TextField
@@ -245,6 +250,18 @@ const EditorScreenDrawer: FC<Props> = ({
     }
   };
 
+  /**
+   * Updates formSlug and formUrl values
+   */
+  const updateFormSlugAndUrl = () => {
+    const updatedSlug = slugify(formSettings.formName);
+    setFormSettings({
+      ...formSettings,
+      formSlug: updatedSlug,
+      formUrl: `${updatedSlug}.metaform.fi`
+    });
+  };
+
   useEffect(() => {
     validateFormSettings();
   }, [formSettings]);
@@ -252,6 +269,10 @@ const EditorScreenDrawer: FC<Props> = ({
   useEffect(() => {
     resetFormSchema();
   }, [formSettings.formTemplate]);
+
+  useEffect(() => {
+    updateFormSlugAndUrl();
+  }, [formSettings.formName]);
 
   return (
     <Drawer
