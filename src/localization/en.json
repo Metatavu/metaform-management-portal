@@ -33,7 +33,8 @@
     "adminFormsScreen": {
       "listForms": "Fetching forms failed",
       "createForm": "Creating form failed",
-      "deleteVersion": "Deleting form failed"
+      "deleteVersion": "Deleting form failed",
+      "createFormDuplicateNameError": "Form with that name already exists!"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -297,7 +298,6 @@
     },
     "confirmDeleteVersionTitle": "Are you sure?",
     "confirmDeleteVersionText": "Are you sure that you wish to delete the form version?",
-    "createFormDuplicateNameError": "Form with that name already exists!",
     "formProductionVersion": "production"
   },
 

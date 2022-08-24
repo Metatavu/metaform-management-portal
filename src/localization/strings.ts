@@ -46,6 +46,7 @@ export interface Localized extends LocalizedStringsMethods {
       listForms: string;
       createForm: string;
       deleteVersion: string;
+      createFormDuplicateNameError: string;
     },
     formScreen: {
       saveReply: string;
@@ -342,7 +343,6 @@ export interface Localized extends LocalizedStringsMethods {
     };
     confirmDeleteVersionTitle: string;
     confirmDeleteVersionText: string;
-    createFormDuplicateNameError: string;
     formProductionVersion: string;
   };
 

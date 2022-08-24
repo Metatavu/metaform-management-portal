@@ -33,7 +33,8 @@
     "adminFormsScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",
       "createForm": "Lomakkeen luominen epäonnistui",
-      "deleteVersion": "Lomakeversion poistaminen epäonnistui"
+      "deleteVersion": "Lomakeversion poistaminen epäonnistui",
+      "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -296,7 +297,6 @@
     },
     "confirmDeleteVersionTitle": "Oletko varma?",
     "confirmDeleteVersionText": "Oletko varma, että haluat poistaa lomakeversion?",
-    "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
     "formProductionVersion": "tuotanto"
   },
 
