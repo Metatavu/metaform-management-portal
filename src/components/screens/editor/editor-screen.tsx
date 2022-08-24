@@ -1,5 +1,5 @@
-import { Accordion, AccordionDetails, AccordionSummary, Divider, Grid, List, ListItem, Typography } from "@mui/material";
-import { ListRounded, KeyboardArrowDown, Settings, DateRangeRounded, PersonRounded, Add } from "@mui/icons-material";
+import { Divider } from "@mui/material";
+import { Add } from "@mui/icons-material";
 import { useApiClient } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
 import strings from "localization/strings";
@@ -8,64 +8,59 @@ import Api from "api";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import { Metaform, MetaformVersion, MetaformVersionType } from "generated/client";
-import { AdminFormListStack, AdminFormTypographyField, VersionListHeader } from "styled/react-components/react-components";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { NewUserButton } from "styled/layouts/admin-layout";
-import moment from "moment";
-import EditorScreenDrawer from "./editor-screen-drawer";
+import EditorScreenDrawer from "../../editor/editor-screen-drawer";
 import { useNavigate } from "react-router-dom";
-
-/**
- * Interface for single Metaform row
- */
-interface Row {
-  metaform: Metaform;
-  versions: MetaformVersion[];
-}
+import GenericLoaderWrapper from "components/generic/generic-loader";
+import EditorScreenTable from "../../editor/editor-screen-table";
 
 /**
  * Editor screen component
  */
 const EditorScreen: React.FC = () => {
+  const currentPath = window.location.pathname;
   const errorContext = useContext(ErrorContext);
   const navigate = useNavigate();
 
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, versionsApi } = apiClient;
 
-  const [ metaformRows, setMetaformRows ] = useState<Row[]>([]);
+  const [ metaforms, setMetaforms ] = useState<Metaform[]>([]);
+  const [ metaformVersions, setMetaformVersions ] = useState<MetaformVersion[]>([]);
+
   const [ loading, setLoading ] = useState<boolean>(false);
 
   const [ drawerOpen, setDrawerOpen ] = useState<boolean>(false);
 
+  /* eslint-disable @typescript-eslint/return-await */
   /**
-   * Gets Metaforms and corresponding MetaformVersions 
+   * Gets Metaforms and Metaform Versions 
    */
   const loadMetaforms = async () => {
     setLoading(true);
     
     try {
       const forms = await metaformsApi.listMetaforms({});
-      const rows: Row[] = await Promise.all(forms.map(async form => {
-        return {
-          metaform: form,
-          versions: await versionsApi.listMetaformVersions({ metaformId: form.id! })
-        };
-      }));
+      const versions = await Promise.all(forms.map(form => versionsApi.listMetaformVersions({ metaformId: form.id! })));
 
-      setMetaformRows(rows);
+      setMetaforms(forms);
+      setMetaformVersions(versions.flat());
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
 
     setLoading(false);
   };
+  /* eslint-enable @typescript-eslint/return-await */
 
   /**
-   * Creates new Metaform and MetaformVersion
+   * Creates new Metaform and  MetaformVersion and navigates to DraftEditorScreen
    */
   const createMetaform = async (metaform: Metaform) => {
     try {
+      if (metaforms.find(existingForm => existingForm.title === metaform.title)) {
+        throw new Error(strings.errorHandling.adminFormsScreen.createFormDuplicateNameError);
+      }
       const newMetaform = await metaformsApi.createMetaform({ metaform: metaform });
       const newMetaformVersion = await versionsApi.createMetaformVersion({
         metaformId: newMetaform.id!,
@@ -74,99 +69,55 @@ const EditorScreen: React.FC = () => {
           data: { ...newMetaform } as any
         }
       });
-      const currentPath = window.location.pathname;
+      
       navigate(`${currentPath}/${newMetaform.slug}/${newMetaformVersion.id}`);
     } catch (e) {
-      errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
+      errorContext.setError(strings.errorHandling.adminFormsScreen.createForm, e);
     }
   };
 
   /**
-   * Renders MetaformVersions Listing
+   * Deletes a Metaform or MetaformVersion
+   */
+  const deleteMetaformOrVersion = async (id: string) => {
+    setLoading(true);
+
+    try {
+      if (metaforms.find(metaform => metaform.id === id)) {
+        await metaformsApi.deleteMetaform({ metaformId: id });
+
+        setMetaforms(metaforms.filter(metaform => metaform.id !== id));
+      } else {
+        const metaformToDelete = metaformVersions.find(version => version.id === id)?.data as Metaform;
+        await versionsApi.deleteMetaformVersion({
+          metaformId: metaformToDelete.id!,
+          versionId: id
+        });
+
+        setMetaformVersions(metaformVersions.filter(version => version.id !== id));
+      }
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.deleteVersion, e);
+    }
+
+    setLoading(false);
+  };
+
+  /**
+   * Gets correct URL path to MetaformEditor
    * 
-   * @param metaform metaform
+   * @returns URL path
    */
-  const buildVersionRows = (metaform: Metaform) => {
-    const versions = metaformRows.find(x => x.metaform.id === metaform.id)?.versions;
-    if (!versions) {
-      return;
+  const getPathToEditor = async (id: string): Promise<string> => {
+    const metaformToEdit = metaforms.find(metaform => metaform.id === id);
+    
+    if (metaformToEdit) {
+      return `${currentPath}/${metaformToEdit.slug}/${id}`;
     }
 
-    return versions.map((version: MetaformVersion) => {
-      return (
-        <ListItem
-          key={ version.id! }
-          sx={{
-            width: "100%",
-            padding: 0,
-            height: "60px"
-          }}
-        >
-          <AdminFormListStack direction="row">
-            <Grid container>
-              <Grid item md={ 6 }>
-                <AdminFormTypographyField>
-                  <ListRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
-                  { version.type === MetaformVersionType.Archived ? strings.editorScreen.formVersionArchived : strings.editorScreen.formVersionDraft }
-                </AdminFormTypographyField>
-              </Grid>
-              <Grid item md={ 2 }>
-                <AdminFormTypographyField>
-                  <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
-                  { moment(version.createdAt).format("LLL") }
-                </AdminFormTypographyField>
-              </Grid>
-              <Grid item md={ 2 }>
-                <AdminFormTypographyField>
-                  <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
-                  { moment(version.modifiedAt).format("LLL") }
-                </AdminFormTypographyField>
-              </Grid>
-              <Grid item md={ 2 }>
-                <AdminFormTypographyField>
-                  <PersonRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
-                  placeholder_email
-                </AdminFormTypographyField>
-              </Grid>
-            </Grid>
-          </AdminFormListStack>
-        </ListItem>
-      );
-    });
-  };
+    const { slug } = (metaformVersions.find(version => version.id === id)?.data as Metaform);
 
-  /**
-   * Renders header for MetaformVersions listing
-   */
-  const renderVersionListHeader = () => {
-    return (
-      <VersionListHeader container>
-        <Grid item md={ 6 }>
-          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>
-            <ListRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
-            { strings.editorScreen.formVersion }
-          </AdminFormTypographyField>
-        </Grid>
-        <Grid item md={ 2 }>
-          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>
-            <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
-            { strings.editorScreen.formCreatedAt }
-          </AdminFormTypographyField>
-        </Grid>
-        <Grid item md={ 2 }>
-          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>
-            <DateRangeRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
-            { strings.editorScreen.formModifiedAt }
-          </AdminFormTypographyField>
-        </Grid>
-        <Grid item md={ 2 }>
-          <AdminFormTypographyField sx={{ fontWeight: "bold" }}>
-            <PersonRounded style={{ fill: "darkgrey", marginRight: "0.5rem" }}/>
-            { strings.editorScreen.formLastModifier }
-          </AdminFormTypographyField>
-        </Grid>
-      </VersionListHeader>
-    );
+    return `${currentPath}/${slug}/${id}`;
   };
 
   /**
@@ -176,95 +127,9 @@ const EditorScreen: React.FC = () => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const columns: GridColDef[] = [
-    {
-      field: "metaform",
-      flex: 1,
-      renderCell: params => {
-        return (
-          <AdminFormListStack direction="row">
-            <Accordion
-              disableGutters
-              sx={{
-                backgroundColor: "rgba(0,0,0,0.03)",
-                padding: "0px"
-              }}
-            >
-              <AccordionSummary
-                sx={{
-                  backgroundColor: "white",
-                  padding: 0
-                }}
-                expandIcon={ <KeyboardArrowDown style={{ fill: "darkgrey" }}/> }
-              >
-                <AdminFormTypographyField variant="h3">{ params.row.title }</AdminFormTypographyField>
-                <Settings
-                  style={{
-                    fill: "darkgrey",
-                    alignSelf: "center",
-                    marginRight: "0.5rem"
-                  }}
-                />
-              </AccordionSummary>
-              <AccordionDetails sx={{ padding: 0 }}>
-                <List sx={{ padding: 0 }}>
-                  <ListItem
-                    key={ params.row.id }
-                    sx={{
-                      width: "100%",
-                      padding: 0
-                    }}
-                  >
-                    <AdminFormListStack direction="row">
-                      { renderVersionListHeader() }
-                    </AdminFormListStack>
-                  </ListItem>
-                  { buildVersionRows(params.row) }
-                </List>
-              </AccordionDetails>
-            </Accordion>
-          </AdminFormListStack>
-        );
-      }
-    }
-  ];
-
   useEffect(() => {
     loadMetaforms();
   }, []);
-
-  /**
-   * Renders DataGrid containing available Metaforms
-   */
-  const renderMetaformList = () => {
-    if (metaformRows.length === 0) {
-      return (
-        <Typography variant="body1">
-          { strings.editorScreen.noMetaforms }
-        </Typography>
-      );
-    }
-
-    return (
-      <DataGrid
-        sx={{
-          "& .MuiDataGrid-columnHeaders": { display: "none" },
-          "& .MuiDataGrid-virtualScroller": { marginTop: "0!important" },
-          "& .MuiDataGrid-columnHeaders:focus-within, & .MuiDataGrid-cell:focus-within": { outline: "none" },
-          "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-cell:focus": { outline: "none" },
-          "& .MuiDataGrid-cell": { p: 0 },
-          padding: 2
-        }}
-        loading={ loading }
-        rows={ metaformRows.map(metaform => metaform.metaform) }
-        columns={ columns }
-        disableColumnMenu
-        disableColumnSelector
-        disableSelectionOnClick
-        getRowHeight={() => "auto"}
-      />
-    );
-  };
 
   return (
     <>
@@ -285,7 +150,15 @@ const EditorScreen: React.FC = () => {
         </NewUserButton>
       </NavigationTabContainer>
       <Divider/>
-      { renderMetaformList() }
+      <GenericLoaderWrapper loading={ loading }>
+        <EditorScreenTable
+          loading={ loading }
+          metaforms={ metaforms }
+          metaformVersions={ metaformVersions }
+          deleteMetaformOrVersion={ deleteMetaformOrVersion }
+          getPathToEditor={ getPathToEditor }
+        />
+      </GenericLoaderWrapper>
     </>
   );
 };
