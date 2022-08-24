@@ -1,5 +1,4 @@
-/* eslint-disable */
-import { Box, Divider, FormControl, FormLabel, Icon, MenuItem, Select, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Divider, FormControl, FormLabel, Icon, MenuItem, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
 import TabPanel from "components/generic/tab-panel";
@@ -56,11 +55,17 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
           select
           label={ strings.draftEditorScreen.editor.form.backgroundImage }
         >
+          <MenuItem>
+            { strings.generic.notImplemented }
+          </MenuItem>
         </TextField>
         <TextField
           select
           label={ strings.draftEditorScreen.editor.form.backgroundColor }
         >
+          <MenuItem>
+            { strings.generic.notImplemented }
+          </MenuItem>
         </TextField>
       </Stack>
       <Divider/>

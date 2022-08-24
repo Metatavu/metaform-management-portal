@@ -18,7 +18,6 @@ import GenericLoaderWrapper from "components/generic/generic-loader";
  * Draft editor screen component
  */
 const DraftEditorScreen: React.FC = () => {
-  // TODO draft fetch, set logic, replace the example form
   const params = useParams();
   const navigate = useNavigate();
   const errorContext = useContext(ErrorContext);
@@ -45,7 +44,11 @@ const DraftEditorScreen: React.FC = () => {
         versionId: draftId!
       });
 
-      setDraftForm(draft.data as Metaform);
+      if (draft) {
+        setDraftForm(draft.data as Metaform);
+      } else {
+        setDraftForm(form);
+      }
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.findDraft, e);
     }
