@@ -196,6 +196,7 @@ export interface Localized extends LocalizedStringsMethods {
    */
   replyScreen: {
     exportPdf: string;
+    selectStatus: string;
   }
 
   /**

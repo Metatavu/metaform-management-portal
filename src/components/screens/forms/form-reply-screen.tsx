@@ -1,5 +1,4 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import BasicLayout from "components/layouts/basic-layout";
 import strings from "localization/strings";
 import { Metaform, MetaformFieldType, Reply } from "generated/client";
 import { FieldValue, FileFieldValue } from "metaform-react/types";
@@ -10,11 +9,14 @@ import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
-import { Dictionary } from "types";
+import { Dictionary, ReplyStatus } from "types";
 import { useParams } from "react-router-dom";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import ReplySaved from "./form/ReplySaved";
 import { Button, Stack } from "@mui/material";
+import FormContainer from "styled/generic/form";
+import { StatusSelector } from "styled/layouts/admin-layout";
+import LocalizationUtils from "utils/localization-utils";
 
 /**
  * Component for exhibitions screen
@@ -185,20 +187,80 @@ const ReplyScreen: FC = () => {
     setLoading(false);
   };
 
+  /**
+   * Handle selected reply status change
+   * 
+   * @param event event
+   */
+  const handleReplyStatusChange = (event: React.ChangeEvent<{ value: string }>) => {
+    if (!reply || !event) {
+      return;
+    }
+
+    const updatedReplyData = { ...reply.data, status: event.target.value };
+    const updatedReply = { ...reply, data: updatedReplyData as any };
+    setReply(updatedReply);
+  };
+
+  const statusOptions = Object.keys(ReplyStatus).map(status => { return status; });
+  console.log(LocalizationUtils.getLocalizedStatusOfReply(statusOptions[0]));
+  /**
+   * Renter status switch
+   */
+  const renderStatusSwitch = () => {
+    return (
+      <StatusSelector
+        key="metaform-select-container"
+        value={ reply?.data?.status }
+        onChange={ handleReplyStatusChange }
+        disableUnderline
+      >
+        <option value="" key="no-status-selected">{ strings.replyScreen.selectStatus }</option>
+        {
+          statusOptions.map(status => {
+            return (
+              <option
+                key={ `metaform-reply-status-${status}` }
+                value={ status }
+              >
+                { status }
+              </option>
+            );
+          })
+        }
+      </StatusSelector>
+    );
+  };
+
   useEffect(() => {
     setup();
   }, []);
 
   return (
     <GenericLoaderWrapper loading={ loading }>
-      <BasicLayout>
+      <FormContainer>
         <Stack>
-          <Stack sx={{
-            width: 100,
-            margin: 5
-          }}
-          >
-            <Button color="primary" variant="contained" onClick={ onExportPdfClick }>{ strings.replyScreen.exportPdf }</Button>
+          <Stack direction="row" position="sticky">
+            <Stack sx={{
+              width: 100,
+              margin: 1
+            }}
+            >
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={ onExportPdfClick }
+              >
+                { strings.replyScreen.exportPdf }
+              </Button>
+            </Stack>
+            <Stack sx={{
+              width: 50,
+              margin: 1
+            }}
+            >
+              { renderStatusSwitch() }
+            </Stack>
           </Stack>
           <Stack>
             { renderForm() }
@@ -208,7 +270,7 @@ const ReplyScreen: FC = () => {
           replySavedVisible={ replySavedVisible }
           setReplySavedVisible={ setReplySavedVisible }
         />
-      </BasicLayout>
+      </FormContainer>
     </GenericLoaderWrapper>
   );
 };

@@ -158,7 +158,8 @@
   },
 
   "replyScreen": {
-    "exportPdf": "Lataa PDF"
+    "exportPdf": "Lataa PDF",
+    "selectStatus": "Valitse tila"
   },
 
   "publicFormsScreen": {

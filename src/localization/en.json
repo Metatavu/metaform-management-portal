@@ -159,7 +159,8 @@
   },
 
   "replyScreen": {
-    "exportPdf": "Export PDF"
+    "exportPdf": "Export PDF",
+    "selectStatus": "Select status"
   },
 
   "publicFormsScreen": {
