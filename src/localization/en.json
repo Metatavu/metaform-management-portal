@@ -186,7 +186,12 @@
       },
       "features": {
         "tabTitle": "Features",
-        "title": "Title"
+        "title": "Title",
+        "fieldDatas": "Select a field in the form to edit the field information.",
+        "fieldHeader": "Field information",
+        "labelText": "Field name",
+        "fieldValue": "No value",
+        "requiredField": "Required"
       },
       "visibility": {
         "tabTitle": "Visibility"

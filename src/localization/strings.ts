@@ -219,6 +219,11 @@ export interface Localized extends LocalizedStringsMethods {
       features: {
         tabTitle: string;
         title: string;
+        fieldDatas: string;
+        fieldHeader: string;
+        labelText: string;
+        fieldValue: string;
+        requiredField: string;
       };
       visibility: {
         tabTitle: string;

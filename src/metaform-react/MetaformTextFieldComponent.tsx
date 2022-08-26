@@ -42,20 +42,23 @@ const MetaformTextFieldComponent: React.FC<Props> = ({
   }
 
   return (
-    <TextFieldWrapper
-      type="text"
-      placeholder={ field.placeholder }
-      id={ fieldId }
-      aria-labelledby={ fieldLabelId }
-      name={ field.name }
-      title={ field.title }
-      required={ field.required }
-      readOnly={ formReadOnly || field.readonly }
-      value={ value as string || "" }
-      onChange={ onChange }
-      onFocus={ onFocus }
-      disableUnderline
-    />
+    <>
+      <h4>{field.name}</h4>
+      <TextFieldWrapper
+        type="text"
+        placeholder={ field.placeholder }
+        id={ fieldId }
+        aria-labelledby={ fieldLabelId }
+        name={ field.name }
+        title={ field.title }
+        required={ field.required }
+        readOnly={ formReadOnly || field.readonly }
+        value={ " " || value as string }
+        onChange={ onChange }
+        onFocus={ onFocus }
+        disableUnderline
+      />
+    </>
   );
 };
 

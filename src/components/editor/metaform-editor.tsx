@@ -43,8 +43,8 @@ const MetaformEditor: React.FC<Props> = ({
    */
   const onGlobalClick = (event: MouseEvent) => {
     if (!editorRef.current?.contains(event.target as Node)) {
-      setSelectedFieldIndex(undefined);
-      setSelectedSectionIndex(undefined);
+      // setSelectedFieldIndex(undefined);
+      // setSelectedSectionIndex(undefined);
     }
   };
 
@@ -358,7 +358,9 @@ const MetaformEditor: React.FC<Props> = ({
       </DragDropContext>
       <MetaformEditorRightDrawer
         pendingForm={ pendingForm }
-        setPendingForm={ setPendingForm }
+        setPendingForm={ setPendingForm } // 
+        fieldIndex={ selectedFieldIndex }
+        sectionIndex={ selectedSectionIndex }
       />
     </EditorWrapper>
   );

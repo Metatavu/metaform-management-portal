@@ -185,7 +185,12 @@
       },
       "features": {
         "tabTitle": "Ominaisuudet",
-        "title": "Title"
+        "title": "Title",
+        "fieldDatas": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja.",
+        "fieldHeader": "Kentän tiedot",
+        "labelText": "Kentän nimi",
+        "fieldValue": "Ei arvoa",
+        "requiredField": "Vaadittu"
       },
       "visibility": {
         "tabTitle": "näkyvyys"

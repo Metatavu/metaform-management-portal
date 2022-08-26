@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Tab, Tabs } from "@mui/material";
-import { Metaform, MetaformField, MetaformSection } from "generated/client";
+import TabPanel from "components/generic/tab-panel";
+import { Checkbox, FormControlLabel, Radio, RadioGroup, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Metaform, MetaformField } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
 import React from "react";
@@ -33,12 +34,11 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
    * @param newMetaformField new metaform field
    */
   const updateFormField = (newMetaformField: MetaformField) => {
-    if (!sectionIndex || !fieldIndex) {
+    if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
 
     const field = pendingForm.sections?.[sectionIndex]?.fields?.[fieldIndex];
-
     if (!field) {
       return;
     }
@@ -51,28 +51,55 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   };
 
   /**
-   * Updates metaform section
-   *
-   * @param newMetaformSection new metaform section
+   * Renders fields category title
    */
-  const updateFormSection = (newMetaformSection: MetaformSection) => {
-    if (!sectionIndex) {
+  const renderFieldsCategorytitle = (title: string) => (
+    <Typography
+      variant="subtitle1"
+      style={{
+        width: "100%",
+        textAlign: "center",
+        display: "flex"
+      }}
+    >
+      { !sectionIndex !== undefined && fieldIndex !== undefined ? null : title }
+    </Typography>
+  );
+
+  /**
+   * Renders fields tab
+   */
+  const renderFieldsTab = () => {
+    const infoText = strings.draftEditorScreen.editor.features;
+    
+    if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
 
-    const section = pendingForm.sections?.[sectionIndex];
-
-    if (!section) {
-      return;
-    }
-
-    const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.splice(sectionIndex, 1, newMetaformSection);
-    });
-
-    setPendingForm(updatedForm);
+    const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
+    return (
+      <>
+        <h2>{infoText.fieldHeader}</h2>
+        <TextField
+          label={infoText.labelText}
+          value={ field.name && undefined}
+          onChange={ event => updateFormField({ ...field, name: event.target.value }) }
+        />
+        <FormControlLabel
+          label={infoText.requiredField}
+          control={
+            <Checkbox
+              value={ field.required }
+              onChange={ event => updateFormField({ ...field, required: event.target.checked }) }
+            />
+            
+          }
+        />
+      </>
+    );
   };
 
+  const editorScreen = strings.draftEditorScreen.editor;
   /**
    * Component render
    */
@@ -84,13 +111,27 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
       >
         <Tab
           value={ 0 }
-          label={ strings.draftEditorScreen.editor.features.tabTitle }
+          label={ editorScreen.features.tabTitle }
         />
         <Tab
           value={ 1 }
-          label={ strings.draftEditorScreen.editor.visibility.tabTitle }
+          label={ editorScreen.visibility.tabTitle }
         />
       </Tabs>
+      <TabPanel value={ tabIndex } index={ 0 }>
+        { renderFieldsCategorytitle(editorScreen.features.fieldDatas) }
+        { renderFieldsTab() }
+      </TabPanel>
+      <TabPanel value={ tabIndex } index={ 1 }>
+        <RadioGroup
+          aria-labelledby="demo-radio-buttons-group-label"
+          defaultValue="female"
+          name="radio-buttons-group"
+        >
+          <FormControlLabel value="Required" control={<Radio/>} label="Required"/>
+          <FormControlLabel value="Not-required" control={<Radio/>} label="Not required"/>
+        </RadioGroup>
+      </TabPanel>
     </EditorDrawer>
   );
 };
