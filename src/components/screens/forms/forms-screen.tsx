@@ -11,7 +11,7 @@ import { AdminFormListStack, AdminFormTypographyField } from "styled/react-compo
 import { Link } from "react-router-dom";
 import { useApiClient } from "app/hooks";
 import Api from "api";
-import { Metaform, Reply } from "generated/client";
+import { Metaform, MetaformMemberRole, Reply } from "generated/client";
 import { ErrorContext } from "components/contexts/error-handler";
 import { ReplyStatus } from "types";
 
@@ -85,7 +85,9 @@ const FormsScreen: React.FC = () => {
     setLoading(true);
   
     try {
-      const forms = await metaformsApi.listMetaforms({});
+      const forms = await metaformsApi.listMetaforms({
+        memberRole: MetaformMemberRole.Manager
+      });
       const replies = await Promise.all(forms.map(form => repliesApi.listReplies({ metaformId: form.id!! })));
       const builtRows = forms.map((form, i) => buildRow(form, replies[i]));
   
