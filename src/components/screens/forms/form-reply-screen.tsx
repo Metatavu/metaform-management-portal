@@ -163,7 +163,7 @@ const ReplyScreen: FC = () => {
     setLoading(true);
 
     try {
-      const foundMetaform = await metaformsApi.findMetaformBySlug({
+      const foundMetaform = await metaformsApi.findMetaform({
         metaformSlug: formSlug!
       });
 

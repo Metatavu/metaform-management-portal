@@ -237,7 +237,7 @@ const FormRepliesScreen: React.FC = () => {
     setLoading(true);
 
     try {
-      const metaformData = await metaformsApi.findMetaformBySlug({ metaformSlug: formSlug });
+      const metaformData = await metaformsApi.findMetaform({ metaformSlug: formSlug });
       setMetaform(metaformData);
       const [ repliesData, fields ] = await Promise.all([
         repliesApi.listReplies({ metaformId: metaformData.id! }),

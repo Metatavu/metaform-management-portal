@@ -533,7 +533,7 @@ const FormScreen: React.FC<Props> = () => {
       setLoading(true);
       const { metaformsApi } = apiClient;
 
-      const foundMetaform = await metaformsApi.findMetaformBySlug({
+      const foundMetaform = await metaformsApi.findMetaform({
         metaformSlug: metaformSlug
       });
       
