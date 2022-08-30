@@ -2,7 +2,6 @@ import React, { FC, useContext, useEffect, useState } from "react";
 import strings from "localization/strings";
 import { Metaform, MetaformFieldType, Reply } from "generated/client";
 import { FieldValue, FileFieldValue } from "metaform-react/types";
-
 import MetaformUtils from "utils/metaform-utils";
 import Form from "components/generic/form";
 import { ErrorContext } from "components/contexts/error-handler";
