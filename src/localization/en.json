@@ -55,7 +55,14 @@
       "fetchReplies": "Fetching replies failed",
       "fetchFields": "Fetching column fields failed",
       "deleteReply":"Deleting reply failed",
-      "formIdNotFound": "Form id not found"
+      "formSlugNotFound": "Form slug not found"
+    },
+    "adminReplyScreen": {
+      "saveReply": "Saving reply failed",
+      "exportPdf": "Exporting PDF failed",
+      "replyIdNotFound": "Reply id not found",
+      "fetchReply": "Error occurred when trying to fetch reply"
+
     },
     "usersScreen": {
       "loadMetaforms": "Error occurred while loading metaforms",
@@ -136,6 +143,7 @@
 
   "repliesScreen": {
     "title": "Answers",
+    "open": "Open",
     "description": "List of answers for the selected form.",
     "createdColumnTitle": "CREATED",
     "modifiedColumnTitle": "MODIFIED",
@@ -148,6 +156,11 @@
     "statusDone": "Done",
     "confirmDeleteReplyTitle": "Delete answer",
     "confirmDeleteReplyText":"Are you sure you want to delete this answer?"
+  },
+
+  "replyScreen": {
+    "exportPdf": "Export PDF",
+    "selectStatus": "Select status"
   },
 
   "publicFormsScreen": {

@@ -172,7 +172,7 @@ const FormScreen: React.FC<Props> = () => {
       ownerKey: currentOwnerKey || undefined
     });
   };
-
+ 
   /**
    * Autosaves the form
    */
@@ -271,7 +271,7 @@ const FormScreen: React.FC<Props> = () => {
       const updatedOwnerKey = ownerKey || reply?.ownerKey;
       let updatedValues = replyToUpdate?.data;
       if (updatedOwnerKey && reply) {
-        updatedValues = await MetaformUtils.processReplyData(metaform, replyToUpdate, updatedOwnerKey, apiClient.attachmentsApi);
+        updatedValues = await MetaformUtils.processReplyData(metaform, replyToUpdate, apiClient.attachmentsApi, updatedOwnerKey);
       }
 
       setSaving(false);
@@ -531,7 +531,7 @@ const FormScreen: React.FC<Props> = () => {
       setLoading(true);
       const { metaformsApi } = apiClient;
 
-      const foundMetaform = await metaformsApi.findMetaformBySlug({
+      const foundMetaform = await metaformsApi.findMetaform({
         metaformSlug: metaformSlug
       });
 
@@ -542,7 +542,7 @@ const FormScreen: React.FC<Props> = () => {
       if (replyId && currentOwnerKey) {
         const foundReply = await findReply(replyId, currentOwnerKey);
         if (foundReply) {
-          const replyData = await MetaformUtils.processReplyData(foundMetaform, foundReply, currentOwnerKey, apiClient.attachmentsApi);
+          const replyData = await MetaformUtils.processReplyData(foundMetaform, foundReply, apiClient.attachmentsApi, currentOwnerKey);
           if (replyData) {
             Object.keys(replyData as any).forEach(replyKey => {
               preparedFormValues[replyKey] = replyData[replyKey] as any;

@@ -10,15 +10,17 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 import { useApiClient } from "app/hooks";
 import Api from "api";
-import { Metaform, Reply } from "generated/client";
+import { Metaform, MetaformMemberRole, Reply } from "generated/client";
 import { ErrorContext } from "components/contexts/error-handler";
-import { useNavigate } from "react-router-dom";
+import { ReplyStatus } from "types";
+import { useNavigate, Link } from "react-router-dom";
 
 /**
  * Interface for single form row
  */
 interface Row {
   id: string;
+  slug?: string;
   title: string;
   latestReply: string;
   newReply?: string;
@@ -56,7 +58,7 @@ const FormsScreen: React.FC = () => {
    * @param replies replies
    * @return count of waiting replies
    */
-  const countWaitingReplies = (replies: Reply[]) => replies.filter(reply => reply.data?.status as (string | undefined) === "waiting").length;
+  const countWaitingReplies = (replies: Reply[]) => replies.filter(reply => reply.data?.status as (string | undefined) === ReplyStatus.WAITING).length;
 
   /**
    * Builds a row for the table
@@ -69,6 +71,7 @@ const FormsScreen: React.FC = () => {
 
     return {
       id: form.id || "",
+      slug: form.slug || "",
       title: form.title || strings.formScreen.noTitle,
       latestReply: getLatestReplyDate(replies),
       newReply: amountWaiting > 0 ? `${strings.navigationHeader.formsScreens.formScreen.form.notProcessed} (${amountWaiting})` : undefined
@@ -82,7 +85,9 @@ const FormsScreen: React.FC = () => {
     setLoading(true);
 
     try {
-      const forms = await metaformsApi.listMetaforms({});
+      const forms = await metaformsApi.listMetaforms({
+        memberRole: MetaformMemberRole.Manager
+      });
       const replies = await Promise.all(forms.map(form => repliesApi.listReplies({ metaformId: form.id!! })));
       const builtRows = forms.map((form, i) => buildRow(form, replies[i]));
 
@@ -115,7 +120,7 @@ const FormsScreen: React.FC = () => {
         return (
           <AdminFormListStack direction="row">
             <ListIcon style={ { fill: "darkgrey" } }/>
-            <AdminFormTypographyField>{ params.row.title }</AdminFormTypographyField>
+            <AdminFormTypographyField><Link to={`${params.id}/answers`}>{ params.row.title }</Link></AdminFormTypographyField>
           </AdminFormListStack>
         );
       }

@@ -33,10 +33,11 @@ export const MetaformRadioFieldComponent: React.FC<Props> = ({
   renderIcon,
   notInteractive
 }) => {
-  const options = field.options || [];
-  if (!field.name) {
+  if (!field.name || field.name === "status") {
     return null;
   }
+  
+  const options = field.options || [];
 
   /**
    * Event handler for field input change

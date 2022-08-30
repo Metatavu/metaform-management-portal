@@ -31,6 +31,20 @@ export const FilterSelector = styled(NativeSelect, {
 }));
 
 /**
+ * Styled status selector component
+ */
+export const StatusSelector = styled(NativeSelect, {
+  label: "admin-layout-status-selector"
+})(({ theme }) => ({
+  height: theme.spacing(5),
+  borderRadius: theme.spacing(1),
+  border: "0.06em solid #ccc",
+  padding: theme.spacing(2),
+  minWidth: 300,
+  flex: 1
+}));
+
+/**
  * Styled form control component
  */
 export const FormFilterWrapper = styled(FormControl, {
