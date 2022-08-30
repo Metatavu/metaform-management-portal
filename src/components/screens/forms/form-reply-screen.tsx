@@ -49,9 +49,7 @@ const ReplyScreen: FC = () => {
    *
    * @param fieldName field name
    */
-  const getFieldValue = (fieldName: string): FieldValue => {
-    return formValues[fieldName] || null;
-  };
+  const getFieldValue = (fieldName: string): FieldValue => formValues[fieldName] || null;
 
   /**
    * Method for saving reply
