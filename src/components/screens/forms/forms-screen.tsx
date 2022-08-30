@@ -13,7 +13,7 @@ import Api from "api";
 import { Metaform, MetaformMemberRole, Reply } from "generated/client";
 import { ErrorContext } from "components/contexts/error-handler";
 import { ReplyStatus } from "types";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Interface for single form row
@@ -120,7 +120,7 @@ const FormsScreen: React.FC = () => {
         return (
           <AdminFormListStack direction="row">
             <ListIcon style={ { fill: "darkgrey" } }/>
-            <AdminFormTypographyField><Link to={`${params.id}/answers`}>{ params.row.title }</Link></AdminFormTypographyField>
+            <AdminFormTypographyField>{ params.row.title }</AdminFormTypographyField>
           </AdminFormListStack>
         );
       }
@@ -184,7 +184,7 @@ const FormsScreen: React.FC = () => {
       <DataGrid
         loading={ loading }
         rows={ rows }
-        onRowDoubleClick={ rowParams => navigate(`${rowParams.row.id}/answers`) }
+        onRowDoubleClick={ rowParams => navigate(`${rowParams.row.slug}/answers`) }
         columns={ columns }
         autoHeight
         disableColumnMenu
