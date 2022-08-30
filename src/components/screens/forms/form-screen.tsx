@@ -42,7 +42,6 @@ const FormScreen: React.FC<Props> = () => {
   const [ , setLoading ] = useState(false);
   const [ savingReply, setSaving ] = useState(false);
   const [ , setSnackbarMessage ] = useState<SnackbarMessage>();
-
   const [ , setReplyConfirmVisible ] = useState(false);
   const [ metaform, setMetaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ ownerKey, setOwnerKey ] = useState<string | null>();
@@ -68,7 +67,7 @@ const FormScreen: React.FC<Props> = () => {
 
   /**
    * Returns reply edit link
-   * 
+   *
    * @returns reply edit link or null if not available
    */
   const getReplyEditLink = () => {

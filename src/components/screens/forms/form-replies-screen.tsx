@@ -22,7 +22,6 @@ import { ApplicationRoles, ReplyStatus } from "types";
 const FormRepliesScreen: React.FC = () => {
   const errorContext = useContext(ErrorContext);
   const keycloak = useAppSelector(selectKeycloak);
-  
   const apiClient = useApiClient(Api.getApiClient);
   const { repliesApi, metaformsApi } = apiClient;
 
@@ -43,14 +42,14 @@ const FormRepliesScreen: React.FC = () => {
 
   /**
    * Builds a row for the table
-   * 
-   * @param reply reply 
+   *
+   * @param reply reply
    */
   const buildRow = (reply: Reply, fields: MetaformField[]) => {
     const row : { [key: string]: string | number } = {};
-    
+
     row.id = reply.id!;
-    
+
     row.replyStatus = reply.data?.status?.toString() || "";
 
     fields.forEach(field => {
@@ -89,7 +88,7 @@ const FormRepliesScreen: React.FC = () => {
   };
 
   /**
-   * Return fields that include context "MANAGEMENT_LIST" 
+   * Return fields that include context "MANAGEMENT_LIST"
    */
   const getManagementListFields = async (metaformData: Metaform) => {
     if (!metaformData) {
@@ -109,7 +108,7 @@ const FormRepliesScreen: React.FC = () => {
   /**
    * Builds the columns for the table
    * Adds delete button column if user has realm role metaform-admin
-   * 
+   *
    * @returns management list columns
    */
   const setGridColumns = async (metaformData: Metaform) => {
@@ -140,7 +139,7 @@ const FormRepliesScreen: React.FC = () => {
           <AdminFormRepliesScreenStack direction="row">
             <AdminFormRepliesScreenText>{ column.name ? params.row[column.name] : "" }</AdminFormRepliesScreenText>
           </AdminFormRepliesScreenStack>
-  
+
         );
       }
     }));
@@ -161,13 +160,13 @@ const FormRepliesScreen: React.FC = () => {
         ]
       } as GridColDef);
     }
-    
+
     setColumns(gridColumns);
   };
 
   /**
    * Deletes a reply
-   * 
+   *
    * @param replyId reply id
    */
   const deleteReply = async (replyId: string) => {
@@ -177,12 +176,12 @@ const FormRepliesScreen: React.FC = () => {
       if (!metaform || !metaform.id || !replyId) {
         return;
       }
-    
+
       await repliesApi.deleteReply({
         metaformId: metaform.id,
         replyId: replyId
       });
-  
+
       setRows(rows?.filter(row => row.id !== replyId));
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.deleteReply, e);
@@ -190,7 +189,7 @@ const FormRepliesScreen: React.FC = () => {
 
     setLoading(false);
   };
-  
+
   /**
    * Event handler for delete reply dialog confirm
    */
@@ -198,7 +197,7 @@ const FormRepliesScreen: React.FC = () => {
     if (deletableReplyId) {
       deleteReply(deletableReplyId);
     }
-  
+
     setDeletableReplyId(undefined);
   };
 
@@ -211,7 +210,7 @@ const FormRepliesScreen: React.FC = () => {
     }
 
     const filterableRows = [ ...rows ];
-  
+
     if (!showAllReplies) {
       setFilteredRows(filterableRows.filter(row => row.replyStatus === ReplyStatus.WAITING));
     } else {
@@ -226,7 +225,7 @@ const FormRepliesScreen: React.FC = () => {
     if (!formId) {
       return;
     }
-    
+
     setLoading(true);
 
     try {
@@ -237,7 +236,7 @@ const FormRepliesScreen: React.FC = () => {
         repliesApi.listReplies({ metaformId: formId }),
         getManagementListFields(metaformData)
       ]);
-      
+
       if (!repliesData || !fields) {
         return;
       }
@@ -248,7 +247,7 @@ const FormRepliesScreen: React.FC = () => {
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchReplies, e);
     }
-  
+
     setLoading(false);
   };
 
@@ -259,7 +258,7 @@ const FormRepliesScreen: React.FC = () => {
   useEffect(() => {
     filterRows();
   }, [showAllReplies, rows]);
-  
+
   /**
      * Renders delete reply confirm dialog
      */
@@ -277,7 +276,7 @@ const FormRepliesScreen: React.FC = () => {
       />
     );
   };
-  
+
   /**
    * Render toggle switch for not processed/all replies
    */
@@ -288,7 +287,7 @@ const FormRepliesScreen: React.FC = () => {
       <Typography>{ strings.repliesScreen.selectorShowAll }</Typography>
     </AdminFormRepliesScreenStack>
   );
-  
+
   return (
     <>
       <NavigationTabContainer>

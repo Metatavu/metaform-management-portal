@@ -69,7 +69,7 @@ const EditorScreen: React.FC = () => {
           data: { ...newMetaform } as any
         }
       });
-      
+
       navigate(`${currentPath}/${newMetaform.slug}/${newMetaformVersion.id}`);
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.createForm, e);

@@ -8,11 +8,11 @@ import DateRangeIcon from "@mui/icons-material/DateRange";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
-import { Link } from "react-router-dom";
 import { useApiClient } from "app/hooks";
 import Api from "api";
 import { Metaform, Reply } from "generated/client";
 import { ErrorContext } from "components/contexts/error-handler";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Interface for single form row
@@ -29,12 +29,12 @@ interface Row {
  */
 const FormsScreen: React.FC = () => {
   const errorContext = useContext(ErrorContext);
-  
+
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, repliesApi } = apiClient;
-
   const [ rows, setRows ] = useState<Row[]>([]);
   const [ loading, setLoading ] = useState(false);
+  const navigate = useNavigate();
 
   /**
    * Gets the latest reply date of a Metaform
@@ -43,24 +43,24 @@ const FormsScreen: React.FC = () => {
     if (replies.length < 1) {
       return "";
     }
-  
+
     if (!replies[0].modifiedAt) {
       return "";
     }
-      
+
     return replies[0].modifiedAt.toLocaleString().slice(0, -3);
   };
-  
+
   /**
    * Counts amount of waiting replies to be displayed in the row
    * @param replies replies
    * @return count of waiting replies
    */
   const countWaitingReplies = (replies: Reply[]) => replies.filter(reply => reply.data?.status as (string | undefined) === "waiting").length;
-  
+
   /**
    * Builds a row for the table
-   * 
+   *
    * @param form form
    * @param replies replies
    */
@@ -74,26 +74,26 @@ const FormsScreen: React.FC = () => {
       newReply: amountWaiting > 0 ? `${strings.navigationHeader.formsScreens.formScreen.form.notProcessed} (${amountWaiting})` : undefined
     };
   };
-  
+
   /**
    * View setup
    */
   const setup = async () => {
     setLoading(true);
-  
+
     try {
       const forms = await metaformsApi.listMetaforms({});
       const replies = await Promise.all(forms.map(form => repliesApi.listReplies({ metaformId: form.id!! })));
       const builtRows = forms.map((form, i) => buildRow(form, replies[i]));
-  
+
       setRows(builtRows);
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
-  
+
     setLoading(false);
   };
-  
+
   useEffect(() => {
     setup();
   }, []);
@@ -115,7 +115,7 @@ const FormsScreen: React.FC = () => {
         return (
           <AdminFormListStack direction="row">
             <ListIcon style={ { fill: "darkgrey" } }/>
-            <AdminFormTypographyField><Link to={`${params.id}/answers`}>{ params.row.title }</Link></AdminFormTypographyField>
+            <AdminFormTypographyField>{ params.row.title }</AdminFormTypographyField>
           </AdminFormListStack>
         );
       }
@@ -179,6 +179,7 @@ const FormsScreen: React.FC = () => {
       <DataGrid
         loading={ loading }
         rows={ rows }
+        onRowDoubleClick={ rowParams => navigate(`${rowParams.row.id}/answers`) }
         columns={ columns }
         autoHeight
         disableColumnMenu
