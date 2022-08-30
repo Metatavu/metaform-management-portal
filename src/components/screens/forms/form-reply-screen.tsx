@@ -55,7 +55,7 @@ const ReplyScreen: FC = () => {
    * Method for saving reply
    */
   const onSave = async () => {
-    if (!metaform || !metaform.id || !reply || !reply.id) {
+    if (!metaform?.id || !reply?.id) {
       return;
     }
 
