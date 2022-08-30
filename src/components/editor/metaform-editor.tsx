@@ -24,6 +24,7 @@ interface Props {
   editorRef: React.RefObject<HTMLDivElement>
   pendingForm: Metaform;
   setPendingForm: (metaform: Metaform) => void;
+  
 }
 
 /**
@@ -37,14 +38,13 @@ const MetaformEditor: React.FC<Props> = ({
   const [ selectedFieldIndex, setSelectedFieldIndex ] = React.useState<number>();
   const [ selectedSectionIndex, setSelectedSectionIndex ] = React.useState<number>();
   const [ draggingMode, setDraggingMode ] = React.useState<DraggingMode>();
-
+  
   /**
    * Event handler for empty space click
    */
   const onGlobalClick = (event: MouseEvent) => {
     if (!editorRef.current?.contains(event.target as Node)) {
-      setSelectedFieldIndex(undefined);
-      setSelectedSectionIndex(undefined);
+      return null;
     }
   };
 
@@ -170,7 +170,6 @@ const MetaformEditor: React.FC<Props> = ({
    */
   const onAddNewSectionClick = () => {
     const createdSection = MetaformUtils.createEmptySection();
-
     const updatedForm = produce(pendingForm, draftForm => {
       !draftForm.sections && (draftForm.sections = []);
       draftForm.sections?.push(createdSection);
@@ -183,11 +182,12 @@ const MetaformEditor: React.FC<Props> = ({
    * Event handler for section click
    *
    * @param sectionIndex section index
+   * 
    */
   const onSectionClick = (sectionIndex: number) => () => {
     if (selectedSectionIndex !== sectionIndex) {
-      setSelectedFieldIndex(undefined);
       setSelectedSectionIndex(sectionIndex);
+      setSelectedFieldIndex(undefined);
     }
   };
 
@@ -237,13 +237,11 @@ const MetaformEditor: React.FC<Props> = ({
     if (!section.fields || section.fields.length <= fieldIndex) {
       return;
     }
-
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.[sectionIndex].fields?.splice(fieldIndex, 1);
     });
-
-    setPendingForm(updatedForm);
     setSelectedFieldIndex(undefined);
+    setPendingForm(updatedForm);
   };
 
   /**
@@ -267,7 +265,9 @@ const MetaformEditor: React.FC<Props> = ({
             selected={ selected }
             onDeleteClick={ onFieldDeleteClick(sectionIndex, fieldIndex) }
           >
+            <Typography color="gray" margin="5px">{ field.required === true ? `${field.title} *` : field.title }</Typography>
             <AddableFieldRenderer
+              key="key"
               field={ field }
               fieldId={ DragAndDropUtils.getFieldId(pendingForm, field) }
               fieldLabelId={ DragAndDropUtils.getFieldLabelId(pendingForm, field) }
@@ -299,6 +299,7 @@ const MetaformEditor: React.FC<Props> = ({
         >
           <Typography variant="h1" sx={{ mb: 2 }}>
             { section.title }
+
           </Typography>
           <DroppableWrapper
             droppableId={ sectionIndex.toString() }
@@ -359,6 +360,8 @@ const MetaformEditor: React.FC<Props> = ({
       <MetaformEditorRightDrawer
         pendingForm={ pendingForm }
         setPendingForm={ setPendingForm }
+        fieldIndex={ selectedFieldIndex }
+        sectionIndex={ selectedSectionIndex }
       />
     </EditorWrapper>
   );

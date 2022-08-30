@@ -32,9 +32,7 @@
     },
     "adminFormsScreen": {
       "listForms": "Fetching forms failed",
-      "createForm": "Creating form failed",
-      "deleteVersion": "Deleting form failed",
-      "createFormDuplicateNameError": "Form with that name already exists!"
+      "createForm": "Creating form failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -188,10 +186,22 @@
       },
       "features": {
         "tabTitle": "Features",
-        "title": "Title"
+        "title": "Title",
+        "fieldDatas": "Field Information",
+        "fieldVisiblity": "The field is visible on the form:",
+        "visiblityCondition": "Visiblity condition",
+        "required": "Required",
+        "defineUserGroup": "Define a user group",
+        "selectableOnlyOn": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
+        "selectComponent": "Select a field in the form to edit the field information.",
+        "fieldTitle": "Field title",
+        "sectionTitle": "Section title"
       },
       "visibility": {
-        "tabTitle": "Visibility"
+        "tabTitle": "Visibility",
+        "conditionLabelTitle":"Condition field name",
+        "conditionally": "Conditionally",
+        "conditionalFieldValue": "Conditional field value"
       }
     }
   },
@@ -288,7 +298,7 @@
       "formTemplateCustom": "Custom template",
       "formTemplateCustomHelper": "Create new form with empty template. Recommended only if Sosmeta doesn't contain a suitable form template.",
       "formTemplateSosmeta": "Sosmeta template",
-      "formTemplateSosmetaHelper": "Create new form with Sosmetas structure. Sosmeta is a service maintained by the Finnish Institute for Health and Welfare. Templates can be found at: ",
+      "formTemplateSosmetaHelper": "Create new form with Sosmetas structure. Sosmeta is a service maintained by the Finnish Institute for Health and Welfare. Templates can be found at https://sosmeta.thl.fi/document-definitions/list.",
       "formTemplateSosmetaLink": "https://sosmeta.thl.fi/document-definitions/list",
       "formTemplateSchema": "Schema",
       "formIdentification": "Repliers identification",

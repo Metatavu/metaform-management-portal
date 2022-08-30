@@ -45,8 +45,6 @@ export interface Localized extends LocalizedStringsMethods {
     adminFormsScreen: {
       listForms: string;
       createForm: string;
-      deleteVersion: string;
-      createFormDuplicateNameError: string;
     },
     formScreen: {
       saveReply: string;
@@ -221,9 +219,22 @@ export interface Localized extends LocalizedStringsMethods {
       features: {
         tabTitle: string;
         title: string;
+        fieldDatas: string;
+        visiblityCondition: string;
+        fieldVisiblity: string;
+        defineUserGroup: string;
+        selectableOnlyOn: string;
+        required: string;
+        selectComponent: string;
+        fieldTitle: string;
+        sectionTitle: string;
       };
       visibility: {
         tabTitle: string;
+        conditionLabelTitle: string;
+        conditionally: string;
+        conditionalFieldValue: string;
+
       };
     };
   };

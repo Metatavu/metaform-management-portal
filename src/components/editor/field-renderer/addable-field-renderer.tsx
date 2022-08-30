@@ -1,6 +1,6 @@
 import { DatePicker, DateTimePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { TextField, Typography } from "@mui/material";
+import { TextField, Icon } from "@mui/material";
 import { MetaformField, MetaformFieldType, MetaformTableColumnType } from "generated/client";
 import strings from "localization/strings";
 import MetaformBooleanFieldComponent from "metaform-react/MetaformBooleanFieldComponent";
@@ -21,11 +21,13 @@ import MetaformTableFieldComponent from "metaform-react/MetaformTableFieldCompon
 import MetaformSubmitFieldComponent from "metaform-react/MetaformSubmitFieldComponent";
 import MetaformUrlFieldComponent from "metaform-react/MetaformUrlField";
 import MetaformTextFieldComponent from "metaform-react/MetaformTextFieldComponent";
+import { IconName } from "metaform-react/types";
 
 interface Prop {
   field: MetaformField;
   fieldLabelId: string;
   fieldId: string;
+  key: string;
 }
 
 /**
@@ -38,13 +40,15 @@ const AddableFieldRenderer: React.FC<Prop> = ({
   fieldLabelId
 }) => {
   /**
-   * Implement later
+   * Method for rendering form icons
+   * @param IconName Icon
+   * @param key IconKey
    */
-  const renderIcon = () => (
-    <Typography>
-      { strings.generic.notImplemented }
-    </Typography>
-  );
+  const renderIcon = (icon: IconName, key: string) => {
+    return (
+      <Icon key={ key }>{ icon }</Icon>
+    );
+  };
 
   /**
    * Date picker
@@ -189,6 +193,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
         <MetaformDateTimeFieldComponent
           field={ field }
           datetimePicker={ dateTimePicker }
+          
         />
       );
     case MetaformFieldType.Date:
@@ -221,7 +226,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           field={{
             ...field,
             name: "Radio",
-            options: [ { name: "a", text: "a" }, { name: "b", text: "b" }, { name: "c", text: "c" } ]
+            options: [ { name: "a", text: "b" }]
           }}
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
@@ -255,7 +260,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
           formReadOnly={ true }
-          value={ field.name || "" }
+          value="Sähköposti"
         />
       );
     case MetaformFieldType.Number:
@@ -266,7 +271,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
           formReadOnly={ true }
-          value={ field.name || "" }
+          value={" "}
         />
       );
     case MetaformFieldType.Memo:
@@ -300,7 +305,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
           formReadOnly={ true }
-          value={ field.name || "" }
+          value={" "}
         />
       );
   }

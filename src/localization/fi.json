@@ -32,9 +32,7 @@
     },
     "adminFormsScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",
-      "createForm": "Lomakkeen luominen epäonnistui",
-      "deleteVersion": "Lomakeversion poistaminen epäonnistui",
-      "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!"
+      "createForm": "Lomakkeen luominen epäonnistui"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -187,10 +185,22 @@
       },
       "features": {
         "tabTitle": "Ominaisuudet",
-        "title": "Title"
+        "title": "Title",
+        "fieldDatas": "Kentän tiedot",
+        "fieldVisiblity": "Kenttä näkyy lomakkeella:",
+        "visiblityCondition": "Näkyvyyden ehto",
+        "required": "Pakollisuus",
+        "defineUserGroup": "Määrittää käyttäjäryhmän",
+        "selectableOnlyOn": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
+        "selectComponent": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja.",
+        "fieldTitle": "Kentän otsikko",
+        "sectionTitle": "Osion otsikko"
       },
       "visibility": {
-        "tabTitle": "näkyvyys"
+        "tabTitle": "näkyvyys",
+        "conditionLabelTitle":"Ehtokentän nimi",
+        "conditionally":"Ehdollisesti",
+        "conditionalFieldValue": "Ehtokentän arvo"
       }
     }
   },
@@ -287,7 +297,7 @@
       "formTemplateCustom": "Mukautettu pohja",
       "formTemplateCustomHelper": "Luo uusi lomake tyhjällä pohjalla. Suositeltavaa vain, jos Sosmetasta ei löydy sopivaa pohjaa lomakkeelle.",
       "formTemplateSosmeta": "Sosmetan pohja",
-      "formTemplateSosmetaHelper": "Luo uusi lomake Sosmetan rakenteiden mukaisesti. Sosmeta on Terveyden ja Hyvinvoinnin laitoksen ylläpitä palvelu. Rakennepohjat löytyvät osoitteesta: ",
+      "formTemplateSosmetaHelper": "Luo uusi lomake Sosmetan rakenteiden mukaisesti. Sosmeta on Terveyden ja Hyvinvoinnin laitoksen ylläpitä palvelu. Rakennepohjat löytyvät osoitteesta: https://sosmeta.thl.fi/document-definitions/list.",
       "formTemplateSosmetaLink": "https://sosmeta.thl.fi/document-definitions/list",
       "formTemplateSchema": "Schema",
       "formIdentification": "Vastaajan tunnistautuminen",
