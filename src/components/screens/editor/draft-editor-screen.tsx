@@ -38,7 +38,7 @@ const DraftEditorScreen: React.FC = () => {
     const { formSlug, draftId } = params;
 
     try {
-      const form = await metaformsApi.findMetaformBySlug({ metaformSlug: formSlug! });
+      const form = await metaformsApi.findMetaform({ metaformSlug: formSlug! });
       const draft = await versionsApi.findMetaformVersion({
         metaformId: form.id!,
         versionId: draftId!

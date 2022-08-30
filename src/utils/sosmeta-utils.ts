@@ -1,21 +1,9 @@
 import Config from "app/config";
 import { Metaform, MetaformFieldType } from "generated/client";
 import MetaformUtils from "./metaform-utils";
+import { SosmetaType } from "../types/index";
 
 // TODO: Typing for Sosmeta Schemas and support for other possible field types(?)
-/**
- * Enum for different types of "sections" and "fields" contained in Sosmeta Schemas
- */
-enum SosmetaType {
-  ARRAY = "array",
-  BOOLEAN = "boolean",
-  INTEGER = "integer",
-  NULL = "null",
-  NUMBER = "number",
-  OBJECT = "object",
-  STRING = "string"
-}
-
 /**
  * Namespace for Sosmeta utilities
  */

@@ -1,12 +1,13 @@
 import { Box, Divider, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography, Link } from "@mui/material";
 import { Save, Clear } from "@mui/icons-material";
 import strings from "localization/strings";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import theme from "theme";
 import { Metaform, MetaformSection } from "generated/client";
 import slugify from "slugify";
 import SosmetaUtils from "utils/sosmeta-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
+import { ErrorContext } from "components/contexts/error-handler";
 
 /**
  * Component props
@@ -38,6 +39,8 @@ const EditorScreenDrawer: FC<Props> = ({
   setOpen,
   createMetaform
 }) => {
+  const currentHostname = window.location.hostname;
+  const errorContext = useContext(ErrorContext);
   const [ formSettings, setFormSettings ] = useState<FormSettings>({
     formName: "",
     formSlug: "",
@@ -71,7 +74,7 @@ const EditorScreenDrawer: FC<Props> = ({
         formSections: convertedForm!.sections!
       });
     } catch (e) {
-      console.log(e);
+      errorContext.setError(strings.errorHandling.adminFormsScreen.convertSosmetaError, e);
     }
     
     setConverting(false);
@@ -284,7 +287,7 @@ const EditorScreenDrawer: FC<Props> = ({
     setFormSettings({
       ...formSettings,
       formSlug: updatedSlug,
-      formUrl: `${updatedSlug}.metaform.fi`
+      formUrl: `${currentHostname}/${updatedSlug}`
     });
   };
 
