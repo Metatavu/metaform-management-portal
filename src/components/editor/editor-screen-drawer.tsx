@@ -3,8 +3,10 @@ import { Save, Clear } from "@mui/icons-material";
 import strings from "localization/strings";
 import React, { FC, useEffect, useState } from "react";
 import theme from "theme";
-import { Metaform } from "generated/client";
+import { Metaform, MetaformSection } from "generated/client";
 import slugify from "slugify";
+import SosmetaUtils from "utils/sosmeta-utils";
+import GenericLoaderWrapper from "components/generic/generic-loader";
 
 /**
  * Component props
@@ -25,6 +27,7 @@ interface FormSettings {
   formTemplate: boolean;
   formSchema: string;
   formAuthentication: boolean;
+  formSections?: MetaformSection[];
 }
 
 /**
@@ -44,6 +47,7 @@ const EditorScreenDrawer: FC<Props> = ({
     formAuthentication: true
   });
   const [ valid, setValid ] = useState<boolean>(false);
+  const [ converting, setConverting ] = useState<boolean>(false);
 
   /**
    * Toggle drawer
@@ -53,13 +57,35 @@ const EditorScreenDrawer: FC<Props> = ({
   };
 
   /**
+   * Handles conversion of Sosmeta schemas to Metaform
+   */
+  const handleSosmetaConversion = async () => {
+    setConverting(true);
+
+    try {
+      const convertedForm = await SosmetaUtils.convertSosmetaToMetaform(formSettings.formSchema);
+
+      setFormSettings({
+        ...formSettings,
+        formName: convertedForm!.title!,
+        formSections: convertedForm!.sections!
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    
+    setConverting(false);
+  };
+
+  /**
    * Handles Save icon click
    */
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     createMetaform({
       allowAnonymous: !formSettings.formAuthentication,
       title: formSettings.formName,
-      slug: formSettings.formSlug
+      slug: formSettings.formSlug,
+      sections: formSettings.formSections
     });
   };
 
@@ -254,13 +280,19 @@ const EditorScreenDrawer: FC<Props> = ({
    * Updates formSlug and formUrl values
    */
   const updateFormSlugAndUrl = () => {
-    const updatedSlug = slugify(formSettings.formName);
+    const updatedSlug = slugify(formSettings.formName, { lower: true });
     setFormSettings({
       ...formSettings,
       formSlug: updatedSlug,
       formUrl: `${updatedSlug}.metaform.fi`
     });
   };
+
+  useEffect(() => {
+    if (formSettings.formSchema) {
+      handleSosmetaConversion();
+    }
+  }, [formSettings.formSchema]);
 
   useEffect(() => {
     validateFormSettings();
@@ -287,17 +319,21 @@ const EditorScreenDrawer: FC<Props> = ({
       onClose={ toggleDrawerOpen }
     >
       <Stack spacing={ 2 } direction="column">
-        <FormControl
-          fullWidth
+        <GenericLoaderWrapper
+          loading={ converting }
         >
-          { renderDrawerHeader() }
-          <Divider/>
-          { renderDrawerInfoSection() }
-          <Divider/>
-          { renderDrawerTemplateSection() }
-          <Divider/>
-          { renderDrawerAuthenticationSection() }
-        </FormControl>
+          <FormControl
+            fullWidth
+          >
+            { renderDrawerHeader() }
+            <Divider/>
+            { renderDrawerInfoSection() }
+            <Divider/>
+            { renderDrawerTemplateSection() }
+            <Divider/>
+            { renderDrawerAuthenticationSection() }
+          </FormControl>
+        </GenericLoaderWrapper>
       </Stack>
     </Drawer>
   );
