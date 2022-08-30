@@ -24,7 +24,6 @@ const ReplyScreen: FC = () => {
   const errorContext = useContext(ErrorContext);
 
   const [ loading, setLoading ] = useState(false);
-
   const [ metaform, setMetaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});
   const [ reply, setReply ] = useState<Reply>();
