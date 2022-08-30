@@ -15,10 +15,9 @@ import ReplySaved from "./form/ReplySaved";
 import { Button, Stack } from "@mui/material";
 import FormContainer from "styled/generic/form";
 import { StatusSelector } from "styled/layouts/admin-layout";
-import LocalizationUtils from "utils/localization-utils";
 
 /**
- * Component for exhibitions screen
+ * Component for single reply screen
  */
 const ReplyScreen: FC = () => {
   const errorContext = useContext(ErrorContext);
@@ -43,6 +42,41 @@ const ReplyScreen: FC = () => {
   if (!replyId) {
     errorContext.setError(strings.errorHandling.adminReplyScreen.replyIdNotFound);
   }
+
+  /**
+   * Load data for reply
+   */
+  const loadData = async () => {
+    setLoading(true);
+
+    try {
+      const foundMetaform = await metaformsApi.findMetaform({
+        metaformSlug: formSlug!
+      });
+
+      const replyData = await repliesApi.findReply({
+        metaformId: foundMetaform.id!,
+        replyId: replyId!
+      });
+
+      const processedReplyData = await MetaformUtils.processReplyData(foundMetaform, replyData, attachmentsApi) as any;
+      const preparedFormValues = MetaformUtils.prepareFormValues(foundMetaform, processedReplyData, keycloak);
+
+      if (preparedFormValues && foundMetaform && replyData) {
+        setFormValues(preparedFormValues);
+        setMetaform(foundMetaform);
+        setReply(replyData);
+      }
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminReplyScreen.fetchReply, e);
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   /**
    * Method for getting field value
@@ -153,37 +187,6 @@ const ReplyScreen: FC = () => {
   };
 
   /**
-   * View setup
-   */
-  const setup = async () => {
-    setLoading(true);
-
-    try {
-      const foundMetaform = await metaformsApi.findMetaform({
-        metaformSlug: formSlug!
-      });
-
-      const replyData = await repliesApi.findReply({
-        metaformId: foundMetaform.id!,
-        replyId: replyId!
-      });
-
-      const processedReplyData = await MetaformUtils.processReplyData(foundMetaform, replyData, attachmentsApi) as any;
-      const preparedFormValues = MetaformUtils.prepareFormValues(foundMetaform, processedReplyData, keycloak);
-
-      if (preparedFormValues && foundMetaform && replyData) {
-        setFormValues(preparedFormValues);
-        setMetaform(foundMetaform);
-        setReply(replyData);
-      }
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.adminReplyScreen.fetchReply, e);
-    }
-
-    setLoading(false);
-  };
-
-  /**
    * Handle selected reply status change
    * 
    * @param event event
@@ -199,7 +202,7 @@ const ReplyScreen: FC = () => {
   };
 
   const statusOptions = Object.keys(ReplyStatus).map(status => { return status; });
-  console.log(LocalizationUtils.getLocalizedStatusOfReply(statusOptions[0]));
+  // TODO: add localization for status options
   /**
    * Renter status switch
    */
@@ -227,10 +230,6 @@ const ReplyScreen: FC = () => {
       </StatusSelector>
     );
   };
-
-  useEffect(() => {
-    setup();
-  }, []);
 
   return (
     <GenericLoaderWrapper loading={ loading }>
