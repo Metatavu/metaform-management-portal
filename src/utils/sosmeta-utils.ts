@@ -2,6 +2,10 @@ import Config from "app/config";
 import { Metaform, MetaformFieldType } from "generated/client";
 import MetaformUtils from "./metaform-utils";
 
+// TODO: Typing for Sosmeta Schemas and support for other possible field types(?)
+/**
+ * Enum for different types of "sections" and "fields" contained in Sosmeta Schemas
+ */
 enum SosmetaType {
   ARRAY = "array",
   BOOLEAN = "boolean",
@@ -19,12 +23,10 @@ namespace SosmetaUtils {
 
   const sosmetaUrlSuffix = "/schema";
 
-  const metaform: Metaform = {
-
-  };
+  const metaform: Metaform = {};
 
   /**
-   * Extracts needed properties from SosmetaSchema
+   * Handles creation of MetaformField with MetaformFieldType of text
    * 
    * @param sectionName sectionName
    * @param field field
@@ -47,7 +49,7 @@ namespace SosmetaUtils {
   };
 
   /**
-   * Extracts needed properties from SosmetaSchema
+   * Handles creation of MetaformField with MetaformFieldType of boolean
    * 
    * @param sectionName sectionName
    * @param field field
@@ -65,12 +67,12 @@ namespace SosmetaUtils {
   };
 
   /**
-   * Extracts needed properties from SosmetaSchema
+   * TODO: Figure out a more descriptive TSDoc
    * 
    * @param sectionName
    * @param field field
    * @param required required
-   * @returns MetaformField
+   * @returns MetaformField[]
    */
   const handleSosmetaObjectField = (sectionName: string, field: any, required: boolean) => {
     try {
@@ -101,10 +103,11 @@ namespace SosmetaUtils {
   };
 
   /**
-   * Extracts needed properties from SosmetaSchema
+   * Handles creation of MetaformFields from Sosmeta Schema Properties of type array
+   * TODO: This may need restructuring when being tested with more Sosmeta schemas
    * 
    * @param sosmetaSection 
-   * @returns 
+   * @returns MetaformField[]
    */
   const handleSosmetaArraySection = (sosmetaSection: any) => {
     try {
@@ -123,16 +126,18 @@ namespace SosmetaUtils {
   };
 
   /**
-   * Extracts needed properties from SosmetaSchema
-   * 
+   * Handles creation of MetaformFields from Sosmeta Schema Properties of type object
+   * Type object contains sub properties which contain the data that can be 
+   * converted to MetaformField and therefore each object key needs to be mapped 
+   *  
    * @param sosmetaSection 
-   * @returns 
+   * @returns MetaformField[]
    */
   const handleSosmetaObjectSection = (sosmetaSection: any) => {
     try {
       const requiredFieldNames: string[] = sosmetaSection.required;
       const fields = Object.keys(sosmetaSection.properties).map(fieldName => sosmetaSection.properties[fieldName]);
-      // console.log(fields)
+
       return fields.map(field =>
         handleSosmetaObjectField(
           sosmetaSection.sosmeta.name[0].value,
@@ -145,10 +150,10 @@ namespace SosmetaUtils {
   };
 
   /**
-   * Extracts needed properties from SosmetaSchema
+   * Handles creation of MetaformFields from Sosmeta Schema Properties of type string
    * 
    * @param sosmetaSection 
-   * @returns 
+   * @returns MetaformField
    */
   const handleSosmetaStringSection = (sosmetaSection: any) => {
     try {
@@ -161,13 +166,16 @@ namespace SosmetaUtils {
   };
 
   /**
-   * Converts SosmetaSchema properties to equivalent Metaform Sections
+   * Maps through Sosmeta Schema Properties
+   * and creates Metaform Section from each property
+   * based on type (SosmetaType) of given property 
    * 
    * @param sosmetaForm
    * @returns MetaformSection[]
    */
   const convertSections = (sosmetaForm: any) => {
     const sosmetaSections = Object.keys(sosmetaForm.properties).map(sosmetaSection => sosmetaForm.properties[sosmetaSection]);
+    
     return sosmetaSections.map(sosmetaSection => {
       switch (sosmetaSection.type) {
         case SosmetaType.ARRAY:
