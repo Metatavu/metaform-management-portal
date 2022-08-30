@@ -173,17 +173,14 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
         />
       );
     }
+    
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
       if (field === undefined) {
         return null;
       } if (field !== undefined) {
-        let disabledV;
-        if (field.type === "select" || field.type === "date-time" || field.type === "radio" || field.type === "checklist" || field.type === "date") {
-          disabledV = false;
-        } else {
-          disabledV = true;
-        }
+        const disabledV = field.type === "select" || field.type === "date-time" || field.type === "radio" || field.type === "checklist" || field.type === "date";
+
         return (
           <>
             { renderFieldsCategorytitle(strings.draftEditorScreen.editor.features.fieldDatas) }
@@ -209,7 +206,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
             <Typography variant="subtitle1" style={{ width: "100%" }}>
               { strings.draftEditorScreen.editor.features.defineUserGroup }
             </Typography>
-            <FormControl disabled={ disabledV }>
+            <FormControl disabled={ !disabledV }>
               <FormControlLabel
                 label={ strings.generic.yes }
                 control={
