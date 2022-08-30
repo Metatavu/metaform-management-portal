@@ -32,7 +32,9 @@
     },
     "adminFormsScreen": {
       "listForms": "Fetching forms failed",
-      "createForm": "Creating form failed"
+      "createForm": "Creating form failed",
+      "deleteVersion": "Deleting form failed",
+      "createFormDuplicateNameError": "Form with that name already exists!"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",

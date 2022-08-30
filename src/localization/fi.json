@@ -32,7 +32,9 @@
     },
     "adminFormsScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",
-      "createForm": "Lomakkeen luominen epäonnistui"
+      "createForm": "Lomakkeen luominen epäonnistui",
+      "deleteVersion": "Lomakeversion poistaminen epäonnistui",
+      "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
