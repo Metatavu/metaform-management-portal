@@ -1,4 +1,4 @@
-import { Button, FormControlLabel, Switch, Typography } from "@mui/material";
+import { FormControlLabel, Switch, Typography } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
@@ -9,7 +9,7 @@ import { Metaform, MetaformField, MetaformFieldType, Reply } from "generated/cli
 import strings from "localization/strings";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import { AdminFormRepliesScreenStack, AdminFormRepliesScreenText } from "styled/react-components/react-components";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -24,6 +24,7 @@ const FormRepliesScreen: React.FC = () => {
   const keycloak = useAppSelector(selectKeycloak);
   const apiClient = useApiClient(Api.getApiClient);
   const { repliesApi, metaformsApi } = apiClient;
+  const navigate = useNavigate();
 
   const [ rows, setRows ] = useState<any[]>([]);
   const [ filteredRows, setFilteredRows] = useState<any[]>([]);
@@ -39,6 +40,86 @@ const FormRepliesScreen: React.FC = () => {
   if (!formSlug) {
     errorContext.setError(strings.errorHandling.adminRepliesScreen.formSlugNotFound);
   }
+
+  /**
+   * Return fields that include context "MANAGEMENT_LIST"
+   *
+   * @param metaformData metaform data
+   */
+  const getManagementListFields = async (metaformData: Metaform) => {
+    if (!metaformData) {
+      return;
+    }
+
+    try {
+      const fieldData = (metaformData.sections || [])
+        .flatMap(section => section.fields || [])
+        .filter(field => (field.contexts || []).includes("MANAGEMENT_LIST"));
+      return fieldData;
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchFields, e);
+    }
+  };
+
+  /**
+   * Builds the columns for the table
+   * Adds delete button column if user has realm role metaform-admin
+   *
+   * @param metaformData metaform data
+   * @returns management list columns
+   */
+  const setGridColumns = async (metaformData: Metaform) => {
+    if (!metaformData) {
+      return;
+    }
+
+    const managementListColumns = await getManagementListFields(metaformData);
+
+    if (!managementListColumns) {
+      return;
+    }
+
+    const gridColumns = managementListColumns.map<GridColDef>(column => ({
+      field: column.name || "",
+      headerName: column.title,
+      allowProps: true,
+      flex: 1,
+      renderHeader: params => {
+        return (
+          <AdminFormRepliesScreenStack direction="row">
+            <AdminFormRepliesScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormRepliesScreenText>
+          </AdminFormRepliesScreenStack>
+        );
+      },
+      renderCell: params => {
+        return (
+          <AdminFormRepliesScreenStack direction="row">
+            <AdminFormRepliesScreenText>{ column.name ? params.row[column.name] : "" }</AdminFormRepliesScreenText>
+          </AdminFormRepliesScreenStack>
+
+        );
+      }
+    }));
+
+    if (keycloak?.hasRealmRole(ApplicationRoles.METAFORM_ADMIN)) {
+      gridColumns.push({
+        field: "actions",
+        type: "actions",
+        width: 140,
+        // eslint-disable-next-line react/no-unstable-nested-components
+        getActions: (params: { row: any; }) => [
+          <GridActionsCellItem
+            icon={ <DeleteIcon/> }
+            onClick={ () => setDeletableReplyId(params.row.id) }
+            label={ strings.generic.delete }
+            showInMenu
+          />
+        ]
+      } as GridColDef);
+    }
+
+    setColumns(gridColumns);
+  };
 
   /**
    * Builds a row for the table
@@ -88,88 +169,61 @@ const FormRepliesScreen: React.FC = () => {
   };
 
   /**
-   * Return fields that include context "MANAGEMENT_LIST"
+   * Replies screen loadData
    */
-  const getManagementListFields = async (metaformData: Metaform) => {
-    if (!metaformData) {
+  const loadData = async () => {
+    if (!formSlug) {
       return;
     }
+
+    setLoading(true);
 
     try {
-      const fieldData = (metaformData.sections || [])
-        .flatMap(section => section.fields || [])
-        .filter(field => (field.contexts || []).includes("MANAGEMENT_LIST"));
-      return fieldData;
+      const metaformData = await metaformsApi.findMetaform({ metaformSlug: formSlug });
+      setMetaform(metaformData);
+      const [ repliesData, fields ] = await Promise.all([
+        repliesApi.listReplies({ metaformId: metaformData.id! }),
+        getManagementListFields(metaformData)
+      ]);
+
+      if (!repliesData || !fields) {
+        return;
+      }
+
+      const replyRows = repliesData.map(reply => buildRow(reply, fields));
+      setRows(replyRows);
+      await setGridColumns(metaformData);
     } catch (e) {
-      errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchFields, e);
+      errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchReplies, e);
     }
+
+    setLoading(false);
   };
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   /**
-   * Builds the columns for the table
-   * Adds delete button column if user has realm role metaform-admin
-   *
-   * @returns management list columns
+   * Filter replies
    */
-  const setGridColumns = async (metaformData: Metaform) => {
-    if (!metaformData) {
+  const filterRows = () => {
+    if (!rows) {
       return;
     }
 
-    const managementListColumns = await getManagementListFields(metaformData);
+    const filterableRows = [ ...rows ];
 
-    if (!managementListColumns) {
-      return;
+    if (!showAllReplies) {
+      setFilteredRows(filterableRows.filter(row => row.replyStatus === ReplyStatus.WAITING));
+    } else {
+      setFilteredRows(filterableRows);
     }
-
-    const gridColumns = managementListColumns.map<GridColDef>(column => ({
-      field: column.name || "",
-      headerName: column.title,
-      allowProps: true,
-      flex: 1,
-      renderHeader: params => {
-        return (
-          <AdminFormRepliesScreenStack direction="row">
-            <AdminFormRepliesScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormRepliesScreenText>
-          </AdminFormRepliesScreenStack>
-        );
-      },
-      renderCell: params => {
-        return (
-          <AdminFormRepliesScreenStack direction="row">
-            <AdminFormRepliesScreenText>{ column.name ? params.row[column.name] : "" }</AdminFormRepliesScreenText>
-          </AdminFormRepliesScreenStack>
-
-        );
-      }
-    }));
-
-    if (keycloak?.hasRealmRole(ApplicationRoles.METAFORM_ADMIN)) {
-      gridColumns.push({
-        field: "actions",
-        type: "actions",
-        width: 140,
-        // eslint-disable-next-line react/no-unstable-nested-components
-        getActions: (params: { row: any; }) => [
-          <GridActionsCellItem
-            icon={ <DeleteIcon/> }
-            onClick={ () => setDeletableReplyId(params.row.id) }
-            label={ strings.generic.delete }
-            showInMenu
-          />,
-          <Button
-            variant="outlined"
-            color="primary"
-            size="small"
-          >
-            <Link to={params.row.id}>{ strings.repliesScreen.open }</Link>
-          </Button>
-        ]
-      } as GridColDef);
-    }
-
-    setColumns(gridColumns);
   };
+
+  useEffect(() => {
+    filterRows();
+  }, [ showAllReplies, rows ]);
 
   /**
    * Deletes a reply
@@ -209,65 +263,8 @@ const FormRepliesScreen: React.FC = () => {
   };
 
   /**
-   * Filter replies
+   * Renders delete reply confirm dialog
    */
-  const filterRows = () => {
-    if (!rows) {
-      return;
-    }
-
-    const filterableRows = [ ...rows ];
-
-    if (!showAllReplies) {
-      setFilteredRows(filterableRows.filter(row => row.replyStatus === ReplyStatus.WAITING));
-    } else {
-      setFilteredRows(filterableRows);
-    }
-  };
-
-  /**
-   * Replies screen setup
-   */
-  const setup = async () => {
-    if (!formSlug) {
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const metaformData = await metaformsApi.findMetaform({ metaformSlug: formSlug });
-      setMetaform(metaformData);
-      const [ repliesData, fields ] = await Promise.all([
-        repliesApi.listReplies({ metaformId: metaformData.id! }),
-        getManagementListFields(metaformData)
-      ]);
-
-      if (!repliesData || !fields) {
-        return;
-      }
-
-      const replyRows = repliesData.map(reply => buildRow(reply, fields));
-      setRows(replyRows);
-      await setGridColumns(metaformData);
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchReplies, e);
-    }
-
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    setup();
-  }, []);
-
-  useEffect(() => {
-    filterRows();
-  }, [showAllReplies, rows]);
-
-  /**
-     * Renders delete reply confirm dialog
-     */
   const renderDeleteReplyConfirm = () => {
     return (
       <ConfirmDialog
@@ -288,9 +285,16 @@ const FormRepliesScreen: React.FC = () => {
    */
   const renderToggleSwitch = () => (
     <AdminFormRepliesScreenStack direction="row">
-      <Typography>{ strings.repliesScreen.selectorShowOpen }</Typography>
-      <FormControlLabel control={ <Switch onChange={() => { setShowAllReplies(!showAllReplies); }}/> } label={ undefined }/>
-      <Typography>{ strings.repliesScreen.selectorShowAll }</Typography>
+      <Typography>
+        { strings.repliesScreen.selectorShowOpen }
+      </Typography>
+      <FormControlLabel
+        control={ <Switch onChange={() => { setShowAllReplies(!showAllReplies); }}/> }
+        label={ undefined }
+      />
+      <Typography>
+        { strings.repliesScreen.selectorShowAll }
+      </Typography>
     </AdminFormRepliesScreenStack>
   );
 
@@ -303,17 +307,19 @@ const FormRepliesScreen: React.FC = () => {
         />
         <NavigationTab
           text={ strings.navigationHeader.formsScreens.formDataScreen }
-          to=":formId/history"
+          to="../history"
+          // TODO check this
         />
       </NavigationTabContainer>
       <DataGrid
-        loading={ loading }
-        rows={ filteredRows }
-        columns={ columns }
-        getRowId={ row => (row.id) }
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
+        loading={ loading }
+        rows={ filteredRows }
+        columns={ columns }
+        getRowId={ row => row.id }
+        onRowDoubleClick={ rowParams => navigate(rowParams.row.id) }
       />
       { renderDeleteReplyConfirm() }
     </>

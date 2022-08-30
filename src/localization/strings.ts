@@ -119,7 +119,7 @@ export interface Localized extends LocalizedStringsMethods {
     forms: string;
     data: string;
     list: string;
-    answer: string;
+    answers: string;
     history: string;
   };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import FormHistoryScreen from "./form-history-screen";
 import FormReplyScreen from "./form-reply-screen";
 import FormsDataScreen from "./forms-data-screen";
@@ -19,10 +19,6 @@ const FormsRoutes: React.FC = () => (
       path="/data"
       element={ <FormsDataScreen/> }
     />
-    {/* <Route
-      path="/:formSlug"
-      element={ <Navigate to="/admin/forms"/> }
-    /> */}
     <Route
       path="/:formSlug/answers"
       element={ <FormRepliesScreen/> }
@@ -34,6 +30,10 @@ const FormsRoutes: React.FC = () => (
     <Route
       path="/:formSlug/history"
       element={ <FormHistoryScreen/> }
+    />
+    <Route
+      path="/:formSlug"
+      element={ <Navigate to="./answers"/> }
     />
   </Routes>
 );

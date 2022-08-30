@@ -182,14 +182,14 @@ const FormsScreen: React.FC = () => {
         />
       </NavigationTabContainer>
       <DataGrid
-        loading={ loading }
-        rows={ rows }
-        onRowDoubleClick={ rowParams => navigate(`${rowParams.row.slug}/answers`) }
-        columns={ columns }
         autoHeight
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
+        loading={ loading }
+        rows={ rows }
+        columns={ columns }
+        onRowDoubleClick={ rowParams => navigate(`${rowParams.row.slug}/answers`) }
       />
     </>
   );
