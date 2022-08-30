@@ -139,7 +139,7 @@ namespace MetaformUtils {
    * 
    * @return data processes to be used by ui
    */
-  export const processReplyData = async (foundMetaform: Metaform, foundReply: Reply, currentOwnerKey: string, attachmentsApi: AttachmentsApi) => {
+  export const processReplyData = async (foundMetaform: Metaform, foundReply: Reply, attachmentsApi: AttachmentsApi, currentOwnerKey?: string) => {
     const values = foundReply.data;
     foundMetaform.sections?.forEach(async foundSection => {
       const section = foundMetaform.sections && foundSection ? foundSection : undefined;

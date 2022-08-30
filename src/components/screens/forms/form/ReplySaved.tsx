@@ -4,10 +4,10 @@ import strings from "localization/strings";
 import * as React from "react";
 
 interface Props {
-  getReplyEditLink: () => string | null;
+  getReplyEditLink?: () => string | null;
   replySavedVisible: boolean;
   setReplySavedVisible: (status: boolean) => void;
-  onReplyEmailLinkClick: () => void;
+  onReplyEmailLinkClick?: () => void;
 
 }
 
@@ -20,7 +20,7 @@ const ReplySaved: React.FC<Props> = ({
   setReplySavedVisible,
   onReplyEmailLinkClick
 }) => {
-  const replyEditLink = getReplyEditLink();
+  const replyEditLink = getReplyEditLink && getReplyEditLink();
 
   if (replyEditLink) {
     return (
