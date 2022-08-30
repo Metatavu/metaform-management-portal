@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import FormAnswerScreen from "./form-replies-screen";
 import FormHistoryScreen from "./form-history-screen";
 import FormsDataScreen from "./forms-data-screen";
@@ -19,7 +19,11 @@ const FormsRoutes: React.FC = () => (
       element={ <FormsDataScreen/> }
     />
     <Route
-      path="/:formId/answers"
+      path="/:formSlug"
+      element={ <Navigate to="/admin/forms"/> }
+    />
+    <Route
+      path="/:formSlug/answers"
       element={ <FormAnswerScreen/> }
     />
     <Route

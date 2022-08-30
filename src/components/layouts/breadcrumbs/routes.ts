@@ -44,7 +44,7 @@ const routes = [
   },
   {
     path: "/admin/forms/:formSlug/answer",
-    breadcrumb: FormBreadcrumb
+    breadcrumb: strings.breadcrumb.answer
   },
   {
     path: "/admin/forms/:formSlug/history",

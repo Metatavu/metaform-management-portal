@@ -6,7 +6,6 @@ import BasicLayout, { SnackbarMessage } from "components/layouts/basic-layout";
 import strings from "localization/strings";
 import { Metaform, MetaformFieldType, Reply } from "generated/client";
 import { FieldValue, FileFieldValue, ValidationErrors } from "metaform-react/types";
-
 import MetaformUtils from "utils/metaform-utils";
 import Mail from "mail/mail";
 import ConfirmDialog from "components/generic/confirm-dialog";
@@ -535,7 +534,7 @@ const FormScreen: React.FC<Props> = () => {
       const foundMetaform = await metaformsApi.findMetaformBySlug({
         metaformSlug: metaformSlug
       });
-      
+
       document.title = foundMetaform.title ? foundMetaform.title : "Metaform";
 
       const preparedFormValues = MetaformUtils.prepareFormValues(foundMetaform, formValues, keycloak);
