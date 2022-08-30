@@ -211,10 +211,9 @@ const Form: React.FC<Props> = ({
    * Renders autocomplete component
    * 
    * @param field field
-   * @param formReadOnly form read only
+   * @param readOnly form read only
    * @param value autocomplete form value
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, require-jsdoc
   const renderAutocomplete = (field: MetaformField, readOnly: boolean, value: FieldValue) => {
     return (
       <FormAutocomplete
