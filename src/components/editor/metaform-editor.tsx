@@ -59,7 +59,7 @@ const MetaformEditor: React.FC<Props> = ({
    * @param droppableDestination droppable destination
    */
   const onFieldAdd = (fieldType: MetaformFieldType, droppableDestination: DraggableLocation) => {
-    const defaultField = MetaformUtils.createEmptyField(fieldType);
+    const defaultField = MetaformUtils.createField(fieldType);
     const sectionIndex = parseInt(droppableDestination.droppableId, 10);
     const fieldIndex = droppableDestination.index;
 
@@ -168,7 +168,8 @@ const MetaformEditor: React.FC<Props> = ({
    * Event handler for new section add
    */
   const onAddNewSectionClick = () => {
-    const createdSection = MetaformUtils.createEmptySection();
+    const createdSection = MetaformUtils.createSection();
+
     const updatedForm = produce(pendingForm, draftForm => {
       !draftForm.sections && (draftForm.sections = []);
       draftForm.sections?.push(createdSection);

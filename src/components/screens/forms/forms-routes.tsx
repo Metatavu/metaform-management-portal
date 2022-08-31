@@ -1,7 +1,8 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import FormAnswerScreen from "./form-replies-screen";
+import FormRepliesScreen from "./form-replies-screen";
 import FormHistoryScreen from "./form-history-screen";
+import FormReplyScreen from "./form-reply-screen";
 import FormsDataScreen from "./forms-data-screen";
 import FormsScreen from "./forms-screen";
 
@@ -19,8 +20,12 @@ const FormsRoutes: React.FC = () => (
       element={ <FormsDataScreen/> }
     />
     <Route
-      path="/:formId/answers"
-      element={ <FormAnswerScreen/> }
+      path="/:formSlug/answers"
+      element={ <FormRepliesScreen/> }
+    />
+    <Route
+      path="/:formSlug/answers/:replyId"
+      element={ <FormReplyScreen/> }
     />
     <Route
       path="/:formSlug/history"

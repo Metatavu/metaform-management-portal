@@ -34,7 +34,12 @@
       "listForms": "Fetching forms failed",
       "createForm": "Creating form failed",
       "deleteVersion": "Deleting form failed",
-      "createFormDuplicateNameError": "Form with that name already exists!"
+      "createFormDuplicateNameError": "Form with that name already exists!",
+      "convertSosmetaError": "Converting Sosmeta failed"
+    },
+    "draftEditorScreen": {
+      "findDraft": "Fetching form version failed",
+      "saveDraft": "Saving form version failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -55,7 +60,14 @@
       "fetchReplies": "Fetching replies failed",
       "fetchFields": "Fetching column fields failed",
       "deleteReply":"Deleting reply failed",
-      "formIdNotFound": "Form id not found"
+      "formSlugNotFound": "Form slug not found"
+    },
+    "adminReplyScreen": {
+      "saveReply": "Saving reply failed",
+      "exportPdf": "Exporting PDF failed",
+      "replyIdNotFound": "Reply id not found",
+      "fetchReply": "Error occurred when trying to fetch reply"
+
     },
     "usersScreen": {
       "loadMetaforms": "Error occurred while loading metaforms",
@@ -136,6 +148,7 @@
 
   "repliesScreen": {
     "title": "Answers",
+    "open": "Open",
     "description": "List of answers for the selected form.",
     "createdColumnTitle": "CREATED",
     "modifiedColumnTitle": "MODIFIED",
@@ -148,6 +161,11 @@
     "statusDone": "Done",
     "confirmDeleteReplyTitle": "Delete answer",
     "confirmDeleteReplyText":"Are you sure you want to delete this answer?"
+  },
+
+  "replyScreen": {
+    "exportPdf": "Export PDF",
+    "selectStatus": "Select status"
   },
 
   "publicFormsScreen": {
@@ -163,7 +181,12 @@
       "emptySection": "Empty section",
       "form": {
         "tabTitle": "Form",
-        "formTitle": "Form title"
+        "formTitle": "Form title",
+        "versionInfo": "Version info",
+        "formVersion": "Version",
+        "formStyling": "Form outfit",
+        "backgroundImage": "Background image",
+        "backgroundColor": "Background color"
       },
       "fields": {
         "tabTitle": "Fields",
@@ -297,7 +320,7 @@
       "formName": "Name",
       "formUrl": "Url-address",
       "formTemplate": "Form template",
-      "formTemplateCustom": "Custom template",
+      "formTemplateCustom": "Empty template",
       "formTemplateCustomHelper": "Create new form with empty template. Recommended only if Sosmeta doesn't contain a suitable form template.",
       "formTemplateSosmeta": "Sosmeta template",
       "formTemplateSosmetaHelper": "Create new form with Sosmetas structure. Sosmeta is a service maintained by the Finnish Institute for Health and Welfare. Templates can be found at ",

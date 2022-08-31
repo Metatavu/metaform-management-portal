@@ -1,10 +1,13 @@
 import { Box, Divider, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography, Link } from "@mui/material";
 import { Save, Clear } from "@mui/icons-material";
 import strings from "localization/strings";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import theme from "theme";
-import { Metaform } from "generated/client";
+import { Metaform, MetaformSection } from "generated/client";
 import slugify from "slugify";
+import SosmetaUtils from "utils/sosmeta-utils";
+import GenericLoaderWrapper from "components/generic/generic-loader";
+import { ErrorContext } from "components/contexts/error-handler";
 
 /**
  * Component props
@@ -25,6 +28,7 @@ interface FormSettings {
   formTemplate: boolean;
   formSchema: string;
   formAuthentication: boolean;
+  formSections?: MetaformSection[];
 }
 
 /**
@@ -35,6 +39,8 @@ const EditorScreenDrawer: FC<Props> = ({
   setOpen,
   createMetaform
 }) => {
+  const currentHostname = window.location.hostname;
+  const errorContext = useContext(ErrorContext);
   const [ formSettings, setFormSettings ] = useState<FormSettings>({
     formName: "",
     formSlug: "",
@@ -44,6 +50,7 @@ const EditorScreenDrawer: FC<Props> = ({
     formAuthentication: true
   });
   const [ valid, setValid ] = useState<boolean>(false);
+  const [ converting, setConverting ] = useState<boolean>(false);
 
   /**
    * Toggle drawer
@@ -53,13 +60,35 @@ const EditorScreenDrawer: FC<Props> = ({
   };
 
   /**
+   * Handles conversion of Sosmeta schemas to Metaform
+   */
+  const handleSosmetaConversion = async () => {
+    setConverting(true);
+
+    try {
+      const convertedForm = await SosmetaUtils.convertSosmetaToMetaform(formSettings.formSchema);
+
+      setFormSettings({
+        ...formSettings,
+        formName: convertedForm.title!,
+        formSections: convertedForm.sections!
+      });
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.convertSosmetaError, e);
+    }
+    
+    setConverting(false);
+  };
+
+  /**
    * Handles Save icon click
    */
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     createMetaform({
       allowAnonymous: !formSettings.formAuthentication,
       title: formSettings.formName,
-      slug: formSettings.formSlug
+      slug: formSettings.formSlug,
+      sections: formSettings.formSections
     });
   };
 
@@ -254,13 +283,19 @@ const EditorScreenDrawer: FC<Props> = ({
    * Updates formSlug and formUrl values
    */
   const updateFormSlugAndUrl = () => {
-    const updatedSlug = slugify(formSettings.formName);
+    const updatedSlug = slugify(formSettings.formName, { lower: true });
     setFormSettings({
       ...formSettings,
       formSlug: updatedSlug,
-      formUrl: `${updatedSlug}.metaform.fi`
+      formUrl: `${currentHostname}/${updatedSlug}`
     });
   };
+
+  useEffect(() => {
+    if (formSettings.formSchema) {
+      handleSosmetaConversion();
+    }
+  }, [formSettings.formSchema]);
 
   useEffect(() => {
     validateFormSettings();
@@ -287,17 +322,21 @@ const EditorScreenDrawer: FC<Props> = ({
       onClose={ toggleDrawerOpen }
     >
       <Stack spacing={ 2 } direction="column">
-        <FormControl
-          fullWidth
+        <GenericLoaderWrapper
+          loading={ converting }
         >
-          { renderDrawerHeader() }
-          <Divider/>
-          { renderDrawerInfoSection() }
-          <Divider/>
-          { renderDrawerTemplateSection() }
-          <Divider/>
-          { renderDrawerAuthenticationSection() }
-        </FormControl>
+          <FormControl
+            fullWidth
+          >
+            { renderDrawerHeader() }
+            <Divider/>
+            { renderDrawerInfoSection() }
+            <Divider/>
+            { renderDrawerTemplateSection() }
+            <Divider/>
+            { renderDrawerAuthenticationSection() }
+          </FormControl>
+        </GenericLoaderWrapper>
       </Stack>
     </Drawer>
   );

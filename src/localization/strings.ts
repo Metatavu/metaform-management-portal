@@ -47,6 +47,11 @@ export interface Localized extends LocalizedStringsMethods {
       createForm: string;
       deleteVersion: string;
       createFormDuplicateNameError: string;
+      convertSosmetaError: string;
+    },
+    draftEditorScreen: {
+      findDraft: string;
+      saveDraft: string;
     },
     formScreen: {
       saveReply: string;
@@ -67,8 +72,14 @@ export interface Localized extends LocalizedStringsMethods {
       fetchReplies: string;
       fetchFields: string;
       deleteReply: string;
-      formIdNotFound: string;
-    }
+      formSlugNotFound: string;
+    },
+    adminReplyScreen: {
+      saveReply: string;
+      exportPdf: string;
+      replyIdNotFound: string;
+      fetchReply: string;
+    },
     usersScreen: {
       loadMetaforms: string;
       loadMemberGroups: string;
@@ -170,6 +181,7 @@ export interface Localized extends LocalizedStringsMethods {
    */
   repliesScreen: {
     title: string;
+    open: string;
     description: string;
     createdColumnTitle: string;
     modifiedColumnTitle: string;
@@ -185,6 +197,14 @@ export interface Localized extends LocalizedStringsMethods {
   }
 
   /**
+   * Translations related to admin single reply screen
+   */
+  replyScreen: {
+    exportPdf: string;
+    selectStatus: string;
+  }
+
+  /**
    * Translations related to metaform editor screen
    */
   draftEditorScreen: {
@@ -196,6 +216,11 @@ export interface Localized extends LocalizedStringsMethods {
       form: {
         tabTitle: string;
         formTitle: string;
+        versionInfo: string;
+        formVersion: string;
+        formStyling: string;
+        backgroundImage: string;
+        backgroundColor: string;
       };
       fields: {
         tabTitle: string;
