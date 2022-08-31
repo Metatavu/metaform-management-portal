@@ -34,7 +34,12 @@
       "listForms": "Lomakkeiden haku epäonnistui",
       "createForm": "Lomakkeen luominen epäonnistui",
       "deleteVersion": "Lomakeversion poistaminen epäonnistui",
-      "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!"
+      "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
+      "convertSosmetaError": "Sosmetan muuntaminen epäonnistui"
+    },
+    "draftEditorScreen": {
+      "findDraft": "Lomakeversion haku epäoonistui",
+      "saveDraft": "Lomakeversion tallentaminen epäonnistui"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -174,7 +179,12 @@
       "emptySection": "Tyhjä osio",
       "form": {
         "tabTitle": "Lomake",
-        "formTitle": "Lomakkeen otsikko"
+        "formTitle": "Lomakkeen otsikko",
+        "versionInfo": "Version tiedot",
+        "formVersion": "Versio",
+        "formStyling": "Lomakkeen ulkoasu",
+        "backgroundImage": "Taustakuva",
+        "backgroundColor": "Taustaväri"
       },
       "fields": {
         "tabTitle": "Kentät",
@@ -296,7 +306,7 @@
       "formName": "Nimi",
       "formUrl": "Url-osoite",
       "formTemplate": "Lomakkeen pohja",
-      "formTemplateCustom": "Mukautettu pohja",
+      "formTemplateCustom": "Tyhjä pohja",
       "formTemplateCustomHelper": "Luo uusi lomake tyhjällä pohjalla. Suositeltavaa vain, jos Sosmetasta ei löydy sopivaa pohjaa lomakkeelle.",
       "formTemplateSosmeta": "Sosmetan pohja",
       "formTemplateSosmetaHelper": "Luo uusi lomake Sosmetan rakenteiden mukaisesti. Sosmeta on Terveyden ja Hyvinvoinnin laitoksen ylläpitä palvelu. Rakennepohjat löytyvät osoitteesta: ",

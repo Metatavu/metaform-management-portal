@@ -65,14 +65,20 @@ namespace MetaformUtils {
    * Create empty field for given field type
    *
    * @param fieldType metaform field type
+   * @param title title
+   * @param name name
+   * @param required required
+   * @param options options
    * @returns created field
    */
-  export const createEmptyField = (fieldType: MetaformFieldType): MetaformField => {
+  export const createField = (fieldType: MetaformFieldType, title?: string, name?: string, required?: boolean, options?: any[]): MetaformField => {
     if (fieldType === MetaformFieldType.Select || fieldType === MetaformFieldType.Radio) {
       return {
-        title: fieldType,
+        name: name ?? fieldType,
+        title: title ?? fieldType,
         type: fieldType,
-        options: [
+        required: required ?? false,
+        options: options ?? [
           {
             name: "option",
             text: "option"
@@ -82,8 +88,9 @@ namespace MetaformUtils {
     }
 
     return {
-      name: fieldType,
-      title: fieldType,
+      name: name ?? fieldType,
+      title: title ?? fieldType,
+      required: required ?? false,
       type: fieldType
     };
   };
@@ -91,12 +98,14 @@ namespace MetaformUtils {
   /**
    * Create an empty section
    *
+   * @param title title
+   * @param fields fields
    * @returns created section
    */
-  export const createEmptySection = (): MetaformSection => {
+  export const createSection = (title?: string, fields?: any[]): MetaformSection => {
     return {
-      title: "Section",
-      fields: []
+      title: title ?? "Section",
+      fields: fields ?? []
     };
   };
 

@@ -7,6 +7,7 @@ import { Stack } from "@mui/material";
 interface Props {
   value: number;
   index: number;
+  padding?: number;
 }
 
 /**
@@ -17,7 +18,8 @@ interface Props {
 const TabPanel: React.FC<Props> = ({
   value,
   index,
-  children
+  children,
+  padding
 }) => {
   if (value !== index) return null;
 
@@ -35,10 +37,10 @@ const TabPanel: React.FC<Props> = ({
         flexWrap: "wrap",
         flexDirection: "row"
       }}
-      pl={ 2 }
-      pr={ 2 }
-      pt={ 2 }
-      pb={ 7 }
+      pl={ padding ?? 2 }
+      pr={ padding ?? 2 }
+      pt={ padding ?? 2 }
+      pb={ padding ?? 7 }
     >
       { children }
     </Stack>

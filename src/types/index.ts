@@ -108,6 +108,20 @@ export enum ReplyStatus {
   PROCESSING = "processing",
   DONE = "done"
 }
+
+/**
+ * Enum for different types of "sections" and "fields" contained in Sosmeta Schemas
+ */
+export enum SosmetaType {
+  ARRAY = "array",
+  BOOLEAN = "boolean",
+  INTEGER = "integer",
+  NULL = "null",
+  NUMBER = "number",
+  OBJECT = "object",
+  STRING = "string"
+}
+
 declare module "@mui/material/styles" {
   interface CustomTheme {
     logo: {
