@@ -38,12 +38,3 @@ export const FormReplyAction = styled(Box, {
   padding: theme.spacing(4),
   justifyContent: "space-between"
 }));
-
-/**
- * Styled metaform form reply Footer component
- */
-export const FormReplyFooter = styled(Box, {
-  label: "form-reply-action"
-})(({ theme }) => ({
-  height: theme.spacing(4)
-}));
