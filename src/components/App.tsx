@@ -12,8 +12,10 @@ import PublicRoutes from "./screens/public/public-routes";
 import AuthenticationProvider from "./containers/access-token-refresh";
 import moment from "moment";
 import "moment/locale/fi";
+import strings from "localization/strings";
 
 moment.locale("fi");
+strings.setLanguage("fi");
 
 /**
  * Application component
