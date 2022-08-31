@@ -70,8 +70,8 @@ const EditorScreenDrawer: FC<Props> = ({
 
       setFormSettings({
         ...formSettings,
-        formName: convertedForm!.title!,
-        formSections: convertedForm!.sections!
+        formName: convertedForm.title!,
+        formSections: convertedForm.sections!
       });
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.convertSosmetaError, e);

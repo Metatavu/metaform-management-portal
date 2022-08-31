@@ -246,7 +246,7 @@ namespace SosmetaUtils {
       metaform.sections = convertSections(sosmetaForm);
       return validateConvertedField();
     } catch (e) {
-      // TODO: Error handling/messages
+      throw new Error(`Error happened while converting Sosmeta Schema: ${e}`);
     }
   };
 }
