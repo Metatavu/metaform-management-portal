@@ -24,7 +24,6 @@ interface Props {
   editorRef: React.RefObject<HTMLDivElement>
   pendingForm: Metaform;
   setPendingForm: (metaform: Metaform) => void;
-  
 }
 
 /**

@@ -5,6 +5,7 @@ import produce from "immer";
 import strings from "localization/strings";
 import React from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
+
 /**
  * Component properties
  */
@@ -14,6 +15,7 @@ interface Props {
   pendingForm: Metaform;
   setPendingForm: (metaform: Metaform) => void;
 }
+
 /**
  * Draft editor right drawer component
  */
@@ -36,14 +38,17 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
       return;
     }
     const field = 2;
+    
     if (field === undefined) {
       return;
     }
+    
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, newMetaformField);
     });
     setPendingForm(updatedForm);
   };
+
   /**
    * Updates metaform section
    *
@@ -53,17 +58,23 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
     if (sectionIndex === undefined) {
       return;
     }
+
     const section = pendingForm.sections?.[sectionIndex];
     if (!section) {
       return;
     }
+
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.splice(sectionIndex, 1, newMetaformSection);
     });
+
     setPendingForm(updatedForm);
   };
+
   /**
   * Renders fields category title
+  * 
+  * @param title Category title
   */
   const renderFieldsCategorytitle = (title: string) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
@@ -74,90 +85,16 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
         <Typography variant="subtitle1" style={{ width: "100%" }}>
           {title}
         </Typography>
+
       );
     }
   };
 
   /**
-   * TSDOC
+   * Render feature components
+   * 
    */
-  const fieldConditionComponent = () => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
-      return;
-    }
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      return (
-        <>
-          { renderFieldsCategorytitle(strings.draftEditorScreen.editor.features.visiblityCondition) }
-          <FormControl fullWidth disabled={ !disabledValue }>
-            <InputLabel id="visiblityConditionLabel3">{ strings.draftEditorScreen.editor.visibility.conditionLabelTitle }</InputLabel>
-            <Select
-              fullWidth
-              labelId="visiblityConditionLabel3"
-              label={ strings.draftEditorScreen.editor.visibility.conditionLabelTitle }
-              value={ requiredField ?? "" }
-              onChange={ event => setRequiredField(event.target.value)}
-            >
-              { pendingForm!.sections!.map(section => section.fields!.map(x => {
-                return (
-                  <MenuItem value={x.name} key={`section-${x}`}>
-                    {x.title}
-                  </MenuItem>
-                );
-              }))
-              }
-            </Select>
-          </FormControl>
-        </>
-      );
-    }
-  };
-
-  /**
-   * TSDOC
-   */
-  const conditionValueField = () => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
-      return;
-    }
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
-      if (requiredField === undefined) {
-        return null;
-      }
-      return (
-        <FormControl fullWidth>
-          <InputLabel id="visiblityConditionLabel">{ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }</InputLabel>
-          <Select
-            fullWidth
-            labelId="visiblityConditionLabel"
-            label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
-            value={ requiredField }
-            onChange={ event => updateFormField({
-              ...field,
-              visibleIf: {
-                field: requiredField,
-                equals: event.target.value,
-                notEquals: "",
-                and: [],
-                or: []
-              }
-            }) }
-          >
-            <MenuItem value="kylla">{ strings.generic.yes }</MenuItem>
-            <MenuItem value="ei">{ strings.generic.no }</MenuItem>
-          </Select>
-        </FormControl>
-      );
-    }
-  };
-
-  /**
-   * Renders form components
-   * @param fieldIndex number
-   * @param sectionIndex number
-   */
-  const renderFormTab = () => {
+  const featureComponents = () => {
     if (sectionIndex === undefined && fieldIndex === undefined) {
       return (
         <Typography>{ strings.draftEditorScreen.editor.features.selectComponent }</Typography>
@@ -169,28 +106,29 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
         <TextField
           value={ section.title }
           label={ strings.draftEditorScreen.editor.features.sectionTitle }
-          onChange={ event => updateFormSection({ ...section, title: event.target.value })}
+          onChange={ event => updateFormSection({ ...section, title: event.target.value }) }
         />
       );
     }
-    
+
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
       if (field === undefined) {
         return null;
       } if (field !== undefined) {
-        const disabledV = field.type === "select" || field.type === "date-time" || field.type === "radio" || field.type === "checklist" || field.type === "date";
+        const disableForm = field.type === "select" || field.type === "date-time" || field.type === "radio" || field.type === "checklist" || field.type === "date";
 
         return (
           <>
             { renderFieldsCategorytitle(strings.draftEditorScreen.editor.features.fieldDatas) }
             <TextField
               label={ strings.draftEditorScreen.editor.features.fieldTitle }
-              value={ field.title ? field.title : "" }
+              value={ field.title ? field.title : " " }
               onChange={ event => updateFormField({
                 ...field, title: event.target.value, name: `${sectionIndex}.${fieldIndex}`
               }) }
             />
+        
             <Divider/>
             { renderFieldsCategorytitle(strings.draftEditorScreen.editor.features.required) }
             <FormControlLabel
@@ -206,7 +144,8 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
             <Typography variant="subtitle1" style={{ width: "100%" }}>
               { strings.draftEditorScreen.editor.features.defineUserGroup }
             </Typography>
-            <FormControl disabled={ !disabledV }>
+
+            <FormControl disabled={ !disableForm }>
               <FormControlLabel
                 label={ strings.generic.yes }
                 control={
@@ -227,34 +166,109 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   };
 
   /**
-   * TSDOC
+   * Render visiblity condition selection menu
+   *
    */
-  const setSwitchValue = (value: any) => {
+  const FieldConditionComponent = () => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
+    if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      return (
+        <>
+          { renderFieldsCategorytitle(strings.draftEditorScreen.editor.features.visiblityCondition) }
+          <FormControl fullWidth disabled={ !disabledValue }>
+            <InputLabel id="visiblityConditionLabel2">{ strings.draftEditorScreen.editor.visibility.conditionLabelTitle }</InputLabel>
+            <Select
+              fullWidth
+              labelId="visiblityConditionLabel2"
+              label={ strings.draftEditorScreen.editor.visibility.conditionLabelTitle }
+              value={ requiredField }
+              onChange={ event => setRequiredField(event.target.value) }
+            >
+              { pendingForm!.sections!.map(section => section.fields!.map(x => {
+                return (
+                  <MenuItem value={x.name} key={`section-${x}`}>
+                    {x.title}
+                  </MenuItem>
+                );
+              }))
+              }
+            </Select>
+          </FormControl>
+        </>
+      );
+    }
+  };
 
+  /**
+   * Render visiblity condition boolean menu
+   * 
+   */
+  const conditionValueField = () => {
+    if (sectionIndex === undefined || fieldIndex === undefined) {
+      return;
+    }
+    if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
+      if (requiredField === undefined) {
+        return null;
+      }
+      if (requiredField !== undefined) {
+        return (
+          <FormControl fullWidth id="kissa">
+            <InputLabel id="visiblityConditionLabel">{ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }</InputLabel>
+            <Select
+              fullWidth
+              labelId="visiblityConditionLabel"
+              label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
+              value="kissa"
+              onChange={ event => updateFormField({
+                ...field,
+                visibleIf: {
+                  field: requiredField,
+                  equals: event.target.value,
+                  notEquals: "",
+                  and: [],
+                  or: []
+                }
+              }) }
+            >
+              <MenuItem value="kylla">{ strings.generic.yes }</MenuItem>
+              <MenuItem value="ei">{ strings.generic.no }</MenuItem>
+            </Select>
+          </FormControl>
+        );
+      }
+    }
+  };
+  /**
+  * Render components depending what is switch value
+  * @param value Switch value true false
+  * 
+  */
+  const setSwitchValue = (value: boolean) => {
+    if (sectionIndex === undefined || fieldIndex === undefined) {
+      return;
+    }
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
       setdisabledValue(value);
-
       if (disabledValue === true) {
         setRequiredField(undefined);
-        updateFormField({ ...field, visibleIf: undefined });
-      }
-
-      fieldConditionComponent();
+        updateFormField({ ...field, visibleIf: undefined }); }
+      FieldConditionComponent();
       conditionValueField();
     }
-
     if (disabledValue === false) {
-      fieldConditionComponent();
+      FieldConditionComponent();
       conditionValueField();
     }
   };
 
   /**
-   * TSDOC
+   * Render Visiblity switch component
+   * 
    */
   const visiblitySwitch = () => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
@@ -268,7 +282,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
             control={
               <Switch
                 value
-                onChange={event => setSwitchValue(event.target.checked)}
+                onChange={event => setSwitchValue(event.target.checked) }
               />
             }
             label={ strings.draftEditorScreen.editor.visibility.conditionally }
@@ -283,7 +297,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
    * Component render
    */
   return (
-    <EditorDrawer style={ { height: "500px" } }>
+    <EditorDrawer style={{ height: "500px" }}>
       <Tabs
         onChange={ (_, value: number) => setTabIndex(value) }
         value={ tabIndex }
@@ -298,14 +312,17 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
         />
       </Tabs>
       <TabPanel value={ tabIndex } index={ 0 }>
-        { renderFormTab() }
+        { featureComponents() }
       </TabPanel>
+
       <TabPanel value={ tabIndex } index={ 1 }>
         { visiblitySwitch() }
-        { fieldConditionComponent() }
+        { FieldConditionComponent() }
         { conditionValueField() }
       </TabPanel>
+
     </EditorDrawer>
   );
 };
+
 export default MetaformEditorRightDrawer;
