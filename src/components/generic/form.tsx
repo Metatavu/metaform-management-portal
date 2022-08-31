@@ -56,7 +56,7 @@ const Form: React.FC<Props> = ({
       <Icon key={ key }>{ icon }</Icon>
     );
   };
-    
+
   /**
    * Event handler for date change
    */
@@ -120,7 +120,7 @@ const Form: React.FC<Props> = ({
 
   /**
    * Performs file upload request
-   * 
+   *
    * @param fieldName field name
    * @param file file to upload
    * @param path upload path
@@ -186,7 +186,7 @@ const Form: React.FC<Props> = ({
     }
     const files = (currentFiles as FileFieldValue).files.filter(f => f.id !== value.id);
     setFieldValue(fieldName, { files: files });
-    
+
     if (!value.persisted) {
       fetch(createDefaultFileUrl(value.id), { method: "DELETE" });
     }
@@ -209,7 +209,7 @@ const Form: React.FC<Props> = ({
 
   /**
    * Renders autocomplete component
-   * 
+   *
    * @param field field
    * @param readOnly form read only
    * @param value autocomplete form value
@@ -225,7 +225,7 @@ const Form: React.FC<Props> = ({
       />
     );
   };
-  
+
   return (
     <FormContainer>
       <MetaformComponent

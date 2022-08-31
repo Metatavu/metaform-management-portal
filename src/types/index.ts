@@ -66,6 +66,11 @@ export type ListItemData = {
 };
 
 /**
+ * Not selected for placeholder
+ */
+export const NOT_SELECTED = "NOT_SELECTED";
+
+/**
  * React dnd dragging mode
  */
 export enum DraggingMode {

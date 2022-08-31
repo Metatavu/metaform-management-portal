@@ -28,7 +28,7 @@ const GenericLoaderWrapper: FC<Props> = ({
       </Stack>
     );
   }
-  
+
   return children;
 };
 

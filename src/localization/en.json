@@ -13,7 +13,8 @@
     "close": "Close",
     "reload": "Reload",
     "show": "Show",
-    "addFilesText": "Drop files here or click here to add files."
+    "addFilesText": "Drop files here or click here to add files.",
+    "back": "Back"
   },
 
   "errorHandling": {

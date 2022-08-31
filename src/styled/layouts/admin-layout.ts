@@ -1,4 +1,4 @@
-import { Button, Paper, NativeSelect, FormControl } from "@mui/material";
+import { Button, Paper, FormControl } from "@mui/material";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 
@@ -14,34 +14,6 @@ export const ContentWrapper = styled(Box, {
   padding: theme.spacing(4),
   overflow: "hidden",
   background: "transparent"
-}));
-
-/**
- * Styled admin selector component
- */
-export const FilterSelector = styled(NativeSelect, {
-  label: "admin-layout--filter-selector"
-})(({ theme }) => ({
-  height: theme.spacing(5),
-  borderRadius: theme.spacing(1),
-  border: "0.06em solid #ccc",
-  padding: theme.spacing(2),
-  minWidth: 400,
-  flex: 1
-}));
-
-/**
- * Styled status selector component
- */
-export const StatusSelector = styled(NativeSelect, {
-  label: "admin-layout-status-selector"
-})(({ theme }) => ({
-  height: theme.spacing(5),
-  borderRadius: theme.spacing(1),
-  border: "0.06em solid #ccc",
-  padding: theme.spacing(2),
-  minWidth: 300,
-  flex: 1
 }));
 
 /**

@@ -1,8 +1,10 @@
 import React, { FC } from "react";
-import { FilterSelector, FormFilterWrapper } from "../../styled/layouts/admin-layout";
+import { FormFilterWrapper } from "../../styled/layouts/admin-layout";
 import strings from "localization/strings";
 import { Metaform, MetaformMemberGroup } from "generated/client";
 import GenericLoaderWrapper from "components/generic/generic-loader";
+import { MenuItem, TextField } from "@mui/material";
+import { NOT_SELECTED } from "types";
 
 /**
  * Component props
@@ -31,7 +33,7 @@ const UsersFilter: FC<Props> = ({
 }: Props) => {
   /**
    * Handle selected metaform change
-   * 
+   *
    * @param event event
    */
   const handleMetaformSelectorChange = (event: React.ChangeEvent<{ value: string }>) => {
@@ -51,52 +53,54 @@ const UsersFilter: FC<Props> = ({
   return (
     <FormFilterWrapper>
       <GenericLoaderWrapper loading={ loading }>
-        <FilterSelector
+        <TextField
+          select
+          fullWidth
           key="metaform-select-container"
-          value={ selectedMetaformId }
+          value={ selectedMetaformId || NOT_SELECTED }
           onChange={ handleMetaformSelectorChange }
-          disableUnderline
         >
-          <option value="" key="no-metaform-selected">{ strings.userManagementScreen.selector.form }</option>
+          <MenuItem
+            value={ NOT_SELECTED }
+            key="no-metaform-selected"
+          >
+            { strings.userManagementScreen.selector.form }
+          </MenuItem>
           {
-            metaforms.map(metaform => {
-              return (
-                <option
-                  key={ `${metaform.id}-metaform` }
-                  value={ metaform.id }
-                >
-                  { metaform.title }
-                </option>
-              );
-            })
+            metaforms.map(metaform =>
+              <MenuItem
+                key={ `${metaform.id}-metaform` }
+                value={ metaform.id }
+              >
+                { metaform.title }
+              </MenuItem>)
           }
-        </FilterSelector>
+        </TextField>
       </GenericLoaderWrapper>
       <GenericLoaderWrapper loading={ loading }>
-        <FilterSelector
-          value={ selectedMemberGroupId }
+        <TextField
+          select
+          fullWidth
+          value={ selectedMemberGroupId || NOT_SELECTED }
           onChange={ onMemberGroupSelectorChange }
-          disableUnderline
-          sx={{
-            opacity: selectedMetaformId ? 1 : 0.8,
-            borderStyle: selectedMetaformId ? "solid" : "dotted"
-          }}
           disabled={ !selectedMetaformId }
         >
-          <option value="">{ strings.userManagementScreen.selector.group }</option>
+          <MenuItem
+            value={ NOT_SELECTED }
+            key="no-member-group-selected"
+          >
+            { strings.userManagementScreen.selector.group }
+          </MenuItem>
           {
-            memberGroups.map(metaformMemberGroup => {
-              return (
-                <option
-                  key={ `${metaformMemberGroup.id}-metaform-member-group` }
-                  value={ metaformMemberGroup.id }
-                >
-                  { metaformMemberGroup.displayName }
-                </option>
-              );
-            })
+            memberGroups.map(metaformMemberGroup =>
+              <MenuItem
+                key={ `${metaformMemberGroup.id}-metaform-member-group` }
+                value={ metaformMemberGroup.id }
+              >
+                { metaformMemberGroup.displayName }
+              </MenuItem>)
           }
-        </FilterSelector>
+        </TextField>
       </GenericLoaderWrapper>
     </FormFilterWrapper>
   );
