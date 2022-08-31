@@ -264,7 +264,9 @@ const MetaformEditor: React.FC<Props> = ({
             selected={ selected }
             onDeleteClick={ onFieldDeleteClick(sectionIndex, fieldIndex) }
           >
-            <Typography color="gray" margin="5px">{ field.required === true ? `${field.title} *` : field.title }</Typography>
+            <Typography sx={{ color: "gray", margin: "5px" }}>
+              { field.required === true ? `${field.title} *` : field.title }
+            </Typography>
             <AddableFieldRenderer
               key="key"
               field={ field }
@@ -298,7 +300,6 @@ const MetaformEditor: React.FC<Props> = ({
         >
           <Typography variant="h1" sx={{ mb: 2 }}>
             { section.title }
-
           </Typography>
           <DroppableWrapper
             droppableId={ sectionIndex.toString() }

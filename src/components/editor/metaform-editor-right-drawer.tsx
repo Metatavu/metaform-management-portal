@@ -216,13 +216,13 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
       }
       if (requiredField !== undefined) {
         return (
-          <FormControl fullWidth id="kissa">
+          <FormControl fullWidth>
             <InputLabel id="visiblityConditionLabel">{ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }</InputLabel>
             <Select
               fullWidth
               labelId="visiblityConditionLabel"
               label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
-              value="kissa"
+              value=""
               onChange={ event => updateFormField({
                 ...field,
                 visibleIf: {
@@ -242,6 +242,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
       }
     }
   };
+
   /**
   * Render components depending what is switch value
   * @param value Switch value true false
@@ -256,7 +257,8 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
       setdisabledValue(value);
       if (disabledValue === true) {
         setRequiredField(undefined);
-        updateFormField({ ...field, visibleIf: undefined }); }
+        updateFormField({ ...field, visibleIf: undefined });
+      }
       FieldConditionComponent();
       conditionValueField();
     }
