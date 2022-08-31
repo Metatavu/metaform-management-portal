@@ -13,9 +13,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import ReplySaved from "./form/ReplySaved";
 import { Button, Divider, MenuItem, Stack, TextField } from "@mui/material";
-import FormContainer from "styled/generic/form";
 import LocalizationUtils from "utils/localization-utils";
-import { FormReplyAction, FormReplyContent, ReplyViewContainer } from "styled/form/form-reply";
+import { FormReplyAction, FormReplyContent, ReplyFormContainer, ReplyViewContainer } from "styled/form/form-reply";
 import { ArrowBack } from "@mui/icons-material";
 
 /**
@@ -254,13 +253,13 @@ const ReplyScreen: FC = () => {
       <Divider/>
       <FormReplyContent>
         <GenericLoaderWrapper loading={ loading }>
-          <FormContainer>
+          <ReplyFormContainer>
             { renderForm() }
             <ReplySaved
               replySavedVisible={ replySavedVisible }
               setReplySavedVisible={ setReplySavedVisible }
             />
-          </FormContainer>
+          </ReplyFormContainer>
         </GenericLoaderWrapper>
       </FormReplyContent>
     </ReplyViewContainer>

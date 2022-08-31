@@ -48,7 +48,7 @@ const Form: React.FC<Props> = ({
 
   /**
    * Method for rendering form icons
-   * @param IconName Icon
+   * @param icon Icon
    * @param key IconKey
    */
   const renderIcon = (icon: IconName, key: string) => {

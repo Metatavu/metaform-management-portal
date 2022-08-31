@@ -66,7 +66,7 @@ const MetaformComponent: React.FC<Props> = ({
     if (!form.title) {
       return null;
     }
-    
+
     return (
       <h1>
         { form.title }
@@ -76,7 +76,7 @@ const MetaformComponent: React.FC<Props> = ({
 
   /**
    * Validates field value
-   * 
+   *
    * @param field field
    * @param value value
    * @returns validation result
@@ -85,11 +85,11 @@ const MetaformComponent: React.FC<Props> = ({
     if (field.required && !value) {
       return "missing-required";
     }
-    
+
     if (field.type === MetaformFieldType.Email && value && !EmailValidator.validate(value as string)) {
       return "invalid-email";
     }
-    
+
     return null;
   };
 
@@ -98,7 +98,7 @@ const MetaformComponent: React.FC<Props> = ({
    */
   const validateFields = () => {
     const localValidationErros: ValidationErrors = {};
-    
+
     (form.sections || [])
       .filter(section => {
         return VisibileIfEvaluator.isVisible(section.visibleIf, getFieldValue);
@@ -134,7 +134,7 @@ const MetaformComponent: React.FC<Props> = ({
 
   /**
    * Sets field value
-   * 
+   *
    * @param fieldName field name
    * @param fieldValue field value
    */
@@ -147,9 +147,7 @@ const MetaformComponent: React.FC<Props> = ({
 
   return (
     <div className="metaform">
-      {
-        renderTitle()
-      }
+      { renderTitle() }
       {
         sections.map((section, i) => {
           const sectionId = `section-${i}`;
