@@ -13,7 +13,8 @@
     "close": "Close",
     "reload": "Reload",
     "show": "Show",
-    "addFilesText": "Drop files here or click here to add files."
+    "addFilesText": "Drop files here or click here to add files.",
+    "back": "Back"
   },
 
   "errorHandling": {
@@ -97,7 +98,7 @@
     "forms": "Forms",
     "data": "Data",
     "list": "List",
-    "answer": "Answer",
+    "answers": "Answers",
     "history": "History"
   },
 

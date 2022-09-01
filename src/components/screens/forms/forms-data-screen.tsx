@@ -12,7 +12,7 @@ const FormsDataScreen: React.FC = () => (
     <NavigationTabContainer>
       <NavigationTab
         text={ strings.navigationHeader.formsScreens.formScreen }
-        to="../"
+        to="./.."
       />
       <NavigationTab
         text={ strings.navigationHeader.formsScreens.formDataScreen }

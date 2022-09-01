@@ -44,6 +44,10 @@ const App: React.FC = () => (
                 element={ <AdminLayout><EditorRoutes/></AdminLayout> }
               />
               <Route
+                path="/admin/*"
+                element={ <Navigate to="/admin/forms"/> }
+              />
+              <Route
                 path="/*"
                 element={ <PublicLayout><PublicRoutes/></PublicLayout> }
               />

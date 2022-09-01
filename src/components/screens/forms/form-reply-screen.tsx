@@ -8,13 +8,15 @@ import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
-import { Dictionary, ReplyStatus } from "types";
-import { useParams } from "react-router-dom";
+import { Dictionary, NOT_SELECTED, ReplyStatus } from "types";
+import { useNavigate, useParams } from "react-router-dom";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import ReplySaved from "./form/ReplySaved";
-import { Button, Stack } from "@mui/material";
-import FormContainer from "styled/generic/form";
-import { StatusSelector } from "styled/layouts/admin-layout";
+import { Divider, MenuItem, Stack, TextField } from "@mui/material";
+import LocalizationUtils from "utils/localization-utils";
+import { FormReplyAction, FormReplyContent, ReplyViewContainer } from "styled/form/form-reply";
+import { ArrowBack, SaveAlt } from "@mui/icons-material";
+import { RoundActionButton } from "styled/generic/form";
 
 /**
  * Component for single reply screen
@@ -30,6 +32,7 @@ const ReplyScreen: FC = () => {
 
   const params = useParams();
   const { formSlug, replyId } = params;
+  const navigate = useNavigate();
 
   const apiClient = useApiClient(Api.getApiClient);
   const keycloak = useAppSelector(selectKeycloak);
@@ -158,8 +161,8 @@ const ReplyScreen: FC = () => {
         replyId: replyId!,
         format: "PDF"
       });
-  
-      MetaformUtils.downloadBlob(pdf, "reply.pdf");
+
+      MetaformUtils.downloadBlob(pdf, `${formSlug}-${replyId}.pdf`);
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminReplyScreen.exportPdf, e);
     }
@@ -177,6 +180,7 @@ const ReplyScreen: FC = () => {
 
     return (
       <Form
+        titleColor="#000"
         contexts={ ["MANAGEMENT"] }
         metaform={ metaform }
         getFieldValue={ getFieldValue }
@@ -188,7 +192,7 @@ const ReplyScreen: FC = () => {
 
   /**
    * Handle selected reply status change
-   * 
+   *
    * @param event event
    */
   const handleReplyStatusChange = (event: React.ChangeEvent<{ value: string }>) => {
@@ -201,72 +205,70 @@ const ReplyScreen: FC = () => {
     setReply(updatedReply);
   };
 
-  const statusOptions = Object.keys(ReplyStatus).map(status => { return status; });
-  // TODO: add localization for status options
   /**
    * Renter status switch
    */
-  const renderStatusSwitch = () => {
-    return (
-      <StatusSelector
-        key="metaform-select-container"
-        value={ reply?.data?.status }
-        onChange={ handleReplyStatusChange }
-        disableUnderline
-      >
-        <option value="" key="no-status-selected">{ strings.replyScreen.selectStatus }</option>
-        {
-          statusOptions.map(status => {
-            return (
-              <option
-                key={ `metaform-reply-status-${status}` }
-                value={ status }
-              >
-                { status }
-              </option>
-            );
-          })
-        }
-      </StatusSelector>
-    );
-  };
+  const renderStatusSelect = () => (
+    <TextField
+      select
+      sx={{ width: 300 }}
+      key="metaform-select-container"
+      value={ reply?.data?.status || NOT_SELECTED }
+      onChange={ handleReplyStatusChange }
+    >
+      <MenuItem value={ NOT_SELECTED } key="no-status-selected">{ strings.replyScreen.selectStatus }</MenuItem>
+      {
+        Object.values(ReplyStatus).map(status =>
+          <MenuItem
+            key={ `metaform-reply-status-${status}` }
+            value={ status }
+          >
+            { LocalizationUtils.getLocalizedStatusOfReply(status) }
+          </MenuItem>)
+      }
+    </TextField>
+  );
 
   return (
-    <GenericLoaderWrapper loading={ loading }>
-      <FormContainer>
-        <Stack>
-          <Stack direction="row" position="sticky">
-            <Stack sx={{
-              width: 100,
-              margin: 1
-            }}
-            >
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={ onExportPdfClick }
-              >
-                { strings.replyScreen.exportPdf }
-              </Button>
-            </Stack>
-            <Stack sx={{
-              width: 50,
-              margin: 1
-            }}
-            >
-              { renderStatusSwitch() }
-            </Stack>
-          </Stack>
-          <Stack>
-            { renderForm() }
-          </Stack>
+    <ReplyViewContainer>
+      <FormReplyAction>
+        <RoundActionButton
+          startIcon={ <ArrowBack/> }
+          color="error"
+          variant="outlined"
+          onClick={ () => navigate("./..") }
+        >
+          { strings.generic.back }
+        </RoundActionButton>
+        <Stack
+          alignItems="center"
+          direction="row"
+          spacing={ 4 }
+        >
+          { renderStatusSelect() }
+          <RoundActionButton
+            startIcon={ <SaveAlt/> }
+            color="primary"
+            variant="outlined"
+            onClick={ onExportPdfClick }
+          >
+            { strings.replyScreen.exportPdf }
+          </RoundActionButton>
         </Stack>
-        <ReplySaved
-          replySavedVisible={ replySavedVisible }
-          setReplySavedVisible={ setReplySavedVisible }
-        />
-      </FormContainer>
-    </GenericLoaderWrapper>
+      </FormReplyAction>
+      <Divider/>
+      <FormReplyContent>
+        <GenericLoaderWrapper loading={ loading }>
+          <>
+            { renderForm() }
+            <ReplySaved
+              replySavedVisible={ replySavedVisible }
+              setReplySavedVisible={ setReplySavedVisible }
+            />
+          </>
+        </GenericLoaderWrapper>
+      </FormReplyContent>
+    </ReplyViewContainer>
   );
 };
 

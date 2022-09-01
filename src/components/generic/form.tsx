@@ -2,7 +2,7 @@ import { LinearProgress, TextField, Icon } from "@mui/material";
 import { Metaform, MetaformField } from "generated/client";
 import { FileFieldValueItem, ValidationErrors, FieldValue, FileFieldValue, IconName } from "../../metaform-react/types";
 import React from "react";
-import FormContainer from "styled/generic/form";
+import { FormContainer } from "styled/generic/form";
 import strings from "localization/strings";
 import DatePicker from "@mui/lab/DatePicker";
 import { DateTimePicker, LocalizationProvider } from "@mui/lab";
@@ -22,6 +22,7 @@ interface Props {
   contexts: string[];
   metaform: Metaform;
   ownerKey?: string;
+  titleColor?: string;
   getFieldValue: (fieldName: string) => FieldValue;
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   onSubmit: (source: Metaform) => void;
@@ -36,11 +37,12 @@ const Form: React.FC<Props> = ({
   contexts,
   metaform,
   ownerKey,
+  saving,
+  titleColor,
   getFieldValue,
   setFieldValue,
   onValidationErrorsChange,
-  onSubmit,
-  saving
+  onSubmit
 }) => {
   const [ uploadingFields, setUploadingFields ] = React.useState<string[]>([]);
 
@@ -48,7 +50,7 @@ const Form: React.FC<Props> = ({
 
   /**
    * Method for rendering form icons
-   * @param IconName Icon
+   * @param icon Icon
    * @param key IconKey
    */
   const renderIcon = (icon: IconName, key: string) => {
@@ -56,7 +58,7 @@ const Form: React.FC<Props> = ({
       <Icon key={ key }>{ icon }</Icon>
     );
   };
-    
+
   /**
    * Event handler for date change
    */
@@ -120,7 +122,7 @@ const Form: React.FC<Props> = ({
 
   /**
    * Performs file upload request
-   * 
+   *
    * @param fieldName field name
    * @param file file to upload
    * @param path upload path
@@ -186,7 +188,7 @@ const Form: React.FC<Props> = ({
     }
     const files = (currentFiles as FileFieldValue).files.filter(f => f.id !== value.id);
     setFieldValue(fieldName, { files: files });
-    
+
     if (!value.persisted) {
       fetch(createDefaultFileUrl(value.id), { method: "DELETE" });
     }
@@ -209,7 +211,7 @@ const Form: React.FC<Props> = ({
 
   /**
    * Renders autocomplete component
-   * 
+   *
    * @param field field
    * @param readOnly form read only
    * @param value autocomplete form value
@@ -225,13 +227,14 @@ const Form: React.FC<Props> = ({
       />
     );
   };
-  
+
   return (
     <FormContainer>
       <MetaformComponent
         form={ metaform }
         contexts={ contexts }
         formReadOnly={ false }
+        titleColor={ titleColor }
         getFieldValue={ getFieldValue }
         setFieldValue={ setFieldValue }
         datePicker={ renderDatePicker }
