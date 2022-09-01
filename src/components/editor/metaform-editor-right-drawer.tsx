@@ -26,7 +26,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   setPendingForm
 }) => {
   const [ tabIndex, setTabIndex ] = React.useState(0);
-  const [ disabledValue, setdisabledValue ] = React.useState<any>();
+  const [ disabledValue, setdisabledValue ] = React.useState<boolean>(false);
   const [ requiredField, setRequiredField ] = React.useState<any>("");
   const [ requiredFieldBoolean, setRequiredFieldBoolean ] = React.useState<string>("");
 
@@ -211,10 +211,11 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
               value={ requiredField }
               onChange={ event => setRequiredField(event.target.value) }
             >
-              { pendingForm.sections!.map(section => section.fields!.map(x => {
+              { pendingForm.sections!.map(section => section.fields!.map((field, index) => {
+                const key2 = `${field.title}-${index}`;
                 return (
-                  <MenuItem value={x.name} key={`section-${x}`}>
-                    {x.title}
+                  <MenuItem value={ field.name } key={ key2 }>
+                    { field.title }
                   </MenuItem>
                 );
               }))
@@ -319,7 +320,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
       );
     }
   };
-  
+
   /**
    * Component render
    */
