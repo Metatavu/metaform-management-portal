@@ -307,7 +307,7 @@ const FormRepliesScreen: React.FC = () => {
         />
         <NavigationTab
           text={ strings.navigationHeader.formsScreens.formDataScreen }
-          to="../history"
+          to="./../history"
           // TODO check this
         />
       </NavigationTabContainer>

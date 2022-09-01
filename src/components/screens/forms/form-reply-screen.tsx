@@ -14,7 +14,7 @@ import GenericLoaderWrapper from "components/generic/generic-loader";
 import ReplySaved from "./form/ReplySaved";
 import { Button, Divider, MenuItem, Stack, TextField } from "@mui/material";
 import LocalizationUtils from "utils/localization-utils";
-import { FormReplyAction, FormReplyContent, ReplyFormContainer, ReplyViewContainer } from "styled/form/form-reply";
+import { FormReplyAction, FormReplyContent, ReplyViewContainer } from "styled/form/form-reply";
 import { ArrowBack } from "@mui/icons-material";
 
 /**
@@ -231,11 +231,12 @@ const ReplyScreen: FC = () => {
     <ReplyViewContainer>
       <FormReplyAction>
         {/* TODO fix back button */}
+        {/* Button styling */}
         <Button
           startIcon={ <ArrowBack/> }
           color="info"
           variant="outlined"
-          onClick={ () => navigate(".") }
+          onClick={ () => navigate("./..") }
         >
           { strings.generic.back }
         </Button>
@@ -253,13 +254,14 @@ const ReplyScreen: FC = () => {
       <Divider/>
       <FormReplyContent>
         <GenericLoaderWrapper loading={ loading }>
-          <ReplyFormContainer>
+          <>
             { renderForm() }
+            {/* TODO fix styling (title, replacing plain html to mui) */}
             <ReplySaved
               replySavedVisible={ replySavedVisible }
               setReplySavedVisible={ setReplySavedVisible }
             />
-          </ReplyFormContainer>
+          </>
         </GenericLoaderWrapper>
       </FormReplyContent>
     </ReplyViewContainer>
