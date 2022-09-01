@@ -224,7 +224,11 @@
         "tabTitle": "näkyvyys",
         "conditionLabelTitle":"Ehtokentän nimi",
         "conditionally":"Ehdollisesti",
-        "conditionalFieldValue": "Ehtokentän arvo"
+        "conditionalFieldValue": "Ehtokentän arvo",
+        "conditionalFieldInfo": "Valitse se lomakkeen kenttä, joka määrittää näkyvyyden.",
+        "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
+        "fieldDefiningCondition": "Ehdon määrittävä kenttä"
+
       }
     }
   },

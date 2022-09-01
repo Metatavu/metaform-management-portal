@@ -226,7 +226,10 @@
         "tabTitle": "Visibility",
         "conditionLabelTitle":"Condition field name",
         "conditionally": "Conditionally",
-        "conditionalFieldValue": "Conditional field value"
+        "conditionalFieldValue": "Conditional field value",
+        "conditionalFieldInfo": "Select the form field that determines visibility.",
+        "conditionalFieldValueInfo":"Select or enter the field value that determines the visibility.",
+        "fieldDefiningCondition": "Field defining the condition"
       }
     }
   },
