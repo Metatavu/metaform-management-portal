@@ -150,7 +150,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
               label={ strings.generic.yes }
               control={
                 <Checkbox
-                  value={ field.required || false }
+                  checked={ field.required }
                   onChange={ event => updateFormField({ ...field, required: event.target.checked }) }
                 />
               }
@@ -165,7 +165,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
                 label={ strings.generic.yes }
                 control={
                   <Checkbox
-                    value={ field.required || false }
+                    checked={ field.required }
                     onChange={ event => updateFormField({ ...field, required: event.target.checked }) }
                   />
                 }
