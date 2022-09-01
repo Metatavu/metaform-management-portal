@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 /**
@@ -37,4 +37,18 @@ export const FormReplyAction = styled(Box, {
   alignItems: "center",
   padding: theme.spacing(4),
   justifyContent: "space-between"
+}));
+
+/**
+ * Styled new member group button component
+ */
+export const FormReplyActionButton = styled(Button, {
+  label: "form-reply-action-button"
+})(({ theme }) => ({
+  borderRadius: "1em",
+  fontWeight: "bold",
+  height: "fit-content",
+  padding: theme.spacing(1.5),
+  paddingInline: theme.spacing(2),
+  alignSelf: "center"
 }));

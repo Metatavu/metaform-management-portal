@@ -12,10 +12,10 @@ import { Dictionary, NOT_SELECTED, ReplyStatus } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import ReplySaved from "./form/ReplySaved";
-import { Button, Divider, MenuItem, Stack, TextField } from "@mui/material";
+import { Divider, MenuItem, Stack, TextField } from "@mui/material";
 import LocalizationUtils from "utils/localization-utils";
-import { FormReplyAction, FormReplyContent, ReplyViewContainer } from "styled/form/form-reply";
-import { ArrowBack } from "@mui/icons-material";
+import { FormReplyAction, FormReplyActionButton, FormReplyContent, ReplyViewContainer } from "styled/form/form-reply";
+import { ArrowBack, SaveAlt } from "@mui/icons-material";
 
 /**
  * Component for single reply screen
@@ -209,7 +209,7 @@ const ReplyScreen: FC = () => {
   const renderStatusSelect = () => (
     <TextField
       select
-      sx={{ width: 200 }}
+      sx={{ width: 300 }}
       key="metaform-select-container"
       value={ reply?.data?.status || NOT_SELECTED }
       onChange={ handleReplyStatusChange }
@@ -230,25 +230,29 @@ const ReplyScreen: FC = () => {
   return (
     <ReplyViewContainer>
       <FormReplyAction>
-        {/* TODO fix back button */}
         {/* Button styling */}
-        <Button
+        <FormReplyActionButton
           startIcon={ <ArrowBack/> }
-          color="info"
+          color="error"
           variant="outlined"
           onClick={ () => navigate("./..") }
         >
           { strings.generic.back }
-        </Button>
-        <Stack direction="row" spacing={ 2 }>
-          <Button
+        </FormReplyActionButton>
+        <Stack
+          alignItems="center"
+          direction="row"
+          spacing={ 4 }
+        >
+          { renderStatusSelect() }
+          <FormReplyActionButton
+            startIcon={ <SaveAlt/> }
             color="primary"
             variant="outlined"
             onClick={ onExportPdfClick }
           >
             { strings.replyScreen.exportPdf }
-          </Button>
-          { renderStatusSelect() }
+          </FormReplyActionButton>
         </Stack>
       </FormReplyAction>
       <Divider/>

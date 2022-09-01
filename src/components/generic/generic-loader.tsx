@@ -23,7 +23,14 @@ const GenericLoaderWrapper: FC<Props> = ({
    */
   if (loading) {
     return (
-      <Stack alignItems="center" style={{ flex: 1 }}>
+      <Stack
+        justifyContent="center"
+        alignItems="center"
+        style={{
+          flex: 1,
+          height: "100%"
+        }}
+      >
         <CircularProgress/>
       </Stack>
     );
