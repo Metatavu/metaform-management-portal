@@ -14,8 +14,9 @@ import GenericLoaderWrapper from "components/generic/generic-loader";
 import ReplySaved from "./form/ReplySaved";
 import { Divider, MenuItem, Stack, TextField } from "@mui/material";
 import LocalizationUtils from "utils/localization-utils";
-import { FormReplyAction, FormReplyActionButton, FormReplyContent, ReplyViewContainer } from "styled/form/form-reply";
+import { FormReplyAction, FormReplyContent, ReplyViewContainer } from "styled/form/form-reply";
 import { ArrowBack, SaveAlt } from "@mui/icons-material";
+import { RoundActionButton } from "styled/generic/form";
 
 /**
  * Component for single reply screen
@@ -230,29 +231,28 @@ const ReplyScreen: FC = () => {
   return (
     <ReplyViewContainer>
       <FormReplyAction>
-        {/* Button styling */}
-        <FormReplyActionButton
+        <RoundActionButton
           startIcon={ <ArrowBack/> }
           color="error"
           variant="outlined"
           onClick={ () => navigate("./..") }
         >
           { strings.generic.back }
-        </FormReplyActionButton>
+        </RoundActionButton>
         <Stack
           alignItems="center"
           direction="row"
           spacing={ 4 }
         >
           { renderStatusSelect() }
-          <FormReplyActionButton
+          <RoundActionButton
             startIcon={ <SaveAlt/> }
             color="primary"
             variant="outlined"
             onClick={ onExportPdfClick }
           >
             { strings.replyScreen.exportPdf }
-          </FormReplyActionButton>
+          </RoundActionButton>
         </Stack>
       </FormReplyAction>
       <Divider/>

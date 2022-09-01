@@ -55,33 +55,3 @@ export const IconActionButton = styled(Button, {
   borderRadius: 25,
   padding: theme.spacing(1.5)
 }));
-
-/**
- * Styled new user button component
- */
-export const NewUserButton = styled(Button, {
-  label: "new-button"
-})(({ theme }) => ({
-  borderRadius: "1em",
-  fontWeight: "bold",
-  height: "fit-content",
-  padding: theme.spacing(1.5),
-  paddingInline: theme.spacing(2),
-  alignSelf: "center",
-  marginRight: theme.spacing(2)
-}));
-
-/**
- * Styled new member group button component
- */
-export const NewMemberGroupButton = styled(Button, {
-  label: "new-button"
-})(({ theme }) => ({
-  borderRadius: "1em",
-  fontWeight: "bold",
-  height: "fit-content",
-  padding: theme.spacing(1.5),
-  paddingInline: theme.spacing(2),
-  alignSelf: "center",
-  marginRight: theme.spacing(2)
-}));

@@ -2,7 +2,7 @@ import { LinearProgress, TextField, Icon } from "@mui/material";
 import { Metaform, MetaformField } from "generated/client";
 import { FileFieldValueItem, ValidationErrors, FieldValue, FileFieldValue, IconName } from "../../metaform-react/types";
 import React from "react";
-import FormContainer from "styled/generic/form";
+import { FormContainer } from "styled/generic/form";
 import strings from "localization/strings";
 import DatePicker from "@mui/lab/DatePicker";
 import { DateTimePicker, LocalizationProvider } from "@mui/lab";

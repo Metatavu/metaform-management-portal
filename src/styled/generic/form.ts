@@ -1,13 +1,12 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import theme from "theme";
 
 /**
  * Styled metaform container
  */
 export const FormContainer = styled(Box, {
   label: "metaform-container"
-})(() => ({
+})(({ theme }) => ({
   display: "flex",
   overflow: "auto",
   justifyContent: "center",
@@ -62,4 +61,16 @@ export const FormContainer = styled(Box, {
   }
 }));
 
-export default FormContainer;
+/**
+ * Styled round action button component
+ */
+export const RoundActionButton = styled(Button, {
+  label: "round-action-button"
+})(({ theme }) => ({
+  borderRadius: "1em",
+  fontWeight: "bold",
+  height: "fit-content",
+  padding: theme.spacing(1.5),
+  paddingInline: theme.spacing(2),
+  alignSelf: "center"
+}));
