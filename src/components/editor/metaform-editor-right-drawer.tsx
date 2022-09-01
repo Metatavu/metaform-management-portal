@@ -29,7 +29,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   const [ disabledValue, setdisabledValue ] = React.useState<boolean>(false);
   const [ requiredConditionField, setRequiredConditionField ] = React.useState<string>("");
   const [ requiredConditionFieldBoolean, setRequiredConditionFieldBoolean ] = React.useState<string>("");
-  const [ requiredConditionInfoField, setRequiredConditionInfoField ] = React.useState<string>("visible");
+  const [ requiredConditionInfoField, setRequiredConditionInfoField ] = React.useState<boolean>(true);
 
   /**
    * Updates metaform field
@@ -53,7 +53,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
    */
   const updateFormFieldVisiblityValues = (newMetaformField: MetaformField, eventValue: string) => {
     setRequiredConditionFieldBoolean(eventValue);
-    setRequiredConditionInfoField("hidden");
+    setRequiredConditionInfoField(false);
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -209,7 +209,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
               value={ requiredConditionField }
               onChange={ event => setRequiredConditionField(event.target.value) }
             >
-              <MenuItem sx={{ color: "gray" }}>Valitse kenttä</MenuItem>
+              <MenuItem sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.selectField }</MenuItem>
               { pendingForm.sections!.map(section => section.fields!.map((field, index) => {
                 const key2 = `${field.title}-${index}`;
                 return (
@@ -251,42 +251,41 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
     }
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
-      if (requiredConditionField === "") {
+      if (!requiredConditionField) {
         return null;
       }
-      if (requiredConditionField !== "") {
-        return (
-          <>
-            <FormControl fullWidth>
-              <InputLabel id="visiblityConditionLabel21">{ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }</InputLabel>
-              <Select
-                fullWidth
-                labelId="visiblityConditionLabel21"
-                label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
-                value={ requiredConditionFieldBoolean }
-                onChange={ event => updateFormFieldVisiblityValues({
-                  ...field,
-                  visibleIf: {
-                    field: requiredConditionField,
-                    equals: event.target.value,
-                    notEquals: "",
-                    and: [],
-                    or: []
-                  }
-                }, event.target.value)
+      return (
+        <>
+          <FormControl fullWidth>
+            <InputLabel id="visiblityConditionLabel21">{ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }</InputLabel>
+            <Select
+              fullWidth
+              labelId="visiblityConditionLabel21"
+              label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
+              value={ requiredConditionFieldBoolean }
+              onChange={ event => updateFormFieldVisiblityValues({
+                ...field,
+                visibleIf: {
+                  field: requiredConditionField,
+                  equals: event.target.value,
+                  notEquals: "",
+                  and: [],
+                  or: []
                 }
-              >
-                <MenuItem sx={{ color: "gray" }}>Valitse kenttä</MenuItem>
-                <MenuItem value="kylla">{ strings.generic.yes }</MenuItem>
-                <MenuItem value="ei">{ strings.generic.no }</MenuItem>
-              </Select>
-            </FormControl>
-            <Typography sx={{ color: "gray", visibility: requiredConditionInfoField }}>
-              { strings.draftEditorScreen.editor.visibility.conditionalFieldValueInfo }
-            </Typography>
-          </>
-        );
-      }
+              }, event.target.value)
+              }
+            >
+              <MenuItem sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.selectField }</MenuItem>
+              <MenuItem value="kylla">{ strings.generic.yes }</MenuItem>
+              <MenuItem value="ei">{ strings.generic.no }</MenuItem>
+            </Select>
+          </FormControl>
+          { requiredConditionInfoField
+            ? <Typography sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.conditionalFieldValueInfo }</Typography>
+            : null
+          }
+        </>
+      );
     }
   };
 
@@ -305,7 +304,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
       if (disabledValue) {
         setRequiredConditionField("");
         setRequiredConditionFieldBoolean("");
-        setRequiredConditionInfoField("visible");
+        setRequiredConditionInfoField(true);
         updateFormField({ ...field, visibleIf: undefined });
       }
       fieldConditionComponent();

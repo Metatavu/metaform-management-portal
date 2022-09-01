@@ -227,7 +227,8 @@
         "conditionalFieldValue": "Ehtokentän arvo",
         "conditionalFieldInfo": "Valitse se lomakkeen kenttä, joka määrittää näkyvyyden.",
         "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
-        "fieldDefiningCondition": "Ehdon määrittävä kenttä"
+        "fieldDefiningCondition": "Ehdon määrittävä kenttä",
+        "selectField": "Valitse kenttä"
 
       }
     }

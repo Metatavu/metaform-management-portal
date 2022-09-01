@@ -264,6 +264,7 @@ export interface Localized extends LocalizedStringsMethods {
         conditionalFieldInfo: string;
         conditionalFieldValueInfo: string;
         fieldDefiningCondition: string;
+        selectField: string;
       };
     };
   };
