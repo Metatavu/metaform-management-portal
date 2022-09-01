@@ -1,9 +1,10 @@
 import { Typography } from "@mui/material";
 import React, { ReactNode } from "react";
+import { MetaformFieldset, MetaformSectionWrapper } from "styled/generic/form";
 import { MetaformSection, MetaformField } from "../generated/client/models";
 import { MetaformFieldComponent } from "./MetaformFieldComponent";
 import { FieldValue, FileFieldValueItem, IconName, ValidationErrors } from "./types";
-import VisibileIfEvaluator from "./VisibleIfEvaluator";
+import VisibleIfEvaluator from "./VisibleIfEvaluator";
 
 /**
  * Component props
@@ -72,7 +73,7 @@ const MetaformSectionComponent: React.FC<Props> = ({
    */
   const renderFields = () => {
     return (
-      <fieldset>
+      <MetaformFieldset>
         {
           (section.fields || []).map((field, i) => {
             return (
@@ -102,19 +103,19 @@ const MetaformSectionComponent: React.FC<Props> = ({
             );
           })
         }
-      </fieldset>
+      </MetaformFieldset>
     );
   };
 
-  if (!VisibileIfEvaluator.isVisible(section.visibleIf, getFieldValue)) {
+  if (!VisibleIfEvaluator.isVisible(section.visibleIf, getFieldValue)) {
     return null;
   }
 
   return (
-    <section className="metaform-section">
+    <MetaformSectionWrapper>
       { renderTitle() }
       { renderFields() }
-    </section>
+    </MetaformSectionWrapper>
   );
 };
 

@@ -22,6 +22,7 @@ interface Props {
   contexts: string[];
   metaform: Metaform;
   ownerKey?: string;
+  titleColor?: string;
   getFieldValue: (fieldName: string) => FieldValue;
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   onSubmit: (source: Metaform) => void;
@@ -36,11 +37,12 @@ const Form: React.FC<Props> = ({
   contexts,
   metaform,
   ownerKey,
+  saving,
+  titleColor,
   getFieldValue,
   setFieldValue,
   onValidationErrorsChange,
-  onSubmit,
-  saving
+  onSubmit
 }) => {
   const [ uploadingFields, setUploadingFields ] = React.useState<string[]>([]);
 
@@ -232,6 +234,7 @@ const Form: React.FC<Props> = ({
         form={ metaform }
         contexts={ contexts }
         formReadOnly={ false }
+        titleColor={ titleColor }
         getFieldValue={ getFieldValue }
         setFieldValue={ setFieldValue }
         datePicker={ renderDatePicker }

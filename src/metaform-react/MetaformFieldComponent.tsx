@@ -1,7 +1,7 @@
 /* eslint-disable */ // Remove when refactoring is done
 import React, { ReactNode, useState } from 'react';
 import { FieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
-import VisibileIfEvaluator from './VisibleIfEvaluator';
+import VisibleIfEvaluator from './VisibleIfEvaluator';
 import MetaformMemoComponent from './MetaformMemoComponent';
 import { MetaformField, MetaformFieldType } from '../generated/client/models';
 import MetaformTextFieldComponent from './MetaformTextFieldComponent';
@@ -22,6 +22,8 @@ import { MetaformSliderFieldComponent } from './MetaformSliderFieldComponent';
 import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent"; 
 import { MetaformChecklistFieldComponent } from "./MetaformChecklistFieldComponent";
 import ContextUtils from '../utils/context-utils';
+import { MetaformFieldWrapper } from 'styled/generic/form';
+import { Typography } from '@mui/material';
 
 /**
  * Component props
@@ -86,10 +88,10 @@ export const MetaformFieldComponent: React.FC<Props> = ({
     const title = `${field.title}` + (field.required ? " *" : "");
 
     return (
-      <div className="metaform-field-label-container"> 
-        <label className="metaform-field-label"> { title } </label> 
-      </div>
-    ) 
+      <Typography>
+        { title }
+      </Typography>
+    )
   }
 
   /**
@@ -373,23 +375,17 @@ export const MetaformFieldComponent: React.FC<Props> = ({
     return null;
   }
 
-  if (!VisibileIfEvaluator.isVisible(field.visibleIf, getFieldValue)) {
+  if (!VisibleIfEvaluator.isVisible(field.visibleIf, getFieldValue)) {
     return null;
   }
 
-  const classNames = [ "metaform-field" ];
-
-  if (pristine) {
-    classNames.push("pristine");
-  }
-
   return (
-    <div className={ classNames.join(" ") } key={ getFieldId() }>
+    <MetaformFieldWrapper className={ pristine ? "pristine" : undefined } key={ getFieldId() }>
       { renderBeforeField && renderBeforeField(field.name) }
       { renderTitle() }
       { renderInput() }
       { renderRequiredFieldMissingError() }
       { renderHelp() }
-    </div>
+    </MetaformFieldWrapper>
   );
 }

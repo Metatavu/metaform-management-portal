@@ -180,6 +180,7 @@ const ReplyScreen: FC = () => {
 
     return (
       <Form
+        titleColor="#000"
         contexts={ ["MANAGEMENT"] }
         metaform={ metaform }
         getFieldValue={ getFieldValue }
@@ -260,7 +261,6 @@ const ReplyScreen: FC = () => {
         <GenericLoaderWrapper loading={ loading }>
           <>
             { renderForm() }
-            {/* TODO fix styling (title, replacing plain html to mui) */}
             <ReplySaved
               replySavedVisible={ replySavedVisible }
               setReplySavedVisible={ setReplySavedVisible }
