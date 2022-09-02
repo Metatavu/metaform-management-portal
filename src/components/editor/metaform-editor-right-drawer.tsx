@@ -26,7 +26,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   setPendingForm
 }) => {
   const [ tabIndex, setTabIndex ] = React.useState(0);
-  const [ disabledValue, setdisabledValue ] = React.useState<boolean>(false);
+  const [ disabledValue, setDisabledValue ] = React.useState<boolean>(false);
   const [ requiredConditionField, setRequiredConditionField ] = React.useState<string>("");
   const [ requiredConditionFieldBoolean, setRequiredConditionFieldBoolean ] = React.useState<string>("");
   const [ requiredConditionInfoField, setRequiredConditionInfoField ] = React.useState<boolean>(true);
@@ -54,6 +54,9 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   const updateFormFieldVisiblityValues = (newMetaformField: MetaformField, eventValue: string) => {
     setRequiredConditionFieldBoolean(eventValue);
     setRequiredConditionInfoField(false);
+    setDisabledValue(false);
+    setRequiredConditionField("");
+    setRequiredConditionFieldBoolean("");
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -171,7 +174,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
                 }
               />
               <Typography fontSize="12px">
-                { strings.draftEditorScreen.editor.features.selectableOnlyOn }
+                { strings.draftEditorScreen.editor.features.selectableFieldsInfo }
               </Typography>
             </FormControl>
           </>
@@ -212,7 +215,10 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
               <MenuItem sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.selectField }</MenuItem>
               { pendingForm.sections!.map(section => section.fields!.map((field, index) => {
                 const key2 = `${field.title}-${index}`;
-                return (
+                const currentField = pendingForm.sections![sectionIndex].fields![fieldIndex];
+                if (currentField.name === field.name) {
+                  return null;
+                } return (
                   <MenuItem value={ field.name } key={ key2 }>
                     { field.title }
                   </MenuItem>
@@ -257,10 +263,10 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
       return (
         <>
           <FormControl fullWidth>
-            <InputLabel id="visiblityConditionLabel21">{ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }</InputLabel>
+            <InputLabel id="visiblityConditionLabel">{ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }</InputLabel>
             <Select
               fullWidth
-              labelId="visiblityConditionLabel21"
+              labelId="visiblityConditionLabel"
               label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
               value={ requiredConditionFieldBoolean }
               onChange={ event => updateFormFieldVisiblityValues({
@@ -292,6 +298,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   /**
   * Render components depending what is switch value
   * @param value Switch value true false
+  * @param value Switch value true or false
   * 
   */
   const setSwitchValue = (value: boolean) => {
@@ -300,7 +307,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
     }
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
-      setdisabledValue(value);
+      setDisabledValue(value);
       if (disabledValue) {
         setRequiredConditionField("");
         setRequiredConditionFieldBoolean("");

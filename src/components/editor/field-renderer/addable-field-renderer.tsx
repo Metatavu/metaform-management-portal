@@ -193,7 +193,6 @@ const AddableFieldRenderer: React.FC<Prop> = ({
         <MetaformDateTimeFieldComponent
           field={ field }
           datetimePicker={ dateTimePicker }
-          
         />
       );
     case MetaformFieldType.Date:
@@ -260,7 +259,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
           formReadOnly={ true }
-          value="Sähköposti"
+          value={ strings.draftEditorScreen.editor.fields.email }
         />
       );
     case MetaformFieldType.Number:

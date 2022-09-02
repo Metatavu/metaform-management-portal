@@ -215,7 +215,7 @@
         "visiblityCondition": "Näkyvyyden ehto",
         "required": "Pakollisuus",
         "defineUserGroup": "Määrittää käyttäjäryhmän",
-        "selectableOnlyOn": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
+        "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
         "selectComponent": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja.",
         "fieldTitle": "Kentän otsikko",
         "sectionTitle": "Osion otsikko"

@@ -217,7 +217,7 @@
         "visiblityCondition": "Visiblity condition",
         "required": "Required",
         "defineUserGroup": "Define a user group",
-        "selectableOnlyOn": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
+        "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
         "selectComponent": "Select a field in the form to edit the field information.",
         "fieldTitle": "Field title",
         "sectionTitle": "Section title"

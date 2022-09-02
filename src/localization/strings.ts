@@ -250,7 +250,7 @@ export interface Localized extends LocalizedStringsMethods {
         visiblityCondition: string;
         fieldVisiblity: string;
         defineUserGroup: string;
-        selectableOnlyOn: string;
+        selectableFieldsInfo: string;
         required: string;
         selectComponent: string;
         fieldTitle: string;
