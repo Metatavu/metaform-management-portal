@@ -322,10 +322,10 @@ const EditorScreenDrawer: FC<Props> = ({
       open={ open }
       onClose={ toggleDrawerOpen }
     >
-      <Stack spacing={ 2 } direction="column">
-        <GenericLoaderWrapper
-          loading={ converting }
-        >
+      <GenericLoaderWrapper
+        loading={ converting }
+      >
+        <Stack spacing={ 2 } direction="column">
           <FormControl
             fullWidth
           >
@@ -337,8 +337,9 @@ const EditorScreenDrawer: FC<Props> = ({
             <Divider/>
             { renderDrawerAuthenticationSection() }
           </FormControl>
-        </GenericLoaderWrapper>
-      </Stack>
+        </Stack>
+
+      </GenericLoaderWrapper>
     </Drawer>
   );
 };
