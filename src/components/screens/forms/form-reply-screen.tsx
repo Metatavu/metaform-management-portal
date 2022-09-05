@@ -200,6 +200,8 @@ const ReplyScreen: FC = () => {
       return;
     }
 
+    setLoading(true);
+
     const values = { ...formValues };
 
     metaform.sections?.forEach(section => {
@@ -233,29 +235,33 @@ const ReplyScreen: FC = () => {
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminReplyScreen.saveReply, e);
     }
+
+    setLoading(false);
   };
 
   /**
    * Renter status switch
    */
   const renderStatusSelect = () => (
-    <TextField
-      select
-      sx={{ width: 300 }}
-      key="metaform-select-container"
-      value={ reply?.data?.status }
-      onChange={ handleReplyStatusChange }
-    >
-      {
-        Object.values(ReplyStatus).map(status =>
-          <MenuItem
-            key={ `metaform-reply-status-${status}` }
-            value={ status }
-          >
-            { LocalizationUtils.getLocalizedStatusOfReply(status) }
-          </MenuItem>)
-      }
-    </TextField>
+    <GenericLoaderWrapper style={{ width: 300 }} loading={ loading }>
+      <TextField
+        select
+        sx={{ width: 300 }}
+        key="metaform-select-container"
+        value={ reply?.data?.status }
+        onChange={ handleReplyStatusChange }
+      >
+        {
+          Object.values(ReplyStatus).map(status =>
+            <MenuItem
+              key={ `metaform-reply-status-${status}` }
+              value={ status }
+            >
+              { LocalizationUtils.getLocalizedStatusOfReply(status) }
+            </MenuItem>)
+        }
+      </TextField>
+    </GenericLoaderWrapper>
   );
 
   return (
