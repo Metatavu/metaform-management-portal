@@ -8,7 +8,7 @@ import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
-import { Dictionary, NOT_SELECTED, ReplyStatus } from "types";
+import { Dictionary, ReplyStatus } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import ReplySaved from "./form/ReplySaved";
@@ -195,14 +195,44 @@ const ReplyScreen: FC = () => {
    *
    * @param event event
    */
-  const handleReplyStatusChange = (event: React.ChangeEvent<{ value: string }>) => {
-    if (!reply || !event) {
+  const handleReplyStatusChange = async (event: React.ChangeEvent<{ value: string }>) => {
+    if (!reply?.data || !reply.id) {
       return;
     }
 
-    const updatedReplyData = { ...reply.data, status: event.target.value };
-    const updatedReply = { ...reply, data: updatedReplyData as any };
-    setReply(updatedReply);
+    const values = { ...formValues };
+
+    metaform.sections?.forEach(section => {
+      section.fields?.forEach(field => {
+        if (field.type === MetaformFieldType.Files) {
+          let value = getFieldValue(field.name as string);
+          if (!value) {
+            value = { files: [] };
+          }
+          values[field.name as string] = (value as FileFieldValue).files.map(file => file.id);
+        }
+      });
+    });
+
+    values.status = event.target.value;
+
+    try {
+      await repliesApi.updateReply({
+        metaformId: metaform.id!,
+        reply: { ...reply, data: values as any },
+        replyId: reply.id
+      });
+
+      const updatedReply = await repliesApi.findReply({
+        metaformId: metaform.id!,
+        replyId: reply.id
+      });
+      const updatedValues = await MetaformUtils.processReplyData(metaform, updatedReply, attachmentsApi);
+      setReply(updatedReply);
+      setFormValues(updatedValues as any);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminReplyScreen.saveReply, e);
+    }
   };
 
   /**
@@ -213,10 +243,9 @@ const ReplyScreen: FC = () => {
       select
       sx={{ width: 300 }}
       key="metaform-select-container"
-      value={ reply?.data?.status || NOT_SELECTED }
+      value={ reply?.data?.status }
       onChange={ handleReplyStatusChange }
     >
-      <MenuItem value={ NOT_SELECTED } key="no-status-selected">{ strings.replyScreen.selectStatus }</MenuItem>
       {
         Object.values(ReplyStatus).map(status =>
           <MenuItem

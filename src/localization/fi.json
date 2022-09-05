@@ -107,16 +107,7 @@
       "description": "Lomakkeiden ja vastausten tarkastelu.",
       "formScreen": {
         "title": "Lomakelistaus",
-        "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus.",
-        "form": {
-          "form": "LOMAKE",
-          "latestReply": "VIIMEISIN",
-          "newReply": "UUSIA",
-          "notProcessed": "käsittelemättömiä"
-        }
-      },
-      "formListing": {
-        "form": "LOMAKE"
+        "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus."
       },
       "formDataScreen": {
         "title": "Datan tarkastelu",
@@ -261,6 +252,15 @@
     "tableField": {
       "addNewRow": "Lisää uusi rivi",
       "unknownColumnType": "Tuntematon saraketyyppi"
+    }
+  },
+
+  "formsScreen": {
+    "formTable": {
+      "form": "Lomake",
+      "latestReply": "Viimeisin",
+      "newReply": "Uusia",
+      "notProcessed": "käsittelemättömiä"
     }
   },
 

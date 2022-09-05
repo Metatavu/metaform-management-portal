@@ -106,7 +106,7 @@ export interface Localized extends LocalizedStringsMethods {
   publicFormsScreen: {
     title: string;
   }
-  
+
   /**
    * Translations related to header
    */
@@ -139,15 +139,6 @@ export interface Localized extends LocalizedStringsMethods {
       formScreen: {
         title: string;
         description: string;
-        form: {
-          form: string;
-          latestReply: string;
-          newReply: string;
-          notProcessed: string;
-        }
-      };
-      formListing: {
-        form: string;
       };
       formDataScreen: {
         title: string;
@@ -308,6 +299,17 @@ export interface Localized extends LocalizedStringsMethods {
   };
 
   /**
+   * Translations related to forms screen
+   */
+  formsScreen: {
+    formTable: {
+      form: string;
+      latestReply: string;
+      newReply: string;
+      notProcessed: string;
+    };
+  }
+  /**
    * Translations related to form screen
    */
   formScreen: {
@@ -373,7 +375,7 @@ export interface Localized extends LocalizedStringsMethods {
   };
 
   /**
-   * Translations related to email dialogs 
+   * Translations related to email dialogs
    */
   emailDialog: {
     title: string;

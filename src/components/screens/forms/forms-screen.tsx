@@ -74,7 +74,7 @@ const FormsScreen: React.FC = () => {
       slug: form.slug || "",
       title: form.title || strings.formScreen.noTitle,
       latestReply: getLatestReplyDate(replies),
-      newReply: amountWaiting > 0 ? `${strings.navigationHeader.formsScreens.formScreen.form.notProcessed} (${amountWaiting})` : undefined
+      newReply: amountWaiting > 0 ? `${strings.formsScreen.formTable.notProcessed} (${amountWaiting})` : undefined
     };
   };
 
@@ -106,7 +106,7 @@ const FormsScreen: React.FC = () => {
   const columns: GridColDef[] = [
     {
       field: "title",
-      headerName: strings.navigationHeader.formsScreens.formListing.form,
+      headerName: strings.formsScreen.formTable.form,
       flex: 1,
       renderHeader: params => {
         return (
@@ -127,7 +127,7 @@ const FormsScreen: React.FC = () => {
     },
     {
       field: "latestReply",
-      headerName: strings.navigationHeader.formsScreens.formScreen.form.latestReply,
+      headerName: strings.formsScreen.formTable.latestReply,
       width: 250,
       renderHeader: params => {
         return (
@@ -148,7 +148,7 @@ const FormsScreen: React.FC = () => {
     },
     {
       field: "newReply",
-      headerName: strings.navigationHeader.formsScreens.formScreen.form.newReply,
+      headerName: strings.formsScreen.formTable.newReply,
       width: 250,
       renderHeader: params => {
         return (
@@ -182,7 +182,6 @@ const FormsScreen: React.FC = () => {
         />
       </NavigationTabContainer>
       <DataGrid
-        autoHeight
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
