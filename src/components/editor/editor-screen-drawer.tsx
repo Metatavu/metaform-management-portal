@@ -3,7 +3,7 @@ import { Save, Clear } from "@mui/icons-material";
 import strings from "localization/strings";
 import React, { FC, useContext, useEffect, useState } from "react";
 import theme from "theme";
-import { Metaform, MetaformSection } from "generated/client";
+import { Metaform, MetaformSection, MetaformVisibility } from "generated/client";
 import slugify from "slugify";
 import SosmetaUtils from "utils/sosmeta-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
@@ -86,6 +86,7 @@ const EditorScreenDrawer: FC<Props> = ({
   const handleFormSubmit = async () => {
     createMetaform({
       allowAnonymous: !formSettings.formAuthentication,
+      visibility: formSettings.formAuthentication ? MetaformVisibility.Private : MetaformVisibility.Public,
       title: formSettings.formName,
       slug: formSettings.formSlug,
       sections: formSettings.formSections
@@ -321,10 +322,10 @@ const EditorScreenDrawer: FC<Props> = ({
       open={ open }
       onClose={ toggleDrawerOpen }
     >
-      <Stack spacing={ 2 } direction="column">
-        <GenericLoaderWrapper
-          loading={ converting }
-        >
+      <GenericLoaderWrapper
+        loading={ converting }
+      >
+        <Stack spacing={ 2 } direction="column">
           <FormControl
             fullWidth
           >
@@ -336,8 +337,9 @@ const EditorScreenDrawer: FC<Props> = ({
             <Divider/>
             { renderDrawerAuthenticationSection() }
           </FormControl>
-        </GenericLoaderWrapper>
-      </Stack>
+        </Stack>
+
+      </GenericLoaderWrapper>
     </Drawer>
   );
 };
