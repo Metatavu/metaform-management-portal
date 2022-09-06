@@ -50,6 +50,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
    * Updates metaform field VisiblityIf
    *
    * @param newMetaformField new metaform field
+   * @param eventValue FieldCondition value
    */
   const updateFormFieldVisiblityValues = (newMetaformField: MetaformField, eventValue: string) => {
     setRequiredConditionFieldBoolean(eventValue);
@@ -297,7 +298,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
 
   /**
   * Render components depending what is switch value
-  * @param value Switch value true false
+  *
   * @param value Switch value true or false
   * 
   */
