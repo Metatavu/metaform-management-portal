@@ -145,7 +145,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
             { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.fieldDatas) }
             <TextField
               label={ strings.draftEditorScreen.editor.features.fieldTitle }
-              value={ field.title ? field.title : " " }
+              value={ field.title ? field.title : "" }
               onChange={ event => updateFormField({
                 ...field, title: event.target.value, name: `${sectionIndex}.${fieldIndex}`
               }) }
@@ -219,12 +219,12 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
             >
               <MenuItem sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.selectField }</MenuItem>
               { pendingForm.sections!.map(section => section.fields!.map((field, index) => {
-                const key2 = `${field.title}-${index}`;
+                const constructedKey = `${field.title}-${index}`;
                 const currentField = pendingForm.sections![sectionIndex].fields![fieldIndex];
                 if (currentField.name === field.name) {
                   return null;
                 } return (
-                  <MenuItem value={ field.name } key={ key2 }>
+                  <MenuItem value={ field.name } key={ constructedKey }>
                     { field.title }
                   </MenuItem>
                 );
