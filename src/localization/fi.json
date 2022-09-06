@@ -14,7 +14,8 @@
     "reload": "Lataa uudelleen",
     "show": "Näytä",
     "addFilesText": "Tiputa tiedosto tähän, tai klikkaa tästä lisätäksesi liitteitä.",
-    "back": "Takaisin"
+    "back": "Takaisin",
+    "actions": "Toiminnot"
   },
 
   "errorHandling": {

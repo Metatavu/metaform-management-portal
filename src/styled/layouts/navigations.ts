@@ -33,7 +33,8 @@ export const NavigationTabContainer = styled(Stack, {
 })(() => ({
   height: 100,
   flexDirection: "row",
-  overflow: "hidden"
+  overflow: "hidden",
+  flexShrink: 0
 }));
 
 /**

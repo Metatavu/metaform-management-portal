@@ -26,6 +26,7 @@ export interface Localized extends LocalizedStringsMethods {
     show: string;
     addFilesText: string;
     back: string;
+    actions: string;
   };
 
   /**

@@ -14,7 +14,8 @@
     "reload": "Reload",
     "show": "Show",
     "addFilesText": "Drop files here or click here to add files.",
-    "back": "Back"
+    "back": "Back",
+    "actions": "Action"
   },
 
   "errorHandling": {
