@@ -115,7 +115,7 @@ const ReplyScreen: FC = () => {
     try {
       await repliesApi.updateReply({
         metaformId: metaform.id!,
-        reply: { ...reply, data: values as any },
+        reply: { ...reply, data: values as { [index: string]: object } },
         replyId: reply.id
       });
 
@@ -221,7 +221,7 @@ const ReplyScreen: FC = () => {
     try {
       await repliesApi.updateReply({
         metaformId: metaform.id!,
-        reply: { ...reply, data: values as any },
+        reply: { ...reply, data: values as { [index: string]: object } },
         replyId: reply.id
       });
 
@@ -231,7 +231,7 @@ const ReplyScreen: FC = () => {
       });
       const updatedValues = await MetaformUtils.processReplyData(metaform, updatedReply, attachmentsApi);
       setReply(updatedReply);
-      setFormValues(updatedValues as any);
+      setFormValues(updatedValues);
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminReplyScreen.saveReply, e);
     }
