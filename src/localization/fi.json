@@ -23,7 +23,7 @@
     "dialog": {
       "title": "Hups! Jokin meni pieleen",
       "reloadPage": "Kokeile ladata sivu uudelleen.",
-      "unsavedContents": "Huomaathan, että tallentamattomat sisällöt häviävät uudelleenladattaessa. Mikäli sinulla on sivulla tallentamattomia sisältöjä, voit sulkea tämän ilmoituksen ja kopioida sisällöt leikepöydälle ennen uudelleenlatausta.",
+      "unsavedContents": "Huomaathan, että tallentamattomat sisällöt häviävät uudelleen ladattaessa. Mikäli sinulla on sivulla tallentamattomia sisältöjä, voit sulkea tämän ilmoituksen ja kopioida sisällöt leikepöydälle ennen uudelleenlatausta.",
       "reportIssue": "Mikäli ongelma jatkuu, ota sähköpostilla yhteyttä osoitteeseen support@metatavu.fi. Liitä tekniset lisätiedot osaksi sähköpostia nopeuttaaksesi ongelman selvittelyä.",
       "technicalDetails": "Teknisiä lisätietoja:",
       "time": "Aika: {0}",
@@ -39,7 +39,7 @@
       "convertSosmetaError": "Sosmetan muuntaminen epäonnistui"
     },
     "draftEditorScreen": {
-      "findDraft": "Lomakeversion haku epäoonistui",
+      "findDraft": "Lomakeversion haku epäonnistui",
       "saveDraft": "Lomakeversion tallentaminen epäonnistui"
     },
     "formScreen": {
@@ -210,10 +210,26 @@
       },
       "features": {
         "tabTitle": "Ominaisuudet",
-        "title": "Title"
+        "title": "Title",
+        "fieldDatas": "Kentän tiedot",
+        "fieldVisiblity": "Kenttä näkyy lomakkeella:",
+        "visiblityCondition": "Näkyvyyden ehto",
+        "required": "Pakollisuus",
+        "defineUserGroup": "Määrittää käyttäjäryhmän",
+        "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
+        "fieldTitle": "Kentän otsikko",
+        "sectionTitle": "Osion otsikko"
       },
       "visibility": {
-        "tabTitle": "näkyvyys"
+        "tabTitle": "näkyvyys",
+        "conditionLabelTitle":"Ehtokentän nimi",
+        "conditionally":"Ehdollisesti",
+        "conditionalFieldValue": "Ehtokentän arvo",
+        "conditionalFieldInfo": "Valitse se lomakkeen kenttä, joka määrittää näkyvyyden.",
+        "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
+        "fieldDefiningCondition": "Ehdon määrittävä kenttä",
+        "selectField": "Valitse kenttä",
+        "selectVisibilityInfo": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja."
       }
     }
   },

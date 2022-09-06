@@ -247,9 +247,25 @@ export interface Localized extends LocalizedStringsMethods {
       features: {
         tabTitle: string;
         title: string;
+        fieldDatas: string;
+        visiblityCondition: string;
+        fieldVisiblity: string;
+        defineUserGroup: string;
+        selectableFieldsInfo: string;
+        required: string;
+        fieldTitle: string;
+        sectionTitle: string;
       };
       visibility: {
         tabTitle: string;
+        conditionLabelTitle: string;
+        conditionally: string;
+        conditionalFieldValue: string;
+        conditionalFieldInfo: string;
+        conditionalFieldValueInfo: string;
+        fieldDefiningCondition: string;
+        selectField: string;
+        selectVisibilityInfo: string;
       };
     };
   };

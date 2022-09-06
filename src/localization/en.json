@@ -212,10 +212,26 @@
       },
       "features": {
         "tabTitle": "Features",
-        "title": "Title"
+        "title": "Title",
+        "fieldDatas": "Field Information",
+        "fieldVisiblity": "The field is visible on the form:",
+        "visiblityCondition": "Visiblity condition",
+        "required": "Required",
+        "defineUserGroup": "Define a user group",
+        "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
+        "fieldTitle": "Field title",
+        "sectionTitle": "Section title"
       },
       "visibility": {
-        "tabTitle": "Visibility"
+        "tabTitle": "Visibility",
+        "conditionLabelTitle":"Condition field name",
+        "conditionally": "Conditionally",
+        "conditionalFieldValue": "Conditional field value",
+        "conditionalFieldInfo": "Select the form field that determines visibility.",
+        "conditionalFieldValueInfo":"Select or enter the field value that determines the visibility.",
+        "fieldDefiningCondition": "Field defining the condition",
+        "selectField": "Select a field",
+        "selectVisibilityInfo": "Select a field in the form to edit the field information."
       }
     }
   },
@@ -312,7 +328,7 @@
       "formTemplateCustom": "Empty template",
       "formTemplateCustomHelper": "Create new form with empty template. Recommended only if Sosmeta doesn't contain a suitable form template.",
       "formTemplateSosmeta": "Sosmeta template",
-      "formTemplateSosmetaHelper": "Create new form with Sosmetas structure. Sosmeta is a service maintained by the Finnish Institute for Health and Welfare. Templates can be found at: ",
+      "formTemplateSosmetaHelper": "Create new form with Sosmetas structure. Sosmeta is a service maintained by the Finnish Institute for Health and Welfare. Templates can be found at ",
       "formTemplateSosmetaLink": "https://sosmeta.thl.fi/document-definitions/list",
       "formTemplateSchema": "Schema",
       "formIdentification": "Repliers identification",
