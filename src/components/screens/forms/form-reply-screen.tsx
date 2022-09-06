@@ -200,43 +200,11 @@ const ReplyScreen: FC = () => {
       return;
     }
 
-    setLoading(true);
-
     const values = { ...formValues };
-
-    metaform.sections?.forEach(section => {
-      section.fields?.forEach(field => {
-        if (field.type === MetaformFieldType.Files) {
-          let value = getFieldValue(field.name as string);
-          if (!value) {
-            value = { files: [] };
-          }
-          values[field.name as string] = (value as FileFieldValue).files.map(file => file.id);
-        }
-      });
-    });
-
     values.status = event.target.value;
 
-    try {
-      await repliesApi.updateReply({
-        metaformId: metaform.id!,
-        reply: { ...reply, data: values as { [index: string]: object } },
-        replyId: reply.id
-      });
-
-      const updatedReply = await repliesApi.findReply({
-        metaformId: metaform.id!,
-        replyId: reply.id
-      });
-      const updatedValues = await MetaformUtils.processReplyData(metaform, updatedReply, attachmentsApi);
-      setReply(updatedReply);
-      setFormValues(updatedValues);
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.adminReplyScreen.saveReply, e);
-    }
-
-    setLoading(false);
+    setReply({ ...reply, data: values as { [index: string]: object } });
+    setFormValues(values);
   };
 
   /**
