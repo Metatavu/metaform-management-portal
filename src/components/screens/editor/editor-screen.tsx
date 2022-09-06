@@ -120,7 +120,7 @@ const EditorScreen: React.FC = () => {
         setOpen={ setDrawerOpen }
         createMetaform={ createMetaform }
       />
-      <Stack overflow="hidden">
+      <Stack overflow="hidden" flex={ 1 }>
         <NavigationTabContainer>
           <NavigationTab
             text={ strings.navigationHeader.editorScreens.editorScreen }
