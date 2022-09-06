@@ -98,6 +98,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
+
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       return (
         <Typography variant="subtitle1" style={{ width: "100%" }}>
@@ -118,6 +119,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
         <Typography>{ strings.draftEditorScreen.editor.features.selectComponent }</Typography>
       );
     }
+
     if (sectionIndex !== undefined && fieldIndex === undefined) {
       const section = pendingForm.sections![sectionIndex];
       return (
@@ -134,6 +136,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
       if (field === undefined) {
         return null;
       }
+
       if (field !== undefined) {
         const disableForm = field.type === "select" || field.type === "date-time" || field.type === "radio" || field.type === "checklist" || field.type === "date";
 
@@ -192,6 +195,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
+
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       return (
         <>
@@ -245,6 +249,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
         </Typography>
       );
     }
+
     return null;
   };
 
@@ -256,11 +261,13 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
+
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
       if (!requiredConditionField) {
         return null;
       }
+
       return (
         <>
           <FormControl fullWidth>
@@ -306,6 +313,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
+
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
       setDisabledValue(value);
@@ -315,6 +323,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
         setRequiredConditionInfoField(true);
         updateFormField({ ...field, visibleIf: undefined });
       }
+
       fieldConditionComponent();
       conditionValueField();
     }
@@ -328,6 +337,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
+
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       return (
         <>
