@@ -1,10 +1,10 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
-import FormRepliesScreen from "./form-replies-screen";
+import { Navigate, Route, Routes } from "react-router-dom";
 import FormHistoryScreen from "./form-history-screen";
 import FormReplyScreen from "./form-reply-screen";
 import FormsDataScreen from "./forms-data-screen";
 import FormsScreen from "./forms-screen";
+import FormRepliesScreen from "./form-replies-screen";
 
 /**
  * Component for forms routes
@@ -30,6 +30,10 @@ const FormsRoutes: React.FC = () => (
     <Route
       path="/:formSlug/history"
       element={ <FormHistoryScreen/> }
+    />
+    <Route
+      path="/:formSlug"
+      element={ <Navigate to="./answers"/> }
     />
   </Routes>
 );

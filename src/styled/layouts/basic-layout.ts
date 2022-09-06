@@ -10,7 +10,7 @@ export const Root = styled(Box, {
 })(() => ({
   height: "100vh",
   width: "100vw",
-  overflow: "scroll",
+  overflow: "auto",
   display: "grid",
   gridTemplateRows: "auto auto auto 1fr",
   background: theme.palette.background.default

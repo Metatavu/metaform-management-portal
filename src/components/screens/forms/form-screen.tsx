@@ -6,7 +6,6 @@ import BasicLayout, { SnackbarMessage } from "components/layouts/basic-layout";
 import strings from "localization/strings";
 import { Metaform, MetaformFieldType, Reply } from "generated/client";
 import { FieldValue, FileFieldValue, ValidationErrors } from "metaform-react/types";
-
 import MetaformUtils from "utils/metaform-utils";
 import Mail from "mail/mail";
 import ConfirmDialog from "components/generic/confirm-dialog";
@@ -42,7 +41,6 @@ const FormScreen: React.FC<Props> = () => {
   const [ , setLoading ] = useState(false);
   const [ savingReply, setSaving ] = useState(false);
   const [ , setSnackbarMessage ] = useState<SnackbarMessage>();
-
   const [ , setReplyConfirmVisible ] = useState(false);
   const [ metaform, setMetaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ ownerKey, setOwnerKey ] = useState<string | null>();
@@ -67,8 +65,113 @@ const FormScreen: React.FC<Props> = () => {
   const keycloak = useAppSelector(selectKeycloak);
 
   /**
+   * Finds the reply from API
+   *
+   * @param replyId reply id
+   * @param currentOwnerKey owner key
+   * @returns found reply or null if not found
+   */
+  const findReply = async (replyId: string, currentOwnerKey: string) => {
+    try {
+      const replyApi = apiClient.repliesApi;
+      return await replyApi.findReply({
+        metaformId: metaformId!!,
+        replyId: replyId,
+        ownerKey: currentOwnerKey
+      });
+    } catch (e) {
+      return null;
+    }
+  };
+
+  /**
+   * Finds the draft from API
+   *
+   * @param draftToFindId draft id
+   * @returns found draft or null if not found
+   */
+  const findDraft = async (draftToFindId: string) => {
+    try {
+      const { draftsApi } = apiClient;
+      return await draftsApi.findDraft({
+        metaformId: metaformId!!,
+        draftId: draftToFindId
+      });
+    } catch (e) {
+      return null;
+    }
+  };
+
+  /**
+   * Loads data
+   */
+  const loadData = async () => {
+    const query = new URLSearchParams(location.search);
+
+    setDraftId(query.get("draft"));
+    const replyId = query.get("reply");
+    const currentOwnerKey = query.get("owner-key");
+
+    if (!metaformSlug) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const { metaformsApi } = apiClient;
+
+      const foundMetaform = await metaformsApi.findMetaform({
+        metaformSlug: metaformSlug
+      });
+
+      document.title = foundMetaform.title ? foundMetaform.title : "Metaform";
+
+      const preparedFormValues = MetaformUtils.prepareFormValues(foundMetaform, formValues, keycloak);
+
+      if (replyId && currentOwnerKey) {
+        const foundReply = await findReply(replyId, currentOwnerKey);
+        if (foundReply) {
+          const replyData = await MetaformUtils.processReplyData(foundMetaform, foundReply, apiClient.attachmentsApi, currentOwnerKey);
+          if (replyData) {
+            Object.keys(replyData as any).forEach(replyKey => {
+              preparedFormValues[replyKey] = replyData[replyKey] as any;
+            });
+          }
+
+          setReply(foundReply);
+          setOwnerKey(currentOwnerKey);
+          setReplyDeleteVisible(!!currentOwnerKey);
+        } else {
+          setSnackbarMessage({
+            message: strings.formScreen.replyNotFound,
+            severity: "error"
+          });
+        }
+      } else if (draftId) {
+        const draft = await findDraft(draftId);
+        const draftData = draft?.data || {};
+        Object.keys(draftData).forEach(draftKey => {
+          formValues[draftKey] = draftData[draftKey] as any;
+        });
+      }
+
+      setMetaformId(foundMetaform.id);
+      setMetaform(foundMetaform);
+      setFormValues(preparedFormValues);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.findMetaform, e);
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  /**
    * Returns reply edit link
-   * 
+   *
    * @returns reply edit link or null if not available
    */
   const getReplyEditLink = () => {
@@ -131,7 +234,7 @@ const FormScreen: React.FC<Props> = () => {
 
   /**
    * Returns form values as map
-   * 
+   *
    * @param currentMetaform metaform
    * @returns form values as map
    */
@@ -153,12 +256,12 @@ const FormScreen: React.FC<Props> = () => {
     return values as { [ key: string]: object };
   };
 
-  /** 
+  /**
    * Implement later
    */
   const updateReply = async (currentMetaform: Metaform, currentReply: Reply, currentOwnerKey: string | null | undefined) => {
     const { repliesApi } = apiClient;
-    
+
     await repliesApi.updateReply({
       metaformId: metaformId!!,
       replyId: currentReply.id!,
@@ -174,7 +277,7 @@ const FormScreen: React.FC<Props> = () => {
       ownerKey: currentOwnerKey || undefined
     });
   };
- 
+
   /**
    * Autosaves the form
    */
@@ -207,7 +310,7 @@ const FormScreen: React.FC<Props> = () => {
   };
 
   /**
-   * Schedules an autosave. If new autosave is scheduled before given cooldown period 
+   * Schedules an autosave. If new autosave is scheduled before given cooldown period
    * the old autosave is cancelled and replaced with the new one
    */
   const scheduleAutosave = () => {
@@ -238,7 +341,7 @@ const FormScreen: React.FC<Props> = () => {
 
   /**
    * Creates new reply
-   * 
+   *
    * @param currentMetaform metaform
    */
   const createReply = async (currentMetaform: Metaform) => {
@@ -288,7 +391,7 @@ const FormScreen: React.FC<Props> = () => {
 
   /**
    * Event handler for validation errors change
-   * 
+   *
    * @param validationErrors validation errors
    */
   const onValidationErrorsChange = (validationErrors: ValidationErrors) => {
@@ -305,13 +408,13 @@ const FormScreen: React.FC<Props> = () => {
 
   /**
    * Sends reply link to given email
-   * 
+   *
    * @param email email
    */
   const sendReplyEmail = async (email: string) => {
     const { REACT_APP_EMAIL_FROM } = process.env;
     const replyEditLink = getReplyEditLink();
-    
+
     if (!replyEditLink || !metaform) {
       return;
     }
@@ -344,7 +447,7 @@ const FormScreen: React.FC<Props> = () => {
       errorContext.setError(strings.errorHandling.formScreen.sendReplyEmail, e);
     }
   };
-  
+
   /**
    * Deletes the reply
    */
@@ -380,30 +483,8 @@ const FormScreen: React.FC<Props> = () => {
   };
 
   /**
-   * Renders the form
-   */
-  const renderForm = () => {
-    if (!metaform) {
-      return null;
-    }
-
-    return (
-      <Form
-        ownerKey={ ownerKey || "" }
-        contexts={ ["FORM"] }
-        metaform={ metaform }
-        getFieldValue={ getFieldValue }
-        setFieldValue={ setFieldValue }
-        onSubmit={ saveReply }
-        onValidationErrorsChange={ onValidationErrorsChange }
-        saving={ savingReply }
-      />
-    );
-  };
-
-  /**
    * Returns draft link
-   * 
+   *
    * @returns draft link or null if not available
    */
   const getDraftLink = () => {
@@ -433,13 +514,13 @@ const FormScreen: React.FC<Props> = () => {
 
   /**
    * Sends draft link to given email
-   * 
+   *
    * @param email email
    */
   const sendDraftEmail = async (email: string) => {
     const { REACT_APP_EMAIL_FROM } = process.env;
     const draftLink = getDraftLink();
-  
+
     if (!draftLink || !metaform) {
       return;
     }
@@ -478,109 +559,26 @@ const FormScreen: React.FC<Props> = () => {
   const renderLogoutLink = () => {};
 
   /**
-   * Finds the reply from API
-   * 
-   * @param replyId reply id
-   * @param currentOwnerKey owner key
-   * @returns found reply or null if not found
+   * Renders the form
    */
-  const findReply = async (replyId: string, currentOwnerKey: string) => {
-    try {
-      const replyApi = apiClient.repliesApi;
-      return await replyApi.findReply({
-        metaformId: metaformId!!,
-        replyId: replyId,
-        ownerKey: currentOwnerKey
-      });
-    } catch (e) {
+  const renderForm = () => {
+    if (!metaform) {
       return null;
     }
+
+    return (
+      <Form
+        ownerKey={ ownerKey || "" }
+        contexts={ ["FORM"] }
+        metaform={ metaform }
+        getFieldValue={ getFieldValue }
+        setFieldValue={ setFieldValue }
+        onSubmit={ saveReply }
+        onValidationErrorsChange={ onValidationErrorsChange }
+        saving={ savingReply }
+      />
+    );
   };
-
-  /**
-   * Finds the draft from API
-   * 
-   * @param draftToFindId draft id
-   * @returns found draft or null if not found
-   */
-  const findDraft = async (draftToFindId: string) => {
-    try {
-      const { draftsApi } = apiClient;
-      return await draftsApi.findDraft({
-        metaformId: metaformId!!,
-        draftId: draftToFindId
-      });
-    } catch (e) {
-      return null;
-    }
-  };
-
-  /**
-   * View setup
-   */
-  const setup = async () => {
-    const query = new URLSearchParams(location.search);
-
-    setDraftId(query.get("draft"));
-    const replyId = query.get("reply");
-    const currentOwnerKey = query.get("owner-key");
-
-    if (!metaformSlug) {
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const { metaformsApi } = apiClient;
-
-      const foundMetaform = await metaformsApi.findMetaform({
-        metaformSlug: metaformSlug
-      });
-      
-      document.title = foundMetaform.title ? foundMetaform.title : "Metaform";
-
-      const preparedFormValues = MetaformUtils.prepareFormValues(foundMetaform, formValues, keycloak);
-
-      if (replyId && currentOwnerKey) {
-        const foundReply = await findReply(replyId, currentOwnerKey);
-        if (foundReply) {
-          const replyData = await MetaformUtils.processReplyData(foundMetaform, foundReply, apiClient.attachmentsApi, currentOwnerKey);
-          if (replyData) {
-            Object.keys(replyData as any).forEach(replyKey => {
-              preparedFormValues[replyKey] = replyData[replyKey] as any;
-            });
-          }
-
-          setReply(foundReply);
-          setOwnerKey(currentOwnerKey);
-          setReplyDeleteVisible(!!currentOwnerKey);
-        } else {
-          setSnackbarMessage({
-            message: strings.formScreen.replyNotFound,
-            severity: "error"
-          });
-        }
-      } else if (draftId) {
-        const draft = await findDraft(draftId);
-        const draftData = draft?.data || {};
-        Object.keys(draftData).forEach(draftKey => {
-          formValues[draftKey] = draftData[draftKey] as any;
-        });
-      }
-
-      setMetaformId(foundMetaform.id);
-      setMetaform(foundMetaform);
-      setFormValues(preparedFormValues);
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.formScreen.findMetaform, e);
-    }
-
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    setup();
-  }, []);
 
   return (
     /**

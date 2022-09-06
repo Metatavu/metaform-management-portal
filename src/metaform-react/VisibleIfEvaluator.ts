@@ -5,7 +5,7 @@ import { FieldValue } from './types';
 /**
  * Helper class for evaluating "visible if" rules
  */
-class VisibileIfEvaluator {
+class VisibleIfEvaluator {
 
   /**
    * Evaluates given visible if rule
@@ -26,18 +26,18 @@ class VisibileIfEvaluator {
     if (field && fieldRule.equals) {
       const equals = fieldRule.equals as FieldValue; 
       const fieldValue = getFieldValue(field);
-      result = VisibileIfEvaluator.compareValues(equals, fieldValue);
+      result = VisibleIfEvaluator.compareValues(equals, fieldValue);
     }
 
     if (!result && field && fieldRule.notEquals) {
       const notEquals = fieldRule.notEquals as FieldValue; 
       const fieldValue = getFieldValue(field);
-      result = !VisibileIfEvaluator.compareValues(notEquals, fieldValue);
+      result = !VisibleIfEvaluator.compareValues(notEquals, fieldValue);
     }
 
     const ands = fieldRule.and || [];
     for (let i = 0; i < ands.length; i++) {
-      if (!VisibileIfEvaluator.isVisible(ands[i], getFieldValue)) {
+      if (!VisibleIfEvaluator.isVisible(ands[i], getFieldValue)) {
         return false;
       }
     }
@@ -45,7 +45,7 @@ class VisibileIfEvaluator {
     if (!result) {
       const ors = fieldRule.or || [];
       for (let i = 0; i < ors.length; i++) {
-        if (VisibileIfEvaluator.isVisible(ors[i], getFieldValue)) {
+        if (VisibleIfEvaluator.isVisible(ors[i], getFieldValue)) {
           return true;
         }
       }
@@ -89,4 +89,4 @@ class VisibileIfEvaluator {
 
 }
 
-export default VisibileIfEvaluator;
+export default VisibleIfEvaluator;

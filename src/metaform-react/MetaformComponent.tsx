@@ -3,9 +3,11 @@ import { Metaform, MetaformField, MetaformFieldType } from "../generated/client/
 import MetaformSectionComponent from "./MetaformSectionComponent";
 import { FieldValue, FileFieldValueItem, IconName, ValidationErrors, ValidationStatus } from "./types";
 import * as EmailValidator from "email-validator";
-import VisibileIfEvaluator from "./VisibleIfEvaluator";
+import VisibleIfEvaluator from "./VisibleIfEvaluator";
 import ContextUtils from "../utils/context-utils";
 import deepEqual from "fast-deep-equal";
+import { MetaformBody, MetaformTitle } from "styled/generic/form";
+import theme from "theme";
 
 /**
  * Component props
@@ -13,10 +15,12 @@ import deepEqual from "fast-deep-equal";
 interface Props {
   form: Metaform;
   formReadOnly: boolean;
-  renderBeforeField?: (fieldName?: string) => JSX.Element | void;
+  titleColor?: string;
+  saving?: boolean;
   contexts?: string[];
   requiredFieldsMissingError?: string;
   showRequiredFieldsMissingError?: boolean;
+  renderBeforeField?: (fieldName?: string) => JSX.Element | void;
   getFieldValue: (fieldName: string) => FieldValue
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
@@ -28,7 +32,6 @@ interface Props {
   onFileShow: (value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
   onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
-  saving?: boolean;
 }
 
 /**
@@ -36,11 +39,13 @@ interface Props {
  */
 const MetaformComponent: React.FC<Props> = ({
   form,
+  saving,
+  titleColor,
   formReadOnly,
-  renderBeforeField,
   contexts,
   requiredFieldsMissingError,
   showRequiredFieldsMissingError,
+  renderBeforeField,
   getFieldValue,
   setFieldValue,
   datePicker,
@@ -51,8 +56,7 @@ const MetaformComponent: React.FC<Props> = ({
   onSubmit,
   onFileShow,
   onFileDelete,
-  onValidationErrorsChange,
-  saving
+  onValidationErrorsChange
 }) => {
   const metaformId = form.id ? `${form.id}` : "";
   const metaformSectionKeyPrefix = `metaform-${metaformId}`;
@@ -66,17 +70,17 @@ const MetaformComponent: React.FC<Props> = ({
     if (!form.title) {
       return null;
     }
-    
+
     return (
-      <h1>
+      <MetaformTitle color={ titleColor || theme.palette.secondary.dark }>
         { form.title }
-      </h1>
+      </MetaformTitle>
     );
   };
 
   /**
    * Validates field value
-   * 
+   *
    * @param field field
    * @param value value
    * @returns validation result
@@ -85,11 +89,11 @@ const MetaformComponent: React.FC<Props> = ({
     if (field.required && !value) {
       return "missing-required";
     }
-    
+
     if (field.type === MetaformFieldType.Email && value && !EmailValidator.validate(value as string)) {
       return "invalid-email";
     }
-    
+
     return null;
   };
 
@@ -98,17 +102,17 @@ const MetaformComponent: React.FC<Props> = ({
    */
   const validateFields = () => {
     const localValidationErros: ValidationErrors = {};
-    
+
     (form.sections || [])
       .filter(section => {
-        return VisibileIfEvaluator.isVisible(section.visibleIf, getFieldValue);
+        return VisibleIfEvaluator.isVisible(section.visibleIf, getFieldValue);
       })
       .forEach(section => {
         (section.fields || [])
           .filter(field => !!field.name)
           .filter(field => ContextUtils.isEnabledContext(contexts, field.contexts))
           .filter(field => {
-            return VisibileIfEvaluator.isVisible(field.visibleIf, getFieldValue);
+            return VisibleIfEvaluator.isVisible(field.visibleIf, getFieldValue);
           })
           .forEach(field => {
             const fieldName = field.name || "";
@@ -134,7 +138,7 @@ const MetaformComponent: React.FC<Props> = ({
 
   /**
    * Sets field value
-   * 
+   *
    * @param fieldName field name
    * @param fieldValue field value
    */
@@ -146,10 +150,8 @@ const MetaformComponent: React.FC<Props> = ({
   const sections = form.sections || [];
 
   return (
-    <div className="metaform">
-      {
-        renderTitle()
-      }
+    <MetaformBody>
+      { renderTitle() }
       {
         sections.map((section, i) => {
           const sectionId = `section-${i}`;
@@ -181,7 +183,7 @@ const MetaformComponent: React.FC<Props> = ({
           );
         })
       }
-    </div>
+    </MetaformBody>
   );
 };
 

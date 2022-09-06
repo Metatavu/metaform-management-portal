@@ -2,8 +2,6 @@ import React from "react";
 import Api from "api";
 import strings from "localization/strings";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
-
-import { NewUserButton, NewMemberGroupButton } from "styled/layouts/admin-layout";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import { PersonAdd, GroupAdd } from "@mui/icons-material";
 import { ErrorContext } from "components/contexts/error-handler";
@@ -13,6 +11,8 @@ import AddMemberGroupDialog from "components/users/add-member-group-dialog";
 import UsersTable from "components/users/users-table";
 import AddMemberDialog from "components/users/add-member-dialog";
 import UsersFilter from "components/users/users-filter";
+import { RoundActionButton } from "styled/generic/form";
+import theme from "theme";
 
 /**
  * Users screen component
@@ -86,18 +86,18 @@ const UsersScreen: React.FC = () => {
    */
   const loadMembersAndGroups = async () => {
     setLoading(true);
-    
+
     await Promise.all([
       loadMemberGroups(),
       loadMetaformMembers()
     ]);
-    
+
     setLoading(false);
   };
 
   /**
    * Event handler for group membership removal from member
-   * 
+   *
    * @param metaformMember metaform member
    * @param groupId group id
    */
@@ -114,7 +114,7 @@ const UsersScreen: React.FC = () => {
         errorContext.setError(strings.errorHandling.usersScreen.removeMemberNotFound);
         return;
       }
-      
+
       const updatedGroup = await metaformMemberGroupsApi.updateMetaformMemberGroup({
         metaformId: selectedMetaformId,
         metaformMemberGroupId: groupId,
@@ -133,7 +133,7 @@ const UsersScreen: React.FC = () => {
 
   /**
    * Event handler for group membership add to member
-   * 
+   *
    * @param metaformMember metaform member
    * @param groupId group id
    */
@@ -175,8 +175,8 @@ const UsersScreen: React.FC = () => {
   };
 
   /**
-   * Event handler for member group dialog create 
-   * 
+   * Event handler for member group dialog create
+   *
    * @param displayName group's display name
    */
   const onAddMemberGroupDialogCreate = async (displayName: string | undefined) => {
@@ -205,7 +205,7 @@ const UsersScreen: React.FC = () => {
   };
 
   /**
-   * Event handler for member group dialog cancel 
+   * Event handler for member group dialog cancel
    */
   const onAddMemberGroupDialogCancel = () => {
     setAddMemberGroupOpen(false);
@@ -219,15 +219,15 @@ const UsersScreen: React.FC = () => {
   };
 
   /**
-   * Event handler for member dialog cancel 
+   * Event handler for member dialog cancel
    */
   const onAddMemberDialogCancel = () => {
     setAddMemberOpen(false);
   };
 
   /**
-   * Event handler for member dialog create 
-   * 
+   * Event handler for member dialog create
+   *
    * @param member member's details
    */
   const onAddMemberDialogCreate = async (member: MetaformMember) => {
@@ -278,22 +278,24 @@ const UsersScreen: React.FC = () => {
         <NavigationTab
           text={ strings.navigationHeader.usersScreens.subheader }
         />
-        <NewUserButton
+        <RoundActionButton
           disabled={ !selectedMetaformId }
           variant="outlined"
           endIcon={ <PersonAdd/> }
           onClick={ onNewMemberButtonClick }
+          sx={{ mr: theme.spacing(2) }}
         >
           { strings.userManagementScreen.addMemberButton }
-        </NewUserButton>
-        <NewMemberGroupButton
+        </RoundActionButton>
+        <RoundActionButton
           disabled={ !selectedMetaformId }
           variant="outlined"
           endIcon={ <GroupAdd/> }
           onClick={ onNewMemberGroupButtonClick }
+          sx={{ mr: theme.spacing(2) }}
         >
           { strings.userManagementScreen.addMemberGroupButton }
-        </NewMemberGroupButton>
+        </RoundActionButton>
       </NavigationTabContainer>
       <UsersFilter
         loading={ loading }

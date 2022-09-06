@@ -8,11 +8,12 @@ import Api from "api";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import { Metaform, MetaformVersion, MetaformVersionType } from "generated/client";
-import { NewUserButton } from "styled/layouts/admin-layout";
 import EditorScreenDrawer from "../../editor/editor-screen-drawer";
 import { useNavigate } from "react-router-dom";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import EditorScreenTable from "../../editor/editor-screen-table";
+import theme from "theme";
+import { RoundActionButton } from "styled/generic/form";
 
 /**
  * Editor screen component
@@ -69,7 +70,7 @@ const EditorScreen: React.FC = () => {
           data: { ...newMetaform } as any
         }
       });
-      
+
       navigate(`${currentPath}/${newMetaform.slug}/${newMetaformVersion.id}`);
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.createForm, e);
@@ -142,12 +143,13 @@ const EditorScreen: React.FC = () => {
         <NavigationTab
           text={ strings.navigationHeader.editorScreens.editorScreen }
         />
-        <NewUserButton
+        <RoundActionButton
           endIcon={ <Add/> }
           onClick={ toggleEditorDrawer }
+          sx={{ mr: theme.spacing(2) }}
         >
           { strings.navigationHeader.editorScreens.newFormButton }
-        </NewUserButton>
+        </RoundActionButton>
       </NavigationTabContainer>
       <Divider/>
       <GenericLoaderWrapper loading={ loading }>

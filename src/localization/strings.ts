@@ -25,6 +25,7 @@ export interface Localized extends LocalizedStringsMethods {
     reload: string;
     show: string;
     addFilesText: string;
+    back: string;
   };
 
   /**
@@ -124,7 +125,7 @@ export interface Localized extends LocalizedStringsMethods {
     forms: string;
     data: string;
     list: string;
-    answer: string;
+    answers: string;
     history: string;
   };
 

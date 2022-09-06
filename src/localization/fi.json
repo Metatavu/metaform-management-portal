@@ -13,7 +13,8 @@
     "close": "Sulje",
     "reload": "Lataa uudelleen",
     "show": "Näytä",
-    "addFilesText": "Tiputa tiedosto tähän, tai klikkaa tästä lisätäksesi liitteitä."
+    "addFilesText": "Tiputa tiedosto tähän, tai klikkaa tästä lisätäksesi liitteitä.",
+    "back": "Takaisin"
   },
 
   "errorHandling": {
@@ -96,7 +97,7 @@
     "forms": "Lomakelistaus",
     "data": "Tiedot",
     "list": "Lista",
-    "answer": "Vastaus",
+    "answers": "Vastaukset",
     "history": "Historia"
   },
 

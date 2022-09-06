@@ -1,6 +1,7 @@
 import FormBreadcrumb from "./form-breadcrumb";
 import strings from "localization/strings";
 import DraftBreadcrumb from "./draft-breadcrumb";
+import ReplyBreadcrumb from "./reply-breadcrumb";
 
 /**
  * Routes for breadcrumb
@@ -43,8 +44,12 @@ const routes = [
     breadcrumb: FormBreadcrumb
   },
   {
-    path: "/admin/forms/:formSlug/answer",
-    breadcrumb: FormBreadcrumb
+    path: "/admin/forms/:formSlug/answers",
+    breadcrumb: strings.breadcrumb.answers
+  },
+  {
+    path: "/admin/forms/:formSlug/answers/:replyId",
+    breadcrumb: ReplyBreadcrumb
   },
   {
     path: "/admin/forms/:formSlug/history",
