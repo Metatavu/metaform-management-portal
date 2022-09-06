@@ -266,6 +266,8 @@ export interface Localized extends LocalizedStringsMethods {
         fieldDefiningCondition: string;
         selectField: string;
         selectVisibilityInfo: string;
+        fieldConditionLabel: string;
+        sectionConditionLabel: string;
       };
     };
   };

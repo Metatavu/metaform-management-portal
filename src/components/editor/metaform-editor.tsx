@@ -265,8 +265,11 @@ const MetaformEditor: React.FC<Props> = ({
             selected={ selected }
             onDeleteClick={ onFieldDeleteClick(sectionIndex, fieldIndex) }
           >
-            <Typography sx={{ color: "gray", margin: "5px" }}>
+            <Typography sx={{ color: "gray", margin: "0px 5px 0px 0px" }}>
               { field.required === true ? `${field.title} *` : field.title }
+            </Typography>
+            <Typography sx={{ color: "red", margin: "0px, 5px 0px" }}>
+              { field.visibleIf?.field ? strings.formatString(strings.draftEditorScreen.editor.visibility.fieldConditionLabel, (field.visibleIf.field.replaceAll("-", " ")).replaceAll(".", " "), field.visibleIf.equals!) : ""}
             </Typography>
             <AddableFieldRenderer
               key="key"
@@ -299,8 +302,11 @@ const MetaformEditor: React.FC<Props> = ({
         <EditorSection
           onClick={ onSectionClick(sectionIndex) }
         >
-          <Typography variant="h1" sx={{ mb: 2 }}>
+          <Typography variant="h1" sx={{ mb: 0 }}>
             { section.title }
+          </Typography>
+          <Typography variant="h2" sx={{ color: "red", mb: 5 }} >
+            { section.visibleIf?.field ? strings.formatString(strings.draftEditorScreen.editor.visibility.sectionConditionLabel, (section.visibleIf.field.replaceAll("-", " ")).replaceAll(".", " "), section.visibleIf.equals!) : ""}
           </Typography>
           <DroppableWrapper
             droppableId={ sectionIndex.toString() }
