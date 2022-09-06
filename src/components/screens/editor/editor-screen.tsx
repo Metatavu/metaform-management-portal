@@ -1,4 +1,4 @@
-import { Divider } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useApiClient } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
@@ -28,18 +28,16 @@ const EditorScreen: React.FC = () => {
 
   const [ metaforms, setMetaforms ] = useState<Metaform[]>([]);
   const [ metaformVersions, setMetaformVersions ] = useState<MetaformVersion[]>([]);
-
   const [ loading, setLoading ] = useState<boolean>(false);
-
   const [ drawerOpen, setDrawerOpen ] = useState<boolean>(false);
 
   /* eslint-disable @typescript-eslint/return-await */
   /**
-   * Gets Metaforms and Metaform Versions 
+   * Gets Metaforms and Metaform Versions
    */
   const loadMetaforms = async () => {
     setLoading(true);
-    
+
     try {
       const forms = await metaformsApi.listMetaforms({});
       const versions = await Promise.all(forms.map(form => versionsApi.listMetaformVersions({ metaformId: form.id! })));
@@ -105,23 +103,6 @@ const EditorScreen: React.FC = () => {
   };
 
   /**
-   * Gets correct URL path to MetaformEditor
-   * 
-   * @returns URL path
-   */
-  const getPathToEditor = async (id: string): Promise<string> => {
-    const metaformToEdit = metaforms.find(metaform => metaform.id === id);
-    
-    if (metaformToEdit) {
-      return `${currentPath}/${metaformToEdit.slug}/${id}`;
-    }
-
-    const { slug } = (metaformVersions.find(version => version.id === id)?.data as Metaform);
-
-    return `${currentPath}/${slug}/${id}`;
-  };
-
-  /**
    * Toggles drawer
    */
   const toggleEditorDrawer = () => {
@@ -139,28 +120,29 @@ const EditorScreen: React.FC = () => {
         setOpen={ setDrawerOpen }
         createMetaform={ createMetaform }
       />
-      <NavigationTabContainer>
-        <NavigationTab
-          text={ strings.navigationHeader.editorScreens.editorScreen }
-        />
-        <RoundActionButton
-          endIcon={ <Add/> }
-          onClick={ toggleEditorDrawer }
-          sx={{ mr: theme.spacing(2) }}
-        >
-          { strings.navigationHeader.editorScreens.newFormButton }
-        </RoundActionButton>
-      </NavigationTabContainer>
-      <Divider/>
-      <GenericLoaderWrapper loading={ loading }>
-        <EditorScreenTable
-          loading={ loading }
-          metaforms={ metaforms }
-          metaformVersions={ metaformVersions }
-          deleteMetaformOrVersion={ deleteMetaformOrVersion }
-          getPathToEditor={ getPathToEditor }
-        />
-      </GenericLoaderWrapper>
+      <Stack overflow="hidden" flex={ 1 }>
+        <NavigationTabContainer>
+          <NavigationTab
+            text={ strings.navigationHeader.editorScreens.editorScreen }
+          />
+          <RoundActionButton
+            endIcon={ <Add/> }
+            onClick={ toggleEditorDrawer }
+            sx={{ mr: theme.spacing(2) }}
+          >
+            { strings.navigationHeader.editorScreens.newFormButton }
+          </RoundActionButton>
+        </NavigationTabContainer>
+        <Divider/>
+        <GenericLoaderWrapper loading={ loading }>
+          <EditorScreenTable
+            loading={ loading }
+            metaforms={ metaforms }
+            metaformVersions={ metaformVersions }
+            deleteMetaformOrVersion={ deleteMetaformOrVersion }
+          />
+        </GenericLoaderWrapper>
+      </Stack>
     </>
   );
 };

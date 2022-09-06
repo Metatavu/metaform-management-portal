@@ -8,7 +8,7 @@ import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
-import { Dictionary, NOT_SELECTED, ReplyStatus } from "types";
+import { Dictionary, ReplyStatus } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import ReplySaved from "./form/ReplySaved";
@@ -115,7 +115,7 @@ const ReplyScreen: FC = () => {
     try {
       await repliesApi.updateReply({
         metaformId: metaform.id!,
-        reply: { ...reply, data: values as any },
+        reply: { ...reply, data: values as { [index: string]: object } },
         replyId: reply.id
       });
 
@@ -195,38 +195,41 @@ const ReplyScreen: FC = () => {
    *
    * @param event event
    */
-  const handleReplyStatusChange = (event: React.ChangeEvent<{ value: string }>) => {
-    if (!reply || !event) {
+  const handleReplyStatusChange = async (event: React.ChangeEvent<{ value: string }>) => {
+    if (!reply?.data || !reply.id) {
       return;
     }
 
-    const updatedReplyData = { ...reply.data, status: event.target.value };
-    const updatedReply = { ...reply, data: updatedReplyData as any };
-    setReply(updatedReply);
+    const values = { ...formValues };
+    values.status = event.target.value;
+
+    setReply({ ...reply, data: values as { [index: string]: object } });
+    setFormValues(values);
   };
 
   /**
    * Renter status switch
    */
   const renderStatusSelect = () => (
-    <TextField
-      select
-      sx={{ width: 300 }}
-      key="metaform-select-container"
-      value={ reply?.data?.status || NOT_SELECTED }
-      onChange={ handleReplyStatusChange }
-    >
-      <MenuItem value={ NOT_SELECTED } key="no-status-selected">{ strings.replyScreen.selectStatus }</MenuItem>
-      {
-        Object.values(ReplyStatus).map(status =>
-          <MenuItem
-            key={ `metaform-reply-status-${status}` }
-            value={ status }
-          >
-            { LocalizationUtils.getLocalizedStatusOfReply(status) }
-          </MenuItem>)
-      }
-    </TextField>
+    <GenericLoaderWrapper style={{ width: 300 }} loading={ loading }>
+      <TextField
+        select
+        sx={{ width: 300 }}
+        key="metaform-select-container"
+        value={ reply?.data?.status }
+        onChange={ handleReplyStatusChange }
+      >
+        {
+          Object.values(ReplyStatus).map(status =>
+            <MenuItem
+              key={ `metaform-reply-status-${status}` }
+              value={ status }
+            >
+              { LocalizationUtils.getLocalizedStatusOfReply(status) }
+            </MenuItem>)
+        }
+      </TextField>
+    </GenericLoaderWrapper>
   );
 
   return (

@@ -46,19 +46,15 @@ const FormRepliesScreen: React.FC = () => {
    *
    * @param metaformData metaform data
    */
-  const getManagementListFields = async (metaformData: Metaform) => {
+  const getManagementListFields = (metaformData: Metaform) => {
     if (!metaformData) {
       return;
     }
 
-    try {
-      const fieldData = (metaformData.sections || [])
-        .flatMap(section => section.fields || [])
-        .filter(field => (field.contexts || []).includes("MANAGEMENT_LIST"));
-      return fieldData;
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.adminRepliesScreen.fetchFields, e);
-    }
+    const fieldData = (metaformData.sections || [])
+      .flatMap(section => section.fields || [])
+      .filter(field => (field.contexts || []).includes("MANAGEMENT_LIST"));
+    return fieldData;
   };
 
   /**

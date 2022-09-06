@@ -6,6 +6,7 @@ import { CircularProgress, Stack } from "@mui/material";
  */
 interface Props {
   loading?: boolean;
+  style?: React.CSSProperties
   children: JSX.Element;
 }
 
@@ -16,6 +17,7 @@ interface Props {
  */
 const GenericLoaderWrapper: FC<Props> = ({
   loading,
+  style,
   children
 }) => {
   /**
@@ -28,7 +30,8 @@ const GenericLoaderWrapper: FC<Props> = ({
         alignItems="center"
         style={{
           flex: 1,
-          height: "100%"
+          height: "100%",
+          ...style
         }}
       >
         <CircularProgress/>

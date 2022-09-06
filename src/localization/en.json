@@ -14,7 +14,8 @@
     "reload": "Reload",
     "show": "Show",
     "addFilesText": "Drop files here or click here to add files.",
-    "back": "Back"
+    "back": "Back",
+    "actions": "Action"
   },
 
   "errorHandling": {
@@ -108,16 +109,7 @@
       "description": "Review of forms and responses.",
       "formScreen": {
         "title": "Form listing",
-        "description": "A list of forms that the user has permission to process.",
-        "form": {
-          "form": "FORM",
-          "latestReply": "LATEST",
-          "newReply": "NEW",
-          "notProcessed": "untreated"
-        }
-      },
-      "formListing": {
-          "form": "FORM"
+        "description": "A list of forms that the user has permission to process."
       },
       "formDataScreen": {
         "title": "Viewing data",
@@ -279,6 +271,15 @@
     "tableField": {
       "addNewRow": "Add new row",
       "unknownColumnType": "Unknown column type"
+    }
+  },
+
+  "formsScreen": {
+    "formTable": {
+      "form": "Form",
+      "latestReply": "Latest",
+      "newReply": "New",
+      "notProcessed": "untreated"
     }
   },
 
