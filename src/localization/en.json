@@ -218,7 +218,6 @@
         "required": "Required",
         "defineUserGroup": "Define a user group",
         "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
-        "selectComponent": "Select a field in the form to edit the field information.",
         "fieldTitle": "Field title",
         "sectionTitle": "Section title"
       },
@@ -230,7 +229,8 @@
         "conditionalFieldInfo": "Select the form field that determines visibility.",
         "conditionalFieldValueInfo":"Select or enter the field value that determines the visibility.",
         "fieldDefiningCondition": "Field defining the condition",
-        "selectField": "Select a field"
+        "selectField": "Select a field",
+        "selectVisibilityInfo": "Select a field in the form to edit the field information."
       }
     }
   },

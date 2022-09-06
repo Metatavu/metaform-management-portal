@@ -216,7 +216,6 @@
         "required": "Pakollisuus",
         "defineUserGroup": "Määrittää käyttäjäryhmän",
         "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
-        "selectComponent": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja.",
         "fieldTitle": "Kentän otsikko",
         "sectionTitle": "Osion otsikko"
       },
@@ -228,8 +227,8 @@
         "conditionalFieldInfo": "Valitse se lomakkeen kenttä, joka määrittää näkyvyyden.",
         "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
         "fieldDefiningCondition": "Ehdon määrittävä kenttä",
-        "selectField": "Valitse kenttä"
-
+        "selectField": "Valitse kenttä",
+        "selectVisibilityInfo": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja."
       }
     }
   },

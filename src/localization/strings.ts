@@ -252,7 +252,6 @@ export interface Localized extends LocalizedStringsMethods {
         defineUserGroup: string;
         selectableFieldsInfo: string;
         required: string;
-        selectComponent: string;
         fieldTitle: string;
         sectionTitle: string;
       };
@@ -265,6 +264,7 @@ export interface Localized extends LocalizedStringsMethods {
         conditionalFieldValueInfo: string;
         fieldDefiningCondition: string;
         selectField: string;
+        selectVisibilityInfo: string;
       };
     };
   };

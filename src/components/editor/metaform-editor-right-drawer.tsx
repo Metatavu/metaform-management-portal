@@ -47,7 +47,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   };
 
   /**
-   * Updates metaform field VisiblityIf
+   * Updates metaform field VisiblityIf parameters
    *
    * @param newMetaformField new metaform field
    * @param eventValue FieldCondition value
@@ -94,7 +94,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   * 
   * @param title Category title
   */
-  const renderFieldsCategorytitle = (title: string) => {
+  const renderFieldsCategoryTitle = (title: string) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -113,10 +113,10 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
    * Render feature components
    * 
    */
-  const featureComponents = () => {
+  const renderFeatures = () => {
     if (sectionIndex === undefined && fieldIndex === undefined) {
       return (
-        <Typography>{ strings.draftEditorScreen.editor.features.selectComponent }</Typography>
+        <Typography>{ strings.draftEditorScreen.editor.visibility.selectVisibilityInfo }</Typography>
       );
     }
 
@@ -142,7 +142,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
 
         return (
           <>
-            { renderFieldsCategorytitle(strings.draftEditorScreen.editor.features.fieldDatas) }
+            { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.fieldDatas) }
             <TextField
               label={ strings.draftEditorScreen.editor.features.fieldTitle }
               value={ field.title ? field.title : " " }
@@ -152,7 +152,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
             />
         
             <Divider/>
-            { renderFieldsCategorytitle(strings.draftEditorScreen.editor.features.required) }
+            { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.required) }
             <FormControlLabel
               label={ strings.generic.yes }
               control={
@@ -199,7 +199,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       return (
         <>
-          { renderFieldsCategorytitle(strings.draftEditorScreen.editor.features.visiblityCondition) }
+          { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.visiblityCondition) }
           <FormControl fullWidth disabled={ !disabledValue }>
             <InputLabel id="fieldCategoryVisiblityConditionLabel">
               { requiredConditionField ?
@@ -341,7 +341,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       return (
         <>
-          { renderFieldsCategorytitle(strings.draftEditorScreen.editor.features.fieldVisiblity) }
+          { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.fieldVisiblity) }
           <FormControlLabel
             control={
               <Switch
@@ -376,7 +376,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
         />
       </Tabs>
       <TabPanel value={ tabIndex } index={ 0 }>
-        { featureComponents() }
+        { renderFeatures() }
       </TabPanel>
 
       <TabPanel value={ tabIndex } index={ 1 }>
