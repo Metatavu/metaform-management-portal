@@ -116,6 +116,11 @@ export interface Localized extends LocalizedStringsMethods {
   header: {
     user: string;
     logo: string;
+    selectLanguage: string;
+    languages: {
+      fi: string;
+      en: string;
+    }
   };
 
   /**

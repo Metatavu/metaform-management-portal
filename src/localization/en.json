@@ -91,7 +91,12 @@
 
   "header": {
     "user": "User",
-    "logo": "Essote logo"
+    "logo": "Essote logo",
+    "selectLanguage": "Select language",
+    "languages": {
+      "fi": "Suomi",
+      "en": "English"
+    }
   },
 
   "breadcrumb": {
