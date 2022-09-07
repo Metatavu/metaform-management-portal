@@ -387,6 +387,8 @@ const FormScreen: React.FC<Props> = () => {
     } catch (e) {
       errorContext.setError(strings.errorHandling.formScreen.saveReply, e);
     }
+
+    setSaving(false);
   };
 
   /**
