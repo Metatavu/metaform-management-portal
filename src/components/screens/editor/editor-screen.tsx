@@ -139,6 +139,7 @@ const EditorScreen: React.FC = () => {
 
       navigate(`${currentPath}/${metaformToEdit.slug}/${newMetaformVersion.id}`);
     }
+    
     const versionToEdit = metaformVersions.find(version => version.id === id);
     const versionData = versionToEdit?.data as Metaform;
 

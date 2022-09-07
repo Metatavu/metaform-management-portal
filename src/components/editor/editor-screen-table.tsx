@@ -270,8 +270,7 @@ const EditorScreenTable: FC<Props> = ({
         const versionRow = row.row as MetaformVersionRow;
         if (versionRow.type === MetaformVersionType.Archived) {
           return [
-            renderActionCellArchiveItem(row.id as string),
-            renderActionCellDeleteItem(row.id as string)
+            renderActionCellArchiveItem(row.id as string)
           ];
         }
 
