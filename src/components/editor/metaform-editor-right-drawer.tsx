@@ -31,7 +31,6 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   const [ requiredConditionField, setRequiredConditionField ] = React.useState<string>("");
   const [ requiredConditionEqualsValue, setRequiredConditionEqualsValue ] = React.useState<string>("");
   const [ requiredConditionInfoField, setRequiredConditionInfoField ] = React.useState<boolean>(true);
-  const [ sectionSelection, setSectionSelection] = React.useState<boolean | undefined>(false);
   const [ selectedComponent, setSelectedComponent] = React.useState<string | undefined>("");
   const [ metaFormFieldSection, setMetaFormFieldSection] = React.useState<MetaformField | MetaformSection>();
   const [ metaformSectionTitle, setMetaFormSectionTitle] = React.useState<string | undefined>("");
@@ -42,46 +41,29 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
    */
   const setVisiblityComponentValues = () => {
     if (fieldIndex === undefined && sectionIndex !== undefined) {
-      setMetaFormFieldSection(pendingForm.sections![sectionIndex]);
-      setMetaFormSectionTitle(pendingForm.sections![sectionIndex].title);
-      const section = pendingForm.sections![sectionIndex].visibleIf;
-      if (section) {
-        setDisabledValue(true);
-        setRequiredConditionField(section.field!);
-        setRequiredConditionEqualsValue(section.equals!);
-      } else {
-        setDisabledValue(false);
-        setRequiredConditionField("");
-        setRequiredConditionEqualsValue("");
-      }
+      const section = pendingForm.sections![sectionIndex!].visibleIf;
+      setMetaFormFieldSection(pendingForm.sections![sectionIndex!]);
+      setMetaFormSectionTitle(pendingForm.sections![sectionIndex!].title ?? "");
+      setDisabledValue(section as boolean);
+      setRequiredConditionField(section ? section.field! : "");
+      setRequiredConditionEqualsValue(section ? section.equals! : "");
+      setRequiredConditionInfoField(!section as boolean);
     }
+
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      const field = pendingForm.sections![sectionIndex].fields![fieldIndex].visibleIf;
       setMetaFormFieldSection(pendingForm.sections![sectionIndex].fields![fieldIndex]);
       setSelectedComponent(pendingForm.sections![sectionIndex].fields![fieldIndex].name);
-      const field = pendingForm.sections![sectionIndex].fields![fieldIndex].visibleIf;
-      if (field) {
-        setDisabledValue(true);
-        setRequiredConditionField(field.field!);
-        setRequiredConditionEqualsValue(field.equals!);
-      } else {
-        setDisabledValue(false);
-        setRequiredConditionField("");
-        setRequiredConditionEqualsValue("");
-      }
+      setDisabledValue(field as boolean);
+      setRequiredConditionField(field ? field.field! : "");
+      setRequiredConditionEqualsValue(field ? field.equals! : "");
+      setRequiredConditionInfoField(!field as boolean);
     }
   };
 
   useEffect(() => {
     setVisiblityComponentValues();
   }, [fieldIndex, sectionIndex]);
-
-  useEffect(() => {
-    if (sectionIndex !== undefined) {
-      setSectionSelection(true);
-    } else {
-      setSectionSelection(false);
-    }
-  }, [sectionIndex]);
 
   /**
    * Updates metaform field
@@ -102,22 +84,23 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
    * Updates metaform field or section visibleIf parameters
    *
    * @param newMetaformUpdateFieldOrSection metaform field or section
-   * @param value event condition equals value (kylla / ei)
+   * @param value event condition equals value (yes / no)
    */
-  const updateFormFieldOrSectionVisiblityValues = (newMetaformUpdateFieldOrSection: any, value: string) => {
+  const updateFormFieldOrSectionVisiblityValues = (newMetaformUpdateFieldOrSection: MetaformField | MetaformSection, value: string) => {
     setRequiredConditionEqualsValue(value);
+    setRequiredConditionInfoField(false);
     if (sectionIndex === undefined) {
       return;
     }
     if (sectionIndex !== undefined && fieldIndex === undefined) {
       const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections?.splice(sectionIndex, 1, newMetaformUpdateFieldOrSection);
+        draftForm.sections?.splice(sectionIndex, 1, newMetaformUpdateFieldOrSection as MetaformSection);
       });
       setPendingForm(updatedForm);
     }
-    if (fieldIndex !== undefined) {
+    if (sectionIndex !== undefined && fieldIndex !== undefined) {
       const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, newMetaformUpdateFieldOrSection);
+        draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex!, 1, newMetaformUpdateFieldOrSection as MetaformField);
       });
       setPendingForm(updatedForm);
     }
@@ -253,7 +236,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
    *
    */
   const fieldConditionComponent = () => {
-    if (sectionSelection) {
+    if (sectionIndex !== undefined) {
       return (
         <>
           { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.visiblityCondition) }
@@ -344,14 +327,15 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
               }
             >
               <MenuItem sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.selectField }</MenuItem>
-              <MenuItem value="kylla">{ strings.generic.yes }</MenuItem>
-              <MenuItem value="ei">{ strings.generic.no }</MenuItem>
+              <MenuItem value="yes">{ strings.generic.yes }</MenuItem>
+              <MenuItem value="no">{ strings.generic.no }</MenuItem>
             </Select>
           </FormControl>
           { requiredConditionInfoField
             ? <Typography sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.conditionalFieldValueInfo }</Typography>
             : null
           }
+          <Divider/>
         </>
       );
     }
@@ -359,12 +343,11 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
 
   /**
   * Render components depending what is switch value
-  *
   * @param value Switch value true or false
   * 
   */
   const setSwitchValue = (value: boolean) => {
-    if (!sectionSelection) {
+    if (sectionIndex === undefined) {
       return;
     }
 
@@ -401,7 +384,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
    * 
    */
   const visiblitySwitch = () => {
-    if (sectionSelection) {
+    if (sectionIndex !== undefined) {
       return (
         <>
           { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.fieldVisiblity) }
