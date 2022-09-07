@@ -60,6 +60,16 @@ const EditorScreenTable: FC<Props> = ({
   };
 
   /**
+   * Handles delete button click
+   * 
+   * @param id metaform or version id
+   */
+  const handleDeleteDialogOpen = (id: string) => {
+    setSelectedId(id);
+    setDeleteDialogOpen(!deleteDialogOpen);
+  };
+
+  /**
    * Renders delete confirm dialog
    */
   const renderDeleteConfirm = () => (
@@ -113,11 +123,11 @@ const EditorScreenTable: FC<Props> = ({
   /**
    * Renders action cell delete items
    */
-  const renderActionCellDeleteItem = () => (
+  const renderActionCellDeleteItem = (row: GridRowParams) => (
     <GridActionsCellItem
       icon={ <Delete/> }
       label={ strings.generic.delete }
-      onClick={ () => setDeleteDialogOpen(!deleteDialogOpen) }
+      onClick={ () => handleDeleteDialogOpen(row.id as string) }
       showInMenu
     />
   );
@@ -234,7 +244,7 @@ const EditorScreenTable: FC<Props> = ({
       width: 150,
       getActions: (row: GridRowParams) => [
         renderActionCellEditItem(slug, row),
-        renderActionCellDeleteItem()
+        renderActionCellDeleteItem(row)
       ]
     }
   ];
@@ -271,6 +281,7 @@ const EditorScreenTable: FC<Props> = ({
   */
   const renderMetaformAccordion = (metaform: Metaform) => (
     <Accordion
+      key={ metaform.id }
       disableGutters
       sx={{ backgroundColor: "rgba(0,0,0,0.03)" }}
     >
