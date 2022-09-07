@@ -38,6 +38,7 @@ export interface Localized extends LocalizedStringsMethods {
     authentication: string;
     dialog: {
       reloadPage: string;
+      tryAgain: string;
       unsavedContents: string;
       reportIssue: string;
       technicalDetails: string;
@@ -65,6 +66,8 @@ export interface Localized extends LocalizedStringsMethods {
       autosave: string;
       deleteReply: string;
       findMetaform: string;
+      noConnection: string;
+      noConnectionHelper: string;
     },
     formAutoComplete: {
       autocompleteField: string;
