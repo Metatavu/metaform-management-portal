@@ -58,6 +58,10 @@ const DraftEditorScreen: React.FC = () => {
   const saveMetaformVersion = async () => {
     setLoading(true);
 
+    if (!draftId || !formSlug) {
+      return;
+    }
+
     try {
       await versionsApi.createMetaformVersion({
         metaformId: draftForm.id!,
@@ -68,7 +72,7 @@ const DraftEditorScreen: React.FC = () => {
       });
       await versionsApi.deleteMetaformVersion({
         metaformId: draftForm.id!,
-        versionId: draftId!
+        versionId: draftId
       });
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.saveDraft, e);
@@ -83,6 +87,10 @@ const DraftEditorScreen: React.FC = () => {
   const publishMetaformVersion = async () => {
     setLoading(true);
 
+    if (!draftId || !formSlug) {
+      return;
+    }
+    
     try {
       const form = await metaformsApi.findMetaform({ metaformSlug: formSlug });
       await metaformsApi.updateMetaform({
@@ -99,7 +107,7 @@ const DraftEditorScreen: React.FC = () => {
       });
       await versionsApi.deleteMetaformVersion({
         metaformId: form.id!,
-        versionId: draftId!
+        versionId: draftId
       });
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.publishDraft, e);

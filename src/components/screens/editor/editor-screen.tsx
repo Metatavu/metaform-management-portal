@@ -83,23 +83,28 @@ const EditorScreen: React.FC = () => {
    */
   const handleArchiveToDraft = async (versionToEdit: MetaformVersion) => {
     const { slug, id } = versionToEdit.data as Metaform;
+
+    if (!slug || !id) {
+      return;
+    }
+
     const oldDraftVersion = metaformVersions.find(metaformVersion =>
       (metaformVersion.data as Metaform).id === id &&
       metaformVersion.type === MetaformVersionType.Draft);
     
     if (oldDraftVersion) {
       await versionsApi.deleteMetaformVersion({
-        metaformId: id!,
+        metaformId: id,
         versionId: oldDraftVersion.id!
       });
     }
 
     await versionsApi.deleteMetaformVersion({
-      metaformId: id!,
+      metaformId: id,
       versionId: versionToEdit.id!
     });
     const newMetaformVersion = await versionsApi.createMetaformVersion({
-      metaformId: id!,
+      metaformId: id,
       metaformVersion: {
         type: MetaformVersionType.Draft,
         data: { ...versionToEdit.data }
@@ -125,8 +130,7 @@ const EditorScreen: React.FC = () => {
         metaformVersion.type === MetaformVersionType.Draft);
 
       if (version) {
-        navigate(`${currentPath}/${metaformToEdit.slug}/${version.id}`);
-        return;
+        return navigate(`${currentPath}/${metaformToEdit.slug}/${version.id}`);
       }
 
       const newMetaformVersion = await versionsApi.createMetaformVersion({
@@ -141,14 +145,18 @@ const EditorScreen: React.FC = () => {
     }
     
     const versionToEdit = metaformVersions.find(version => version.id === id);
+
+    if (!versionToEdit) {
+      return;
+    }
+
     const versionData = versionToEdit?.data as Metaform;
 
-    switch (versionToEdit!.type) {
-      case MetaformVersionType.Archived:
-        return handleArchiveToDraft(versionToEdit!);
-      default:
-        return navigate(`${currentPath}/${versionData.slug}/${versionToEdit!.id}`);
+    if (versionToEdit.type === MetaformVersionType.Archived) {
+      return handleArchiveToDraft(versionToEdit);
     }
+    
+    return navigate(`${currentPath}/${versionData.slug}/${versionToEdit.id}`);
   };
 
   /**
