@@ -123,11 +123,11 @@ const EditorScreenTable: FC<Props> = ({
   /**
    * Renders action cell delete items
    */
-  const renderActionCellDeleteItem = (row: GridRowParams) => (
+  const renderActionCellDeleteItem = (id: string) => (
     <GridActionsCellItem
       icon={ <Delete/> }
       label={ strings.generic.delete }
-      onClick={ () => handleDeleteDialogOpen(row.id as string) }
+      onClick={ () => handleDeleteDialogOpen(id) }
       showInMenu
     />
   );
@@ -244,7 +244,7 @@ const EditorScreenTable: FC<Props> = ({
       width: 150,
       getActions: (row: GridRowParams) => [
         renderActionCellEditItem(slug, row),
-        renderActionCellDeleteItem(row)
+        renderActionCellDeleteItem(row.id as string)
       ]
     }
   ];
