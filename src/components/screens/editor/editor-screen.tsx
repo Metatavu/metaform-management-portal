@@ -75,6 +75,82 @@ const EditorScreen: React.FC = () => {
     }
   };
 
+  // TODO: Investigate possibility of adding PUT method to VersionsApi to simplify this!
+  /**
+   * Handle Archive to Draft conversion
+   * 
+   * @param versionToEdit Version to edit
+   */
+  const handleArchiveToDraft = async (versionToEdit: MetaformVersion) => {
+    const { slug, id } = versionToEdit.data as Metaform;
+    const oldDraftVersion = metaformVersions.find(metaformVersion =>
+      (metaformVersion.data as Metaform).id === id &&
+      metaformVersion.type === MetaformVersionType.Draft);
+    
+    if (oldDraftVersion) {
+      await versionsApi.deleteMetaformVersion({
+        metaformId: id!,
+        versionId: oldDraftVersion.id!
+      });
+    }
+
+    await versionsApi.deleteMetaformVersion({
+      metaformId: id!,
+      versionId: versionToEdit.id!
+    });
+    const newMetaformVersion = await versionsApi.createMetaformVersion({
+      metaformId: id!,
+      metaformVersion: {
+        type: MetaformVersionType.Draft,
+        data: { ...versionToEdit.data }
+      }
+    });
+
+    return navigate(`${currentPath}/${slug}/${newMetaformVersion.id!}`);
+  };
+
+  /**
+   * Navigates to MetaformEditor.
+   * Creates new MetaformVersion when 
+   * user wants to edit production grade Metaform.
+   *
+   *  @param id id
+   */
+  const goToEditor = async (id: string) => {
+    const metaformToEdit = metaforms.find(metaform => metaform.id === id);
+
+    if (metaformToEdit) {
+      const version = metaformVersions.find(metaformVersion =>
+        (metaformVersion.data as Metaform).id === metaformToEdit.id &&
+        metaformVersion.type === MetaformVersionType.Draft);
+
+      if (version) {
+        navigate(`${currentPath}/${metaformToEdit.slug}/${version.id}`);
+        return;
+      }
+
+      const newMetaformVersion = await versionsApi.createMetaformVersion({
+        metaformId: metaformToEdit.id!,
+        metaformVersion: {
+          type: MetaformVersionType.Draft,
+          data: { ...metaformToEdit } as { [key: string]: object }
+        }
+      });
+
+      navigate(`${currentPath}/${metaformToEdit.slug}/${newMetaformVersion.id}`);
+    }
+    
+    const versionToEdit = metaformVersions.find(version => version.id === id);
+    const versionData = versionToEdit?.data as Metaform;
+
+    switch (versionToEdit!.type) {
+      case MetaformVersionType.Archived:
+        return handleArchiveToDraft(versionToEdit!);
+      default:
+        return navigate(`${currentPath}/${versionData.slug}/${versionToEdit!.id}`);
+    }
+  };
+
   /**
    * Deletes a Metaform or MetaformVersion
    */
@@ -140,6 +216,7 @@ const EditorScreen: React.FC = () => {
             metaforms={ metaforms }
             metaformVersions={ metaformVersions }
             deleteMetaformOrVersion={ deleteMetaformOrVersion }
+            goToEditor={ goToEditor }
           />
         </GenericLoaderWrapper>
       </Stack>

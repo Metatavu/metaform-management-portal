@@ -15,7 +15,8 @@
     "show": "Näytä",
     "addFilesText": "Tiputa tiedosto tähän, tai klikkaa tästä lisätäksesi liitteitä.",
     "back": "Takaisin",
-    "actions": "Toiminnot"
+    "actions": "Toiminnot",
+    "restore": "Palauta"
   },
 
   "errorHandling": {
@@ -41,7 +42,8 @@
     },
     "draftEditorScreen": {
       "findDraft": "Lomakeversion haku epäonnistui",
-      "saveDraft": "Lomakeversion tallentaminen epäonnistui"
+      "saveDraft": "Lomakeversion tallentaminen epäonnistui",
+      "publishDraft": "Lomakeversion julkaiseminen epäonnistui"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",

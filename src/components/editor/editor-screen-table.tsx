@@ -1,4 +1,4 @@
-import { DateRangeRounded, Delete, KeyboardArrowDown, ListRounded, PersonRounded, Settings } from "@mui/icons-material";
+import { Archive, DateRangeRounded, Delete, KeyboardArrowDown, ListRounded, PersonRounded, RestorePage, Settings, StarOutline } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, Divider, Typography } from "@mui/material";
 import ConfirmDialog from "components/generic/confirm-dialog";
 import GenericLoaderWrapper from "components/generic/generic-loader";
@@ -9,21 +9,20 @@ import React, { FC, useState } from "react";
 import { FormListContainer, FormPagination, FormsContainer } from "styled/editor/metaform-editor";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 import { DataGrid, GridActionsCellItem, GridColumns, GridRowParams } from "@mui/x-data-grid";
-import { useNavigate } from "react-router-dom";
-
 /**
- * Component props
- */
+* Component props
+*/
 interface Props {
   loading: boolean;
   metaforms: Metaform[];
   metaformVersions: MetaformVersion[];
   deleteMetaformOrVersion: (id: string) => void;
+  goToEditor: (id: string) => void;
 }
 
 /**
- * Interface for MetaformVersionRow
- */
+* Interface for MetaformVersionRow
+*/
 interface MetaformVersionRow {
   id: string;
   typeString?: string;
@@ -34,13 +33,14 @@ interface MetaformVersionRow {
 }
 
 /**
- * Table component for Editor screen
- */
+* Table component for Editor screen
+*/
 const EditorScreenTable: FC<Props> = ({
   loading,
   metaforms,
   metaformVersions,
-  deleteMetaformOrVersion
+  deleteMetaformOrVersion,
+  goToEditor
 }) => {
   // TODO: Currently API doesn't return metadata (created/modified dates etc) for Metaforms.
   // That needs to be changed and after that, this components version row functionality need slight refactoring.
@@ -49,7 +49,6 @@ const EditorScreenTable: FC<Props> = ({
   const [ page, setPage ] = useState(0);
   const [ pageSize, setPageSize ] = useState(25);
 
-  const navigate = useNavigate();
   /**
    * Handles delete confirmation
    */
@@ -117,11 +116,25 @@ const EditorScreenTable: FC<Props> = ({
     });
     versionRows.push(productionVersion);
 
-    return versionRows;
+    return versionRows.reverse();
   };
 
   /**
+   * Renders action cell archive items
+   * 
+   */
+  const renderActionCellArchiveItem = (id: string) => (
+    <GridActionsCellItem
+      icon={ <RestorePage/> }
+      label={ strings.generic.restore }
+      onClick={ () => goToEditor(id) }
+      showInMenu
+    />
+  );
+
+  /**
    * Renders action cell delete items
+   * @param id form or version id
    */
   const renderActionCellDeleteItem = (id: string) => (
     <GridActionsCellItem
@@ -135,24 +148,35 @@ const EditorScreenTable: FC<Props> = ({
   /**
    * Renders action cell edit items
    *
-   * @param slug metaform slug
-   * @param row grid row parameters
+   * @param id form or version id
    */
-  const renderActionCellEditItem = (slug:string, row: GridRowParams) => (
+  const renderActionCellEditItem = (id: string) => (
     <GridActionsCellItem
       icon={ <Settings/> }
       label={ strings.generic.edit }
-      onClick={ () => navigate(`${slug}/${row.id}`) }
+      onClick={ () => goToEditor(id) }
       showInMenu
     />
   );
 
   /**
-   * Gets columns
-   *
-   * @param slug slug
+   * Renders version icon
    */
-  const getColumns = (slug: string): GridColumns => [
+  const renderVersionIcon = (type?: MetaformVersionType) => {
+    switch (type) {
+      case MetaformVersionType.Draft:
+        return <ListRounded style={{ fill: "darkgrey" }}/>;
+      case MetaformVersionType.Archived:
+        return <Archive style={{ fill: "darkgrey" }}/>;
+      default:
+        return <StarOutline style={{ fill: "darkgrey" }}/>;
+    }
+  };
+
+  /**
+   * Gets columns
+   */
+  const getColumns = (): GridColumns => [
     {
       field: "typeString",
       headerName: strings.editorScreen.formVersion,
@@ -168,7 +192,7 @@ const EditorScreenTable: FC<Props> = ({
       renderCell: params => {
         return (
           <AdminFormListStack direction="row">
-            <ListRounded style={ { fill: "darkgrey" } }/>
+            { renderVersionIcon(params.row.type) }
             <AdminFormTypographyField>{ params.row.typeString }</AdminFormTypographyField>
           </AdminFormListStack>
         );
@@ -242,10 +266,19 @@ const EditorScreenTable: FC<Props> = ({
       type: "actions",
       headerName: strings.generic.actions,
       width: 150,
-      getActions: (row: GridRowParams) => [
-        renderActionCellEditItem(slug, row),
-        renderActionCellDeleteItem(row.id as string)
-      ]
+      getActions: (row: GridRowParams) => {
+        const versionRow = row.row as MetaformVersionRow;
+        if (versionRow.type === MetaformVersionType.Archived) {
+          return [
+            renderActionCellArchiveItem(row.id as string)
+          ];
+        }
+
+        return [
+          renderActionCellEditItem(row.id as string),
+          renderActionCellDeleteItem(row.id as string)
+        ];
+      }
     }
   ];
 
@@ -268,7 +301,7 @@ const EditorScreenTable: FC<Props> = ({
         disableColumnSelector
         disableSelectionOnClick
         rows={ versions }
-        columns={ getColumns(metaform.slug!!) }
+        columns={ getColumns() }
         getRowId={ row => row.id }
       />
     );
