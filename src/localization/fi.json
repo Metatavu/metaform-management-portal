@@ -90,7 +90,12 @@
 
   "header": {
     "user": "Käyttäjä",
-    "logo": "Essote logo"
+    "logo": "Essote logo",
+    "selectLanguage": "Valitse kieli",
+    "languages": {
+      "fi": "Suomi",
+      "en": "English"
+    }
   },
 
   "breadcrumb": {
@@ -133,7 +138,7 @@
         "description": "Valitse editoitava lomake, tai luo uusi lomake."
       },
       "draftEditorScreen": {
-        "title": "luonnoseditori",
+        "title": "Luonnoseditori",
         "description": "Lomakkeen muokkaus"
       },
       "newFormButton": "Luo uusi lomake"
