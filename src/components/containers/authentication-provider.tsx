@@ -30,7 +30,7 @@ interface DecodedAccessToken {
  */
 const AuthenticationProvider: React.FC = ({ children }) => {
   const errorContext = React.useContext(ErrorContext);
-  
+
   const keycloak = useAppSelector(selectKeycloak);
   const anonymousKeycloak = useAppSelector(selectAnonymousKeycloak);
   const dispatch = useAppDispatch();
@@ -38,7 +38,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
 
   /**
    * Builds access token object from login data
-   * 
+   *
    * @param tokenData token data
    */
   const buildToken = (tokenData: any): AccessToken => {
@@ -55,7 +55,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       realmRoles: decodedToken.realm_access?.roles || []
     };
   };
-  
+
   /**
    * Initializes Anonymous Keycloak authentication. Used for non-admin routes.
    */
@@ -64,7 +64,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       const { username, password } = Config.get().anonymousUser;
       const authConfig = Config.get().auth;
       const keycloakInstance = new Keycloak(authConfig);
-      
+
       const response = await fetch(`${authConfig.url}/realms/${authConfig.realm}/protocol/openid-connect/token`, {
         method: "POST",
         body: querystring.stringify({
@@ -79,7 +79,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       });
 
       const accessToken = buildToken(await response.json());
-      
+
       await keycloakInstance.init({
         token: accessToken.access_token,
         refreshToken: accessToken.refresh_token,

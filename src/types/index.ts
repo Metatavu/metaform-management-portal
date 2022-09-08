@@ -1,3 +1,5 @@
+import { RootState } from "app/store";
+
 /**
  * Application configuration
  */
@@ -71,6 +73,11 @@ export type ListItemData = {
 export const NOT_SELECTED = "NOT_SELECTED";
 
 /**
+ * System admin role
+ */
+export const SYSTEM_ADMIN_ROLE = "system-admin";
+
+/**
  * React dnd dragging mode
  */
 export enum DraggingMode {
@@ -127,6 +134,16 @@ export enum SosmetaType {
   STRING = "string"
 }
 
+/**
+ * Enum for user permission level (metaform specific)
+ */
+export enum PermissionLevel {
+  SYSTEM_ADMIN = "system-admin",
+  METAFORM_ADMIN = "metaform-admin",
+  METAFORM_MANGER = "metaform-manager",
+  ANON = "anon"
+}
+
 declare module "@mui/material/styles" {
   interface CustomTheme {
     logo: {
@@ -136,4 +153,12 @@ declare module "@mui/material/styles" {
 
   interface Theme extends CustomTheme {}
   interface ThemeOptions extends CustomTheme {}
+}
+
+/**
+ * Thunk API config
+ */
+export interface ThunkApiConfig {
+  state: RootState;
+  rejectValue: string;
 }

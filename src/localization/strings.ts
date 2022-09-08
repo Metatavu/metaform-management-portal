@@ -35,6 +35,7 @@ export interface Localized extends LocalizedStringsMethods {
   errorHandling: {
     title: string;
     authentication: string;
+    noToken: string;
     dialog: {
       reloadPage: string;
       unsavedContents: string;
@@ -44,6 +45,9 @@ export interface Localized extends LocalizedStringsMethods {
       url: string;
       errorMessage: string;
     },
+    accessControl: {
+      loadPermission: string;
+    };
     adminFormsScreen: {
       listForms: string;
       createForm: string;

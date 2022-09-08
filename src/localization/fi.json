@@ -21,6 +21,7 @@
   "errorHandling": {
     "title": "Tapahtui virhe",
     "authentication": "Tunnistautumisessa tapahtui virhe",
+    "noToken": "No token",
     "dialog": {
       "title": "Hups! Jokin meni pieleen",
       "reloadPage": "Kokeile ladata sivu uudelleen.",
@@ -31,6 +32,9 @@
       "url": "Osoite: {0}",
       "errorMessage": "Virheilmoitus: ",
       "close": "Sulje"
+    },
+    "accessControl": {
+      "loadPermission": "Loading permission failed"
     },
     "adminFormsScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",

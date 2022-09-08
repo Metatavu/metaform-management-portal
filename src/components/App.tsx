@@ -9,7 +9,7 @@ import BasicLayout from "./layouts/basic-layout";
 import AdminLayout from "./layouts/admin-layout";
 import PublicLayout from "./layouts/public-layout";
 import PublicRoutes from "./screens/public/public-routes";
-import AuthenticationProvider from "./containers/access-token-refresh";
+import AuthenticationProvider from "./containers/authentication-provider";
 import moment from "moment";
 import "moment/locale/fi";
 import strings from "localization/strings";

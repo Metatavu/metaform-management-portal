@@ -21,6 +21,7 @@
   "errorHandling": {
     "title": "Error",
     "authentication": "User authentication failed",
+    "noToken": "No token",
     "dialog": {
       "title": "Whoops! Something went wrong",
       "reloadPage": "Try reloading the page.",
@@ -31,6 +32,9 @@
       "url": "URL: {0}",
       "errorMessage": "Error message: ",
       "close": "Close"
+    },
+    "accessControl": {
+      "loadPermission": "Loading permission failed"
     },
     "adminFormsScreen": {
       "listForms": "Fetching forms failed",
