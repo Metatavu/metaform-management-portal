@@ -1,7 +1,9 @@
-import { Alert, Snackbar, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import GenericSnackbar from "components/generic/generic-snackbar";
 import strings from "localization/strings";
 import React, { useEffect, useState } from "react";
 
+/* eslint-disable */
 /**
  * ConnectionHandler component
  */
@@ -12,18 +14,16 @@ const ConnectionHandler: React.FC = ({ children }) => {
    * Renders connection lost alert
    */
   const renderConnectionLostAlert = () => (
-    <Snackbar
+    <GenericSnackbar
       open={ connectionLost }
+      onClose={ () => setConnectionLost(!connectionLost) }
+      severity="error"
     >
-      <Alert
-        variant="filled"
-        severity="error"
-        elevation={ 5 }
-      >
+      <>
         <Typography variant="h5">{ strings.errorHandling.formScreen.noConnection }</Typography>
         <Typography variant="caption">{ strings.errorHandling.formScreen.noConnectionHelper }</Typography>
-      </Alert>
-    </Snackbar>
+      </>
+    </GenericSnackbar>
   );
 
   /**

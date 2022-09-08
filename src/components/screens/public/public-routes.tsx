@@ -1,5 +1,4 @@
 import ConnectionHandler from "components/contexts/connection-handler";
-import LeavePageHandler from "components/contexts/leave-page-handler";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import FormScreen from "../forms/form-screen";
@@ -16,7 +15,7 @@ const PublicRoutes: React.FC = () => (
     />
     <Route
       path="/:metaformSlug"
-      element={ <LeavePageHandler><ConnectionHandler><FormScreen/></ConnectionHandler></LeavePageHandler> }
+      element={ <ConnectionHandler><FormScreen/></ConnectionHandler> }
     />
   </Routes>
 );

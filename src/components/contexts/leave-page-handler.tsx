@@ -1,29 +1,44 @@
 import React, { useEffect } from "react";
 
 interface Props {
+  active: boolean;
   children: JSX.Element;
 }
 
 /**
  * LeavePageHandler component
  */
-const LeavePageHandler: React.FC<Props> = ({ children }) => {
+const LeavePageHandler: React.FC<Props> = ({
+  active,
+  children
+}) => {
   /**
    * Handles user alert
    */
   const handleUserAlert = (e: BeforeUnloadEvent) => {
     e.preventDefault();
-    e.returnValue = "Are you sure you wish to leave this page?";
+    e.returnValue = "";
 
     return e.returnValue;
   };
 
-  useEffect(() => {
-    window.addEventListener("beforeunload", handleUserAlert);
-
-    return () => {
+  /**
+   * Handles wheter this components event listeners should be active
+   */
+  const handleActive = () => {
+    if (active) {
+      window.addEventListener("beforeunload", handleUserAlert);
+    } else {
       window.removeEventListener("beforeunload", handleUserAlert);
-    };
+    }
+  };
+
+  useEffect(() => {
+    return () => handleActive();
+  }, [active]);
+
+  useEffect(() => {
+    return () => window.removeEventListener("beforeunload", handleUserAlert);
   }, []);
 
   return (

@@ -23,6 +23,7 @@ import { useApiClient, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
 import { Dictionary } from "types";
 import { useParams } from "react-router-dom";
+import LeavePageHandler from "components/contexts/leave-page-handler";
 
 /**
  * Component props
@@ -58,11 +59,29 @@ const FormScreen: React.FC<Props> = () => {
   const [ replyDeleteConfirmVisible, setReplyDeleteConfirmVisble ] = useState(false);
   const [ formValueChangeTimeout, setFormValueChangeTimeout ] = useState<NodeJS.Timeout>();
   const [ metaformId, setMetaformId ] = useState<string>();
+  const [ formFilling, setFormFilling ] = useState<boolean>(false);
   const params = useParams();
   const { metaformSlug } = params;
 
   const apiClient = useApiClient(Api.getApiClient);
   const keycloak = useAppSelector(selectKeycloak);
+
+  /**
+   * Checks if form is has unsaved changes
+   */
+  const handleFormChanges = () => {
+    Object.keys(formValues).forEach(fieldName => {
+      if (!formValues[fieldName]) {
+        delete formValues[fieldName];
+      }
+    });
+    const fieldsFilled = Object.keys(formValues).length;
+    setFormFilling(!!fieldsFilled);
+  };
+
+  useEffect(() => {
+    handleFormChanges();
+  }, [formValues]);
 
   /**
    * Finds the reply from API
@@ -587,54 +606,58 @@ const FormScreen: React.FC<Props> = () => {
      * Implement layout later
      */
     <BasicLayout>
-      <div>
-        { renderForm() }
-        <ReplySaved
-          getReplyEditLink={ getReplyEditLink }
-          replySavedVisible={ replySavedVisible }
-          onReplyEmailLinkClick={ onReplyEmailLinkClick }
-          setReplySavedVisible={ setReplySavedVisible }
-        />
-        <ReplyEmailDialog
-          replyEmailDialogVisible={ replyEmailDialogVisible }
-          setReplyEmailDialogVisible={ setReplyEmailDialogVisible }
-          sendReplyEmail={ sendReplyEmail }
-        />
-        <ReplyDelete
-          replyDeleteVisible={ replyDeleteVisible }
-          setReplyConfirmVisible={ setReplyConfirmVisible }
-          setReplyDeleteVisible={ setReplyDeleteVisible }
-        />
-        <ConfirmDialog
-          onClose={ () => setReplyConfirmVisible(false) }
-          onCancel={ () => setReplyConfirmVisible(false) }
-          onConfirm={ deleteReply }
-          cancelButtonText={ strings.generic.cancel }
-          positiveButtonText={ strings.generic.confirm }
-          title={ strings.formScreen.confirmDeleteReplyTitle }
-          text={ strings.formScreen.confirmDeleteReplyText }
-          open={ replyDeleteConfirmVisible }
-        />
-        <DraftSaveDialog
-          setDraftSaveVisible={ setDraftSaveVisible }
-          draftSaveVisible={ draftSaveVisible }
-          saveDraft={ saveDraft }
-        />
-        <DraftSavedDialog
-          setDraftSavedVisible={ setDraftSavedVisible }
-          draftSavedVisible={ draftSavedVisible }
-          getDraftLink={ getDraftLink }
-          onDraftEmailLinkClick={ onDraftEmailLinkClick }
-        />
-        <EmailDialog
-          text={ strings.formScreen.draftEmailDialogText }
-          open={ draftEmailDialogVisible }
-          onSend={ sendDraftEmail }
-          onCancel={ () => setDraftEmailDialogVisible(false) }
-        />
-        <Autosaving autosaving={ autosaving }/>
-        { renderLogoutLink() }
-      </div>
+      <LeavePageHandler
+        active={ formFilling }
+      >
+        <>
+          { renderForm() }
+          <ReplySaved
+            getReplyEditLink={ getReplyEditLink }
+            replySavedVisible={ replySavedVisible }
+            onReplyEmailLinkClick={ onReplyEmailLinkClick }
+            setReplySavedVisible={ setReplySavedVisible }
+          />
+          <ReplyEmailDialog
+            replyEmailDialogVisible={ replyEmailDialogVisible }
+            setReplyEmailDialogVisible={ setReplyEmailDialogVisible }
+            sendReplyEmail={ sendReplyEmail }
+          />
+          <ReplyDelete
+            replyDeleteVisible={ replyDeleteVisible }
+            setReplyConfirmVisible={ setReplyConfirmVisible }
+            setReplyDeleteVisible={ setReplyDeleteVisible }
+          />
+          <ConfirmDialog
+            onClose={ () => setReplyConfirmVisible(false) }
+            onCancel={ () => setReplyConfirmVisible(false) }
+            onConfirm={ deleteReply }
+            cancelButtonText={ strings.generic.cancel }
+            positiveButtonText={ strings.generic.confirm }
+            title={ strings.formScreen.confirmDeleteReplyTitle }
+            text={ strings.formScreen.confirmDeleteReplyText }
+            open={ replyDeleteConfirmVisible }
+          />
+          <DraftSaveDialog
+            setDraftSaveVisible={ setDraftSaveVisible }
+            draftSaveVisible={ draftSaveVisible }
+            saveDraft={ saveDraft }
+          />
+          <DraftSavedDialog
+            setDraftSavedVisible={ setDraftSavedVisible }
+            draftSavedVisible={ draftSavedVisible }
+            getDraftLink={ getDraftLink }
+            onDraftEmailLinkClick={ onDraftEmailLinkClick }
+          />
+          <EmailDialog
+            text={ strings.formScreen.draftEmailDialogText }
+            open={ draftEmailDialogVisible }
+            onSend={ sendDraftEmail }
+            onCancel={ () => setDraftEmailDialogVisible(false) }
+          />
+          <Autosaving autosaving={ autosaving }/>
+          { renderLogoutLink() }
+        </>
+      </LeavePageHandler>
     </BasicLayout>
   );
 };
