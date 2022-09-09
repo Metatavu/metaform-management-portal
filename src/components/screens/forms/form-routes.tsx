@@ -4,6 +4,8 @@ import FormHistoryScreen from "./form-history-screen";
 import FormReplyScreen from "./form-reply-screen";
 import FormRepliesScreen from "./form-replies-screen";
 import { useFormAccessControl } from "app/hooks";
+import FormRestrictedView from "components/containers/form-content-restricted";
+import { PermissionLevel } from "types";
 
 /**
  * Component for form routes
@@ -27,7 +29,11 @@ const FormRoutes: React.FC = () => {
       />
       <Route
         path="/history"
-        element={ <FormHistoryScreen/> }
+        element={
+          <FormRestrictedView restrictionLevel={ PermissionLevel.METAFORM_MANGER }>
+            <FormHistoryScreen/>
+          </FormRestrictedView>
+        }
       />
     </Routes>
   );

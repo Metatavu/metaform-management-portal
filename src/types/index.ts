@@ -75,7 +75,7 @@ export const NOT_SELECTED = "NOT_SELECTED";
 /**
  * System admin role
  */
-export const SYSTEM_ADMIN_ROLE = "system-admin";
+export const SYSTEM_ADMIN_ROLE = "metaform-admin";
 
 /**
  * React dnd dragging mode

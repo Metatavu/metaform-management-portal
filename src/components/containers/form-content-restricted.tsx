@@ -11,15 +11,15 @@ import strings from "localization/strings";
  * Component props
  */
 interface Prop {
-  restrictedPermissionLevel: PermissionLevel;
+  restrictionLevel: PermissionLevel;
 }
 
 /**
- * Component for form content restricted
+ * Component for form restricted view
  */
-const FormContentRestricted: React.FC<Prop> = ({
+const FormRestrictedView: React.FC<Prop> = ({
   children,
-  restrictedPermissionLevel
+  restrictionLevel
 }) => {
   const permissionLevel = useAppSelector(selectPermissionLevel);
   const [ restricted, setRestricted ] = useState(false);
@@ -27,18 +27,18 @@ const FormContentRestricted: React.FC<Prop> = ({
   const { setError } = useContext(ErrorContext);
 
   React.useEffect(() => {
-    if (permissionLevel <= restrictedPermissionLevel) {
-      setRestricted(true)
-      setError(strings.errorHandling.accessControl.contentNotPermitted)
+    if (permissionLevel >= restrictionLevel) {
+      setRestricted(true);
+      setError(strings.errorHandling.accessControl.contentNotPermitted);
       navigate(-1);
     }
-  }, []);
+  }, [ permissionLevel ]);
 
   if (restricted) {
-    return null
+    return null;
   }
 
   return <>{ children }</>;
 };
 
-export default FormContentRestricted;
+export default FormRestrictedView;
