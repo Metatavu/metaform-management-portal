@@ -25,9 +25,9 @@ const MetaformEditorRightDrawerFeatureComponent: React.FC<Props> = ({
   setPendingForm
 }) => {
   const [ metaformSectionTitle, setMetaFormSectionTitle] = React.useState<string | undefined>("");
+
   /**
    * Set values of Confidition field, switch and get selected component name
-   * 
    */
   const setVisiblityComponentValues = () => {
     if (fieldIndex === undefined && sectionIndex !== undefined) {
@@ -91,14 +91,12 @@ const MetaformEditorRightDrawerFeatureComponent: React.FC<Props> = ({
         <Typography variant="subtitle1" style={{ width: "100%" }}>
           {title}
         </Typography>
-
       );
     }
   };
 
   /**
-   * Render feature components
-   * 
+   * Render feature component
    */
   const renderFeatures = () => {
     if (sectionIndex === undefined && fieldIndex === undefined) {
@@ -124,59 +122,56 @@ const MetaformEditorRightDrawerFeatureComponent: React.FC<Props> = ({
 
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
-      if (field === undefined) {
+      if (!field) {
         return null;
       }
+      const disableForm = field.type === "select" || field.type === "date-time" || field.type === "radio" || field.type === "checklist" || field.type === "date";
 
-      if (field !== undefined) {
-        const disableForm = field.type === "select" || field.type === "date-time" || field.type === "radio" || field.type === "checklist" || field.type === "date";
+      return (
+        <>
+          { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.fieldDatas) }
+          <TextField
+            fullWidth
+            label={ strings.draftEditorScreen.editor.features.fieldTitle }
+            value={ field.title ? field.title : "" }
+            onChange={ event => updateFormField({
+              ...field,
+              title: event.target.value,
+              name: slugify(metaformSectionTitle + event.target.value)
+            }) }
+          />
 
-        return (
-          <>
-            { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.fieldDatas) }
-            <TextField
-              fullWidth
-              label={ strings.draftEditorScreen.editor.features.fieldTitle }
-              value={ field.title ? field.title : "" }
-              onChange={ event => updateFormField({
-                ...field,
-                title: event.target.value,
-                name: slugify(metaformSectionTitle + event.target.value)
-              }) }
-            />
+          <Divider/>
+          { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.required) }
+          <FormControlLabel
+            label={ strings.generic.yes }
+            control={
+              <Checkbox
+                checked={ field.required }
+                onChange={ event => updateFormField({ ...field, required: event.target.checked }) }
+              />
+            }
+          />
+          <Divider/>
+          <Typography variant="subtitle1" style={{ width: "100%" }}>
+            { strings.draftEditorScreen.editor.features.defineUserGroup }
+          </Typography>
 
-            <Divider/>
-            { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.required) }
+          <FormControl disabled={ !disableForm }>
             <FormControlLabel
               label={ strings.generic.yes }
               control={
                 <Checkbox
-                  checked={ field.required }
-                  onChange={ event => updateFormField({ ...field, required: event.target.checked }) }
+                  checked
                 />
               }
             />
-            <Divider/>
-            <Typography variant="subtitle1" style={{ width: "100%" }}>
-              { strings.draftEditorScreen.editor.features.defineUserGroup }
+            <Typography fontSize="12px">
+              { strings.draftEditorScreen.editor.features.selectableFieldsInfo }
             </Typography>
-
-            <FormControl disabled={ !disableForm }>
-              <FormControlLabel
-                label={ strings.generic.yes }
-                control={
-                  <Checkbox
-                    checked
-                  />
-                }
-              />
-              <Typography fontSize="12px">
-                { strings.draftEditorScreen.editor.features.selectableFieldsInfo }
-              </Typography>
-            </FormControl>
-          </>
-        );
-      }
+          </FormControl>
+        </>
+      );
     }
   };
 

@@ -241,16 +241,16 @@ const MetaformEditor: React.FC<Props> = ({
     }
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.[sectionIndex].fields?.splice(fieldIndex, 1);
-      draftForm.sections?.forEach(_section => {
-        if (_section.visibleIf) {
-          if (_section.visibleIf.field === field?.title) {
-            delete _section.visibleIf;
+      draftForm.sections?.forEach(currentSection => {
+        if (currentSection.visibleIf) {
+          if (currentSection.visibleIf.field === field?.title) {
+            delete currentSection.visibleIf;
           }
         }
-        _section.fields?.forEach(_field => {
-          if (_field.visibleIf) {
-            if (_field.visibleIf.field === field?.title) {
-              delete _field.visibleIf;
+        currentSection.fields?.forEach(currentField => {
+          if (currentField.visibleIf) {
+            if (currentField.visibleIf.field === field?.title) {
+              delete currentField.visibleIf;
             }
           }
         });
