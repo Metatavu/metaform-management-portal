@@ -14,7 +14,9 @@
     "reload": "Lataa uudelleen",
     "show": "Näytä",
     "addFilesText": "Tiputa tiedosto tähän, tai klikkaa tästä lisätäksesi liitteitä.",
-    "back": "Takaisin"
+    "back": "Takaisin",
+    "actions": "Toiminnot",
+    "restore": "Palauta"
   },
 
   "errorHandling": {
@@ -40,7 +42,8 @@
     },
     "draftEditorScreen": {
       "findDraft": "Lomakeversion haku epäonnistui",
-      "saveDraft": "Lomakeversion tallentaminen epäonnistui"
+      "saveDraft": "Lomakeversion tallentaminen epäonnistui",
+      "publishDraft": "Lomakeversion julkaiseminen epäonnistui"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -87,7 +90,12 @@
 
   "header": {
     "user": "Käyttäjä",
-    "logo": "Essote logo"
+    "logo": "Essote logo",
+    "selectLanguage": "Valitse kieli",
+    "languages": {
+      "fi": "Suomi",
+      "en": "English"
+    }
   },
 
   "breadcrumb": {
@@ -107,16 +115,7 @@
       "description": "Lomakkeiden ja vastausten tarkastelu.",
       "formScreen": {
         "title": "Lomakelistaus",
-        "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus.",
-        "form": {
-          "form": "LOMAKE",
-          "latestReply": "VIIMEISIN",
-          "newReply": "UUSIA",
-          "notProcessed": "käsittelemättömiä"
-        }
-      },
-      "formListing": {
-        "form": "LOMAKE"
+        "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus."
       },
       "formDataScreen": {
         "title": "Datan tarkastelu",
@@ -139,7 +138,7 @@
         "description": "Valitse editoitava lomake, tai luo uusi lomake."
       },
       "draftEditorScreen": {
-        "title": "luonnoseditori",
+        "title": "Luonnoseditori",
         "description": "Lomakkeen muokkaus"
       },
       "newFormButton": "Luo uusi lomake"
@@ -279,6 +278,15 @@
     "tableField": {
       "addNewRow": "Lisää uusi rivi",
       "unknownColumnType": "Tuntematon saraketyyppi"
+    }
+  },
+
+  "formsScreen": {
+    "formTable": {
+      "form": "Lomake",
+      "latestReply": "Viimeisin",
+      "newReply": "Uusia",
+      "notProcessed": "käsittelemättömiä"
     }
   },
 

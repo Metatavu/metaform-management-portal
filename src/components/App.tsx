@@ -12,51 +12,59 @@ import PublicRoutes from "./screens/public/public-routes";
 import AuthenticationProvider from "./containers/access-token-refresh";
 import moment from "moment";
 import "moment/locale/fi";
-import strings from "localization/strings";
-
-moment.locale("fi");
-strings.setLanguage("fi");
+import { useAppDispatch, useAppSelector } from "app/hooks";
+import { selectLocale, setLocale } from "features/locale-slice";
 
 /**
  * Application component
  */
-const App: React.FC = () => (
-  <BrowserRouter>
-    <AuthenticationProvider>
-      <ErrorHandler>
-        <ConfirmHandler>
-          <BasicLayout>
-            <Routes>
-              <Route
-                path="/admin"
-                element={ <Navigate to="/admin/forms"/> }
-              />
-              <Route
-                path="/admin/users"
-                element={ <AdminLayout><UsersScreen/></AdminLayout> }
-              />
-              <Route
-                path="/admin/forms/*"
-                element={ <AdminLayout><FormsRoutes/></AdminLayout> }
-              />
-              <Route
-                path="/admin/editor/*"
-                element={ <AdminLayout><EditorRoutes/></AdminLayout> }
-              />
-              <Route
-                path="/admin/*"
-                element={ <Navigate to="/admin/forms"/> }
-              />
-              <Route
-                path="/*"
-                element={ <PublicLayout><PublicRoutes/></PublicLayout> }
-              />
-            </Routes>
-          </BasicLayout>
-        </ConfirmHandler>
-      </ErrorHandler>
-    </AuthenticationProvider>
-  </BrowserRouter>
-);
+const App: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { locale } = useAppSelector(selectLocale);
+
+  React.useLayoutEffect(() => {
+    dispatch(setLocale(locale));
+    moment.locale(locale);
+  }, []);
+
+  return (
+    <BrowserRouter>
+      <AuthenticationProvider>
+        <ErrorHandler>
+          <ConfirmHandler>
+            <BasicLayout>
+              <Routes>
+                <Route
+                  path="/admin"
+                  element={ <Navigate to="/admin/forms"/> }
+                />
+                <Route
+                  path="/admin/users"
+                  element={ <AdminLayout><UsersScreen/></AdminLayout> }
+                />
+                <Route
+                  path="/admin/forms/*"
+                  element={ <AdminLayout><FormsRoutes/></AdminLayout> }
+                />
+                <Route
+                  path="/admin/editor/*"
+                  element={ <AdminLayout><EditorRoutes/></AdminLayout> }
+                />
+                <Route
+                  path="/admin/*"
+                  element={ <Navigate to="/admin/forms"/> }
+                />
+                <Route
+                  path="/*"
+                  element={ <PublicLayout><PublicRoutes/></PublicLayout> }
+                />
+              </Routes>
+            </BasicLayout>
+          </ConfirmHandler>
+        </ErrorHandler>
+      </AuthenticationProvider>
+    </BrowserRouter>
+  );
+};
 
 export default App;

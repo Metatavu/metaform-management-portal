@@ -19,12 +19,13 @@ import GenericLoaderWrapper from "components/generic/generic-loader";
  */
 const DraftEditorScreen: React.FC = () => {
   const params = useParams();
+  const { formSlug, draftId } = params;
   const navigate = useNavigate();
   const errorContext = useContext(ErrorContext);
 
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, versionsApi } = apiClient;
-  
+
   const editorRef = useRef<HTMLDivElement>(null);
   const [ draftForm, setDraftForm ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
 
@@ -35,7 +36,6 @@ const DraftEditorScreen: React.FC = () => {
    */
   const loadMetaformVersion = async () => {
     setLoading(true);
-    const { formSlug, draftId } = params;
 
     try {
       const form = await metaformsApi.findMetaform({ metaformSlug: formSlug });
@@ -43,12 +43,8 @@ const DraftEditorScreen: React.FC = () => {
         metaformId: form.id!,
         versionId: draftId!
       });
-
-      if (draft) {
-        setDraftForm(draft.data as Metaform);
-      } else {
-        setDraftForm(form);
-      }
+      
+      setDraftForm(draft.data as Metaform);
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.findDraft, e);
     }
@@ -62,16 +58,59 @@ const DraftEditorScreen: React.FC = () => {
   const saveMetaformVersion = async () => {
     setLoading(true);
 
+    if (!draftId || !formSlug) {
+      return;
+    }
+
     try {
       await versionsApi.createMetaformVersion({
         metaformId: draftForm.id!,
         metaformVersion: {
           type: MetaformVersionType.Draft,
-          data: { ...draftForm } as any
+          data: { ...draftForm } as { [key: string]: object }
         }
+      });
+      await versionsApi.deleteMetaformVersion({
+        metaformId: draftForm.id!,
+        versionId: draftId
       });
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.saveDraft, e);
+    }
+
+    navigate(-1);
+  };
+
+  /**
+   * Publishes Metaform
+   */
+  const publishMetaformVersion = async () => {
+    setLoading(true);
+
+    if (!draftId || !formSlug) {
+      return;
+    }
+    
+    try {
+      const form = await metaformsApi.findMetaform({ metaformSlug: formSlug });
+      await metaformsApi.updateMetaform({
+        metaformId: form.id!,
+        metaform: draftForm
+      });
+      // TODO: Investigate possibility of adding PUT method to MetaformVersions API to simplify this.
+      await versionsApi.createMetaformVersion({
+        metaformId: form.id!,
+        metaformVersion: {
+          type: MetaformVersionType.Archived,
+          data: { ...form } as { [key: string]: object }
+        }
+      });
+      await versionsApi.deleteMetaformVersion({
+        metaformId: form.id!,
+        versionId: draftId
+      });
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.draftEditorScreen.publishDraft, e);
     }
 
     navigate(-1);
@@ -95,7 +134,10 @@ const DraftEditorScreen: React.FC = () => {
       <IconActionButton onClick={ () => editorRef.current?.requestFullscreen?.() } startIcon={ <Preview/> }>
         <Typography>{ strings.draftEditorScreen.preview }</Typography>
       </IconActionButton>
-      <IconActionButton disabled startIcon={ <Public/> }>
+      <IconActionButton
+        startIcon={ <Public/> }
+        onClick={ publishMetaformVersion }
+      >
         <Typography>{ strings.draftEditorScreen.publish }</Typography>
       </IconActionButton>
     </Stack>

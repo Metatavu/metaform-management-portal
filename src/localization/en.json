@@ -14,7 +14,9 @@
     "reload": "Reload",
     "show": "Show",
     "addFilesText": "Drop files here or click here to add files.",
-    "back": "Back"
+    "back": "Back",
+    "actions": "Action",
+    "restore": "Restore"
   },
 
   "errorHandling": {
@@ -40,7 +42,8 @@
     },
     "draftEditorScreen": {
       "findDraft": "Fetching form version failed",
-      "saveDraft": "Saving form version failed"
+      "saveDraft": "Saving form version failed",
+      "publishDraft": "Publishing form version failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -88,7 +91,12 @@
 
   "header": {
     "user": "User",
-    "logo": "Essote logo"
+    "logo": "Essote logo",
+    "selectLanguage": "Select language",
+    "languages": {
+      "fi": "Suomi",
+      "en": "English"
+    }
   },
 
   "breadcrumb": {
@@ -108,16 +116,7 @@
       "description": "Review of forms and responses.",
       "formScreen": {
         "title": "Form listing",
-        "description": "A list of forms that the user has permission to process.",
-        "form": {
-          "form": "FORM",
-          "latestReply": "LATEST",
-          "newReply": "NEW",
-          "notProcessed": "untreated"
-        }
-      },
-      "formListing": {
-          "form": "FORM"
+        "description": "A list of forms that the user has permission to process."
       },
       "formDataScreen": {
         "title": "Viewing data",
@@ -281,6 +280,15 @@
     "tableField": {
       "addNewRow": "Add new row",
       "unknownColumnType": "Unknown column type"
+    }
+  },
+
+  "formsScreen": {
+    "formTable": {
+      "form": "Form",
+      "latestReply": "Latest",
+      "newReply": "New",
+      "notProcessed": "untreated"
     }
   },
 

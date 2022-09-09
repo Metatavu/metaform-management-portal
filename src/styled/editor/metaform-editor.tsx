@@ -1,4 +1,4 @@
-import { Paper, Stack } from "@mui/material";
+import { Paper, Stack, TablePagination } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 /**
@@ -42,4 +42,35 @@ export const EditorSection = styled(Paper, {
 })(({ theme }) => ({
   padding: theme.spacing(4),
   borderRadius: 25
+}));
+
+/**
+ * Styled text for the form pagination
+ */
+export const FormPagination = styled(TablePagination, {
+  label: "form-pagination"
+})(() => ({
+  overflow: "hidden",
+  flexShrink: 0
+}));
+
+/**
+ * Styled text for the form list container
+ */
+export const FormListContainer = styled(Stack, {
+  label: "form-list-container"
+})(() => ({
+  overflow: "hidden",
+  height: "100%"
+}));
+
+/**
+ * Styled text for the forms container
+ */
+export const FormsContainer = styled(Stack, {
+  label: "forms-container"
+})(({ theme }) => ({
+  overflow: "auto",
+  flex: 1,
+  backgroundColor: theme.palette.grey[300]
 }));

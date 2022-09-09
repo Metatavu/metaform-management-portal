@@ -135,7 +135,6 @@ const UsersTable: FC<Props> = ({
       loading={ loading }
       columns={ columns }
       rows={ data }
-      autoHeight
       disableColumnMenu
       disableColumnSelector
       disableSelectionOnClick

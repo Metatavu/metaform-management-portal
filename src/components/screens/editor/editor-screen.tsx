@@ -1,4 +1,4 @@
-import { Divider } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useApiClient } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
@@ -28,18 +28,16 @@ const EditorScreen: React.FC = () => {
 
   const [ metaforms, setMetaforms ] = useState<Metaform[]>([]);
   const [ metaformVersions, setMetaformVersions ] = useState<MetaformVersion[]>([]);
-
   const [ loading, setLoading ] = useState<boolean>(false);
-
   const [ drawerOpen, setDrawerOpen ] = useState<boolean>(false);
 
   /* eslint-disable @typescript-eslint/return-await */
   /**
-   * Gets Metaforms and Metaform Versions 
+   * Gets Metaforms and Metaform Versions
    */
   const loadMetaforms = async () => {
     setLoading(true);
-    
+
     try {
       const forms = await metaformsApi.listMetaforms({});
       const versions = await Promise.all(forms.map(form => versionsApi.listMetaformVersions({ metaformId: form.id! })));
@@ -77,6 +75,90 @@ const EditorScreen: React.FC = () => {
     }
   };
 
+  // TODO: Investigate possibility of adding PUT method to VersionsApi to simplify this!
+  /**
+   * Handle Archive to Draft conversion
+   * 
+   * @param versionToEdit Version to edit
+   */
+  const handleArchiveToDraft = async (versionToEdit: MetaformVersion) => {
+    const { slug, id } = versionToEdit.data as Metaform;
+
+    if (!slug || !id) {
+      return;
+    }
+
+    const oldDraftVersion = metaformVersions.find(metaformVersion =>
+      (metaformVersion.data as Metaform).id === id &&
+      metaformVersion.type === MetaformVersionType.Draft);
+    
+    if (oldDraftVersion) {
+      await versionsApi.deleteMetaformVersion({
+        metaformId: id,
+        versionId: oldDraftVersion.id!
+      });
+    }
+
+    await versionsApi.deleteMetaformVersion({
+      metaformId: id,
+      versionId: versionToEdit.id!
+    });
+    const newMetaformVersion = await versionsApi.createMetaformVersion({
+      metaformId: id,
+      metaformVersion: {
+        type: MetaformVersionType.Draft,
+        data: { ...versionToEdit.data }
+      }
+    });
+
+    return navigate(`${currentPath}/${slug}/${newMetaformVersion.id!}`);
+  };
+
+  /**
+   * Navigates to MetaformEditor.
+   * Creates new MetaformVersion when 
+   * user wants to edit production grade Metaform.
+   *
+   *  @param id id
+   */
+  const goToEditor = async (id: string) => {
+    const metaformToEdit = metaforms.find(metaform => metaform.id === id);
+
+    if (metaformToEdit) {
+      const version = metaformVersions.find(metaformVersion =>
+        (metaformVersion.data as Metaform).id === metaformToEdit.id &&
+        metaformVersion.type === MetaformVersionType.Draft);
+
+      if (version) {
+        return navigate(`${currentPath}/${metaformToEdit.slug}/${version.id}`);
+      }
+
+      const newMetaformVersion = await versionsApi.createMetaformVersion({
+        metaformId: metaformToEdit.id!,
+        metaformVersion: {
+          type: MetaformVersionType.Draft,
+          data: { ...metaformToEdit } as { [key: string]: object }
+        }
+      });
+
+      navigate(`${currentPath}/${metaformToEdit.slug}/${newMetaformVersion.id}`);
+    }
+    
+    const versionToEdit = metaformVersions.find(version => version.id === id);
+
+    if (!versionToEdit) {
+      return;
+    }
+
+    const versionData = versionToEdit?.data as Metaform;
+
+    if (versionToEdit.type === MetaformVersionType.Archived) {
+      return handleArchiveToDraft(versionToEdit);
+    }
+    
+    return navigate(`${currentPath}/${versionData.slug}/${versionToEdit.id}`);
+  };
+
   /**
    * Deletes a Metaform or MetaformVersion
    */
@@ -105,23 +187,6 @@ const EditorScreen: React.FC = () => {
   };
 
   /**
-   * Gets correct URL path to MetaformEditor
-   * 
-   * @returns URL path
-   */
-  const getPathToEditor = async (id: string): Promise<string> => {
-    const metaformToEdit = metaforms.find(metaform => metaform.id === id);
-    
-    if (metaformToEdit) {
-      return `${currentPath}/${metaformToEdit.slug}/${id}`;
-    }
-
-    const { slug } = (metaformVersions.find(version => version.id === id)?.data as Metaform);
-
-    return `${currentPath}/${slug}/${id}`;
-  };
-
-  /**
    * Toggles drawer
    */
   const toggleEditorDrawer = () => {
@@ -139,28 +204,30 @@ const EditorScreen: React.FC = () => {
         setOpen={ setDrawerOpen }
         createMetaform={ createMetaform }
       />
-      <NavigationTabContainer>
-        <NavigationTab
-          text={ strings.navigationHeader.editorScreens.editorScreen }
-        />
-        <RoundActionButton
-          endIcon={ <Add/> }
-          onClick={ toggleEditorDrawer }
-          sx={{ mr: theme.spacing(2) }}
-        >
-          { strings.navigationHeader.editorScreens.newFormButton }
-        </RoundActionButton>
-      </NavigationTabContainer>
-      <Divider/>
-      <GenericLoaderWrapper loading={ loading }>
-        <EditorScreenTable
-          loading={ loading }
-          metaforms={ metaforms }
-          metaformVersions={ metaformVersions }
-          deleteMetaformOrVersion={ deleteMetaformOrVersion }
-          getPathToEditor={ getPathToEditor }
-        />
-      </GenericLoaderWrapper>
+      <Stack overflow="hidden" flex={ 1 }>
+        <NavigationTabContainer>
+          <NavigationTab
+            text={ strings.navigationHeader.editorScreens.editorScreen }
+          />
+          <RoundActionButton
+            endIcon={ <Add/> }
+            onClick={ toggleEditorDrawer }
+            sx={{ mr: theme.spacing(2) }}
+          >
+            { strings.navigationHeader.editorScreens.newFormButton }
+          </RoundActionButton>
+        </NavigationTabContainer>
+        <Divider/>
+        <GenericLoaderWrapper loading={ loading }>
+          <EditorScreenTable
+            loading={ loading }
+            metaforms={ metaforms }
+            metaformVersions={ metaformVersions }
+            deleteMetaformOrVersion={ deleteMetaformOrVersion }
+            goToEditor={ goToEditor }
+          />
+        </GenericLoaderWrapper>
+      </Stack>
     </>
   );
 };

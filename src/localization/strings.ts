@@ -26,6 +26,8 @@ export interface Localized extends LocalizedStringsMethods {
     show: string;
     addFilesText: string;
     back: string;
+    actions: string;
+    restore: string;
   };
 
   /**
@@ -53,6 +55,7 @@ export interface Localized extends LocalizedStringsMethods {
     draftEditorScreen: {
       findDraft: string;
       saveDraft: string;
+      publishDraft: string;
     },
     formScreen: {
       saveReply: string;
@@ -106,13 +109,18 @@ export interface Localized extends LocalizedStringsMethods {
   publicFormsScreen: {
     title: string;
   }
-  
+
   /**
    * Translations related to header
    */
   header: {
     user: string;
     logo: string;
+    selectLanguage: string;
+    languages: {
+      fi: string;
+      en: string;
+    }
   };
 
   /**
@@ -139,15 +147,6 @@ export interface Localized extends LocalizedStringsMethods {
       formScreen: {
         title: string;
         description: string;
-        form: {
-          form: string;
-          latestReply: string;
-          newReply: string;
-          notProcessed: string;
-        }
-      };
-      formListing: {
-        form: string;
       };
       formDataScreen: {
         title: string;
@@ -326,6 +325,17 @@ export interface Localized extends LocalizedStringsMethods {
   };
 
   /**
+   * Translations related to forms screen
+   */
+  formsScreen: {
+    formTable: {
+      form: string;
+      latestReply: string;
+      newReply: string;
+      notProcessed: string;
+    };
+  }
+  /**
    * Translations related to form screen
    */
   formScreen: {
@@ -391,7 +401,7 @@ export interface Localized extends LocalizedStringsMethods {
   };
 
   /**
-   * Translations related to email dialogs 
+   * Translations related to email dialogs
    */
   emailDialog: {
     title: string;

@@ -22,7 +22,6 @@ const FormsDataScreen: React.FC = () => (
     <DataGrid
       rows={ [] }
       columns={ [] }
-      autoHeight
       disableColumnMenu
       disableColumnSelector
       disableSelectionOnClick

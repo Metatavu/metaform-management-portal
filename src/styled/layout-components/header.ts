@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar } from "@mui/material";
+import { AppBar, Box, Select, Toolbar } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 /**
@@ -45,6 +45,28 @@ export const Logo = styled(Box, {
   backgroundSize: "contain",
   backgroundRepeat: "no-repeat",
   height: 62
+}));
+
+/**
+ * Styled select box component
+ */
+export const HeaderSelect = styled(Select, {
+  label: "select-box"
+})(() => ({
+  ".MuiSvgIcon-root": {
+    fill: "white !important"
+  },
+  ".MuiOutlinedInput-notchedOutline": {
+    borderColor: "rgba(228, 219, 233, 0.5)"
+  },
+  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+    borderColor: "rgba(228, 219, 233, 0.5)"
+  },
+  "&:hover .MuiOutlinedInput-notchedOutline": {
+    borderColor: "rgba(228, 219, 233, 0.5)"
+  },
+  color: "#fff",
+  borderRadius: "1rem"
 }));
 
 export default Root;
