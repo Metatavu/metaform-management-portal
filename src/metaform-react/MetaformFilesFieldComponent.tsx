@@ -175,6 +175,9 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
           name={ field.name }
           onChange={ onChange }
           onFocus={ onFocus }
+          inputProps={{
+            "aria-label": strings.generic.addFilesText
+          }}
         />
       </FormControl>
     </Box>

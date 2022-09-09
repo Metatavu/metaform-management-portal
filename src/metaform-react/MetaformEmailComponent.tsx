@@ -9,7 +9,6 @@ import { FieldValue } from "./types";
 interface Props {
   field: MetaformField;
   fieldId: string;
-  fieldLabelId: string;
   formReadOnly: boolean;
   value: FieldValue;
   onValueChange?: (value: FieldValue) => void;
@@ -23,7 +22,6 @@ interface Props {
 const MetaformEmailFieldComponent: React.FC<Props> = ({
   field,
   fieldId,
-  fieldLabelId,
   formReadOnly,
   value,
   onValueChange,
@@ -50,7 +48,6 @@ const MetaformEmailFieldComponent: React.FC<Props> = ({
       type="email"
       placeholder={ field.placeholder }
       id={ fieldId }
-      aria-labelledby={ fieldLabelId }
       name={ field.name }
       title={ field.title }
       required={ field.required }
@@ -59,6 +56,7 @@ const MetaformEmailFieldComponent: React.FC<Props> = ({
       onChange={ onChange }
       onFocus={ onFocus }
       InputProps={{
+        "aria-label": field.title,
         sx: {
           ".MuiOutlinedInput-notchedOutline": {
             border: "none"

@@ -15,7 +15,8 @@
     "show": "Show",
     "addFilesText": "Drop files here or click here to add files.",
     "back": "Back",
-    "actions": "Action"
+    "actions": "Action",
+    "restore": "Restore"
   },
 
   "errorHandling": {
@@ -46,7 +47,8 @@
     },
     "draftEditorScreen": {
       "findDraft": "Fetching form version failed",
-      "saveDraft": "Saving form version failed"
+      "saveDraft": "Saving form version failed",
+      "publishDraft": "Publishing form version failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -94,7 +96,12 @@
 
   "header": {
     "user": "User",
-    "logo": "Essote logo"
+    "logo": "Essote logo",
+    "selectLanguage": "Select language",
+    "languages": {
+      "fi": "Suomi",
+      "en": "English"
+    }
   },
 
   "breadcrumb": {

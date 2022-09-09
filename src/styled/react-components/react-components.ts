@@ -54,6 +54,7 @@ export const SubmitFieldWrapper = styled(Button, {
 export const AddRowButtonWrapper = styled(Button, {
   label: "add-row-button-wrapper"
 })(() => ({
+  backgroundColor: "rgb(55 90 163)",
   borderRadius: "0.5rem",
   border: 0,
   width: "100%",
