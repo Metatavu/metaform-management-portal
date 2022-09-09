@@ -91,6 +91,9 @@ export const MetaformChecklistFieldComponent: React.FC<Props> = ({
                 value={ option.name }
                 checked={ checked }
                 onChange={ (event: any) => onCheckboxChange(option, event.target.checked) }
+                inputProps={{
+                  "aria-label": field.title
+                }}
               />
             }
             label={ option.text }

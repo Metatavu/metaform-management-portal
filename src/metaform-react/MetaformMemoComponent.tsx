@@ -64,6 +64,7 @@ const MetaformMemoComponent: React.FC<Props> = ({
       onFocus={ onFocus }
       style={ style }
       InputProps={{
+        "aria-label": field.title,
         sx: {
           ".MuiOutlinedInput-notchedOutline": {
             border: "none"

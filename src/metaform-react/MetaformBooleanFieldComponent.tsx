@@ -69,6 +69,9 @@ const MetaformBooleanFieldComponent: React.FC<Props> = ({
       checked={ checked }
       onChange={ onChange }
       onFocus={ onFocus }
+      inputProps={{
+        "aria-label": field.title
+      }}
     />;
   };
 

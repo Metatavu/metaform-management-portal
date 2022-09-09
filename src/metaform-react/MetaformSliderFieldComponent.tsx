@@ -44,6 +44,7 @@ export const MetaformSliderFieldComponent: React.FC<Props> = ({
       onChange={ (event: Event, newValue: number | number[]) => {
         setFieldValue && setFieldValue(fieldName, newValue as number);
       }}
+      aria-label={ field.title }
     />
   );
 };

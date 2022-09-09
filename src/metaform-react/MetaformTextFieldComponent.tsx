@@ -55,6 +55,9 @@ const MetaformTextFieldComponent: React.FC<Props> = ({
       onChange={ onChange }
       onFocus={ onFocus }
       disableUnderline
+      inputProps={{
+        "aria-label": field.title
+      }}
     />
   );
 };

@@ -132,6 +132,7 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
           style: style,
           readOnly: formReadOnly || field.readonly,
           disableUnderline: true,
+          "aria-label": field.title,
           sx: {
             ".MuiOutlinedInput-notchedOutline": {
               border: "none"
