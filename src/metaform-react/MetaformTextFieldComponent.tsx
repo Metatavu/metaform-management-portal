@@ -9,7 +9,6 @@ import { FieldValue } from "./types";
 interface Props {
   field: MetaformField;
   fieldId: string;
-  fieldLabelId: string;
   formReadOnly: boolean;
   value: FieldValue;
   onValueChange?: (value: FieldValue) => void;
@@ -22,7 +21,6 @@ interface Props {
 const MetaformTextFieldComponent: React.FC<Props> = ({
   field,
   fieldId,
-  fieldLabelId,
   formReadOnly,
   value,
   onValueChange,
@@ -46,7 +44,6 @@ const MetaformTextFieldComponent: React.FC<Props> = ({
       type="text"
       placeholder={ field.placeholder }
       id={ fieldId }
-      aria-labelledby={ fieldLabelId }
       name={ field.name }
       title={ field.title }
       required={ field.required }
@@ -55,6 +52,9 @@ const MetaformTextFieldComponent: React.FC<Props> = ({
       onChange={ onChange }
       onFocus={ onFocus }
       disableUnderline
+      inputProps={{
+        "aria-label": field.title
+      }}
     />
   );
 };

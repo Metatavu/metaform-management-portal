@@ -10,7 +10,6 @@ import { FieldValue, IconName } from "./types";
 interface Props {
   field: MetaformField,
   fieldId: string,
-  fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
   onValueChange?: (value: FieldValue) => void,
@@ -25,7 +24,6 @@ interface Props {
 export const MetaformRadioFieldComponent: React.FC<Props> = ({
   field,
   fieldId,
-  fieldLabelId,
   formReadOnly,
   value,
   onValueChange,
@@ -82,7 +80,6 @@ export const MetaformRadioFieldComponent: React.FC<Props> = ({
             size="small"
             key={ `${fieldId}-${option.name}-input` }
             id={ `${fieldId}-${option.name}` }
-            aria-labelledby={ fieldLabelId }
             name={ field.name }
             title={ field.title }
             required={ field.required }
@@ -91,6 +88,9 @@ export const MetaformRadioFieldComponent: React.FC<Props> = ({
             checked={ checked }
             onChange={ onChange }
             onFocus={ onFocus }
+            inputProps={{
+              "aria-label": field.title
+            }}
           /> }
         />
       </RadioGroup>

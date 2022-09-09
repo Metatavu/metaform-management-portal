@@ -102,7 +102,6 @@ export const MetaformFieldComponent: React.FC<Props> = ({
       case MetaformFieldType.Text:
         return  <MetaformTextFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ getFieldLabelId() }
                   fieldId={ getFieldId() }
                   field={ field } onValueChange={ onValueChange }
                   value={ thisFieldValue() }
@@ -111,7 +110,6 @@ export const MetaformFieldComponent: React.FC<Props> = ({
       case MetaformFieldType.Memo:
         return  <MetaformMemoComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ getFieldLabelId() }
                   fieldId={ getFieldId() }
                   field={ field }
                   onValueChange={ onValueChange }
@@ -122,7 +120,6 @@ export const MetaformFieldComponent: React.FC<Props> = ({
         return  <MetaformRadioFieldComponent
                   renderIcon={ renderIcon }
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ getFieldLabelId() }
                   fieldId={ getFieldId() }
                   field={ field }
                   onValueChange={ onValueChange }
@@ -148,7 +145,6 @@ export const MetaformFieldComponent: React.FC<Props> = ({
         return  <MetaformBooleanFieldComponent
                   renderIcon={ renderIcon }
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ getFieldLabelId() }
                   fieldId={ getFieldId() }
                   field={ field }
                   onValueChange={ onValueChange }
@@ -157,14 +153,12 @@ export const MetaformFieldComponent: React.FC<Props> = ({
                 />;
       case MetaformFieldType.Html:
         return  <MetaformHtmlComponent
-                  fieldLabelId={ getFieldLabelId() }
                   fieldId={ getFieldId() }
                   field={ field }
                 />;
       case MetaformFieldType.Email:
         return  <MetaformEmailFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ getFieldLabelId() }
                   fieldId={ getFieldId() }
                   field={ field }
                   onValueChange={ onValueChange }

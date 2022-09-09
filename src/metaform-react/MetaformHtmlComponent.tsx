@@ -8,7 +8,6 @@ import { MetaformField } from "../generated/client/models";
 interface Props {
   field: MetaformField,
   fieldId: string,
-  fieldLabelId: string,
   notInteractive?: boolean
 }
 
@@ -20,7 +19,6 @@ interface Props {
 export const MetaformHtmlComponent: React.FC<Props> = ({
   field,
   fieldId,
-  fieldLabelId,
   notInteractive
 }) => {
   if (!field.name) {
@@ -33,7 +31,6 @@ export const MetaformHtmlComponent: React.FC<Props> = ({
     <HtmlFieldWrapper
       style={ notInteractive ? { pointerEvents: "none" } : {}}
       id={ fieldId }
-      aria-labelledby={ fieldLabelId }
       dangerouslySetInnerHTML={{ __html: dangerousInnerHTML }}
     />
   );

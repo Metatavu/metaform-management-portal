@@ -56,6 +56,9 @@ export const MetaformUrlFieldComponent: React.FC<Props> = ({
       value={ value as string || "" }
       onChange={ onChange }
       onFocus={ onFocus }
+      inputProps={{
+        "aria-label": field.title
+      }}
     />
   );
 };

@@ -53,6 +53,9 @@ export const MetaformSelectFieldComponent: React.FC<Props> = ({
         onChange={ onChange }
         value={ selected }
         disabled={ readOnly }
+        inputProps={{
+          "aria-label": field.title
+        }}
       >
         { options.map(option => <MenuItem key={ option.name } value={ option.name }>{ option.text }</MenuItem>) }
       </Select>
