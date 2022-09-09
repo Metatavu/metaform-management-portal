@@ -41,7 +41,7 @@ const MetaformEditorRightDrawerVisibleCondition: React.FC<Props> = ({
       setDisabledValue(section !== undefined);
       setRequiredConditionField(section ? section.field! : "");
       setRequiredConditionEqualsValue(section ? section.equals! : "");
-      setRequiredConditionInfoField(!section as boolean);
+      setRequiredConditionInfoField(!section);
       setSelectedComponent(pendingForm.sections![sectionIndex].title);
     }
 
@@ -52,7 +52,7 @@ const MetaformEditorRightDrawerVisibleCondition: React.FC<Props> = ({
       setDisabledValue(field !== undefined);
       setRequiredConditionField(field ? field.field! : "");
       setRequiredConditionEqualsValue(field ? field.equals! : "");
-      setRequiredConditionInfoField(!field as boolean);
+      setRequiredConditionInfoField(!field);
     }
   };
   
@@ -125,26 +125,6 @@ const MetaformEditorRightDrawerVisibleCondition: React.FC<Props> = ({
   };
 
   /**
-  * Renders fields category title
-  * 
-  * @param title Category title
-  */
-  const renderFieldsCategoryTitle = (title: string) => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
-      return;
-    }
-
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      return (
-        <Typography variant="subtitle1" style={{ width: "100%" }}>
-          {title}
-        </Typography>
-
-      );
-    }
-  };
-
-  /**
    * Render visiblity condition selection menu
    *
    */
@@ -152,7 +132,9 @@ const MetaformEditorRightDrawerVisibleCondition: React.FC<Props> = ({
     if (sectionIndex !== undefined) {
       return (
         <>
-          { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.visiblityCondition) }
+          <Typography variant="subtitle1" style={{ width: "100%" }}>
+            { strings.draftEditorScreen.editor.features.visiblityCondition }
+          </Typography>
           <FormControl fullWidth disabled={ !disabledValue }>
             <InputLabel id="fieldCategoryVisiblityConditionLabel">
               { requiredConditionField ?
@@ -322,7 +304,9 @@ const MetaformEditorRightDrawerVisibleCondition: React.FC<Props> = ({
     if (sectionIndex !== undefined) {
       return (
         <>
-          { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.fieldVisiblity) }
+          <Typography variant="subtitle1" style={{ width: "100%" }}>
+            { strings.draftEditorScreen.editor.features.fieldVisiblity }
+          </Typography>
           <FormControlLabel
             control={
               <Switch
