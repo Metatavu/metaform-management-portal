@@ -9,7 +9,6 @@ import { FieldValue } from "./types";
 interface Props {
   field: MetaformField,
   fieldId: string,
-  fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
   onValueChange?: (value: FieldValue) => void,
@@ -23,7 +22,6 @@ interface Props {
 const MetaformMemoComponent: React.FC<Props> = ({
   field,
   fieldId,
-  fieldLabelId,
   formReadOnly,
   value,
   onValueChange,
@@ -54,7 +52,6 @@ const MetaformMemoComponent: React.FC<Props> = ({
       multiline
       placeholder={ field.placeholder }
       id={ fieldId }
-      aria-labelledby={ fieldLabelId }
       name={ field.name }
       title={ field.title }
       required={ field.required }

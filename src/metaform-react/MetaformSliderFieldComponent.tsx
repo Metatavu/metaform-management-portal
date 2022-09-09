@@ -26,6 +26,7 @@ export const MetaformSliderFieldComponent: React.FC<Props> = ({
 }) => {
   const fieldName = field.name;
   const readOnly = !!(formReadOnly || field.readonly);
+  const defaultSliderAriaLabel = "Slider";
 
   if (!fieldName) {
     return null;
@@ -44,7 +45,7 @@ export const MetaformSliderFieldComponent: React.FC<Props> = ({
       onChange={ (event: Event, newValue: number | number[]) => {
         setFieldValue && setFieldValue(fieldName, newValue as number);
       }}
-      aria-label={ field.title }
+      aria-label={ field.title ? field.title : defaultSliderAriaLabel }
     />
   );
 };

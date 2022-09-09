@@ -9,7 +9,6 @@ import { FieldValue, IconName } from "./types";
 interface Props {
   field: MetaformField,
   fieldId: string,
-  fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
   onValueChange?: (value: FieldValue) => void,
@@ -24,7 +23,6 @@ interface Props {
 const MetaformBooleanFieldComponent: React.FC<Props> = ({
   field,
   fieldId,
-  fieldLabelId,
   formReadOnly,
   value,
   onValueChange,
@@ -60,7 +58,6 @@ const MetaformBooleanFieldComponent: React.FC<Props> = ({
       style={ notInteractive ? { pointerEvents: "none" } : {}}
       key={ `${fieldId}-${option.name}-input` }
       id={ `${fieldId}-${option.name}` }
-      aria-labelledby={ fieldLabelId }
       name={ field.name }
       title={ field.title }
       required={ field.required }
