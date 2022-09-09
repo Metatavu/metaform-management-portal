@@ -223,6 +223,7 @@ const MetaformEditor: React.FC<Props> = ({
 
   /**
    * Event handler for field delete click
+   * if deleted Field is used as visibleIf condition, deletes all visibleIf where it is used
    *
    * @param sectionIndex section index
    * @param fieldIndex field index
@@ -233,12 +234,27 @@ const MetaformEditor: React.FC<Props> = ({
     }
 
     const section = pendingForm.sections[sectionIndex];
+    const field = section.fields?.[fieldIndex];
 
     if (!section.fields || section.fields.length <= fieldIndex) {
       return;
     }
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.[sectionIndex].fields?.splice(fieldIndex, 1);
+      draftForm.sections?.forEach(_section => {
+        if (_section.visibleIf) {
+          if (_section.visibleIf.field === field?.title) {
+            delete _section.visibleIf;
+          }
+        }
+        _section.fields?.forEach(_field => {
+          if (_field.visibleIf) {
+            if (_field.visibleIf.field === field?.title) {
+              delete _field.visibleIf;
+            }
+          }
+        });
+      });
     });
     setSelectedFieldIndex(undefined);
     setPendingForm(updatedForm);

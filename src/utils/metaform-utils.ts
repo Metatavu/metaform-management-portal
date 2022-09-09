@@ -72,7 +72,7 @@ namespace MetaformUtils {
    * @returns created field
    */
   export const createField = (fieldType: MetaformFieldType, title?: string, name?: string, required?: boolean, options?: any[]): MetaformField => {
-    if (fieldType === MetaformFieldType.Select || fieldType === MetaformFieldType.Radio) {
+    if (fieldType === MetaformFieldType.Select || fieldType === MetaformFieldType.Radio || fieldType === MetaformFieldType.Checklist) {
       return {
         name: name ?? fieldType,
         title: title ?? fieldType,
@@ -80,8 +80,12 @@ namespace MetaformUtils {
         required: required ?? false,
         options: options ?? [
           {
-            name: "option",
-            text: "option"
+            name: "option1",
+            text: "option1"
+          },
+          {
+            name: "option2",
+            text: "option2"
           }
         ]
       };
