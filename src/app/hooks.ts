@@ -1,6 +1,10 @@
-import { selectKeycloak } from "features/auth-slice";
-import React from "react";
+import Api from "api";
+import { ErrorContext } from "components/contexts/error-handler";
+import { resetPermission, selectKeycloak, setMetaform } from "features/auth-slice";
+import strings from "localization/strings";
+import React, { useContext } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import type { RootState, AppDispatch } from "./store";
 
 /**
@@ -69,4 +73,37 @@ export const useDebounce = (value: string, delay: number) => {
 export const useApiClient = <T extends {}>(apiClientFactory: (accessToken?: string) => T): T => {
   const { token } = useAppSelector(selectKeycloak) || {};
   return React.useMemo(() => apiClientFactory(token), [ token ]);
+};
+
+/**
+ * Custom hook that provides form access control.
+ */
+export const useFormAccessControl = () => {
+  const { formSlug } = useParams();
+  const apiClient = useApiClient(Api.getApiClient);
+  const { metaformsApi } = apiClient;
+  const dispatch = useAppDispatch();
+  const errorContext = useContext(ErrorContext);
+
+  /**
+   * Loads permission
+   */
+  const loadPermission = async () => {
+    try {
+      const foundMetaform = await metaformsApi.findMetaform({
+        metaformSlug: formSlug
+      });
+
+      dispatch(setMetaform(foundMetaform.id!));
+    } catch (error) {
+      errorContext.setError(strings.errorHandling.accessControl.loadPermission, error);
+    }
+  };
+
+  React.useEffect(() => {
+    loadPermission();
+    return () => {
+      dispatch(resetPermission());
+    };
+  }, []);
 };

@@ -32,7 +32,7 @@ const ErrorHandler: React.FC = ({ children }) => {
    */
   const handleError = async (message: string, err?: any) => {
     setError(message);
-    
+
     Sentry.captureException(err);
 
     if (err instanceof Response) {
@@ -57,16 +57,16 @@ const ErrorHandler: React.FC = ({ children }) => {
 
   /**
    * Returns current time
-   * 
+   *
    * @returns current time
    */
   const getTime = () => {
     return moment().format("DD.MM.YYYY HH:mm:ss");
   };
-  
+
   /**
    * Returns current window URL
-   * 
+   *
    * @returns current window URL
    */
   const getURL = () => {

@@ -47,6 +47,7 @@ export interface Localized extends LocalizedStringsMethods {
     },
     accessControl: {
       loadPermission: string;
+      contentNotPermitted: string;
     };
     adminFormsScreen: {
       listForms: string;

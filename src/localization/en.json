@@ -34,7 +34,8 @@
       "close": "Close"
     },
     "accessControl": {
-      "loadPermission": "Loading permission failed"
+      "loadPermission": "Loading permission failed",
+      "contentNotPermitted": "Content not permitted"
     },
     "adminFormsScreen": {
       "listForms": "Fetching forms failed",

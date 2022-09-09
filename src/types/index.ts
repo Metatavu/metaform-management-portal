@@ -138,10 +138,10 @@ export enum SosmetaType {
  * Enum for user permission level (metaform specific)
  */
 export enum PermissionLevel {
-  SYSTEM_ADMIN = "system-admin",
-  METAFORM_ADMIN = "metaform-admin",
-  METAFORM_MANGER = "metaform-manager",
-  ANON = "anon"
+  SYSTEM_ADMIN = 0,
+  METAFORM_ADMIN = 1,
+  METAFORM_MANGER = 2,
+  ANON = 3
 }
 
 declare module "@mui/material/styles" {
