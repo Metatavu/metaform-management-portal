@@ -3,7 +3,7 @@ import { Metaform, MetaformField, MetaformSection } from "generated/client";
 import produce from "immer";
 import slugify from "slugify";
 import strings from "localization/strings";
-import React, { useEffect } from "react";
+import React, { useEffect, FC } from "react";
 
 /**
  * Component properties
@@ -16,9 +16,9 @@ interface Props {
 }
 
 /**
- * Draft editor right drawer component
+ * Draft editor right drawer feature component
  */
-const MetaformEditorRightDrawerFeatureComponent: React.FC<Props> = ({
+const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   sectionIndex,
   fieldIndex,
   pendingForm,
@@ -89,7 +89,7 @@ const MetaformEditorRightDrawerFeatureComponent: React.FC<Props> = ({
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       return (
         <Typography variant="subtitle1" style={{ width: "100%" }}>
-          {title}
+          { title }
         </Typography>
       );
     }

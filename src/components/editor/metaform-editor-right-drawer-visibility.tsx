@@ -2,7 +2,7 @@ import { Divider, FormControl, FormControlLabel, InputLabel, MenuItem, Select, S
 import { Metaform, MetaformField, MetaformSection } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
-import React, { useEffect } from "react";
+import React, { useEffect, FC } from "react";
 
 /**
  * Component properties
@@ -15,9 +15,9 @@ interface Props {
 }
 
 /**
- * Draft editor right drawer component
+ * Draft editor right drawer visibility component
  */
-const MetaformEditorRightDrawerVisibleCondition: React.FC<Props> = ({
+const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
   sectionIndex,
   fieldIndex,
   pendingForm,
