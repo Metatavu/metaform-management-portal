@@ -27,6 +27,7 @@ export interface Localized extends LocalizedStringsMethods {
     addFilesText: string;
     back: string;
     actions: string;
+    restore: string;
   };
 
   /**
@@ -59,6 +60,7 @@ export interface Localized extends LocalizedStringsMethods {
     draftEditorScreen: {
       findDraft: string;
       saveDraft: string;
+      publishDraft: string;
     },
     formScreen: {
       saveReply: string;
@@ -119,6 +121,11 @@ export interface Localized extends LocalizedStringsMethods {
   header: {
     user: string;
     logo: string;
+    selectLanguage: string;
+    languages: {
+      fi: string;
+      en: string;
+    }
   };
 
   /**
