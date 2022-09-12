@@ -223,6 +223,7 @@ const MetaformEditor: React.FC<Props> = ({
 
   /**
    * Event handler for field delete click
+   * if deleted Field is used as visibleIf condition, deletes all visibleIf where it is used
    *
    * @param sectionIndex section index
    * @param fieldIndex field index
@@ -233,12 +234,27 @@ const MetaformEditor: React.FC<Props> = ({
     }
 
     const section = pendingForm.sections[sectionIndex];
+    const field = section.fields?.[fieldIndex];
 
     if (!section.fields || section.fields.length <= fieldIndex) {
       return;
     }
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.[sectionIndex].fields?.splice(fieldIndex, 1);
+      draftForm.sections?.forEach(currentSection => {
+        if (currentSection.visibleIf) {
+          if (currentSection.visibleIf.field === field?.title) {
+            delete currentSection.visibleIf;
+          }
+        }
+        currentSection.fields?.forEach(currentField => {
+          if (currentField.visibleIf) {
+            if (currentField.visibleIf.field === field?.title) {
+              delete currentField.visibleIf;
+            }
+          }
+        });
+      });
     });
     setSelectedFieldIndex(undefined);
     setPendingForm(updatedForm);
@@ -265,7 +281,7 @@ const MetaformEditor: React.FC<Props> = ({
             selected={ selected }
             onDeleteClick={ onFieldDeleteClick(sectionIndex, fieldIndex) }
           >
-            <Typography sx={{ color: "gray", margin: "5px" }}>
+            <Typography sx={{ color: "gray", mr: "5px" }}>
               { field.required === true ? `${field.title} *` : field.title }
             </Typography>
             <AddableFieldRenderer
@@ -299,7 +315,7 @@ const MetaformEditor: React.FC<Props> = ({
         <EditorSection
           onClick={ onSectionClick(sectionIndex) }
         >
-          <Typography variant="h1" sx={{ mb: 2 }}>
+          <Typography variant="h1" sx={{ mb: 0 }}>
             { section.title }
           </Typography>
           <DroppableWrapper
