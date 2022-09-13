@@ -1,7 +1,7 @@
 import { DatePicker, DateTimePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { TextField, Icon } from "@mui/material";
-import { MetaformField, MetaformFieldType, MetaformTableColumnType } from "generated/client";
+import { MetaformField, MetaformFieldType } from "generated/client";
 import strings from "localization/strings";
 import MetaformBooleanFieldComponent from "metaform-react/MetaformBooleanFieldComponent";
 import MetaformChecklistFieldComponent from "metaform-react/MetaformChecklistFieldComponent";
@@ -133,33 +133,22 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           field={{
             ...field,
             name: "Table",
-            columns: [ { name: "a", type: MetaformTableColumnType.Text }, { name: "b", type: MetaformTableColumnType.Text }, { name: "c", type: MetaformTableColumnType.Text } ],
+            columns: field.columns,
             addRows: true
           }}
           formReadOnly={ false }
           renderIcon={ renderIcon }
-          value={[
-            {
-              a: "a",
-              b: "b",
-              c: "c"
-            },
-            {
-              a: "a",
-              b: "b",
-              c: "c"
-            }
-          ]}
+          value=""
         />
       );
     case MetaformFieldType.Select:
       return (
         <MetaformSelectFieldComponent
-          value="a"
+          value=""
           field={{
             ...field,
-            name: "Select",
-            options: [ { name: "a", text: "a" }, { name: "b", text: "b" }, { name: "c", text: "c" } ]
+            name: field.name,
+            options: field.options
           }}
           formReadOnly={ false }
           notInteractive={ true }
@@ -209,8 +198,8 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           value="a"
           field={{
             ...field,
-            name: "Checklist",
-            options: [ { name: "a", text: "a" }, { name: "b", text: "b" }, { name: "c", text: "c" } ]
+            name: field.name,
+            options: field.options
           }}
           formReadOnly={ false }
           renderIcon={ renderIcon }
@@ -224,8 +213,9 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           value="a"
           field={{
             ...field,
-            name: "Radio",
-            options: [ { name: "a", text: "b" }]
+            name: field.name,
+            title: field.title,
+            options: field.options
           }}
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
@@ -236,7 +226,13 @@ const AddableFieldRenderer: React.FC<Prop> = ({
       return (
         <MetaformSliderFieldComponent
           notInteractive={ true }
-          field={ field }
+          field={{
+            ...field,
+            name: field.name,
+            title: field.title,
+            max: field.max,
+            min: field.min
+          }}
           formReadOnly={ true }
           value={ field.max && field.min ? (field.max - field.min) / 2 : 0 }
         />
@@ -244,7 +240,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     case MetaformFieldType.Url:
       return (
         <MetaformUrlFieldComponent
-          value="https://google.com"
+          value="E.g. https://google.com"
           field={ field }
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
@@ -281,7 +277,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           fieldId={ fieldId }
           fieldLabelId={ fieldLabelId }
           formReadOnly={ true }
-          value={ field.name || "" }
+          value="Memo"
         />
       );
     case MetaformFieldType.Boolean:

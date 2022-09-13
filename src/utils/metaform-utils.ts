@@ -72,7 +72,7 @@ namespace MetaformUtils {
    * @returns created field
    */
   export const createField = (fieldType: MetaformFieldType, title?: string, name?: string, required?: boolean, options?: any[]): MetaformField => {
-    if (fieldType === MetaformFieldType.Select || fieldType === MetaformFieldType.Radio) {
+    if (fieldType === MetaformFieldType.Select || fieldType === MetaformFieldType.Radio || fieldType === MetaformFieldType.Checklist) {
       return {
         name: name ?? fieldType,
         title: title ?? fieldType,
@@ -81,7 +81,45 @@ namespace MetaformUtils {
         options: options ?? [
           {
             name: "option",
-            text: "option"
+            text: "option1"
+          }
+        ]
+      };
+    }
+
+    if (fieldType === MetaformFieldType.Slider) {
+      return {
+        name: name ?? fieldType,
+        title: title ?? fieldType,
+        type: fieldType,
+        required: required ?? false,
+        min: 50,
+        max: 100
+      };
+    }
+
+    if (fieldType === MetaformFieldType.Table) {
+      return {
+        name: name ?? fieldType,
+        title: title ?? fieldType,
+        text: fieldType,
+        type: fieldType,
+        required: required ?? false,
+        columns: options ?? [
+          {
+            type: "text",
+            name: "Ryhman-nimi",
+            title: "Ryhmän nimi"
+          },
+          {
+            type: "number",
+            name: "Harjoituskerrat",
+            title: "Harjoituskerrat"
+          },
+          {
+            type: "number",
+            name: "Osallistujamaara-keskimaarin",
+            title: "Osallistujamäärä keskimäärin"
           }
         ]
       };

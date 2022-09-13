@@ -4,6 +4,7 @@
     "delete": "Poista",
     "edit": "Muokkaa",
     "logout": "Kirjaudu ulos",
+    "login": "Ammattilaisen kirjautuminen",
     "notImplemented": "Ei vielä toteutettu",
     "save": "Tallenna",
     "yes": "Kyllä",
@@ -135,7 +136,7 @@
       "description": "Lomakkeiden muokkaus ja uusien lomakkeiden luominen.",
       "editorScreen": {
         "title": "Valitse lomake",
-        "description": "Valitse editoitava lomake, tai luo uusi lomake."
+        "description": "Valitse editoitava lomake tai luo uusi lomake."
       },
       "draftEditorScreen": {
         "title": "Luonnoseditori",
@@ -168,7 +169,10 @@
   },
 
   "publicFormsScreen": {
-    "title": "Lomakkeet"
+    "title": "Lomakkeet",
+    "welcome": "Tervetuloa lomakeportaaliin",
+    "welcomeInfo": "Jos olet ammattilainen, niin voit kirjautua sisään. Vierailija palaa essoten etusivulle.",
+    "backToEssote": "Siirry essoten sivuille"
   },
 
   "draftEditorScreen": {
@@ -217,7 +221,9 @@
         "defineUserGroup": "Määrittää käyttäjäryhmän",
         "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
         "fieldTitle": "Kentän otsikko",
-        "sectionTitle": "Osion otsikko"
+        "sectionTitle": "Osion otsikko",
+        "addSelectionField": "Lisää kenttä",
+        "addNewColumn": "Lisää uusi sarake"
       },
       "visibility": {
         "tabTitle": "näkyvyys",
@@ -228,6 +234,8 @@
         "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
         "fieldDefiningCondition": "Ehdon määrittävä kenttä",
         "selectField": "Valitse kenttä",
+        "fieldConditionLabel": "Tämä kenttä näkyy, jos {0} arvo on {1}",
+        "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}",
         "selectVisibilityInfo": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja."
       }
     }
