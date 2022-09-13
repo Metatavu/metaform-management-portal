@@ -16,6 +16,7 @@ export interface Localized extends LocalizedStringsMethods {
     delete: string;
     edit: string;
     logout: string;
+    login: string;
     notImplemented: string;
     save: string;
     yes: string;
@@ -108,6 +109,9 @@ export interface Localized extends LocalizedStringsMethods {
    */
   publicFormsScreen: {
     title: string;
+    welcome: string;
+    welcomeInfo: string;
+    backToEssote: string;
   }
 
   /**
@@ -254,6 +258,8 @@ export interface Localized extends LocalizedStringsMethods {
         required: string;
         fieldTitle: string;
         sectionTitle: string;
+        addSelectionField: string;
+        addNewColumn: string;
       };
       visibility: {
         tabTitle: string;

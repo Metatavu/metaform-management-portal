@@ -4,6 +4,7 @@
     "delete": "Delete",
     "edit": "Edit",
     "logout": "Logout",
+    "login": "Log in",
     "notImplemented": "Not yet implemented",
     "save": "Save",
     "yes": "Yes",
@@ -132,7 +133,7 @@
       }
     },
     "editorScreens": {
-      "title": "Editors",
+      "title": "Editor",
       "description": "Edit forms and create new forms.",
       "editorScreen": {
         "title": "Select form",
@@ -169,7 +170,10 @@
   },
 
   "publicFormsScreen": {
-    "title": "Forms"
+    "title": "Forms",
+    "welcome": "Welcome to form portal",
+    "welcomeInfo": "If you are a professional, you can log in. The visitor please return to the home page.",
+    "backToEssote": "Return to front page"
   },
 
 
@@ -219,7 +223,9 @@
         "defineUserGroup": "Define a user group",
         "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
         "fieldTitle": "Field title",
-        "sectionTitle": "Section title"
+        "sectionTitle": "Section title",
+        "addSelectionField": "Add field",
+        "addNewColumn": "Add new column"
       },
       "visibility": {
         "tabTitle": "Visibility",
