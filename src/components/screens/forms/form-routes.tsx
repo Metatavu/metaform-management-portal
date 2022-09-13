@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import FormHistoryScreen from "./form-history-screen";
 import FormReplyScreen from "./form-reply-screen";
 import FormRepliesScreen from "./form-replies-screen";
@@ -11,7 +11,8 @@ import { PermissionLevel } from "types";
  * Component for form routes
  */
 const FormRoutes: React.FC = () => {
-  useFormAccessControl();
+  const { formSlug } = useParams();
+  useFormAccessControl(formSlug);
 
   return (
     <Routes>

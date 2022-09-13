@@ -24,6 +24,19 @@ const initialState: AuthState = {
 };
 
 /**
+ * Checks for admin permission
+ *
+ * @param keycloak keycloak
+*/
+const isSystemAdmin = (keycloak?: Keycloak): Boolean => {
+  if (!keycloak?.token) {
+    throw new Error(strings.errorHandling.noToken);
+  }
+
+  return keycloak?.hasRealmRole(SYSTEM_ADMIN_ROLE);
+};
+
+/**
  * Async thunk that determines permission level from user id and metaform id
  */
 export const setMetaform = createAsyncThunk<PermissionLevel, string, ThunkApiConfig>(
@@ -32,17 +45,13 @@ export const setMetaform = createAsyncThunk<PermissionLevel, string, ThunkApiCon
     try {
       const { keycloak } = getState().auth;
 
-      if (!keycloak?.token) {
-        throw new Error(strings.errorHandling.noToken);
-      }
-
-      if (keycloak?.hasRealmRole(SYSTEM_ADMIN_ROLE)) {
+      if (isSystemAdmin(keycloak)) {
         return PermissionLevel.SYSTEM_ADMIN;
       }
 
-      const foundMember = await Api.getApiClient(keycloak.token).metaformMembersApi.findMetaformMember({
+      const foundMember = await Api.getApiClient(keycloak!.token).metaformMembersApi.findMetaformMember({
         metaformId: metaformId,
-        metaformMemberId: keycloak.subject!
+        metaformMemberId: keycloak!.subject!
       });
 
       switch (foundMember.role) {
@@ -79,6 +88,11 @@ export const authSlice = createSlice({
     },
     resetPermission: state => {
       state.permissionLevel = PermissionLevel.ANON;
+    },
+    setSystemAdminPermission: state => {
+      if (isSystemAdmin(state.keycloak)) {
+        state.permissionLevel = PermissionLevel.SYSTEM_ADMIN;
+      }
     }
   },
   extraReducers: builder => {
@@ -91,7 +105,7 @@ export const authSlice = createSlice({
 /**
  * Authentication actions from created authentication slice
  */
-export const { anonymousLogin, login, logout, resetPermission } = authSlice.actions;
+export const { anonymousLogin, login, logout, resetPermission, setSystemAdminPermission } = authSlice.actions;
 
 /**
  * Select Keycloak selector

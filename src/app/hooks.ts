@@ -1,10 +1,9 @@
 import Api from "api";
 import { ErrorContext } from "components/contexts/error-handler";
-import { resetPermission, selectKeycloak, setMetaform } from "features/auth-slice";
+import { resetPermission, selectKeycloak, setMetaform, setSystemAdminPermission } from "features/auth-slice";
 import strings from "localization/strings";
 import React, { useContext } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import type { RootState, AppDispatch } from "./store";
 
 /**
@@ -78,8 +77,7 @@ export const useApiClient = <T extends {}>(apiClientFactory: (accessToken?: stri
 /**
  * Custom hook that provides form access control.
  */
-export const useFormAccessControl = () => {
-  const { formSlug } = useParams();
+export const useFormAccessControl = (formSlug?: string) => {
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi } = apiClient;
   const dispatch = useAppDispatch();
@@ -101,7 +99,11 @@ export const useFormAccessControl = () => {
   };
 
   React.useEffect(() => {
-    loadPermission();
+    if (formSlug !== undefined) {
+      loadPermission();
+    } else {
+      dispatch(setSystemAdminPermission());
+    }
     return () => {
       dispatch(resetPermission());
     };
