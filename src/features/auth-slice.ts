@@ -63,6 +63,7 @@ export const setMetaform = createAsyncThunk<PermissionLevel, string, ThunkApiCon
           return PermissionLevel.ANON;
       }
     } catch (error) {
+      console.error(error);
       return PermissionLevel.ANON;
     }
   }
