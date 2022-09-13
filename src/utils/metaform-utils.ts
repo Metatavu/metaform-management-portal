@@ -72,7 +72,7 @@ namespace MetaformUtils {
    * @returns created field
    */
   export const createField = (fieldType: MetaformFieldType, title?: string, name?: string, required?: boolean, options?: any[]): MetaformField => {
-    if (fieldType === MetaformFieldType.Select || fieldType === MetaformFieldType.Radio || fieldType === MetaformFieldType.Checklist) {
+    if (fieldType === MetaformFieldType.Select || fieldType === MetaformFieldType.Radio || fieldType === MetaformFieldType.Checklist || fieldType === MetaformFieldType.Checklist) {
       return {
         name: name ?? fieldType,
         title: title ?? fieldType,

@@ -169,7 +169,6 @@ const AddableFieldRenderer: React.FC<Prop> = ({
         <MetaformHtmlComponent
           notInteractive={ true }
           fieldId={ fieldId }
-          fieldLabelId={ fieldLabelId }
           field={{
             ...field,
             name: "Custom HTML",
@@ -218,7 +217,6 @@ const AddableFieldRenderer: React.FC<Prop> = ({
             options: field.options
           }}
           fieldId={ fieldId }
-          fieldLabelId={ fieldLabelId }
           formReadOnly={ false }
         />
       );
@@ -253,7 +251,6 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           notInteractive={ true }
           field={ field }
           fieldId={ fieldId }
-          fieldLabelId={ fieldLabelId }
           formReadOnly={ true }
           value={ strings.draftEditorScreen.editor.fields.email }
         />
@@ -275,7 +272,6 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           notInteractive={ true }
           field={ field }
           fieldId={ fieldId }
-          fieldLabelId={ fieldLabelId }
           formReadOnly={ true }
           value="Memo"
         />
@@ -287,7 +283,6 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           renderIcon={ renderIcon }
           field={ field }
           fieldId={ fieldId }
-          fieldLabelId={ fieldLabelId }
           formReadOnly={ false }
           value="true"
         />
@@ -298,7 +293,6 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           key={ fieldId }
           field={ field }
           fieldId={ fieldId }
-          fieldLabelId={ fieldLabelId }
           formReadOnly={ true }
           value={" "}
         />

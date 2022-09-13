@@ -29,6 +29,7 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
   notInteractive
 }) => {
   const [ rowValues, setRowValues ] = React.useState<TableFieldValue>(value as TableFieldValue || [{}]);
+  const defaultCellInputAriaLabel = "Cell input";
 
   if (!field.name) {
     return null;
@@ -128,6 +129,7 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
       <TableTextCellWrapper
         value={ cellValue || "" }
         key={ column.name }
+        aria-label={ field.title ? field.title : defaultCellInputAriaLabel}
         InputProps={{
           style: style,
           readOnly: formReadOnly || field.readonly,

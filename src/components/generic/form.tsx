@@ -87,7 +87,7 @@ const Form: React.FC<Props> = ({
           onChange={ (date: Date | null) => handleDateChange(date, fieldName) }
           views={["day", "month", "year"]}
           renderInput={ params =>
-            <TextField label={ strings.formComponent.dateTimePicker } { ...params }/>
+            <TextField label={ strings.formComponent.dateTimePicker } aria-label={ fieldName } { ...params }/>
           }
         />
       </LocalizationProvider>
@@ -105,7 +105,7 @@ const Form: React.FC<Props> = ({
           value={ value ? new Date(value as string) : null }
           onChange={ (date: Date | null) => handleDateTimeChange(date, fieldName) }
           renderInput={ params =>
-            <TextField label={ strings.formComponent.dateTimePicker } { ...params }/>
+            <TextField label={ strings.formComponent.dateTimePicker } aria-label={ fieldName } { ...params }/>
           }
         />
       </LocalizationProvider>
