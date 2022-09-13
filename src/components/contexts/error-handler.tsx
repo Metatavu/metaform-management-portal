@@ -32,20 +32,21 @@ const ErrorHandler: React.FC = ({ children }) => {
    */
   const handleError = async (message: string, err?: any) => {
     setError(message);
-    
+
     Sentry.captureException(err);
+    console.error(err);
 
     if (err instanceof Response) {
       try {
-        console.error(await err.json());
+        const errorJson = await err.json();
+        console.error(errorJson);
+        setErrorMessage(errorJson.message);
       } catch {
-        console.error(err);
+        setErrorMessage(JSON.stringify(error));
       }
-      return;
+    } else if (err !== undefined) {
+      setErrorMessage(JSON.stringify(error));
     }
-
-    setErrorMessage(err.message);
-    console.error(err);
   };
 
   /**
