@@ -246,6 +246,7 @@ export interface Localized extends LocalizedStringsMethods {
         dateAndTime: string;
         files: string;
         table: string;
+        submit: string;
       };
       features: {
         tabTitle: string;

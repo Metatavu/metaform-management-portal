@@ -27,7 +27,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   setPendingForm
 }) => {
   const [ tabIndex, setTabIndex ] = React.useState(0);
-
+  console.log(pendingForm);
   /**
    * Component render
    */

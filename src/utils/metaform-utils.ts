@@ -72,7 +72,10 @@ namespace MetaformUtils {
    * @returns created field
    */
   export const createField = (fieldType: MetaformFieldType, title?: string, name?: string, required?: boolean, options?: any[]): MetaformField => {
-    if (fieldType === MetaformFieldType.Select || fieldType === MetaformFieldType.Radio || fieldType === MetaformFieldType.Checklist || fieldType === MetaformFieldType.Checklist) {
+    if (fieldType === MetaformFieldType.Select ||
+        fieldType === MetaformFieldType.Radio ||
+        fieldType === MetaformFieldType.Checklist ||
+        fieldType === MetaformFieldType.Boolean) {
       return {
         name: name ?? fieldType,
         title: title ?? fieldType,
@@ -122,6 +125,17 @@ namespace MetaformUtils {
             title: "Osallistujamäärä keskimäärin"
           }
         ]
+      };
+    }
+    if (fieldType === MetaformFieldType.Submit) {
+      return {
+        title: "",
+        name: "submit",
+        type: fieldType,
+        text: "Lähetä lomake" ?? fieldType,
+        columns: [],
+        options: [],
+        contexts: options ?? ["FORM", "MANAGEMENT"]
       };
     }
 

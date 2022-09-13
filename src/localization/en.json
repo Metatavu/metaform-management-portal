@@ -211,7 +211,8 @@
         "date": "Date",
         "dateAndTime": "Date & time",
         "files": "Files",
-        "table": "Table"
+        "table": "Table",
+        "submit": "Submit"
       },
       "features": {
         "tabTitle": "Features",

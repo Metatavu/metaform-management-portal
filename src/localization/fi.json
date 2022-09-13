@@ -209,7 +209,8 @@
         "date": "Päivämäärä",
         "dateAndTime": "Päivämäärä & aika",
         "files": "Liitteet",
-        "table": "Taulukko"
+        "table": "Taulukko",
+        "submit:": "Lähetä"
       },
       "features": {
         "tabTitle": "Ominaisuudet",
