@@ -26,7 +26,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   setPendingForm
 }) => {
   const [ metaformSectionTitle, setMetaFormSectionTitle ] = React.useState<string | undefined>("");
-  const [ columnType, setColumnType ] = React.useState<string | null>(null);
+  const [ columnType, setColumnType ] = React.useState<string>("");
 
   /**
    * Set values of Confidition field, switch and get selected component name
@@ -37,69 +37,53 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     }
   };
 
-  useEffect(() => {
-    setVisiblityComponentValues();
-  }, [fieldIndex, sectionIndex]);
-
   /**
    * Updates metaform field
-   *
-   * @param newMetaformField new metaform field
+   * @param metaformField Metaform field what we are editing
    */
-  const updateFormField = (newMetaformField: MetaformField) => {
+  const updateFormField = (metaformField: MetaformField) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
     const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, newMetaformField);
+      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, metaformField);
     });
     setPendingForm(updatedForm);
   };
 
   /**
    * Updates metaform section
-   *
-   * @param newMetaformSection new metaform section
+   * @param metaformSection metaform section what we are editing
    */
-  const updateFormSection = (newMetaformSection: MetaformSection) => {
+  const updateFormSection = (metaformSection: MetaformSection) => {
     if (sectionIndex === undefined) {
       return;
     }
-
-    const section = pendingForm.sections?.[sectionIndex];
-    if (!section) {
-      return;
-    }
-
     const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.splice(sectionIndex, 1, newMetaformSection);
+      draftForm.sections?.splice(sectionIndex, 1, metaformSection);
     });
-
     setPendingForm(updatedForm);
   };
 
   /**
   * Renders fields category title
-  * 
   * @param title Category title
   */
   const renderFieldsCategoryTitle = (title: string) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
-
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      return (
-        <Typography variant="subtitle1" style={{ width: "100%", textAlign: "center" }}>
-          { title }
-        </Typography>
-      );
-    }
+    return (
+      <Typography variant="subtitle1" style={{ width: "100%" }}>
+        { title }
+      </Typography>
+    );
   };
 
   /**
    * Update option text
-   * 
+   * @param updateTextOption FieldOption text we are changing
+   * @param index index value
    */
   const updateOptionText = (updateTextOption: MetaformFieldOption, index: number) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
@@ -112,7 +96,6 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * 
    * Add new Radio / Boolean / Select option field
    */
   const addNewOptionField = () => {
@@ -128,9 +111,10 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Delete optionfield
-   * 
+   * @param index index value of optionfield what we delete
+   * @param event event value
    */
-  const deleteOptionField = (event : any, index : number) => {
+  const deleteOptionField = (event: any, index: number) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -174,9 +158,10 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Delete column
-   * 
+   * @param index indexvalue of current column we are deleting
+   * @param event event value
    */
-  const deleteColumn = (event : any, index : number) => {
+  const deleteColumn = (event: any, index : number) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -220,7 +205,6 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Render option textfields if radio/checklist or boolean
-   * 
    */
   const options = () => {
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
@@ -350,7 +334,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
               );
             })}
             <Divider/>
-            <Typography variant="subtitle1" style={{ width: "100%", textAlign: "center" }}>
+            <Typography variant="subtitle1" style={{ width: "100%" }}>
               { strings.draftEditorScreen.editor.features.addNewColumn }
             </Typography>
             <FormControl fullWidth>
@@ -380,12 +364,6 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * Render feature component
    */
   const renderFeatures = () => {
-    if (sectionIndex === undefined && fieldIndex === undefined) {
-      return (
-        <Typography>{ strings.draftEditorScreen.editor.visibility.selectVisibilityInfo }</Typography>
-      );
-    }
-
     if (sectionIndex !== undefined && fieldIndex === undefined) {
       const section = pendingForm.sections![sectionIndex];
       return (
@@ -435,7 +413,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
             }
           />
           <Divider/>
-          <Typography variant="subtitle1" style={{ width: "100%", textAlign: "center" }}>
+          <Typography variant="subtitle1" style={{ width: "100%" }}>
             { strings.draftEditorScreen.editor.features.defineUserGroup }
           </Typography>
 
@@ -455,7 +433,14 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
         </>
       );
     }
+    return (
+      <Typography>{ strings.draftEditorScreen.editor.visibility.selectVisibilityInfo }</Typography>
+    );
   };
+
+  useEffect(() => {
+    setVisiblityComponentValues();
+  }, [fieldIndex, sectionIndex]);
 
   /**
    * Component render
