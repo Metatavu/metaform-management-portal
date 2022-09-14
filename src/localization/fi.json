@@ -232,6 +232,10 @@
         "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}",
         "selectVisibilityInfo": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja."
       }
+    },
+    "formPreview": {
+      "exit": "Sulje esikatselu",
+      "shareLink": "Jaa linkki"
     }
   },
 

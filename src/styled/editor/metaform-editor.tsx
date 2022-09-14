@@ -1,4 +1,4 @@
-import { Paper, Stack, TablePagination } from "@mui/material";
+import { Box, Paper, Stack, TablePagination } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 /**
@@ -69,8 +69,34 @@ export const FormListContainer = styled(Stack, {
  */
 export const FormsContainer = styled(Stack, {
   label: "forms-container"
-})(({ theme }) => ({
+})(() => ({
   overflow: "auto",
-  flex: 1,
+  flex: 1
+}));
+
+/**
+ * Styled preview root component
+ */
+export const PreviewHeaderRoot = styled(Box, {
+  label: "preview-header--root"
+})(({ theme }) => ({
+  width: "100vw",
+  overflow: "auto",
+  padding: theme.spacing(1),
+  background: theme.palette.secondary.main,
+  boxShadow: "0px 2px 1px rgba(0,0,0,0.5)"
+}));
+
+/**
+ * Styled preview container component
+ */
+export const PreviewContainer = styled(Box, {
+  label: "preview-container"
+})(({ theme }) => ({
+  height: "100vh",
+  width: "100vw",
+  overflow: "auto",
+  display: "grid",
+  gridTemplateRows: "auto auto auto 1fr",
   backgroundColor: theme.palette.grey[300]
 }));

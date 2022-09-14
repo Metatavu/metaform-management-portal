@@ -269,6 +269,10 @@ export interface Localized extends LocalizedStringsMethods {
         sectionConditionLabel: string;
       };
     };
+    formPreview: {
+      exit: string;
+      shareLink: string;
+    };
   };
 
   /**

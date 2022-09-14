@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-unused-vars */
 import { Divider, Stack, Typography } from "@mui/material";
 import { Metaform, MetaformVersionType } from "generated/client";
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -7,12 +8,14 @@ import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
 import { Preview, Public, Save } from "@mui/icons-material";
-import { IconActionButton } from "styled/layouts/admin-layout";
 import { useParams, useNavigate } from "react-router-dom";
 import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
 import { useApiClient } from "app/hooks";
 import GenericLoaderWrapper from "components/generic/generic-loader";
+import MetaformEditorPreview from "components/editor/preview/metaform-editor-preview";
+import { Box } from "@mui/system";
+import { RoundActionButton } from "styled/generic/form";
 
 /**
  * Draft editor screen component
@@ -27,9 +30,9 @@ const DraftEditorScreen: React.FC = () => {
   const { metaformsApi, versionsApi } = apiClient;
 
   const editorRef = useRef<HTMLDivElement>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
   const [ draftForm, setDraftForm ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
-
-  const [ loading, setLoading ] = useState<boolean>(false);
+  const [ loading, setLoading ] = useState(false);
 
   /**
    * Loads MetaformVersion to edit.
@@ -43,7 +46,7 @@ const DraftEditorScreen: React.FC = () => {
         metaformId: form.id!,
         versionId: draftId!
       });
-      
+
       setDraftForm(draft.data as Metaform);
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.findDraft, e);
@@ -90,7 +93,7 @@ const DraftEditorScreen: React.FC = () => {
     if (!draftId || !formSlug) {
       return;
     }
-    
+
     try {
       const form = await metaformsApi.findMetaform({ metaformSlug: formSlug });
       await metaformsApi.updateMetaform({
@@ -121,25 +124,41 @@ const DraftEditorScreen: React.FC = () => {
   }, []);
 
   /**
+   * Renders editor preview
+   */
+  const renderEditorPreview = () => (
+    <Box width={ 0 } height={ 0 }>
+      <MetaformEditorPreview
+        previewRef={ previewRef }
+        metaform={ draftForm }
+        titleColor="#000"
+      />
+    </Box>
+  );
+
+  /**
    * Renders draft editor actions
    */
   const draftEditorActions = () => (
     <Stack direction="row" spacing={ 2 }>
-      <IconActionButton
+      <RoundActionButton
         startIcon={ <Save/> }
         onClick={ saveMetaformVersion }
       >
         <Typography>{ strings.generic.save }</Typography>
-      </IconActionButton>
-      <IconActionButton onClick={ () => editorRef.current?.requestFullscreen?.() } startIcon={ <Preview/> }>
+      </RoundActionButton>
+      <RoundActionButton
+        onClick={ () => previewRef.current?.requestFullscreen?.() }
+        startIcon={ <Preview/> }
+      >
         <Typography>{ strings.draftEditorScreen.preview }</Typography>
-      </IconActionButton>
-      <IconActionButton
+      </RoundActionButton>
+      <RoundActionButton
         startIcon={ <Public/> }
         onClick={ publishMetaformVersion }
       >
         <Typography>{ strings.draftEditorScreen.publish }</Typography>
-      </IconActionButton>
+      </RoundActionButton>
     </Stack>
   );
 
@@ -153,11 +172,14 @@ const DraftEditorScreen: React.FC = () => {
       </NavigationTabContainer>
       <Divider/>
       <GenericLoaderWrapper loading={ loading }>
-        <MetaformEditor
-          editorRef={ editorRef }
-          pendingForm={ MetaformUtils.jsonToMetaform(draftForm) }
-          setPendingForm={ setDraftForm }
-        />
+        <>
+          <MetaformEditor
+            editorRef={ editorRef }
+            pendingForm={ MetaformUtils.jsonToMetaform(draftForm) }
+            setPendingForm={ setDraftForm }
+          />
+          { renderEditorPreview() }
+        </>
       </GenericLoaderWrapper>
     </Stack>
   );
