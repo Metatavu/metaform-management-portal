@@ -8,11 +8,24 @@ import strings from "localization/strings";
 const PublicFormsScreen: React.FC = () => {
   return (
     <Box bgcolor="#375AA3" height="100vh">
-      <Box margin="auto" mt="200px" width="500px" bgcolor="white" borderRadius="15px" boxShadow="10">
+      <Box
+        margin="auto"
+        mt="200px"
+        width="500px"
+        bgcolor="white"
+        borderRadius="15px"
+        boxShadow="10"
+      >
         <Container
           disableGutters
         >
-          <Typography variant="body1" padding="30px 50px" textAlign="center">{ strings.publicFormsScreen.welcomeInfo }</Typography>
+          <Typography
+            variant="body1"
+            padding="30px 50px"
+            textAlign="center"
+          >
+            { strings.publicFormsScreen.welcomeInfo }
+          </Typography>
           <Stack
             direction="row"
             justifyContent="center"
