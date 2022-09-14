@@ -1,4 +1,4 @@
-import { Button, Checkbox, Divider, FormControl, FormControlLabel, Stack, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, Divider, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType } from "generated/client";
 import produce from "immer";
 import slugify from "slugify";
@@ -25,7 +25,8 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   pendingForm,
   setPendingForm
 }) => {
-  const [ metaformSectionTitle, setMetaFormSectionTitle] = React.useState<string | undefined>("");
+  const [ metaformSectionTitle, setMetaFormSectionTitle ] = React.useState<string | undefined>("");
+  const [ columnType, setColumnType ] = React.useState<string | null>(null);
 
   /**
    * Set values of Confidition field, switch and get selected component name
@@ -89,7 +90,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       return (
-        <Typography variant="subtitle1" style={{ width: "100%" }}>
+        <Typography variant="subtitle1" style={{ width: "100%", textAlign: "center" }}>
           { title }
         </Typography>
       );
@@ -179,9 +180,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
-    console.log("deleteColumn");
     const updatedForm = produce(pendingForm, draftForm => {
-      console.log(index);
       draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.columns?.splice(index, 1);
     });
     setPendingForm(updatedForm);
@@ -197,10 +196,24 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     const columnsAmount = JSON.stringify(pendingForm.sections![sectionIndex].fields![fieldIndex].columns?.length);
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.columns?.push({
-        type: "text" as MetaformTableColumnType,
+        type: columnType as MetaformTableColumnType,
         name: columnsAmount,
-        title: "Column title"
+        title: `Column title ${columnsAmount}`
       });
+    });
+    setPendingForm(updatedForm);
+  };
+
+  /**
+   * Add custom html code
+   * @param htmlField html field
+   */
+  const updateCustomHtml = (htmlField : MetaformField) => {
+    if (sectionIndex === undefined || fieldIndex === undefined) {
+      return;
+    }
+    const updatedForm = produce(pendingForm, draftForm => {
+      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, htmlField);
     });
     setPendingForm(updatedForm);
   };
@@ -234,7 +247,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
           </>
         );
       }
-      if (selectedType.options !== undefined) {
+      if (selectedType.type === "checklist" || selectedType.type === "radio" || selectedType.type === "select") {
         const optionsText = pendingForm.sections![sectionIndex].fields![fieldIndex].options;
         return (
           <>
@@ -266,6 +279,18 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
             })}
             <Button fullWidth sx={{ height: "50px" }} onClick={ addNewOptionField }>{ strings.draftEditorScreen.editor.features.addSelectionField }</Button>
           </>
+        );
+      }
+      if (selectedType.type === "html") {
+        return (
+          <TextField
+            fullWidth
+            placeholder="Add custom html here"
+            multiline
+            rows={4}
+            value={ selectedType.html }
+            onChange={ event => updateCustomHtml({ ...selectedType, html: event.target.value }) }
+          />
         );
       }
     }
@@ -324,7 +349,27 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
                 </Stack>
               );
             })}
-            <Button fullWidth sx={{ height: "50px" }} onClick={ addNewColumn }>{ strings.draftEditorScreen.editor.features.addNewColumn }</Button>
+            <Divider/>
+            <Typography variant="subtitle1" style={{ width: "100%", textAlign: "center" }}>
+              { strings.draftEditorScreen.editor.features.addNewColumn }
+            </Typography>
+            <FormControl fullWidth>
+              <InputLabel id="fieldCategoryVisiblityConditionLabel">
+                { strings.draftEditorScreen.editor.features.addColumnType }
+              </InputLabel>
+              <Select
+                fullWidth
+                labelId="fieldCategoryVisiblityConditionLabel"
+                label={ strings.draftEditorScreen.editor.features.addColumnType }
+                sx={{ height: "50px" }}
+                value={ columnType }
+                onChange={ event => setColumnType(event.target.value) }
+              >
+                <MenuItem value="text">{ strings.draftEditorScreen.editor.features.columnTextType}</MenuItem>
+                <MenuItem value="number">{ strings.draftEditorScreen.editor.features.columnNumberType}</MenuItem>
+              </Select>
+              <Button fullWidth sx={{ height: "50px", mt: "5px" }} onClick={ addNewColumn }>{ strings.draftEditorScreen.editor.features.addNewColumn }</Button>
+            </FormControl>
           </>
         );
       }
@@ -390,7 +435,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
             }
           />
           <Divider/>
-          <Typography variant="subtitle1" style={{ width: "100%" }}>
+          <Typography variant="subtitle1" style={{ width: "100%", textAlign: "center" }}>
             { strings.draftEditorScreen.editor.features.defineUserGroup }
           </Typography>
 

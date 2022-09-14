@@ -171,8 +171,8 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           fieldId={ fieldId }
           field={{
             ...field,
-            name: "Custom HTML",
-            html: "<b>You can replace this with custom HTML</b>"
+            name: "Custom-HTML",
+            html: field.html
           }}
         />
       );

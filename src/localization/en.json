@@ -226,7 +226,10 @@
         "fieldTitle": "Field title",
         "sectionTitle": "Section title",
         "addSelectionField": "Add field",
-        "addNewColumn": "Add new column"
+        "addNewColumn": "Add new column",
+        "addColumnType": "Add column type",
+        "columnTextType": "Text field",
+        "columnNumberType": "Number field"
       },
       "visibility": {
         "tabTitle": "Visibility",

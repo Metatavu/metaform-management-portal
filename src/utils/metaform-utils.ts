@@ -74,8 +74,7 @@ namespace MetaformUtils {
   export const createField = (fieldType: MetaformFieldType, title?: string, name?: string, required?: boolean, options?: any[]): MetaformField => {
     if (fieldType === MetaformFieldType.Select ||
         fieldType === MetaformFieldType.Radio ||
-        fieldType === MetaformFieldType.Checklist ||
-        fieldType === MetaformFieldType.Boolean) {
+        fieldType === MetaformFieldType.Checklist) {
       return {
         name: name ?? fieldType,
         title: title ?? fieldType,
@@ -87,6 +86,15 @@ namespace MetaformUtils {
             text: "option1"
           }
         ]
+      };
+    }
+    if (fieldType === MetaformFieldType.Boolean) {
+      return {
+        name: name ?? fieldType,
+        title: title ?? fieldType,
+        type: fieldType,
+        required: required ?? false,
+        checked: false
       };
     }
 
@@ -134,15 +142,22 @@ namespace MetaformUtils {
         type: fieldType,
         text: "Lähetä lomake" ?? fieldType,
         columns: [],
-        options: [],
-        contexts: options ?? ["FORM", "MANAGEMENT"]
+        contexts: options ?? ["FORM"]
       };
     }
-
+    if (fieldType === MetaformFieldType.Html) {
+      return {
+        name: name ?? fieldType,
+        title: "",
+        required: required ?? false,
+        type: fieldType
+      };
+    }
     return {
       name: name ?? fieldType,
       title: title ?? fieldType,
       required: required ?? false,
+      text: fieldType,
       type: fieldType
     };
   };

@@ -261,6 +261,9 @@ export interface Localized extends LocalizedStringsMethods {
         sectionTitle: string;
         addSelectionField: string;
         addNewColumn: string;
+        addColumnType: string;
+        columnTextType: string;
+        columnNumberType: string;
       };
       visibility: {
         tabTitle: string;

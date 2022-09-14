@@ -210,7 +210,7 @@
         "dateAndTime": "Päivämäärä & aika",
         "files": "Liitteet",
         "table": "Taulukko",
-        "submit:": "Lähetä"
+        "submit": "Lähetä"
       },
       "features": {
         "tabTitle": "Ominaisuudet",
@@ -224,7 +224,10 @@
         "fieldTitle": "Kentän otsikko",
         "sectionTitle": "Osion otsikko",
         "addSelectionField": "Lisää kenttä",
-        "addNewColumn": "Lisää uusi sarake"
+        "addNewColumn": "Lisää uusi sarake",
+        "addColumnType": "Anna kentän tyyppi",
+        "columnTextType": "Tekstikenttä",
+        "columnNumberType": "Numerokenttä"
       },
       "visibility": {
         "tabTitle": "näkyvyys",
