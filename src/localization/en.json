@@ -186,6 +186,7 @@
       "form": {
         "tabTitle": "Form",
         "formTitle": "Form title",
+        "formSlugUrl": "Form url",
         "versionInfo": "Version info",
         "formVersion": "Version",
         "formStyling": "Form outfit",

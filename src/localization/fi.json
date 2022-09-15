@@ -184,6 +184,7 @@
       "form": {
         "tabTitle": "Lomake",
         "formTitle": "Lomakkeen otsikko",
+        "formSlugUrl": "Lomakkeen url osoite",
         "versionInfo": "Version tiedot",
         "formVersion": "Versio",
         "formStyling": "Lomakkeen ulkoasu",
