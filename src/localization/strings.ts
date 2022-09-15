@@ -220,6 +220,7 @@ export interface Localized extends LocalizedStringsMethods {
       form: {
         tabTitle: string;
         formTitle: string;
+        formSlugUrl: string;
         versionInfo: string;
         formVersion: string;
         formStyling: string;
