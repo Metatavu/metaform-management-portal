@@ -31,15 +31,15 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
   /**
    * Event handler for metaform property change
    *
-   * @param key metaform property key
-   * @param key2 metaform slug
+   * @param title metaform title 
+   * @param slug metaform slug
    */
-  const onMetaformPropertyChange = (key: keyof Metaform, key2: keyof Metaform): ChangeEventHandler<HTMLInputElement> =>
+  const onMetaformPropertyChange = (title: keyof Metaform, slug: keyof Metaform): ChangeEventHandler<HTMLInputElement> =>
     ({ target: { value } }) => {
       pendingForm && setPendingForm({
         ...pendingForm,
-        [key]: value,
-        [key2]: slugify(value, { lower: true })
+        [title]: value,
+        [slug]: slugify(value, { lower: true })
       });
     };
 
