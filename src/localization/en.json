@@ -5,7 +5,6 @@
     "edit": "Edit",
     "logout": "Logout",
     "login": "Log in",
-    "login": "Log in",
     "notImplemented": "Not yet implemented",
     "save": "Save",
     "yes": "Yes",
@@ -172,9 +171,6 @@
 
   "publicFormsScreen": {
     "title": "Forms",
-    "welcome": "Welcome to form portal",
-    "welcomeInfo": "If you are a professional, you can log in. The visitor please return to the home page.",
-    "backToEssote": "Return to front page",
     "welcome": "Welcome to form portal",
     "welcomeInfo": "If you are a professional, you can log in. The visitor please return to the home page.",
     "backToEssote": "Return to front page"

@@ -6,7 +6,6 @@ import strings from "localization/strings";
 import MetaformBooleanFieldComponent from "metaform-react/MetaformBooleanFieldComponent";
 import MetaformChecklistFieldComponent from "metaform-react/MetaformChecklistFieldComponent";
 import MetaformDateFieldComponent from "metaform-react/MetaformDateFieldComponent";
-import MetaformEmailFieldComponent from "metaform-react/MetaformEmailComponent";
 import MetaformMemoComponent from "metaform-react/MetaformMemoComponent";
 import MetaformNumberFieldComponent from "metaform-react/MetaformNumberFieldComponent";
 import MetaformRadioFieldComponent from "metaform-react/MetaformRadioFieldComponent";
@@ -19,7 +18,6 @@ import MetaformFilesFieldComponent from "metaform-react/MetaformFilesFieldCompon
 import MetaformSelectFieldComponent from "metaform-react/MetaformSelectFieldComponent";
 import MetaformTableFieldComponent from "metaform-react/MetaformTableFieldComponent";
 import MetaformSubmitFieldComponent from "metaform-react/MetaformSubmitFieldComponent";
-import MetaformUrlFieldComponent from "metaform-react/MetaformUrlField";
 import MetaformTextFieldComponent from "metaform-react/MetaformTextFieldComponent";
 import { IconName } from "metaform-react/types";
 
@@ -233,26 +231,6 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           }}
           formReadOnly={ true }
           value={ field.max && field.min ? (field.max - field.min) / 2 : 0 }
-        />
-      );
-    case MetaformFieldType.Url:
-      return (
-        <MetaformUrlFieldComponent
-          value="E.g. https://google.com"
-          field={ field }
-          fieldId={ fieldId }
-          fieldLabelId={ fieldLabelId }
-          formReadOnly={ true }
-        />
-      );
-    case MetaformFieldType.Email:
-      return (
-        <MetaformEmailFieldComponent
-          notInteractive={ true }
-          field={ field }
-          fieldId={ fieldId }
-          formReadOnly={ true }
-          value={ strings.draftEditorScreen.editor.fields.email }
         />
       );
     case MetaformFieldType.Number:

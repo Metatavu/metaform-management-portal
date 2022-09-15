@@ -25,20 +25,21 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   pendingForm,
   setPendingForm
 }) => {
-  const [ metaformSectionTitle, setMetaFormSectionTitle ] = React.useState<string | undefined>("");
+  const [ metaformSectionTitle, setMetaformSectionTitle ] = React.useState<string | undefined>("");
   const [ columnType, setColumnType ] = React.useState<string>("");
-
+ 
   /**
-   * Set values of Confidition field, switch and get selected component name
+   * Get title of current section
    */
-  const setVisiblityComponentValues = () => {
+  const setVisiblityComponentValue = () => {
     if (fieldIndex === undefined && sectionIndex !== undefined) {
-      setMetaFormSectionTitle(pendingForm.sections![sectionIndex].title ?? "");
+      setMetaformSectionTitle(pendingForm.sections![sectionIndex].title ?? "");
     }
   };
 
   /**
    * Updates metaform field
+   * 
    * @param metaformField Metaform field what we are editing
    */
   const updateFormField = (metaformField: MetaformField) => {
@@ -53,6 +54,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Updates metaform section
+   * 
    * @param metaformSection metaform section what we are editing
    */
   const updateFormSection = (metaformSection: MetaformSection) => {
@@ -66,22 +68,8 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-  * Renders fields category title
-  * @param title Category title
-  */
-  const renderFieldsCategoryTitle = (title: string) => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
-      return;
-    }
-    return (
-      <Typography variant="subtitle1" style={{ width: "100%" }}>
-        { title }
-      </Typography>
-    );
-  };
-
-  /**
    * Update option text
+   * 
    * @param updateTextOption FieldOption text we are changing
    * @param index index value
    */
@@ -361,6 +349,74 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
   
   /**
+   * Render define user group component
+   *  @param field current field
+   */
+  const defineUserGroupComponent = (field : MetaformField) => {
+    console.log(field);
+    const allowToDefineUserGroup = field.type === "select" || field.type === "date-time" || field.type === "radio" || field.type === "checklist" || field.type === "date";
+    return (
+      <>
+        <Typography variant="subtitle1" style={{ width: "100%" }}>
+          { strings.draftEditorScreen.editor.features.defineUserGroup }
+        </Typography>
+        <FormControl disabled={ !allowToDefineUserGroup }>
+          <FormControlLabel
+            label={ strings.generic.yes }
+            control={
+              <Checkbox
+                checked
+              />
+            }
+          />
+          <Typography variant="body2">
+            { strings.draftEditorScreen.editor.features.selectableFieldsInfo }
+          </Typography>
+        </FormControl>
+      </>
+    );
+  };
+
+  /**
+   * Render fieldTitle and Required or not component
+   * @param field current field
+   */
+  const fieldTitleAndRequiredComponent = (field: MetaformField) => {
+    return (
+      <>
+        <Typography variant="subtitle1" style={{ width: "100%" }}>
+          { strings.draftEditorScreen.editor.features.fieldDatas }
+        </Typography>
+        <TextField
+          fullWidth
+          label={ strings.draftEditorScreen.editor.features.fieldTitle }
+          value={ field.title ? field.title : "" }
+          onChange={ event => updateFormField({
+            ...field,
+            title: event.target.value,
+            name: slugify(metaformSectionTitle + event.target.value)
+          }) }
+        />
+        { options() }
+        { optionsTable() }
+        <Divider/>
+        <Typography variant="subtitle1" style={{ width: "100%" }}>
+          { strings.draftEditorScreen.editor.features.required }
+        </Typography>
+        <FormControlLabel
+          label={ strings.generic.yes }
+          control={
+            <Checkbox
+              checked={ field.required }
+              onChange={ event => updateFormField({ ...field, required: event.target.checked }) }
+            />
+          }
+        />
+      </>
+    );
+  };
+
+  /**
    * Render feature component
    */
   const renderFeatures = () => {
@@ -381,55 +437,11 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
-      if (!field) {
-        return null;
-      }
-      const disableForm = field.type === "select" || field.type === "date-time" || field.type === "radio" || field.type === "checklist" || field.type === "date";
-
       return (
         <>
-          { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.fieldDatas) }
-          <TextField
-            fullWidth
-            label={ strings.draftEditorScreen.editor.features.fieldTitle }
-            value={ field.title ? field.title : "" }
-            onChange={ event => updateFormField({
-              ...field,
-              title: event.target.value,
-              name: slugify(metaformSectionTitle + event.target.value)
-            }) }
-          />
-          { options() }
-          { optionsTable() }
+          { fieldTitleAndRequiredComponent(field) }
           <Divider/>
-          { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.features.required) }
-          <FormControlLabel
-            label={ strings.generic.yes }
-            control={
-              <Checkbox
-                checked={ field.required }
-                onChange={ event => updateFormField({ ...field, required: event.target.checked }) }
-              />
-            }
-          />
-          <Divider/>
-          <Typography variant="subtitle1" style={{ width: "100%" }}>
-            { strings.draftEditorScreen.editor.features.defineUserGroup }
-          </Typography>
-
-          <FormControl disabled={ !disableForm }>
-            <FormControlLabel
-              label={ strings.generic.yes }
-              control={
-                <Checkbox
-                  checked
-                />
-              }
-            />
-            <Typography fontSize="12px">
-              { strings.draftEditorScreen.editor.features.selectableFieldsInfo }
-            </Typography>
-          </FormControl>
+          { defineUserGroupComponent(field) }
         </>
       );
     }
@@ -439,17 +451,13 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   useEffect(() => {
-    setVisiblityComponentValues();
+    setVisiblityComponentValue();
   }, [fieldIndex, sectionIndex]);
 
   /**
    * Component render
    */
-  return (
-    <>
-      { renderFeatures() }
-    </>
-  );
+  return renderFeatures();
 };
 
 export default MetaformEditorRightDrawerFeatureComponent;

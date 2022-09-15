@@ -3,6 +3,7 @@ import { AttachmentsApi, Metaform, MetaformField, MetaformFieldSourceType, Metaf
 import Keycloak from "keycloak-js";
 import { FieldValue } from "metaform-react/types";
 import { Dictionary } from "types";
+import strings from "localization/strings";
 
 /**
  * Utility class for metaform
@@ -119,18 +120,18 @@ namespace MetaformUtils {
         columns: options ?? [
           {
             type: "text",
-            name: "Ryhman-nimi",
-            title: "Ryhmän nimi"
+            name: "column1",
+            title: "Column 1"
           },
           {
             type: "number",
-            name: "Harjoituskerrat",
-            title: "Harjoituskerrat"
+            name: "column2",
+            title: "Column 2"
           },
           {
             type: "number",
-            name: "Osallistujamaara-keskimaarin",
-            title: "Osallistujamäärä keskimäärin"
+            name: "column3",
+            title: "Column 3"
           }
         ]
       };
@@ -140,7 +141,7 @@ namespace MetaformUtils {
         title: "",
         name: "submit",
         type: fieldType,
-        text: "Lähetä lomake" ?? fieldType,
+        text: strings.draftEditorScreen.editor.fields.submit ?? fieldType,
         columns: [],
         contexts: options ?? ["FORM"]
       };
