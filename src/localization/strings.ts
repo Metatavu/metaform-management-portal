@@ -272,6 +272,14 @@ export interface Localized extends LocalizedStringsMethods {
     formPreview: {
       exit: string;
       shareLink: string;
+      shareLinkDialog: {
+        title: string;
+        text: string;
+        link: string;
+        recipients: string;
+        send: string;
+        linkCopied: string;
+      }
     };
   };
 
@@ -284,7 +292,6 @@ export interface Localized extends LocalizedStringsMethods {
       group: string;
       user: string;
     };
-
     addMemberButton: string
     addMemberGroupButton: string
     addMemberDialog: {

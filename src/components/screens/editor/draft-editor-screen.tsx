@@ -13,8 +13,6 @@ import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
 import { useApiClient } from "app/hooks";
 import GenericLoaderWrapper from "components/generic/generic-loader";
-import MetaformEditorPreview from "components/editor/preview/metaform-editor-preview";
-import { Box } from "@mui/system";
 import { RoundActionButton } from "styled/generic/form";
 
 /**
@@ -81,7 +79,7 @@ const DraftEditorScreen: React.FC = () => {
       errorContext.setError(strings.errorHandling.draftEditorScreen.saveDraft, e);
     }
 
-    navigate(-1);
+    navigate("./../..");
   };
 
   /**
@@ -124,19 +122,6 @@ const DraftEditorScreen: React.FC = () => {
   }, []);
 
   /**
-   * Renders editor preview
-   */
-  const renderEditorPreview = () => (
-    <Box width={ 0 } height={ 0 }>
-      <MetaformEditorPreview
-        previewRef={ previewRef }
-        metaform={ draftForm }
-        titleColor="#000"
-      />
-    </Box>
-  );
-
-  /**
    * Renders draft editor actions
    */
   const draftEditorActions = () => (
@@ -148,7 +133,7 @@ const DraftEditorScreen: React.FC = () => {
         <Typography>{ strings.generic.save }</Typography>
       </RoundActionButton>
       <RoundActionButton
-        onClick={ () => previewRef.current?.requestFullscreen?.() }
+        onClick={ () => navigate(window.location.pathname.replace("editor", "preview")) }
         startIcon={ <Preview/> }
       >
         <Typography>{ strings.draftEditorScreen.preview }</Typography>
@@ -172,14 +157,11 @@ const DraftEditorScreen: React.FC = () => {
       </NavigationTabContainer>
       <Divider/>
       <GenericLoaderWrapper loading={ loading }>
-        <>
-          <MetaformEditor
-            editorRef={ editorRef }
-            pendingForm={ MetaformUtils.jsonToMetaform(draftForm) }
-            setPendingForm={ setDraftForm }
-          />
-          { renderEditorPreview() }
-        </>
+        <MetaformEditor
+          editorRef={ editorRef }
+          pendingForm={ MetaformUtils.jsonToMetaform(draftForm) }
+          setPendingForm={ setDraftForm }
+        />
       </GenericLoaderWrapper>
     </Stack>
   );

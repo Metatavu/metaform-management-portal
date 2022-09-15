@@ -4,13 +4,21 @@ import { Stack, Typography } from "@mui/material";
 import { RoundActionButton } from "styled/generic/form";
 import { HeaderToolbar } from "styled/layout-components/header";
 import { Close, Share } from "@mui/icons-material";
-import { PreviewHeaderRoot } from "styled/editor/metaform-editor";
+import { PreviewHeaderRoot } from "styled/preview/metaform-preview";
+import { useNavigate } from "react-router-dom";
+
+interface Prop {
+  onShareLinkClick: () => void;
+}
 
 /**
  * Metaform editor preview header component
  */
-const MetaformEditorPreviewHeader: React.FC = () => {
-  // TODO path argument for preview
+const DraftPreviewHeader: React.FC<Prop> = ({
+  onShareLinkClick
+}) => {
+  const navigate = useNavigate();
+
   return (
     <PreviewHeaderRoot position="static">
       <HeaderToolbar>
@@ -21,13 +29,13 @@ const MetaformEditorPreviewHeader: React.FC = () => {
         >
           <RoundActionButton
             endIcon={ <Share/> }
-            onClick={ () => document.exitFullscreen() }
+            onClick={ onShareLinkClick }
           >
             <Typography>{ strings.draftEditorScreen.formPreview.shareLink }</Typography>
           </RoundActionButton>
           <RoundActionButton
             endIcon={ <Close/> }
-            onClick={ () => document.exitFullscreen() }
+            onClick={ () => navigate(window.location.pathname.replace("preview", "editor")) }
           >
             <Typography>{ strings.draftEditorScreen.formPreview.exit }</Typography>
           </RoundActionButton>
@@ -37,4 +45,4 @@ const MetaformEditorPreviewHeader: React.FC = () => {
   );
 };
 
-export default MetaformEditorPreviewHeader;
+export default DraftPreviewHeader;

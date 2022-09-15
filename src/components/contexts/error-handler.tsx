@@ -44,7 +44,7 @@ const ErrorHandler: React.FC = ({ children }) => {
       } catch {
         setErrorMessage(JSON.stringify(error));
       }
-    } else if (err !== undefined) {
+    } else {
       setErrorMessage(JSON.stringify(error));
     }
   };

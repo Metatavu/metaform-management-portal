@@ -237,7 +237,15 @@
     },
     "formPreview": {
       "exit": "Exit preview",
-      "shareLink": "Share link"
+      "shareLink": "Share link",
+      "shareLinkDialog": {
+        "title": "Share a preview version of the form",
+        "text": "Send an invitation by e-mail, or copy the link and share it yourself on the channel of your choice.",
+        "link": "Direct link",
+        "recipients": "Recipient(s)",
+        "send": "Send",
+        "linkCopied": "Link copied"
+      }
     }
   },
 

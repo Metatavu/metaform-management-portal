@@ -235,7 +235,15 @@
     },
     "formPreview": {
       "exit": "Sulje esikatselu",
-      "shareLink": "Jaa linkki"
+      "shareLink": "Jaa linkki",
+      "shareLinkDialog": {
+        "title": "Jaa esikatseluversio lomakkeesta",
+        "text": "Lähetä kutsu sähköpostitse, tai kopio linkki ja jaa se itse haluamassasi kanavassa.",
+        "link": "Suora linkki",
+        "recipients": "Vastaanottaja(t)",
+        "send": "lähetä",
+        "linkCopied": "Linkki kopioitu"
+      }
     }
   },
 
