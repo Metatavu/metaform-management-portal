@@ -228,7 +228,8 @@
         "addNewColumn": "Lisää uusi sarake",
         "addColumnType": "Anna kentän tyyppi",
         "columnTextType": "Tekstikenttä",
-        "columnNumberType": "Numerokenttä"
+        "columnNumberType": "Numerokenttä",
+        "textOfSubmitButton": "Painikkeen teksti"
       },
       "visibility": {
         "tabTitle": "näkyvyys",

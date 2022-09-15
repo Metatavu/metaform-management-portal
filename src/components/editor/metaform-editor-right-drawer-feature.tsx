@@ -353,7 +353,6 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    *  @param field current field
    */
   const defineUserGroupComponent = (field : MetaformField) => {
-    console.log(field);
     const allowToDefineUserGroup = field.type === "select" || field.type === "date-time" || field.type === "radio" || field.type === "checklist" || field.type === "date";
     return (
       <>
@@ -389,13 +388,24 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
         </Typography>
         <TextField
           fullWidth
-          label={ strings.draftEditorScreen.editor.features.fieldTitle }
-          value={ field.title ? field.title : "" }
-          onChange={ event => updateFormField({
-            ...field,
-            title: event.target.value,
-            name: slugify(metaformSectionTitle + event.target.value)
-          }) }
+          label={ field.type === "submit" ? strings.draftEditorScreen.editor.features.textOfSubmitButton : strings.draftEditorScreen.editor.features.fieldTitle }
+          value={ field.type === "submit" ? field.text : field.title }
+          onChange={ event => {
+            if (field.type === "submit") {
+              updateFormField({
+                ...field,
+                text: event.target.value,
+                name: slugify(`${metaformSectionTitle}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
+              });
+            } else {
+              updateFormField({
+                ...field,
+                title: event.target.value,
+                name: slugify(`${metaformSectionTitle}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
+              });
+            }
+          }
+          }
         />
         { options() }
         { optionsTable() }

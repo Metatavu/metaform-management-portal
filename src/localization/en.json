@@ -230,7 +230,8 @@
         "addNewColumn": "Add new column",
         "addColumnType": "Add column type",
         "columnTextType": "Text field",
-        "columnNumberType": "Number field"
+        "columnNumberType": "Number field",
+        "textOfSubmitButton": "Button text"
       },
       "visibility": {
         "tabTitle": "Visibility",
