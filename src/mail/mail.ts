@@ -34,13 +34,4 @@ export default class Mail {
     })).ok;
   };
 
-  /**
-   * Checks if an email address is valid
-   *
-   * @param email email address
-   */
-  public static isValidEmail = (email: string): boolean => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
-
 }

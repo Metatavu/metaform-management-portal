@@ -6,6 +6,7 @@ import { RoundActionButton } from "styled/generic/form";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Mail from "mail/mail";
 import { ErrorContext } from "components/contexts/error-handler";
+import isEmail from "validator/lib/isEmail";
 
 /**
  * Interface representing component properties
@@ -88,7 +89,7 @@ const DraftPreviewShareDialog: React.FC<Props> = ({
               onChange={ ({ target }) => setEmail(target.value) }
             />
             <RoundActionButton
-              disabled={ !Mail.isValidEmail(email) }
+              disabled={ !isEmail(email) }
               onClick={ onSendEmailClick }
             >
               <Typography>{ strings.draftEditorScreen.formPreview.shareLinkDialog.send }</Typography>
