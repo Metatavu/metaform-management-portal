@@ -231,7 +231,9 @@
         "addColumnType": "Add column type",
         "columnTextType": "Text field",
         "columnNumberType": "Number field",
-        "textOfSubmitButton": "Button text"
+        "textOfSubmitButton": "Button text",
+        "newOptionField":"Option field",
+        "addCustomHtml":"Add custom html here"
       },
       "visibility": {
         "tabTitle": "Visibility",

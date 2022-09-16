@@ -27,11 +27,11 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 }) => {
   const [ metaformSectionTitle, setMetaformSectionTitle ] = React.useState<string | undefined>("");
   const [ columnType, setColumnType ] = React.useState<string>("");
- 
+
   /**
    * Get title of current section
    */
-  const setVisiblityComponentValue = () => {
+  const getCurrentSectionTitle = () => {
     if (fieldIndex === undefined && sectionIndex !== undefined) {
       setMetaformSectionTitle(pendingForm.sections![sectionIndex].title ?? "");
     }
@@ -84,7 +84,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * Add new Radio / Boolean / Select option field
+   * Add new Radio / Checklist / Select option field
    */
   const addNewOptionField = () => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
@@ -92,17 +92,21 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     }
     const optionsAmount = JSON.stringify(pendingForm.sections![sectionIndex].fields![fieldIndex].options?.length);
     const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.push({ name: optionsAmount, text: "Valintakenttä" });
+      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.push({
+        name: `${strings.draftEditorScreen.editor.features.newOptionField}-${optionsAmount}`,
+        text: `${strings.draftEditorScreen.editor.features.newOptionField}-${optionsAmount}`
+      });
     });
     setPendingForm(updatedForm);
   };
 
   /**
    * Delete optionfield
+   * 
    * @param index index value of optionfield what we delete
    * @param event event value
    */
-  const deleteOptionField = (event: any, index: number) => {
+  const deleteFieldOptions = (event: any, index: number) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -114,10 +118,11 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Update slider value
+   * 
    * @param eventValue Value of min or max slider value
    * @param minMax Min or Max, depending which value we are changing
    */
-  const updateSliderValue = (eventValue:string, minMax: string) => {
+  const updateSliderValue = (eventValue: string, minMax: string) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -125,7 +130,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (minMax === "min") {
       const updateField = {
         ...metaFormField,
-        min: eventValue as unknown as number
+        min: Number(eventValue)
       };
       const updatedForm = produce(pendingForm, draftForm => {
         draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, updateField);
@@ -135,7 +140,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (minMax === "max") {
       const updateField = {
         ...metaFormField,
-        max: eventValue as unknown as number
+        max: Number(eventValue)
       };
       const updatedForm = produce(pendingForm, draftForm => {
         draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, updateField);
@@ -146,10 +151,11 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Delete column
+   * 
    * @param index indexvalue of current column we are deleting
    * @param event event value
    */
-  const deleteColumn = (event: any, index : number) => {
+  const deleteColumn = (event: any, index: number) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -171,7 +177,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
       draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.columns?.push({
         type: columnType as MetaformTableColumnType,
         name: columnsAmount,
-        title: `Column title ${columnsAmount}`
+        title: columnsAmount
       });
     });
     setPendingForm(updatedForm);
@@ -179,9 +185,10 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Add custom html code
+   * 
    * @param htmlField html field
    */
-  const updateCustomHtml = (htmlField : MetaformField) => {
+  const updateCustomHtml = (htmlField: MetaformField) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -219,8 +226,8 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
           </>
         );
       }
-      if (selectedType.type === "checklist" || selectedType.type === "radio" || selectedType.type === "select") {
-        const optionsText = pendingForm.sections![sectionIndex].fields![fieldIndex].options;
+      if (selectedType.type === "checklist" || selectedType.type === "radio" ||
+      selectedType.type === "select") {
         return (
           <>
             { pendingForm.sections![sectionIndex].fields![fieldIndex].options!.map((field, index) => {
@@ -231,12 +238,21 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
                     value={ field.text }
                     label={ index }
                     onChange={ event => updateOptionText({
-                      ...optionsText,
+                      ...field,
                       name: slugify(event.target.value),
                       text: event.target.value
                     }, index)}
                   />
-                  <Button variant="outlined" color="error" sx={{ alignContent: "center", height: "40px" }} value={ index } onClick={ event => deleteOptionField(event, index) }>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    sx={{
+                      alignContent: "center",
+                      height: "40px"
+                    }}
+                    value={ index }
+                    onClick={ event => deleteFieldOptions(event, index) }
+                  >
                     <DeleteIcon
                       color="error"
                       sx={{
@@ -257,9 +273,9 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
         return (
           <TextField
             fullWidth
-            placeholder="Add custom html here"
+            placeholder={ strings.draftEditorScreen.editor.features.addCustomHtml }
             multiline
-            rows={4}
+            rows={ 4 }
             value={ selectedType.html }
             onChange={ event => updateCustomHtml({ ...selectedType, html: event.target.value }) }
           />
@@ -270,6 +286,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Update column title value
+   * 
    * @param tableColumn MetaformTableColumn where we are changing title
    * @param index index value of current column title
    */
@@ -284,7 +301,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * Options table component render table columns editor
+   * Render table options features (Add, edit and delete columns)
    */
   const optionsTable = () => {
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
@@ -302,13 +319,22 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
                     label={ index }
                     onChange={ event => updateColumnTitle({
                       ...tableColumn,
-                      name: slugify(event.target.value),
+                      name: slugify(`${event.target.value}-${index}`),
                       title: event.target.value,
                       type: "text" as MetaformTableColumnType,
                       values: undefined
                     }, index)}
                   />
-                  <Button variant="outlined" color="error" sx={{ alignContent: "center", height: "40px" }} value={ index } onClick={ event => deleteColumn(event, index) }>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    sx={{
+                      alignContent: "center",
+                      height: "40px"
+                    }}
+                    value={ index }
+                    onClick={ event => deleteColumn(event, index) }
+                  >
                     <DeleteIcon
                       color="error"
                       sx={{
@@ -340,7 +366,16 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
                 <MenuItem value="text">{ strings.draftEditorScreen.editor.features.columnTextType}</MenuItem>
                 <MenuItem value="number">{ strings.draftEditorScreen.editor.features.columnNumberType}</MenuItem>
               </Select>
-              <Button fullWidth sx={{ height: "50px", mt: "5px" }} onClick={ addNewColumn }>{ strings.draftEditorScreen.editor.features.addNewColumn }</Button>
+              <Button
+                fullWidth
+                sx={{
+                  height: "50px",
+                  mt: "5px"
+                }}
+                onClick={ addNewColumn }
+              >
+                { strings.draftEditorScreen.editor.features.addNewColumn }
+              </Button>
             </FormControl>
           </>
         );
@@ -461,7 +496,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   useEffect(() => {
-    setVisiblityComponentValue();
+    getCurrentSectionTitle();
   }, [fieldIndex, sectionIndex]);
 
   /**
