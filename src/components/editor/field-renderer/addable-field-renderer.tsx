@@ -159,7 +159,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           field={{
             ...field,
             name: "Select",
-            options: [ { name: "a", text: "a" }, { name: "b", text: "b" }, { name: "c", text: "c" } ]
+            options: field.options
           }}
           formReadOnly={ false }
           notInteractive={ true }
@@ -208,8 +208,8 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           value="a"
           field={{
             ...field,
-            name: "Checklist",
-            options: [ { name: "a", text: "a" }, { name: "b", text: "b" }, { name: "c", text: "c" } ]
+            name: field.name,
+            options: field.options
           }}
           formReadOnly={ false }
           renderIcon={ renderIcon }
@@ -223,8 +223,8 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           value="a"
           field={{
             ...field,
-            name: "Radio",
-            options: [ { name: "a", text: "b" }]
+            name: field.name,
+            options: field.options
           }}
           fieldId={ fieldId }
           formReadOnly={ false }
