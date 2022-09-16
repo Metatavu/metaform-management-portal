@@ -28,7 +28,6 @@ const DraftEditorScreen: React.FC = () => {
   const { metaformsApi, versionsApi } = apiClient;
 
   const editorRef = useRef<HTMLDivElement>(null);
-  const previewRef = useRef<HTMLDivElement>(null);
   const [ draftForm, setDraftForm ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ loading, setLoading ] = useState(false);
 
