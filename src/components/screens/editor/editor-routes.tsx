@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import DraftEditorScreen from "./draft-editor-screen";
 import EditorScreen from "./editor-screen";
 
@@ -15,6 +15,10 @@ const EditorRoutes: React.FC = () => (
     <Route
       path="/:formSlug/:draftId"
       element={ <DraftEditorScreen/> }
+    />
+    <Route
+      path="/:formSlug"
+      element={ <Navigate to="/admin/editor"/> }
     />
   </Routes>
 );

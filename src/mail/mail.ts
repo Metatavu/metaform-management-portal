@@ -17,7 +17,7 @@ export default class Mail {
 
   /**
    * Sends an email
-   * 
+   *
    * @param email email data
    */
   public static sendMail = async (email: Email) => {
@@ -32,6 +32,15 @@ export default class Mail {
       method: "POST",
       body: JSON.stringify(email)
     })).ok;
+  };
+
+  /**
+   * Checks if an email address is valid
+   *
+   * @param email email address
+   */
+  public static isValidEmail = (email: string): boolean => {
+    return /\S+@\S+\.\S+/.test(email);
   };
 
 }

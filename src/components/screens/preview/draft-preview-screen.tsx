@@ -12,6 +12,7 @@ import MetaformUtils from "utils/metaform-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import Form from "components/generic/form";
 import { Dictionary } from "@reduxjs/toolkit";
+import { Alert, Snackbar } from "@mui/material";
 
 /**
  * Metaform editor preview component
@@ -21,6 +22,8 @@ const DraftPreviewScreen: React.FC = () => {
   const [ loading, setLoading ] = useState(false);
   const [ draftForm, setDraftForm ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});
+  const [ linkCopied, setLinkCopied ] = useState(false);
+  const [ emailSent, setEmailSent ] = useState(false);
 
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, versionsApi } = apiClient;
@@ -90,7 +93,45 @@ const DraftPreviewScreen: React.FC = () => {
       open={ dialogOpen }
       onCancel={ () => setDialogOpen(false) }
       linkToShare={ linkToShare }
+      setEmailSent={ setEmailSent }
+      setLinkCopied={ setLinkCopied }
     />
+  );
+
+  /**
+   * Renders link copied snackbar
+   */
+  const renderLinkSharedSnackbar = () => (
+    <Snackbar
+      open={ linkCopied }
+      onClose={ () => setLinkCopied(false) }
+    >
+      <Alert severity="info">
+        <span>
+          {" "}
+          { strings.draftEditorScreen.formPreview.shareLinkDialog.linkCopied }
+          {" "}
+        </span>
+      </Alert>
+    </Snackbar>
+  );
+
+  /**
+   * Renders email sent snackbar
+   */
+  const renderEmailSentSnackbar = () => (
+    <Snackbar
+      open={ emailSent }
+      onClose={ () => setEmailSent(false) }
+    >
+      <Alert severity="info">
+        <span>
+          {" "}
+          { strings.draftEditorScreen.formPreview.previewEmail.emailSent }
+          {" "}
+        </span>
+      </Alert>
+    </Snackbar>
   );
 
   return (
@@ -107,6 +148,8 @@ const DraftPreviewScreen: React.FC = () => {
           saving={ false }
         />
         { renderShareLinkDialog() }
+        { renderLinkSharedSnackbar() }
+        { renderEmailSentSnackbar() }
       </>
     </GenericLoaderWrapper>
   );

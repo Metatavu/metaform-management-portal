@@ -81,6 +81,9 @@
       "loadMembers": "Error occurred while loading users",
       "removeMemberNotFound": "Could not remove user from the group. User was not found",
       "addMemberNotFound": "Could not add user to the group. User was not found"
+    },
+    "previewScreen": {
+      "shareLink": "Error occurred while sharing link"
     }
   },
 
@@ -245,6 +248,11 @@
         "recipients": "Recipient(s)",
         "send": "Send",
         "linkCopied": "Link copied"
+      },
+      "previewEmail": {
+        "content": "<p>Hi!</p><p>Please fill the form {0} from following link:</p><p><a href='{1}'>{1}</a></p><hr/><p>This is an automated message, please do not reply.</p>",
+        "subject": "Please fill the form - {0}",
+        "emailSent": "Email sent"
       }
     }
   },

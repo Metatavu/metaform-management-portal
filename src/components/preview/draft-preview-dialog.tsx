@@ -1,17 +1,21 @@
 import * as React from "react";
 import { useState } from "react";
-import { Alert, Dialog, DialogContent, DialogTitle, IconButton, Snackbar, Stack, TextField, Typography } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, IconButton, Stack, TextField, Typography } from "@mui/material";
 import strings from "localization/strings";
 import { RoundActionButton } from "styled/generic/form";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import Mail from "mail/mail";
+import { ErrorContext } from "components/contexts/error-handler";
 
 /**
  * Interface representing component properties
  */
 interface Props {
   open: boolean;
-  onCancel: () => void;
   linkToShare: string;
+  onCancel: () => void;
+  setEmailSent: (emailSent: boolean) => void;
+  setLinkCopied: (emailSent: boolean) => void;
 }
 
 /**
@@ -20,10 +24,13 @@ interface Props {
 const DraftPreviewShareDialog: React.FC<Props> = ({
   open,
   onCancel,
-  linkToShare
+  linkToShare,
+  setEmailSent,
+  setLinkCopied
 }) => {
   const [ email, setEmail ] = useState("");
-  const [ linkCopied, setLinkCopied ] = useState(false);
+  const errorContext = React.useContext(ErrorContext);
+  const { REACT_APP_EMAIL_FROM } = process.env;
 
   /**
    * On copy click handler
@@ -31,26 +38,29 @@ const DraftPreviewShareDialog: React.FC<Props> = ({
   const onCopyClick = async () => {
     await navigator.clipboard.writeText(linkToShare);
     setLinkCopied(true);
-    setTimeout(() => setLinkCopied(false), 1000);
   };
 
   /**
-   * Renders link copied snackbar
+   * On send email click handler
    */
-  const renderSnackbar = () => (
-    <Snackbar
-      open={ linkCopied }
-      onClose={ () => setLinkCopied(false) }
-    >
-      <Alert severity="info">
-        <span>
-          {" "}
-          { strings.draftEditorScreen.formPreview.shareLinkDialog.linkCopied }
-          {" "}
-        </span>
-      </Alert>
-    </Snackbar>
-  );
+  const onSendEmailClick = async () => {
+    try {
+      if (!REACT_APP_EMAIL_FROM) {
+        throw new Error("Missing REACT_APP_EMAIL_FROM env");
+      }
+      Mail.sendMail({
+        from: REACT_APP_EMAIL_FROM,
+        to: email,
+        html: strings.draftEditorScreen.formPreview.previewEmail.content,
+        subject: strings.draftEditorScreen.formPreview.previewEmail.subject
+      });
+
+      setEmailSent(true);
+      setEmail("");
+    } catch (error) {
+      errorContext.setError(strings.errorHandling.previewScreen.shareLink, error);
+    }
+  };
 
   /**
    * Renders dialog
@@ -77,7 +87,10 @@ const DraftPreviewShareDialog: React.FC<Props> = ({
               label={ strings.draftEditorScreen.formPreview.shareLinkDialog.recipients }
               onChange={ ({ target }) => setEmail(target.value) }
             />
-            <RoundActionButton disabled>
+            <RoundActionButton
+              disabled={ !Mail.isValidEmail(email) }
+              onClick={ onSendEmailClick }
+            >
               <Typography>{ strings.draftEditorScreen.formPreview.shareLinkDialog.send }</Typography>
             </RoundActionButton>
           </Stack>
@@ -102,17 +115,12 @@ const DraftPreviewShareDialog: React.FC<Props> = ({
   );
 
   if (!open) {
-    return (
-      <>
-        { renderSnackbar() }
-      </>
-    );
+    return null;
   }
 
   return (
     <>
       { renderDialog() }
-      { renderSnackbar() }
     </>
   );
 };

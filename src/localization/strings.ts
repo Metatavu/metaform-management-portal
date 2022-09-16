@@ -44,19 +44,19 @@ export interface Localized extends LocalizedStringsMethods {
       time: string;
       url: string;
       errorMessage: string;
-    },
+    };
     adminFormsScreen: {
       listForms: string;
       createForm: string;
       deleteVersion: string;
       createFormDuplicateNameError: string;
       convertSosmetaError: string;
-    },
+    };
     draftEditorScreen: {
       findDraft: string;
       saveDraft: string;
       publishDraft: string;
-    },
+    };
     formScreen: {
       saveReply: string;
       sendReplyEmail: string;
@@ -65,25 +65,25 @@ export interface Localized extends LocalizedStringsMethods {
       autosave: string;
       deleteReply: string;
       findMetaform: string;
-    },
+    };
     formAutoComplete: {
       autocompleteField: string;
-    },
+    };
     publicFormsScreen: {
       fetchForms: string;
-    },
+    };
     adminRepliesScreen: {
       fetchReplies: string;
       fetchFields: string;
       deleteReply: string;
       formSlugNotFound: string;
-    },
+    };
     adminReplyScreen: {
       saveReply: string;
       exportPdf: string;
       replyIdNotFound: string;
       fetchReply: string;
-    },
+    };
     usersScreen: {
       loadMetaforms: string;
       loadMemberGroups: string;
@@ -92,7 +92,10 @@ export interface Localized extends LocalizedStringsMethods {
       loadMembers: string;
       removeMemberNotFound: string;
       addMemberNotFound: string;
-    }
+    };
+    previewScreen: {
+      shareLink: string;
+    };
   };
 
   /**
@@ -167,7 +170,7 @@ export interface Localized extends LocalizedStringsMethods {
       editorScreen: {
         title: string;
         description: string;
-      },
+      };
       draftEditorScreen: {
         title: string;
         description: string;
@@ -279,7 +282,12 @@ export interface Localized extends LocalizedStringsMethods {
         recipients: string;
         send: string;
         linkCopied: string;
-      }
+      };
+      previewEmail: {
+        subject: string;
+        content: string;
+        emailSent: string;
+      };
     };
   };
 

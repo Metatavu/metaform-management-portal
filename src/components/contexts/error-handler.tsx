@@ -42,10 +42,12 @@ const ErrorHandler: React.FC = ({ children }) => {
         console.error(errorJson);
         setErrorMessage(errorJson.message);
       } catch {
-        setErrorMessage(JSON.stringify(error));
+        setErrorMessage(JSON.stringify(err));
       }
+    } else if (err instanceof Error) {
+      setErrorMessage(err.message);
     } else {
-      setErrorMessage(JSON.stringify(error));
+      setErrorMessage(JSON.stringify(err));
     }
   };
 
