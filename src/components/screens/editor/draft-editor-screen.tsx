@@ -14,7 +14,7 @@ import Api from "api";
 import { useApiClient, useAppDispatch } from "app/hooks";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { RoundActionButton } from "styled/generic/form";
-import { setMetaform } from "features/metaform-slice";
+import { setMetaformVersion } from "features/metaform-slice";
 
 /**
  * Draft editor screen component
@@ -48,7 +48,7 @@ const DraftEditorScreen: React.FC = () => {
 
       const draftMetaform = draft.data as Metaform;
       setDraftForm(draftMetaform);
-      dispatch(setMetaform(draftMetaform));
+      dispatch(setMetaformVersion(draft));
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.findDraft, e);
     }
@@ -123,7 +123,7 @@ const DraftEditorScreen: React.FC = () => {
   useEffect(() => {
     loadMetaformVersion();
     return () => {
-      dispatch(setMetaform());
+      dispatch(setMetaformVersion());
     };
   }, []);
 

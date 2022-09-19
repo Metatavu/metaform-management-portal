@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "app/store";
-import { Metaform } from "generated/client";
+import { MetaformVersion } from "generated/client";
 
 interface MetaformState {
-  metaform?: Metaform;
+  metaformVersion?: MetaformVersion;
 }
 
 /**
  * Initial metaform state
  */
 const initialState: MetaformState = {
-  metaform: undefined
+  metaformVersion: undefined
 };
 
 /**
@@ -20,8 +20,8 @@ export const metaformSlice = createSlice({
   name: "metaform",
   initialState: initialState,
   reducers: {
-    setMetaform: (state, { payload }: PayloadAction<Metaform | undefined>) => {
-      state.metaform = payload;
+    setMetaformVersion: (state, { payload }: PayloadAction<MetaformVersion | undefined>) => {
+      state.metaformVersion = payload;
     }
   }
 });
@@ -29,7 +29,7 @@ export const metaformSlice = createSlice({
 /**
  * Metaform actions from created metaform slice
  */
-export const { setMetaform } = metaformSlice.actions;
+export const { setMetaformVersion } = metaformSlice.actions;
 
 /**
  * Select metaform selector
