@@ -8,6 +8,7 @@ import { useAppSelector } from "app/hooks";
 import { Alert, Snackbar } from "@mui/material";
 import DraftPreview from "components/preview/draft-preview";
 import { selectMetaform } from "features/metaform-slice";
+import MetaformUtils from "utils/metaform-utils";
 
 /**
  * Metaform editor preview component
@@ -17,7 +18,9 @@ const DraftPreviewScreen: React.FC = () => {
   const [ linkCopied, setLinkCopied ] = useState(false);
   const [ emailSent, setEmailSent ] = useState(false);
   const { metaformVersion } = useAppSelector(selectMetaform);
-  const metaformData = metaformVersion?.data as Metaform;
+  const draftForm = metaformVersion?.data === undefined ?
+    MetaformUtils.jsonToMetaform({}) :
+    metaformVersion?.data as Metaform;
 
   const navigate = useNavigate();
   const { formSlug, draftId } = useParams();
@@ -25,6 +28,8 @@ const DraftPreviewScreen: React.FC = () => {
   const linkToShare = `${window.location.origin}/${formSlug}`;
 
   React.useEffect(() => {
+    const metaformData = metaformVersion?.data as Metaform;
+
     if (!metaformVersion || metaformData.slug !== formSlug || metaformVersion.id !== draftId) {
       navigate(window.location.pathname.replace("preview", "editor"));
     }
@@ -90,7 +95,7 @@ const DraftPreviewScreen: React.FC = () => {
     <>
       <DraftPreviewHeader onShareLinkClick={ onShareLinkClick }/>
       <DraftPreview
-        metaform={ metaformData }
+        metaform={ draftForm }
       />
       { renderShareLinkDialog() }
       { renderLinkSharedSnackbar() }

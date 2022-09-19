@@ -15,7 +15,6 @@ import "moment/locale/fi";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { selectLocale, setLocale } from "features/locale-slice";
 import DraftPreviewScreen from "./screens/preview/draft-preview-screen";
-import { PreviewLayout } from "styled/preview/metaform-preview";
 
 /**
  * Application component
@@ -54,7 +53,7 @@ const App: React.FC = () => {
                 />
                 <Route
                   path="/admin/preview/:formSlug/:draftId"
-                  element={ <PreviewLayout><DraftPreviewScreen/></PreviewLayout> }
+                  element={ <BasicLayout><DraftPreviewScreen/></BasicLayout> }
                 />
                 <Route
                   path="/admin/*"

@@ -1,6 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
 import { Divider, Stack, Typography } from "@mui/material";
-import { Metaform, MetaformVersionType } from "generated/client";
+import { Metaform, MetaformVersion, MetaformVersionType } from "generated/client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import MetaformUtils from "utils/metaform-utils";
 import MetaformEditor from "components/editor/metaform-editor";
@@ -11,10 +11,10 @@ import { Preview, Public, Save } from "@mui/icons-material";
 import { useParams, useNavigate } from "react-router-dom";
 import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
-import { useApiClient, useAppDispatch } from "app/hooks";
+import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { RoundActionButton } from "styled/generic/form";
-import { setMetaformVersion } from "features/metaform-slice";
+import { selectMetaform, setMetaformVersion } from "features/metaform-slice";
 
 /**
  * Draft editor screen component
@@ -25,12 +25,15 @@ const DraftEditorScreen: React.FC = () => {
   const navigate = useNavigate();
   const errorContext = useContext(ErrorContext);
   const dispatch = useAppDispatch();
+  const { metaformVersion } = useAppSelector(selectMetaform);
+  const draftForm = metaformVersion?.data === undefined ?
+    MetaformUtils.jsonToMetaform({}) :
+    metaformVersion?.data as Metaform;
 
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, versionsApi } = apiClient;
 
   const editorRef = useRef<HTMLDivElement>(null);
-  const [ draftForm, setDraftForm ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ loading, setLoading ] = useState(false);
 
   /**
@@ -46,8 +49,6 @@ const DraftEditorScreen: React.FC = () => {
         versionId: draftId!
       });
 
-      const draftMetaform = draft.data as Metaform;
-      setDraftForm(draftMetaform);
       dispatch(setMetaformVersion(draft));
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.findDraft, e);
@@ -121,11 +122,18 @@ const DraftEditorScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    loadMetaformVersion();
-    return () => {
-      dispatch(setMetaformVersion());
-    };
+    if (metaformVersion === undefined || metaformVersion.id !== draftId) {
+      loadMetaformVersion();
+    }
   }, []);
+
+  /**
+   * Publishes Metaform
+   */
+  const setPendingForm = async (form: Metaform) => {
+    const updatedMetaformVersion = { ...metaformVersion, data: form } as MetaformVersion;
+    dispatch(setMetaformVersion(updatedMetaformVersion));
+  };
 
   /**
    * Renders draft editor actions
@@ -166,7 +174,7 @@ const DraftEditorScreen: React.FC = () => {
         <MetaformEditor
           editorRef={ editorRef }
           pendingForm={ MetaformUtils.jsonToMetaform(draftForm) }
-          setPendingForm={ setDraftForm }
+          setPendingForm={ setPendingForm }
         />
       </GenericLoaderWrapper>
     </Stack>
