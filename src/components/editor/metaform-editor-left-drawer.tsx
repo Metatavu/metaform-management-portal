@@ -117,7 +117,6 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
       </TabPanel>
       <TabPanel value={ tabIndex } index={ 1 }>
         { renderFieldsCategorytitle(strings.draftEditorScreen.editor.fields.staticFields) }
-        { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Url), strings.draftEditorScreen.editor.fields.url, "http") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Html), strings.draftEditorScreen.editor.fields.html, "html") }
         { renderFieldsCategorytitle(strings.draftEditorScreen.editor.fields.selectorFields) }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Boolean), strings.draftEditorScreen.editor.fields.boolean, "checkbox") }
@@ -128,12 +127,12 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
         { renderFieldsCategorytitle(strings.draftEditorScreen.editor.fields.inputFields) }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Text), strings.draftEditorScreen.editor.fields.text, "text_fields") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Number), strings.draftEditorScreen.editor.fields.number, "looks_one") }
-        { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Email), strings.draftEditorScreen.editor.fields.email, "email") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Memo), strings.draftEditorScreen.editor.fields.memo, "notes") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Date), strings.draftEditorScreen.editor.fields.date, "today") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.DateTime), strings.draftEditorScreen.editor.fields.dateAndTime, "today") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Files), strings.draftEditorScreen.editor.fields.files, "attachment") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Table), strings.draftEditorScreen.editor.fields.table, "table_chart") }
+        { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Submit), strings.draftEditorScreen.editor.fields.submit, "send") }
       </TabPanel>
     </EditorDrawer>
   );

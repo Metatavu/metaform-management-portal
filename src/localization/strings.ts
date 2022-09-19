@@ -250,6 +250,7 @@ export interface Localized extends LocalizedStringsMethods {
         dateAndTime: string;
         files: string;
         table: string;
+        submit: string;
       };
       features: {
         tabTitle: string;
@@ -264,6 +265,12 @@ export interface Localized extends LocalizedStringsMethods {
         sectionTitle: string;
         addSelectionField: string;
         addNewColumn: string;
+        addColumnType: string;
+        columnTextType: string;
+        columnNumberType: string;
+        textOfSubmitButton: string;
+        newFieldOption: string;
+        addCustomHtml: string;
       };
       visibility: {
         tabTitle: string;

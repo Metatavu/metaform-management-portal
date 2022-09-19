@@ -151,7 +151,7 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
               <MenuItem sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.selectField }</MenuItem>
               { pendingForm.sections!.map(section => section.fields!.map((field, index) => {
                 const constructedKey = `${field.title}-${index}`;
-                if (field.type === "radio" || field.type === "checklist" || field.type === "boolean") {
+                if (field.type === "radio" || field.type === "checklist" || field.type === "select") {
                   if (field.name !== selectedComponent) {
                     return (
                       <MenuItem value={ field.name } key={ constructedKey }>
@@ -163,6 +163,7 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
                 return null;
               }))
               }
+              
             </Select>
           </FormControl>
         </>
@@ -230,9 +231,11 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
             >
               { pendingForm.sections!.map(section => section.fields!.map(field => {
                 if (field.name === requiredConditionField) {
-                  return (
-                    renderFieldConditionOptions(field)
-                  );
+                  if (field.type === "radio" || field.type === "checklist" || field.type === "select") {
+                    return (
+                      renderFieldConditionOptions(field)
+                    );
+                  }
                 }
                 return null;
               }))}

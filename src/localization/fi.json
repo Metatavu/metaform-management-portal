@@ -174,8 +174,8 @@
   "publicFormsScreen": {
     "title": "Lomakkeet",
     "welcome": "Tervetuloa lomakeportaaliin",
-    "welcomeInfo": "Jos olet ammattilainen, niin voit kirjautua sisään. Vierailija palaa essoten etusivulle.",
-    "backToEssote": "Siirry essoten sivuille"
+    "welcomeInfo": "Jos olet ammattilainen, niin voit kirjautua sisään. Vierailija palaa hyvinvointialueen sivuille.",
+    "backToEssote": "Siirry hyvinvointialueen sivuille"
   },
 
   "draftEditorScreen": {
@@ -213,7 +213,8 @@
         "date": "Päivämäärä",
         "dateAndTime": "Päivämäärä & aika",
         "files": "Liitteet",
-        "table": "Taulukko"
+        "table": "Taulukko",
+        "submit": "Lähetä"
       },
       "features": {
         "tabTitle": "Ominaisuudet",
@@ -227,7 +228,13 @@
         "fieldTitle": "Kentän otsikko",
         "sectionTitle": "Osion otsikko",
         "addSelectionField": "Lisää kenttä",
-        "addNewColumn": "Lisää uusi sarake"
+        "addNewColumn": "Lisää uusi sarake",
+        "addColumnType": "Anna kentän tyyppi",
+        "columnTextType": "Tekstikenttä",
+        "columnNumberType": "Numerokenttä",
+        "textOfSubmitButton": "Painikkeen teksti",
+        "newFieldOption":"Valintakenttä",
+        "addCustomHtml":"Lisää tähän HTML-sisältöä"
       },
       "visibility": {
         "tabTitle": "näkyvyys",

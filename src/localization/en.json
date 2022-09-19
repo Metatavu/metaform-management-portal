@@ -215,7 +215,8 @@
         "date": "Date",
         "dateAndTime": "Date & time",
         "files": "Files",
-        "table": "Table"
+        "table": "Table",
+        "submit": "Submit"
       },
       "features": {
         "tabTitle": "Features",
@@ -229,7 +230,13 @@
         "fieldTitle": "Field title",
         "sectionTitle": "Section title",
         "addSelectionField": "Add field",
-        "addNewColumn": "Add new column"
+        "addNewColumn": "Add new column",
+        "addColumnType": "Add column type",
+        "columnTextType": "Text field",
+        "columnNumberType": "Number field",
+        "textOfSubmitButton": "Button text",
+        "newFieldOption":"Option field",
+        "addCustomHtml":"Add html code in field"
       },
       "visibility": {
         "tabTitle": "Visibility",
