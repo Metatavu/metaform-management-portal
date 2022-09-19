@@ -18,7 +18,7 @@ import DraftPreview from "components/preview/draft-preview";
 /**
  * Metaform editor preview component
  */
-const DraftPreviewScreen: React.FC = () => {
+const PublicPreviewScreen: React.FC = () => {
   const [ dialogOpen, setDialogOpen ] = useState(false);
   const [ loading, setLoading ] = useState(false);
   const [ draftForm, setDraftForm ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
@@ -150,4 +150,4 @@ const DraftPreviewScreen: React.FC = () => {
   );
 };
 
-export default DraftPreviewScreen;
+export default PublicPreviewScreen;
