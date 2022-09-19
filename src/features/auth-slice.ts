@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Api from "api";
 import type { RootState } from "app/store";

@@ -4,7 +4,7 @@ import FormsScreen from "./forms-screen";
 import FormRoutes from "./form-routes";
 import FormsDataScreen from "./forms-data-screen";
 import { useFormAccessControl } from "app/hooks";
-import FormRestrictedView from "components/containers/form-content-restricted";
+import FormRestrictedView from "components/containers/form-restricted-view";
 import { PermissionLevel } from "types";
 
 /**
@@ -22,7 +22,7 @@ const FormsRoutes: React.FC = () => {
       <Route
         path="/data"
         element={
-          <FormRestrictedView restrictionLevel={ PermissionLevel.METAFORM_ADMIN }>
+          <FormRestrictedView restrictionLevel={ PermissionLevel.METAFORM_MANGER }>
             <FormsDataScreen/>
           </FormRestrictedView>
         }

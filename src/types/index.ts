@@ -103,16 +103,6 @@ export interface Dictionary<T> {
 }
 
 /**
- * Enum for application roles
- */
-export enum ApplicationRoles {
-  METAFORM_ADMIN = "metaform-admin",
-  METAFORM_MANAGER = "metaform-manager",
-  METAFORM_USER = "metaform-user",
-  ANONYMOUS = "anonymous"
-}
-
-/**
  * Enum for reply status
  */
 export enum ReplyStatus {

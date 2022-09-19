@@ -14,6 +14,8 @@ import moment from "moment";
 import "moment/locale/fi";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { selectLocale, setLocale } from "features/locale-slice";
+import FormRestrictedView from "./containers/form-restricted-view";
+import { PermissionLevel } from "types";
 
 /**
  * Application component
@@ -40,7 +42,13 @@ const App: React.FC = () => {
                 />
                 <Route
                   path="/admin/users"
-                  element={ <AdminLayout><UsersScreen/></AdminLayout> }
+                  element={
+                    <FormRestrictedView restrictionLevel={ PermissionLevel.METAFORM_MANGER }>
+                      <AdminLayout>
+                        <UsersScreen/>
+                      </AdminLayout>
+                    </FormRestrictedView>
+                  }
                 />
                 <Route
                   path="/admin/forms/*"
@@ -48,7 +56,13 @@ const App: React.FC = () => {
                 />
                 <Route
                   path="/admin/editor/*"
-                  element={ <AdminLayout><EditorRoutes/></AdminLayout> }
+                  element={
+                    <FormRestrictedView restrictionLevel={ PermissionLevel.METAFORM_MANGER }>
+                      <AdminLayout>
+                        <EditorRoutes/>
+                      </AdminLayout>
+                    </FormRestrictedView>
+                  }
                 />
                 <Route
                   path="/admin/*"

@@ -4,7 +4,7 @@ import FormHistoryScreen from "./form-history-screen";
 import FormReplyScreen from "./form-reply-screen";
 import FormRepliesScreen from "./form-replies-screen";
 import { useFormAccessControl } from "app/hooks";
-import FormRestrictedView from "components/containers/form-content-restricted";
+import FormRestrictedView from "components/containers/form-restricted-view";
 import { PermissionLevel } from "types";
 
 /**

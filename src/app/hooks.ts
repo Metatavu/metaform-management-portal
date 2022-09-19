@@ -1,9 +1,10 @@
 import Api from "api";
 import { ErrorContext } from "components/contexts/error-handler";
-import { resetPermission, selectKeycloak, setMetaform, setSystemAdminPermission } from "features/auth-slice";
+import { resetPermission, selectKeycloak, selectPermissionLevel, setMetaform, setSystemAdminPermission } from "features/auth-slice";
 import strings from "localization/strings";
 import React, { useContext } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { PermissionLevel } from "types";
 import type { RootState, AppDispatch } from "./store";
 
 /**
@@ -82,11 +83,13 @@ export const useFormAccessControl = (formSlug?: string) => {
   const { metaformsApi } = apiClient;
   const dispatch = useAppDispatch();
   const errorContext = useContext(ErrorContext);
+  const permissionLevel = useAppSelector(selectPermissionLevel);
 
   /**
    * Loads permission
    */
   const loadPermission = async () => {
+    console.log("loading permission somehow");
     try {
       const foundMetaform = await metaformsApi.findMetaform({
         metaformSlug: formSlug
@@ -99,7 +102,7 @@ export const useFormAccessControl = (formSlug?: string) => {
   };
 
   React.useEffect(() => {
-    if (formSlug !== undefined) {
+    if (formSlug !== undefined && permissionLevel !== PermissionLevel.SYSTEM_ADMIN) {
       loadPermission();
     } else {
       dispatch(setSystemAdminPermission());

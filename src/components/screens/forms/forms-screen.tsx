@@ -12,8 +12,9 @@ import { useApiClient } from "app/hooks";
 import Api from "api";
 import { Metaform, MetaformMemberRole, Reply } from "generated/client";
 import { ErrorContext } from "components/contexts/error-handler";
-import { ReplyStatus } from "types";
+import { PermissionLevel, ReplyStatus } from "types";
 import { useNavigate } from "react-router-dom";
+import FormRestrictedContent from "components/containers/form-restricted-content";
 
 /**
  * Interface for single form row
@@ -176,10 +177,12 @@ const FormsScreen: React.FC = () => {
         <NavigationTab
           text={ strings.navigationHeader.formsScreens.formScreen }
         />
-        <NavigationTab
-          text={ strings.navigationHeader.formsScreens.formDataScreen }
-          to="data"
-        />
+        <FormRestrictedContent restrictionLevel={ PermissionLevel.METAFORM_MANGER }>
+          <NavigationTab
+            text={ strings.navigationHeader.formsScreens.formDataScreen }
+            to="data"
+          />
+        </FormRestrictedContent>
       </NavigationTabContainer>
       <DataGrid
         disableColumnMenu

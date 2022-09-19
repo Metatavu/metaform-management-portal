@@ -31,6 +31,8 @@ const FormRestrictedView: React.FC<Prop> = ({
       setRestricted(true);
       setError(strings.errorHandling.accessControl.contentNotPermitted);
       navigate(-1);
+    } else {
+      setRestricted(false);
     }
   }, [ permissionLevel ]);
 
