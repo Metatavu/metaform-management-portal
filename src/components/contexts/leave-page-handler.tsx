@@ -25,13 +25,7 @@ const LeavePageHandler: React.FC<Props> = ({
   /**
    * Handles wheter this components event listeners should be active
    */
-  const handleActive = () => {
-    if (active) {
-      window.addEventListener("beforeunload", handleUserAlert);
-    } else {
-      window.removeEventListener("beforeunload", handleUserAlert);
-    }
-  };
+  const handleActive = () => (active ? window.addEventListener("beforeunload", handleUserAlert) : window.removeEventListener("beforeunload", handleUserAlert));
 
   useEffect(() => {
     handleActive();

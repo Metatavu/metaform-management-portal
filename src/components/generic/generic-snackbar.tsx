@@ -20,7 +20,7 @@ interface Props {
 }
 
 /**
- * GenericSnackbar component
+ * Generic Snackbar component
  */
 const GenericSnackbar: React.FC<Props> = ({
   open,

@@ -10,22 +10,6 @@ const ConnectionHandler: React.FC = ({ children }) => {
   const [ connectionLost, setConnectionLost ] = useState<boolean>(false);
 
   /**
-   * Renders connection lost alert
-   */
-  const renderConnectionLostAlert = () => (
-    <GenericSnackbar
-      open={ connectionLost }
-      onClose={ () => setConnectionLost(!connectionLost) }
-      severity="error"
-    >
-      <>
-        <Typography variant="h5">{ strings.errorHandling.formScreen.noConnection }</Typography>
-        <Typography variant="caption">{ strings.errorHandling.formScreen.noConnectionHelper }</Typography>
-      </>
-    </GenericSnackbar>
-  );
-
-  /**
    * Handles notifying user when connection lost
    */
   const handleConnectionLost = () => {
@@ -48,6 +32,22 @@ const ConnectionHandler: React.FC = ({ children }) => {
       window.removeEventListener("online", handleConnectionResume);
     };
   }, []);
+
+  /**
+  * Renders connection lost alert
+  */
+  const renderConnectionLostAlert = () => (
+    <GenericSnackbar
+      open={ connectionLost }
+      onClose={ () => setConnectionLost(!connectionLost) }
+      severity="error"
+    >
+      <>
+        <Typography variant="h5">{ strings.errorHandling.formScreen.noConnection }</Typography>
+        <Typography variant="caption">{ strings.errorHandling.formScreen.noConnectionHelper }</Typography>
+      </>
+    </GenericSnackbar>
+  );
 
   return (
     <>
