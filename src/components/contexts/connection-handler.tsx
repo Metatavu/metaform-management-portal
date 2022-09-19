@@ -1,12 +1,12 @@
 import { Typography } from "@mui/material";
 import GenericSnackbar from "components/generic/generic-snackbar";
 import strings from "localization/strings";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 /**
  * ConnectionHandler component
  */
-const ConnectionHandler: React.FC = ({ children }) => {
+const ConnectionHandler: FC = ({ children }) => {
   const [ connectionLost, setConnectionLost ] = useState<boolean>(false);
 
   /**

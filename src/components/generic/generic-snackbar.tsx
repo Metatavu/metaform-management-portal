@@ -1,6 +1,6 @@
 import { Close } from "@mui/icons-material";
 import { Alert, AlertColor, IconButton, Snackbar, SnackbarCloseReason } from "@mui/material";
-import React from "react";
+import React, { FC } from "react";
 
 /**
  * Component props
@@ -22,7 +22,7 @@ interface Props {
 /**
  * Generic Snackbar component
  */
-const GenericSnackbar: React.FC<Props> = ({
+const GenericSnackbar: FC<Props> = ({
   open,
   onClose,
   autoHideDuration,

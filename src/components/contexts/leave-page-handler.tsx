@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+import React, { FC, useEffect } from "react";
 
 interface Props {
   active: boolean;
@@ -8,7 +9,7 @@ interface Props {
 /**
  * LeavePageHandler component
  */
-const LeavePageHandler: React.FC<Props> = ({
+const LeavePageHandler: FC<Props> = ({
   active,
   children
 }) => {
