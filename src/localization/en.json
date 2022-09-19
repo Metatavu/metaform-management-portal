@@ -4,6 +4,7 @@
     "delete": "Delete",
     "edit": "Edit",
     "logout": "Logout",
+    "login": "Log in",
     "notImplemented": "Not yet implemented",
     "save": "Save",
     "yes": "Yes",
@@ -20,11 +21,12 @@
   },
 
   "errorHandling": {
-    "title": "Error",
+    "title": "Error occurred",
     "authentication": "User authentication failed",
     "dialog": {
       "title": "Whoops! Something went wrong",
       "reloadPage": "Try reloading the page.",
+      "tryAgain": "Please check your internet connection and try again.",
       "unsavedContents": "Please note that unsaved content will not be saved when reloading. If you have unsaved content on this page, you can close this message and copy the content to the clipboard before reloading.",
       "reportIssue": "If the problem persists, contact support@metatavu.fi by email. Please include technical details in the email to speed up resolution of the problem.",
       "technicalDetails": "Technical details:",
@@ -52,7 +54,9 @@
       "saveDraft": "Saving form draft failed",
       "autosave": "Autosave failed",
       "deleteReply": "Deleting reply failed",
-      "findMetaform": "Finding Metaform failed"
+      "findMetaform": "Finding Metaform failed",
+      "noConnection": "No internet connection!",
+      "noConnectionHelper": "Form cannot be submitted without internet connection. Please check your settings."
     },
     "formAutoComplete": {
       "autocompleteField": "Fetching autocomplete field options failed. You can still fill and submit the form by closing this dialog." 
@@ -135,7 +139,7 @@
       }
     },
     "editorScreens": {
-      "title": "Editors",
+      "title": "Editor",
       "description": "Edit forms and create new forms.",
       "editorScreen": {
         "title": "Select form",
@@ -172,7 +176,10 @@
   },
 
   "publicFormsScreen": {
-    "title": "Forms"
+    "title": "Forms",
+    "welcome": "Welcome to form portal",
+    "welcomeInfo": "If you are a professional, you can log in. The visitor please return to the home page.",
+    "backToEssote": "Return to front page"
   },
 
 
@@ -185,6 +192,7 @@
       "form": {
         "tabTitle": "Form",
         "formTitle": "Form title",
+        "formSlugUrl": "Form url",
         "versionInfo": "Version info",
         "formVersion": "Version",
         "formStyling": "Form outfit",
@@ -210,7 +218,8 @@
         "date": "Date",
         "dateAndTime": "Date & time",
         "files": "Files",
-        "table": "Table"
+        "table": "Table",
+        "submit": "Submit"
       },
       "features": {
         "tabTitle": "Features",
@@ -222,7 +231,15 @@
         "defineUserGroup": "Define a user group",
         "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
         "fieldTitle": "Field title",
-        "sectionTitle": "Section title"
+        "sectionTitle": "Section title",
+        "addSelectionField": "Add field",
+        "addNewColumn": "Add new column",
+        "addColumnType": "Add column type",
+        "columnTextType": "Text field",
+        "columnNumberType": "Number field",
+        "textOfSubmitButton": "Button text",
+        "newFieldOption":"Option field",
+        "addCustomHtml":"Add html code in field"
       },
       "visibility": {
         "tabTitle": "Visibility",

@@ -90,7 +90,6 @@ const ErrorHandler: React.FC = ({ children }) => {
         onConfirm={ () => setError(undefined) }
         title={ strings.errorHandling.title }
         closeButtonText={ strings.generic.close }
-        reloadButtonText={ strings.generic.reload }
       >
         <DialogContent id="error-dialog-description">
           { error &&
@@ -99,10 +98,7 @@ const ErrorHandler: React.FC = ({ children }) => {
             </Typography>
           }
           <Typography marginBottom={ 2 }>
-            { strings.errorHandling.dialog.reloadPage }
-          </Typography>
-          <Typography marginBottom={ 2 }>
-            { strings.errorHandling.dialog.unsavedContents }
+            { strings.errorHandling.dialog.tryAgain }
           </Typography>
           <Typography marginBottom={ 2 }>
             { strings.errorHandling.dialog.reportIssue }

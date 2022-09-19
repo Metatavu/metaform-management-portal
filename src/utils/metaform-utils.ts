@@ -3,6 +3,7 @@ import { AttachmentsApi, Metaform, MetaformField, MetaformFieldSourceType, Metaf
 import Keycloak from "keycloak-js";
 import { FieldValue } from "metaform-react/types";
 import { Dictionary } from "types";
+import strings from "localization/strings";
 
 /**
  * Utility class for metaform
@@ -72,7 +73,9 @@ namespace MetaformUtils {
    * @returns created field
    */
   export const createField = (fieldType: MetaformFieldType, title?: string, name?: string, required?: boolean, options?: any[]): MetaformField => {
-    if (fieldType === MetaformFieldType.Select || fieldType === MetaformFieldType.Radio || fieldType === MetaformFieldType.Checklist) {
+    if (fieldType === MetaformFieldType.Select ||
+        fieldType === MetaformFieldType.Radio ||
+        fieldType === MetaformFieldType.Checklist) {
       return {
         name: name ?? fieldType,
         title: title ?? fieldType,
@@ -80,21 +83,82 @@ namespace MetaformUtils {
         required: required ?? false,
         options: options ?? [
           {
-            name: "option1",
+            name: "option",
             text: "option1"
-          },
-          {
-            name: "option2",
-            text: "option2"
           }
         ]
       };
     }
+    if (fieldType === MetaformFieldType.Boolean) {
+      return {
+        name: name ?? fieldType,
+        title: title ?? fieldType,
+        type: fieldType,
+        required: required ?? false,
+        checked: false
+      };
+    }
 
+    if (fieldType === MetaformFieldType.Slider) {
+      return {
+        name: name ?? fieldType,
+        title: title ?? fieldType,
+        type: fieldType,
+        required: required ?? false,
+        min: 50,
+        max: 100
+      };
+    }
+
+    if (fieldType === MetaformFieldType.Table) {
+      return {
+        name: name ?? fieldType,
+        title: title ?? fieldType,
+        text: fieldType,
+        type: fieldType,
+        required: required ?? false,
+        columns: options ?? [
+          {
+            type: "text",
+            name: "column1",
+            title: "Column 1"
+          },
+          {
+            type: "number",
+            name: "column2",
+            title: "Column 2"
+          },
+          {
+            type: "number",
+            name: "column3",
+            title: "Column 3"
+          }
+        ]
+      };
+    }
+    if (fieldType === MetaformFieldType.Submit) {
+      return {
+        title: "",
+        name: "submit",
+        type: fieldType,
+        text: strings.draftEditorScreen.editor.fields.submit ?? fieldType,
+        columns: [],
+        contexts: options ?? ["FORM"]
+      };
+    }
+    if (fieldType === MetaformFieldType.Html) {
+      return {
+        name: name ?? fieldType,
+        title: "",
+        required: required ?? false,
+        type: fieldType
+      };
+    }
     return {
       name: name ?? fieldType,
       title: title ?? fieldType,
       required: required ?? false,
+      text: fieldType,
       type: fieldType
     };
   };

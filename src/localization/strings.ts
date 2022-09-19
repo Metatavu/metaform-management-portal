@@ -16,6 +16,7 @@ export interface Localized extends LocalizedStringsMethods {
     delete: string;
     edit: string;
     logout: string;
+    login: string;
     notImplemented: string;
     save: string;
     yes: string;
@@ -38,6 +39,7 @@ export interface Localized extends LocalizedStringsMethods {
     authentication: string;
     dialog: {
       reloadPage: string;
+      tryAgain: string;
       unsavedContents: string;
       reportIssue: string;
       technicalDetails: string;
@@ -65,7 +67,9 @@ export interface Localized extends LocalizedStringsMethods {
       autosave: string;
       deleteReply: string;
       findMetaform: string;
-    };
+      noConnection: string;
+      noConnectionHelper: string;
+    },
     formAutoComplete: {
       autocompleteField: string;
     };
@@ -111,6 +115,9 @@ export interface Localized extends LocalizedStringsMethods {
    */
   publicFormsScreen: {
     title: string;
+    welcome: string;
+    welcomeInfo: string;
+    backToEssote: string;
   }
 
   /**
@@ -219,6 +226,7 @@ export interface Localized extends LocalizedStringsMethods {
       form: {
         tabTitle: string;
         formTitle: string;
+        formSlugUrl: string;
         versionInfo: string;
         formVersion: string;
         formStyling: string;
@@ -245,6 +253,7 @@ export interface Localized extends LocalizedStringsMethods {
         dateAndTime: string;
         files: string;
         table: string;
+        submit: string;
       };
       features: {
         tabTitle: string;
@@ -257,6 +266,14 @@ export interface Localized extends LocalizedStringsMethods {
         required: string;
         fieldTitle: string;
         sectionTitle: string;
+        addSelectionField: string;
+        addNewColumn: string;
+        addColumnType: string;
+        columnTextType: string;
+        columnNumberType: string;
+        textOfSubmitButton: string;
+        newFieldOption: string;
+        addCustomHtml: string;
       };
       visibility: {
         tabTitle: string;

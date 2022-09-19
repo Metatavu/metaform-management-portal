@@ -1,4 +1,4 @@
-import { Divider, FormControl, FormLabel, Icon, MenuItem, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { FormControl, FormLabel, Icon, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
 import TabPanel from "components/generic/tab-panel";
@@ -8,6 +8,7 @@ import React, { ChangeEventHandler } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
 import { DraggingMode } from "types";
 import MetaformUtils from "utils/metaform-utils";
+import slugify from "slugify";
 
 /**
  * Component properties
@@ -25,15 +26,21 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
   setPendingForm
 }) => {
   const [ tabIndex, setTabIndex ] = React.useState(0);
+  const currentHostname = window.location.hostname;
 
   /**
    * Event handler for metaform property change
    *
-   * @param key metaform property key
+   * @param title metaform title 
+   * @param slug metaform slug
    */
-  const onMetaformPropertyChange = (key: keyof Metaform): ChangeEventHandler<HTMLInputElement> =>
+  const onMetaformPropertyChange = (title: keyof Metaform, slug: keyof Metaform): ChangeEventHandler<HTMLInputElement> =>
     ({ target: { value } }) => {
-      pendingForm && setPendingForm({ ...pendingForm, [key]: value });
+      pendingForm && setPendingForm({
+        ...pendingForm,
+        [title]: value,
+        [slug]: slugify(value, { lower: true })
+      });
     };
 
   /**
@@ -46,29 +53,14 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
         <TextField
           label={ strings.draftEditorScreen.editor.form.formTitle }
           value={ pendingForm?.title }
-          onChange={ onMetaformPropertyChange("title") }
+          onChange={ onMetaformPropertyChange("title", "slug") }
+        />
+        <TextField
+          label={ strings.draftEditorScreen.editor.form.formSlugUrl }
+          value={ `${currentHostname}/${pendingForm?.slug}` }
+          disabled
         />
       </Stack>
-      <Stack spacing={ 2 } padding={ 1 }>
-        <FormLabel>{ strings.draftEditorScreen.editor.form.formStyling }</FormLabel>
-        <TextField
-          select
-          label={ strings.draftEditorScreen.editor.form.backgroundImage }
-        >
-          <MenuItem>
-            { strings.generic.notImplemented }
-          </MenuItem>
-        </TextField>
-        <TextField
-          select
-          label={ strings.draftEditorScreen.editor.form.backgroundColor }
-        >
-          <MenuItem>
-            { strings.generic.notImplemented }
-          </MenuItem>
-        </TextField>
-      </Stack>
-      <Divider/>
     </FormControl>
   );
 
@@ -125,7 +117,6 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
       </TabPanel>
       <TabPanel value={ tabIndex } index={ 1 }>
         { renderFieldsCategorytitle(strings.draftEditorScreen.editor.fields.staticFields) }
-        { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Url), strings.draftEditorScreen.editor.fields.url, "http") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Html), strings.draftEditorScreen.editor.fields.html, "html") }
         { renderFieldsCategorytitle(strings.draftEditorScreen.editor.fields.selectorFields) }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Boolean), strings.draftEditorScreen.editor.fields.boolean, "checkbox") }
@@ -136,12 +127,12 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
         { renderFieldsCategorytitle(strings.draftEditorScreen.editor.fields.inputFields) }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Text), strings.draftEditorScreen.editor.fields.text, "text_fields") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Number), strings.draftEditorScreen.editor.fields.number, "looks_one") }
-        { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Email), strings.draftEditorScreen.editor.fields.email, "email") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Memo), strings.draftEditorScreen.editor.fields.memo, "notes") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Date), strings.draftEditorScreen.editor.fields.date, "today") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.DateTime), strings.draftEditorScreen.editor.fields.dateAndTime, "today") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Files), strings.draftEditorScreen.editor.fields.files, "attachment") }
         { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Table), strings.draftEditorScreen.editor.fields.table, "table_chart") }
+        { renderFieldsTab(MetaformUtils.createField(MetaformFieldType.Submit), strings.draftEditorScreen.editor.fields.submit, "send") }
       </TabPanel>
     </EditorDrawer>
   );
