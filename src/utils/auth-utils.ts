@@ -11,7 +11,7 @@ namespace AuthUtils {
    *
    * @param keycloak keycloak
   */
-  export const isSystemAdmin = (keycloak?: Keycloak): Boolean => {
+  export const isSystemAdmin = (keycloak?: Keycloak): boolean => {
     if (!keycloak?.token) {
       return false;
     }
