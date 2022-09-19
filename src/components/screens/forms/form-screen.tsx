@@ -67,7 +67,7 @@ const FormScreen: React.FC<Props> = () => {
   const keycloak = useAppSelector(selectKeycloak);
 
   /**
-   * Checks if form is has unsaved changes
+   * Checks if form has unsaved changes
    */
   const handleFormChanges = () => {
     Object.keys(formValues).forEach(fieldName => {

@@ -34,7 +34,7 @@ const LeavePageHandler: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    return () => handleActive();
+    handleActive();
   }, [active]);
 
   useEffect(() => {
