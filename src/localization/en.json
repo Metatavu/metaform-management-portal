@@ -233,7 +233,7 @@
         "columnNumberType": "Number field",
         "textOfSubmitButton": "Button text",
         "newFieldOption":"Option field",
-        "addCustomHtml":"Add custom html here"
+        "addCustomHtml":"Add html code in field"
       },
       "visibility": {
         "tabTitle": "Visibility",

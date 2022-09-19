@@ -3,7 +3,7 @@ import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, Metaform
 import produce from "immer";
 import slugify from "slugify";
 import strings from "localization/strings";
-import React, { useEffect, FC } from "react";
+import React, { useEffect, FC, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 /**
@@ -25,8 +25,8 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   pendingForm,
   setPendingForm
 }) => {
-  const [ metaformSectionTitle, setMetaformSectionTitle ] = React.useState<string | undefined>("");
-  const [ columnType, setColumnType ] = React.useState<string>("");
+  const [ metaformSectionTitle, setMetaformSectionTitle ] = useState<string | undefined>("");
+  const [ columnType, setColumnType ] = useState<string>("");
 
   /**
    * Get title of current section
@@ -71,14 +71,14 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * Update option text
    * 
    * @param updateTextOption FieldOption text we are changing
-   * @param index index value
+   * @param optionIndex option index value
    */
-  const updateOptionText = (updateTextOption: MetaformFieldOption, index: number) => {
+  const updateOptionText = (updateTextOption: MetaformFieldOption, optionIndex: number) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
     const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.splice(index, 1, updateTextOption);
+      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.splice(optionIndex, 1, updateTextOption);
     });
     setPendingForm(updatedForm);
   };
@@ -101,17 +101,16 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * Delete optionfield
+   * Delete option field
    * 
-   * @param index index value of optionfield what we delete
-   * @param event event value
+   * @param optionIndex Option index value of option field what we delete
    */
-  const deleteFieldOptions = (event: any, index: number) => {
+  const deleteFieldOptions = (optionIndex: number) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
     const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.splice(index, 1);
+      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.splice(optionIndex, 1);
     });
     setPendingForm(updatedForm);
   };
@@ -152,15 +151,14 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   /**
    * Delete column
    * 
-   * @param index indexvalue of current column we are deleting
-   * @param event event value
+   * @param columnIndex indexvalue of current column we are deleting
    */
-  const deleteColumn = (event: any, index: number) => {
+  const deleteColumn = (columnIndex: number) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
     const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.columns?.splice(index, 1);
+      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.columns?.splice(columnIndex, 1);
     });
     setPendingForm(updatedForm);
   };
@@ -188,7 +186,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * 
    * @param htmlField html field
    */
-  const updateCustomHtml = (htmlField: MetaformField) => {
+  const updateHtml = (htmlField: MetaformField) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -202,7 +200,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * Render slider scope values
    *  
    * @param selectedField selected metaformField
-   * */
+   */
   const renderSliderScopeValues = (selectedField: MetaformField) => {
     const {
       max,
@@ -259,7 +257,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
                     height: "40px"
                   }}
                   value={ index }
-                  onClick={ event => deleteFieldOptions(event, index) }
+                  onClick={ () => deleteFieldOptions(index) }
                 >
                   <DeleteIcon
                     color="error"
@@ -301,7 +299,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
         multiline
         rows={ 4 }
         value={ html }
-        onChange={ event => updateCustomHtml({ ...selectedField, html: event.target.value }) }
+        onChange={ event => updateHtml({ ...selectedField, html: event.target.value }) }
       />
     );
   };
@@ -309,15 +307,15 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   /**
    * Update column title value
    * 
-   * @param tableColumn MetaformTableColumn where we are changing title
-   * @param index index value of current column title
+   * @param tableColumn Metaform table column where we are changing title
+   * @param columnIndex index value of current column title
    */
-  const updateColumnTitle = (tableColumn: MetaformTableColumn, index: number) => {
+  const updateColumnTitle = (tableColumn: MetaformTableColumn, columnIndex: number) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
     const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.columns?.splice(index, 1, tableColumn);
+      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.columns?.splice(columnIndex, 1, tableColumn);
     });
     setPendingForm(updatedForm);
   };
@@ -325,7 +323,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   /**
    * Render features for adding, editing and deleting columns in table field
    */
-  const renderTableColumns = () => {
+  const renderTableColumnFeatures = () => {
     const tableColumn = pendingForm.sections![sectionIndex!].fields![fieldIndex!].columns;
     return (
       <>
@@ -352,7 +350,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
                   height: "40px"
                 }}
                 value={ index }
-                onClick={ event => deleteColumn(event, index) }
+                onClick={ () => deleteColumn(index) }
               >
                 <DeleteIcon
                   color="error"
@@ -424,7 +422,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
       }
       if (type === "table") {
         return (
-          renderTableColumns()
+          renderTableColumnFeatures()
         );
       }
     }
@@ -435,7 +433,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * 
    *  @param field selected field
    */
-  const defineUserGroupComponent = (field: MetaformField) => {
+  const renderDefineUserGroup = (field: MetaformField) => {
     const { type } = field;
     const allowToDefineUserGroup = type === "select" || type === "date-time" || type === "radio" || type === "checklist" || type === "date";
     return (
@@ -465,7 +463,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * 
    * @param field current field
    */
-  const fieldTitleAndRequiredComponent = (field: MetaformField) => {
+  const renderFieldTitleAndRequired = (field: MetaformField) => {
     if (field === undefined) {
       return null;
     }
@@ -545,9 +543,9 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
       }
       return (
         <>
-          { fieldTitleAndRequiredComponent(field) }
+          { renderFieldTitleAndRequired(field) }
           <Divider/>
-          { defineUserGroupComponent(field) }
+          { renderDefineUserGroup(field) }
         </>
       );
     }

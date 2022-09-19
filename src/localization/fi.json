@@ -231,7 +231,7 @@
         "columnNumberType": "Numerokenttä",
         "textOfSubmitButton": "Painikkeen teksti",
         "newFieldOption":"Valintakenttä",
-        "addCustomHtml":"Lisää tähän kustomoitua html"
+        "addCustomHtml":"Lisää tähän HTML-sisältöä"
       },
       "visibility": {
         "tabTitle": "näkyvyys",
