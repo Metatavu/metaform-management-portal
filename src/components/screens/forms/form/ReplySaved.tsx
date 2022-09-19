@@ -1,7 +1,7 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import { Alert, Link, Snackbar } from "@mui/material";
+import { Button, Link, Typography } from "@mui/material";
+import GenericSnackbar from "components/generic/generic-snackbar";
 import strings from "localization/strings";
-import * as React from "react";
+import React from "react";
 
 interface Props {
   getReplyEditLink?: () => string | null;
@@ -24,50 +24,31 @@ const ReplySaved: React.FC<Props> = ({
 
   if (replyEditLink) {
     return (
-      <Snackbar open={ replySavedVisible } onClose={ () => setReplySavedVisible(false) } anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-        <Alert onClose={ () => setReplySavedVisible(false) } severity="success">
-          <span>
-            {" "}
-            { strings.formScreen.replySaved }
-            {" "}
-          </span>
-          <p>
-            {" "}
-            { strings.formScreen.replyEdit }
-            {" "}
-          </p>
-          <div style={{
-            textOverflow: "ellipsis", overflow: "hidden", maxWidth: "50vw", whiteSpace: "nowrap"
-          }}
-          >
-            <a href={ replyEditLink }>
-              {" "}
-              { replyEditLink }
-              {" "}
-            </a>
-          </div>
-          <p>
-            { strings.formScreen.replyEditEmailText }
-            <Link href="#" onClick={ onReplyEmailLinkClick }>
-              {" "}
-              { strings.formScreen.replyEditEmailLink }
-              {" "}
-            </Link>
-          </p>
-        </Alert>
-      </Snackbar>
+      <GenericSnackbar
+        open={ replySavedVisible }
+        onClose={ () => setReplySavedVisible(false) }
+        severity="success"
+        disableClickaway
+      >
+        <>
+          <Typography>{ strings.formScreen.replySaved }</Typography>
+          <Typography>{ strings.formScreen.replyEdit }</Typography>
+          <Link href={ replyEditLink }>{ replyEditLink }</Link>
+          <Typography>{ strings.formScreen.replyEditEmailText }</Typography>
+          <Button variant="text" onClick={ onReplyEmailLinkClick }>{ strings.formScreen.replyEditEmailLink }</Button>
+        </>
+      </GenericSnackbar>
     );
   }
   return (
-    <Snackbar open={ replySavedVisible } onClose={ () => setReplySavedVisible(false) } anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-      <Alert onClose={ () => setReplySavedVisible(false) } severity="success">
-        <span>
-          {" "}
-          { strings.formScreen.replySaved }
-          {" "}
-        </span>
-      </Alert>
-    </Snackbar>
+    <GenericSnackbar
+      open={ replySavedVisible }
+      onClose={ () => setReplySavedVisible(false) }
+      severity="success"
+      autoHideDuration={ 5000 }
+    >
+      <Typography>{ strings.formScreen.replySaved }</Typography>
+    </GenericSnackbar>
   );
 };
 

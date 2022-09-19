@@ -21,11 +21,12 @@
   },
 
   "errorHandling": {
-    "title": "Error",
+    "title": "Error occurred",
     "authentication": "User authentication failed",
     "dialog": {
       "title": "Whoops! Something went wrong",
       "reloadPage": "Try reloading the page.",
+      "tryAgain": "Please check your internet connection and try again.",
       "unsavedContents": "Please note that unsaved content will not be saved when reloading. If you have unsaved content on this page, you can close this message and copy the content to the clipboard before reloading.",
       "reportIssue": "If the problem persists, contact support@metatavu.fi by email. Please include technical details in the email to speed up resolution of the problem.",
       "technicalDetails": "Technical details:",
@@ -53,7 +54,9 @@
       "saveDraft": "Saving form draft failed",
       "autosave": "Autosave failed",
       "deleteReply": "Deleting reply failed",
-      "findMetaform": "Finding Metaform failed"
+      "findMetaform": "Finding Metaform failed",
+      "noConnection": "No internet connection!",
+      "noConnectionHelper": "Form cannot be submitted without internet connection. Please check your settings."
     },
     "formAutoComplete": {
       "autocompleteField": "Fetching autocomplete field options failed. You can still fill and submit the form by closing this dialog." 

@@ -26,6 +26,7 @@
     "dialog": {
       "title": "Hups! Jokin meni pieleen",
       "reloadPage": "Kokeile ladata sivu uudelleen.",
+      "tryAgain": "Tarkista internet-yhteytesi ja yritä uudelleen.",
       "unsavedContents": "Huomaathan, että tallentamattomat sisällöt häviävät uudelleen ladattaessa. Mikäli sinulla on sivulla tallentamattomia sisältöjä, voit sulkea tämän ilmoituksen ja kopioida sisällöt leikepöydälle ennen uudelleenlatausta.",
       "reportIssue": "Mikäli ongelma jatkuu, ota sähköpostilla yhteyttä osoitteeseen support@metatavu.fi. Liitä tekniset lisätiedot osaksi sähköpostia nopeuttaaksesi ongelman selvittelyä.",
       "technicalDetails": "Teknisiä lisätietoja:",
@@ -53,7 +54,9 @@
       "saveDraft": "Lomakkeen vedoksen tallennus epäonnistui",
       "autosave": "Lomakkeen automaattinen tallennus epäonnistui",
       "deleteReply": "Vastauksen poistaminen epäonnistui",
-      "findMetaform": "Lomakkeen hakemisessa tapahtui virhe"
+      "findMetaform": "Lomakkeen hakemisessa tapahtui virhe",
+      "noConnection": "Ei internet-yhteyttä!",
+      "noConnectionHelper": "Lomaketta ei voida lähettää ilman toimivaa internet-yhteyttä. Tarkista verkkoasetuksesi."
     },
     "formAutoComplete": {
       "autocompleteField": "Automaattisen täytön asetusten haku epäonnistui, voit kuitenkin jatkaa lomakkeen täyttöä sulkemalla tämän ilmoituksen."
@@ -299,7 +302,8 @@
 
   "formScreen": {
     "autosaving": "Vastausta tallennetaan...",
-    "replyEditEmailText": "Voit lähettää linkin itsellesi sähköpostilla klikkaamalla",
+    "replyEditEmailText": "Voit lähettää linkin itsellesi sähköpostilla klikkaamalla ",
+    "replyEditEmailLink": "tästä",
     "replyEditEmailContent": "<p>Hei!</p><p>Pääset muokkaamaan {0} -lomakkeen vastauksia seuraavasta linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
     "replyEditEmailSubject": "{0} -lomakkeen muokkauslinkki",
     "replyEditEmailSent": "Muokkauslinkki lähetetty!",
@@ -314,7 +318,6 @@
     "draftEmailDialogText": "Kirjoita sähköpostiosoite, johon haluat vedoksen muokkauslinkin lähetettävän",
     "replySaved": "Lähetetty onnistuneesti!",
     "replyEdit": "Voit muokata vastaustasi käyttämällä seuraavaa linkkiä:",
-    "replyEditEmailLink": "tästä",
     "replyEditEmailDialogText": "Kirjoita sähköpostiosoite, johon haluat lomakkeen muokkauslinkin lähetettävän",
     "replyDeleteText": "Voit poistaa tämän vastauksen klikkaamalla",
     "replyDeleteLink": "tästä",
