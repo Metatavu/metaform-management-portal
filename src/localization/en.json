@@ -23,7 +23,6 @@
   "errorHandling": {
     "title": "Error occurred",
     "authentication": "User authentication failed",
-    "noToken": "No token",
     "dialog": {
       "title": "Whoops! Something went wrong",
       "reloadPage": "Try reloading the page.",
@@ -37,7 +36,6 @@
       "close": "Close"
     },
     "accessControl": {
-      "loadPermission": "Loading permission failed",
       "contentNotPermitted": "Content not permitted"
     },
     "adminFormsScreen": {

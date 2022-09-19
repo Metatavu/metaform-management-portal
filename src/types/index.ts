@@ -1,5 +1,3 @@
-import { RootState } from "app/store";
-
 /**
  * Application configuration
  */
@@ -133,12 +131,4 @@ declare module "@mui/material/styles" {
 
   interface Theme extends CustomTheme {}
   interface ThemeOptions extends CustomTheme {}
-}
-
-/**
- * Thunk API config
- */
-export interface ThunkApiConfig {
-  state: RootState;
-  rejectValue: string;
 }

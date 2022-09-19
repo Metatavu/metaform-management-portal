@@ -13,7 +13,7 @@ namespace AuthUtils {
   */
   export const isSystemAdmin = (keycloak?: Keycloak): Boolean => {
     if (!keycloak?.token) {
-      throw false;
+      return false;
     }
 
     return keycloak?.hasRealmRole(SYSTEM_ADMIN_ROLE);

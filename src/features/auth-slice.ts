@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "app/store";
 import Keycloak from "keycloak-js";
