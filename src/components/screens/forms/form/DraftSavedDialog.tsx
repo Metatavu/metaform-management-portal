@@ -1,7 +1,7 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import { Alert, Link, Snackbar } from "@mui/material";
+import { Button, Link, Typography } from "@mui/material";
+import GenericSnackbar from "components/generic/generic-snackbar";
 import strings from "localization/strings";
-import * as React from "react";
+import React from "react";
 
 interface Props {
   setDraftSavedVisible: (visible: boolean) => void;
@@ -26,30 +26,19 @@ const DraftSavedDialog: React.FC<Props> = ({
   }
 
   return (
-    <Snackbar open={ draftSavedVisible } onClose={ () => setDraftSavedVisible(false) } anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-      <Alert onClose={ () => setDraftSavedVisible(false) } severity="success">
-        <span>
-          {" "}
-          { strings.formScreen.draftSaved }
-          {" "}
-        </span>
-        <br/>
-        <br/>
-        <a href={ draftLink }>
-          {" "}
-          { draftLink }
-          {" "}
-        </a>
-        <p>
-          { strings.formScreen.draftEmailText }
-          <Link href="#" onClick={ onDraftEmailLinkClick }>
-            {" "}
-            { strings.formScreen.draftEmailLink }
-            {" "}
-          </Link>
-        </p>
-      </Alert>
-    </Snackbar>
+    <GenericSnackbar
+      open={ draftSavedVisible }
+      onClose={ () => setDraftSavedVisible(false) }
+      severity="success"
+      disableClickaway
+    >
+      <>
+        <Typography>{ strings.formScreen.draftSaved }</Typography>
+        <Link href={ draftLink }>{ draftLink }</Link>
+        <Typography>{ strings.formScreen.draftEmailText }</Typography>
+        <Button variant="text" onClick={ onDraftEmailLinkClick}>{ strings.formScreen.draftEmailLink }</Button>
+      </>
+    </GenericSnackbar>
   );
 };
 

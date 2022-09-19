@@ -4,7 +4,7 @@ import { Metaform } from "generated/client";
 import strings from "localization/strings";
 import React from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
-import MetaFormRightDrawerFeature from "./metaform-editor-rightDrawer-feature";
+import MetaFormRightDrawerFeature from "./metaform-editor-right-drawer-feature";
 import MetaFormRightDrawerVisibility from "./metaform-editor-right-drawer-visibility";
 
 /**

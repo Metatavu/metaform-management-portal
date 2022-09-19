@@ -40,6 +40,7 @@ export interface Localized extends LocalizedStringsMethods {
     noToken: string;
     dialog: {
       reloadPage: string;
+      tryAgain: string;
       unsavedContents: string;
       reportIssue: string;
       technicalDetails: string;
@@ -71,6 +72,8 @@ export interface Localized extends LocalizedStringsMethods {
       autosave: string;
       deleteReply: string;
       findMetaform: string;
+      noConnection: string;
+      noConnectionHelper: string;
     },
     formAutoComplete: {
       autocompleteField: string;
@@ -252,6 +255,7 @@ export interface Localized extends LocalizedStringsMethods {
         dateAndTime: string;
         files: string;
         table: string;
+        submit: string;
       };
       features: {
         tabTitle: string;
@@ -266,6 +270,12 @@ export interface Localized extends LocalizedStringsMethods {
         sectionTitle: string;
         addSelectionField: string;
         addNewColumn: string;
+        addColumnType: string;
+        columnTextType: string;
+        columnNumberType: string;
+        textOfSubmitButton: string;
+        newFieldOption: string;
+        addCustomHtml: string;
       };
       visibility: {
         tabTitle: string;

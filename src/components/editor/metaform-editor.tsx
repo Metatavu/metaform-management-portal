@@ -174,7 +174,6 @@ const MetaformEditor: React.FC<Props> = ({
       !draftForm.sections && (draftForm.sections = []);
       draftForm.sections?.push(createdSection);
     });
-
     setPendingForm(updatedForm);
   };
 

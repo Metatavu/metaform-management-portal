@@ -1,3 +1,4 @@
+import ConnectionHandler from "components/contexts/connection-handler";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import FormScreen from "../forms/form-screen";
@@ -14,7 +15,7 @@ const PublicRoutes: React.FC = () => (
     />
     <Route
       path="/:metaformSlug"
-      element={ <FormScreen/> }
+      element={ <ConnectionHandler><FormScreen/></ConnectionHandler> }
     />
   </Routes>
 );
