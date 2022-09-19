@@ -3,7 +3,6 @@ import GenericSnackbar from "components/generic/generic-snackbar";
 import strings from "localization/strings";
 import React, { useEffect, useState } from "react";
 
-/* eslint-disable */
 /**
  * ConnectionHandler component
  */
