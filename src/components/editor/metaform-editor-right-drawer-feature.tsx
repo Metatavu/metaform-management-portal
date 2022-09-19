@@ -149,6 +149,22 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
+   * Update column title value
+   * 
+   * @param tableColumn Metaform table column where we are changing title
+   * @param columnIndex index value of current column title
+   */
+  const updateColumnTitle = (tableColumn: MetaformTableColumn, columnIndex: number) => {
+    if (sectionIndex === undefined || fieldIndex === undefined) {
+      return;
+    }
+    const updatedForm = produce(pendingForm, draftForm => {
+      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.columns?.splice(columnIndex, 1, tableColumn);
+    });
+    setPendingForm(updatedForm);
+  };
+
+  /**
    * Delete column
    * 
    * @param columnIndex indexvalue of current column we are deleting
@@ -186,7 +202,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * 
    * @param htmlField html field
    */
-  const updateHtml = (htmlField: MetaformField) => {
+  const updateHtmlField = (htmlField: MetaformField) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -299,25 +315,9 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
         multiline
         rows={ 4 }
         value={ html }
-        onChange={ event => updateHtml({ ...selectedField, html: event.target.value }) }
+        onChange={ event => updateHtmlField({ ...selectedField, html: event.target.value }) }
       />
     );
-  };
-
-  /**
-   * Update column title value
-   * 
-   * @param tableColumn Metaform table column where we are changing title
-   * @param columnIndex index value of current column title
-   */
-  const updateColumnTitle = (tableColumn: MetaformTableColumn, columnIndex: number) => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
-      return;
-    }
-    const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.columns?.splice(columnIndex, 1, tableColumn);
-    });
-    setPendingForm(updatedForm);
   };
 
   /**
