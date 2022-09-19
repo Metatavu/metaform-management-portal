@@ -232,7 +232,7 @@
         "columnTextType": "Text field",
         "columnNumberType": "Number field",
         "textOfSubmitButton": "Button text",
-        "newOptionField":"Option field",
+        "newFieldOption":"Option field",
         "addCustomHtml":"Add custom html here"
       },
       "visibility": {

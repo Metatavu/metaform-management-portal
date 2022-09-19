@@ -266,7 +266,7 @@ export interface Localized extends LocalizedStringsMethods {
         columnTextType: string;
         columnNumberType: string;
         textOfSubmitButton: string;
-        newOptionField: string;
+        newFieldOption: string;
         addCustomHtml: string;
       };
       visibility: {

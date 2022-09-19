@@ -230,7 +230,7 @@
         "columnTextType": "Tekstikenttä",
         "columnNumberType": "Numerokenttä",
         "textOfSubmitButton": "Painikkeen teksti",
-        "newOptionField":"Valintakenttä",
+        "newFieldOption":"Valintakenttä",
         "addCustomHtml":"Lisää tähän kustomoitua html"
       },
       "visibility": {
