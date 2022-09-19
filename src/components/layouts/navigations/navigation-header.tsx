@@ -1,7 +1,7 @@
 import { ListItemText, Stack } from "@mui/material";
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { NavigationLinks, PermissionLevel } from "types";
+import { NavigationLinks } from "types";
 import LocalizationUtils from "utils/localization-utils";
 import NavigationLink from "./navigation-link";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
@@ -10,6 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import NavigationUtils from "utils/navigation-utils";
 import { HeaderNavigationWrapper } from "styled/layouts/navigations";
 import FormRestrictedContent from "components/containers/form-restricted-content";
+
 /**
  * Navigation header component
  */
@@ -29,7 +30,7 @@ const NavigationHeader: React.FC = () => {
         navigation={ NavigationLinks.FORMS }
         renderIcon={ color => <FormatAlignJustifyIcon htmlColor={ color }/> }
       />
-      <FormRestrictedContent restrictionLevel={ PermissionLevel.METAFORM_MANGER }>
+      <FormRestrictedContent>
         <NavigationLink
           currentNavigation={ currentNavigation }
           navigation={ NavigationLinks.USERS }

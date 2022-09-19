@@ -1,43 +1,36 @@
 import React from "react";
-import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import FormHistoryScreen from "./form-history-screen";
 import FormReplyScreen from "./form-reply-screen";
 import FormRepliesScreen from "./form-replies-screen";
-import { useFormAccessControl } from "app/hooks";
-import FormRestrictedView from "components/containers/form-restricted-view";
-import { PermissionLevel } from "types";
+import FormRestrictedContent from "components/containers/form-restricted-content";
 
 /**
  * Component for form routes
  */
-const FormRoutes: React.FC = () => {
-  const { formSlug } = useParams();
-  useFormAccessControl(formSlug);
-
-  return (
-    <Routes>
-      <Route
-        path="/"
-        element={ <Navigate to="./answers"/> }
-      />
-      <Route
-        path="/answers"
-        element={ <FormRepliesScreen/> }
-      />
-      <Route
-        path="/answers/:replyId"
-        element={ <FormReplyScreen/> }
-      />
-      <Route
-        path="/history"
-        element={
-          <FormRestrictedView restrictionLevel={ PermissionLevel.METAFORM_MANGER }>
-            <FormHistoryScreen/>
-          </FormRestrictedView>
-        }
-      />
-    </Routes>
-  );
-};
+const FormRoutes: React.FC = () => (
+  <Routes>
+    <Route
+      path="/"
+      element={ <Navigate to="./answers"/> }
+    />
+    <Route
+      path="/answers"
+      element={ <FormRepliesScreen/> }
+    />
+    <Route
+      path="/answers/:replyId"
+      element={ <FormReplyScreen/> }
+    />
+    <Route
+      path="/history"
+      element={
+        <FormRestrictedContent route>
+          <FormHistoryScreen/>
+        </FormRestrictedContent>
+      }
+    />
+  </Routes>
+);
 
 export default FormRoutes;

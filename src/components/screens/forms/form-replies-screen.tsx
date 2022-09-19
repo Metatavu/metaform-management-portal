@@ -14,8 +14,9 @@ import { NavigationTabContainer } from "styled/layouts/navigations";
 import { AdminFormRepliesScreenStack, AdminFormRepliesScreenText } from "styled/react-components/react-components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { selectKeycloak } from "features/auth-slice";
-import { PermissionLevel, ReplyStatus, SYSTEM_ADMIN_ROLE } from "types";
+import { ReplyStatus } from "types";
 import FormRestrictedContent from "components/containers/form-restricted-content";
+import AuthUtils from "utils/auth-utils";
 
 /**
  * Form replies screen component
@@ -98,7 +99,7 @@ const FormRepliesScreen: React.FC = () => {
       }
     }));
 
-    if (keycloak?.hasRealmRole(SYSTEM_ADMIN_ROLE)) {
+    if (AuthUtils.isSystemAdmin(keycloak)) {
       gridColumns.push({
         field: "actions",
         type: "actions",
@@ -302,7 +303,7 @@ const FormRepliesScreen: React.FC = () => {
           text={ strings.repliesScreen }
           renderActions={ renderToggleSwitch }
         />
-        <FormRestrictedContent restrictionLevel={ PermissionLevel.METAFORM_MANGER }>
+        <FormRestrictedContent>
           <NavigationTab
             text={ strings.navigationHeader.formsScreens.formDataScreen }
             to="./../history"

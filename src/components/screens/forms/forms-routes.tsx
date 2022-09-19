@@ -3,36 +3,30 @@ import { Route, Routes } from "react-router-dom";
 import FormsScreen from "./forms-screen";
 import FormRoutes from "./form-routes";
 import FormsDataScreen from "./forms-data-screen";
-import { useFormAccessControl } from "app/hooks";
-import FormRestrictedView from "components/containers/form-restricted-view";
-import { PermissionLevel } from "types";
+import FormRestrictedContent from "components/containers/form-restricted-content";
 
 /**
  * Component for forms routes
  */
-const FormsRoutes: React.FC = () => {
-  useFormAccessControl();
-
-  return (
-    <Routes>
-      <Route
-        path="/"
-        element={ <FormsScreen/> }
-      />
-      <Route
-        path="/data"
-        element={
-          <FormRestrictedView restrictionLevel={ PermissionLevel.METAFORM_MANGER }>
-            <FormsDataScreen/>
-          </FormRestrictedView>
-        }
-      />
-      <Route
-        path="/:formSlug/*"
-        element={ <FormRoutes/> }
-      />
-    </Routes>
-  );
-};
+const FormsRoutes: React.FC = () => (
+  <Routes>
+    <Route
+      path="/"
+      element={ <FormsScreen/> }
+    />
+    <Route
+      path="/data"
+      element={
+        <FormRestrictedContent route>
+          <FormsDataScreen/>
+        </FormRestrictedContent>
+      }
+    />
+    <Route
+      path="/:formSlug/*"
+      element={ <FormRoutes/> }
+    />
+  </Routes>
+);
 
 export default FormsRoutes;

@@ -1,33 +1,39 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-import React, { useState } from "react";
-import { selectPermissionLevel } from "features/auth-slice";
-import { PermissionLevel } from "types";
+import React, { useContext, useState } from "react";
+import { selectKeycloak } from "features/auth-slice";
 import { useAppSelector } from "app/hooks";
+import { useNavigate } from "react-router-dom";
+import { ErrorContext } from "components/contexts/error-handler";
+import strings from "localization/strings";
+import AuthUtils from "utils/auth-utils";
 
-/**
- * Component props
- */
 interface Prop {
-  restrictionLevel: PermissionLevel;
+  route?: boolean
 }
 
 /**
- * Component for form restricted content
+ * Component for form restricted view
  */
 const FormRestrictedContent: React.FC<Prop> = ({
   children,
-  restrictionLevel
+  route
 }) => {
-  const permissionLevel = useAppSelector(selectPermissionLevel);
+  const keycloak = useAppSelector(selectKeycloak);
   const [ restricted, setRestricted ] = useState(false);
+  const navigate = useNavigate();
+  const { setError } = useContext(ErrorContext);
 
   React.useEffect(() => {
-    if (permissionLevel >= restrictionLevel) {
-      setRestricted(true);
-    } else {
+    if (AuthUtils.isSystemAdmin(keycloak)) {
       setRestricted(false);
+    } else {
+      setRestricted(true);
+      if (route) {
+        setError(strings.errorHandling.accessControl.contentNotPermitted);
+        navigate(-1);
+      }
     }
-  }, [ permissionLevel ]);
+  }, [ keycloak ]);
 
   if (restricted) {
     return null;

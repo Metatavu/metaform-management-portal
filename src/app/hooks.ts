@@ -1,10 +1,6 @@
-import Api from "api";
-import { ErrorContext } from "components/contexts/error-handler";
-import { resetPermission, selectKeycloak, selectPermissionLevel, setMetaform, setSystemAdminPermission } from "features/auth-slice";
-import strings from "localization/strings";
-import React, { useContext } from "react";
+import { selectKeycloak } from "features/auth-slice";
+import React from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { PermissionLevel } from "types";
 import type { RootState, AppDispatch } from "./store";
 
 /**
@@ -73,42 +69,4 @@ export const useDebounce = (value: string, delay: number) => {
 export const useApiClient = <T extends {}>(apiClientFactory: (accessToken?: string) => T): T => {
   const { token } = useAppSelector(selectKeycloak) || {};
   return React.useMemo(() => apiClientFactory(token), [ token ]);
-};
-
-/**
- * Custom hook that provides form access control.
- */
-export const useFormAccessControl = (formSlug?: string) => {
-  const apiClient = useApiClient(Api.getApiClient);
-  const { metaformsApi } = apiClient;
-  const dispatch = useAppDispatch();
-  const errorContext = useContext(ErrorContext);
-  const permissionLevel = useAppSelector(selectPermissionLevel);
-
-  /**
-   * Loads permission
-   */
-  const loadPermission = async () => {
-    console.log("loading permission somehow");
-    try {
-      const foundMetaform = await metaformsApi.findMetaform({
-        metaformSlug: formSlug
-      });
-
-      dispatch(setMetaform(foundMetaform.id!));
-    } catch (error) {
-      errorContext.setError(strings.errorHandling.accessControl.loadPermission, error);
-    }
-  };
-
-  React.useEffect(() => {
-    if (formSlug !== undefined && permissionLevel !== PermissionLevel.SYSTEM_ADMIN) {
-      loadPermission();
-    } else {
-      dispatch(setSystemAdminPermission());
-    }
-    return () => {
-      dispatch(resetPermission());
-    };
-  }, []);
 };

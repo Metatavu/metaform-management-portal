@@ -12,7 +12,7 @@ import { useApiClient } from "app/hooks";
 import Api from "api";
 import { Metaform, MetaformMemberRole, Reply } from "generated/client";
 import { ErrorContext } from "components/contexts/error-handler";
-import { PermissionLevel, ReplyStatus } from "types";
+import { ReplyStatus } from "types";
 import { useNavigate } from "react-router-dom";
 import FormRestrictedContent from "components/containers/form-restricted-content";
 
@@ -177,7 +177,7 @@ const FormsScreen: React.FC = () => {
         <NavigationTab
           text={ strings.navigationHeader.formsScreens.formScreen }
         />
-        <FormRestrictedContent restrictionLevel={ PermissionLevel.METAFORM_MANGER }>
+        <FormRestrictedContent>
           <NavigationTab
             text={ strings.navigationHeader.formsScreens.formDataScreen }
             to="data"
