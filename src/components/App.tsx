@@ -9,12 +9,13 @@ import BasicLayout from "./layouts/basic-layout";
 import AdminLayout from "./layouts/admin-layout";
 import PublicLayout from "./layouts/public-layout";
 import PublicRoutes from "./screens/public/public-routes";
-import AuthenticationProvider from "./containers/access-token-refresh";
+import AuthenticationProvider from "./containers/authentication-provider";
 import moment from "moment";
 import "moment/locale/fi";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { selectLocale, setLocale } from "features/locale-slice";
 import DraftPreviewScreen from "./screens/preview/draft-preview-screen";
+import FormRestrictedContent from "./containers/form-restricted-content";
 
 /**
  * Application component
@@ -41,7 +42,13 @@ const App: React.FC = () => {
                 />
                 <Route
                   path="/admin/users"
-                  element={ <AdminLayout><UsersScreen/></AdminLayout> }
+                  element={
+                    <FormRestrictedContent route>
+                      <AdminLayout>
+                        <UsersScreen/>
+                      </AdminLayout>
+                    </FormRestrictedContent>
+                  }
                 />
                 <Route
                   path="/admin/forms/*"
@@ -49,7 +56,13 @@ const App: React.FC = () => {
                 />
                 <Route
                   path="/admin/editor/*"
-                  element={ <AdminLayout><EditorRoutes/></AdminLayout> }
+                  element={
+                    <FormRestrictedContent route>
+                      <AdminLayout>
+                        <EditorRoutes/>
+                      </AdminLayout>
+                    </FormRestrictedContent>
+                  }
                 />
                 <Route
                   path="/admin/preview/:formSlug/:draftId"

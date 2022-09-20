@@ -35,6 +35,9 @@
       "errorMessage": "Virheilmoitus: ",
       "close": "Sulje"
     },
+    "accessControl": {
+      "contentNotPermitted": "Sinulla ei ole oikeutta tähän sisältöön"
+    },
     "adminFormsScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",
       "createForm": "Lomakkeen luominen epäonnistui",

@@ -9,6 +9,8 @@ import GroupIcon from "@mui/icons-material/Group";
 import EditIcon from "@mui/icons-material/Edit";
 import NavigationUtils from "utils/navigation-utils";
 import { HeaderNavigationWrapper } from "styled/layouts/navigations";
+import FormRestrictedContent from "components/containers/form-restricted-content";
+
 /**
  * Navigation header component
  */
@@ -28,16 +30,18 @@ const NavigationHeader: React.FC = () => {
         navigation={ NavigationLinks.FORMS }
         renderIcon={ color => <FormatAlignJustifyIcon htmlColor={ color }/> }
       />
-      <NavigationLink
-        currentNavigation={ currentNavigation }
-        navigation={ NavigationLinks.USERS }
-        renderIcon={ color => <GroupIcon htmlColor={ color }/> }
-      />
-      <NavigationLink
-        currentNavigation={ currentNavigation }
-        navigation={ NavigationLinks.EDITOR }
-        renderIcon={ color => <EditIcon htmlColor={ color }/> }
-      />
+      <FormRestrictedContent>
+        <NavigationLink
+          currentNavigation={ currentNavigation }
+          navigation={ NavigationLinks.USERS }
+          renderIcon={ color => <GroupIcon htmlColor={ color }/> }
+        />
+        <NavigationLink
+          currentNavigation={ currentNavigation }
+          navigation={ NavigationLinks.EDITOR }
+          renderIcon={ color => <EditIcon htmlColor={ color }/> }
+        />
+      </FormRestrictedContent>
     </Stack>
   );
 

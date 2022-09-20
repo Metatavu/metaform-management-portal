@@ -60,16 +60,16 @@ const ErrorHandler: React.FC = ({ children }) => {
 
   /**
    * Returns current time
-   * 
+   *
    * @returns current time
    */
   const getTime = () => {
     return moment().format("DD.MM.YYYY HH:mm:ss");
   };
-  
+
   /**
    * Returns current window URL
-   * 
+   *
    * @returns current window URL
    */
   const getURL = () => {
