@@ -7,8 +7,17 @@ import { styled } from "@mui/material/styles";
 export const FormContainer = styled(Box, {
   label: "metaform-container"
 })(() => ({
+  overflow: "auto"
+}));
+
+/**
+ * Styled metaform layout
+ */
+export const FormLayout = styled(Box, {
+  label: "metaform-container"
+})(({ theme }) => ({
   display: "flex",
-  overflow: "auto",
+  padding: theme.spacing(2),
   justifyContent: "center"
 }));
 

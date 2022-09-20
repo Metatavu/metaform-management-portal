@@ -69,8 +69,7 @@ export const FormListContainer = styled(Stack, {
  */
 export const FormsContainer = styled(Stack, {
   label: "forms-container"
-})(({ theme }) => ({
+})(() => ({
   overflow: "auto",
-  flex: 1,
-  backgroundColor: theme.palette.grey[300]
+  flex: 1
 }));

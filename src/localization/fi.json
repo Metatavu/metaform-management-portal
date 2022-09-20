@@ -87,6 +87,9 @@
       "loadMembers": "Käyttäjien latauksessa tapahtui virhe",
       "removeMemberNotFound": "Ryhmän poistossa tapahtui virhe, käyttäjää ei löytynyt",
       "addMemberNotFound": "Ryhmän lisäämisessä tapahtui virhe, käyttäjää ei löytynyt"
+    },
+    "previewScreen": {
+      "shareLink": "Linkin jakamisessa tapahtui virhe"
     }
   },
 
@@ -251,6 +254,23 @@
         "fieldConditionLabel": "Tämä kenttä näkyy, jos {0} arvo on {1}",
         "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}",
         "selectVisibilityInfo": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja."
+      }
+    },
+    "formPreview": {
+      "exit": "Sulje esikatselu",
+      "shareLink": "Jaa linkki",
+      "shareLinkDialog": {
+        "title": "Jaa esikatseluversio lomakkeesta",
+        "text": "Lähetä linkki luonnokseen sähköpostitse, tai kopioi ja jaa se haluamassasi kanavassa. Muistathan tallentaa viimeisimmän luonnoksen ensin.",
+        "link": "Suora linkki",
+        "recipients": "Vastaanottaja(t)",
+        "send": "lähetä",
+        "linkCopied": "Linkki kopioitu"
+      },
+      "previewEmail": {
+        "content": "<p>Hei!</p><p>Ole hyvä ja tarkastele lomaketta {0} seuraavasta linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
+        "subject": "Ole hyvä ja tarkastele lomaketta - {0}",
+        "emailSent": "Linkki lähetetty sähköpostitse"
       }
     }
   },

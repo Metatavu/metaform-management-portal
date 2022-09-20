@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { selectKeycloak } from "features/auth-slice";
 import { useAppSelector } from "app/hooks";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ interface Prop {
 /**
  * Component for form restricted view
  */
-const FormRestrictedContent: React.FC<Prop> = ({
+const FormRestrictedContent: FC<Prop> = ({
   children,
   route
 }) => {
