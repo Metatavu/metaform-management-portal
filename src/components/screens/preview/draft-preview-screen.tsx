@@ -1,5 +1,5 @@
 import { Metaform } from "generated/client";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import strings from "localization/strings";
 import DraftPreviewHeader from "../../preview/draft-preview-header";
 import DraftPreviewShareDialog from "../../preview/draft-preview-dialog";
@@ -13,7 +13,7 @@ import MetaformUtils from "utils/metaform-utils";
 /**
  * Metaform editor preview component
  */
-const DraftPreviewScreen: React.FC = () => {
+const DraftPreviewScreen: FC = () => {
   const [ dialogOpen, setDialogOpen ] = useState(false);
   const [ linkCopied, setLinkCopied ] = useState(false);
   const [ emailSent, setEmailSent ] = useState(false);

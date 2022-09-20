@@ -128,7 +128,9 @@ const DraftEditorScreen: React.FC = () => {
   }, []);
 
   /**
-   * Publishes Metaform
+   * Sets pending form
+   *
+   * @param form pending form
    */
   const setPendingForm = async (form: Metaform) => {
     const updatedMetaformVersion = { ...metaformVersion, data: form } as MetaformVersion;
