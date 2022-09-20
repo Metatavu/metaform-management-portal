@@ -258,7 +258,7 @@
       "shareLink": "Jaa linkki",
       "shareLinkDialog": {
         "title": "Jaa esikatseluversio lomakkeesta",
-        "text": "Lähetä kutsu sähköpostitse, tai kopio linkki ja jaa se itse haluamassasi kanavassa. Ole hyvä ja tallenna ja julkaise lomake ensin!",
+        "text": "Lähetä linkki luonnokseen sähköpostitse, tai kopioi ja jaa se haluamassasi kanavassa. Muistathan tallentaa viimeisimmän luonnoksen ensin.",
         "link": "Suora linkki",
         "recipients": "Vastaanottaja(t)",
         "send": "lähetä",
