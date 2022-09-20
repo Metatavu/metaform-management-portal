@@ -35,6 +35,9 @@
       "errorMessage": "Error message: ",
       "close": "Close"
     },
+    "accessControl": {
+      "contentNotPermitted": "Content not permitted"
+    },
     "adminFormsScreen": {
       "listForms": "Fetching forms failed",
       "createForm": "Creating form failed",

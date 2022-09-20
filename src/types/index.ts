@@ -71,6 +71,11 @@ export type ListItemData = {
 export const NOT_SELECTED = "NOT_SELECTED";
 
 /**
+ * System admin role
+ */
+export const SYSTEM_ADMIN_ROLE = "metaform-admin";
+
+/**
  * React dnd dragging mode
  */
 export enum DraggingMode {
@@ -93,16 +98,6 @@ export enum NavigationLinks {
  */
 export interface Dictionary<T> {
   [Key: string]: T;
-}
-
-/**
- * Enum for application roles
- */
-export enum ApplicationRoles {
-  METAFORM_ADMIN = "metaform-admin",
-  METAFORM_MANAGER = "metaform-manager",
-  METAFORM_USER = "metaform-user",
-  ANONYMOUS = "anonymous"
 }
 
 /**
