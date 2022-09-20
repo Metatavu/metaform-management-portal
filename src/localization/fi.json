@@ -36,7 +36,7 @@
       "close": "Sulje"
     },
     "accessControl": {
-      "contentNotPermitted": "Sisältöä ei sallita"
+      "contentNotPermitted": "Sinulla ei ole oikeutta tähän sisältöön"
     },
     "adminFormsScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",
