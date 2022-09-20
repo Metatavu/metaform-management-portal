@@ -1,10 +1,8 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { selectKeycloak } from "features/auth-slice";
 import { useAppSelector } from "app/hooks";
 import { useNavigate } from "react-router-dom";
-import { ErrorContext } from "components/contexts/error-handler";
-import strings from "localization/strings";
 import AuthUtils from "utils/auth-utils";
 
 interface Prop {
@@ -21,7 +19,6 @@ const FormRestrictedContent: React.FC<Prop> = ({
   const keycloak = useAppSelector(selectKeycloak);
   const [ restricted, setRestricted ] = useState(false);
   const navigate = useNavigate();
-  const { setError } = useContext(ErrorContext);
 
   React.useEffect(() => {
     if (AuthUtils.isSystemAdmin(keycloak)) {
@@ -29,7 +26,6 @@ const FormRestrictedContent: React.FC<Prop> = ({
     } else {
       setRestricted(true);
       if (route) {
-        setError(strings.errorHandling.accessControl.contentNotPermitted);
         navigate(-1);
       }
     }
