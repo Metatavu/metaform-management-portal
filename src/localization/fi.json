@@ -266,7 +266,7 @@
       },
       "previewEmail": {
         "content": "<p>Hei!</p><p>Ole hyvä ja tarkastele lomaketta {0} seuraavasta linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
-        "subject": "Ole hyvä ja täytä lomake - {0}",
+        "subject": "Ole hyvä ja tarkastele lomaketta - {0}",
         "emailSent": "Sähköposti lähetetty"
       }
     }
