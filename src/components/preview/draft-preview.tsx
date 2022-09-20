@@ -1,5 +1,5 @@
 import { Metaform } from "generated/client";
-import React, { useState } from "react";
+import React, { useState, FC } from "react";
 import { FieldValue } from "metaform-react/types";
 import Form from "components/generic/form";
 import { Dictionary } from "@reduxjs/toolkit";
@@ -14,7 +14,7 @@ interface Prop {
 /**
  * Metaform editor preview component
  */
-const DraftPreview: React.FC<Prop> = ({
+const DraftPreview: FC<Prop> = ({
   metaform
 }) => {
   const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});

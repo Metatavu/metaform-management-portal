@@ -258,16 +258,16 @@
       "shareLink": "Jaa linkki",
       "shareLinkDialog": {
         "title": "Jaa esikatseluversio lomakkeesta",
-        "text": "Lähetä kutsu sähköpostitse, tai kopio linkki ja jaa se itse haluamassasi kanavassa. Ole hyvä ja tallenna ja julkaise lomake ensin!",
+        "text": "Lähetä linkki luonnokseen sähköpostitse, tai kopioi ja jaa se haluamassasi kanavassa. Muistathan tallentaa viimeisimmän luonnoksen ensin.",
         "link": "Suora linkki",
         "recipients": "Vastaanottaja(t)",
         "send": "lähetä",
         "linkCopied": "Linkki kopioitu"
       },
       "previewEmail": {
-        "content": "<p>Hi!</p><p>Ole hyvä ja täytä lomake {0} seuraavasta linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
-        "subject": "Ole hyvä ja täytä lomake - {0}",
-        "emailSent": "Sähköposti lähetetty"
+        "content": "<p>Hei!</p><p>Ole hyvä ja tarkastele lomaketta {0} seuraavasta linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
+        "subject": "Ole hyvä ja tarkastele lomaketta - {0}",
+        "emailSent": "Linkki lähetetty sähköpostitse"
       }
     }
   },
