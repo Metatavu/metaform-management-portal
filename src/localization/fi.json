@@ -237,7 +237,11 @@
         "columnNumberType": "Numerokenttä",
         "textOfSubmitButton": "Painikkeen teksti",
         "newFieldOption":"Valintakenttä",
-        "addCustomHtml":"Lisää tähän HTML-sisältöä"
+        "addCustomHtml":"Lisää tähän HTML-sisältöä",
+        "contextFormVisibility":"Näkyy lomakkeella",
+        "contextManagementVisibility":"Näkyy hallintointi näkymässä",
+        "contextManagementListVisibility":"Näkyy hallintointilista näkymässä",
+        "ContextVisibilityInfo":"Kentän hallinnointi asetukset"
       },
       "visibility": {
         "tabTitle": "näkyvyys",

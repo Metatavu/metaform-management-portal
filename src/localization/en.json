@@ -239,7 +239,11 @@
         "columnNumberType": "Number field",
         "textOfSubmitButton": "Button text",
         "newFieldOption":"Option field",
-        "addCustomHtml":"Add html code in field"
+        "addCustomHtml":"Add html code in field",
+        "contextFormVisibility":"Shown on the form",
+        "contextManagementVisibility":"Shown on management scene",
+        "contextManagementListVisibility":"Shown on managementlist scene",
+        "ContextVisibilityInfo":"Field management settings"  
       },
       "visibility": {
         "tabTitle": "Visibility",

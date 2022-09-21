@@ -73,94 +73,95 @@ namespace MetaformUtils {
    * @returns created field
    */
   export const createField = (fieldType: MetaformFieldType, title?: string, name?: string, required?: boolean, options?: any[]): MetaformField => {
-    if (fieldType === MetaformFieldType.Select ||
-        fieldType === MetaformFieldType.Radio ||
-        fieldType === MetaformFieldType.Checklist) {
-      return {
-        name: name ?? fieldType,
-        title: title ?? fieldType,
-        type: fieldType,
-        required: required ?? false,
-        options: options ?? [
-          {
-            name: "option",
-            text: "option1"
-          }
-        ]
-      };
+    switch (fieldType) {
+      case MetaformFieldType.Select:
+      case MetaformFieldType.Radio:
+      case MetaformFieldType.Checklist:
+        return {
+          name: name ?? fieldType,
+          title: title ?? fieldType,
+          type: fieldType,
+          required: required ?? false,
+          contexts: ["FORM", "MANAGEMENT"],
+          options: options ?? [
+            {
+              name: "option",
+              text: "option1"
+            }
+          ]
+        };
+      case MetaformFieldType.Boolean:
+        return {
+          name: name ?? fieldType,
+          title: title ?? fieldType,
+          type: fieldType,
+          required: required ?? false,
+          checked: false,
+          contexts: ["FORM", "MANAGEMENT"]
+        };
+      case MetaformFieldType.Slider:
+        return {
+          name: name ?? fieldType,
+          title: title ?? fieldType,
+          type: fieldType,
+          required: required ?? false,
+          min: 50,
+          max: 100,
+          contexts: ["FORM", "MANAGEMENT"]
+        };
+      case MetaformFieldType.Table:
+        return {
+          name: name ?? fieldType,
+          title: title ?? fieldType,
+          text: fieldType,
+          type: fieldType,
+          required: required ?? false,
+          contexts: ["FORM", "MANAGEMENT"],
+          columns: options ?? [
+            {
+              type: "text",
+              name: "column1",
+              title: "Column 1"
+            },
+            {
+              type: "number",
+              name: "column2",
+              title: "Column 2"
+            },
+            {
+              type: "number",
+              name: "column3",
+              title: "Column 3"
+            }
+          ]
+        };
+      case MetaformFieldType.Submit:
+        return {
+          title: "",
+          name: "submit",
+          type: fieldType,
+          text: strings.draftEditorScreen.editor.fields.submit ?? fieldType,
+          columns: [],
+          contexts: ["FORM", "MANAGEMENT"]
+        };
+      case MetaformFieldType.Html:
+        return {
+          name: name ?? fieldType,
+          title: " ",
+          required: required ?? false,
+          type: fieldType,
+          contexts: ["FORM", "MANAGEMENT"]
+        };
+      default:
+        return {
+          name: name ?? fieldType,
+          title: title ?? fieldType,
+          required: required ?? false,
+          text: fieldType,
+          type: fieldType,
+          contexts: ["FORM", "MANAGEMENT"]
+        };
     }
-    if (fieldType === MetaformFieldType.Boolean) {
-      return {
-        name: name ?? fieldType,
-        title: title ?? fieldType,
-        type: fieldType,
-        required: required ?? false,
-        checked: false
-      };
-    }
-
-    if (fieldType === MetaformFieldType.Slider) {
-      return {
-        name: name ?? fieldType,
-        title: title ?? fieldType,
-        type: fieldType,
-        required: required ?? false,
-        min: 50,
-        max: 100
-      };
-    }
-
-    if (fieldType === MetaformFieldType.Table) {
-      return {
-        name: name ?? fieldType,
-        title: title ?? fieldType,
-        text: fieldType,
-        type: fieldType,
-        required: required ?? false,
-        columns: options ?? [
-          {
-            type: "text",
-            name: "column1",
-            title: "Column 1"
-          },
-          {
-            type: "number",
-            name: "column2",
-            title: "Column 2"
-          },
-          {
-            type: "number",
-            name: "column3",
-            title: "Column 3"
-          }
-        ]
-      };
-    }
-    if (fieldType === MetaformFieldType.Submit) {
-      return {
-        title: "",
-        name: "submit",
-        type: fieldType,
-        text: strings.draftEditorScreen.editor.fields.submit ?? fieldType,
-        columns: [],
-        contexts: options ?? ["FORM"]
-      };
-    }
-    if (fieldType === MetaformFieldType.Html) {
-      return {
-        name: name ?? fieldType,
-        title: "",
-        required: required ?? false,
-        type: fieldType
-      };
-    }
-    return {
-      name: name ?? fieldType,
-      title: title ?? fieldType,
-      required: required ?? false,
-      text: fieldType,
-      type: fieldType
-    };
   };
 
   /**

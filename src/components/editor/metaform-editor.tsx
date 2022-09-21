@@ -221,6 +221,16 @@ const MetaformEditor: React.FC<Props> = ({
   };
 
   /**
+   * Event handler for section edit click
+   *
+   * @param sectionIndex section index 
+   */
+  const onSectionEditClick = (sectionIndex: number) => () => {
+    setSelectedFieldIndex(undefined);
+    setSelectedSectionIndex(sectionIndex);
+  };
+
+  /**
    * Event handler for field delete click
    * if deleted Field is used as visibleIf condition, deletes all visibleIf where it is used
    *
@@ -242,13 +252,13 @@ const MetaformEditor: React.FC<Props> = ({
       draftForm.sections?.[sectionIndex].fields?.splice(fieldIndex, 1);
       draftForm.sections?.forEach(currentSection => {
         if (currentSection.visibleIf) {
-          if (currentSection.visibleIf.field === field?.title) {
+          if (currentSection.visibleIf.field === field?.name) {
             delete currentSection.visibleIf;
           }
         }
         currentSection.fields?.forEach(currentField => {
           if (currentField.visibleIf) {
-            if (currentField.visibleIf.field === field?.title) {
+            if (currentField.visibleIf.field === field?.name) {
               delete currentField.visibleIf;
             }
           }
@@ -309,6 +319,7 @@ const MetaformEditor: React.FC<Props> = ({
     >
       <SectionDragHandle
         selected={ selectedSectionIndex === sectionIndex }
+        onEditClick={ onSectionEditClick(sectionIndex) }
         onDeleteClick={ onSectionDeleteClick(sectionIndex) }
       >
         <EditorSection

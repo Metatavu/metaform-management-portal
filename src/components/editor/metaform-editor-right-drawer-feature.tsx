@@ -1,5 +1,5 @@
 import { Button, Checkbox, Divider, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
-import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType } from "generated/client";
+import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType, MetaformFieldType } from "generated/client";
 import produce from "immer";
 import slugify from "slugify";
 import strings from "localization/strings";
@@ -27,6 +27,9 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 }) => {
   const [ metaformSectionTitle, setMetaformSectionTitle ] = useState<string | undefined>("");
   const [ columnType, setColumnType ] = useState<string>("");
+  const [ contextFormOption, setContextFormOption ] = React.useState<boolean>(false);
+  const [ contextManagementOption, setContextManagementOption ] = React.useState<boolean>(false);
+  const [ contextManagementListOption, setContextManagementListOption ] = React.useState<boolean>(false);
 
   /**
    * Get title of current section
@@ -198,6 +201,41 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
+   * Update contexts
+   * @param selectedContext Selected context Option
+   * @param checked Is context option checked or not
+   */
+  const updateContexts = (selectedContext: string, checked: boolean) => {
+    if (!checked) {
+      pendingForm.sections![sectionIndex!].fields![fieldIndex!].contexts!.map((context, index) => {
+        if (selectedContext === context) {
+          const updatedForm = produce(pendingForm, draftForm => {
+            draftForm.sections?.[sectionIndex!]?.fields?.[fieldIndex!]?.contexts?.splice(index, 1);
+          });
+          setPendingForm(updatedForm);
+        }
+        return null;
+      });
+    }
+    if (checked) {
+      const updatedForm = produce(pendingForm, draftForm => {
+        draftForm.sections?.[sectionIndex!]?.fields?.[fieldIndex!]?.contexts?.push(selectedContext);
+      });
+      setPendingForm(updatedForm);
+    }
+    switch (selectedContext) {
+      case "FORM":
+        return setContextFormOption(checked);
+      case "MANAGEMENT":
+        return setContextManagementOption(checked);
+      case "MANAGEMENT_LIST":
+        return setContextManagementListOption(checked);
+      default:
+        return null;
+    }
+  };
+
+  /**
    * Add custom html code in field
    * 
    * @param htmlField html field
@@ -212,6 +250,73 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     setPendingForm(updatedForm);
   };
 
+  /**
+   * When changing field check what context settings field have
+   */
+  const checkContextSettings = () => {
+    if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      setContextFormOption(false);
+      setContextManagementOption(false);
+      setContextManagementListOption(false);
+      pendingForm.sections![sectionIndex!].fields![fieldIndex!].contexts!.map(field => {
+        if (field === "FORM") {
+          setContextFormOption(true);
+        }
+        if (field === "MANAGEMENT") {
+          setContextManagementOption(true);
+        }
+        if (field === "MANAGEMENT_LIST") {
+          setContextManagementListOption(true);
+        }
+        return null;
+      });
+    }
+  };
+
+  /**
+   * Render contexts options
+   */
+  const renderContextOptions = () => {
+    return (
+      <>
+        <Divider/>
+        <Typography variant="subtitle1">{ strings.draftEditorScreen.editor.features.ContextVisibilityInfo }</Typography>
+        <FormControl>
+          <FormControlLabel
+            label={ strings.draftEditorScreen.editor.features.contextFormVisibility }
+            control={
+              <Checkbox
+                checked={ contextFormOption }
+                onChange={ event => updateContexts("FORM", event.target.checked) }
+              />
+            }
+          />
+        </FormControl>
+        <FormControl>
+          <FormControlLabel
+            label={ strings.draftEditorScreen.editor.features.contextManagementVisibility }
+            control={
+              <Checkbox
+                checked={ contextManagementOption }
+                onChange={ event => updateContexts("MANAGEMENT", event.target.checked) }
+              />
+            }
+          />
+        </FormControl>
+        <FormControl>
+          <FormControlLabel
+            label={ strings.draftEditorScreen.editor.features.contextManagementListVisibility }
+            control={
+              <Checkbox
+                checked={ contextManagementListOption }
+                onChange={ event => updateContexts("MANAGEMENT_LIST", event.target.checked) }
+              />
+            }
+          />
+        </FormControl>
+      </>
+    );
+  };
   /**
    * Render slider scope values
    *  
@@ -405,25 +510,19 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const selectedField = pendingForm.sections![sectionIndex].fields![fieldIndex];
       const { type } = selectedField;
-      if (type === "slider") {
-        return (
-          renderSliderScopeValues(selectedField)
-        );
-      }
-      if (type === "checklist" || type === "radio" || type === "select") {
-        return (
-          renderFieldOptions()
-        );
-      }
-      if (type === "html") {
-        return (
-          renderHtmlEditor(selectedField)
-        );
-      }
-      if (type === "table") {
-        return (
-          renderTableColumnFeatures()
-        );
+      switch (type) {
+        case MetaformFieldType.Slider:
+          return renderSliderScopeValues(selectedField);
+        case MetaformFieldType.Checklist:
+        case MetaformFieldType.Radio:
+        case MetaformFieldType.Select:
+          return renderFieldOptions();
+        case MetaformFieldType.Html:
+          return renderHtmlEditor(selectedField);
+        case MetaformFieldType.Table:
+          return renderTableColumnFeatures();
+        default:
+          return null;
       }
     }
   };
@@ -500,6 +599,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
           }
         />
         { renderOptions() }
+        { renderContextOptions() }
         <Divider/>
         <Typography variant="subtitle1" style={{ width: "100%" }}>
           { strings.draftEditorScreen.editor.features.required }
@@ -524,15 +624,20 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (sectionIndex !== undefined && fieldIndex === undefined) {
       const section = pendingForm.sections![sectionIndex];
       return (
-        <TextField
-          fullWidth
-          value={ section.title ?? "" }
-          label={ strings.draftEditorScreen.editor.features.sectionTitle }
-          onChange={ event => updateFormSection({
-            ...section,
-            title: event.target.value
-          }) }
-        />
+        <>
+          <Typography variant="subtitle1" style={{ width: "100%" }}>
+            { strings.draftEditorScreen.editor.features.fieldDatas }
+          </Typography>
+          <TextField
+            fullWidth
+            value={ section.title ?? "" }
+            label={ strings.draftEditorScreen.editor.features.sectionTitle }
+            onChange={ event => updateFormSection({
+              ...section,
+              title: event.target.value
+            }) }
+          />
+        </>
       );
     }
 
@@ -556,6 +661,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   useEffect(() => {
     getSelectedSectionTitle();
+    checkContextSettings();
   }, [fieldIndex, sectionIndex]);
 
   /**
