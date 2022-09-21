@@ -2,7 +2,7 @@ import { LinearProgress, TextField, Icon } from "@mui/material";
 import { Metaform, MetaformField } from "generated/client";
 import { FileFieldValueItem, ValidationErrors, FieldValue, FileFieldValue, IconName } from "../../metaform-react/types";
 import React from "react";
-import { FormContainer } from "styled/generic/form";
+import { FormContainer, FormLayout } from "styled/generic/form";
 import strings from "localization/strings";
 import DatePicker from "@mui/lab/DatePicker";
 import { DateTimePicker, LocalizationProvider } from "@mui/lab";
@@ -230,29 +230,31 @@ const Form: React.FC<Props> = ({
 
   return (
     <FormContainer>
-      <MetaformComponent
-        form={ metaform }
-        contexts={ contexts }
-        formReadOnly={ false }
-        titleColor={ titleColor }
-        getFieldValue={ getFieldValue }
-        setFieldValue={ setFieldValue }
-        datePicker={ renderDatePicker }
-        datetimePicker={ renderDatetimePicker }
-        renderAutocomplete={ renderAutocomplete }
-        uploadFile={ uploadFile }
-        onFileDelete={ deleteFile }
-        onFileShow={ showFile }
-        renderIcon={ renderIcon }
-        onSubmit={ onSubmit }
-        saving={ saving }
-        onValidationErrorsChange={ onValidationErrorsChange }
-        renderBeforeField={(fieldname?: string) => {
-          if (fieldname && uploadingFields.indexOf(fieldname) > -1) {
-            return (<LinearProgress/>);
-          }
-        }}
-      />
+      <FormLayout>
+        <MetaformComponent
+          form={ metaform }
+          contexts={ contexts }
+          formReadOnly={ false }
+          titleColor={ titleColor }
+          getFieldValue={ getFieldValue }
+          setFieldValue={ setFieldValue }
+          datePicker={ renderDatePicker }
+          datetimePicker={ renderDatetimePicker }
+          renderAutocomplete={ renderAutocomplete }
+          uploadFile={ uploadFile }
+          onFileDelete={ deleteFile }
+          onFileShow={ showFile }
+          renderIcon={ renderIcon }
+          onSubmit={ onSubmit }
+          saving={ saving }
+          onValidationErrorsChange={ onValidationErrorsChange }
+          renderBeforeField={(fieldname?: string) => {
+            if (fieldname && uploadingFields.indexOf(fieldname) > -1) {
+              return (<LinearProgress/>);
+            }
+          }}
+        />
+      </FormLayout>
     </FormContainer>
   );
 };

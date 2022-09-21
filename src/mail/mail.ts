@@ -17,7 +17,7 @@ export default class Mail {
 
   /**
    * Sends an email
-   * 
+   *
    * @param email email data
    */
   public static sendMail = async (email: Email) => {

@@ -14,7 +14,9 @@ export interface SnackbarMessage {
  *
  * @param props component properties
  */
-const BasicLayout: React.FC = ({ children }) => {
+const BasicLayout: React.FC = ({
+  children
+}) => {
   /**
    * Component render
    */

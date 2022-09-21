@@ -34,18 +34,21 @@ const ErrorHandler: React.FC = ({ children }) => {
     setError(message);
 
     Sentry.captureException(err);
+    console.error(err);
 
     if (err instanceof Response) {
       try {
-        console.error(await err.json());
+        const errorJson = await err.json();
+        console.error(errorJson);
+        setErrorMessage(errorJson.message);
       } catch {
-        console.error(err);
+        setErrorMessage(JSON.stringify(err));
       }
-      return;
+    } else if (err instanceof Error) {
+      setErrorMessage(err.message);
+    } else {
+      setErrorMessage(JSON.stringify(err));
     }
-
-    setErrorMessage(err.message);
-    console.error(err);
   };
 
   /**

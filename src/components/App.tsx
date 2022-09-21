@@ -14,6 +14,7 @@ import moment from "moment";
 import "moment/locale/fi";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { selectLocale, setLocale } from "features/locale-slice";
+import DraftPreviewScreen from "./screens/preview/draft-preview-screen";
 import FormRestrictedContent from "./containers/form-restricted-content";
 
 /**
@@ -62,6 +63,10 @@ const App: React.FC = () => {
                       </AdminLayout>
                     </FormRestrictedContent>
                   }
+                />
+                <Route
+                  path="/admin/preview/:formSlug/:draftId"
+                  element={ <BasicLayout><DraftPreviewScreen/></BasicLayout> }
                 />
                 <Route
                   path="/admin/*"

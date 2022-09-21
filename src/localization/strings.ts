@@ -56,12 +56,12 @@ export interface Localized extends LocalizedStringsMethods {
       deleteVersion: string;
       createFormDuplicateNameError: string;
       convertSosmetaError: string;
-    },
+    };
     draftEditorScreen: {
       findDraft: string;
       saveDraft: string;
       publishDraft: string;
-    },
+    };
     formScreen: {
       saveReply: string;
       sendReplyEmail: string;
@@ -75,22 +75,22 @@ export interface Localized extends LocalizedStringsMethods {
     },
     formAutoComplete: {
       autocompleteField: string;
-    },
+    };
     publicFormsScreen: {
       fetchForms: string;
-    },
+    };
     adminRepliesScreen: {
       fetchReplies: string;
       fetchFields: string;
       deleteReply: string;
       formSlugNotFound: string;
-    },
+    };
     adminReplyScreen: {
       saveReply: string;
       exportPdf: string;
       replyIdNotFound: string;
       fetchReply: string;
-    },
+    };
     usersScreen: {
       loadMetaforms: string;
       loadMemberGroups: string;
@@ -99,7 +99,10 @@ export interface Localized extends LocalizedStringsMethods {
       loadMembers: string;
       removeMemberNotFound: string;
       addMemberNotFound: string;
-    }
+    };
+    previewScreen: {
+      shareLink: string;
+    };
   };
 
   /**
@@ -177,7 +180,7 @@ export interface Localized extends LocalizedStringsMethods {
       editorScreen: {
         title: string;
         description: string;
-      },
+      };
       draftEditorScreen: {
         title: string;
         description: string;
@@ -293,6 +296,23 @@ export interface Localized extends LocalizedStringsMethods {
         sectionConditionLabel: string;
       };
     };
+    formPreview: {
+      exit: string;
+      shareLink: string;
+      shareLinkDialog: {
+        title: string;
+        text: string;
+        link: string;
+        recipients: string;
+        send: string;
+        linkCopied: string;
+      };
+      previewEmail: {
+        subject: string;
+        content: string;
+        emailSent: string;
+      };
+    };
   };
 
   /**
@@ -304,7 +324,6 @@ export interface Localized extends LocalizedStringsMethods {
       group: string;
       user: string;
     };
-
     addMemberButton: string
     addMemberGroupButton: string
     addMemberDialog: {

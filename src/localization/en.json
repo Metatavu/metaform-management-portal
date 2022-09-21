@@ -88,6 +88,9 @@
       "loadMembers": "Error occurred while loading users",
       "removeMemberNotFound": "Could not remove user from the group. User was not found",
       "addMemberNotFound": "Could not add user to the group. User was not found"
+    },
+    "previewScreen": {
+      "shareLink": "Error occurred while sharing link"
     }
   },
 
@@ -257,6 +260,23 @@
         "fieldConditionLabel": "This field appears, if {0} value is {1}",
         "sectionConditionLabel": "This section appears, if {0} value is {1}",
         "selectVisibilityInfo": "Select a field in the form to edit the field information."
+      }
+    },
+    "formPreview": {
+      "exit": "Exit preview",
+      "shareLink": "Share link",
+      "shareLinkDialog": {
+        "title": "Share a preview version of the form",
+        "text": "Send an invitation by e-mail, or copy the link and share it yourself on the channel of your choice. Remember to save the draft version first.",
+        "link": "Direct link",
+        "recipients": "Recipient(s)",
+        "send": "Send",
+        "linkCopied": "Link copied"
+      },
+      "previewEmail": {
+        "content": "<p>Hi!</p><p>Please preview the form {0} from following link:</p><p><a href='{1}'>{1}</a></p><hr/><p>This is an automated message, please do not reply.</p>",
+        "subject": "Please preview the form - {0}",
+        "emailSent": "Email sent"
       }
     }
   },
