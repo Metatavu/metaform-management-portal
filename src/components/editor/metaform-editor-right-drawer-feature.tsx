@@ -1,5 +1,5 @@
 import { Button, Checkbox, Divider, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
-import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType } from "generated/client";
+import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType, MetaformFieldType } from "generated/client";
 import produce from "immer";
 import slugify from "slugify";
 import strings from "localization/strings";
@@ -38,7 +38,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * Updates metaform field
+   * Updates metaform field and check if its used as visibleIf condition and change them 
    * 
    * @param metaformField Metaform field what we are editing
    */
@@ -46,7 +46,47 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
+    const selectedField = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
+
     const updatedForm = produce(pendingForm, draftForm => {
+      if (metaformField.type === "select" || metaformField.type === "checklist" || metaformField.type === "radio") {
+        draftForm.sections?.forEach((currentSection, sectionIndexOfSection) => {
+          if (currentSection.visibleIf) {
+            if (currentSection.visibleIf.field === selectedField.name) {
+              const metaFormFieldSection = pendingForm.sections![sectionIndexOfSection];
+              const editedSection = {
+                ...metaFormFieldSection,
+                visibleIf: {
+                  field: metaformField.name,
+                  equals: currentSection.visibleIf.equals,
+                  notEquals: "",
+                  and: [],
+                  or: []
+                }
+              };
+              draftForm.sections?.splice(sectionIndexOfSection, 1, editedSection as MetaformSection);
+            }
+          }
+          currentSection.fields?.forEach((currentField, fieldIndexOfField) => {
+            if (currentField.visibleIf) {
+              if (currentField.visibleIf.field === selectedField.name) {
+                const metaFormFieldSection = pendingForm.sections![sectionIndexOfSection].fields![fieldIndexOfField];
+                const editedField = {
+                  ...metaFormFieldSection,
+                  visibleIf: {
+                    field: metaformField.name,
+                    equals: currentField.visibleIf.equals,
+                    notEquals: "",
+                    and: [],
+                    or: []
+                  }
+                };
+                draftForm.sections?.[sectionIndexOfSection]?.fields?.splice(fieldIndexOfField, 1, editedField as MetaformField);
+              }
+            }
+          });
+        });
+      }
       draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, metaformField);
     });
     setPendingForm(updatedForm);
@@ -68,16 +108,54 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * Update option text
+   * Update option text and check if its used as VisibleIf change text also in that field
    * 
    * @param updateTextOption FieldOption text we are changing
    * @param optionIndex option index value
    */
   const updateOptionText = (updateTextOption: MetaformFieldOption, optionIndex: number) => {
+    const selectedField = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
+
     const updatedForm = produce(pendingForm, draftForm => {
+      draftForm.sections?.forEach((currentSection, sectionIndexOfSection) => {
+        if (currentSection.visibleIf) {
+          if (currentSection.visibleIf.field === selectedField.name && currentSection.visibleIf.equals === selectedField.options![optionIndex].name) {
+            const metaFormSection = pendingForm.sections![sectionIndexOfSection];
+            const editedSection = {
+              ...metaFormSection,
+              visibleIf: {
+                field: currentSection.visibleIf.field,
+                equals: updateTextOption.name,
+                notEquals: "",
+                and: [],
+                or: []
+              }
+            };
+            draftForm.sections?.splice(sectionIndexOfSection, 1, editedSection as MetaformSection);
+          }
+        }
+        currentSection.fields?.forEach((currentField, fieldIndexOfField) => {
+          if (currentField.visibleIf) {
+            if (currentField.visibleIf.field === selectedField.name && currentField.visibleIf.equals === selectedField.options![optionIndex].name) {
+              const metaFormField = pendingForm.sections![sectionIndexOfSection].fields![fieldIndexOfField];
+              const editedField = {
+                ...metaFormField,
+                visibleIf: {
+                  field: currentField.visibleIf.field,
+                  equals: updateTextOption.name,
+                  notEquals: "",
+                  and: [],
+                  or: []
+                }
+              };
+              draftForm.sections?.[sectionIndexOfSection]?.fields?.splice(fieldIndexOfField, 1, editedField as MetaformField);
+            }
+          }
+        });
+      });
       draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.splice(optionIndex, 1, updateTextOption);
     });
     setPendingForm(updatedForm);
@@ -101,7 +179,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * Delete option field
+   * Delete option field and VisibleIf conditions where its used
    * 
    * @param optionIndex Option index value of option field what we delete
    */
@@ -109,7 +187,22 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
+    const selectedField = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
     const updatedForm = produce(pendingForm, draftForm => {
+      draftForm.sections?.forEach(currentSection => {
+        if (currentSection.visibleIf) {
+          if (currentSection.visibleIf.field === selectedField.name && currentSection.visibleIf.equals === selectedField.options![optionIndex].name) {
+            delete currentSection.visibleIf;
+          }
+        }
+        currentSection.fields?.forEach(currentField => {
+          if (currentField.visibleIf) {
+            if (currentField.visibleIf.field === selectedField.name && currentField.visibleIf.equals === selectedField.options![optionIndex].name) {
+              delete currentField.visibleIf;
+            }
+          }
+        });
+      });
       draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.splice(optionIndex, 1);
     });
     setPendingForm(updatedForm);
@@ -405,25 +498,19 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const selectedField = pendingForm.sections![sectionIndex].fields![fieldIndex];
       const { type } = selectedField;
-      if (type === "slider") {
-        return (
-          renderSliderScopeValues(selectedField)
-        );
-      }
-      if (type === "checklist" || type === "radio" || type === "select") {
-        return (
-          renderFieldOptions()
-        );
-      }
-      if (type === "html") {
-        return (
-          renderHtmlEditor(selectedField)
-        );
-      }
-      if (type === "table") {
-        return (
-          renderTableColumnFeatures()
-        );
+      switch (type) {
+        case MetaformFieldType.Slider:
+          return renderSliderScopeValues(selectedField);
+        case MetaformFieldType.Checklist:
+        case MetaformFieldType.Radio:
+        case MetaformFieldType.Select:
+          return renderFieldOptions();
+        case MetaformFieldType.Html:
+          return renderHtmlEditor(selectedField);
+        case MetaformFieldType.Table:
+          return renderTableColumnFeatures();
+        default:
+          return null;
       }
     }
   };
@@ -524,15 +611,20 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (sectionIndex !== undefined && fieldIndex === undefined) {
       const section = pendingForm.sections![sectionIndex];
       return (
-        <TextField
-          fullWidth
-          value={ section.title ?? "" }
-          label={ strings.draftEditorScreen.editor.features.sectionTitle }
-          onChange={ event => updateFormSection({
-            ...section,
-            title: event.target.value
-          }) }
-        />
+        <>
+          <Typography variant="subtitle1" style={{ width: "100%" }}>
+            { strings.draftEditorScreen.editor.features.fieldDatas }
+          </Typography>
+          <TextField
+            fullWidth
+            value={ section.title ?? "" }
+            label={ strings.draftEditorScreen.editor.features.sectionTitle }
+            onChange={ event => updateFormSection({
+              ...section,
+              title: event.target.value
+            }) }
+          />
+        </>
       );
     }
 
