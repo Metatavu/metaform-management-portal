@@ -40,6 +40,7 @@
     },
     "adminFormsScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",
+      "listReplies": "Vastauksien hakemisessa tapahtui virhe",
       "createForm": "Lomakkeen luominen epäonnistui",
       "deleteVersion": "Lomakeversion poistaminen epäonnistui",
       "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
@@ -90,6 +91,11 @@
     },
     "previewScreen": {
       "shareLink": "Linkin jakamisessa tapahtui virhe"
+    },
+    "adminFormsDataScreen": {
+      "listForms": "Fetching forms failed",
+      "listReplies": "Fetching replies failed",
+      "listAuditLogEntries": "Fetching audit log entries failed"
     }
   },
 
@@ -326,7 +332,16 @@
       "form": "Lomake",
       "latestReply": "Viimeisin",
       "newReply": "Uusia",
-      "notProcessed": "käsittelemättömiä"
+      "notProcessed": "Käsittelemättömiä"
+    }
+  },
+
+  "formsDataScreen": {
+    "formDataTable": {
+      "form": "Lomake",
+      "monthlyReplies": "Vastauksia / kk",
+      "processingDelay": "Käsittelyviive",
+      "average": "Keskimäärin"
     }
   },
 
