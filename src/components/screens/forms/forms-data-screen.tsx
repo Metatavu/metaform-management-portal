@@ -26,7 +26,7 @@ interface Row {
 }
 
 /**
- * Forms screen component
+ * Forms data screen component
  */
 const FormsDataScreen: React.FC = () => {
   const errorContext = useContext(ErrorContext);
@@ -42,6 +42,7 @@ const FormsDataScreen: React.FC = () => {
    *
    * @param form form
    * @param replies replies
+   * @param auditLogEntries audit log entries
    */
   const buildRow = (form: Metaform, replies: Reply[], auditLogEntries: AuditLogEntry[]): Row => {
     const monthlyAverageReplies = MetaformUtils.getMonthlyAverageReply(replies);
@@ -57,8 +58,10 @@ const FormsDataScreen: React.FC = () => {
   };
 
   /**
-   * List relies
-  */
+   * Loads forms
+   *
+   * @return metaform list promise
+   */
   const loadForms = async (): Promise<Metaform[]> => {
     try {
       return await metaformsApi.listMetaforms({
@@ -71,10 +74,11 @@ const FormsDataScreen: React.FC = () => {
   };
 
   /**
-   * List relies
+   * Loads relies
    *
    * @param metaformId metaform id
-  */
+   * @return replies list promise
+   */
   const loadReplies = async (metaformId: string): Promise<Reply[]> => {
     try {
       return await repliesApi.listReplies({ metaformId: metaformId });
@@ -85,10 +89,11 @@ const FormsDataScreen: React.FC = () => {
   };
 
   /**
-   * List relies
+   * Loads audit log entries
    *
    * @param metaformId metaform id
-  */
+   * @return audit log entries list promise
+   */
   const loadAuditLogEntries = async (metaformId: string): Promise<AuditLogEntry[]> => {
     try {
       return await auditLogEntriesApi.listAuditLogEntries({ metaformId: metaformId });
@@ -99,7 +104,7 @@ const FormsDataScreen: React.FC = () => {
   };
 
   /**
-   * View loadData
+   * Loads data
    */
   const loadData = async () => {
     setLoading(true);
@@ -194,6 +199,9 @@ const FormsDataScreen: React.FC = () => {
     }
   ];
 
+  /**
+   * Component render
+   */
   return (
     <>
       <NavigationTabContainer>
