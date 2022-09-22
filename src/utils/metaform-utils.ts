@@ -320,7 +320,7 @@ namespace MetaformUtils {
       if (index === sortedReplyDates.length - 1) {
         return;
       }
-      const next = sortedReplyDates[index + 1];
+      const next: Date = sortedReplyDates[index + 1];
       return !moment(prev).isSame(next, "month") || !moment(prev).isSame(next, "year");
     }).length + 1;
 
@@ -333,7 +333,7 @@ namespace MetaformUtils {
    * @param auditLogEntries audit log entries
    * @returns average reply delay
    */
-  export const getAverageReplyViewDelay = (auditLogEntries: AuditLogEntry[]): moment.Moment => {
+  export const getAverageReplyViewDelay = (auditLogEntries: AuditLogEntry[]): moment.Duration => {
     const preprocessAuditLogEntries: ReplyAuditLog[] = auditLogEntries
       .filter(entry =>
         entry.replyId !== undefined &&
@@ -369,9 +369,9 @@ namespace MetaformUtils {
       }
     });
 
-    if (replyCount === 0) return moment(0);
+    if (replyCount === 0) return moment.duration(0);
 
-    return moment(Math.floor(totalTime / replyCount));
+    return moment.duration(Math.floor(totalTime / replyCount));
   };
 }
 

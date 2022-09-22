@@ -22,7 +22,7 @@ interface Row {
   title: string;
   slug?: string;
   monthlyReplies: number,
-  replyViewDelay: moment.Moment
+  replyViewDelay: moment.Duration
 }
 
 /**
@@ -178,7 +178,12 @@ const FormsDataScreen: React.FC = () => {
         );
       },
       renderCell: params => {
-        const delayString = `${average} ${(params.row.replyViewDelay as moment.Moment).format("D [d] H [h] m [min]")}`;
+        const duration = params.row.replyViewDelay as moment.Duration;
+        const minutes = duration.minutes();
+        const days = duration.days();
+        const hours = duration.hours();
+
+        const delayString = `${average} ${days} d ${hours} h ${minutes} min`;
         return (
           <AdminFormListStack direction="row">
             <HistoryRounded style={ { fill: "darkgrey" } }/>
