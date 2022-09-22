@@ -5,7 +5,7 @@ import slugify from "slugify";
 import strings from "localization/strings";
 import React, { useEffect, FC, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import { FormContext } from "../../types/index";
 /**
  * Component properties
  */
@@ -27,10 +27,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 }) => {
   const [ metaformSectionTitle, setMetaformSectionTitle ] = useState<string | undefined>("");
   const [ columnType, setColumnType ] = useState<string>("");
-  const [ contextFormOption, setContextFormOption ] = React.useState<boolean>(false);
-  const [ contextManagementOption, setContextManagementOption ] = React.useState<boolean>(false);
-  const [ contextManagementListOption, setContextManagementListOption ] = React.useState<boolean>(false);
-
+  const [ contextOption, setContextOption ] = useState<FormContext[]>([FormContext.FORM, FormContext.MANAGEMENT]);
   /**
    * Get title of current section
    */
@@ -201,37 +198,30 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * Update contexts
+   * Update contexts of field
+   * 
    * @param selectedContext Selected context Option
    * @param checked Is context option checked or not
    */
   const updateContexts = (selectedContext: string, checked: boolean) => {
-    if (!checked) {
-      pendingForm.sections![sectionIndex!].fields![fieldIndex!].contexts!.map((context, index) => {
-        if (selectedContext === context) {
-          const updatedForm = produce(pendingForm, draftForm => {
-            draftForm.sections?.[sectionIndex!]?.fields?.[fieldIndex!]?.contexts?.splice(index, 1);
-          });
-          setPendingForm(updatedForm);
-        }
-        return null;
-      });
-    }
-    if (checked) {
-      const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections?.[sectionIndex!]?.fields?.[fieldIndex!]?.contexts?.push(selectedContext);
-      });
-      setPendingForm(updatedForm);
-    }
-    switch (selectedContext) {
-      case "FORM":
-        return setContextFormOption(checked);
-      case "MANAGEMENT":
-        return setContextManagementOption(checked);
-      case "MANAGEMENT_LIST":
-        return setContextManagementListOption(checked);
-      default:
-        return null;
+    if (sectionIndex !== undefined && fieldIndex !== undefined) {
+      if (!checked) {
+        pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.map((context, index) => {
+          if (selectedContext === context) {
+            const updatedForm = produce(pendingForm, draftForm => {
+              draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.contexts?.splice(index, 1);
+            });
+            setPendingForm(updatedForm);
+          }
+          return null;
+        });
+      }
+      if (checked) {
+        const updatedForm = produce(pendingForm, draftForm => {
+          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.contexts?.push(selectedContext);
+        });
+        setPendingForm(updatedForm);
+      }
     }
   };
 
@@ -255,18 +245,17 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    */
   const checkContextSettings = () => {
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      setContextFormOption(false);
-      setContextManagementOption(false);
-      setContextManagementListOption(false);
-      pendingForm.sections![sectionIndex!].fields![fieldIndex!].contexts!.map(field => {
-        if (field === "FORM") {
-          setContextFormOption(true);
-        }
-        if (field === "MANAGEMENT") {
-          setContextManagementOption(true);
-        }
-        if (field === "MANAGEMENT_LIST") {
-          setContextManagementListOption(true);
+      setContextOption([]);
+      pendingForm.sections![sectionIndex].fields![fieldIndex!].contexts!.map(context => {
+        switch (context) {
+          case FormContext.FORM:
+            return setContextOption(contextOptionList => [...contextOptionList, context]);
+          case FormContext.MANAGEMENT:
+            return setContextOption(contextOptionList => [...contextOptionList, context]);
+          case FormContext.MANAGEMENT_LIST:
+            return setContextOption(contextOptionList => [...contextOptionList, context]);
+          default:
+            break;
         }
         return null;
       });
@@ -276,47 +265,46 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   /**
    * Render contexts options
    */
-  const renderContextOptions = () => {
-    return (
-      <>
-        <Divider/>
-        <Typography variant="subtitle1">{ strings.draftEditorScreen.editor.features.ContextVisibilityInfo }</Typography>
-        <FormControl>
-          <FormControlLabel
-            label={ strings.draftEditorScreen.editor.features.contextFormVisibility }
-            control={
-              <Checkbox
-                checked={ contextFormOption }
-                onChange={ event => updateContexts("FORM", event.target.checked) }
-              />
-            }
-          />
-        </FormControl>
-        <FormControl>
-          <FormControlLabel
-            label={ strings.draftEditorScreen.editor.features.contextManagementVisibility }
-            control={
-              <Checkbox
-                checked={ contextManagementOption }
-                onChange={ event => updateContexts("MANAGEMENT", event.target.checked) }
-              />
-            }
-          />
-        </FormControl>
-        <FormControl>
-          <FormControlLabel
-            label={ strings.draftEditorScreen.editor.features.contextManagementListVisibility }
-            control={
-              <Checkbox
-                checked={ contextManagementListOption }
-                onChange={ event => updateContexts("MANAGEMENT_LIST", event.target.checked) }
-              />
-            }
-          />
-        </FormControl>
-      </>
-    );
-  };
+  const renderContextOptions = () => (
+    <>
+      <Divider/>
+      <Typography variant="subtitle1">{ strings.draftEditorScreen.editor.features.ContextVisibilityInfo }</Typography>
+      <FormControl>
+        <FormControlLabel
+          label={ strings.draftEditorScreen.editor.features.contextFormVisibility }
+          control={
+            <Checkbox
+              checked={ contextOption.includes(FormContext.FORM) }
+              onChange={ event => updateContexts(FormContext.FORM, event.target.checked) }
+            />
+          }
+        />
+      </FormControl>
+      <FormControl>
+        <FormControlLabel
+          label={ strings.draftEditorScreen.editor.features.contextManagementVisibility }
+          control={
+            <Checkbox
+              checked={ contextOption.includes(FormContext.MANAGEMENT) }
+              onChange={ event => updateContexts(FormContext.MANAGEMENT, event.target.checked) }
+            />
+          }
+        />
+      </FormControl>
+      <FormControl>
+        <FormControlLabel
+          label={ strings.draftEditorScreen.editor.features.contextManagementListVisibility }
+          control={
+            <Checkbox
+              checked={ contextOption.includes(FormContext.MANAGEMENT_LIST) }
+              onChange={ event => updateContexts(FormContext.MANAGEMENT_LIST, event.target.checked) }
+            />
+          }
+        />
+      </FormControl>
+    </>
+  );
+
   /**
    * Render slider scope values
    *  
@@ -625,7 +613,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
       const section = pendingForm.sections![sectionIndex];
       return (
         <>
-          <Typography variant="subtitle1" style={{ width: "100%" }}>
+          <Typography variant="subtitle1" sx={{ width: "100%" }}>
             { strings.draftEditorScreen.editor.features.fieldDatas }
           </Typography>
           <TextField
@@ -660,8 +648,13 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   useEffect(() => {
+    if (fieldIndex !== undefined) {
+      checkContextSettings();
+    }
+  }, [fieldIndex, pendingForm]);
+
+  useEffect(() => {
     getSelectedSectionTitle();
-    checkContextSettings();
   }, [fieldIndex, sectionIndex]);
 
   /**

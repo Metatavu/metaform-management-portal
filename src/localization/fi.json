@@ -241,9 +241,9 @@
         "textOfSubmitButton": "Painikkeen teksti",
         "newFieldOption":"Valintakenttä",
         "addCustomHtml":"Lisää tähän HTML-sisältöä",
-        "contextFormVisibility":"Näkyy lomakkeella",
-        "contextManagementVisibility":"Näkyy hallintointi näkymässä",
-        "contextManagementListVisibility":"Näkyy hallintointilista näkymässä",
+        "contextFormVisibility":"Näkyy lomakkeella täyttäessä",
+        "contextManagementVisibility":"Näkyy hallinnointi näkymässä",
+        "contextManagementListVisibility":"Näkyy hallinnointilista näkymässä",
         "ContextVisibilityInfo":"Kentän hallinnointi asetukset"
       },
       "visibility": {

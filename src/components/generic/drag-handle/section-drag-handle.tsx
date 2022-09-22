@@ -27,14 +27,14 @@ const SectionDragHandle: React.FC<Props> = ({
       <DragHandle htmlColor="#fff"/>
       <IconButton
         disabled={ !onEditClick }
-        style={{ color: "#fff" }}
+        sx={{ color: "#fff" }}
         onClick={ onEditClick }
       >
         <Edit/>
       </IconButton>
       <IconButton
         disabled={ !onDeleteClick }
-        style={{ color: "#fff" }}
+        sx={{ color: "#fff" }}
         onClick={ onDeleteClick }
       >
         <Delete/>

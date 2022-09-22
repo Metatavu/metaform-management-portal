@@ -242,10 +242,10 @@
         "columnNumberType": "Number field",
         "textOfSubmitButton": "Button text",
         "newFieldOption":"Option field",
-        "addCustomHtml":"Add html code in field",
-        "contextFormVisibility":"Shown on the form",
-        "contextManagementVisibility":"Shown on management scene",
-        "contextManagementListVisibility":"Shown on managementlist scene",
+        "addCustomHtml":"Add HTML code in field",
+        "contextFormVisibility":"Shown on the form for customer",
+        "contextManagementVisibility":"Shown on management screen",
+        "contextManagementListVisibility":"Shown on managementlist screen",
         "ContextVisibilityInfo":"Field management settings"  
       },
       "visibility": {

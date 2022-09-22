@@ -122,6 +122,15 @@ export enum SosmetaType {
   STRING = "string"
 }
 
+/**
+ * Enum for different types of Contexts
+ */
+export enum FormContext {
+  FORM = "FORM",
+  MANAGEMENT = "MANAGEMENT",
+  MANAGEMENT_LIST = "MANAGEMENT_LIST"
+}
+
 declare module "@mui/material/styles" {
   interface CustomTheme {
     logo: {
