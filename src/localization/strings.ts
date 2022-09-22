@@ -29,6 +29,7 @@ export interface Localized extends LocalizedStringsMethods {
     back: string;
     actions: string;
     restore: string;
+    unknown: string;
   };
 
   /**
@@ -102,6 +103,11 @@ export interface Localized extends LocalizedStringsMethods {
     };
     previewScreen: {
       shareLink: string;
+    };
+    adminFormHistoryScreen: {
+      listAuditLogEntries: string;
+      listMetaformMembers: string;
+      findMetaform: string;
     };
   };
 
@@ -354,6 +360,18 @@ export interface Localized extends LocalizedStringsMethods {
   };
 
   /**
+   * Translations related to form history screen
+   */
+  formHistoryScreen: {
+    historyTable: {
+      date: string;
+      actor: string;
+      replyId: string;
+      actionPerformed: string;
+    };
+  }
+
+  /**
    * Translations related to field components
    */
   fieldComponents: {
@@ -450,10 +468,9 @@ export interface Localized extends LocalizedStringsMethods {
   }
 
   /**
- * Autocomplete related messages
- */
+   * Autocomplete related messages
+   */
   autoComplete: {
-    genericUnknown: string;
     missingOptions: string;
     missingCodeServerBaseUrl: string;
     missingCodeServerClassificiationId: string;
@@ -461,6 +478,22 @@ export interface Localized extends LocalizedStringsMethods {
     missingAutocomplete: string;
     unknownAutocompleteService: string;
   }
+
+  /**
+   * Translations related to audit log entry type
+   */
+  auditLogEntryType: {
+    viewReply: string;
+    listReply: string;
+    modifyReply: string;
+    deleteReply: string;
+    createReply: string;
+    viewReplyAttachment: string;
+    downloadReplyAttachment: string;
+    exportReplyPdf: string;
+    exportReplyXlsx: string
+  }
+
 }
 /**
  * Initialized localized strings

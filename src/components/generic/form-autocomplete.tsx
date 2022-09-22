@@ -142,14 +142,14 @@ const FormAutocomplete: React.FC<Props> = ({
     const { autocomplete } = field;
 
     if (!autocomplete) {
-      return strings.autoComplete.genericUnknown;
+      return strings.generic.unknown;
     }
 
     switch (autocomplete.service) {
       case MetaformFieldAutocompleteService.CodeServerConceptCode:
         return autocompleteItem.Abbreviation;
       default:
-        return strings.autoComplete.genericUnknown;
+        return strings.generic.unknown;
     }
   };
 

@@ -11,12 +11,12 @@ import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
-import { AdminFormRepliesScreenStack, AdminFormRepliesScreenText } from "styled/react-components/react-components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { selectKeycloak } from "features/auth-slice";
 import { ReplyStatus } from "types";
 import FormRestrictedContent from "components/containers/form-restricted-content";
 import AuthUtils from "utils/auth-utils";
+import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 
 /**
  * Form replies screen component
@@ -84,17 +84,16 @@ const FormRepliesScreen: React.FC = () => {
       flex: 1,
       renderHeader: params => {
         return (
-          <AdminFormRepliesScreenStack direction="row">
-            <AdminFormRepliesScreenText sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormRepliesScreenText>
-          </AdminFormRepliesScreenStack>
+          <AdminFormListStack direction="row">
+            <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
+          </AdminFormListStack>
         );
       },
       renderCell: params => {
         return (
-          <AdminFormRepliesScreenStack direction="row">
-            <AdminFormRepliesScreenText>{ column.name ? params.row[column.name] : "" }</AdminFormRepliesScreenText>
-          </AdminFormRepliesScreenStack>
-
+          <AdminFormListStack direction="row">
+            <AdminFormTypographyField>{ column.name ? params.row[column.name] : "" }</AdminFormTypographyField>
+          </AdminFormListStack>
         );
       }
     }));
@@ -282,7 +281,7 @@ const FormRepliesScreen: React.FC = () => {
    * Render toggle switch for not processed/all replies
    */
   const renderToggleSwitch = () => (
-    <AdminFormRepliesScreenStack direction="row">
+    <AdminFormListStack direction="row">
       <Typography>
         { strings.repliesScreen.selectorShowOpen }
       </Typography>
@@ -293,7 +292,7 @@ const FormRepliesScreen: React.FC = () => {
       <Typography>
         { strings.repliesScreen.selectorShowAll }
       </Typography>
-    </AdminFormRepliesScreenStack>
+    </AdminFormListStack>
   );
 
   return (

@@ -17,7 +17,8 @@
     "addFilesText": "Tiputa tiedosto tähän, tai klikkaa tästä lisätäksesi liitteitä.",
     "back": "Takaisin",
     "actions": "Toiminnot",
-    "restore": "Palauta"
+    "restore": "Palauta",
+    "unknown": "Tuntematon"
   },
 
   "errorHandling": {
@@ -90,6 +91,11 @@
     },
     "previewScreen": {
       "shareLink": "Linkin jakamisessa tapahtui virhe"
+    },
+    "adminFormHistoryScreen": {
+      "listAuditLogEntries": "Fetching audit log entries failed",
+      "listMetaformMembers": "Fetching metaform members failed",
+      "findMetaform": "Finding metaform failed"
     }
   },
 
@@ -314,6 +320,15 @@
     }
   },
 
+  "formHistoryScreen": {
+    "historyTable": {
+      "date": "Päivämäärä",
+      "actor": "Käsittelijä",
+      "replyId": "Vastaus id",
+      "actionPerformed": "Tehty toiminto"
+    }
+  },
+
   "fieldComponents": {
     "tableField": {
       "addNewRow": "Lisää uusi rivi",
@@ -397,12 +412,23 @@
   },
 
   "autoComplete": {
-    "genericUnknown": "Tuntematon",
     "missingOptions": "Code server autocomplete ei ole määritelty",
     "missingCodeServerBaseUrl": "Code server autocomplete puuttuu codeServerBaseUrl",
     "missingCodeServerClassificiationId": "Code server autocomplete puuttuu codeServerClassificationId",
     "missingCodeServerParentConceptCodeId": "Code server autocomplete puuttuu codeServerParentConceptCodeId",
     "missingAutocomplete": "Autocomplete ei ole määritelty",
     "unknownAutocompleteService": "TUNTEMATON_AUTO_COMPLETE_SERVICE"
+  },
+
+  "auditLogEntryType": {
+    "viewReply": "View reply",
+    "listReply": "List reply",
+    "modifyReply": "Modify reply",
+    "deleteReply": "Delete reply",
+    "createReply": "Create reply",
+    "viewReplyAttachment": "View reply attachment",
+    "downloadReplyAttachment": "Download reply attachment",
+    "exportReplyPdf": "Export reply pdf",
+    "exportReplyXlsx": "Export reply xlsx"
   }
 }

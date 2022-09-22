@@ -17,7 +17,8 @@
     "addFilesText": "Drop files here or click here to add files.",
     "back": "Back",
     "actions": "Action",
-    "restore": "Restore"
+    "restore": "Restore",
+    "unknown": "Unknown"
   },
 
   "errorHandling": {
@@ -91,6 +92,11 @@
     },
     "previewScreen": {
       "shareLink": "Error occurred while sharing link"
+    },
+    "adminFormHistoryScreen": {
+      "listAuditLogEntries": "Fetching audit log entries failed",
+      "listMetaformMembers": "Fetching metaform members failed",
+      "findMetaform": "Finding metaform failed"
     }
   },
 
@@ -316,6 +322,15 @@
     }
   },
 
+  "formHistoryScreen": {
+    "historyTable": {
+      "date": "Date",
+      "actor": "Actor",
+      "replyId": "ReplyId",
+      "actionPerformed": "Action performed"
+    }
+  },
+
   "fieldComponents": {
     "tableField": {
       "addNewRow": "Add new row",
@@ -399,12 +414,23 @@
   },
 
   "autoComplete": {
-    "genericUnknown": "Unknown",
     "missingOptions": "Code server autocomplete not configured",
     "missingCodeServerBaseUrl": "Code server autocomplete missing codeServerBaseUrl",
     "missingCodeServerClassificiationId": "Code server autocomplete missing codeServerClassificationId",
     "missingCodeServerParentConceptCodeId": "Code server autocomplete missing codeServerParentConceptCodeId",
     "missingAutocomplete": "Autocomplete not configured",
     "unknownAutocompleteService": "UNKNOWN_AUTO_COMPLETE_SERVICE"
+  },
+
+  "auditLogEntryType": {
+    "viewReply": "View reply",
+    "listReply": "List reply",
+    "modifyReply": "Modify reply",
+    "deleteReply": "Delete reply",
+    "createReply": "Create reply",
+    "viewReplyAttachment": "View reply attachment",
+    "downloadReplyAttachment": "Download reply attachment",
+    "exportReplyPdf": "Export reply pdf",
+    "exportReplyXlsx": "Export reply xlsx"
   }
 }
