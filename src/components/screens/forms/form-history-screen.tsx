@@ -166,6 +166,9 @@ const FormHistoryScreen: React.FC = () => {
     }
   ];
 
+  /**
+   * Component render
+   */
   return (
     <>
       <NavigationTabContainer>

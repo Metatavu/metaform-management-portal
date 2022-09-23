@@ -326,7 +326,7 @@
     "historyTable": {
       "date": "Date",
       "actor": "Actor",
-      "replyId": "ReplyId",
+      "replyId": "Reply id",
       "actionPerformed": "Action performed"
     }
   },
