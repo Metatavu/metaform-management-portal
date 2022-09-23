@@ -30,7 +30,7 @@ const MetaformHiddenFieldComponent: React.FC<Props> = ({
 }) => {
   /**
    * Event handler for field input change
-   * 
+   *
    * @param event event
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {

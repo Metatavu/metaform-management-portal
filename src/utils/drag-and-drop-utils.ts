@@ -76,7 +76,7 @@ namespace DragAndDropUtils {
    * @returns boolean for true for false
    */
   export const isAddingField = (sourceDroppableId: string, destinationDroppableId: string): boolean =>
-    sourceDroppableId === DraggingMode.ADD_FIELD.toString() && !Number.isNaN(parseInt(destinationDroppableId, 10));
+    sourceDroppableId.startsWith(DraggingMode.ADD_FIELD.toString()) && !Number.isNaN(parseInt(destinationDroppableId, 10));
 
 }
 
