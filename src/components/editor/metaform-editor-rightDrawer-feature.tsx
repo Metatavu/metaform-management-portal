@@ -29,14 +29,14 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   /**
    * Set values of Confidition field, switch and get selected component name
    */
-  const setVisiblityComponentValues = () => {
+  const setVisibilityComponentValues = () => {
     if (fieldIndex === undefined && sectionIndex !== undefined) {
       setMetaFormSectionTitle(pendingForm.sections![sectionIndex].title ?? "");
     }
   };
 
   useEffect(() => {
-    setVisiblityComponentValues();
+    setVisibilityComponentValues();
   }, [fieldIndex, sectionIndex]);
 
   /**

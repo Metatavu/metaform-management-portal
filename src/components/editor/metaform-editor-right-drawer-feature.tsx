@@ -369,12 +369,12 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
           { strings.draftEditorScreen.editor.features.addNewColumn }
         </Typography>
         <FormControl fullWidth>
-          <InputLabel id="fieldCategoryVisiblityConditionLabel">
+          <InputLabel id="fieldCategoryVisibilityConditionLabel">
             { strings.draftEditorScreen.editor.features.addColumnType }
           </InputLabel>
           <Select
             fullWidth
-            labelId="fieldCategoryVisiblityConditionLabel"
+            labelId="fieldCategoryVisibilityConditionLabel"
             label={ strings.draftEditorScreen.editor.features.addColumnType }
             sx={{ height: "50px" }}
             value={ columnType }
