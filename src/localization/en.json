@@ -245,7 +245,7 @@
         "addCustomHtml":"Add HTML code in field",
         "contextFormVisibility":"Shown on the form for customer",
         "contextManagementVisibility":"Shown on management screen",
-        "contextManagementListVisibility":"Shown on managementlist screen",
+        "contextManagementListVisibility":"Shown on management list screen",
         "ContextVisibilityInfo":"Field management settings"  
       },
       "visibility": {

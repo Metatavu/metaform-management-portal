@@ -4,6 +4,7 @@ import Keycloak from "keycloak-js";
 import { FieldValue } from "metaform-react/types";
 import { Dictionary } from "types";
 import strings from "localization/strings";
+import { FormContext } from "../types/index";
 
 /**
  * Utility class for metaform
@@ -82,7 +83,7 @@ namespace MetaformUtils {
           title: title ?? fieldType,
           type: fieldType,
           required: required ?? false,
-          contexts: ["FORM", "MANAGEMENT"],
+          contexts: [ FormContext.FORM, FormContext.MANAGEMENT ],
           options: options ?? [
             {
               name: "option",
@@ -97,7 +98,7 @@ namespace MetaformUtils {
           type: fieldType,
           required: required ?? false,
           checked: false,
-          contexts: ["FORM", "MANAGEMENT"]
+          contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
         };
       case MetaformFieldType.Slider:
         return {
@@ -107,7 +108,7 @@ namespace MetaformUtils {
           required: required ?? false,
           min: 50,
           max: 100,
-          contexts: ["FORM", "MANAGEMENT"]
+          contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
         };
       case MetaformFieldType.Table:
         return {
@@ -116,7 +117,7 @@ namespace MetaformUtils {
           text: fieldType,
           type: fieldType,
           required: required ?? false,
-          contexts: ["FORM", "MANAGEMENT"],
+          contexts: [ FormContext.FORM, FormContext.MANAGEMENT ],
           columns: options ?? [
             {
               type: "text",
@@ -142,7 +143,7 @@ namespace MetaformUtils {
           type: fieldType,
           text: strings.draftEditorScreen.editor.fields.submit ?? fieldType,
           columns: [],
-          contexts: ["FORM", "MANAGEMENT"]
+          contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
         };
       case MetaformFieldType.Html:
         return {
@@ -150,7 +151,7 @@ namespace MetaformUtils {
           title: " ",
           required: required ?? false,
           type: fieldType,
-          contexts: ["FORM", "MANAGEMENT"]
+          contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
         };
       default:
         return {
@@ -159,7 +160,7 @@ namespace MetaformUtils {
           required: required ?? false,
           text: fieldType,
           type: fieldType,
-          contexts: ["FORM", "MANAGEMENT"]
+          contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
         };
     }
   };

@@ -123,7 +123,7 @@ export enum SosmetaType {
 }
 
 /**
- * Enum for different types of Contexts
+ * Enum for different types of Contexts for form fields
  */
 export enum FormContext {
   FORM = "FORM",

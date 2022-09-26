@@ -27,7 +27,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 }) => {
   const [ metaformSectionTitle, setMetaformSectionTitle ] = useState<string | undefined>("");
   const [ columnType, setColumnType ] = useState<string>("");
-  const [ contextOption, setContextOption ] = useState<FormContext[]>([FormContext.FORM, FormContext.MANAGEMENT]);
+  const [ contextOption, setContextOption ] = useState<FormContext[]>([]);
   /**
    * Get title of current section
    */
@@ -215,8 +215,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
           }
           return null;
         });
-      }
-      if (checked) {
+      } else {
         const updatedForm = produce(pendingForm, draftForm => {
           draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.contexts?.push(selectedContext);
         });
@@ -648,9 +647,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   useEffect(() => {
-    if (fieldIndex !== undefined) {
-      checkContextSettings();
-    }
+    checkContextSettings();
   }, [fieldIndex, pendingForm]);
 
   useEffect(() => {
