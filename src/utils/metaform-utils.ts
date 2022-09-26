@@ -175,7 +175,8 @@ namespace MetaformUtils {
   export const createSection = (title?: string, fields?: any[]): MetaformSection => {
     return {
       title: title ?? "Section",
-      fields: fields ?? []
+      fields: fields ?? [],
+      contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
     };
   };
 
