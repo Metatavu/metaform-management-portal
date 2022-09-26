@@ -198,7 +198,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * Update contexts of field or section
+   * Update contexts of field
    * 
    * @param selectedContext Selected context Option
    * @param checked Is context option checked or not
@@ -222,25 +222,6 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
         setPendingForm(updatedForm);
       }
     }
-    if (sectionIndex !== undefined && fieldIndex === undefined) {
-      if (!checked) {
-        pendingForm.sections![sectionIndex].contexts!.map((context, index) => {
-          if (selectedContext === context) {
-            const updatedForm = produce(pendingForm, draftForm => {
-              draftForm.sections?.[sectionIndex].contexts?.splice(index, 1);
-            });
-            setPendingForm(updatedForm);
-          }
-          return null;
-        });
-      } else {
-        const updatedForm = produce(pendingForm, draftForm => {
-          draftForm.sections?.[sectionIndex].contexts?.push(selectedContext);
-        });
-        console.log(updatedForm);
-        setPendingForm(updatedForm);
-      }
-    }
   };
 
   /**
@@ -259,27 +240,12 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * When changing field or section check what context settings field have
+   * When changing field check what context settings field have
    */
   const checkContextSettings = () => {
-    setContextOption([]);
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      setContextOption([]);
       pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.map(context => {
-        switch (context) {
-          case FormContext.FORM:
-            return setContextOption(contextOptionList => [...contextOptionList, context]);
-          case FormContext.MANAGEMENT:
-            return setContextOption(contextOptionList => [...contextOptionList, context]);
-          case FormContext.MANAGEMENT_LIST:
-            return setContextOption(contextOptionList => [...contextOptionList, context]);
-          default:
-            break;
-        }
-        return null;
-      });
-    }
-    if (fieldIndex === undefined && sectionIndex !== undefined) {
-      pendingForm.sections![sectionIndex].contexts!.map(context => {
         switch (context) {
           case FormContext.FORM:
             return setContextOption(contextOptionList => [...contextOptionList, context]);
@@ -658,7 +624,6 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
               title: event.target.value
             }) }
           />
-          { renderContextOptions() }
         </>
       );
     }
@@ -683,7 +648,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   useEffect(() => {
     checkContextSettings();
-  }, [fieldIndex, sectionIndex, pendingForm]);
+  }, [fieldIndex, pendingForm]);
 
   useEffect(() => {
     getSelectedSectionTitle();
