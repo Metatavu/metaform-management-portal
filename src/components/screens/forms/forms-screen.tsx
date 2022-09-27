@@ -193,7 +193,7 @@ const FormsScreen: React.FC = () => {
         />
         <FormRestrictedContent>
           <NavigationTab
-            text={ strings.navigationHeader.formsScreens.formDataScreen }
+            text={ strings.navigationHeader.formsScreens.formsDataScreen }
             to="data"
           />
         </FormRestrictedContent>

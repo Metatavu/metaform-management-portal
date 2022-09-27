@@ -139,9 +139,17 @@
         "title": "Form listing",
         "description": "A list of forms that the user has permission to process."
       },
-      "formDataScreen": {
+      "formsDataScreen": {
         "title": "Viewing data",
         "description": "Information e.g. the utilization rate of the forms."
+      },
+      "formRepliesScreen": {
+        "title": "Answers",
+        "description": "List of answers for the selected form."
+      },
+      "formHistoryScreen": {
+        "title": "History",
+        "description": "Processing history of the selected form."
       }
     },
     "usersScreens": {
@@ -168,9 +176,7 @@
   },
 
   "repliesScreen": {
-    "title": "Answers",
     "open": "Open",
-    "description": "List of answers for the selected form.",
     "createdColumnTitle": "CREATED",
     "modifiedColumnTitle": "MODIFIED",
     "statusColumnTitle": "STATUS",

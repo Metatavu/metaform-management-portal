@@ -139,9 +139,17 @@
         "title": "Lomakelistaus",
         "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus."
       },
-      "formDataScreen": {
+      "formsDataScreen": {
         "title": "Datan tarkastelu",
         "description": "Tietoja mm. lomakkeiden käyttöasteesta."
+      },
+      "formRepliesScreen": {
+        "title": "Vastaukset",
+        "description": "Valitun lomakkeen vastaukset."
+      },
+      "formHistoryScreen": {
+        "title": "Käsittelyhistoria",
+        "description": "Valitun lomakkeen käsittelyhistoria."
       }
     },
     "usersScreens": {
@@ -168,9 +176,7 @@
   },
 
   "repliesScreen": {
-    "title": "Vastaukset",
     "open": "Avaa",
-    "description": "Valitun lomakkeen vastaukset.",
     "createdColumnTitle": "LUOTU",
     "modifiedColumnTitle": "MUOKATTU",
     "statusColumnTitle": "TILA",

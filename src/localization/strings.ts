@@ -173,7 +173,15 @@ export interface Localized extends LocalizedStringsMethods {
         title: string;
         description: string;
       };
-      formDataScreen: {
+      formsDataScreen: {
+        title: string;
+        description: string;
+      };
+      formRepliesScreen: {
+        title: string;
+        description: string;
+      },
+      formHistoryScreen: {
         title: string;
         description: string;
       };
@@ -205,9 +213,7 @@ export interface Localized extends LocalizedStringsMethods {
    * Translations related to metaform replies screen
    */
   repliesScreen: {
-    title: string;
     open: string;
-    description: string;
     createdColumnTitle: string;
     modifiedColumnTitle: string;
     statusColumnTitle: string;

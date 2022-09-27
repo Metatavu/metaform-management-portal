@@ -173,12 +173,12 @@ const FormHistoryScreen: React.FC = () => {
     <>
       <NavigationTabContainer>
         <NavigationTab
-          text={ strings.navigationHeader.formsScreens.formScreen }
-          to="answers"
+          text={ strings.navigationHeader.formsScreens.formRepliesScreen }
+          to="./../answers"
         />
         <FormRestrictedContent>
           <NavigationTab
-            text={ strings.navigationHeader.formsScreens.formDataScreen }
+            text={ strings.navigationHeader.formsScreens.formHistoryScreen }
           />
         </FormRestrictedContent>
       </NavigationTabContainer>

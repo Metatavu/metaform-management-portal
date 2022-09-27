@@ -215,7 +215,7 @@ const FormsDataScreen: React.FC = () => {
           to="./.."
         />
         <NavigationTab
-          text={ strings.navigationHeader.formsScreens.formDataScreen }
+          text={ strings.navigationHeader.formsScreens.formsDataScreen }
         />
       </NavigationTabContainer>
       <DataGrid

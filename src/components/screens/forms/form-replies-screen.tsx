@@ -299,12 +299,12 @@ const FormRepliesScreen: React.FC = () => {
     <>
       <NavigationTabContainer>
         <NavigationTab
-          text={ strings.repliesScreen }
+          text={ strings.navigationHeader.formsScreens.formRepliesScreen }
           renderActions={ renderToggleSwitch }
         />
         <FormRestrictedContent>
           <NavigationTab
-            text={ strings.navigationHeader.formsScreens.formDataScreen }
+            text={ strings.navigationHeader.formsScreens.formHistoryScreen }
             to="./../history"
           />
         </FormRestrictedContent>
