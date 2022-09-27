@@ -367,7 +367,8 @@ namespace MetaformUtils {
       ));
 
     // js sort is stable
-    preprocessAuditLogEntries.sort(dateComparator).sort(replyIdComparator);
+    preprocessAuditLogEntries.sort(dateComparator);
+    preprocessAuditLogEntries.sort(replyIdComparator);
 
     let replyCount = 0;
     // time in millisecond
