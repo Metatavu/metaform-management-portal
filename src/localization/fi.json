@@ -421,7 +421,7 @@
   },
 
   "auditLogEntryType": {
-    "viewReply": "View reply",
+    "viewReply": "Vastaus avattu",
     "listReply": "List reply",
     "modifyReply": "Modify reply",
     "deleteReply": "Vastaus poistettu",
