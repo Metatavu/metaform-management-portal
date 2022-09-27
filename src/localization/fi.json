@@ -422,7 +422,7 @@
 
   "auditLogEntryType": {
     "viewReply": "Vastaus avattu",
-    "listReply": "List reply",
+    "listReply": "Vastaus listattu",
     "modifyReply": "Modify reply",
     "deleteReply": "Vastaus poistettu",
     "createReply": "Vastaus luotu",
