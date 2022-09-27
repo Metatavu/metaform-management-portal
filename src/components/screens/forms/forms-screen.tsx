@@ -80,7 +80,7 @@ const FormsScreen: React.FC = () => {
   };
 
   /**
-   * List relies
+   * Load replies
    *
    * @param metaformId metaform id
   */
