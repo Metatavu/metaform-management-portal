@@ -29,6 +29,7 @@ export interface Localized extends LocalizedStringsMethods {
     back: string;
     actions: string;
     restore: string;
+    unknown: string;
   };
 
   /**
@@ -52,6 +53,7 @@ export interface Localized extends LocalizedStringsMethods {
     };
     adminFormsScreen: {
       listForms: string;
+      listReplies: string;
       createForm: string;
       deleteVersion: string;
       createFormDuplicateNameError: string;
@@ -102,6 +104,16 @@ export interface Localized extends LocalizedStringsMethods {
     };
     previewScreen: {
       shareLink: string;
+    };
+    adminFormHistoryScreen: {
+      listAuditLogEntries: string;
+      listMetaformMembers: string;
+      findMetaform: string;
+    };
+    adminFormsDataScreen: {
+      listForms: string;
+      listReplies: string;
+      listAuditLogEntries: string;
     };
   };
 
@@ -161,7 +173,15 @@ export interface Localized extends LocalizedStringsMethods {
         title: string;
         description: string;
       };
-      formDataScreen: {
+      formsDataScreen: {
+        title: string;
+        description: string;
+      };
+      formRepliesScreen: {
+        title: string;
+        description: string;
+      },
+      formHistoryScreen: {
         title: string;
         description: string;
       };
@@ -193,9 +213,7 @@ export interface Localized extends LocalizedStringsMethods {
    * Translations related to metaform replies screen
    */
   repliesScreen: {
-    title: string;
     open: string;
-    description: string;
     createdColumnTitle: string;
     modifiedColumnTitle: string;
     statusColumnTitle: string;
@@ -223,6 +241,10 @@ export interface Localized extends LocalizedStringsMethods {
   draftEditorScreen: {
     preview: string;
     publish: string;
+    publishDialog: {
+      title: string;
+      contentText: string;
+    };
     editor: {
       addSection: string;
       emptySection: string;
@@ -262,8 +284,8 @@ export interface Localized extends LocalizedStringsMethods {
         tabTitle: string;
         title: string;
         fieldDatas: string;
-        visiblityCondition: string;
-        fieldVisiblity: string;
+        visibilityCondition: string;
+        fieldVisibility: string;
         defineUserGroup: string;
         selectableFieldsInfo: string;
         required: string;
@@ -358,6 +380,18 @@ export interface Localized extends LocalizedStringsMethods {
   };
 
   /**
+   * Translations related to form history screen
+   */
+  formHistoryScreen: {
+    historyTable: {
+      date: string;
+      actor: string;
+      replyId: string;
+      actionPerformed: string;
+    };
+  }
+
+  /**
    * Translations related to field components
    */
   fieldComponents: {
@@ -378,6 +412,20 @@ export interface Localized extends LocalizedStringsMethods {
       notProcessed: string;
     };
   }
+
+  /**
+   * Translations related to forms screen
+   */
+  formsDataScreen: {
+    formDataTable: {
+      form: string;
+      monthlyReplies: string;
+      processingDelay: string;
+      average: string;
+      delayFormat: string;
+    };
+  }
+
   /**
    * Translations related to form screen
    */
@@ -454,10 +502,9 @@ export interface Localized extends LocalizedStringsMethods {
   }
 
   /**
- * Autocomplete related messages
- */
+   * Autocomplete related messages
+   */
   autoComplete: {
-    genericUnknown: string;
     missingOptions: string;
     missingCodeServerBaseUrl: string;
     missingCodeServerClassificiationId: string;
@@ -465,6 +512,22 @@ export interface Localized extends LocalizedStringsMethods {
     missingAutocomplete: string;
     unknownAutocompleteService: string;
   }
+
+  /**
+   * Translations related to audit log entry type
+   */
+  auditLogEntryType: {
+    viewReply: string;
+    listReply: string;
+    modifyReply: string;
+    deleteReply: string;
+    createReply: string;
+    viewReplyAttachment: string;
+    downloadReplyAttachment: string;
+    exportReplyPdf: string;
+    exportReplyXlsx: string
+  }
+
 }
 /**
  * Initialized localized strings

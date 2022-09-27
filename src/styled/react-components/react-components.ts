@@ -269,28 +269,6 @@ export const AdminFormTypographyField = styled(Typography, {
 }));
 
 /**
- * Styled administrator form replies stack component
- */
-export const AdminFormRepliesScreenStack = styled(Stack, {
-  label: "admin-form-replies-list-stack"
-})(() => ({
-  alignItems: "center",
-  padding: "1rem"
-}));
-
-/**
- * Styled text for the administrator form replies screen
- */
-export const AdminFormRepliesScreenText = styled(Typography, {
-  label: "admin-form-replies-screen-text"
-})(() => ({
-  flex: 1,
-  width: "100%",
-  fontSize: "1em",
-  margin: "0.5rem"
-}));
-
-/**
  * Styled text for the version list header
  */
 export const VersionListHeader = styled(Grid, {

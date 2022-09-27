@@ -1,9 +1,9 @@
 import Api from "api";
-import { AttachmentsApi, Metaform, MetaformField, MetaformFieldSourceType, MetaformFieldType, MetaformSection, Reply } from "generated/client";
-import Keycloak from "keycloak-js";
+import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, Metaform, MetaformField, MetaformFieldSourceType, MetaformFieldType, MetaformSection, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
-import { Dictionary } from "types";
+import { Dictionary, ReplyAuditLog } from "types";
 import strings from "localization/strings";
+import moment from "moment";
 import { FormContext } from "../types/index";
 
 /**
@@ -181,7 +181,7 @@ namespace MetaformUtils {
 
   /**
    * Sends a blob to user for downloading
-   * 
+   *
    * @param data data as blob
    * @param filename download file name
    */
@@ -197,11 +197,11 @@ namespace MetaformUtils {
   };
 
   /**
-   * Creates owner key protected reply edit link 
-   * 
+   * Creates owner key protected reply edit link
+   *
    * @param replyId reply id
    * @param ownerKey owner key
-   * @returns owner key protected reply edit link 
+   * @returns owner key protected reply edit link
    */
   export const createOwnerKeyLink = (replyId: string, ownerKey: string) => {
     const { location } = window;
@@ -210,12 +210,12 @@ namespace MetaformUtils {
 
   /**
    * Processes reply from server into form that is understood by ui
-   * 
+   *
    * @param foundMetaform metaform that is being viewed
    * @param foundReply reply loaded from server
    * @param currentOwnerKey owner key for the reply
    * @param attachmentsApi attachments api
-   * 
+   *
    * @return data processes to be used by ui
    */
   export const processReplyData = async (foundMetaform: Metaform, foundReply: Reply, attachmentsApi: AttachmentsApi, currentOwnerKey?: string) => {
@@ -253,7 +253,7 @@ namespace MetaformUtils {
   };
 
   /**
-   * Prepares form values for the form. 
+   * Prepares form values for the form.
    *
    * @param metaformToPrepare metaform
    * @returns prepared form values
@@ -300,6 +300,99 @@ namespace MetaformUtils {
     });
 
     return result;
+  };
+
+  /**
+   * Gets the monthly average reply count
+   *
+   * @param replies replies
+   * @returns monthly average reply
+   */
+  export const getMonthlyAverageReply = (replies: Reply[]): number => {
+    const sortedReplyDates = (replies
+      .map(reply => reply.createdAt)
+      .filter(createdAt => createdAt !== undefined) as Date[])
+      .sort();
+
+    if (sortedReplyDates.length === 0) {
+      return 0;
+    }
+
+    const monthCount = sortedReplyDates.filter((prev, index) => {
+      if (index === sortedReplyDates.length - 1) {
+        return;
+      }
+      const next: Date = sortedReplyDates[index + 1];
+      return !moment(prev).isSame(next, "month") || !moment(prev).isSame(next, "year");
+    }).length + 1;
+
+    return sortedReplyDates.length / monthCount;
+  };
+
+  /**
+   * Date comparator
+   *
+   * @param replyAuditLog1 reply audit log 1
+   * @param replyAuditLog2 reply audit log 2
+   * @returns integer indicates the result
+   */
+  const dateComparator = (replyAuditLog1: ReplyAuditLog, replyAuditLog2: ReplyAuditLog) =>
+    (moment(replyAuditLog1.createdAt).isAfter(replyAuditLog2.createdAt) ? 1 : -1);
+
+  /**
+  * Reply id comparator
+  *
+  * @param replyAuditLog1 reply audit log 1
+  * @param replyAuditLog2 reply audit log 2
+  * @returns integer indicates the result
+  */
+  const replyIdComparator = (replyAuditLog1: ReplyAuditLog, replyAuditLog2: ReplyAuditLog) =>
+    (replyAuditLog1.replyId.localeCompare(replyAuditLog2.replyId));
+
+  /**
+   * Gets the average reply view delay
+   *
+   * @param auditLogEntries audit log entries
+   * @returns average reply delay
+   */
+  export const getAverageReplyViewDelay = (auditLogEntries: AuditLogEntry[]): moment.Duration => {
+    const preprocessAuditLogEntries: ReplyAuditLog[] = auditLogEntries
+      .filter(entry =>
+        entry.replyId !== undefined &&
+        entry.createdAt !== undefined &&
+        entry.logEntryType !== undefined).map(entry => (
+        {
+          replyId: entry.replyId!,
+          createdAt: entry.createdAt!,
+          logEntryType: entry.logEntryType!
+        }
+      ));
+
+    // js sort is stable
+    preprocessAuditLogEntries.sort(dateComparator);
+    preprocessAuditLogEntries.sort(replyIdComparator);
+
+    let replyCount = 0;
+    // time in millisecond
+    let totalTime = 0;
+    let createEntry: ReplyAuditLog;
+
+    preprocessAuditLogEntries.forEach(entry => {
+      if (entry.logEntryType === AuditLogEntryType.CreateReply) {
+        createEntry = entry;
+      } else if (
+        entry.logEntryType === AuditLogEntryType.ViewReply &&
+        createEntry !== undefined &&
+        entry.replyId === createEntry.replyId
+      ) {
+        totalTime += entry.createdAt.getTime() - createEntry.createdAt.getTime();
+        replyCount += 1;
+      }
+    });
+
+    if (replyCount === 0) return moment.duration(0);
+
+    return moment.duration(Math.floor(totalTime / replyCount));
   };
 }
 

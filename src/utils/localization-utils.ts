@@ -1,3 +1,4 @@
+import { AuditLogEntryType } from "generated/client";
 import strings from "localization/strings";
 import moment from "moment";
 import { NavigationLinks, ReplyStatus } from "types";
@@ -39,6 +40,23 @@ namespace LocalizationUtils {
     [ReplyStatus.PROCESSING]: strings.repliesScreen.statusProcessing,
     [ReplyStatus.DONE]: strings.repliesScreen.statusDone
   })[status];
+
+  /**
+   * Returns localized audit log entry type
+   *
+   * @param type audit log entry type
+   */
+  export const getLocalizedAuditLogEntryType = (type: string) => ({
+    [AuditLogEntryType.ViewReply]: strings.auditLogEntryType.viewReply,
+    [AuditLogEntryType.ListReply]: strings.auditLogEntryType.listReply,
+    [AuditLogEntryType.ModifyReply]: strings.auditLogEntryType.modifyReply,
+    [AuditLogEntryType.DeleteReply]: strings.auditLogEntryType.deleteReply,
+    [AuditLogEntryType.CreateReply]: strings.auditLogEntryType.createReply,
+    [AuditLogEntryType.ViewReplyAttachment]: strings.auditLogEntryType.viewReplyAttachment,
+    [AuditLogEntryType.DownloadReplyAttachment]: strings.auditLogEntryType.downloadReplyAttachment,
+    [AuditLogEntryType.ExportReplyPdf]: strings.auditLogEntryType.exportReplyPdf,
+    [AuditLogEntryType.ExportReplyXlsx]: strings.auditLogEntryType.exportReplyXlsx
+  })[type];
 
   /**
    * Returns localized name boolean value

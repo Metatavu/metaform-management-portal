@@ -1,3 +1,5 @@
+import { AuditLogEntryType } from "generated/client";
+
 /**
  * Application configuration
  */
@@ -29,6 +31,15 @@ export interface AccessToken {
   lastName?: string;
   userId?: string;
   realmRoles: string[];
+}
+
+/**
+ * Interface describing an processed reply audit log
+ */
+export interface ReplyAuditLog {
+  replyId: string,
+  createdAt: Date,
+  logEntryType: AuditLogEntryType
 }
 
 /**

@@ -17,7 +17,8 @@
     "addFilesText": "Tiputa tiedosto tähän, tai klikkaa tästä lisätäksesi liitteitä.",
     "back": "Takaisin",
     "actions": "Toiminnot",
-    "restore": "Palauta"
+    "restore": "Palauta",
+    "unknown": "Tuntematon"
   },
 
   "errorHandling": {
@@ -40,6 +41,7 @@
     },
     "adminFormsScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",
+      "listReplies": "Vastauksien haku epäonnistui",
       "createForm": "Lomakkeen luominen epäonnistui",
       "deleteVersion": "Lomakeversion poistaminen epäonnistui",
       "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
@@ -90,6 +92,16 @@
     },
     "previewScreen": {
       "shareLink": "Linkin jakamisessa tapahtui virhe"
+    },
+    "adminFormHistoryScreen": {
+      "listAuditLogEntries": "Auditoinnoin haku epäonnistui",
+      "listMetaformMembers": "Lomakkeen käyttäjien haku epäonnistui",
+      "findMetaform": "Lomakkeen haku epäonnistui"
+    },
+    "adminFormsDataScreen": {
+      "listForms": "Lomakkeiden haku epäonnistui",
+      "listReplies": "Vastauksien haku epäonnistui",
+      "listAuditLogEntries": "Auditoinnoin haku epäonnistui"
     }
   },
 
@@ -127,9 +139,17 @@
         "title": "Lomakelistaus",
         "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus."
       },
-      "formDataScreen": {
+      "formsDataScreen": {
         "title": "Datan tarkastelu",
         "description": "Tietoja mm. lomakkeiden käyttöasteesta."
+      },
+      "formRepliesScreen": {
+        "title": "Vastaukset",
+        "description": "Valitun lomakkeen vastaukset."
+      },
+      "formHistoryScreen": {
+        "title": "Käsittelyhistoria",
+        "description": "Valitun lomakkeen käsittelyhistoria."
       }
     },
     "usersScreens": {
@@ -156,9 +176,7 @@
   },
 
   "repliesScreen": {
-    "title": "Vastaukset",
     "open": "Avaa",
-    "description": "Valitun lomakkeen vastaukset.",
     "createdColumnTitle": "LUOTU",
     "modifiedColumnTitle": "MUOKATTU",
     "statusColumnTitle": "TILA",
@@ -187,6 +205,10 @@
   "draftEditorScreen": {
     "preview": "Esikatsele",
     "publish": "Julkaise",
+    "publishDialog": {
+      "title": "Julkaise versio",
+      "contentText": "Oletko varma, että haluat julkaista lomakkeen {0}?"
+    },
     "editor": {
       "addSection": "Lisää osio",
       "emptySection": "Tyhjä osio",
@@ -226,8 +248,8 @@
         "tabTitle": "Ominaisuudet",
         "title": "Title",
         "fieldDatas": "Kentän tiedot",
-        "fieldVisiblity": "Kenttä näkyy lomakkeella:",
-        "visiblityCondition": "Näkyvyyden ehto",
+        "fieldVisibility": "Kenttä näkyy lomakkeella:",
+        "visibilityCondition": "Näkyvyyden ehto",
         "required": "Pakollisuus",
         "defineUserGroup": "Määrittää käyttäjäryhmän",
         "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
@@ -318,6 +340,15 @@
     }
   },
 
+  "formHistoryScreen": {
+    "historyTable": {
+      "date": "Päivämäärä",
+      "actor": "Käsittelijä",
+      "replyId": "Vastaus id",
+      "actionPerformed": "Tehty toiminto"
+    }
+  },
+
   "fieldComponents": {
     "tableField": {
       "addNewRow": "Lisää uusi rivi",
@@ -330,7 +361,17 @@
       "form": "Lomake",
       "latestReply": "Viimeisin",
       "newReply": "Uusia",
-      "notProcessed": "käsittelemättömiä"
+      "notProcessed": "Käsittelemättömiä"
+    }
+  },
+
+  "formsDataScreen": {
+    "formDataTable": {
+      "form": "Lomake",
+      "monthlyReplies": "Vastauksia / kk",
+      "processingDelay": "Käsittelyviive",
+      "average": "Keskimäärin",
+      "delayFormat": "{0} pv {1} t {2} min"
     }
   },
 
@@ -401,12 +442,23 @@
   },
 
   "autoComplete": {
-    "genericUnknown": "Tuntematon",
     "missingOptions": "Code server autocomplete ei ole määritelty",
     "missingCodeServerBaseUrl": "Code server autocomplete puuttuu codeServerBaseUrl",
     "missingCodeServerClassificiationId": "Code server autocomplete puuttuu codeServerClassificationId",
     "missingCodeServerParentConceptCodeId": "Code server autocomplete puuttuu codeServerParentConceptCodeId",
     "missingAutocomplete": "Autocomplete ei ole määritelty",
     "unknownAutocompleteService": "TUNTEMATON_AUTO_COMPLETE_SERVICE"
+  },
+
+  "auditLogEntryType": {
+    "viewReply": "Vastaus avattu",
+    "listReply": "Vastaus listattu",
+    "modifyReply": "Vastausta muokattu",
+    "deleteReply": "Vastaus poistettu",
+    "createReply": "Vastaus luotu",
+    "viewReplyAttachment": "Vastauksen liite avattu",
+    "downloadReplyAttachment": "Vastauksen liite ladattu",
+    "exportReplyPdf": "Vastaus viety PDF:nä",
+    "exportReplyXlsx": "Vastaus viety taulukkona"
   }
 }

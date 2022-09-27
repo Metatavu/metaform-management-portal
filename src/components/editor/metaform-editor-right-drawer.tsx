@@ -54,7 +54,6 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
           sectionIndex={ sectionIndex }
         />
       </TabPanel>
-
       <TabPanel value={ tabIndex } index={ 1 }>
         <MetaFormRightDrawerVisibility
           pendingForm={ pendingForm }
