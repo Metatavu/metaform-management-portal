@@ -17,7 +17,8 @@
     "addFilesText": "Drop files here or click here to add files.",
     "back": "Back",
     "actions": "Action",
-    "restore": "Restore"
+    "restore": "Restore",
+    "unknown": "Unknown"
   },
 
   "errorHandling": {
@@ -40,6 +41,7 @@
     },
     "adminFormsScreen": {
       "listForms": "Fetching forms failed",
+      "listReplies": "Fetching replies failed",
       "createForm": "Creating form failed",
       "deleteVersion": "Deleting form failed",
       "createFormDuplicateNameError": "Form with that name already exists!",
@@ -78,7 +80,6 @@
       "exportPdf": "Exporting PDF failed",
       "replyIdNotFound": "Reply id not found",
       "fetchReply": "Error occurred when trying to fetch reply"
-
     },
     "usersScreen": {
       "loadMetaforms": "Error occurred while loading metaforms",
@@ -91,6 +92,16 @@
     },
     "previewScreen": {
       "shareLink": "Error occurred while sharing link"
+    },
+    "adminFormHistoryScreen": {
+      "listAuditLogEntries": "Fetching audit log entries failed",
+      "listMetaformMembers": "Fetching metaform members failed",
+      "findMetaform": "Finding metaform failed"
+    },
+    "adminFormsDataScreen": {
+      "listForms": "Fetching forms failed",
+      "listReplies": "Fetching replies failed",
+      "listAuditLogEntries": "Fetching audit log entries failed"
     }
   },
 
@@ -128,9 +139,17 @@
         "title": "Form listing",
         "description": "A list of forms that the user has permission to process."
       },
-      "formDataScreen": {
+      "formsDataScreen": {
         "title": "Viewing data",
         "description": "Information e.g. the utilization rate of the forms."
+      },
+      "formRepliesScreen": {
+        "title": "Answers",
+        "description": "List of answers for the selected form."
+      },
+      "formHistoryScreen": {
+        "title": "History",
+        "description": "Processing history of the selected form."
       }
     },
     "usersScreens": {
@@ -157,9 +176,7 @@
   },
 
   "repliesScreen": {
-    "title": "Answers",
     "open": "Open",
-    "description": "List of answers for the selected form.",
     "createdColumnTitle": "CREATED",
     "modifiedColumnTitle": "MODIFIED",
     "statusColumnTitle": "STATUS",
@@ -232,8 +249,8 @@
         "tabTitle": "Features",
         "title": "Title",
         "fieldDatas": "Field Information",
-        "fieldVisiblity": "The field is visible on the form:",
-        "visiblityCondition": "Visiblity condition",
+        "fieldVisibility": "The field is visible on the form:",
+        "visibilityCondition": "Visibility condition",
         "required": "Required",
         "defineUserGroup": "Define a user group",
         "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
@@ -320,6 +337,15 @@
     }
   },
 
+  "formHistoryScreen": {
+    "historyTable": {
+      "date": "Date",
+      "actor": "Actor",
+      "replyId": "Reply id",
+      "actionPerformed": "Action performed"
+    }
+  },
+
   "fieldComponents": {
     "tableField": {
       "addNewRow": "Add new row",
@@ -332,7 +358,17 @@
       "form": "Form",
       "latestReply": "Latest",
       "newReply": "New",
-      "notProcessed": "untreated"
+      "notProcessed": "Untreated"
+    }
+  },
+
+  "formsDataScreen": {
+    "formDataTable": {
+      "form": "Forms",
+      "monthlyReplies": "Answers / month",
+      "processingDelay": "Processing delay",
+      "average": "Average",
+      "delayFormat": "{0} d {1} h {2} min"
     }
   },
 
@@ -403,12 +439,23 @@
   },
 
   "autoComplete": {
-    "genericUnknown": "Unknown",
     "missingOptions": "Code server autocomplete not configured",
     "missingCodeServerBaseUrl": "Code server autocomplete missing codeServerBaseUrl",
     "missingCodeServerClassificiationId": "Code server autocomplete missing codeServerClassificationId",
     "missingCodeServerParentConceptCodeId": "Code server autocomplete missing codeServerParentConceptCodeId",
     "missingAutocomplete": "Autocomplete not configured",
     "unknownAutocompleteService": "UNKNOWN_AUTO_COMPLETE_SERVICE"
+  },
+
+  "auditLogEntryType": {
+    "viewReply": "View reply",
+    "listReply": "List reply",
+    "modifyReply": "Modify reply",
+    "deleteReply": "Delete reply",
+    "createReply": "Create reply",
+    "viewReplyAttachment": "View reply attachment",
+    "downloadReplyAttachment": "Download reply attachment",
+    "exportReplyPdf": "Export reply pdf",
+    "exportReplyXlsx": "Export reply xlsx"
   }
 }
