@@ -328,6 +328,26 @@ namespace MetaformUtils {
   };
 
   /**
+   * Date comparator
+   *
+   * @param replyAuditLog1 reply audit log 1
+   * @param replyAuditLog2 reply audit log 2
+   * @returns integer indicates the result
+   */
+  const dateComparator = (replyAuditLog1: ReplyAuditLog, replyAuditLog2: ReplyAuditLog) =>
+    (moment(replyAuditLog1.createdAt).isAfter(replyAuditLog2.createdAt) ? 1 : 0);
+
+  /**
+  * Reply id comparator
+  *
+  * @param replyAuditLog1 reply audit log 1
+  * @param replyAuditLog2 reply audit log 2
+  * @returns integer indicates the result
+  */
+  const replyIdComparator = (replyAuditLog1: ReplyAuditLog, replyAuditLog2: ReplyAuditLog) =>
+    (replyAuditLog1.replyId.localeCompare(replyAuditLog2.replyId));
+
+  /**
    * Gets the average reply view delay
    *
    * @param auditLogEntries audit log entries
@@ -347,11 +367,9 @@ namespace MetaformUtils {
       ));
 
     // js sort is stable
-    const dateSortedAuditLogs = preprocessAuditLogEntries
-      .sort((a1, a2) => (moment(a1.createdAt).isAfter(a2.createdAt) ? 1 : 0));
-
-    const sortedAuditLogs = dateSortedAuditLogs
-      .sort((a1, a2) => a1.replyId.localeCompare(a2.replyId));
+    const sortedAuditLogs = preprocessAuditLogEntries
+      .sort(dateComparator)
+      .sort(replyIdComparator);
 
     let replyCount = 0;
     // time in millisecond
