@@ -335,7 +335,7 @@ namespace MetaformUtils {
    * @returns integer indicates the result
    */
   const dateComparator = (replyAuditLog1: ReplyAuditLog, replyAuditLog2: ReplyAuditLog) =>
-    (moment(replyAuditLog1.createdAt).isAfter(replyAuditLog2.createdAt) ? 1 : 0);
+    (moment(replyAuditLog1.createdAt).isAfter(replyAuditLog2.createdAt) ? 1 : -1);
 
   /**
   * Reply id comparator
