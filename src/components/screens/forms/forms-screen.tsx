@@ -94,7 +94,7 @@ const FormsScreen: React.FC = () => {
   };
 
   /**
-   * View loadData
+   * Loads data
    */
   const loadData = async () => {
     setLoading(true);
