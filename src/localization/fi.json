@@ -94,7 +94,7 @@
     },
     "adminFormHistoryScreen": {
       "listAuditLogEntries": "Auditoinnoin haku epäonnistui",
-      "listMetaformMembers": "Fetching metaform members failed",
+      "listMetaformMembers": "Lomakkeen käyttäjien haku epäonnistui",
       "findMetaform": "Finding metaform failed"
     }
   },
