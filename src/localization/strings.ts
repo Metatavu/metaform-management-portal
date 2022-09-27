@@ -280,7 +280,7 @@ export interface Localized extends LocalizedStringsMethods {
         contextFormVisibility: string;
         contextManagementVisibility: string;
         contextManagementListVisibility: string;
-        ContextVisibilityInfo: string;
+        contextVisibilityInfo: string;
       };
       visibility: {
         tabTitle: string;

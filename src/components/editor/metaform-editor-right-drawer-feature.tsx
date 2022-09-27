@@ -203,17 +203,16 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * @param selectedContext Selected context Option
    * @param checked Is context option checked or not
    */
-  const updateContexts = (selectedContext: string, checked: boolean) => {
+  const updateContexts = (selectedContext: FormContext, checked: boolean) => {
     if (sectionIndex !== undefined && fieldIndex !== undefined) {
       if (!checked) {
-        pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.map((context, index) => {
+        pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.forEach((context, index) => {
           if (selectedContext === context) {
             const updatedForm = produce(pendingForm, draftForm => {
               draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.contexts?.splice(index, 1);
             });
             setPendingForm(updatedForm);
           }
-          return null;
         });
       } else {
         const updatedForm = produce(pendingForm, draftForm => {
@@ -240,12 +239,12 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * When changing field check what context settings field have
+   * Check fields contexts
    */
   const checkContextSettings = () => {
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       setContextOption([]);
-      pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.map(context => {
+      pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.forEach(context => {
         switch (context) {
           case FormContext.FORM:
             return setContextOption(contextOptionList => [...contextOptionList, context]);
@@ -256,7 +255,6 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
           default:
             break;
         }
-        return null;
       });
     }
   };
@@ -265,9 +263,9 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * Render contexts options
    */
   const renderContextOptions = () => (
-    <>
+    <Stack spacing={ 2 }>
       <Divider/>
-      <Typography variant="subtitle1">{ strings.draftEditorScreen.editor.features.ContextVisibilityInfo }</Typography>
+      <Typography variant="subtitle1">{ strings.draftEditorScreen.editor.features.contextVisibilityInfo }</Typography>
       <FormControl>
         <FormControlLabel
           label={ strings.draftEditorScreen.editor.features.contextFormVisibility }
@@ -301,7 +299,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
           }
         />
       </FormControl>
-    </>
+    </Stack>
   );
 
   /**
@@ -509,7 +507,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
         case MetaformFieldType.Table:
           return renderTableColumnFeatures();
         default:
-          return null;
+          break;
       }
     }
   };
