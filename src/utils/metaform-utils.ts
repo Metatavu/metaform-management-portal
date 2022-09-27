@@ -367,18 +367,14 @@ namespace MetaformUtils {
       ));
 
     // js sort is stable
-    const dateSortedAuditLogs = preprocessAuditLogEntries
-      .sort(dateComparator);
-
-    const replyIdSortedAuditLogs = preprocessAuditLogEntries
-      .sort(replyIdComparator);
+    preprocessAuditLogEntries.sort(dateComparator).sort(replyIdComparator);
 
     let replyCount = 0;
     // time in millisecond
     let totalTime = 0;
     let createEntry: ReplyAuditLog;
 
-    replyIdSortedAuditLogs.forEach(entry => {
+    preprocessAuditLogEntries.forEach(entry => {
       if (entry.logEntryType === AuditLogEntryType.CreateReply) {
         createEntry = entry;
       } else if (
