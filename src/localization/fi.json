@@ -95,7 +95,7 @@
     "adminFormsDataScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",
       "listReplies": "Vastauksien haku epäonnistui",
-      "listAuditLogEntries": "Fetching audit log entries failed"
+      "listAuditLogEntries": "Auditoinnoin haku epäonnistui"
     }
   },
 
