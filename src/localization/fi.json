@@ -93,7 +93,7 @@
       "shareLink": "Linkin jakamisessa tapahtui virhe"
     },
     "adminFormHistoryScreen": {
-      "listAuditLogEntries": "Fetching audit log entries failed",
+      "listAuditLogEntries": "Auditoinnoin haku epäonnistui",
       "listMetaformMembers": "Fetching metaform members failed",
       "findMetaform": "Finding metaform failed"
     }
