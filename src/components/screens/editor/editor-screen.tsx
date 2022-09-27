@@ -75,14 +75,14 @@ const EditorScreen: React.FC = () => {
     }
   };
 
-  // TODO: Investigate possibility of adding PUT method to VersionsApi to simplify this!
   /**
    * Handle Archive to Draft conversion
    * 
    * @param versionToEdit Version to edit
    */
   const handleArchiveToDraft = async (versionToEdit: MetaformVersion) => {
-    const { slug, id } = versionToEdit.data as Metaform;
+    const { id } = versionToEdit.data as Metaform;
+    const { slug } = metaforms.find(metaform => metaform.id === (versionToEdit.data as Metaform).id)!;
 
     if (!slug || !id) {
       return;
@@ -93,25 +93,26 @@ const EditorScreen: React.FC = () => {
       metaformVersion.type === MetaformVersionType.Draft);
     
     if (oldDraftVersion) {
-      await versionsApi.deleteMetaformVersion({
+      await versionsApi.updateMetaformVersion({
         metaformId: id,
-        versionId: oldDraftVersion.id!
+        versionId: oldDraftVersion.id!,
+        metaformVersion: {
+          type: MetaformVersionType.Archived,
+          data: { ...oldDraftVersion.data }
+        }
       });
     }
 
-    await versionsApi.deleteMetaformVersion({
+    await versionsApi.updateMetaformVersion({
       metaformId: id,
-      versionId: versionToEdit.id!
-    });
-    const newMetaformVersion = await versionsApi.createMetaformVersion({
-      metaformId: id,
+      versionId: versionToEdit.id!,
       metaformVersion: {
         type: MetaformVersionType.Draft,
         data: { ...versionToEdit.data }
       }
     });
 
-    return navigate(`${currentPath}/${slug}/${newMetaformVersion.id!}`);
+    return navigate(`${currentPath}/${slug}/${versionToEdit.id!}`);
   };
 
   /**
@@ -141,7 +142,7 @@ const EditorScreen: React.FC = () => {
         }
       });
 
-      navigate(`${currentPath}/${metaformToEdit.slug}/${newMetaformVersion.id}`);
+      return navigate(`${currentPath}/${metaformToEdit.slug}/${newMetaformVersion.id}`);
     }
     
     const versionToEdit = metaformVersions.find(version => version.id === id);
@@ -150,13 +151,13 @@ const EditorScreen: React.FC = () => {
       return;
     }
 
-    const versionData = versionToEdit?.data as Metaform;
+    const { slug } = metaforms.find(metaform => metaform.id === (versionToEdit.data as Metaform).id)!;
 
     if (versionToEdit.type === MetaformVersionType.Archived) {
       return handleArchiveToDraft(versionToEdit);
     }
     
-    return navigate(`${currentPath}/${versionData.slug}/${versionToEdit.id}`);
+    return navigate(`${currentPath}/${slug}/${versionToEdit.id}`);
   };
 
   /**
