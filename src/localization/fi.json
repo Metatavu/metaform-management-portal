@@ -40,7 +40,7 @@
     },
     "adminFormsScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",
-      "listReplies": "Vastauksien hakemisessa tapahtui virhe",
+      "listReplies": "Vastauksien haku epäonnistui",
       "createForm": "Lomakkeen luominen epäonnistui",
       "deleteVersion": "Lomakeversion poistaminen epäonnistui",
       "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
