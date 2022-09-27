@@ -93,7 +93,7 @@
       "shareLink": "Linkin jakamisessa tapahtui virhe"
     },
     "adminFormsDataScreen": {
-      "listForms": "Fetching forms failed",
+      "listForms": "Lomakkeiden haku epäonnistui",
       "listReplies": "Fetching replies failed",
       "listAuditLogEntries": "Fetching audit log entries failed"
     }
