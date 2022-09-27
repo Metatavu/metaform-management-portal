@@ -1,4 +1,4 @@
-import { Divider, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, Typography } from "@mui/material";
+import { Divider, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, Switch, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformSection } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
@@ -17,7 +17,7 @@ interface Props {
 /**
  * Draft editor right drawer visibility component
  */
-const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
+const MetaFormRightDrawerVisibility: FC<Props> = ({
   sectionIndex,
   fieldIndex,
   pendingForm,
@@ -31,10 +31,9 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
   const [ metaFormFieldSection, setMetaFormFieldSection ] = React.useState<MetaformField | MetaformSection>();
 
   /**
-   * Set values of Confidition field, switch and get selected component name
-   * 
+   * Set values of Conditional field, switch and get selected component name
    */
-  const setVisiblityComponentValues = () => {
+  const setVisibilityComponentValues = () => {
     if (fieldIndex === undefined && sectionIndex !== undefined) {
       const section = pendingForm.sections![sectionIndex].visibleIf;
       setMetaFormFieldSection(pendingForm.sections![sectionIndex]);
@@ -55,9 +54,9 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
       setRequiredConditionInfoField(!field);
     }
   };
-  
+
   useEffect(() => {
-    setVisiblityComponentValues();
+    setVisibilityComponentValues();
   }, [fieldIndex, sectionIndex]);
 
   /**
@@ -81,7 +80,7 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
    * @param newMetaformUpdateFieldOrSection metaform field or section
    * @param value event condition equals value (yes / no)
    */
-  const updateFormFieldOrSectionVisiblityValues = (newMetaformUpdateFieldOrSection: MetaformField | MetaformSection, value: string) => {
+  const updateFormFieldOrSectionVisibilityValues = (newMetaformUpdateFieldOrSection: MetaformField | MetaformSection, value: string) => {
     setRequiredConditionEqualsValue(value);
     setRequiredConditionInfoField(false);
     if (sectionIndex === undefined) {
@@ -104,9 +103,9 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
   /**
    * Empties metaformSection visibleIf
    *
-   * @param metaformSection  metaform section what we are editing
+   * @param metaformSection metaform section what we are editing
    */
-  const emptyFormSectionVisibleIf = (metaFormSection: MetaformSection) => {
+  const emptyFormSectionVisibleIf = (metaformSection: MetaformSection) => {
     if (sectionIndex === undefined) {
       return;
     }
@@ -117,33 +116,39 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
     }
 
     const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.splice(sectionIndex, 1, metaFormSection);
+      draftForm.sections?.splice(sectionIndex, 1, metaformSection);
     });
 
     setPendingForm(updatedForm);
   };
 
   /**
-   * Render visiblity condition selection menu
+   * Renders visibility condition selection menu
    *
    */
-  const fieldConditionComponent = () => {
+  const renderFieldCondition = () => {
     if (sectionIndex !== undefined) {
       const labelText = requiredConditionField
         ? strings.draftEditorScreen.editor.visibility.conditionLabelTitle
         : strings.draftEditorScreen.editor.visibility.fieldDefiningCondition;
       return (
-        <>
-          <Typography variant="subtitle1" style={{ width: "100%" }}>
-            { strings.draftEditorScreen.editor.features.visiblityCondition }
+        <Stack spacing={ 2 }>
+          <Typography
+            variant="subtitle1"
+            style={{ width: "100%" }}
+          >
+            { strings.draftEditorScreen.editor.features.visibilityCondition }
           </Typography>
-          <FormControl fullWidth disabled={ !disabledValue }>
-            <InputLabel id="fieldCategoryVisiblityConditionLabel">
+          <FormControl
+            fullWidth
+            disabled={ !disabledValue }
+          >
+            <InputLabel id="visibilityCondition">
               { labelText }
             </InputLabel>
             <Select
               fullWidth
-              labelId="fieldCategoryVisiblityConditionLabel"
+              labelId="visibilityCondition"
               label={ labelText }
               value={ requiredConditionField }
               onChange={ event => setRequiredConditionField(event.target.value) }
@@ -163,18 +168,17 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
                 return null;
               }))
               }
-              
             </Select>
           </FormControl>
-        </>
+        </Stack>
       );
     }
   };
 
   /**
-   * Render field Condition info component
+   * Render field Condition info
    */
-  const fieldConditionInfoComponent = () => {
+  const renderFieldConditionInfo = () => {
     if (!requiredConditionField && disabledValue) {
       return (
         <Typography sx={{ color: "gray" }}>
@@ -186,6 +190,7 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
 
   /**
    * Check group field options
+   *
    * @param field multi options field where we get option values
    * @returns options from field
    */
@@ -201,9 +206,9 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
   );
 
   /**
-   * Render visiblity condition select menu
+   * Renders visibility condition select menu
    */
-  const conditionValueField = () => {
+  const renderConditionValueField = () => {
     if (sectionIndex !== undefined) {
       if (!requiredConditionField) {
         return null;
@@ -211,13 +216,13 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
       return (
         <>
           <FormControl fullWidth>
-            <InputLabel id="visiblityConditionLabel">{ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }</InputLabel>
+            <InputLabel id="visibilityConditionLabel">{ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }</InputLabel>
             <Select
               fullWidth
-              labelId="visiblityConditionLabel"
+              labelId="visibilityConditionLabel"
               label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
               value={ requiredConditionEqualsValue }
-              onChange={ event => updateFormFieldOrSectionVisiblityValues({
+              onChange={ event => updateFormFieldOrSectionVisibilityValues({
                 ...metaFormFieldSection,
                 visibleIf: {
                   field: requiredConditionField,
@@ -240,7 +245,6 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
                 return null;
               }))}
               ;
-
             </Select>
           </FormControl>
           { requiredConditionInfoField && <Typography sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.conditionalFieldValueInfo }</Typography> }
@@ -252,7 +256,7 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
 
   /**
   * Render components depending what is switch value
-  * 
+  *
   * @param value Switch value true or false
   */
   const setSwitchValue = (value: boolean) => {
@@ -263,16 +267,13 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
       setDisabledValue(value);
-      
+
       if (disabledValue) {
         setRequiredConditionField("");
         setRequiredConditionEqualsValue("");
         setRequiredConditionInfoField(true);
         emptyFormFieldVisibleIf({ ...field, visibleIf: undefined });
       }
-
-      fieldConditionComponent();
-      conditionValueField();
     }
 
     if (sectionIndex !== undefined && fieldIndex === undefined) {
@@ -289,14 +290,14 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
   };
 
   /**
-   * Render Visiblity switch component
+   * Renders visibility switch component
    */
-  const visiblitySwitch = () => {
+  const renderVisibilitySwitch = () => {
     if (sectionIndex !== undefined) {
       return (
         <>
           <Typography variant="subtitle1" style={{ width: "100%" }}>
-            { strings.draftEditorScreen.editor.features.fieldVisiblity }
+            { strings.draftEditorScreen.editor.features.fieldVisibility }
           </Typography>
           <FormControlLabel
             control={
@@ -317,13 +318,13 @@ const MetaformEditorRightDrawerVisibleCondition: FC<Props> = ({
    * Component render
    */
   return (
-    <>
-      { visiblitySwitch() }
-      { fieldConditionComponent() }
-      { fieldConditionInfoComponent() }
-      { conditionValueField() }
-    </>
+    <Stack spacing={ 2 } sx={{ width: "100%" }}>
+      { renderVisibilitySwitch() }
+      { renderFieldCondition() }
+      { renderFieldConditionInfo() }
+      { renderConditionValueField() }
+    </Stack>
   );
 };
 
-export default MetaformEditorRightDrawerVisibleCondition;
+export default MetaFormRightDrawerVisibility;
