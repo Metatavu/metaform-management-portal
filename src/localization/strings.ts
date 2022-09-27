@@ -52,6 +52,7 @@ export interface Localized extends LocalizedStringsMethods {
     };
     adminFormsScreen: {
       listForms: string;
+      listReplies: string;
       createForm: string;
       deleteVersion: string;
       createFormDuplicateNameError: string;
@@ -102,6 +103,11 @@ export interface Localized extends LocalizedStringsMethods {
     };
     previewScreen: {
       shareLink: string;
+    };
+    adminFormsDataScreen: {
+      listForms: string;
+      listReplies: string;
+      listAuditLogEntries: string;
     };
   };
 
@@ -374,6 +380,20 @@ export interface Localized extends LocalizedStringsMethods {
       notProcessed: string;
     };
   }
+
+  /**
+   * Translations related to forms screen
+   */
+  formsDataScreen: {
+    formDataTable: {
+      form: string;
+      monthlyReplies: string;
+      processingDelay: string;
+      average: string;
+      delayFormat: string;
+    };
+  }
+
   /**
    * Translations related to form screen
    */
