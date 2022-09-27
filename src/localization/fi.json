@@ -266,7 +266,9 @@
         "contextFormVisibility": "Näkyy lomaketta täyttäessä",
         "contextManagementVisibility": "Näkyy hallinnointi näkymässä",
         "contextManagementListVisibility": "Näkyy hallinnoinnin listaus näkymässä",
-        "contextVisibilityInfo": "Kentän hallinnointi asetukset"
+        "contextVisibilityInfo": "Kentän hallinnointi asetukset",
+        "sliderMinValueLabel": "Kentän pienin arvo",
+        "sliderMaxValueLabel": "Kentän suurin arvo"
       },
       "visibility": {
         "tabTitle": "näkyvyys",

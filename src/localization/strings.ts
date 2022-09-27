@@ -303,6 +303,8 @@ export interface Localized extends LocalizedStringsMethods {
         contextManagementVisibility: string;
         contextManagementListVisibility: string;
         contextVisibilityInfo: string;
+        sliderMinValueLabel: string;
+        sliderMaxValueLabel: string;
       };
       visibility: {
         tabTitle: string;

@@ -267,7 +267,9 @@
         "contextFormVisibility": "Shown on the form for customer",
         "contextManagementVisibility": "Shown on management screen",
         "contextManagementListVisibility": "Shown on management list screen",
-        "contextVisibilityInfo": "Field management settings"  
+        "contextVisibilityInfo": "Field management settings",
+        "sliderMinValueLabel": "Field minimum value",
+        "sliderMaxValueLabel": "Field maximum value"
       },
       "visibility": {
         "tabTitle": "Visibility",

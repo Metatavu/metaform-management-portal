@@ -299,18 +299,16 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * @param selectedField selected metaformField
    */
   const renderSliderScopeValues = (selectedField: MetaformField) => {
-    const {
-      max,
-      title,
-      min
-    } = selectedField;
+    const { max, min } = selectedField;
+    const { sliderMinValueLabel, sliderMaxValueLabel } = strings.draftEditorScreen.editor.features;
+    
     return (
       <>
         <TextField
           fullWidth
           type="number"
           sx={{ height: "50px" }}
-          label={`${title} min value`}
+          label={ sliderMinValueLabel }
           value={ min }
           onChange={ event => updateSliderValue(event.target.value, "min") }
         />
@@ -318,7 +316,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
           fullWidth
           type="number"
           sx={{ height: "50px" }}
-          label={`${title} max value`}
+          label={ sliderMaxValueLabel }
           value={ max }
           onChange={ event => updateSliderValue(event.target.value, "max") }
         />
