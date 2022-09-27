@@ -94,9 +94,9 @@
       "shareLink": "Linkin jakamisessa tapahtui virhe"
     },
     "adminFormHistoryScreen": {
-      "listAuditLogEntries": "Fetching audit log entries failed",
-      "listMetaformMembers": "Fetching metaform members failed",
-      "findMetaform": "Finding metaform failed"
+      "listAuditLogEntries": "Auditoinnoin haku epäonnistui",
+      "listMetaformMembers": "Lomakkeen käyttäjien haku epäonnistui",
+      "findMetaform": "Lomakkeen haku epäonnistui"
     },
     "adminFormsDataScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",
@@ -443,14 +443,14 @@
   },
 
   "auditLogEntryType": {
-    "viewReply": "View reply",
-    "listReply": "List reply",
-    "modifyReply": "Modify reply",
-    "deleteReply": "Delete reply",
-    "createReply": "Create reply",
-    "viewReplyAttachment": "View reply attachment",
-    "downloadReplyAttachment": "Download reply attachment",
-    "exportReplyPdf": "Export reply pdf",
-    "exportReplyXlsx": "Export reply xlsx"
+    "viewReply": "Vastaus avattu",
+    "listReply": "Vastaus listattu",
+    "modifyReply": "Vastausta muokattu",
+    "deleteReply": "Vastaus poistettu",
+    "createReply": "Vastaus luotu",
+    "viewReplyAttachment": "Vastauksen liite avattu",
+    "downloadReplyAttachment": "Vastauksen liite ladattu",
+    "exportReplyPdf": "Vastaus viety PDF:nä",
+    "exportReplyXlsx": "Vastaus viety taulukkona"
   }
 }
