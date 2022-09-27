@@ -103,20 +103,26 @@ const EditorScreenTable: FC<Props> = ({
    */
   const buildVersionRows = (metaform: Metaform): MetaformVersionRow[] => {
     const versions = metaformVersions.filter(x => x.data.id as unknown === metaform.id);
+    versions.sort((a, b) => {
+      return a.modifiedAt!.getTime() > b.modifiedAt!.getTime() ? -1 : 1;
+    });
     const productionVersion = buildProductionVersion(metaform.id!);
     const versionRows: MetaformVersionRow[] = versions.map((version: MetaformVersion) => {
+      const { formVersionArchived, formVersionDraft } = strings.editorScreen;
+      const typeString = version.type === MetaformVersionType.Archived ? formVersionArchived : formVersionDraft;
+      
       return {
         id: version.id!,
-        typeString: version.type === MetaformVersionType.Archived ? strings.editorScreen.formVersionArchived : strings.editorScreen.formVersionDraft,
+        typeString: typeString,
         type: version.type,
         createdAt: version.createdAt!,
         modifiedAt: version.modifiedAt!,
         modifierId: version.lastModifierId!
       };
     });
-    versionRows.push(productionVersion);
+    versionRows.unshift(productionVersion);
 
-    return versionRows.reverse();
+    return versionRows;
   };
 
   /**
