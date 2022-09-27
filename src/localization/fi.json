@@ -94,7 +94,7 @@
     },
     "adminFormsDataScreen": {
       "listForms": "Lomakkeiden haku epäonnistui",
-      "listReplies": "Fetching replies failed",
+      "listReplies": "Vastauksien haku epäonnistui",
       "listAuditLogEntries": "Fetching audit log entries failed"
     }
   },
