@@ -427,7 +427,7 @@
     "deleteReply": "Delete reply",
     "createReply": "Vastaus luotu",
     "viewReplyAttachment": "Vastauksen liite avattu",
-    "downloadReplyAttachment": "Download reply attachment",
+    "downloadReplyAttachment": "Vastauksen liite ladattu",
     "exportReplyPdf": "Export reply pdf",
     "exportReplyXlsx": "Export reply xlsx"
   }
