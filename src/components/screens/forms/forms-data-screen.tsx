@@ -21,8 +21,8 @@ interface Row {
   id: string;
   title: string;
   slug?: string;
-  monthlyReplies: number,
-  replyViewDelay: moment.Duration
+  monthlyReplies: number;
+  replyViewDelay: moment.Duration;
 }
 
 /**
