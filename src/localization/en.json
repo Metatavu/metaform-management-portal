@@ -206,6 +206,10 @@
   "draftEditorScreen": {
     "preview": "Preview",
     "publish": "Publish",
+    "publishDialog": {
+      "title": "Publish version",
+      "contentText": "Are you sure you wish to publish {0}?"
+    },
     "editor": {
       "addSection": "Add section",
       "emptySection": "Empty section",

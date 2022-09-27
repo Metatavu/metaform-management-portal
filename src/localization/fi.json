@@ -205,6 +205,10 @@
   "draftEditorScreen": {
     "preview": "Esikatsele",
     "publish": "Julkaise",
+    "publishDialog": {
+      "title": "Julkaise versio",
+      "contentText": "Oletko varma, että haluat julkaista lomakkeen {0}?"
+    },
     "editor": {
       "addSection": "Lisää osio",
       "emptySection": "Tyhjä osio",

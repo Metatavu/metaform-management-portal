@@ -241,6 +241,10 @@ export interface Localized extends LocalizedStringsMethods {
   draftEditorScreen: {
     preview: string;
     publish: string;
+    publishDialog: {
+      title: string;
+      contentText: string;
+    };
     editor: {
       addSection: string;
       emptySection: string;
