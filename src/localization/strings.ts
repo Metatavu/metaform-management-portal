@@ -390,6 +390,7 @@ export interface Localized extends LocalizedStringsMethods {
       monthlyReplies: string;
       processingDelay: string;
       average: string;
+      delayFormat: string;
     };
   }
 

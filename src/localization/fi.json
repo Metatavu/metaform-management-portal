@@ -341,7 +341,8 @@
       "form": "Lomake",
       "monthlyReplies": "Vastauksia / kk",
       "processingDelay": "Käsittelyviive",
-      "average": "Keskimäärin"
+      "average": "Keskimäärin",
+      "delayFormat": "{0} pv {1} t {2} min"
     }
   },
 

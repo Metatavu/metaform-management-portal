@@ -110,14 +110,18 @@ const FormsDataScreen: React.FC = () => {
     setLoading(true);
 
     const forms = await loadForms();
+    try {
+      const [ replies, auditLogEntries ] = await Promise.all([
+        Promise.all(forms.map(form => loadReplies(form.id!))),
+        Promise.all(forms.map(form => loadAuditLogEntries(form.id!)))
+      ]);
+      const builtRows = forms.map((form, i) => buildRow(form, replies[i], auditLogEntries[i]));
 
-    const [ replies, auditLogEntries ] = await Promise.all([
-      Promise.all(forms.map(form => loadReplies(form.id!))),
-      Promise.all(forms.map(form => loadAuditLogEntries(form.id!)))
-    ]);
-    const builtRows = forms.map((form, i) => buildRow(form, replies[i], auditLogEntries[i]));
+      setRows(builtRows);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsDataScreen.listForms, e);
+    }
 
-    setRows(builtRows);
     setLoading(false);
   };
 
@@ -125,7 +129,7 @@ const FormsDataScreen: React.FC = () => {
     loadData();
   }, []);
 
-  const { form, average, monthlyReplies, processingDelay } = strings.formsDataScreen.formDataTable;
+  const { form, average, monthlyReplies, processingDelay, delayFormat } = strings.formsDataScreen.formDataTable;
 
   const columns: GridColDef[] = [
     {
@@ -188,11 +192,12 @@ const FormsDataScreen: React.FC = () => {
         const days = duration.days();
         const hours = duration.hours();
 
-        const delayString = `${average} ${days} d ${hours} h ${minutes} min`;
+        const delayString = strings.formatString(delayFormat, days, hours, minutes) as string;
+        const averageDelayString = `${average} ${delayString}`;
         return (
           <AdminFormListStack direction="row">
             <HistoryRounded style={ { fill: "darkgrey" } }/>
-            <AdminFormTypographyField>{ delayString }</AdminFormTypographyField>
+            <AdminFormTypographyField>{ averageDelayString }</AdminFormTypographyField>
           </AdminFormListStack>
         );
       }

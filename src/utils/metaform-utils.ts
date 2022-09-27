@@ -347,8 +347,10 @@ namespace MetaformUtils {
       ));
 
     // js sort is stable
-    const sortedAuditLogs = preprocessAuditLogEntries
-      .sort((a1, a2) => (moment(a1.createdAt).isAfter(a2.createdAt) ? 1 : 0))
+    const dateSortedAuditLogs = preprocessAuditLogEntries
+      .sort((a1, a2) => (moment(a1.createdAt).isAfter(a2.createdAt) ? 1 : 0));
+
+    const sortedAuditLogs = dateSortedAuditLogs
       .sort((a1, a2) => a1.replyId.localeCompare(a2.replyId));
 
     let replyCount = 0;

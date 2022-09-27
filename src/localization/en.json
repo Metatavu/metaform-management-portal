@@ -342,7 +342,8 @@
       "form": "Forms",
       "monthlyReplies": "Answers / month",
       "processingDelay": "Processing delay",
-      "average": "Average"
+      "average": "Average",
+      "delayFormat": "{0} d {1} h {2} min"
     }
   },
 
