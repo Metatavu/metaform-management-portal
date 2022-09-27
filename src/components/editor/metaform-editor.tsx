@@ -181,7 +181,6 @@ const MetaformEditor: React.FC<Props> = ({
    * Event handler for section click
    *
    * @param sectionIndex section index
-   *
    */
   const onSectionClick = (sectionIndex: number) => () => {
     if (selectedSectionIndex !== sectionIndex) {
