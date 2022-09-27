@@ -131,7 +131,7 @@ const EditorScreen: React.FC = () => {
         metaformVersion.type === MetaformVersionType.Draft);
 
       if (version) {
-        return navigate(`${currentPath}/${metaformToEdit.slug}/${version.id}`);
+        navigate(`${currentPath}/${metaformToEdit.slug}/${version.id}`);
       }
 
       const newMetaformVersion = await versionsApi.createMetaformVersion({
@@ -142,7 +142,7 @@ const EditorScreen: React.FC = () => {
         }
       });
 
-      return navigate(`${currentPath}/${metaformToEdit.slug}/${newMetaformVersion.id}`);
+      navigate(`${currentPath}/${metaformToEdit.slug}/${newMetaformVersion.id}`);
     }
     
     const versionToEdit = metaformVersions.find(version => version.id === id);
@@ -154,10 +154,10 @@ const EditorScreen: React.FC = () => {
     const { slug } = metaforms.find(metaform => metaform.id === (versionToEdit.data as Metaform).id)!;
 
     if (versionToEdit.type === MetaformVersionType.Archived) {
-      return handleArchiveToDraft(versionToEdit);
+      handleArchiveToDraft(versionToEdit);
     }
     
-    return navigate(`${currentPath}/${slug}/${versionToEdit.id}`);
+    navigate(`${currentPath}/${slug}/${versionToEdit.id}`);
   };
 
   /**

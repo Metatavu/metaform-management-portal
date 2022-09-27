@@ -9,6 +9,7 @@ import React, { FC, useState } from "react";
 import { FormListContainer, FormPagination, FormsContainer } from "styled/editor/metaform-editor";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 import { DataGrid, GridActionsCellItem, GridColumns, GridRowParams } from "@mui/x-data-grid";
+import { DataValidation } from "utils/data-validation-utils";
 /**
 * Component props
 */
@@ -102,10 +103,12 @@ const EditorScreenTable: FC<Props> = ({
    * @param metaform metaform
    */
   const buildVersionRows = (metaform: Metaform): MetaformVersionRow[] => {
-    const versions = metaformVersions.filter(x => x.data.id as unknown === metaform.id);
-    versions.sort((a, b) => {
-      return a.modifiedAt!.getTime() > b.modifiedAt!.getTime() ? -1 : 1;
-    });
+    const versions = metaformVersions.filter(version =>
+      (version.data as Metaform).id === metaform.id &&
+      DataValidation.validateValueIsNotUndefinedNorNull(version.modifiedAt));
+
+    versions.sort((a, b) => (a.modifiedAt!.getTime() > b.modifiedAt!.getTime() ? -1 : 1));
+    
     const productionVersion = buildProductionVersion(metaform.id!);
     const versionRows: MetaformVersionRow[] = versions.map((version: MetaformVersion) => {
       const { formVersionArchived, formVersionDraft } = strings.editorScreen;

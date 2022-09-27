@@ -188,7 +188,7 @@
     "preview": "Esikatsele",
     "publish": "Julkaise",
     "publishDialog": {
-      "title": "Oletko varma?",
+      "title": "Julkaise versio",
       "contentText": "Oletko varma, että haluat julkaista lomakkeen {0}?"
     },
     "editor": {

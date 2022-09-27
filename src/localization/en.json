@@ -190,7 +190,7 @@
     "preview": "Preview",
     "publish": "Publish",
     "publishDialog": {
-      "title": "Are you sure?",
+      "title": "Publish version",
       "contentText": "Are you sure you wish to publish {0}?"
     },
     "editor": {

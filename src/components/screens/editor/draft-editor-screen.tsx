@@ -129,7 +129,7 @@ const DraftEditorScreen: React.FC = () => {
       cancelButtonText={ strings.generic.cancel }
       positiveButtonText={ strings.generic.confirm }
       title={ strings.draftEditorScreen.publishDialog.title }
-      text={ strings.formatString(strings.draftEditorScreen.publishDialog.contentText, draftForm.slug!) as string }
+      text={ strings.formatString(strings.draftEditorScreen.publishDialog.contentText, draftForm.slug ?? "") as string }
       open={ publishDialogOpen }
     />
   );
