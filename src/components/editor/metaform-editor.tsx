@@ -37,7 +37,7 @@ const MetaformEditor: React.FC<Props> = ({
   const [ selectedFieldIndex, setSelectedFieldIndex ] = React.useState<number>();
   const [ selectedSectionIndex, setSelectedSectionIndex ] = React.useState<number>();
   const [ draggingMode, setDraggingMode ] = React.useState<DraggingMode>();
-  
+
   /**
    * Event handler for empty space click
    */
@@ -181,7 +181,6 @@ const MetaformEditor: React.FC<Props> = ({
    * Event handler for section click
    *
    * @param sectionIndex section index
-   * 
    */
   const onSectionClick = (sectionIndex: number) => () => {
     if (selectedSectionIndex !== sectionIndex) {

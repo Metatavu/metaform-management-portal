@@ -15,6 +15,7 @@ import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { RoundActionButton } from "styled/generic/form";
 import { selectMetaform, setMetaformVersion } from "features/metaform-slice";
+import ConfirmDialog from "components/generic/confirm-dialog";
 
 /**
  * Draft editor screen component
@@ -35,6 +36,7 @@ const DraftEditorScreen: React.FC = () => {
 
   const editorRef = useRef<HTMLDivElement>(null);
   const [ loading, setLoading ] = useState(false);
+  const [ publishDialogOpen, setPublishDialogOpen ] = useState(false);
 
   /**
    * Loads MetaformVersion to edit.
@@ -52,6 +54,7 @@ const DraftEditorScreen: React.FC = () => {
       dispatch(setMetaformVersion(draft));
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.findDraft, e);
+      navigate("./../..");
     }
 
     setLoading(false);
@@ -68,16 +71,13 @@ const DraftEditorScreen: React.FC = () => {
     }
 
     try {
-      await versionsApi.createMetaformVersion({
+      await versionsApi.updateMetaformVersion({
         metaformId: draftForm.id!,
+        versionId: draftId,
         metaformVersion: {
           type: MetaformVersionType.Draft,
           data: { ...draftForm } as { [key: string]: object }
         }
-      });
-      await versionsApi.deleteMetaformVersion({
-        metaformId: draftForm.id!,
-        versionId: draftId
       });
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.saveDraft, e);
@@ -85,7 +85,7 @@ const DraftEditorScreen: React.FC = () => {
 
     navigate("./../..");
   };
-
+  
   /**
    * Publishes Metaform
    */
@@ -102,24 +102,37 @@ const DraftEditorScreen: React.FC = () => {
         metaformId: form.id!,
         metaform: draftForm
       });
-      // TODO: Investigate possibility of adding PUT method to MetaformVersions API to simplify this.
-      await versionsApi.createMetaformVersion({
+
+      await versionsApi.updateMetaformVersion({
         metaformId: form.id!,
+        versionId: draftId,
         metaformVersion: {
           type: MetaformVersionType.Archived,
           data: { ...form } as { [key: string]: object }
         }
       });
-      await versionsApi.deleteMetaformVersion({
-        metaformId: form.id!,
-        versionId: draftId
-      });
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.publishDraft, e);
     }
 
-    navigate(-1);
+    navigate("./../..");
   };
+
+  /**
+   * Renders confirmation for publishing form
+   */
+  const renderPublishConfirmDialog = () => (
+    <ConfirmDialog
+      onClose={ () => setPublishDialogOpen(false) }
+      onCancel={ () => setPublishDialogOpen(false) }
+      onConfirm={ publishMetaformVersion }
+      cancelButtonText={ strings.generic.cancel }
+      positiveButtonText={ strings.generic.confirm }
+      title={ strings.draftEditorScreen.publishDialog.title }
+      text={ strings.formatString(strings.draftEditorScreen.publishDialog.contentText, draftForm.slug ?? "") as string }
+      open={ publishDialogOpen }
+    />
+  );
 
   useEffect(() => {
     if (metaformVersion === undefined || metaformVersion.id !== draftId) {
@@ -156,7 +169,7 @@ const DraftEditorScreen: React.FC = () => {
       </RoundActionButton>
       <RoundActionButton
         startIcon={ <Public/> }
-        onClick={ publishMetaformVersion }
+        onClick={ () => setPublishDialogOpen(true) }
       >
         <Typography>{ strings.draftEditorScreen.publish }</Typography>
       </RoundActionButton>
@@ -165,6 +178,7 @@ const DraftEditorScreen: React.FC = () => {
 
   return (
     <Stack flex={ 1 } overflow="hidden">
+      { renderPublishConfirmDialog() }
       <NavigationTabContainer>
         <NavigationTab
           text={ strings.navigationHeader.editorScreens.draftEditorScreen }

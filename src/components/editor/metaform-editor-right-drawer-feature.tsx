@@ -39,7 +39,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Updates metaform field and check if its used as visibleIf condition and change them 
-   * 
+   *
    * @param metaformField Metaform field what we are editing
    */
   const updateFormField = (metaformField: MetaformField) => {
@@ -94,7 +94,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Updates metaform section
-   * 
+   *
    * @param metaformSection metaform section what we are editing
    */
   const updateFormSection = (metaformSection: MetaformSection) => {
@@ -210,7 +210,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Update slider value
-   * 
+   *
    * @param eventValue Value of min or max slider value
    * @param scopeValue Min or Max, depending which value we are changing
    */
@@ -243,7 +243,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Update column title value
-   * 
+   *
    * @param tableColumn Metaform table column where we are changing title
    * @param columnIndex index value of current column title
    */
@@ -259,7 +259,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Delete column
-   * 
+   *
    * @param columnIndex indexvalue of current column we are deleting
    */
   const deleteColumn = (columnIndex: number) => {
@@ -292,7 +292,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Add custom html code in field
-   * 
+   *
    * @param htmlField html field
    */
   const updateHtmlField = (htmlField: MetaformField) => {
@@ -307,7 +307,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Render slider scope values
-   *  
+   *
    * @param selectedField selected metaformField
    */
   const renderSliderScopeValues = (selectedField: MetaformField) => {
@@ -393,10 +393,10 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
       );
     }
   };
-  
+
   /**
    * Render html editor
-   * 
+   *
    * @param selectedField selected field
    */
   const renderHtmlEditor = (selectedField: MetaformField) => {
@@ -462,12 +462,12 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
           { strings.draftEditorScreen.editor.features.addNewColumn }
         </Typography>
         <FormControl fullWidth>
-          <InputLabel id="fieldCategoryVisiblityConditionLabel">
+          <InputLabel id="fieldCategoryVisibilityConditionLabel">
             { strings.draftEditorScreen.editor.features.addColumnType }
           </InputLabel>
           <Select
             fullWidth
-            labelId="fieldCategoryVisiblityConditionLabel"
+            labelId="fieldCategoryVisibilityConditionLabel"
             label={ strings.draftEditorScreen.editor.features.addColumnType }
             sx={{ height: "50px" }}
             value={ columnType }
@@ -514,10 +514,10 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
       }
     }
   };
-  
+
   /**
    * Render define user group component
-   * 
+   *
    *  @param field selected field
    */
   const renderDefineUserGroup = (field: MetaformField) => {
@@ -547,7 +547,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Render fieldTitle and Required or not component
-   * 
+   *
    * @param field current field
    */
   const renderFieldTitleAndRequired = (field: MetaformField) => {
@@ -605,7 +605,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * Render feature component
+   * Renders feature component
    */
   const renderFeatures = () => {
     if (sectionIndex !== undefined && fieldIndex === undefined) {
@@ -634,11 +634,11 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
         return null;
       }
       return (
-        <>
+        <Stack spacing={ 2 }>
           { renderFieldTitleAndRequired(field) }
           <Divider/>
           { renderDefineUserGroup(field) }
-        </>
+        </Stack>
       );
     }
     return (
@@ -648,7 +648,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   useEffect(() => {
     getSelectedSectionTitle();
-  }, [fieldIndex, sectionIndex]);
+  }, [ fieldIndex, sectionIndex ]);
 
   /**
    * Component render

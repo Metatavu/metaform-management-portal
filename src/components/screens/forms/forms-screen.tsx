@@ -80,16 +80,30 @@ const FormsScreen: React.FC = () => {
   };
 
   /**
-   * View setup
+   * Load replies
+   *
+   * @param metaformId metaform id
+  */
+  const loadReplies = async (metaformId: string): Promise<Reply[]> => {
+    try {
+      return await repliesApi.listReplies({ metaformId: metaformId });
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsDataScreen.listReplies, e);
+      return [];
+    }
+  };
+
+  /**
+   * Loads data
    */
-  const setup = async () => {
+  const loadData = async () => {
     setLoading(true);
 
     try {
       const forms = await metaformsApi.listMetaforms({
         memberRole: MetaformMemberRole.Manager
       });
-      const replies = await Promise.all(forms.map(form => repliesApi.listReplies({ metaformId: form.id!! })));
+      const replies = await Promise.all(forms.map(form => loadReplies(form.id!)));
       const builtRows = forms.map((form, i) => buildRow(form, replies[i]));
 
       setRows(builtRows);
@@ -101,7 +115,7 @@ const FormsScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    setup();
+    loadData();
   }, []);
 
   const columns: GridColDef[] = [
@@ -179,7 +193,7 @@ const FormsScreen: React.FC = () => {
         />
         <FormRestrictedContent>
           <NavigationTab
-            text={ strings.navigationHeader.formsScreens.formDataScreen }
+            text={ strings.navigationHeader.formsScreens.formsDataScreen }
             to="data"
           />
         </FormRestrictedContent>
