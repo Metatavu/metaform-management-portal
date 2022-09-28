@@ -33,8 +33,15 @@ const SectionDragHandle: React.FC<Props> = ({
         <Edit/>
       </IconButton>
       <IconButton
+        disabled={ !onEditClick }
+        sx={{ color: "#fff" }}
+        onClick={ onEditClick }
+      >
+        <Edit/>
+      </IconButton>
+      <IconButton
         disabled={ !onDeleteClick }
-        style={{ color: "#fff" }}
+        sx={{ color: "#fff" }}
         onClick={ onDeleteClick }
       >
         <Delete/>
