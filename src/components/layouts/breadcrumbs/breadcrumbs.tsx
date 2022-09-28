@@ -1,5 +1,5 @@
 import { Typography, Stack } from "@mui/material";
-import getRoutes from "./routes";
+import getLocalizedRoutes from "./routes";
 import React from "react";
 import useBreadcrumbs, { BreadcrumbData } from "use-react-router-breadcrumbs";
 import { Crumb, Wrapper } from "styled/layouts/breadcrumbs";
@@ -11,7 +11,7 @@ import { selectLocale } from "features/locale-slice";
  */
 const Breadcrumbs: React.FC = () => {
   const { locale } = useAppSelector(selectLocale);
-  const breadcrumbs = useBreadcrumbs(getRoutes(locale), { disableDefaults: true });
+  const breadcrumbs = useBreadcrumbs(getLocalizedRoutes(locale), { disableDefaults: true });
 
   /**
    * Renders single breadcrumb
