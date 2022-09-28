@@ -350,7 +350,12 @@ const MetaformEditor: React.FC<Props> = ({
    */
   const renderFormEditor = () => (
     <EditorContent spacing={ 2 } ref={ editorRef }>
-      <Typography variant="h1">{ pendingForm.title }</Typography>
+      <Typography
+        sx={{ textAlign: "center" }}
+        variant="h1"
+      >
+        { pendingForm.title }
+      </Typography>
       <DroppableWrapper
         droppableId={ DraggingMode.SECTION.toString() }
         isDropDisabled={ draggingMode !== DraggingMode.SECTION }
@@ -376,7 +381,10 @@ const MetaformEditor: React.FC<Props> = ({
    */
   return (
     <EditorWrapper>
-      <DragDropContext onDragEnd={ onDragEnd } onDragStart={ onDragStart }>
+      <DragDropContext
+        onDragEnd={ onDragEnd }
+        onDragStart={ onDragStart }
+      >
         <MetaformEditorLeftDrawer
           pendingForm={ pendingForm }
           setPendingForm={ setPendingForm }
