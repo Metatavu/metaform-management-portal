@@ -1,14 +1,17 @@
 import { Typography, Stack } from "@mui/material";
-import routes from "./routes";
+import getRoutes from "./routes";
 import React from "react";
 import useBreadcrumbs, { BreadcrumbData } from "use-react-router-breadcrumbs";
 import { Crumb, Wrapper } from "styled/layouts/breadcrumbs";
+import { useAppSelector } from "app/hooks";
+import { selectLocale } from "features/locale-slice";
 
 /**
  * Breadcrumbs component
  */
 const Breadcrumbs: React.FC = () => {
-  const breadcrumbs = useBreadcrumbs(routes, { disableDefaults: true });
+  const { locale } = useAppSelector(selectLocale);
+  const breadcrumbs = useBreadcrumbs(getRoutes(locale), { disableDefaults: true });
 
   /**
    * Renders single breadcrumb
@@ -20,7 +23,6 @@ const Breadcrumbs: React.FC = () => {
     const { match, breadcrumb } = breadcrumbData;
     const { pathname } = match;
     const lastLink = (index + 1 === breadcrumbs.length) && breadcrumbs.length > 1;
-    const currentPage = (index + 2 === breadcrumbs.length) && breadcrumbs.length > 1;
 
     return (
       <Stack
@@ -33,10 +35,7 @@ const Breadcrumbs: React.FC = () => {
         <Crumb
           to={ pathname }
         >
-          <Typography
-            variant="subtitle2"
-            style={ currentPage ? { fontWeight: "bold" } : {} }
-          >
+          <Typography variant="subtitle2">
             { breadcrumb }
           </Typography>
         </Crumb>

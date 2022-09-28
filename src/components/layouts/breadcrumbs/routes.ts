@@ -1,23 +1,25 @@
 import FormBreadcrumb from "./form-breadcrumb";
-import strings from "localization/strings";
 import DraftBreadcrumb from "./draft-breadcrumb";
 import ReplyBreadcrumb from "./reply-breadcrumb";
+import LocalizationUtils from "utils/localization-utils";
 
 /**
- * Routes for breadcrumb
+ * Gets localized routes
+ *
+ * @param locale locale
  */
-const routes = [
+const getLocalizedRoutes = (locale: string) => [
   {
     path: "/admin/",
-    breadcrumb: strings.breadcrumb.home
+    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("home", locale)
   },
   {
     path: "/admin/users/*",
-    breadcrumb: strings.breadcrumb.users
+    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("users", locale)
   },
   {
     path: "/admin/editor",
-    breadcrumb: strings.breadcrumb.editor
+    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("editor", locale)
   },
   {
     path: "/admin/editor/:formSlug",
@@ -29,15 +31,15 @@ const routes = [
   },
   {
     path: "/admin/forms",
-    breadcrumb: strings.breadcrumb.forms
+    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("forms", locale)
   },
   {
     path: "/admin/forms/data",
-    breadcrumb: strings.breadcrumb.data
+    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("data", locale)
   },
   {
     path: "/admin/forms",
-    breadcrumb: strings.breadcrumb.list
+    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("list", locale)
   },
   {
     path: "/admin/forms/:formSlug",
@@ -45,7 +47,7 @@ const routes = [
   },
   {
     path: "/admin/forms/:formSlug/answers",
-    breadcrumb: strings.breadcrumb.answers
+    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("answers", locale)
   },
   {
     path: "/admin/forms/:formSlug/answers/:replyId",
@@ -53,8 +55,8 @@ const routes = [
   },
   {
     path: "/admin/forms/:formSlug/history",
-    breadcrumb: strings.breadcrumb.history
+    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("history", locale)
   }
 ];
 
-export default routes;
+export default getLocalizedRoutes;
