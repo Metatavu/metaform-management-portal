@@ -1,11 +1,11 @@
 import { Button, Checkbox, Divider, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
-import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType } from "generated/client";
+import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType, MetaformFieldType } from "generated/client";
 import produce from "immer";
 import slugify from "slugify";
 import strings from "localization/strings";
 import React, { useEffect, FC, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import { FormContext } from "../../types/index";
 /**
  * Component properties
  */
@@ -27,7 +27,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 }) => {
   const [ metaformSectionTitle, setMetaformSectionTitle ] = useState<string | undefined>("");
   const [ columnType, setColumnType ] = useState<string>("");
-
+  const [ contextOption, setContextOption ] = useState<FormContext[]>([]);
   /**
    * Get title of current section
    */
@@ -198,6 +198,32 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
+   * Update contexts of field
+   * 
+   * @param selectedContext Selected context Option
+   * @param checked Is context option checked or not
+   */
+  const updateContexts = (selectedContext: FormContext, checked: boolean) => {
+    if (sectionIndex !== undefined && fieldIndex !== undefined) {
+      if (!checked) {
+        pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.forEach((context, index) => {
+          if (selectedContext === context) {
+            const updatedForm = produce(pendingForm, draftForm => {
+              draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.contexts?.splice(index, 1);
+            });
+            setPendingForm(updatedForm);
+          }
+        });
+      } else {
+        const updatedForm = produce(pendingForm, draftForm => {
+          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.contexts?.push(selectedContext);
+        });
+        setPendingForm(updatedForm);
+      }
+    }
+  };
+
+  /**
    * Add custom html code in field
    *
    * @param htmlField html field
@@ -213,23 +239,76 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
+   * Check fields contexts
+   */
+  const checkContextSettings = () => {
+    if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      setContextOption([]);
+      pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.forEach(context => {
+        setContextOption(contextOptionList => [...contextOptionList, context as FormContext]);
+      });
+    }
+  };
+
+  /**
+   * Render contexts options
+   */
+  const renderContextOptions = () => (
+    <Stack spacing={ 2 }>
+      <Divider/>
+      <Typography variant="subtitle1">{ strings.draftEditorScreen.editor.features.contextVisibilityInfo }</Typography>
+      <FormControl>
+        <FormControlLabel
+          label={ strings.draftEditorScreen.editor.features.contextFormVisibility }
+          control={
+            <Checkbox
+              checked={ contextOption.includes(FormContext.FORM) }
+              onChange={ event => updateContexts(FormContext.FORM, event.target.checked) }
+            />
+          }
+        />
+      </FormControl>
+      <FormControl>
+        <FormControlLabel
+          label={ strings.draftEditorScreen.editor.features.contextManagementVisibility }
+          control={
+            <Checkbox
+              checked={ contextOption.includes(FormContext.MANAGEMENT) }
+              onChange={ event => updateContexts(FormContext.MANAGEMENT, event.target.checked) }
+            />
+          }
+        />
+      </FormControl>
+      <FormControl>
+        <FormControlLabel
+          label={ strings.draftEditorScreen.editor.features.contextManagementListVisibility }
+          control={
+            <Checkbox
+              checked={ contextOption.includes(FormContext.MANAGEMENT_LIST) }
+              onChange={ event => updateContexts(FormContext.MANAGEMENT_LIST, event.target.checked) }
+            />
+          }
+        />
+      </FormControl>
+    </Stack>
+  );
+
+  /**
    * Render slider scope values
    *
    * @param selectedField selected metaformField
    */
   const renderSliderScopeValues = (selectedField: MetaformField) => {
-    const {
-      max,
-      title,
-      min
-    } = selectedField;
+    const { max, min } = selectedField;
+    const { sliderMinValueLabel, sliderMaxValueLabel } = strings.draftEditorScreen.editor.features;
+    
     return (
       <>
         <TextField
           fullWidth
           type="number"
           sx={{ height: "50px" }}
-          label={`${title} min value`}
+          label={ sliderMinValueLabel }
           value={ min }
           onChange={ event => updateSliderValue(event.target.value, "min") }
         />
@@ -237,7 +316,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
           fullWidth
           type="number"
           sx={{ height: "50px" }}
-          label={`${title} max value`}
+          label={ sliderMaxValueLabel }
           value={ max }
           onChange={ event => updateSliderValue(event.target.value, "max") }
         />
@@ -405,25 +484,19 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const selectedField = pendingForm.sections![sectionIndex].fields![fieldIndex];
       const { type } = selectedField;
-      if (type === "slider") {
-        return (
-          renderSliderScopeValues(selectedField)
-        );
-      }
-      if (type === "checklist" || type === "radio" || type === "select") {
-        return (
-          renderFieldOptions()
-        );
-      }
-      if (type === "html") {
-        return (
-          renderHtmlEditor(selectedField)
-        );
-      }
-      if (type === "table") {
-        return (
-          renderTableColumnFeatures()
-        );
+      switch (type) {
+        case MetaformFieldType.Slider:
+          return renderSliderScopeValues(selectedField);
+        case MetaformFieldType.Checklist:
+        case MetaformFieldType.Radio:
+        case MetaformFieldType.Select:
+          return renderFieldOptions();
+        case MetaformFieldType.Html:
+          return renderHtmlEditor(selectedField);
+        case MetaformFieldType.Table:
+          return renderTableColumnFeatures();
+        default:
+          break;
       }
     }
   };
@@ -500,6 +573,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
           }
         />
         { renderOptions() }
+        { renderContextOptions() }
         <Divider/>
         <Typography variant="subtitle1" style={{ width: "100%" }}>
           { strings.draftEditorScreen.editor.features.required }
@@ -524,15 +598,20 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (sectionIndex !== undefined && fieldIndex === undefined) {
       const section = pendingForm.sections![sectionIndex];
       return (
-        <TextField
-          fullWidth
-          value={ section.title ?? "" }
-          label={ strings.draftEditorScreen.editor.features.sectionTitle }
-          onChange={ event => updateFormSection({
-            ...section,
-            title: event.target.value
-          }) }
-        />
+        <>
+          <Typography variant="subtitle1" sx={{ width: "100%" }}>
+            { strings.draftEditorScreen.editor.features.fieldDatas }
+          </Typography>
+          <TextField
+            fullWidth
+            value={ section.title ?? "" }
+            label={ strings.draftEditorScreen.editor.features.sectionTitle }
+            onChange={ event => updateFormSection({
+              ...section,
+              title: event.target.value
+            }) }
+          />
+        </>
       );
     }
 
@@ -553,6 +632,10 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
       <Typography>{ strings.draftEditorScreen.editor.visibility.selectVisibilityInfo }</Typography>
     );
   };
+
+  useEffect(() => {
+    checkContextSettings();
+  }, [fieldIndex, pendingForm]);
 
   useEffect(() => {
     getSelectedSectionTitle();

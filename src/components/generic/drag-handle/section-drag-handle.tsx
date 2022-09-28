@@ -1,4 +1,4 @@
-import { Delete, DragHandle } from "@mui/icons-material";
+import { Delete, DragHandle, Edit } from "@mui/icons-material";
 import { Box, IconButton } from "@mui/material";
 import React from "react";
 import { SectionDraggable } from "styled/generic/drag-handles";
@@ -8,6 +8,7 @@ import { SectionDraggable } from "styled/generic/drag-handles";
  */
 interface Props {
   selected: boolean;
+  onEditClick?: () => void;
   onDeleteClick?: () => void;
 }
 
@@ -17,6 +18,7 @@ interface Props {
 const SectionDragHandle: React.FC<Props> = ({
   selected,
   children,
+  onEditClick,
   onDeleteClick
 }) => (
   <Box position="relative">
@@ -24,8 +26,15 @@ const SectionDragHandle: React.FC<Props> = ({
     <SectionDraggable visibility={ !selected ? "hidden" : "visible" }>
       <DragHandle htmlColor="#fff"/>
       <IconButton
+        disabled={ !onEditClick }
+        sx={{ color: "#fff" }}
+        onClick={ onEditClick }
+      >
+        <Edit/>
+      </IconButton>
+      <IconButton
         disabled={ !onDeleteClick }
-        style={{ color: "#fff" }}
+        sx={{ color: "#fff" }}
         onClick={ onDeleteClick }
       >
         <Delete/>

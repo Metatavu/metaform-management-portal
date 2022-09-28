@@ -299,6 +299,12 @@ export interface Localized extends LocalizedStringsMethods {
         textOfSubmitButton: string;
         newFieldOption: string;
         addCustomHtml: string;
+        contextFormVisibility: string;
+        contextManagementVisibility: string;
+        contextManagementListVisibility: string;
+        contextVisibilityInfo: string;
+        sliderMinValueLabel: string;
+        sliderMaxValueLabel: string;
       };
       visibility: {
         tabTitle: string;

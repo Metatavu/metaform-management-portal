@@ -3,6 +3,8 @@ import strings from "localization/strings";
 import DraftBreadcrumb from "./draft-breadcrumb";
 import ReplyBreadcrumb from "./reply-breadcrumb";
 
+strings.setLanguage("fi");
+
 /**
  * Routes for breadcrumb
  */

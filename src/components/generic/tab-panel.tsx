@@ -31,11 +31,12 @@ const TabPanel: React.FC<Props> = ({
       style={{
         overflowY: "auto",
         overflowX: "hidden",
-        height: "100%",
+        height: "auto",
         display: "flex",
         gap: "1rem",
         flexWrap: "wrap",
-        flexDirection: "row"
+        flexDirection: "row",
+        maxHeight: "100%"
       }}
       pl={ padding ?? 2 }
       pr={ padding ?? 2 }
