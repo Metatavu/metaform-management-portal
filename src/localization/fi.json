@@ -247,7 +247,7 @@
       "features": {
         "tabTitle": "Ominaisuudet",
         "title": "Title",
-        "fieldDatas": "Kentän tiedot",
+        "fieldData": "Kentän tiedot",
         "fieldVisibility": "Kenttä näkyy lomakkeella:",
         "visibilityCondition": "Näkyvyyden ehto",
         "required": "Pakollisuus",

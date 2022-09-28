@@ -42,8 +42,9 @@ const MetaformEditor: React.FC<Props> = ({
    * Event handler for empty space click
    */
   const onGlobalClick = (event: MouseEvent) => {
-    if (!editorRef.current?.contains(event.target as Node)) {
-      return null;
+    if (editorRef.current?.isEqualNode(event.target as Node)) {
+      setSelectedFieldIndex(undefined);
+      setSelectedSectionIndex(undefined);
     }
   };
 
@@ -222,7 +223,7 @@ const MetaformEditor: React.FC<Props> = ({
   /**
    * Event handler for section edit click
    *
-   * @param sectionIndex section index 
+   * @param sectionIndex section index
    */
   const onSectionEditClick = (sectionIndex: number) => () => {
     setSelectedFieldIndex(undefined);

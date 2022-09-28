@@ -248,7 +248,7 @@
       "features": {
         "tabTitle": "Features",
         "title": "Title",
-        "fieldDatas": "Field Information",
+        "fieldData": "Field Information",
         "fieldVisibility": "The field is visible on the form:",
         "visibilityCondition": "Visibility condition",
         "required": "Required",

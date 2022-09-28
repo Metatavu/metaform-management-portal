@@ -38,7 +38,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * Updates metaform field and check if its used as visibleIf condition and change them 
+   * Updates metaform field and check if its used as visibleIf condition and change them
    *
    * @param metaformField Metaform field what we are editing
    */
@@ -109,7 +109,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Update option text and check if its used as VisibleIf change text also in that field
-   * 
+   *
    * @param updateTextOption FieldOption text we are changing
    * @param optionIndex option index value
    */
@@ -180,7 +180,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Delete option field and VisibleIf conditions where its used
-   * 
+   *
    * @param optionIndex Option index value of option field what we delete
    */
   const deleteFieldOptions = (optionIndex: number) => {
@@ -292,7 +292,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
 
   /**
    * Update contexts of field
-   * 
+   *
    * @param selectedContext Selected context Option
    * @param checked Is context option checked or not
    */
@@ -394,7 +394,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   const renderSliderScopeValues = (selectedField: MetaformField) => {
     const { max, min } = selectedField;
     const { sliderMinValueLabel, sliderMaxValueLabel } = strings.draftEditorScreen.editor.features;
-    
+
     return (
       <>
         <TextField
@@ -642,7 +642,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     return (
       <>
         <Typography variant="subtitle1" style={{ width: "100%" }}>
-          { strings.draftEditorScreen.editor.features.fieldDatas }
+          { strings.draftEditorScreen.editor.features.fieldData }
         </Typography>
         <TextField
           fullWidth
@@ -693,7 +693,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
       return (
         <>
           <Typography variant="subtitle1" style={{ width: "100%" }}>
-            { strings.draftEditorScreen.editor.features.fieldDatas }
+            { strings.draftEditorScreen.editor.features.fieldData }
           </Typography>
           <TextField
             fullWidth
