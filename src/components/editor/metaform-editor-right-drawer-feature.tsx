@@ -6,6 +6,7 @@ import strings from "localization/strings";
 import React, { useEffect, FC, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { FormContext } from "../../types/index";
+import MetaformUtils from "utils/metaform-utils";
 /**
  * Component properties
  */
@@ -493,12 +494,12 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   /**
    * Render features for adding, editing and deleting columns in table field
    */
-  const renderTableColumnFeatures = () => {
-    const tableColumn = pendingForm.sections![sectionIndex!].fields![fieldIndex!].columns;
+  const renderTableColumnFeatures = (field: MetaformField) => {
+    const columns = field.columns;
 
     return (
       <>
-        { pendingForm.sections![sectionIndex!].fields![fieldIndex!].columns!.map((field, index) => {
+        { pendingForm.sections![sectionIndex!].fields![fieldIndex!].columns!.map((column, index) => {
           return (
             <Stack spacing={ 2 } direction="row">
               <TextField
@@ -506,6 +507,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
                 value={ field.title }
                 label={ index }
                 onChange={ event => updateColumnTitle({
+                  // TODO WTF????????????
                   ...tableColumn,
                   name: slugify(`${event.target.value}-${index}`),
                   title: event.target.value,
@@ -572,25 +574,22 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   /**
    * Render options depending what field type is selected
    */
-  const renderOptions = () => {
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      const selectedField = pendingForm.sections![sectionIndex].fields![fieldIndex];
-      const { type } = selectedField;
+  const renderOptions = (field: MetaformField) => {
+    const { type } = field;
 
-      switch (type) {
-        case MetaformFieldType.Slider:
-          return renderSliderScopeValues(selectedField);
-        case MetaformFieldType.Checklist:
-        case MetaformFieldType.Radio:
-        case MetaformFieldType.Select:
-          return renderFieldOptions();
-        case MetaformFieldType.Html:
-          return renderHtmlEditor(selectedField);
-        case MetaformFieldType.Table:
-          return renderTableColumnFeatures();
-        default:
-          break;
-      }
+    switch (type) {
+      case MetaformFieldType.Slider:
+        return renderSliderScopeValues(field);
+      case MetaformFieldType.Checklist:
+      case MetaformFieldType.Radio:
+      case MetaformFieldType.Select:
+        return renderFieldOptions();
+      case MetaformFieldType.Html:
+        return renderHtmlEditor(field);
+      case MetaformFieldType.Table:
+        return renderTableColumnFeatures(field);
+      default:
+        break;
     }
   };
 
@@ -665,7 +664,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
           }
           }
         />
-        { renderOptions() }
+        { renderOptions(field) }
         { renderContextOptions() }
         <Divider/>
         <Typography variant="subtitle1" style={{ width: "100%" }}>
@@ -688,11 +687,11 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * Renders section editor
    */
   const renderSectionEditor = () => {
-    if (sectionIndex === undefined || fieldIndex !== undefined) {
+    const field = MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex);
+    const section = MetaformUtils.getMetaformSection(pendingForm, sectionIndex);
+    if (!section || field) {
       return null;
     }
-
-    const section = pendingForm.sections![sectionIndex];
 
     return (
       <>
@@ -716,12 +715,11 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * Renders field editor
    */
   const renderFieldEditor = () => {
-    if (fieldIndex === undefined || sectionIndex === undefined) {
+    const field = MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex);
+    const section = MetaformUtils.getMetaformSection(pendingForm, sectionIndex);
+    if (!section || !field) {
       return null;
     }
-
-    const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
-    const section = pendingForm.sections![sectionIndex];
 
     return (
       <>
@@ -736,12 +734,12 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * Renders empty selection
    */
   const renderEmptySelection = () => {
-    if (sectionIndex !== undefined) {
+    if (!MetaformUtils.getMetaformSection(pendingForm, sectionIndex)) {
       return null;
     }
 
     return (
-      <Typography>{ strings.draftEditorScreen.editor.visibility.selectVisibilityInfo }</Typography>
+      <Typography>{ strings.draftEditorScreen.editor.emptySection}</Typography>
     );
   };
 

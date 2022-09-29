@@ -12,6 +12,37 @@ import { FormContext } from "../types/index";
 namespace MetaformUtils {
 
   /**
+   * Gets metaform section
+   *
+   * @param form metaform
+   * @param sectionId section id
+   * @return metaform section
+   */
+  export const getMetaformSection = (form: Metaform, sectionId?: number): MetaformSection | undefined => {
+    if (sectionId === undefined) {
+      return undefined;
+    }
+
+    return form.sections?.[sectionId];
+  }
+
+  /**
+   * Gets metaform section
+   *
+   * @param form metaform
+   * @param fieldId field id
+   * @param sectionId section id
+   * @return metaform field
+   */
+  export const getMetaformField = (form: Metaform, sectionId?: number, fieldId?: number): MetaformField | undefined => {
+    if (sectionId === undefined || fieldId === undefined) {
+      return undefined;
+    }
+
+    return form.sections?.[sectionId]?.fields?.[fieldId];
+  }
+
+  /**
    * Create new Metaform
    *
    * @param formTitle Title of the metaform
