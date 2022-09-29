@@ -1,25 +1,23 @@
 import FormBreadcrumb from "./form-breadcrumb";
 import DraftBreadcrumb from "./draft-breadcrumb";
 import ReplyBreadcrumb from "./reply-breadcrumb";
-import LocalizationUtils from "utils/localization-utils";
+import strings from "localization/strings";
 
 /**
  * Gets localized routes
- *
- * @param locale locale
  */
-const getLocalizedRoutes = (locale: string) => [
+const getRoutes = () => [
   {
     path: "/admin/",
-    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("home", locale)
+    breadcrumb: strings.breadcrumb.home
   },
   {
     path: "/admin/users/*",
-    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("users", locale)
+    breadcrumb: strings.breadcrumb.users
   },
   {
     path: "/admin/editor",
-    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("editor", locale)
+    breadcrumb: strings.breadcrumb.editor
   },
   {
     path: "/admin/editor/:formSlug",
@@ -31,15 +29,15 @@ const getLocalizedRoutes = (locale: string) => [
   },
   {
     path: "/admin/forms",
-    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("forms", locale)
+    breadcrumb: strings.breadcrumb.forms
   },
   {
     path: "/admin/forms/data",
-    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("data", locale)
+    breadcrumb: strings.breadcrumb.data
   },
   {
     path: "/admin/forms",
-    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("list", locale)
+    breadcrumb: strings.breadcrumb.list
   },
   {
     path: "/admin/forms/:formSlug",
@@ -47,7 +45,7 @@ const getLocalizedRoutes = (locale: string) => [
   },
   {
     path: "/admin/forms/:formSlug/answers",
-    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("answers", locale)
+    breadcrumb: strings.breadcrumb.answers
   },
   {
     path: "/admin/forms/:formSlug/answers/:replyId",
@@ -55,8 +53,8 @@ const getLocalizedRoutes = (locale: string) => [
   },
   {
     path: "/admin/forms/:formSlug/history",
-    breadcrumb: LocalizationUtils.localizeBreadcrumbStrings("history", locale)
+    breadcrumb: strings.breadcrumb.history
   }
 ];
 
-export default getLocalizedRoutes;
+export default getRoutes;

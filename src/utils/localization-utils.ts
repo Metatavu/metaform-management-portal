@@ -59,11 +59,6 @@ namespace LocalizationUtils {
   })[type];
 
   /**
-   * Localizes breadcrumb strings
-   */
-  export const localizeBreadcrumbStrings = (key: string, locale: string) => strings.getString(`breadcrumb.${key}`, locale) || "";
-
-  /**
    * Returns localized name boolean value
    *
    * @param bool boolean value
