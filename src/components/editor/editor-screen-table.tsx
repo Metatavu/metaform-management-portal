@@ -91,9 +91,15 @@ const EditorScreenTable: FC<Props> = ({
    * @param id metaform id
    */
   const buildProductionVersion = (id: string): MetaformVersionRow => {
+    const metaform = metaforms.find(form => form.id === id);
+    const { createdAt, modifiedAt, lastModifierId } = metaform!;
+    
     return {
       id: id,
-      typeString: strings.editorScreen.formProductionVersion
+      typeString: strings.editorScreen.formProductionVersion,
+      createdAt: createdAt,
+      modifiedAt: modifiedAt,
+      modifierId: lastModifierId
     };
   };
 
@@ -108,7 +114,7 @@ const EditorScreenTable: FC<Props> = ({
       DataValidation.validateValueIsNotUndefinedNorNull(version.modifiedAt));
 
     versions.sort((a, b) => (a.modifiedAt!.getTime() > b.modifiedAt!.getTime() ? -1 : 1));
-    
+
     const productionVersion = buildProductionVersion(metaform.id!);
     const versionRows: MetaformVersionRow[] = versions.map((version: MetaformVersion) => {
       const { formVersionArchived, formVersionDraft } = strings.editorScreen;
