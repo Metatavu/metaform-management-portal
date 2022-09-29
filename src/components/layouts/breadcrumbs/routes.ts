@@ -3,6 +3,8 @@ import DraftBreadcrumb from "./draft-breadcrumb";
 import ReplyBreadcrumb from "./reply-breadcrumb";
 import strings from "localization/strings";
 
+strings.setLanguage("fi");
+
 /**
  * Gets localized routes
  */

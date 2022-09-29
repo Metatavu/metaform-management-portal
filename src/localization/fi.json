@@ -261,13 +261,19 @@
         "columnTextType": "Tekstikenttä",
         "columnNumberType": "Numerokenttä",
         "textOfSubmitButton": "Painikkeen teksti",
-        "newFieldOption":"Valintakenttä",
-        "addCustomHtml":"Lisää tähän HTML-sisältöä"
+        "newFieldOption": "Valintakenttä",
+        "addCustomHtml": "Lisää tähän HTML-sisältöä",
+        "contextFormVisibility": "Näkyy lomaketta täyttäessä",
+        "contextManagementVisibility": "Näkyy hallinnointi näkymässä",
+        "contextManagementListVisibility": "Näkyy hallinnoinnin listaus näkymässä",
+        "contextVisibilityInfo": "Kentän hallinnointi asetukset",
+        "sliderMinValueLabel": "Kentän pienin arvo",
+        "sliderMaxValueLabel": "Kentän suurin arvo"
       },
       "visibility": {
         "tabTitle": "näkyvyys",
-        "conditionLabelTitle":"Ehtokentän nimi",
-        "conditionally":"Ehdollisesti",
+        "conditionLabelTitle": "Ehtokentän nimi",
+        "conditionally": "Ehdollisesti",
         "conditionalFieldValue": "Ehtokentän arvo",
         "conditionalFieldInfo": "Valitse se lomakkeen kenttä, joka määrittää näkyvyyden.",
         "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
@@ -447,15 +453,15 @@
   },
 
   "auditLogEntryType": {
-    "viewReply": "Vastaus avattu",
-    "listReply": "Vastaus listattu",
-    "modifyReply": "Vastausta muokattu",
-    "deleteReply": "Vastaus poistettu",
-    "createReply": "Vastaus luotu",
-    "viewReplyAttachment": "Vastauksen liite avattu",
-    "downloadReplyAttachment": "Vastauksen liite ladattu",
-    "exportReplyPdf": "Vastaus viety PDF:nä",
-    "exportReplyXlsx": "Vastaus viety taulukkona"
+    "viewReply": "Avattu",
+    "listReply": "Listattu",
+    "modifyReply": "Muokattu",
+    "deleteReply": "Poistettu",
+    "createReply": "Luotu",
+    "viewReplyAttachment": "Liite avattu",
+    "downloadReplyAttachment": "Liite ladattu",
+    "exportReplyPdf": "Viety PDF:nä",
+    "exportReplyXlsx": "Viety taulukkona"
   },
 
   "dataGrid": {
