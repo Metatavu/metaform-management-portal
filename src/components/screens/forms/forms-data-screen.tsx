@@ -96,7 +96,9 @@ const FormsDataScreen: React.FC = () => {
    */
   const loadAuditLogEntries = async (metaformId: string): Promise<AuditLogEntry[]> => {
     try {
-      return await auditLogEntriesApi.listAuditLogEntries({ metaformId: metaformId });
+      const auditLogEntries = await auditLogEntriesApi.listAuditLogEntries({ metaformId: metaformId });
+      
+      return auditLogEntries;
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsDataScreen.listAuditLogEntries, e);
       return [];
