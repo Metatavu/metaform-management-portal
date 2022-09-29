@@ -248,6 +248,7 @@ export interface Localized extends LocalizedStringsMethods {
     editor: {
       addSection: string;
       emptySection: string;
+      emptySelection: string;
       form: {
         tabTitle: string;
         formTitle: string;
@@ -283,31 +284,38 @@ export interface Localized extends LocalizedStringsMethods {
       features: {
         tabTitle: string;
         title: string;
-        fieldData: string;
-        visibilityCondition: string;
-        fieldVisibility: string;
-        defineUserGroup: string;
-        selectableFieldsInfo: string;
-        required: string;
-        fieldTitle: string;
-        sectionTitle: string;
-        addSelectionField: string;
-        addNewColumn: string;
-        addColumnType: string;
-        columnTextType: string;
-        columnNumberType: string;
-        textOfSubmitButton: string;
-        newFieldOption: string;
-        addCustomHtml: string;
-        contextFormVisibility: string;
-        contextManagementVisibility: string;
-        contextManagementListVisibility: string;
-        contextVisibilityInfo: string;
-        sliderMinValueLabel: string;
-        sliderMaxValueLabel: string;
+        section: {
+          sectionData: string;
+          sectionTitle: string;
+        };
+        field: {
+          fieldData: string;
+          fieldTitle: string;
+          defineUserGroup: string;
+          selectableFieldsInfo: string;
+          required: string;
+          addFieldOption: string;
+          addNewColumn: string;
+          addColumnType: string;
+          columnTextType: string;
+          columnNumberType: string;
+          textOfSubmitButton: string;
+          newFieldOption: string;
+          addCustomHtml: string;
+          contextFormVisibility: string;
+          contextManagementVisibility: string;
+          contextManagementListVisibility: string;
+          contextVisibilityInfo: string;
+          slider: {
+            minValueLabel: string;
+            maxValueLabel: string;
+          }
+        };
       };
       visibility: {
         tabTitle: string;
+        fieldVisibility: string;
+        visibilityCondition: string;
         conditionLabelTitle: string;
         conditionally: string;
         conditionalFieldValue: string;
@@ -315,7 +323,6 @@ export interface Localized extends LocalizedStringsMethods {
         conditionalFieldValueInfo: string;
         fieldDefiningCondition: string;
         selectField: string;
-        selectVisibilityInfo: string;
         fieldConditionLabel: string;
         sectionConditionLabel: string;
       };

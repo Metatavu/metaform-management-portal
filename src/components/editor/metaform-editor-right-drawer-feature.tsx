@@ -25,17 +25,24 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   pendingForm,
   setPendingForm
 }) => {
-  const [ metaformSectionTitle, setMetaformSectionTitle ] = useState<string | undefined>("");
   const [ columnType, setColumnType ] = useState<string>("");
   const [ contextOption, setContextOption ] = useState<FormContext[]>([]);
+
   /**
-   * Get title of current section
+   * Check fields contexts
    */
-  const getSelectedSectionTitle = () => {
-    if (fieldIndex === undefined && sectionIndex !== undefined) {
-      setMetaformSectionTitle(pendingForm.sections![sectionIndex].title ?? "");
+  const checkContextSettings = () => {
+    if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      setContextOption([]);
+      pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.forEach(context => {
+        setContextOption(contextOptionList => [...contextOptionList, context as FormContext]);
+      });
     }
   };
+
+  useEffect(() => {
+    checkContextSettings();
+  }, [ sectionIndex, fieldIndex, pendingForm ]);
 
   /**
    * Updates metaform field and check if its used as visibleIf condition and change them
@@ -218,6 +225,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
+
     const metaFormField = pendingForm.sections![sectionIndex].fields![fieldIndex];
     if (scopeValue === "min") {
       const updateField = {
@@ -229,6 +237,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
       });
       setPendingForm(updatedForm);
     }
+
     if (scopeValue === "max") {
       const updateField = {
         ...metaFormField,
@@ -260,7 +269,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   /**
    * Delete column
    *
-   * @param columnIndex indexvalue of current column we are deleting
+   * @param columnIndex index value of current column we are deleting
    */
   const deleteColumn = (columnIndex: number) => {
     if (sectionIndex === undefined || fieldIndex === undefined) {
@@ -329,18 +338,6 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
       draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, htmlField);
     });
     setPendingForm(updatedForm);
-  };
-
-  /**
-   * Check fields contexts
-   */
-  const checkContextSettings = () => {
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      setContextOption([]);
-      pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.forEach(context => {
-        setContextOption(contextOptionList => [...contextOptionList, context as FormContext]);
-      });
-    }
   };
 
   /**
@@ -466,7 +463,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
             }}
             onClick={ addNewFieldOption }
           >
-            { strings.draftEditorScreen.editor.features.addSelectionField }
+            { strings.draftEditorScreen.editor.features.addFieldOption }
           </Button>
         </>
       );
@@ -480,6 +477,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    */
   const renderHtmlEditor = (selectedField: MetaformField) => {
     const { html } = selectedField;
+
     return (
       <TextField
         fullWidth
@@ -497,6 +495,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    */
   const renderTableColumnFeatures = () => {
     const tableColumn = pendingForm.sections![sectionIndex!].fields![fieldIndex!].columns;
+
     return (
       <>
         { pendingForm.sections![sectionIndex!].fields![fieldIndex!].columns!.map((field, index) => {
@@ -577,6 +576,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
       const selectedField = pendingForm.sections![sectionIndex].fields![fieldIndex];
       const { type } = selectedField;
+
       switch (type) {
         case MetaformFieldType.Slider:
           return renderSliderScopeValues(selectedField);
@@ -602,6 +602,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   const renderDefineUserGroup = (field: MetaformField) => {
     const { type } = field;
     const allowToDefineUserGroup = type === "select" || type === "date-time" || type === "radio" || type === "checklist" || type === "date";
+
     return (
       <>
         <Typography variant="subtitle1" style={{ width: "100%" }}>
@@ -629,16 +630,15 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    *
    * @param field current field
    */
-  const renderFieldTitleAndRequired = (field: MetaformField) => {
-    if (field === undefined) {
-      return null;
-    }
+  const renderFieldTitleAndRequired = (field: MetaformField, section: MetaformSection) => {
     const {
       text,
       title,
       type,
       required
     } = field;
+    const sectionTitle = section.title ?? "";
+
     return (
       <>
         <Typography variant="subtitle1" style={{ width: "100%" }}>
@@ -653,13 +653,13 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
               updateFormField({
                 ...field,
                 text: event.target.value,
-                name: slugify(`${metaformSectionTitle}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
+                name: slugify(`${sectionTitle}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
               });
             } else {
               updateFormField({
                 ...field,
                 title: event.target.value,
-                name: slugify(`${metaformSectionTitle}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
+                name: slugify(`${sectionTitle}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
               });
             }
           }
@@ -685,59 +685,76 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
-   * Renders feature component
+   * Renders section editor
    */
-  const renderFeatures = () => {
-    if (sectionIndex !== undefined && fieldIndex === undefined) {
-      const section = pendingForm.sections![sectionIndex];
-      return (
-        <>
-          <Typography variant="subtitle1" style={{ width: "100%" }}>
-            { strings.draftEditorScreen.editor.features.fieldData }
-          </Typography>
-          <TextField
-            fullWidth
-            value={ section.title ?? "" }
-            label={ strings.draftEditorScreen.editor.features.sectionTitle }
-            onChange={ event => updateFormSection({
-              ...section,
-              title: event.target.value
-            }) }
-          />
-        </>
-      );
+  const renderSectionEditor = () => {
+    if (sectionIndex === undefined || fieldIndex !== undefined) {
+      return null;
     }
 
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
-      if (field === undefined) {
-        return null;
-      }
-      return (
-        <Stack spacing={ 2 }>
-          { renderFieldTitleAndRequired(field) }
-          <Divider/>
-          { renderDefineUserGroup(field) }
-        </Stack>
-      );
+    const section = pendingForm.sections![sectionIndex];
+
+    return (
+      <>
+        <Typography variant="subtitle1" style={{ width: "100%" }}>
+          { strings.draftEditorScreen.editor.features.fieldData }
+        </Typography>
+        <TextField
+          fullWidth
+          value={ section.title ?? "" }
+          label={ strings.draftEditorScreen.editor.features.sectionTitle }
+          onChange={ event => updateFormSection({
+            ...section,
+            title: event.target.value
+          }) }
+        />
+      </>
+    );
+  };
+
+  /**
+   * Renders field editor
+   */
+  const renderFieldEditor = () => {
+    if (fieldIndex === undefined || sectionIndex === undefined) {
+      return null;
     }
+
+    const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
+    const section = pendingForm.sections![sectionIndex];
+
+    return (
+      <>
+        { renderFieldTitleAndRequired(field, section) }
+        <Divider/>
+        { renderDefineUserGroup(field) }
+      </>
+    );
+  };
+
+  /**
+   * Renders empty selection
+   */
+  const renderEmptySelection = () => {
+    if (sectionIndex !== undefined) {
+      return null;
+    }
+
     return (
       <Typography>{ strings.draftEditorScreen.editor.visibility.selectVisibilityInfo }</Typography>
     );
   };
 
-  useEffect(() => {
-    checkContextSettings();
-  }, [fieldIndex, pendingForm]);
-
-  useEffect(() => {
-    getSelectedSectionTitle();
-  }, [ fieldIndex, sectionIndex ]);
-
   /**
    * Component render
    */
-  return renderFeatures();
+  return (
+    <Stack spacing={ 2 }>
+      { renderSectionEditor() }
+      { renderFieldEditor() }
+      { renderEmptySelection() }
+    </Stack>
+  );
 };
 
 export default MetaformEditorRightDrawerFeatureComponent;

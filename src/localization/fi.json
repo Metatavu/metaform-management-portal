@@ -255,7 +255,7 @@
         "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
         "fieldTitle": "Kentän otsikko",
         "sectionTitle": "Osion otsikko",
-        "addSelectionField": "Lisää kenttä",
+        "addFieldOption": "Lisää kenttä",
         "addNewColumn": "Lisää uusi sarake",
         "addColumnType": "Anna kentän tyyppi",
         "columnTextType": "Tekstikenttä",

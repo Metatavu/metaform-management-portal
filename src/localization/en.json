@@ -256,7 +256,7 @@
         "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
         "fieldTitle": "Field title",
         "sectionTitle": "Section title",
-        "addSelectionField": "Add field",
+        "addFieldOption": "Add field",
         "addNewColumn": "Add new column",
         "addColumnType": "Add column type",
         "columnTextType": "Text field",
