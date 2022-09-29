@@ -454,14 +454,14 @@
   },
 
   "auditLogEntryType": {
-    "viewReply": "View reply",
-    "listReply": "List reply",
-    "modifyReply": "Modify reply",
-    "deleteReply": "Delete reply",
-    "createReply": "Create reply",
-    "viewReplyAttachment": "View reply attachment",
-    "downloadReplyAttachment": "Download reply attachment",
-    "exportReplyPdf": "Export reply pdf",
-    "exportReplyXlsx": "Export reply xlsx"
+    "viewReply": "Viewed",
+    "listReply": "Listed",
+    "modifyReply": "Modified",
+    "deleteReply": "Deleted",
+    "createReply": "Created",
+    "viewReplyAttachment": "Viewed attachment",
+    "downloadReplyAttachment": "Downloaded attachment",
+    "exportReplyPdf": "Exported pdf",
+    "exportReplyXlsx": "Exported xlsx"
   }
 }
