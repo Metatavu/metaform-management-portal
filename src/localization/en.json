@@ -248,32 +248,40 @@
       "features": {
         "tabTitle": "Features",
         "title": "Title",
-        "fieldData": "Field Information",
-        "fieldVisibility": "The field is visible on the form:",
-        "visibilityCondition": "Visibility condition",
-        "required": "Required",
-        "defineUserGroup": "Define a user group",
-        "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
-        "fieldTitle": "Field title",
-        "sectionTitle": "Section title",
-        "addFieldOption": "Add field",
-        "addNewColumn": "Add new column",
-        "addColumnType": "Add column type",
-        "columnTextType": "Text field",
-        "columnNumberType": "Number field",
-        "textOfSubmitButton": "Button text",
-        "newFieldOption": "Option field",
-        "addCustomHtml": "Add HTML code in field",
-        "contextFormVisibility": "Shown on the form for customer",
-        "contextManagementVisibility": "Shown on management screen",
-        "contextManagementListVisibility": "Shown on management list screen",
-        "contextVisibilityInfo": "Field management settings",
-        "sliderMinValueLabel": "Field minimum value",
-        "sliderMaxValueLabel": "Field maximum value"
+        "emptySelection": "Selection a section or field to start editing.",
+        "section": {
+          "sectionData": "Section information",
+          "sectionTitle": "Section title"
+        },
+        "field":{
+          "fieldData": "Field information",
+          "required": "Required",
+          "defineUserGroup": "Define a user group",
+          "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
+          "fieldTitle": "Field title",
+          "addFieldOption": "Add field",
+          "addNewColumn": "Add new column",
+          "addColumnType": "Add column type",
+          "columnTextType": "Text field",
+          "columnNumberType": "Number field",
+          "textOfSubmitButton": "Button text",
+          "newFieldOption": "Option field",
+          "addCustomHtml": "Add HTML code in field",
+          "contextFormVisibility": "Shown on the form for customer",
+          "contextManagementVisibility": "Shown on management screen",
+          "contextManagementListVisibility": "Shown on management list screen",
+          "contextVisibilityInfo": "Field management settings",
+          "slider": {
+            "minValueLabel": "Field minimum value",
+            "maxValueLabel": "Field maximum value"
+          }
+        }
       },
       "visibility": {
         "tabTitle": "Visibility",
+        "fieldVisibility": "The field is visible on the form:",
         "conditionLabelTitle":"Condition field name",
+        "visibilityCondition": "Visibility condition",
         "conditionally": "Conditionally",
         "conditionalFieldValue": "Conditional field value",
         "conditionalFieldInfo": "Select the form field that determines visibility.",
@@ -281,8 +289,7 @@
         "fieldDefiningCondition": "Field defining the condition",
         "selectField": "Select a field",
         "fieldConditionLabel": "This field appears, if {0} value is {1}",
-        "sectionConditionLabel": "This section appears, if {0} value is {1}",
-        "selectVisibilityInfo": "Select a field in the form to edit the field information."
+        "sectionConditionLabel": "This section appears, if {0} value is {1}"
       }
     },
     "formPreview": {

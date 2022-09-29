@@ -248,7 +248,6 @@ export interface Localized extends LocalizedStringsMethods {
     editor: {
       addSection: string;
       emptySection: string;
-      emptySelection: string;
       form: {
         tabTitle: string;
         formTitle: string;
@@ -284,6 +283,7 @@ export interface Localized extends LocalizedStringsMethods {
       features: {
         tabTitle: string;
         title: string;
+        emptySelection: string;
         section: {
           sectionData: string;
           sectionTitle: string;
