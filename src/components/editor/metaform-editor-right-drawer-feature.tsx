@@ -336,6 +336,9 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    */
   const checkContextSettings = () => {
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      if (!pendingForm.sections![sectionIndex].fields![fieldIndex]) {
+        return;
+      }
       setContextOption([]);
       pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.forEach(context => {
         setContextOption(contextOptionList => [...contextOptionList, context as FormContext]);
