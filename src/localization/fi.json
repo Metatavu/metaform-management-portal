@@ -453,14 +453,14 @@
   },
 
   "auditLogEntryType": {
-    "viewReply": "Vastaus avattu",
-    "listReply": "Vastaus listattu",
-    "modifyReply": "Vastausta muokattu",
-    "deleteReply": "Vastaus poistettu",
-    "createReply": "Vastaus luotu",
-    "viewReplyAttachment": "Vastauksen liite avattu",
-    "downloadReplyAttachment": "Vastauksen liite ladattu",
-    "exportReplyPdf": "Vastaus viety PDF:nä",
-    "exportReplyXlsx": "Vastaus viety taulukkona"
+    "viewReply": "Avattu",
+    "listReply": "Listattu",
+    "modifyReply": "Muokattu",
+    "deleteReply": "Poistettu",
+    "createReply": "Luotu",
+    "viewReplyAttachment": "Liite avattu",
+    "downloadReplyAttachment": "Liite ladattu",
+    "exportReplyPdf": "Viety PDF:nä",
+    "exportReplyXlsx": "Viety taulukkona"
   }
 }
