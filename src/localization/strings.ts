@@ -248,6 +248,7 @@ export interface Localized extends LocalizedStringsMethods {
     editor: {
       addSection: string;
       emptySection: string;
+      emptySelection: string;
       form: {
         tabTitle: string;
         formTitle: string;
@@ -283,7 +284,6 @@ export interface Localized extends LocalizedStringsMethods {
       features: {
         tabTitle: string;
         title: string;
-        emptySelection: string;
         section: {
           sectionData: string;
           sectionTitle: string;
@@ -299,12 +299,9 @@ export interface Localized extends LocalizedStringsMethods {
           addColumnType: string;
           columnTextType: string;
           columnNumberType: string;
-          textOfSubmitButton: string;
+          submitButtonText: string;
           newFieldOption: string;
           addCustomHtml: string;
-          contextFormVisibility: string;
-          contextManagementVisibility: string;
-          contextManagementListVisibility: string;
           contextVisibilityInfo: string;
           slider: {
             minValueLabel: string;
@@ -516,7 +513,7 @@ export interface Localized extends LocalizedStringsMethods {
   autoComplete: {
     missingOptions: string;
     missingCodeServerBaseUrl: string;
-    missingCodeServerClassificiationId: string;
+    missingCodeServerClassificationId: string;
     missingCodeServerParentConceptCodeId: string;
     missingAutocomplete: string;
     unknownAutocompleteService: string;
@@ -535,6 +532,12 @@ export interface Localized extends LocalizedStringsMethods {
     downloadReplyAttachment: string;
     exportReplyPdf: string;
     exportReplyXlsx: string
+  }
+
+  formContext: {
+    management: string;
+    managementList: string;
+    form: string;
   }
 
 }

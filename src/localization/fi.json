@@ -212,6 +212,7 @@
     "editor": {
       "addSection": "Lisää osio",
       "emptySection": "Tyhjä osio",
+      "emptySelection": "Aloita muokkaaminen valitsemalla osio tai kenttä.",
       "form": {
         "tabTitle": "Lomake",
         "formTitle": "Lomakkeen otsikko",
@@ -247,7 +248,6 @@
       "features": {
         "tabTitle": "Ominaisuudet",
         "title": "Title",
-        "emptySelection": "Aloita muokkaaminen valitsemalla osio tai kenttä.",
         "section": {
           "sectionData": "Osion tiedot",
           "sectionTitle": "Osion otsikko"
@@ -263,12 +263,9 @@
           "addColumnType": "Anna kentän tyyppi",
           "columnTextType": "Tekstikenttä",
           "columnNumberType": "Numerokenttä",
-          "textOfSubmitButton": "Painikkeen teksti",
+          "submitButtonText": "Painikkeen teksti",
           "newFieldOption": "Valintakenttä",
           "addCustomHtml": "Lisää tähän HTML-sisältöä",
-          "contextFormVisibility": "Näkyy lomaketta täyttäessä",
-          "contextManagementVisibility": "Näkyy hallinnointi näkymässä",
-          "contextManagementListVisibility": "Näkyy hallinnoinnin listaus näkymässä",
           "contextVisibilityInfo": "Kentän hallinnointi asetukset",
           "slider": {
             "minValueLabel": "Kentän pienin arvo",
@@ -453,7 +450,7 @@
   "autoComplete": {
     "missingOptions": "Code server autocomplete ei ole määritelty",
     "missingCodeServerBaseUrl": "Code server autocomplete puuttuu codeServerBaseUrl",
-    "missingCodeServerClassificiationId": "Code server autocomplete puuttuu codeServerClassificationId",
+    "missingCodeServerClassificationId": "Code server autocomplete puuttuu codeServerClassificationId",
     "missingCodeServerParentConceptCodeId": "Code server autocomplete puuttuu codeServerParentConceptCodeId",
     "missingAutocomplete": "Autocomplete ei ole määritelty",
     "unknownAutocompleteService": "TUNTEMATON_AUTO_COMPLETE_SERVICE"
@@ -469,5 +466,12 @@
     "downloadReplyAttachment": "Liite ladattu",
     "exportReplyPdf": "Viety PDF:nä",
     "exportReplyXlsx": "Viety taulukkona"
+  },
+
+  "formContext": {
+    "form": "Näkyy lomaketta täyttäessä",
+    "management": "Näkyy hallinnointi näkymässä",
+    "managementList": "Näkyy hallinnoinnin listaus näkymässä"
   }
+
 }

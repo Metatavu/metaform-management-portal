@@ -213,6 +213,7 @@
     "editor": {
       "addSection": "Add section",
       "emptySection": "Empty section",
+      "emptySelection": "Selection a section or field to start editing.",
       "form": {
         "tabTitle": "Form",
         "formTitle": "Form title",
@@ -248,7 +249,6 @@
       "features": {
         "tabTitle": "Features",
         "title": "Title",
-        "emptySelection": "Selection a section or field to start editing.",
         "section": {
           "sectionData": "Section information",
           "sectionTitle": "Section title"
@@ -264,12 +264,9 @@
           "addColumnType": "Add column type",
           "columnTextType": "Text field",
           "columnNumberType": "Number field",
-          "textOfSubmitButton": "Button text",
+          "submitButtonText": "Button text",
           "newFieldOption": "Option field",
           "addCustomHtml": "Add HTML code in field",
-          "contextFormVisibility": "Shown on the form for customer",
-          "contextManagementVisibility": "Shown on management screen",
-          "contextManagementListVisibility": "Shown on management list screen",
           "contextVisibilityInfo": "Field management settings",
           "slider": {
             "minValueLabel": "Field minimum value",
@@ -454,7 +451,7 @@
   "autoComplete": {
     "missingOptions": "Code server autocomplete not configured",
     "missingCodeServerBaseUrl": "Code server autocomplete missing codeServerBaseUrl",
-    "missingCodeServerClassificiationId": "Code server autocomplete missing codeServerClassificationId",
+    "missingCodeServerClassificationId": "Code server autocomplete missing codeServerClassificationId",
     "missingCodeServerParentConceptCodeId": "Code server autocomplete missing codeServerParentConceptCodeId",
     "missingAutocomplete": "Autocomplete not configured",
     "unknownAutocompleteService": "UNKNOWN_AUTO_COMPLETE_SERVICE"
@@ -470,5 +467,11 @@
     "downloadReplyAttachment": "Downloaded attachment",
     "exportReplyPdf": "Exported pdf",
     "exportReplyXlsx": "Exported xlsx"
+  },
+
+  "formContext": {
+    "management": "Shown on management screen",
+    "managementList": "Shown on management list screen",
+    "form": "Shown on the form for customer"
   }
 }

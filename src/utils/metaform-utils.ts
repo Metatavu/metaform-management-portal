@@ -12,6 +12,26 @@ import { FormContext } from "../types/index";
 namespace MetaformUtils {
 
   /**
+   * Field types that allow user group
+   */
+  export const fieldTypesAllowUserGroup = [
+    MetaformFieldType.Select,
+    MetaformFieldType.DateTime,
+    MetaformFieldType.Date,
+    MetaformFieldType.Radio,
+    MetaformFieldType.Checklist
+  ];
+
+  /**
+   * Field types that allow visibility
+   */
+  export const fieldTypesAllowVisibility = [
+    MetaformFieldType.Select,
+    MetaformFieldType.Radio,
+    MetaformFieldType.Checklist
+  ];
+
+  /**
    * Gets metaform section
    *
    * @param form metaform
@@ -24,7 +44,7 @@ namespace MetaformUtils {
     }
 
     return form.sections?.[sectionId];
-  }
+  };
 
   /**
    * Gets metaform section
@@ -40,7 +60,7 @@ namespace MetaformUtils {
     }
 
     return form.sections?.[sectionId]?.fields?.[fieldId];
-  }
+  };
 
   /**
    * Create new Metaform
@@ -154,16 +174,6 @@ namespace MetaformUtils {
               type: "text",
               name: "column1",
               title: "Column 1"
-            },
-            {
-              type: "number",
-              name: "column2",
-              title: "Column 2"
-            },
-            {
-              type: "number",
-              name: "column3",
-              title: "Column 3"
             }
           ]
         };
@@ -173,7 +183,6 @@ namespace MetaformUtils {
           name: "submit",
           type: fieldType,
           text: strings.draftEditorScreen.editor.fields.submit ?? fieldType,
-          columns: [],
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
         };
       case MetaformFieldType.Html:

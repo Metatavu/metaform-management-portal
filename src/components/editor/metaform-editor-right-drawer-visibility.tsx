@@ -137,7 +137,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
             variant="subtitle1"
             style={{ width: "100%" }}
           >
-            { strings.draftEditorScreen.editor.features.visibilityCondition }
+            { strings.draftEditorScreen.editor.visibility.visibilityCondition }
           </Typography>
           <FormControl
             fullWidth
@@ -297,7 +297,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       return (
         <>
           <Typography variant="subtitle1" style={{ width: "100%" }}>
-            { strings.draftEditorScreen.editor.features.fieldVisibility }
+            { strings.draftEditorScreen.editor.visibility.fieldVisibility }
           </Typography>
           <FormControlLabel
             control={
