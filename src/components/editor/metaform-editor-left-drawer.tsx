@@ -1,12 +1,13 @@
-import { FormControl, FormLabel, Icon, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Divider, FormControl, FormLabel, Icon, InputLabel, MenuItem, Select, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Metaform, MetaformFieldType, MetaformVisibility } from "generated/client";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
 import TabPanel from "components/generic/tab-panel";
-import { Metaform, MetaformFieldType } from "generated/client";
 import strings from "localization/strings";
 import React, { ChangeEventHandler } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
 import { DraggingMode } from "types";
+import { VisibilityOptions } from "../../types/index";
 import MetaformUtils from "utils/metaform-utils";
 import slugify from "slugify";
 
@@ -44,6 +45,18 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
     };
 
   /**
+   * Event handler for metaform visibility change
+   * 
+   * @param selectedVisibility selected visibility value public or private
+   */
+  const onFormVisibilityChange = (selectedVisibility: MetaformVisibility) => {
+    pendingForm && setPendingForm({
+      ...pendingForm,
+      visibility: selectedVisibility
+    });
+  };
+
+  /**
    * Renders form tab
    */
   const renderFormTab = () => (
@@ -60,6 +73,25 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
           value={ `${currentHostname}/${pendingForm?.slug}` }
           disabled
         />
+      </Stack>
+      <Divider sx={{ mt: "10px", mb: "5px" }}/>
+      <Stack spacing={ 2 } padding={ 1 }>
+        <FormLabel>{ strings.draftEditorScreen.editor.visibility.metaformVisibility }</FormLabel>
+        <FormControl fullWidth>
+          <InputLabel id="metaformVisibilityInfoLabel">
+            { strings.draftEditorScreen.editor.visibility.metaformVisibilityLabel }
+          </InputLabel>
+          <Select
+            fullWidth
+            labelId="metaformVisibilityInfoLabel"
+            label={ strings.draftEditorScreen.editor.visibility.metaformVisibilityLabel }
+            value={ pendingForm?.visibility }
+            onChange={ event => onFormVisibilityChange(event.target.value as MetaformVisibility) }
+          >
+            <MenuItem value={ VisibilityOptions.PUBLIC }>{ strings.draftEditorScreen.editor.visibility.public }</MenuItem>
+            <MenuItem value={ VisibilityOptions.PRIVATE }>{ strings.draftEditorScreen.editor.visibility.private }</MenuItem>
+          </Select>
+        </FormControl>
       </Stack>
     </FormControl>
   );

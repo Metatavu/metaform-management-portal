@@ -318,6 +318,10 @@ export interface Localized extends LocalizedStringsMethods {
         selectVisibilityInfo: string;
         fieldConditionLabel: string;
         sectionConditionLabel: string;
+        metaformVisibility: string;
+        metaformVisibilityLabel: string;
+        private: string;
+        public: string;
       };
     };
     formPreview: {

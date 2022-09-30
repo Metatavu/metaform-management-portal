@@ -282,7 +282,11 @@
         "selectField": "Select a field",
         "fieldConditionLabel": "This field appears, if {0} value is {1}",
         "sectionConditionLabel": "This section appears, if {0} value is {1}",
-        "selectVisibilityInfo": "Select a field in the form to edit the field information."
+        "selectVisibilityInfo": "Select a field in the form to edit the field information.",
+        "metaformVisibility": "Form visibility",
+        "metaformVisibilityLabel": "Form is",
+        "private": "Private",
+        "public": "Public"
       }
     },
     "formPreview": {

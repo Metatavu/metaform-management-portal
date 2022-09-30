@@ -142,6 +142,14 @@ export enum FormContext {
   MANAGEMENT_LIST = "MANAGEMENT_LIST"
 }
 
+/**
+ * Enum for different types of visibility options
+ */
+export enum VisibilityOptions {
+  PUBLIC = "PUBLIC",
+  PRIVATE = "PRIVATE"
+}
+
 declare module "@mui/material/styles" {
   interface CustomTheme {
     logo: {

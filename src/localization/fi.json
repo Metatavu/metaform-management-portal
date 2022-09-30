@@ -281,7 +281,11 @@
         "selectField": "Valitse kenttä",
         "fieldConditionLabel": "Tämä kenttä näkyy, jos {0} arvo on {1}",
         "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}",
-        "selectVisibilityInfo": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja."
+        "selectVisibilityInfo": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja.",
+        "metaformVisibility": "Lomakkeen näkyvyys",
+        "metaformVisibilityLabel": "Lomake on",
+        "private": "Yksityinen",
+        "public": "Julkinen"
       }
     },
     "formPreview": {
