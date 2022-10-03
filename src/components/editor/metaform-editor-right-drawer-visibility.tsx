@@ -1,4 +1,4 @@
-import { Divider, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, Switch, Typography } from "@mui/material";
+import { Divider, FormControl, FormControlLabel, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformSection } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
@@ -26,7 +26,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   const [ disabledValue, setDisabledValue ] = React.useState<boolean>(false);
   const [ requiredConditionField, setRequiredConditionField ] = React.useState<string>("");
   const [ requiredConditionEqualsValue, setRequiredConditionEqualsValue ] = React.useState<string>("");
-  const [ requiredConditionInfoField, setRequiredConditionInfoField ] = React.useState<boolean>(true);
   const [ selectedComponent, setSelectedComponent ] = React.useState<string | undefined>(undefined);
   const [ metaFormFieldSection, setMetaFormFieldSection ] = React.useState<MetaformField | MetaformSection>();
 
@@ -40,7 +39,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       setDisabledValue(!!section);
       setRequiredConditionField(section ? section.field! : "");
       setRequiredConditionEqualsValue(section ? section.equals! : "");
-      setRequiredConditionInfoField(!section);
       setSelectedComponent(pendingForm.sections![sectionIndex].title);
     }
 
@@ -51,7 +49,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       setDisabledValue(!!field);
       setRequiredConditionField(field ? field.field! : "");
       setRequiredConditionEqualsValue(field ? field.equals! : "");
-      setRequiredConditionInfoField(!field);
     }
   };
 
@@ -82,7 +79,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    */
   const updateFormFieldOrSectionVisibilityValues = (newMetaformUpdateFieldOrSection: MetaformField | MetaformSection, value: string) => {
     setRequiredConditionEqualsValue(value);
-    setRequiredConditionInfoField(false);
     if (sectionIndex === undefined) {
       return;
     }
@@ -133,43 +129,33 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
         : strings.draftEditorScreen.editor.visibility.fieldDefiningCondition;
       return (
         <Stack spacing={ 2 }>
-          <Typography
-            variant="subtitle1"
-            style={{ width: "100%" }}
-          >
+          <Typography variant="subtitle1">
             { strings.draftEditorScreen.editor.features.visibilityCondition }
           </Typography>
-          <FormControl
+          <TextField
             fullWidth
+            select
+            label={ labelText }
+            value={ requiredConditionField }
             disabled={ !disabledValue }
+            onChange={ event => setRequiredConditionField(event.target.value) }
           >
-            <InputLabel id="visibilityCondition">
-              { labelText }
-            </InputLabel>
-            <Select
-              fullWidth
-              labelId="visibilityCondition"
-              label={ labelText }
-              value={ requiredConditionField }
-              onChange={ event => setRequiredConditionField(event.target.value) }
-            >
-              <MenuItem sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.selectField }</MenuItem>
-              { pendingForm.sections!.map(section => section.fields!.map((field, index) => {
-                const constructedKey = `${field.title}-${index}`;
-                if (field.type === "radio" || field.type === "checklist" || field.type === "select") {
-                  if (field.name !== selectedComponent) {
-                    return (
-                      <MenuItem value={ field.name } key={ constructedKey }>
-                        { field.title }
-                      </MenuItem>
-                    );
-                  }
+            <MenuItem sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.selectField }</MenuItem>
+            { pendingForm.sections!.map(section => section.fields!.map((field, index) => {
+              const constructedKey = `${field.title}-${index}`;
+              if (field.type === "radio" || field.type === "checklist" || field.type === "select") {
+                if (field.name !== selectedComponent) {
+                  return (
+                    <MenuItem value={ field.name } key={ constructedKey }>
+                      { field.title }
+                    </MenuItem>
+                  );
                 }
-                return null;
-              }))
               }
-            </Select>
-          </FormControl>
+              return null;
+            }))
+            }
+          </TextField>
         </Stack>
       );
     }
@@ -215,40 +201,34 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       }
       return (
         <>
-          <FormControl fullWidth>
-            <InputLabel id="visibilityConditionLabel">{ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }</InputLabel>
-            <Select
-              fullWidth
-              labelId="visibilityConditionLabel"
-              label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
-              value={ requiredConditionEqualsValue }
-              onChange={ event => updateFormFieldOrSectionVisibilityValues({
-                ...metaFormFieldSection,
-                visibleIf: {
-                  field: requiredConditionField,
-                  equals: event.target.value,
-                  notEquals: "",
-                  and: [],
-                  or: []
-                }
-              }, event.target.value)
+          <TextField
+            fullWidth
+            select
+            label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
+            value={ requiredConditionEqualsValue }
+            onChange={ event => updateFormFieldOrSectionVisibilityValues({
+              ...metaFormFieldSection,
+              visibleIf: {
+                field: requiredConditionField,
+                equals: event.target.value,
+                notEquals: "",
+                and: [],
+                or: []
               }
-            >
-              { pendingForm.sections!.map(section => section.fields!.map(field => {
-                if (field.name === requiredConditionField) {
-                  if (field.type === "radio" || field.type === "checklist" || field.type === "select") {
-                    return (
-                      renderFieldConditionOptions(field)
-                    );
-                  }
+            }, event.target.value)
+            }
+          >
+            { pendingForm.sections!.map(section => section.fields!.map(field => {
+              if (field.name === requiredConditionField) {
+                if (field.type === "radio" || field.type === "checklist" || field.type === "select") {
+                  return renderFieldConditionOptions(field);
                 }
-                return null;
-              }))}
-              ;
-            </Select>
-          </FormControl>
-          { requiredConditionInfoField && <Typography sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.conditionalFieldValueInfo }</Typography> }
-          <Divider/>
+              }
+              return null;
+            }))}
+            ;
+          </TextField>
+          { disabledValue && <Typography sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.conditionalFieldValueInfo }</Typography> }
         </>
       );
     }
@@ -271,7 +251,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       if (disabledValue) {
         setRequiredConditionField("");
         setRequiredConditionEqualsValue("");
-        setRequiredConditionInfoField(true);
         emptyFormFieldVisibleIf({ ...field, visibleIf: undefined });
       }
     }
@@ -283,7 +262,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       if (disabledValue) {
         setRequiredConditionField("");
         setRequiredConditionEqualsValue("");
-        setRequiredConditionInfoField(true);
         emptyFormSectionVisibleIf({ ...section, visibleIf: undefined });
       }
     }
@@ -296,7 +274,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
     if (sectionIndex !== undefined) {
       return (
         <>
-          <Typography variant="subtitle1" style={{ width: "100%" }}>
+          <Typography variant="subtitle1">
             { strings.draftEditorScreen.editor.features.fieldVisibility }
           </Typography>
           <FormControlLabel
@@ -308,7 +286,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
             }
             label={ strings.draftEditorScreen.editor.visibility.conditionally }
           />
-          <Divider/>
         </>
       );
     }
@@ -318,12 +295,15 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * Component render
    */
   return (
-    <Stack spacing={ 2 } sx={{ width: "100%" }}>
-      { renderVisibilitySwitch() }
-      { renderFieldCondition() }
-      { renderFieldConditionInfo() }
-      { renderConditionValueField() }
-    </Stack>
+    <FormControl fullWidth>
+      <Stack spacing={ 2 }>
+        { renderVisibilitySwitch() }
+        <Divider/>
+        { renderFieldCondition() }
+        { renderFieldConditionInfo() }
+        { renderConditionValueField() }
+      </Stack>
+    </FormControl>
   );
 };
 

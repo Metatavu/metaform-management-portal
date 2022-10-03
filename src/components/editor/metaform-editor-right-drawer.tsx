@@ -1,4 +1,4 @@
-import { Divider, Tab, Tabs } from "@mui/material";
+import { Tab, Tabs } from "@mui/material";
 import TabPanel from "components/generic/tab-panel";
 import { Metaform } from "generated/client";
 import strings from "localization/strings";
@@ -27,6 +27,16 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
   setPendingForm
 }) => {
   const [ tabIndex, setTabIndex ] = React.useState(0);
+  const [ sectionOrFieldSelected, setSectionOrFieldSelected ] = React.useState(false);
+
+  /**
+   * Checks whether section or field is currently selected
+   */
+  const checkIfSectionOrFieldSelected = () => (setSectionOrFieldSelected(sectionIndex !== undefined || fieldIndex !== undefined));
+
+  React.useEffect(() => {
+    checkIfSectionOrFieldSelected();
+  }, [ sectionIndex, fieldIndex]);
 
   /**
    * Component render
@@ -42,11 +52,12 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
           label={ strings.draftEditorScreen.editor.features.tabTitle }
         />
         <Tab
+          disabled={ !sectionOrFieldSelected }
           value={ 1 }
           label={ strings.draftEditorScreen.editor.visibility.tabTitle }
         />
       </Tabs>
-      <TabPanel value={ tabIndex } index={ 0 }>
+      <TabPanel value={ tabIndex } index={ 0 } padding={ 1 }>
         <MetaFormRightDrawerFeature
           pendingForm={ pendingForm }
           setPendingForm={ setPendingForm }
@@ -54,14 +65,13 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
           sectionIndex={ sectionIndex }
         />
       </TabPanel>
-      <TabPanel value={ tabIndex } index={ 1 }>
+      <TabPanel value={ tabIndex } index={ 1 } padding={ 1 }>
         <MetaFormRightDrawerVisibility
           pendingForm={ pendingForm }
           setPendingForm={ setPendingForm }
           fieldIndex={ fieldIndex }
           sectionIndex={ sectionIndex }
         />
-        <Divider/>
       </TabPanel>
     </EditorDrawer>
   );

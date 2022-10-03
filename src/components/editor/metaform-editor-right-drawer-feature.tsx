@@ -1,4 +1,4 @@
-import { Button, Checkbox, Divider, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, Divider, FormControl, FormControlLabel, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType, MetaformFieldType } from "generated/client";
 import produce from "immer";
 import slugify from "slugify";
@@ -347,12 +347,21 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   };
 
   /**
+   * Renders form section title
+   * 
+   * @param title title
+   */
+  const renderFormSectionTitle = (title: string) => (
+    <Typography variant="subtitle1">
+      { title }
+    </Typography>
+  );
+
+  /**
    * Render contexts options
    */
   const renderContextOptions = () => (
     <Stack spacing={ 2 }>
-      <Divider/>
-      <Typography variant="subtitle1">{ strings.draftEditorScreen.editor.features.contextVisibilityInfo }</Typography>
       <FormControl>
         <FormControlLabel
           label={ strings.draftEditorScreen.editor.features.contextFormVisibility }
@@ -543,52 +552,47 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
         <Typography variant="subtitle1" style={{ width: "100%" }}>
           { strings.draftEditorScreen.editor.features.addNewColumn }
         </Typography>
-        <FormControl fullWidth>
-          <InputLabel id="fieldCategoryVisibilityConditionLabel">
-            { strings.draftEditorScreen.editor.features.addColumnType }
-          </InputLabel>
-          <Select
-            fullWidth
-            labelId="fieldCategoryVisibilityConditionLabel"
-            label={ strings.draftEditorScreen.editor.features.addColumnType }
-            sx={{ height: "50px" }}
-            value={ columnType }
-            onChange={ event => setColumnType(event.target.value) }
-          >
-            <MenuItem value="text">{ strings.draftEditorScreen.editor.features.columnTextType}</MenuItem>
-            <MenuItem value="number">{ strings.draftEditorScreen.editor.features.columnNumberType}</MenuItem>
-          </Select>
-          <Button
-            fullWidth
-            sx={{
-              height: "50px",
-              mt: "5px"
-            }}
-            onClick={ addNewColumn }
-          >
-            { strings.draftEditorScreen.editor.features.addNewColumn }
-          </Button>
-        </FormControl>
+        <TextField
+          select
+          fullWidth
+          label={ strings.draftEditorScreen.editor.features.addColumnType }
+          value={ columnType }
+          onChange={ event => setColumnType(event.target.value) }
+        >
+          <MenuItem value="text">{ strings.draftEditorScreen.editor.features.columnTextType}</MenuItem>
+          <MenuItem value="number">{ strings.draftEditorScreen.editor.features.columnNumberType}</MenuItem>
+        </TextField>
+        <Button
+          fullWidth
+          disabled={ !columnType }
+          sx={{
+            height: "50px",
+            mt: "5px"
+          }}
+          onClick={ addNewColumn }
+        >
+          { strings.draftEditorScreen.editor.features.addNewColumn }
+        </Button>
       </>
     );
   };
 
   /**
    * Render options depending what field type is selected
+   * 
+   * @param field current field
    */
-  const renderOptions = () => {
+  const renderOptions = (field: MetaformField) => {
     if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      const selectedField = pendingForm.sections![sectionIndex].fields![fieldIndex];
-      const { type } = selectedField;
-      switch (type) {
+      switch (field.type) {
         case MetaformFieldType.Slider:
-          return renderSliderScopeValues(selectedField);
+          return renderSliderScopeValues(field);
         case MetaformFieldType.Checklist:
         case MetaformFieldType.Radio:
         case MetaformFieldType.Select:
           return renderFieldOptions();
         case MetaformFieldType.Html:
-          return renderHtmlEditor(selectedField);
+          return renderHtmlEditor(field);
         case MetaformFieldType.Table:
           return renderTableColumnFeatures();
         default:
@@ -605,87 +609,76 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   const renderDefineUserGroup = (field: MetaformField) => {
     const { type } = field;
     const allowToDefineUserGroup = type === "select" || type === "date-time" || type === "radio" || type === "checklist" || type === "date";
+    
+    if (!allowToDefineUserGroup) {
+      return null;
+    }
+    
     return (
       <>
-        <Typography variant="subtitle1" style={{ width: "100%" }}>
-          { strings.draftEditorScreen.editor.features.defineUserGroup }
+        <Divider/>
+        { renderFormSectionTitle(strings.draftEditorScreen.editor.features.defineUserGroup) }
+        <FormControlLabel
+          label={ strings.generic.yes }
+          control={
+            <Checkbox
+              checked
+            />
+          }
+        />
+        <Typography variant="body2">
+          { strings.draftEditorScreen.editor.features.selectableFieldsInfo }
         </Typography>
-        <FormControl disabled={ !allowToDefineUserGroup }>
-          <FormControlLabel
-            label={ strings.generic.yes }
-            control={
-              <Checkbox
-                checked
-              />
-            }
-          />
-          <Typography variant="body2">
-            { strings.draftEditorScreen.editor.features.selectableFieldsInfo }
-          </Typography>
-        </FormControl>
       </>
     );
   };
 
   /**
-   * Render fieldTitle and Required or not component
-   *
+   * Renders field title TextField
+   * 
    * @param field current field
    */
-  const renderFieldTitleAndRequired = (field: MetaformField) => {
-    if (field === undefined) {
-      return null;
-    }
-    const {
-      text,
-      title,
-      type,
-      required
-    } = field;
+  const renderFieldTitleTextField = (field: MetaformField) => {
+    const { text, title, type } = field;
+
     return (
-      <>
-        <Typography variant="subtitle1" style={{ width: "100%" }}>
-          { strings.draftEditorScreen.editor.features.fieldDatas }
-        </Typography>
-        <TextField
-          fullWidth
-          label={ type === "submit" ? strings.draftEditorScreen.editor.features.textOfSubmitButton : strings.draftEditorScreen.editor.features.fieldTitle }
-          value={ type === "submit" ? text : title }
-          onChange={ event => {
-            if (type === "submit") {
-              updateFormField({
-                ...field,
-                text: event.target.value,
-                name: slugify(`${metaformSectionTitle}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
-              });
-            } else {
-              updateFormField({
-                ...field,
-                title: event.target.value,
-                name: slugify(`${metaformSectionTitle}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
-              });
-            }
-          }
-          }
-        />
-        { renderOptions() }
-        { renderContextOptions() }
-        <Divider/>
-        <Typography variant="subtitle1" style={{ width: "100%" }}>
-          { strings.draftEditorScreen.editor.features.required }
-        </Typography>
-        <FormControlLabel
-          label={ strings.generic.yes }
-          control={
-            <Checkbox
-              checked={ required }
-              onChange={ event => updateFormField({ ...field, required: event.target.checked }) }
-            />
-          }
-        />
-      </>
+      <TextField
+        fullWidth
+        label={ type === "submit" ? strings.draftEditorScreen.editor.features.textOfSubmitButton : strings.draftEditorScreen.editor.features.fieldTitle }
+        value={ type === "submit" ? text : title }
+        onChange={ event => (
+          type === "submit"
+            ? updateFormField({
+              ...field,
+              text: event.target.value,
+              name: slugify(`${metaformSectionTitle}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
+            })
+            : updateFormField({
+              ...field,
+              title: event.target.value,
+              name: slugify(`${metaformSectionTitle}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
+            })
+        )}
+      />
     );
   };
+
+  /**
+   * Renders field required Checkbox
+   * 
+   * @param field current field
+   */
+  const renderFieldRequiredCheckbox = (field: MetaformField) => (
+    <FormControlLabel
+      label={ strings.generic.yes }
+      control={
+        <Checkbox
+          checked={ field.required }
+          onChange={ event => updateFormField({ ...field, required: event.target.checked }) }
+        />
+      }
+    />
+  );
 
   /**
    * Renders feature component
@@ -694,10 +687,8 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (sectionIndex !== undefined && fieldIndex === undefined) {
       const section = pendingForm.sections![sectionIndex];
       return (
-        <>
-          <Typography variant="subtitle1" style={{ width: "100%" }}>
-            { strings.draftEditorScreen.editor.features.fieldDatas }
-          </Typography>
+        <Stack spacing={ 2 }>
+          { renderFormSectionTitle(strings.draftEditorScreen.editor.features.sectionInformation) }
           <TextField
             fullWidth
             value={ section.title ?? "" }
@@ -707,7 +698,7 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
               title: event.target.value
             }) }
           />
-        </>
+        </Stack>
       );
     }
 
@@ -718,12 +709,20 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
       }
       return (
         <Stack spacing={ 2 }>
-          { renderFieldTitleAndRequired(field) }
+          { renderFormSectionTitle(strings.draftEditorScreen.editor.features.fieldInformation) }
+          { renderFieldTitleTextField(field) }
+          { renderOptions(field) }
           <Divider/>
+          { renderFormSectionTitle(strings.draftEditorScreen.editor.features.contextVisibilityInfo) }
+          { renderContextOptions() }
+          <Divider/>
+          { renderFormSectionTitle(strings.draftEditorScreen.editor.features.required) }
+          { renderFieldRequiredCheckbox(field) }
           { renderDefineUserGroup(field) }
         </Stack>
       );
     }
+
     return (
       <Typography>{ strings.draftEditorScreen.editor.visibility.selectVisibilityInfo }</Typography>
     );
@@ -740,7 +739,13 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
   /**
    * Component render
    */
-  return renderFeatures();
+  return (
+    <FormControl fullWidth>
+      <Stack spacing={ 2 }>
+        { renderFeatures() }
+      </Stack>
+    </FormControl>
+  );
 };
 
 export default MetaformEditorRightDrawerFeatureComponent;

@@ -283,7 +283,8 @@ export interface Localized extends LocalizedStringsMethods {
       features: {
         tabTitle: string;
         title: string;
-        fieldDatas: string;
+        sectionInformation: string;
+        fieldInformation: string;
         visibilityCondition: string;
         fieldVisibility: string;
         defineUserGroup: string;
