@@ -57,7 +57,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const fieldRuleScan = (fieldRule: FieldRule, match: string, fieldRules: FieldRule[], fieldOptionMatch?: MetaformFieldOption) => {
     if (fieldRule.field === match) {
       if (fieldOptionMatch) {
-        // TODO test equal not equal"
+        // TODO test equal not equal
         if (fieldOptionMatch.name === fieldRule.equals || fieldOptionMatch.name === fieldRule.notEquals) {
           fieldRules.push(fieldRule);
         }
@@ -87,7 +87,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           const fieldOptionMatch = optionIndex !== undefined ?
             pendingForm.sections![sectionIndex].fields![fieldIndex].options![optionIndex] :
             undefined;
-          // TODO fix debounder issue
           const fieldRules: FieldRule[] = [];
 
           draftForm.sections?.forEach(draftSection => {
