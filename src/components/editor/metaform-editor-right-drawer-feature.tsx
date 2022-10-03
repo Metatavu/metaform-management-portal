@@ -31,6 +31,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const [ newColumnType, setNewColumnType ] = useState<MetaformTableColumnType>();
   const [ selectedSection, setSelectedSection ] = useState<MetaformSection>();
   const [ selectedField, setSelectedField ] = useState<MetaformField>();
+  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
 
   /**
    * Updates selected section, field
@@ -38,6 +39,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const updateSelected = () => {
     setSelectedField(MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex));
     setSelectedSection(MetaformUtils.getMetaformSection(pendingForm, sectionIndex));
+    setDebounceTimerId(undefined);
   };
 
   useEffect(() => {
@@ -50,11 +52,11 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * @param fieldRule field rule
    * @param match match
    * @param fieldRules field rules to add to
+   * @param fieldOptionMatch field option match
    */
   const fieldRuleScan = (fieldRule: FieldRule, match: string, fieldRules: FieldRule[], fieldOptionMatch?: MetaformFieldOption) => {
     if (fieldRule.field === match) {
       if (fieldOptionMatch) {
-        // TODO check is it name
         // TODO test equal not equal"
         if (fieldOptionMatch.name === fieldRule.equals || fieldOptionMatch.name === fieldRule.notEquals) {
           fieldRules.push(fieldRule);
@@ -69,20 +71,23 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
-   * Updates metaform field and check if its used as visibleIf condition and change them
+   * Updates field with visibility
    *
    * @param field edited field
+   * @param optionIndex option index
    */
   const updateFormField = (field: MetaformField, optionIndex?: number) => {
     if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
 
-    //  TODO check for option debouncer maybe
     const updatedForm = produce(pendingForm, draftForm => {
       if (MetaformUtils.fieldTypesAllowVisibility.includes(field.type)) {
         if ((selectedField.name !== undefined && field.name !== selectedField.name) || optionIndex !== undefined) {
-          const fieldOptionMatch = optionIndex !== undefined ? selectedField.options![optionIndex] : undefined;
+          const fieldOptionMatch = optionIndex !== undefined ?
+            pendingForm.sections![sectionIndex].fields![fieldIndex].options![optionIndex] :
+            undefined;
+          // TODO fix debounder issue
           const fieldRules: FieldRule[] = [];
 
           draftForm.sections?.forEach(draftSection => {
@@ -119,6 +124,19 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
+   * Debounced update field
+   *
+   * @param field edited field
+   * @param optionIndex option index
+   */
+  const updateFormFieldDebounced = (field: MetaformField, optionIndex?: number) => {
+    setSelectedField(field);
+
+    debounceTimerId && clearTimeout(debounceTimerId);
+    setDebounceTimerId(setTimeout(() => updateFormField(field, optionIndex), 500));
+  };
+
+  /**
    * Updates metaform section
    *
    * @param metaformSection metaform section what we are editing
@@ -150,7 +168,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       draftField?.options?.splice(optionIndex, 1, updateTextOption);
     });
 
-    updateFormField(updatedField, optionIndex);
+    updateFormFieldDebounced(updatedField, optionIndex);
   };
 
   /**
@@ -171,7 +189,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       draftField.options = [ ...(draftField.options || []), newOption ];
     });
 
-    updateFormField(updatedField);
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
@@ -226,7 +244,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       }
     });
 
-    updateFormField(updatedField);
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
@@ -244,7 +262,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       draftField.columns?.splice(columnIndex, 1, tableColumn);
     });
 
-    updateFormField(updatedField);
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
@@ -261,7 +279,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       draftField.columns?.splice(columnIndex, 1);
     });
 
-    updateFormField(updatedField);
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
@@ -284,7 +302,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       draftField.columns = [ ...(draftField.columns || []), newColumn ];
     });
 
-    updateFormField(updatedField);
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
@@ -309,7 +327,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       draftField.contexts = updatedContexts;
     });
 
-    updateFormField(updatedField);
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
@@ -620,7 +638,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
         fullWidth
         label={ strings.draftEditorScreen.editor.features.field.fieldTitle }
         value={ field.title }
-        onChange={ event => updateFormField({
+        onChange={ event => updateFormFieldDebounced({
           ...field,
           title: event.target.value,
           name: slugify(`${section.title}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
@@ -645,7 +663,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
         fullWidth
         label={ strings.draftEditorScreen.editor.features.field.submitButtonText }
         value={ field.text }
-        onChange={ event => updateFormField({
+        onChange={ event => updateFormFieldDebounced({
           ...field,
           text: event.target.value,
           name: slugify(`${section.title}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
@@ -670,7 +688,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
         control={
           <Checkbox
             checked={ field.required }
-            onChange={ event => updateFormField({
+            onChange={ event => updateFormFieldDebounced({
               ...field,
               required: event.target.checked
             }) }
