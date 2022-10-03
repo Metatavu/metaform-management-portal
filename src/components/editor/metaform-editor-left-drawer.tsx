@@ -7,7 +7,6 @@ import strings from "localization/strings";
 import React, { ChangeEventHandler } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
 import { DraggingMode } from "types";
-import { VisibilityOptions } from "../../types/index";
 import MetaformUtils from "utils/metaform-utils";
 import slugify from "slugify";
 
@@ -60,38 +59,32 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
    * Renders form tab
    */
   const renderFormTab = () => (
-    <>
-      <FormControl fullWidth>
-        <Stack spacing={ 2 } padding={ 1 }>
-          <FormLabel>{ strings.draftEditorScreen.editor.form.versionInfo }</FormLabel>
-          <TextField
-            label={ strings.draftEditorScreen.editor.form.formTitle }
-            value={ pendingForm?.title }
-            onChange={ onMetaformPropertyChange("title", "slug") }
-          />
-          <TextField
-            label={ strings.draftEditorScreen.editor.form.formSlugUrl }
-            value={ `${currentHostname}/${pendingForm?.slug}` }
-            disabled
-          />
-        </Stack>
-      </FormControl>
-      <Divider/>
-      <FormControl fullWidth>
-        <Stack spacing={ 2 } padding={ 1 }>
-          <FormLabel>{ strings.draftEditorScreen.editor.visibility.metaformVisibility }</FormLabel>
-          <TextField
-            select
-            label={ strings.draftEditorScreen.editor.visibility.metaformVisibilityLabel }
-            value={ pendingForm?.visibility }
-            onChange={ event => onFormVisibilityChange(event.target.value as MetaformVisibility) }
-          >
-            <MenuItem value={ VisibilityOptions.PUBLIC }>{ strings.draftEditorScreen.editor.visibility.public }</MenuItem>
-            <MenuItem value={ VisibilityOptions.PRIVATE }>{ strings.draftEditorScreen.editor.visibility.private }</MenuItem>
-          </TextField>
-        </Stack>
-      </FormControl>
-    </>
+    <FormControl fullWidth>
+      <Stack spacing={ 2 } padding={ 1 }>
+        <FormLabel>{ strings.draftEditorScreen.editor.form.versionInfo }</FormLabel>
+        <TextField
+          label={ strings.draftEditorScreen.editor.form.formTitle }
+          value={ pendingForm?.title }
+          onChange={ onMetaformPropertyChange("title", "slug") }
+        />
+        <TextField
+          label={ strings.draftEditorScreen.editor.form.formSlugUrl }
+          value={ `${currentHostname}/${pendingForm?.slug}` }
+          disabled
+        />
+        <Divider/>
+        <FormLabel>{ strings.draftEditorScreen.editor.visibility.formVisibility }</FormLabel>
+        <TextField
+          select
+          label={ strings.draftEditorScreen.editor.visibility.formVisibilityLabel }
+          value={ pendingForm?.visibility }
+          onChange={ event => onFormVisibilityChange(event.target.value as MetaformVisibility) }
+        >
+          <MenuItem value={ MetaformVisibility.Public }>{ strings.draftEditorScreen.editor.visibility.public }</MenuItem>
+          <MenuItem value={ MetaformVisibility.Private }>{ strings.draftEditorScreen.editor.visibility.private }</MenuItem>
+        </TextField>
+      </Stack>
+    </FormControl>
   );
 
   /**
