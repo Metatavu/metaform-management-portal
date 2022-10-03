@@ -452,7 +452,7 @@
   "autoComplete": {
     "missingOptions": "Code server autocomplete not configured",
     "missingCodeServerBaseUrl": "Code server autocomplete missing codeServerBaseUrl",
-    "missingCodeServerClassificiationId": "Code server autocomplete missing codeServerClassificationId",
+    "missingCodeServerClassificationId": "Code server autocomplete missing codeServerClassificationId",
     "missingCodeServerParentConceptCodeId": "Code server autocomplete missing codeServerParentConceptCodeId",
     "missingAutocomplete": "Autocomplete not configured",
     "unknownAutocompleteService": "UNKNOWN_AUTO_COMPLETE_SERVICE"
@@ -468,5 +468,9 @@
     "downloadReplyAttachment": "Downloaded attachment",
     "exportReplyPdf": "Exported pdf",
     "exportReplyXlsx": "Exported xlsx"
+  },
+
+  "dataGrid": {
+    "rowsPerPage": "Rows per page:"
   }
 }
