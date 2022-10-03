@@ -509,7 +509,7 @@ export interface Localized extends LocalizedStringsMethods {
   autoComplete: {
     missingOptions: string;
     missingCodeServerBaseUrl: string;
-    missingCodeServerClassificiationId: string;
+    missingCodeServerClassificationId: string;
     missingCodeServerParentConceptCodeId: string;
     missingAutocomplete: string;
     unknownAutocompleteService: string;
@@ -530,6 +530,12 @@ export interface Localized extends LocalizedStringsMethods {
     exportReplyXlsx: string
   }
 
+  /**
+   * Translation related to datagrid
+   */
+  dataGrid: {
+    rowsPerPage: string;
+  }
 }
 /**
  * Initialized localized strings

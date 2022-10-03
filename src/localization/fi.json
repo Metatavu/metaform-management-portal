@@ -446,7 +446,7 @@
   "autoComplete": {
     "missingOptions": "Code server autocomplete ei ole määritelty",
     "missingCodeServerBaseUrl": "Code server autocomplete puuttuu codeServerBaseUrl",
-    "missingCodeServerClassificiationId": "Code server autocomplete puuttuu codeServerClassificationId",
+    "missingCodeServerClassificationId": "Code server autocomplete puuttuu codeServerClassificationId",
     "missingCodeServerParentConceptCodeId": "Code server autocomplete puuttuu codeServerParentConceptCodeId",
     "missingAutocomplete": "Autocomplete ei ole määritelty",
     "unknownAutocompleteService": "TUNTEMATON_AUTO_COMPLETE_SERVICE"
@@ -462,5 +462,9 @@
     "downloadReplyAttachment": "Liite ladattu",
     "exportReplyPdf": "Viety PDF:nä",
     "exportReplyXlsx": "Viety taulukkona"
+  },
+
+  "dataGrid": {
+    "rowsPerPage": "Rivejä sivulla:"
   }
 }
