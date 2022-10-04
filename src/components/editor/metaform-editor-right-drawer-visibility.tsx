@@ -29,7 +29,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   const [ visibleIfSource, setVisibleIfSource ] = React.useState<VisibilitySource>(VisibilitySource.NONE);
 
   /**
-   * Updates visibleIfSource section, field
+   * Updates visibleIf source section, field
    */
   const updateSelected = () => {
     const field = MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex);
