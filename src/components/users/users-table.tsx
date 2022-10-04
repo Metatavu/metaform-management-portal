@@ -132,15 +132,20 @@ const UsersTable: FC<Props> = ({
 
   return (
     <DataGrid
-      loading={ loading }
-      columns={ columns }
-      rows={ data }
       disableColumnMenu
       disableColumnSelector
       disableSelectionOnClick
       sx={{
         border: "none"
       }}
+      componentsProps={{
+        pagination: {
+          labelRowsPerPage: strings.dataGrid.rowsPerPage
+        }
+      }}
+      loading={ loading }
+      columns={ columns }
+      rows={ data }
     />
   );
 };

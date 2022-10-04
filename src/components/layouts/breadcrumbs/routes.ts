@@ -1,14 +1,14 @@
 import FormBreadcrumb from "./form-breadcrumb";
-import strings from "localization/strings";
 import DraftBreadcrumb from "./draft-breadcrumb";
 import ReplyBreadcrumb from "./reply-breadcrumb";
+import strings from "localization/strings";
 
 strings.setLanguage("fi");
 
 /**
- * Routes for breadcrumb
+ * Gets localized routes
  */
-const routes = [
+const getRoutes = () => [
   {
     path: "/admin/",
     breadcrumb: strings.breadcrumb.home
@@ -59,4 +59,4 @@ const routes = [
   }
 ];
 
-export default routes;
+export default getRoutes;

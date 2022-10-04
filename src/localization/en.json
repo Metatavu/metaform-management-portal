@@ -472,5 +472,9 @@
     "management": "Shown on management screen",
     "managementList": "Shown on management list screen",
     "form": "Shown on the form for customer"
+  },
+
+  "dataGrid": {
+    "rowsPerPage": "Rows per page:"
   }
 }

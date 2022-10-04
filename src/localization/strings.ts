@@ -533,12 +533,21 @@ export interface Localized extends LocalizedStringsMethods {
     exportReplyXlsx: string
   }
 
+  /**
+   * Translation related to form context
+   */
   formContext: {
     management: string;
     managementList: string;
     form: string;
   }
 
+  /**
+   * Translation related to datagrid
+   */
+  dataGrid: {
+    rowsPerPage: string;
+  }
 }
 /**
  * Initialized localized strings
