@@ -34,7 +34,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
 
   /**
-   * Updates selected section, field
+   * Updates selected section and field states
    */
   const updateSelected = () => {
     setSelectedField(MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex));
