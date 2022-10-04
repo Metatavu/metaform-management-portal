@@ -47,30 +47,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   }, [ sectionIndex, fieldIndex, pendingForm ]);
 
   /**
-   * Scans field rules that matches
-   *
-   * @param fieldRule field rule
-   * @param match match
-   * @param fieldRules field rules to add to
-   * @param fieldOptionMatch field option match
-   */
-  const fieldRuleScan = (fieldRule: FieldRule, match: string, fieldRules: FieldRule[], fieldOptionMatch?: MetaformFieldOption) => {
-    if (fieldRule.field === match) {
-      if (fieldOptionMatch) {
-        // TODO test equal not equal
-        if (fieldOptionMatch.name === fieldRule.equals || fieldOptionMatch.name === fieldRule.notEquals) {
-          fieldRules.push(fieldRule);
-        }
-      } else {
-        fieldRules.push(fieldRule);
-      }
-    }
-
-    fieldRule.and?.forEach(rule => fieldRuleScan(rule, match, fieldRules));
-    fieldRule.or?.forEach(rule => fieldRuleScan(rule, match, fieldRules));
-  };
-
-  /**
    * Updates field with visibility
    *
    * @param field edited field
@@ -91,11 +67,11 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
 
           draftForm.sections?.forEach(draftSection => {
             if (draftSection.visibleIf !== undefined) {
-              fieldRuleScan(draftSection.visibleIf, selectedField.name!, fieldRules, fieldOptionMatch);
+              MetaformUtils.fieldRuleScan(draftSection.visibleIf, selectedField.name || "", fieldRules, fieldOptionMatch);
             }
             draftSection.fields?.forEach(draftField => {
               if (draftField.visibleIf !== undefined) {
-                fieldRuleScan(draftField.visibleIf, selectedField.name!, fieldRules, fieldOptionMatch);
+                MetaformUtils.fieldRuleScan(draftField.visibleIf, selectedField.name || "", fieldRules, fieldOptionMatch);
               }
             });
           });
@@ -200,20 +176,26 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
     if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
-    // TODO might need a deep scan or is it even necessary to delete????
+    const optionMatch = pendingForm.sections?.[sectionIndex].fields?.[fieldIndex].options?.[optionIndex];
+    const fieldNameMatch = selectedField.name;
+
+    if (!optionMatch || !fieldNameMatch) {
+      return;
+    }
+
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.forEach(draftSection => {
-        if (draftSection.visibleIf) {
-          if (draftSection.visibleIf.field === selectedField.name && draftSection.visibleIf.equals === selectedField.options![optionIndex].name) {
-            delete draftSection.visibleIf;
-          }
+        if (draftSection.visibleIf &&
+          MetaformUtils.fieldRuleMatch(draftSection.visibleIf, fieldNameMatch, optionMatch)
+        ) {
+          draftSection.visibleIf = undefined;
         }
 
         draftSection.fields?.forEach(draftField => {
-          if (draftField.visibleIf) {
-            if (draftField.visibleIf.field === selectedField.name && draftField.visibleIf.equals === selectedField.options![optionIndex].name) {
-              delete draftField.visibleIf;
-            }
+          if (draftField.visibleIf &&
+            MetaformUtils.fieldRuleMatch(draftField.visibleIf, fieldNameMatch, optionMatch)
+          ) {
+            draftField.visibleIf = undefined;
           }
         });
       });
@@ -603,10 +585,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           <FormControlLabel
             label={ strings.generic.yes }
             control={
-              <Checkbox
-              // TODO why is this always checked
-                checked
-              />
+              <Checkbox checked/>
             }
           />
           <Typography variant="body2">
