@@ -105,6 +105,15 @@ export enum NavigationLinks {
 }
 
 /**
+ * Enum for visibility source
+ */
+export enum VisibilitySource {
+  FIELD = "FIELD",
+  SECTION = "SECTION",
+  NONE = "NONE"
+}
+
+/**
  * Interface describing dictionary type
  */
 export interface Dictionary<T> {

@@ -1,4 +1,4 @@
-import { Button, Checkbox, Divider, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, Divider, FormControl, FormControlLabel, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType, MetaformFieldType, FieldRule } from "generated/client";
 import produce from "immer";
 import slugify from "slugify";
@@ -500,37 +500,32 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Renders table new column
    */
   const renderTableNewColumn = () => (
-    <>
+    <Stack spacing={ 2 }>
       <Typography variant="subtitle1" style={{ width: "100%" }}>
         { strings.draftEditorScreen.editor.features.field.addNewColumn }
       </Typography>
-      <FormControl fullWidth>
-        <InputLabel>
-          { strings.draftEditorScreen.editor.features.field.addColumnType }
-        </InputLabel>
-        <TextField
-          select
-          fullWidth
-          label={ strings.draftEditorScreen.editor.features.field.addColumnType }
-          value={ newColumnType }
-          onChange={ ({ target }) => setNewColumnType(target.value as MetaformTableColumnType) }
-        >
-          <MenuItem value={ MetaformTableColumnType.Text }>
-            { strings.draftEditorScreen.editor.features.field.columnTextType }
-          </MenuItem>
-          <MenuItem value={ MetaformTableColumnType.Number }>
-            { strings.draftEditorScreen.editor.features.field.columnNumberType }
-          </MenuItem>
-        </TextField>
-        <Button
-          fullWidth
-          disabled={ newColumnType === undefined }
-          onClick={ addNewColumn }
-        >
-          { strings.draftEditorScreen.editor.features.field.addNewColumn }
-        </Button>
-      </FormControl>
-    </>
+      <TextField
+        select
+        fullWidth
+        label={ strings.draftEditorScreen.editor.features.field.addColumnType }
+        value={ newColumnType }
+        onChange={ ({ target }) => setNewColumnType(target.value as MetaformTableColumnType) }
+      >
+        <MenuItem value={ MetaformTableColumnType.Text }>
+          { strings.draftEditorScreen.editor.features.field.columnTextType }
+        </MenuItem>
+        <MenuItem value={ MetaformTableColumnType.Number }>
+          { strings.draftEditorScreen.editor.features.field.columnNumberType }
+        </MenuItem>
+      </TextField>
+      <Button
+        fullWidth
+        disabled={ newColumnType === undefined }
+        onClick={ addNewColumn }
+      >
+        { strings.draftEditorScreen.editor.features.field.addNewColumn }
+      </Button>
+    </Stack>
   );
 
   /**
