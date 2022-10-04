@@ -126,7 +126,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * Renders visibility condition selection menu
    */
   const renderFieldCondition = () => {
-    const labelText = selectedVisibleIf?.field
+    const labelText = selectedVisibleIf !== undefined
       ? strings.draftEditorScreen.editor.visibility.conditionLabelTitle
       : strings.draftEditorScreen.editor.visibility.fieldDefiningCondition;
 
@@ -137,9 +137,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
           style={{ width: "100%" }}
         >
           { strings.draftEditorScreen.editor.visibility.visibilityCondition }
-        </Typography>
-        <Typography>
-          { labelText }
         </Typography>
         <TextField
           select
@@ -185,7 +182,8 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
 
     return (
       <Stack spacing={ 2 }>
-        <Typography>
+        <Divider/>
+        <Typography variant="subtitle1">
           { strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
         </Typography>
         <TextField
@@ -199,8 +197,9 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
             ?.options!.map(renderFieldConditionOption)
           }
         </TextField>
-        <Typography sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.conditionalFieldValueInfo }</Typography>
-        <Divider/>
+        <Typography sx={{ color: "gray" }}>
+          { strings.draftEditorScreen.editor.visibility.conditionalFieldValueInfo }
+        </Typography>
       </Stack>
     );
   };
@@ -231,6 +230,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   const renderEditor = () => (
     <>
       { renderVisibilitySwitch() }
+      <Divider/>
       { renderFieldCondition() }
       { renderConditionValueField() }
     </>
@@ -258,7 +258,11 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * Component render
    */
   return (
-    <Stack spacing={ 2 }>
+    <Stack
+      spacing={ 2 }
+      width="100%"
+      overflow="hidden"
+    >
       { renderVisibilityEditor() }
     </Stack>
   );

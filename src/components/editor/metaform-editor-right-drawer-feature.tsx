@@ -762,7 +762,11 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Component render
    */
   return (
-    <Stack spacing={ 2 }>
+    <Stack
+      spacing={ 2 }
+      width="100%"
+      overflow="hidden"
+    >
       { renderFeatureEditor() }
     </Stack>
   );

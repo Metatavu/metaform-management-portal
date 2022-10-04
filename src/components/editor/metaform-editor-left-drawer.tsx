@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Icon, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { FormControl, Icon, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
 import TabPanel from "components/generic/tab-panel";
@@ -48,7 +48,9 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
   const renderFormTab = () => (
     <FormControl fullWidth>
       <Stack spacing={ 2 } padding={ 1 }>
-        <FormLabel>{ strings.draftEditorScreen.editor.form.versionInfo }</FormLabel>
+        <Typography variant="subtitle1">
+          { strings.draftEditorScreen.editor.form.versionInfo }
+        </Typography>
         <TextField
           label={ strings.draftEditorScreen.editor.form.formTitle }
           value={ pendingForm?.title }
