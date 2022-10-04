@@ -464,6 +464,7 @@ namespace MetaformUtils {
    * @param fieldRule field rule
    * @param match match
    * @param fieldOptionMatch field option match
+     @return boolean whether field rule was matched
    */
   export const fieldRuleMatch = (fieldRule: FieldRule, match: string, fieldOptionMatch?: MetaformFieldOption): boolean => {
     if (fieldRule.field === match) {
