@@ -47,7 +47,7 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
    */
   const renderFormTab = () => (
     <FormControl fullWidth>
-      <Stack spacing={ 2 } padding={ 1 }>
+      <Stack spacing={ 2 }>
         <Typography variant="subtitle1">
           { strings.draftEditorScreen.editor.form.versionInfo }
         </Typography>

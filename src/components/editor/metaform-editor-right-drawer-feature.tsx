@@ -336,6 +336,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    */
   const renderContextOption = (context: FormContext, selectedContexts: string[]) => (
     <FormControlLabel
+      key={ context.toString() }
       label={ LocalizationUtils.getLocalizedFormContext(context) }
       control={
         <Checkbox
@@ -393,7 +394,11 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Render multi-choice option edit
    */
   const renderMultiChoiceOptionEdit = (option: MetaformFieldOption, index: number) => (
-    <Stack spacing={ 2 } direction="row">
+    <Stack
+      key={ `${option.name}-${index}` }
+      spacing={ 2 }
+      direction="row"
+    >
       <TextField
         value={ option.text }
         label={ index }
@@ -456,7 +461,11 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * @param index index
    */
   const renderTableColumnEdit = (column: MetaformTableColumn, index: number) => (
-    <Stack spacing={ 2 } direction="row">
+    <Stack
+      key={ `${column.name}-${index}` }
+      spacing={ 2 }
+      direction="row"
+    >
       <TextField
         value={ column.title }
         label={ index }
