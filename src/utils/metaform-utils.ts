@@ -47,7 +47,7 @@ namespace MetaformUtils {
   };
 
   /**
-   * Gets metaform section
+   * Gets metaform field
    *
    * @param form metaform
    * @param fieldId field id
