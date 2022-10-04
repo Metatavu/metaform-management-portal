@@ -284,7 +284,6 @@
         "conditionalFieldInfo": "Select the form field that determines visibility.",
         "conditionalFieldValueInfo":"Select or enter the field value that determines the visibility.",
         "fieldDefiningCondition": "Field defining the condition",
-        "selectField": "Select a field",
         "fieldConditionLabel": "This field appears, if {0} value is {1}",
         "sectionConditionLabel": "This section appears, if {0} value is {1}"
       }

@@ -77,6 +77,8 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
 
   /**
    * Toggles visible if enabled
+   *
+   * @param enableVisibleIf enable visible if
    */
   const toggleVisibleIfEnabled = (enableVisibleIf: boolean) => {
     const updatedVisibleIf: FieldRule | undefined = enableVisibleIf ?
@@ -87,6 +89,9 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
 
   /**
    * Updates visible if value
+   *
+   * @param key visible if key
+   * @param value visible if value
    */
   const updateVisibleIfValue = (key: keyof FieldRule, value: string) => {
     if (selectedVisibleIf === undefined) {
@@ -102,7 +107,10 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   };
 
   /**
-   * Renders condition field options
+   * Renders condition field option
+   *
+   * @param field field
+   * @param index index
    */
   const renderConditionFieldOption = (field: MetaformField, index: number) => {
     const constructedKey = `${field.title}-${index}`;
@@ -116,7 +124,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
 
   /**
    * Renders visibility condition selection menu
-   *
    */
   const renderFieldCondition = () => {
     const labelText = selectedVisibleIf?.field
@@ -154,12 +161,12 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   };
 
   /**
-   * Render field condition options
+   * Render field condition option
    *
    * @param option option
    * @param index index
    */
-  const renderFieldConditionOptions = (option: MetaformFieldOption, index: number) => {
+  const renderFieldConditionOption = (option: MetaformFieldOption, index: number) => {
     const constructedKey = `${option.text}-${index}`;
     return (
       <MenuItem value={ option.name } key={ constructedKey }>
@@ -189,7 +196,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
         >
           { pendingForm.sections!.flatMap(section => section.fields || [])!
             .find(field => field.name === selectedVisibleIf.field)
-            ?.options!.map(renderFieldConditionOptions)
+            ?.options!.map(renderFieldConditionOption)
           }
         </TextField>
         <Typography sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.conditionalFieldValueInfo }</Typography>
