@@ -1,4 +1,4 @@
-import { Divider, Tab, Tabs } from "@mui/material";
+import { Tab, Tabs } from "@mui/material";
 import TabPanel from "components/generic/tab-panel";
 import { Metaform } from "generated/client";
 import strings from "localization/strings";
@@ -61,7 +61,6 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
           fieldIndex={ fieldIndex }
           sectionIndex={ sectionIndex }
         />
-        <Divider/>
       </TabPanel>
     </EditorDrawer>
   );

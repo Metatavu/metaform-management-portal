@@ -212,6 +212,7 @@
     "editor": {
       "addSection": "Lisää osio",
       "emptySection": "Tyhjä osio",
+      "emptySelection": "Aloita muokkaaminen valitsemalla osio tai kenttä.",
       "form": {
         "tabTitle": "Lomake",
         "formTitle": "Lomakkeen otsikko",
@@ -247,41 +248,43 @@
       "features": {
         "tabTitle": "Ominaisuudet",
         "title": "Title",
-        "fieldDatas": "Kentän tiedot",
-        "fieldVisibility": "Kenttä näkyy lomakkeella:",
-        "visibilityCondition": "Näkyvyyden ehto",
-        "required": "Pakollisuus",
-        "defineUserGroup": "Määrittää käyttäjäryhmän",
-        "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
-        "fieldTitle": "Kentän otsikko",
-        "sectionTitle": "Osion otsikko",
-        "addSelectionField": "Lisää kenttä",
-        "addNewColumn": "Lisää uusi sarake",
-        "addColumnType": "Anna kentän tyyppi",
-        "columnTextType": "Tekstikenttä",
-        "columnNumberType": "Numerokenttä",
-        "textOfSubmitButton": "Painikkeen teksti",
-        "newFieldOption": "Valintakenttä",
-        "addCustomHtml": "Lisää tähän HTML-sisältöä",
-        "contextFormVisibility": "Näkyy lomaketta täyttäessä",
-        "contextManagementVisibility": "Näkyy hallinnointi näkymässä",
-        "contextManagementListVisibility": "Näkyy hallinnoinnin listaus näkymässä",
-        "contextVisibilityInfo": "Kentän hallinnointi asetukset",
-        "sliderMinValueLabel": "Kentän pienin arvo",
-        "sliderMaxValueLabel": "Kentän suurin arvo"
+        "section": {
+          "sectionData": "Osion tiedot",
+          "sectionTitle": "Osion otsikko"
+        },
+        "field": {
+          "fieldData": "Kentän tiedot",
+          "required": "Pakollisuus",
+          "defineUserGroup": "Määrittää käyttäjäryhmän",
+          "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
+          "fieldTitle": "Kentän otsikko",
+          "addFieldOption": "Lisää kenttä",
+          "addNewColumn": "Lisää uusi sarake",
+          "addColumnType": "Anna kentän tyyppi",
+          "columnTextType": "Tekstikenttä",
+          "columnNumberType": "Numerokenttä",
+          "submitButtonText": "Painikkeen teksti",
+          "newFieldOption": "Valintakenttä",
+          "addCustomHtml": "Lisää tähän HTML-sisältöä",
+          "contextVisibilityInfo": "Kentän hallinnointi asetukset",
+          "slider": {
+            "minValueLabel": "Kentän pienin arvo",
+            "maxValueLabel": "Kentän suurin arvo"
+          }
+        }
       },
       "visibility": {
         "tabTitle": "näkyvyys",
+        "fieldVisibility": "Kenttä näkyy lomakkeella:",
         "conditionLabelTitle": "Ehtokentän nimi",
+        "visibilityCondition": "Näkyvyyden ehto",
         "conditionally": "Ehdollisesti",
         "conditionalFieldValue": "Ehtokentän arvo",
         "conditionalFieldInfo": "Valitse se lomakkeen kenttä, joka määrittää näkyvyyden.",
         "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
         "fieldDefiningCondition": "Ehdon määrittävä kenttä",
-        "selectField": "Valitse kenttä",
         "fieldConditionLabel": "Tämä kenttä näkyy, jos {0} arvo on {1}",
-        "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}",
-        "selectVisibilityInfo": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja."
+        "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}"
       }
     },
     "formPreview": {
@@ -464,7 +467,14 @@
     "exportReplyXlsx": "Viety taulukkona"
   },
 
+  "formContext": {
+    "form": "Näkyy lomaketta täyttäessä",
+    "management": "Näkyy ammattilaiselle vastausnäkymässä",
+    "managementList": "Näkyy ammattilaiselle vastauslistauksessa"
+  },
+
   "dataGrid": {
     "rowsPerPage": "Rivejä sivulla:"
   }
+
 }
