@@ -1,7 +1,7 @@
 import Api from "api";
 import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, Metaform, MetaformField, MetaformFieldSourceType, MetaformFieldType, MetaformSection, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
-import { Dictionary, ReplyAuditLog } from "types";
+import { Dictionary, ReplyAuditLog, ReplyStatus } from "types";
 import strings from "localization/strings";
 import moment from "moment";
 import { FormContext } from "../types/index";
@@ -393,6 +393,34 @@ namespace MetaformUtils {
     if (replyCount === 0) return moment.duration(0);
 
     return moment.duration(Math.floor(totalTime / replyCount));
+  };
+
+  /**
+   * Create status section for new metaform
+   * 
+   * @returns status section for form
+   */
+  export const formStatusSection = () => {
+    return {
+      fields: [{
+        name: "status",
+        type: MetaformFieldType.Radio,
+        options: [
+          {
+            name: "waiting", text: ReplyStatus.WAITING, checked: true
+          },
+          { name: "processing", text: ReplyStatus.PROCESSING },
+          { name: "done", text: ReplyStatus.DONE }
+        ],
+        contexts: [
+          FormContext.MANAGEMENT,
+          FormContext.MANAGEMENT_LIST
+        ],
+        flags: {
+          managementEditable: true
+        }
+      }]
+    };
   };
 }
 
