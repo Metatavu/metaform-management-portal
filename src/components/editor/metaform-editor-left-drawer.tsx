@@ -7,7 +7,6 @@ import strings from "localization/strings";
 import React, { ChangeEventHandler } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
 import { DraggingMode } from "types";
-import MetaformUtils from "utils/metaform-utils";
 import slugify from "slugify";
 
 /**
@@ -88,32 +87,29 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
   );
 
   /**
-   * Renders fields tab
+   * Renders field draggable
    *
    * @param fieldType field type
    * @param name name
    * @param icon icon
    */
-  const renderFieldsTab = (fieldType: MetaformFieldType, name: string, icon: string) => {
-    const field = MetaformUtils.createField(fieldType);
-    return (
-      <DroppableComponentWrapper
-        isDropDisabled
-        droppableId={ `${DraggingMode.ADD_FIELD.toString()}-${field.type.toString()}` }
+  const renderFieldDraggable = (fieldType: MetaformFieldType, name: string, icon: string) => (
+    <DroppableComponentWrapper
+      isDropDisabled
+      droppableId={ `${DraggingMode.ADD_FIELD.toString()}-${fieldType.toString()}` }
+    >
+      <DraggableWrapper
+        index={ 0 }
+        draggableId={ fieldType.toString() }
+        isDragDisabled={ false }
       >
-        <DraggableWrapper
-          index={ 0 }
-          draggableId={ field.type.toString() }
-          isDragDisabled={ false }
-        >
-          <Stack style={{ alignItems: "center", textAlign: "center" }}>
-            <Icon>{ icon }</Icon>
-            <Typography variant="caption">{ name }</Typography>
-          </Stack>
-        </DraggableWrapper>
-      </DroppableComponentWrapper>
-    );
-  };
+        <Stack style={{ alignItems: "center", textAlign: "center" }}>
+          <Icon>{ icon }</Icon>
+          <Typography variant="caption">{ name }</Typography>
+        </Stack>
+      </DraggableWrapper>
+    </DroppableComponentWrapper>
+  );
 
   /**
    * Renders fields category title
@@ -124,6 +120,31 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
     <Typography variant="subtitle1" style={{ width: "100%" }}>
       { title }
     </Typography>
+  );
+
+  /**
+   * Render fields tab
+   */
+  const renderFieldsTab = () => (
+    <>
+      { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.fields.staticFields) }
+      { renderFieldDraggable(MetaformFieldType.Html, strings.draftEditorScreen.editor.fields.html, "html") }
+      { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.fields.selectorFields) }
+      { renderFieldDraggable(MetaformFieldType.Boolean, strings.draftEditorScreen.editor.fields.boolean, "checkbox") }
+      { renderFieldDraggable(MetaformFieldType.Select, strings.draftEditorScreen.editor.fields.select, "expand_circle_down") }
+      { renderFieldDraggable(MetaformFieldType.Slider, strings.draftEditorScreen.editor.fields.slider, "linear_scale") }
+      { renderFieldDraggable(MetaformFieldType.Checklist, strings.draftEditorScreen.editor.fields.checklist, "fact_check") }
+      { renderFieldDraggable(MetaformFieldType.Radio, strings.draftEditorScreen.editor.fields.radio, "radio_button_checked") }
+      { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.fields.inputFields) }
+      { renderFieldDraggable(MetaformFieldType.Text, strings.draftEditorScreen.editor.fields.text, "text_fields") }
+      { renderFieldDraggable(MetaformFieldType.Number, strings.draftEditorScreen.editor.fields.number, "looks_one") }
+      { renderFieldDraggable(MetaformFieldType.Memo, strings.draftEditorScreen.editor.fields.memo, "notes") }
+      { renderFieldDraggable(MetaformFieldType.Date, strings.draftEditorScreen.editor.fields.date, "today") }
+      { renderFieldDraggable(MetaformFieldType.DateTime, strings.draftEditorScreen.editor.fields.dateAndTime, "today") }
+      { renderFieldDraggable(MetaformFieldType.Files, strings.draftEditorScreen.editor.fields.files, "attachment") }
+      { renderFieldDraggable(MetaformFieldType.Table, strings.draftEditorScreen.editor.fields.table, "table_chart") }
+      { renderFieldDraggable(MetaformFieldType.Submit, strings.draftEditorScreen.editor.fields.submit, "send") }
+    </>
   );
 
   /**
@@ -144,27 +165,11 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
           label={ strings.draftEditorScreen.editor.fields.tabTitle }
         />
       </Tabs>
-      <TabPanel value={ tabIndex } index={ 0 } padding={ 0 }>
+      <TabPanel value={ tabIndex } index={ 0 }>
         { renderFormTab() }
       </TabPanel>
       <TabPanel value={ tabIndex } index={ 1 }>
-        { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.fields.staticFields) }
-        { renderFieldsTab(MetaformFieldType.Html, strings.draftEditorScreen.editor.fields.html, "html") }
-        { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.fields.selectorFields) }
-        { renderFieldsTab(MetaformFieldType.Boolean, strings.draftEditorScreen.editor.fields.boolean, "checkbox") }
-        { renderFieldsTab(MetaformFieldType.Select, strings.draftEditorScreen.editor.fields.select, "expand_circle_down") }
-        { renderFieldsTab(MetaformFieldType.Slider, strings.draftEditorScreen.editor.fields.slider, "linear_scale") }
-        { renderFieldsTab(MetaformFieldType.Checklist, strings.draftEditorScreen.editor.fields.checklist, "fact_check") }
-        { renderFieldsTab(MetaformFieldType.Radio, strings.draftEditorScreen.editor.fields.radio, "radio_button_checked") }
-        { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.fields.inputFields) }
-        { renderFieldsTab(MetaformFieldType.Text, strings.draftEditorScreen.editor.fields.text, "text_fields") }
-        { renderFieldsTab(MetaformFieldType.Number, strings.draftEditorScreen.editor.fields.number, "looks_one") }
-        { renderFieldsTab(MetaformFieldType.Memo, strings.draftEditorScreen.editor.fields.memo, "notes") }
-        { renderFieldsTab(MetaformFieldType.Date, strings.draftEditorScreen.editor.fields.date, "today") }
-        { renderFieldsTab(MetaformFieldType.DateTime, strings.draftEditorScreen.editor.fields.dateAndTime, "today") }
-        { renderFieldsTab(MetaformFieldType.Files, strings.draftEditorScreen.editor.fields.files, "attachment") }
-        { renderFieldsTab(MetaformFieldType.Table, strings.draftEditorScreen.editor.fields.table, "table_chart") }
-        { renderFieldsTab(MetaformFieldType.Submit, strings.draftEditorScreen.editor.fields.submit, "send") }
+        { renderFieldsTab() }
       </TabPanel>
     </EditorDrawer>
   );
