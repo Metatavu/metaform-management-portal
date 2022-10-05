@@ -31,10 +31,7 @@ export const EditorDrawer = styled(Paper, {
   label: "metaform-editor-drawer"
 })(() => ({
   width: 300,
-  height: "100%",
-  overflow: "hidden",
-  display: "flex",
-  flexDirection: "column"
+  height: "100%"
 }));
 
 /**

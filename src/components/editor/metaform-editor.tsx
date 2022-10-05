@@ -42,9 +42,8 @@ const MetaformEditor: React.FC<Props> = ({
    * Event handler for empty space click
    */
   const onGlobalClick = (event: MouseEvent) => {
-    if (editorRef.current?.isEqualNode(event.target as Node)) {
-      setSelectedFieldIndex(undefined);
-      setSelectedSectionIndex(undefined);
+    if (!editorRef.current?.contains(event.target as Node)) {
+      return null;
     }
   };
 
@@ -223,7 +222,7 @@ const MetaformEditor: React.FC<Props> = ({
   /**
    * Event handler for section edit click
    *
-   * @param sectionIndex section index
+   * @param sectionIndex section index 
    */
   const onSectionEditClick = (sectionIndex: number) => () => {
     setSelectedFieldIndex(undefined);
@@ -245,20 +244,22 @@ const MetaformEditor: React.FC<Props> = ({
     const section = pendingForm.sections[sectionIndex];
     const field = section.fields?.[fieldIndex];
 
-    if (!section.fields || !field?.name) {
+    if (!section.fields || section.fields.length <= fieldIndex) {
       return;
     }
-
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.[sectionIndex].fields?.splice(fieldIndex, 1);
       draftForm.sections?.forEach(currentSection => {
-        if (currentSection.visibleIf && MetaformUtils.fieldRuleMatch(currentSection.visibleIf, field.name!)) {
-          delete currentSection.visibleIf;
+        if (currentSection.visibleIf) {
+          if (currentSection.visibleIf.field === field?.name) {
+            delete currentSection.visibleIf;
+          }
         }
-
         currentSection.fields?.forEach(currentField => {
-          if (currentField.visibleIf && MetaformUtils.fieldRuleMatch(currentField.visibleIf, field.name!)) {
-            delete currentField.visibleIf;
+          if (currentField.visibleIf) {
+            if (currentField.visibleIf.field === field?.name) {
+              delete currentField.visibleIf;
+            }
           }
         });
       });
@@ -349,12 +350,7 @@ const MetaformEditor: React.FC<Props> = ({
    */
   const renderFormEditor = () => (
     <EditorContent spacing={ 2 } ref={ editorRef }>
-      <Typography
-        sx={{ textAlign: "center" }}
-        variant="h1"
-      >
-        { pendingForm.title }
-      </Typography>
+      <Typography variant="h1">{ pendingForm.title }</Typography>
       <DroppableWrapper
         droppableId={ DraggingMode.SECTION.toString() }
         isDropDisabled={ draggingMode !== DraggingMode.SECTION }
@@ -380,10 +376,7 @@ const MetaformEditor: React.FC<Props> = ({
    */
   return (
     <EditorWrapper>
-      <DragDropContext
-        onDragEnd={ onDragEnd }
-        onDragStart={ onDragStart }
-      >
+      <DragDropContext onDragEnd={ onDragEnd } onDragStart={ onDragStart }>
         <MetaformEditorLeftDrawer
           pendingForm={ pendingForm }
           setPendingForm={ setPendingForm }

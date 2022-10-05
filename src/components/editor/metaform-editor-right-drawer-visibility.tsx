@@ -1,10 +1,8 @@
-import { Divider, FormControlLabel, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
-import { FieldRule, Metaform, MetaformField, MetaformFieldOption } from "generated/client";
+import { Divider, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, Switch, Typography } from "@mui/material";
+import { Metaform, MetaformField, MetaformSection } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
 import React, { useEffect, FC } from "react";
-import { VisibilitySource } from "types";
-import MetaformUtils from "utils/metaform-utils";
 
 /**
  * Component properties
@@ -25,245 +23,306 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   pendingForm,
   setPendingForm
 }) => {
-  const [ selectedVisibleIf, setSelectedVisibleIf ] = React.useState<FieldRule | undefined>();
-  const [ visibleIfSource, setVisibleIfSource ] = React.useState<VisibilitySource>(VisibilitySource.NONE);
+  const [ disabledValue, setDisabledValue ] = React.useState<boolean>(false);
+  const [ requiredConditionField, setRequiredConditionField ] = React.useState<string>("");
+  const [ requiredConditionEqualsValue, setRequiredConditionEqualsValue ] = React.useState<string>("");
+  const [ requiredConditionInfoField, setRequiredConditionInfoField ] = React.useState<boolean>(true);
+  const [ selectedComponent, setSelectedComponent ] = React.useState<string | undefined>(undefined);
+  const [ metaFormFieldSection, setMetaFormFieldSection ] = React.useState<MetaformField | MetaformSection>();
 
   /**
-   * Updates visibleIf source section, field
+   * Set values of Conditional field, switch and get selected component name
    */
-  const updateSelected = () => {
-    const field = MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex);
-    const section = MetaformUtils.getMetaformSection(pendingForm, sectionIndex);
+  const setVisibilityComponentValues = () => {
+    if (fieldIndex === undefined && sectionIndex !== undefined) {
+      const section = pendingForm.sections![sectionIndex].visibleIf;
+      setMetaFormFieldSection(pendingForm.sections![sectionIndex]);
+      setDisabledValue(!!section);
+      setRequiredConditionField(section ? section.field! : "");
+      setRequiredConditionEqualsValue(section ? section.equals! : "");
+      setRequiredConditionInfoField(!section);
+      setSelectedComponent(pendingForm.sections![sectionIndex].title);
+    }
 
-    if (field !== undefined) {
-      setSelectedVisibleIf(field.visibleIf);
-      setVisibleIfSource(VisibilitySource.FIELD);
-    } else if (section !== undefined) {
-      setSelectedVisibleIf(section.visibleIf);
-      setVisibleIfSource(VisibilitySource.SECTION);
-    } else {
-      setSelectedVisibleIf(undefined);
-      setVisibleIfSource(VisibilitySource.NONE);
+    if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      const field = pendingForm.sections![sectionIndex].fields![fieldIndex].visibleIf;
+      setMetaFormFieldSection(pendingForm.sections![sectionIndex].fields![fieldIndex]);
+      setSelectedComponent(pendingForm.sections![sectionIndex].fields![fieldIndex].name);
+      setDisabledValue(!!field);
+      setRequiredConditionField(field ? field.field! : "");
+      setRequiredConditionEqualsValue(field ? field.equals! : "");
+      setRequiredConditionInfoField(!field);
     }
   };
 
   useEffect(() => {
-    updateSelected();
-  }, [ sectionIndex, fieldIndex ]);
+    setVisibilityComponentValues();
+  }, [fieldIndex, sectionIndex]);
 
   /**
-   * Updated visibleIfSource visible if
+   * Empties metaformField visibleIf conditions
    *
-   * @param visibleIf visible if
+   * @param metaformField metaformField what we change
    */
-  const updateSelectedVisibleIf = (visibleIf: FieldRule | undefined) => {
-    if (visibleIfSource === VisibilitySource.FIELD) {
-      const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections![sectionIndex!].fields![fieldIndex!].visibleIf = visibleIf;
-      });
-
-      setPendingForm(updatedForm);
+  const emptyFormFieldVisibleIf = (metaformField: MetaformField) => {
+    if (sectionIndex === undefined || fieldIndex === undefined) {
+      return;
     }
-
-    if (visibleIfSource === VisibilitySource.SECTION) {
-      const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections![sectionIndex!].visibleIf = visibleIf;
-      });
-
-      setPendingForm(updatedForm);
-    }
-    setSelectedVisibleIf(visibleIf);
+    const updatedForm = produce(pendingForm, draftForm => {
+      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, metaformField);
+    });
+    setPendingForm(updatedForm);
   };
 
   /**
-   * Toggles visible if enabled
+   * Updates metaform field or section visibleIf parameters
    *
-   * @param enableVisibleIf enable visible if
+   * @param newMetaformUpdateFieldOrSection metaform field or section
+   * @param value event condition equals value (yes / no)
    */
-  const toggleVisibleIfEnabled = (enableVisibleIf: boolean) => {
-    const updatedVisibleIf: FieldRule | undefined = enableVisibleIf ?
-      {} :
-      undefined;
-    updateSelectedVisibleIf(updatedVisibleIf);
+  const updateFormFieldOrSectionVisibilityValues = (newMetaformUpdateFieldOrSection: MetaformField | MetaformSection, value: string) => {
+    setRequiredConditionEqualsValue(value);
+    setRequiredConditionInfoField(false);
+    if (sectionIndex === undefined) {
+      return;
+    }
+    if (sectionIndex !== undefined && fieldIndex === undefined) {
+      const updatedForm = produce(pendingForm, draftForm => {
+        draftForm.sections?.splice(sectionIndex, 1, newMetaformUpdateFieldOrSection as MetaformSection);
+      });
+      setPendingForm(updatedForm);
+    }
+    if (sectionIndex !== undefined && fieldIndex !== undefined) {
+      const updatedForm = produce(pendingForm, draftForm => {
+        draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, newMetaformUpdateFieldOrSection as MetaformField);
+      });
+      setPendingForm(updatedForm);
+    }
   };
 
   /**
-   * Updates visible if value
+   * Empties metaformSection visibleIf
    *
-   * @param key visible if key
-   * @param value visible if value
+   * @param metaformSection metaform section what we are editing
    */
-  const updateVisibleIfValue = (key: keyof FieldRule, value: string) => {
-    if (selectedVisibleIf === undefined) {
+  const emptyFormSectionVisibleIf = (metaformSection: MetaformSection) => {
+    if (sectionIndex === undefined) {
       return;
     }
 
-    const updatedVisibleIf = {
-      ...selectedVisibleIf,
-      [key]: value
-    };
+    const section = pendingForm.sections![sectionIndex];
+    if (!section) {
+      return;
+    }
 
-    updateSelectedVisibleIf(updatedVisibleIf);
-  };
+    const updatedForm = produce(pendingForm, draftForm => {
+      draftForm.sections?.splice(sectionIndex, 1, metaformSection);
+    });
 
-  /**
-   * Renders condition field option
-   *
-   * @param field field
-   * @param index index
-   */
-  const renderConditionFieldOption = (field: MetaformField, index: number) => {
-    const constructedKey = `${field.title}-${index}`;
-
-    return (
-      <MenuItem value={ field.name } key={ constructedKey }>
-        { field.title }
-      </MenuItem>
-    );
+    setPendingForm(updatedForm);
   };
 
   /**
    * Renders visibility condition selection menu
+   *
    */
   const renderFieldCondition = () => {
-    const labelText = selectedVisibleIf !== undefined
-      ? strings.draftEditorScreen.editor.visibility.conditionLabelTitle
-      : strings.draftEditorScreen.editor.visibility.fieldDefiningCondition;
-
-    return (
-      <Stack spacing={ 2 }>
-        <Typography
-          variant="subtitle1"
-          style={{ width: "100%" }}
-        >
-          { strings.draftEditorScreen.editor.visibility.visibilityCondition }
-        </Typography>
-        <TextField
-          select
-          disabled={ selectedVisibleIf === undefined }
-          label={ labelText }
-          value={ selectedVisibleIf?.field }
-          onChange={ event => updateVisibleIfValue("field", event.target.value) }
-        >
-          { pendingForm.sections!.flatMap(section => section.fields || [])
-            .filter(field => MetaformUtils.fieldTypesAllowVisibility.includes(field.type))
-            .map(renderConditionFieldOption)
-          }
-        </TextField>
-        <Typography sx={{ color: "gray" }}>
-          { strings.draftEditorScreen.editor.visibility.conditionalFieldInfo }
-        </Typography>
-      </Stack>
-    );
+    if (sectionIndex !== undefined) {
+      const labelText = requiredConditionField
+        ? strings.draftEditorScreen.editor.visibility.conditionLabelTitle
+        : strings.draftEditorScreen.editor.visibility.fieldDefiningCondition;
+      return (
+        <Stack spacing={ 2 }>
+          <Typography
+            variant="subtitle1"
+            style={{ width: "100%" }}
+          >
+            { strings.draftEditorScreen.editor.features.visibilityCondition }
+          </Typography>
+          <FormControl
+            fullWidth
+            disabled={ !disabledValue }
+          >
+            <InputLabel id="visibilityCondition">
+              { labelText }
+            </InputLabel>
+            <Select
+              fullWidth
+              labelId="visibilityCondition"
+              label={ labelText }
+              value={ requiredConditionField }
+              onChange={ event => setRequiredConditionField(event.target.value) }
+            >
+              <MenuItem sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.selectField }</MenuItem>
+              { pendingForm.sections!.map(section => section.fields!.map((field, index) => {
+                const constructedKey = `${field.title}-${index}`;
+                if (field.type === "radio" || field.type === "checklist" || field.type === "select") {
+                  if (field.name !== selectedComponent) {
+                    return (
+                      <MenuItem value={ field.name } key={ constructedKey }>
+                        { field.title }
+                      </MenuItem>
+                    );
+                  }
+                }
+                return null;
+              }))
+              }
+            </Select>
+          </FormControl>
+        </Stack>
+      );
+    }
   };
 
   /**
-   * Render field condition option
-   *
-   * @param option option
-   * @param index index
+   * Render field Condition info
    */
-  const renderFieldConditionOption = (option: MetaformFieldOption, index: number) => {
-    const constructedKey = `${option.text}-${index}`;
-    return (
-      <MenuItem value={ option.name } key={ constructedKey }>
-        { option.text }
-      </MenuItem>
-    );
+  const renderFieldConditionInfo = () => {
+    if (!requiredConditionField && disabledValue) {
+      return (
+        <Typography sx={{ color: "gray" }}>
+          { strings.draftEditorScreen.editor.visibility.conditionalFieldInfo }
+        </Typography>
+      );
+    }
   };
+
+  /**
+   * Check group field options
+   *
+   * @param field multi options field where we get option values
+   * @returns options from field
+   */
+  const renderFieldConditionOptions = (field: MetaformField) => (
+    field.options!.map((option, index) => {
+      const constructedKey = `${option.text}-${index}-`;
+      return (
+        <MenuItem value={ option.name } key={ constructedKey }>
+          { option.text }
+        </MenuItem>
+      );
+    })
+  );
 
   /**
    * Renders visibility condition select menu
    */
   const renderConditionValueField = () => {
-    if (!selectedVisibleIf?.field) {
-      return null;
+    if (sectionIndex !== undefined) {
+      if (!requiredConditionField) {
+        return null;
+      }
+      return (
+        <>
+          <FormControl fullWidth>
+            <InputLabel id="visibilityConditionLabel">{ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }</InputLabel>
+            <Select
+              fullWidth
+              labelId="visibilityConditionLabel"
+              label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
+              value={ requiredConditionEqualsValue }
+              onChange={ event => updateFormFieldOrSectionVisibilityValues({
+                ...metaFormFieldSection,
+                visibleIf: {
+                  field: requiredConditionField,
+                  equals: event.target.value,
+                  notEquals: "",
+                  and: [],
+                  or: []
+                }
+              }, event.target.value)
+              }
+            >
+              { pendingForm.sections!.map(section => section.fields!.map(field => {
+                if (field.name === requiredConditionField) {
+                  if (field.type === "radio" || field.type === "checklist" || field.type === "select") {
+                    return (
+                      renderFieldConditionOptions(field)
+                    );
+                  }
+                }
+                return null;
+              }))}
+              ;
+            </Select>
+          </FormControl>
+          { requiredConditionInfoField && <Typography sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.conditionalFieldValueInfo }</Typography> }
+          <Divider/>
+        </>
+      );
+    }
+  };
+
+  /**
+  * Render components depending what is switch value
+  *
+  * @param value Switch value true or false
+  */
+  const setSwitchValue = (value: boolean) => {
+    if (sectionIndex === undefined) {
+      return;
     }
 
-    return (
-      <Stack spacing={ 2 }>
-        <Divider/>
-        <Typography variant="subtitle1">
-          { strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
-        </Typography>
-        <TextField
-          select
-          label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
-          value={ selectedVisibleIf.equals }
-          onChange={ event => updateVisibleIfValue("equals", event.target.value) }
-        >
-          { pendingForm.sections!.flatMap(section => section.fields || [])!
-            .find(field => field.name === selectedVisibleIf.field)
-            ?.options!.map(renderFieldConditionOption)
-          }
-        </TextField>
-        <Typography sx={{ color: "gray" }}>
-          { strings.draftEditorScreen.editor.visibility.conditionalFieldValueInfo }
-        </Typography>
-      </Stack>
-    );
+    if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
+      setDisabledValue(value);
+
+      if (disabledValue) {
+        setRequiredConditionField("");
+        setRequiredConditionEqualsValue("");
+        setRequiredConditionInfoField(true);
+        emptyFormFieldVisibleIf({ ...field, visibleIf: undefined });
+      }
+    }
+
+    if (sectionIndex !== undefined && fieldIndex === undefined) {
+      const section = pendingForm.sections![sectionIndex];
+      setDisabledValue(value);
+
+      if (disabledValue) {
+        setRequiredConditionField("");
+        setRequiredConditionEqualsValue("");
+        setRequiredConditionInfoField(true);
+        emptyFormSectionVisibleIf({ ...section, visibleIf: undefined });
+      }
+    }
   };
 
   /**
    * Renders visibility switch component
    */
-  const renderVisibilitySwitch = () => (
-    <Stack spacing={ 2 }>
-      <Typography variant="subtitle1" style={{ width: "100%" }}>
-        { strings.draftEditorScreen.editor.visibility.fieldVisibility }
-      </Typography>
-      <FormControlLabel
-        control={
-          <Switch
-            checked={ !!selectedVisibleIf }
-            onChange={ event => toggleVisibleIfEnabled(event.target.checked) }
+  const renderVisibilitySwitch = () => {
+    if (sectionIndex !== undefined) {
+      return (
+        <>
+          <Typography variant="subtitle1" style={{ width: "100%" }}>
+            { strings.draftEditorScreen.editor.features.fieldVisibility }
+          </Typography>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={ disabledValue }
+                onChange={ event => setSwitchValue(event.target.checked) }
+              />
+            }
+            label={ strings.draftEditorScreen.editor.visibility.conditionally }
           />
-        }
-        label={ strings.draftEditorScreen.editor.visibility.conditionally }
-      />
-    </Stack>
-  );
-
-  /**
-   * Renders editor
-   */
-  const renderEditor = () => (
-    <>
-      { renderVisibilitySwitch() }
-      <Divider/>
-      { renderFieldCondition() }
-      { renderConditionValueField() }
-    </>
-  );
-
-  /**
-   * Renders empty selection
-   */
-  const renderEmptySelection = () => (
-    <Typography>{ strings.draftEditorScreen.editor.emptySelection}</Typography>
-  );
-
-  /**
-   * Renders visibility editor
-   */
-  const renderVisibilityEditor = () => {
-    if (visibleIfSource !== VisibilitySource.NONE) {
-      return renderEditor();
+          <Divider/>
+        </>
+      );
     }
-
-    return renderEmptySelection();
   };
 
   /**
    * Component render
    */
   return (
-    <Stack
-      spacing={ 2 }
-      width="100%"
-      overflow="hidden"
-    >
-      { renderVisibilityEditor() }
+    <Stack spacing={ 2 } sx={{ width: "100%" }}>
+      { renderVisibilitySwitch() }
+      { renderFieldCondition() }
+      { renderFieldConditionInfo() }
+      { renderConditionValueField() }
     </Stack>
   );
 };

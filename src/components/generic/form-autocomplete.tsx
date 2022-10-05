@@ -82,7 +82,7 @@ const FormAutocomplete: React.FC<Props> = ({
     }
 
     if (!codeServerClassificationId) {
-      throw new Error(strings.autoComplete.missingCodeServerClassificationId);
+      throw new Error(strings.autoComplete.missingCodeServerClassificiationId);
     }
 
     if (!codeServerParentConceptCodeId) {

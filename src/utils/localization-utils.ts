@@ -1,7 +1,7 @@
 import { AuditLogEntryType } from "generated/client";
 import strings from "localization/strings";
 import moment from "moment";
-import { FormContext, NavigationLinks, ReplyStatus } from "types";
+import { NavigationLinks, ReplyStatus } from "types";
 
 namespace LocalizationUtils {
 
@@ -35,7 +35,7 @@ namespace LocalizationUtils {
    *
    * @param status status of reply
    */
-  export const getLocalizedStatusOfReply = (status: ReplyStatus) => ({
+  export const getLocalizedStatusOfReply = (status: string) => ({
     [ReplyStatus.WAITING]: strings.repliesScreen.statusWaiting,
     [ReplyStatus.PROCESSING]: strings.repliesScreen.statusProcessing,
     [ReplyStatus.DONE]: strings.repliesScreen.statusDone
@@ -46,7 +46,7 @@ namespace LocalizationUtils {
    *
    * @param type audit log entry type
    */
-  export const getLocalizedAuditLogEntryType = (type: AuditLogEntryType) => ({
+  export const getLocalizedAuditLogEntryType = (type: string) => ({
     [AuditLogEntryType.ViewReply]: strings.auditLogEntryType.viewReply,
     [AuditLogEntryType.ListReply]: strings.auditLogEntryType.listReply,
     [AuditLogEntryType.ModifyReply]: strings.auditLogEntryType.modifyReply,
@@ -57,17 +57,6 @@ namespace LocalizationUtils {
     [AuditLogEntryType.ExportReplyPdf]: strings.auditLogEntryType.exportReplyPdf,
     [AuditLogEntryType.ExportReplyXlsx]: strings.auditLogEntryType.exportReplyXlsx
   })[type];
-
-  /**
-   * Returns localized metaform form context
-   *
-   * @param context metaform context
-   */
-  export const getLocalizedFormContext = (context: FormContext) => ({
-    [FormContext.FORM]: strings.formContext.form,
-    [FormContext.MANAGEMENT]: strings.formContext.management,
-    [FormContext.MANAGEMENT_LIST]: strings.formContext.managementList
-  })[context];
 
   /**
    * Returns localized name boolean value

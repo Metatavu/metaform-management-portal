@@ -313,11 +313,6 @@ const FormRepliesScreen: React.FC = () => {
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
-        componentsProps={{
-          pagination: {
-            labelRowsPerPage: strings.dataGrid.rowsPerPage
-          }
-        }}
         loading={ loading }
         rows={ filteredRows }
         columns={ columns }

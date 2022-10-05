@@ -186,11 +186,6 @@ const FormHistoryScreen: React.FC = () => {
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
-        componentsProps={{
-          pagination: {
-            labelRowsPerPage: strings.dataGrid.rowsPerPage
-          }
-        }}
         loading={ loading }
         rows={ auditLogEntries }
         columns={ columns }

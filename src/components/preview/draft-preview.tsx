@@ -40,6 +40,7 @@ const DraftPreview: FC<Prop> = ({
 
   return (
     <Form
+      titleColor="#000"
       contexts={ ["FORM"] }
       metaform={ metaform }
       getFieldValue={ getFieldValue }

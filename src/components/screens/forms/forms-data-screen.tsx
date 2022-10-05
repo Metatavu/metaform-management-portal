@@ -224,11 +224,6 @@ const FormsDataScreen: React.FC = () => {
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
-        componentsProps={{
-          pagination: {
-            labelRowsPerPage: strings.dataGrid.rowsPerPage
-          }
-        }}
         loading={ loading }
         rows={ rows }
         columns={ columns }
