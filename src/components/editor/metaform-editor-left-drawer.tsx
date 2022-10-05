@@ -44,7 +44,7 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
 
   /**
    * Event handler for metaform visibility change
-   * 
+   *
    * @param selectedVisibility selected visibility value public or private
    */
   const onFormVisibilityChange = (selectedVisibility: MetaformVisibility) => {

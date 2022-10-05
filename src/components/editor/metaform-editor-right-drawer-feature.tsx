@@ -395,7 +395,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    */
   const renderMultiChoiceOptionEdit = (option: MetaformFieldOption, index: number) => (
     <Stack
-      key={ `${option.name}-${index}` }
+      key={ `option-${index}` }
       spacing={ 2 }
       direction="row"
     >
@@ -462,7 +462,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    */
   const renderTableColumnEdit = (column: MetaformTableColumn, index: number) => (
     <Stack
-      key={ `${column.name}-${index}` }
+      key={ `column-${index}` }
       spacing={ 2 }
       direction="row"
     >
@@ -471,7 +471,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
         label={ index }
         onChange={ event => updateTableColumn({
           ...column,
-          name: slugify(`${event.target.value}-${index}`),
           title: event.target.value,
           type: "text" as MetaformTableColumnType,
           values: undefined
