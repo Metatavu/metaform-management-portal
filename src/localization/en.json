@@ -285,7 +285,11 @@
         "conditionalFieldValueInfo":"Select or enter the field value that determines the visibility.",
         "fieldDefiningCondition": "Field defining the condition",
         "fieldConditionLabel": "This field appears, if {0} value is {1}",
-        "sectionConditionLabel": "This section appears, if {0} value is {1}"
+        "sectionConditionLabel": "This section appears, if {0} value is {1}",
+        "formVisibility": "Form information",
+        "formVisibilityLabel": "Form visibility",
+        "private": "Private",
+        "public": "Public"
       }
     },
     "formPreview": {

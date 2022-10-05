@@ -321,6 +321,10 @@ export interface Localized extends LocalizedStringsMethods {
         fieldDefiningCondition: string;
         fieldConditionLabel: string;
         sectionConditionLabel: string;
+        formVisibility: string;
+        formVisibilityLabel: string;
+        private: string;
+        public: string;
       };
     };
     formPreview: {

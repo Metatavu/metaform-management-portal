@@ -284,7 +284,11 @@
         "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
         "fieldDefiningCondition": "Ehdon määrittävä kenttä",
         "fieldConditionLabel": "Tämä kenttä näkyy, jos {0} arvo on {1}",
-        "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}"
+        "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}",
+        "formVisibility": "Lomakkeen tiedot",
+        "formVisibilityLabel": "Lomakkeen näkyvyys",
+        "private": "Yksityinen",
+        "public": "Julkinen"
       }
     },
     "formPreview": {
