@@ -469,8 +469,8 @@
 
   "formContext": {
     "form": "Näkyy lomaketta täyttäessä",
-    "management": "Näkyy hallinnointi näkymässä",
-    "managementList": "Näkyy hallinnoinnin listaus näkymässä"
+    "management": "Näkyy ammattilaiselle vastausnäkymässä",
+    "managementList": "Näkyy ammattilaiselle vastauslistauksessa"
   },
 
   "dataGrid": {
