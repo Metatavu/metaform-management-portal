@@ -23,14 +23,12 @@ const DraftPreviewScreen: FC = () => {
     metaformVersion?.data as Metaform;
 
   const navigate = useNavigate();
-  const { formSlug, draftId } = useParams();
+  const { draftId } = useParams();
 
-  const linkToShare = `${window.location.origin}/${formSlug}`;
+  const linkToShare = `${window.location}`;
 
   React.useEffect(() => {
-    const metaformData = metaformVersion?.data as Metaform;
-
-    if (!metaformVersion || metaformData.slug !== formSlug || metaformVersion.id !== draftId) {
+    if (!metaformVersion || metaformVersion.id !== draftId) {
       navigate(window.location.pathname.replace("preview", "editor"));
     }
   }, []);
