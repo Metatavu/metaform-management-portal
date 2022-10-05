@@ -132,17 +132,17 @@ const EditorScreen: React.FC = () => {
 
       if (version) {
         navigate(`${currentPath}/${metaformToEdit.slug}/${version.id}`);
+      } else {
+        const newMetaformVersion = await versionsApi.createMetaformVersion({
+          metaformId: metaformToEdit.id!,
+          metaformVersion: {
+            type: MetaformVersionType.Draft,
+            data: { ...metaformToEdit } as { [key: string]: object }
+          }
+        });
+  
+        navigate(`${currentPath}/${metaformToEdit.slug}/${newMetaformVersion.id}`);
       }
-
-      const newMetaformVersion = await versionsApi.createMetaformVersion({
-        metaformId: metaformToEdit.id!,
-        metaformVersion: {
-          type: MetaformVersionType.Draft,
-          data: { ...metaformToEdit } as { [key: string]: object }
-        }
-      });
-
-      navigate(`${currentPath}/${metaformToEdit.slug}/${newMetaformVersion.id}`);
     }
     
     const versionToEdit = metaformVersions.find(version => version.id === id);
