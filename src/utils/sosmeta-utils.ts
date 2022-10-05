@@ -15,7 +15,7 @@ namespace SosmetaUtils {
 
   /**
    * Handles creation of MetaformField with MetaformFieldType of text
-   * 
+   *
    * @param sectionName sectionName
    * @param field field
    * @param required required
@@ -24,7 +24,7 @@ namespace SosmetaUtils {
   const handleSosmetaStringField = (sectionName: string, field: any, required?: boolean) => {
     try {
       const fieldData = field.sosmeta;
-      
+
       return MetaformUtils.createField(
         MetaformFieldType.Text,
         fieldData.name[0].value,
@@ -38,7 +38,7 @@ namespace SosmetaUtils {
 
   /**
    * Handles creation of MetaformField with MetaformFieldType of boolean
-   * 
+   *
    * @param sectionName sectionName
    * @param field field
    * @returns MetaformField
@@ -56,7 +56,7 @@ namespace SosmetaUtils {
 
   /**
    * TODO: Figure out a more descriptive TSDoc
-   * 
+   *
    * @param sectionName
    * @param field field
    * @param required required
@@ -93,15 +93,15 @@ namespace SosmetaUtils {
   /**
    * Handles creation of MetaformFields from Sosmeta Schema Properties of type array
    * TODO: This may need restructuring when being tested with more Sosmeta schemas
-   * 
-   * @param sosmetaSection 
+   *
+   * @param sosmetaSection
    * @returns MetaformField[]
    */
   const handleSosmetaArraySection = (sosmetaSection: any) => {
     try {
       const requiredFieldNames: string[] = sosmetaSection.items.required;
       const fields = Object.keys(sosmetaSection.items.properties).map(fieldName => sosmetaSection.items.properties[fieldName]);
-      
+
       return fields.map(field =>
         handleSosmetaStringField(
           sosmetaSection.items.sosmeta.name[0].value,
@@ -115,10 +115,10 @@ namespace SosmetaUtils {
 
   /**
    * Handles creation of MetaformFields from Sosmeta Schema Properties of type object
-   * Type object contains sub properties which contain the data that can be 
-   * converted to MetaformField and therefore each object key needs to be mapped 
-   *  
-   * @param sosmetaSection 
+   * Type object contains sub properties which contain the data that can be
+   * converted to MetaformField and therefore each object key needs to be mapped
+   *
+   * @param sosmetaSection
    * @returns MetaformField[]
    */
   const handleSosmetaObjectSection = (sosmetaSection: any) => {
@@ -139,8 +139,8 @@ namespace SosmetaUtils {
 
   /**
    * Handles creation of MetaformFields from Sosmeta Schema Properties of type string
-   * 
-   * @param sosmetaSection 
+   *
+   * @param sosmetaSection
    * @returns MetaformField
    */
   const handleSosmetaStringSection = (sosmetaSection: any) => {
@@ -156,14 +156,14 @@ namespace SosmetaUtils {
   /**
    * Maps through Sosmeta Schema Properties
    * and creates Metaform Section from each property
-   * based on type (SosmetaType) of given property 
-   * 
+   * based on type (SosmetaType) of given property
+   *
    * @param sosmetaForm
    * @returns MetaformSection[]
    */
   const convertSections = (sosmetaForm: any) => {
     const sosmetaSections = Object.keys(sosmetaForm.properties).map(sosmetaSection => sosmetaForm.properties[sosmetaSection]);
-    
+
     return sosmetaSections.map(sosmetaSection => {
       switch (sosmetaSection.type) {
         case SosmetaType.ARRAY:
@@ -197,7 +197,7 @@ namespace SosmetaUtils {
 
   /**
    * Validates converted form fields e.g. filters undefined values out
-   * 
+   *
    * @returns Metaform
    */
   const validateConvertedField = (): Metaform => {
@@ -209,10 +209,10 @@ namespace SosmetaUtils {
       }))
     };
   };
-    
+
   /**
    * Fetches Sosmeta schema from Sosmeta
-   * 
+   *
    * @param sosmetaUrl of sosmeta schema
    * @return Sosmeta Schema as JSON
    */
@@ -221,7 +221,7 @@ namespace SosmetaUtils {
       const schemaUrl = sosmetaUrl?.replace("/definition", sosmetaUrlSuffix);
       const corsProxy = Config.getCorsProxy();
       const request = await fetch(`${corsProxy}/${schemaUrl}`);
-      
+
       if (request.status === 200) {
         return await request.json();
       }
@@ -233,7 +233,7 @@ namespace SosmetaUtils {
   /* eslint-disable prefer-destructuring */
   /**
    * Converts Sosmeta Schema into Metaform
-   * 
+   *
    * @param sosmetaUrl string
    * @return Metaform
    */

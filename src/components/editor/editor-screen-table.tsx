@@ -315,6 +315,11 @@ const EditorScreenTable: FC<Props> = ({
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
+        componentsProps={{
+          pagination: {
+            labelRowsPerPage: strings.dataGrid.rowsPerPage
+          }
+        }}
         rows={ versions }
         columns={ getColumns() }
         getRowId={ row => row.id }

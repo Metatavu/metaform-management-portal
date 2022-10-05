@@ -1,5 +1,5 @@
 import Api from "api";
-import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, Metaform, MetaformField, MetaformFieldSourceType, MetaformFieldType, MetaformSection, Reply } from "generated/client";
+import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
 import { Dictionary, ReplyAuditLog } from "types";
 import strings from "localization/strings";
@@ -10,6 +10,57 @@ import { FormContext } from "../types/index";
  * Utility class for metaform
  */
 namespace MetaformUtils {
+
+  /**
+   * Field types that allow user group
+   */
+  export const fieldTypesAllowUserGroup = [
+    MetaformFieldType.Select,
+    MetaformFieldType.DateTime,
+    MetaformFieldType.Date,
+    MetaformFieldType.Radio,
+    MetaformFieldType.Checklist
+  ];
+
+  /**
+   * Field types that allow visibility
+   */
+  export const fieldTypesAllowVisibility = [
+    MetaformFieldType.Select,
+    MetaformFieldType.Radio,
+    MetaformFieldType.Checklist
+  ];
+
+  /**
+   * Gets metaform section
+   *
+   * @param form metaform
+   * @param sectionId section id
+   * @return metaform section
+   */
+  export const getMetaformSection = (form: Metaform, sectionId?: number): MetaformSection | undefined => {
+    if (sectionId === undefined) {
+      return undefined;
+    }
+
+    return form.sections?.[sectionId];
+  };
+
+  /**
+   * Gets metaform field
+   *
+   * @param form metaform
+   * @param fieldId field id
+   * @param sectionId section id
+   * @return metaform field
+   */
+  export const getMetaformField = (form: Metaform, sectionId?: number, fieldId?: number): MetaformField | undefined => {
+    if (sectionId === undefined || fieldId === undefined) {
+      return undefined;
+    }
+
+    return form.sections?.[sectionId]?.fields?.[fieldId];
+  };
 
   /**
    * Create new Metaform
@@ -123,16 +174,6 @@ namespace MetaformUtils {
               type: "text",
               name: "column1",
               title: "Column 1"
-            },
-            {
-              type: "number",
-              name: "column2",
-              title: "Column 2"
-            },
-            {
-              type: "number",
-              name: "column3",
-              title: "Column 3"
             }
           ]
         };
@@ -142,7 +183,6 @@ namespace MetaformUtils {
           name: "submit",
           type: fieldType,
           text: strings.draftEditorScreen.editor.fields.submit ?? fieldType,
-          columns: [],
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
         };
       case MetaformFieldType.Html:
@@ -393,6 +433,51 @@ namespace MetaformUtils {
     if (replyCount === 0) return moment.duration(0);
 
     return moment.duration(Math.floor(totalTime / replyCount));
+  };
+
+  /**
+   * Finds field rules that matches
+   *
+   * @param fieldRule field rule
+   * @param match match
+   * @param foundFieldRules found field rule list
+   * @param fieldOptionMatch field option match
+   */
+  export const fieldRuleScan = (fieldRule: FieldRule, match: string, foundFieldRules: FieldRule[], fieldOptionMatch?: MetaformFieldOption) => {
+    if (fieldRule.field === match) {
+      if (fieldOptionMatch !== undefined) {
+        if (fieldOptionMatch.name === fieldRule.equals || fieldOptionMatch.name === fieldRule.notEquals) {
+          foundFieldRules.push(fieldRule);
+        }
+      } else {
+        foundFieldRules.push(fieldRule);
+      }
+    }
+
+    fieldRule.and?.forEach(rule => fieldRuleScan(rule, match, foundFieldRules, fieldOptionMatch));
+    fieldRule.or?.forEach(rule => fieldRuleScan(rule, match, foundFieldRules, fieldOptionMatch));
+  };
+
+  /**
+   * Checks field rules that matches
+   *
+   * @param fieldRule field rule
+   * @param match match
+   * @param fieldOptionMatch field option match
+     @return boolean whether field rule was matched
+   */
+  export const fieldRuleMatch = (fieldRule: FieldRule, match: string, fieldOptionMatch?: MetaformFieldOption): boolean => {
+    if (fieldRule.field === match) {
+      if (fieldOptionMatch) {
+        if (fieldOptionMatch.name === fieldRule.equals || fieldOptionMatch.name === fieldRule.notEquals) {
+          return true;
+        }
+      }
+      return true;
+    }
+
+    return !!fieldRule.and?.some(rule => fieldRuleMatch(rule, match, fieldOptionMatch)) ||
+    !!fieldRule.or?.some(rule => fieldRuleMatch(rule, match, fieldOptionMatch));
   };
 }
 
