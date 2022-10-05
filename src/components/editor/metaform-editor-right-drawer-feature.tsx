@@ -471,6 +471,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
         label={ index }
         onChange={ event => updateTableColumn({
           ...column,
+          name: slugify(`${event.target.value}-${index}`),
           title: event.target.value,
           type: "text" as MetaformTableColumnType,
           values: undefined
