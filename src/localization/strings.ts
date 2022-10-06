@@ -121,6 +121,7 @@ export interface Localized extends LocalizedStringsMethods {
    * Translations related to form component
    */
   formComponent: {
+    html: string;
     datePicker: string;
     dateTimePicker: string;
   };
@@ -301,8 +302,11 @@ export interface Localized extends LocalizedStringsMethods {
           columnNumberType: string;
           submitButtonText: string;
           newFieldOption: string;
-          addCustomHtml: string;
           contextVisibilityInfo: string;
+          html: {
+            openEditor: string;
+            editHtml: string;
+          }
           slider: {
             minValueLabel: string;
             maxValueLabel: string;

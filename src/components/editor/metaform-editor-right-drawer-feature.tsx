@@ -8,6 +8,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { FormContext } from "../../types/index";
 import MetaformUtils from "utils/metaform-utils";
 import LocalizationUtils from "utils/localization-utils";
+import GenericDialog from "components/generic/generic-dialog";
+import CodeEditor from "@uiw/react-textarea-code-editor";
 
 /**
  * Component properties
@@ -32,6 +34,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const [ selectedSection, setSelectedSection ] = useState<MetaformSection>();
   const [ selectedField, setSelectedField ] = useState<MetaformField>();
   const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
+  const [ openHtmlEditor, setOpenHtmlEditor ] = useState(false);
 
   /**
    * Updates selected section and field states
@@ -312,20 +315,20 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
-   * Add custom html code in field
+   * Updates html field
    *
-   * @param htmlField html field
+   * @param html html value
    */
-  const updateHtmlField = (htmlField: MetaformField) => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
+  const updateHtmlField = (html: string) => {
+    if (!selectedField) {
       return;
     }
 
-    const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, htmlField);
+    const updatedField = produce(selectedField, draftField => {
+      draftField.html = html;
     });
 
-    setPendingForm(updatedForm);
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
@@ -440,18 +443,48 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
 
   /**
    * Renders html editor
-   *
-   * @param field field
    */
-  const renderHtmlProperties = (field: MetaformField) => (
-    <TextField
-      fullWidth
-      placeholder={ strings.draftEditorScreen.editor.features.field.addCustomHtml }
-      multiline
-      rows={ 4 }
-      value={ field.html }
-      onChange={ event => updateHtmlField({ ...field, html: event.target.value }) }
-    />
+  const renderHtmlEditor = () => {
+    if (!selectedField || selectedField.type !== MetaformFieldType.Html) {
+      return null;
+    }
+
+    return (
+      <GenericDialog
+        error={ false }
+        open={ openHtmlEditor }
+        title={ strings.draftEditorScreen.editor.features.field.html.editHtml }
+        onClose={ () => setOpenHtmlEditor(false) }
+        onConfirm={ () => setOpenHtmlEditor(false) }
+        onCancel={ () => setOpenHtmlEditor(false) }
+        closeButtonText={ strings.generic.close }
+      >
+        <CodeEditor
+          value={ selectedField.html || "" }
+          language="html"
+          onChange={ ({ target }) => updateHtmlField(target.value) }
+          padding={15}
+          style={{
+            width: 500,
+            height: 400,
+            fontSize: 12,
+            backgroundColor: "#f5f5f5",
+            fontFamily: "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace"
+          }}
+        />
+      </GenericDialog>
+    );
+  };
+
+  /**
+   * Renders html editor
+   */
+  const renderHtmlProperties = () => (
+    <Button
+      onClick={ () => setOpenHtmlEditor(true) }
+    >
+      { strings.draftEditorScreen.editor.features.field.html.openEditor }
+    </Button>
   );
 
   /**
@@ -560,7 +593,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       case MetaformFieldType.Html:
         return (
           <>
-            { renderHtmlProperties(field) }
+            { renderHtmlProperties() }
             <Divider/>
           </>
         );
@@ -750,13 +783,16 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Component render
    */
   return (
-    <Stack
-      spacing={ 2 }
-      width="100%"
-      overflow="hidden"
-    >
-      { renderFeatureEditor() }
-    </Stack>
+    <>
+      <Stack
+        spacing={ 2 }
+        width="100%"
+        overflow="hidden"
+      >
+        { renderFeatureEditor() }
+      </Stack>
+      { renderHtmlEditor() }
+    </>
   );
 };
 

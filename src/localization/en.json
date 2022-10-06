@@ -106,6 +106,7 @@
   },
 
   "formComponent": {
+    "html": "Empty html",
     "datePicker": "Date",
     "dateTimePicker": "Date and time"
   },
@@ -266,8 +267,11 @@
           "columnNumberType": "Number field",
           "submitButtonText": "Button text",
           "newFieldOption": "Option field",
-          "addCustomHtml": "Add HTML code in field",
           "contextVisibilityInfo": "Field management settings",
+          "html": {
+            "openEditor": "Open editor",
+            "editHtml": "Edit html"
+          },
           "slider": {
             "minValueLabel": "Field minimum value",
             "maxValueLabel": "Field maximum value"
