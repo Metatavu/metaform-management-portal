@@ -468,9 +468,9 @@ namespace MetaformUtils {
    */
   export const removeStatusFieldFromForm = (form: Metaform) => {
     const sectionsWithoutStatusField = form.sections?.map(section => {
-      const hasStatusField = section?.fields?.filter(field => field.name !== "status");
+      const hasNoStatusField = section?.fields?.filter(field => field.name !== "status");
       const newSection: MetaformSection = jsonToMetaform(section);
-      newSection.fields = hasStatusField;
+      newSection.fields = hasNoStatusField;
       return newSection;
     });
     const newForm: Metaform = jsonToMetaform(form);
