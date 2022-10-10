@@ -11,6 +11,7 @@ import { selectMetaform } from "features/metaform-slice";
 import MetaformUtils from "utils/metaform-utils";
 import Api from "api";
 import { ErrorContext } from "components/contexts/error-handler";
+import GenericLoaderWrapper from "components/generic/generic-loader";
 
 /**
  * Metaform editor preview component
@@ -19,13 +20,12 @@ const DraftPreviewScreen: FC = () => {
   const [ dialogOpen, setDialogOpen ] = useState(false);
   const [ linkCopied, setLinkCopied ] = useState(false);
   const [ emailSent, setEmailSent ] = useState(false);
-  const { metaformVersion } = useAppSelector(selectMetaform);
-  const [draftForm, setDraftForm] = useState(metaformVersion?.data === undefined ?
-    MetaformUtils.jsonToMetaform({}) :
-    metaformVersion?.data as Metaform);
+  const [ draftForm, setDraftForm ] = useState<Metaform>({});
+  const [ loading, setLoading ] = useState(false);
 
   const navigate = useNavigate();
   const { formSlug, draftId } = useParams();
+  const { metaformVersion } = useAppSelector(selectMetaform);
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, versionsApi } = apiClient;
   const errorContext = useContext(ErrorContext);
@@ -33,32 +33,38 @@ const DraftPreviewScreen: FC = () => {
   const linkToShare = `${window.location}`;
 
   /**
-   * Loads Metaform draft version to preview.
+   * Loads Metaform draft version to preview if redux doesn't have one.
    */
   const loadDraftVersion = async () => {
-    try {
-      const form = await metaformsApi.findMetaform({ metaformSlug: formSlug });
-      const draft = await versionsApi.findMetaformVersion({
-        metaformId: form.id!,
-        versionId: draftId!
-      });
-      
-      setDraftForm(draft);
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.draftEditorScreen.findDraft, e);
-      navigate(window.location.pathname.replace("preview", "editor"));
+    if (!formSlug || !draftId) {
+      return;
     }
+
+    if (metaformVersion?.data === undefined) {
+      setLoading(true);
+      try {
+        const form = await metaformsApi.findMetaform({ metaformSlug: formSlug });
+        const draft = await versionsApi.findMetaformVersion({
+          metaformId: form.id!,
+          versionId: draftId!
+        });
+        
+        setDraftForm(MetaformUtils.jsonToMetaform(draft.data));
+      } catch (e) {
+        errorContext.setError(strings.errorHandling.draftEditorScreen.findDraft, e);
+        navigate(window.location.pathname.replace("preview", "editor"));
+      }
+    } else {
+      setDraftForm(metaformVersion?.data as Metaform);
+    }
+    setLoading(false);
   };
 
   /**
    * Initializes component data
    */
   const initDraftPreview = async () => {
-    console.log(metaformVersion);
-    console.log(draftId);
-    if (!metaformVersion || !draftId) {
-      await loadDraftVersion();
-    }
+    await loadDraftVersion();
   };
 
   React.useEffect(() => {
@@ -124,9 +130,12 @@ const DraftPreviewScreen: FC = () => {
   return (
     <>
       <DraftPreviewHeader onShareLinkClick={ onShareLinkClick }/>
-      <DraftPreview
-        metaform={ draftForm }
-      />
+      <GenericLoaderWrapper loading={ loading }>
+        <DraftPreview
+          metaform={ draftForm }
+        />
+      </GenericLoaderWrapper>
+      
       { renderShareLinkDialog() }
       { renderLinkSharedSnackbar() }
       { renderEmailSentSnackbar() }
