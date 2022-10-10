@@ -226,7 +226,8 @@
         "formVisibility": "Lomakkeen tiedot",
         "formVisibilityLabel": "Lomakkeen näkyvyys",
         "private": "Yksityinen (Suomi.fi)",
-        "public": "Julkinen"
+        "public": "Julkinen",
+        "tooltipDescription": "Edit form title and set form to public or private."
       },
       "fields": {
         "tabTitle": "Kentät",
@@ -248,7 +249,8 @@
         "dateAndTime": "Päivämäärä & aika",
         "files": "Liitteet",
         "table": "Taulukko",
-        "submit": "Lähetä"
+        "submit": "Lähetä",
+        "tooltipDescription": "Select fields to add to form."
       },
       "features": {
         "tabTitle": "Ominaisuudet",
@@ -278,7 +280,8 @@
             "minValueLabel": "Kentän pienin arvo",
             "maxValueLabel": "Kentän suurin arvo"
           }
-        }
+        },
+        "tooltipDescription": "Edit form section information. Edit field information, attributes, and display settings."
       },
       "visibility": {
         "tabTitle": "näkyvyys",
@@ -291,7 +294,8 @@
         "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
         "fieldDefiningCondition": "Ehdon määrittävä kenttä",
         "fieldConditionLabel": "Tämä kenttä näkyy, jos {0} arvo on {1}",
-        "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}"
+        "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}",
+        "tooltipDescription": "Set conditions whether field is visible on form."
       }
     },
     "formPreview": {

@@ -263,6 +263,7 @@ export interface Localized extends LocalizedStringsMethods {
         formVisibilityLabel: string;
         private: string;
         public: string;
+        tooltipDescription: string;
       };
       fields: {
         tabTitle: string;
@@ -285,6 +286,7 @@ export interface Localized extends LocalizedStringsMethods {
         files: string;
         table: string;
         submit: string;
+        tooltipDescription: string;
       };
       features: {
         tabTitle: string;
@@ -314,6 +316,7 @@ export interface Localized extends LocalizedStringsMethods {
             maxValueLabel: string;
           }
         };
+        tooltipDescription: string;
       };
       visibility: {
         tabTitle: string;
@@ -327,6 +330,7 @@ export interface Localized extends LocalizedStringsMethods {
         fieldDefiningCondition: string;
         fieldConditionLabel: string;
         sectionConditionLabel: string;
+        tooltipDescription: string;
       };
     };
     formPreview: {

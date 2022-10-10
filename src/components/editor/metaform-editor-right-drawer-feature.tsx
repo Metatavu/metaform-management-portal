@@ -627,7 +627,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
         })
         }
       />
-      <Typography variant="body1">
+      <Typography variant="body2">
         { `${strings.draftEditorScreen.editor.features.field.fieldType}: ${field.type}` }
       </Typography>
     </Stack>

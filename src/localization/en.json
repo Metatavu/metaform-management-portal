@@ -227,7 +227,8 @@
         "formVisibility": "Form information",
         "formVisibilityLabel": "Form visibility",
         "private": "Private (Suomi.fi)",
-        "public": "Public"
+        "public": "Public",
+        "tooltipDescription": "Edit form title and set form to public or private."
       },
       "fields": {
         "tabTitle": "Fields",
@@ -249,7 +250,8 @@
         "dateAndTime": "Date & time",
         "files": "Files",
         "table": "Table",
-        "submit": "Submit"
+        "submit": "Submit",
+        "tooltipDescription": "Select fields to add to form."
       },
       "features": {
         "tabTitle": "Features",
@@ -278,7 +280,8 @@
             "minValueLabel": "Field minimum value",
             "maxValueLabel": "Field maximum value"
           }
-        }
+        },
+        "tooltipDescription": "Edit form section information. Edit field information, attributes, and display settings."
       },
       "visibility": {
         "tabTitle": "Visibility",
@@ -291,7 +294,8 @@
         "conditionalFieldValueInfo":"Select or enter the field value that determines the visibility.",
         "fieldDefiningCondition": "Field defining the condition",
         "fieldConditionLabel": "This field appears, if {0} value is {1}",
-        "sectionConditionLabel": "This section appears, if {0} value is {1}"
+        "sectionConditionLabel": "This section appears, if {0} value is {1}",
+        "tooltipDescription": "Set conditions whether field is visible on form."
       }
     },
     "formPreview": {

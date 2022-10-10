@@ -37,13 +37,13 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
         onChange={ (_, value: number) => setTabIndex(value) }
         value={ tabIndex }
       >
-        <Tooltip title="Features description here">
+        <Tooltip title={ strings.draftEditorScreen.editor.features.tooltipDescription }>
           <Tab
             value={ 0 }
             label={ strings.draftEditorScreen.editor.features.tabTitle }
           />
         </Tooltip>
-        <Tooltip title="Visibility description here">
+        <Tooltip title={ strings.draftEditorScreen.editor.visibility.tooltipDescription }>
           <Tab
             value={ 1 }
             label={ strings.draftEditorScreen.editor.visibility.tabTitle }
