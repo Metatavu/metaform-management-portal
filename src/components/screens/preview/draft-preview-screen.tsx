@@ -1,14 +1,16 @@
 import { Metaform } from "generated/client";
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import strings from "localization/strings";
 import DraftPreviewHeader from "../../preview/draft-preview-header";
 import DraftPreviewShareDialog from "../../preview/draft-preview-dialog";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppSelector } from "app/hooks";
+import { useApiClient, useAppSelector } from "app/hooks";
 import { Alert, Snackbar } from "@mui/material";
 import DraftPreview from "components/preview/draft-preview";
 import { selectMetaform } from "features/metaform-slice";
 import MetaformUtils from "utils/metaform-utils";
+import Api from "api";
+import { ErrorContext } from "components/contexts/error-handler";
 
 /**
  * Metaform editor preview component
@@ -18,19 +20,49 @@ const DraftPreviewScreen: FC = () => {
   const [ linkCopied, setLinkCopied ] = useState(false);
   const [ emailSent, setEmailSent ] = useState(false);
   const { metaformVersion } = useAppSelector(selectMetaform);
-  const draftForm = metaformVersion?.data === undefined ?
+  const [draftForm, setDraftForm] = useState(metaformVersion?.data === undefined ?
     MetaformUtils.jsonToMetaform({}) :
-    metaformVersion?.data as Metaform;
+    metaformVersion?.data as Metaform);
 
   const navigate = useNavigate();
-  const { draftId } = useParams();
+  const { formSlug, draftId } = useParams();
+  const apiClient = useApiClient(Api.getApiClient);
+  const { metaformsApi, versionsApi } = apiClient;
+  const errorContext = useContext(ErrorContext);
 
   const linkToShare = `${window.location}`;
 
-  React.useEffect(() => {
-    if (!metaformVersion || metaformVersion.id !== draftId) {
+  /**
+   * Loads Metaform draft version to preview.
+   */
+  const loadDraftVersion = async () => {
+    try {
+      const form = await metaformsApi.findMetaform({ metaformSlug: formSlug });
+      const draft = await versionsApi.findMetaformVersion({
+        metaformId: form.id!,
+        versionId: draftId!
+      });
+      
+      setDraftForm(draft);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.draftEditorScreen.findDraft, e);
       navigate(window.location.pathname.replace("preview", "editor"));
     }
+  };
+
+  /**
+   * Initializes component data
+   */
+  const initDraftPreview = async () => {
+    console.log(metaformVersion);
+    console.log(draftId);
+    if (!metaformVersion || !draftId) {
+      await loadDraftVersion();
+    }
+  };
+
+  React.useEffect(() => {
+    initDraftPreview();
   }, []);
 
   /**
