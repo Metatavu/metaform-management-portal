@@ -257,8 +257,6 @@ export interface Localized extends LocalizedStringsMethods {
         versionInfo: string;
         formVersion: string;
         formStyling: string;
-        backgroundImage: string;
-        backgroundColor: string;
         formVisibility: string;
         formVisibilityLabel: string;
         private: string;

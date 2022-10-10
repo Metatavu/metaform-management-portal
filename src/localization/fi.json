@@ -221,8 +221,6 @@
         "versionInfo": "Version tiedot",
         "formVersion": "Versio",
         "formStyling": "Lomakkeen ulkoasu",
-        "backgroundImage": "Taustakuva",
-        "backgroundColor": "Taustaväri",
         "formVisibility": "Lomakkeen tiedot",
         "formVisibilityLabel": "Lomakkeen näkyvyys",
         "private": "Yksityinen (Suomi.fi)",
