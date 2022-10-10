@@ -1,7 +1,7 @@
 import Api from "api";
-import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, Reply } from "generated/client";
+import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, Metaform, FieldRule, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, MetaformVersion, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
-import { Dictionary, ReplyAuditLog } from "types";
+import { Dictionary, ReplyAuditLog, ReplyStatus } from "types";
 import strings from "localization/strings";
 import moment from "moment";
 import { FormContext } from "../types/index";
@@ -436,6 +436,60 @@ namespace MetaformUtils {
   };
 
   /**
+   * Create status section for new metaform
+   * 
+   * @returns status section for form
+   */
+  export const formStatusSection = (): MetaformField => {
+    return {
+      name: "status",
+      type: MetaformFieldType.Radio,
+      options: [
+        {
+          name: "waiting", text: ReplyStatus.WAITING, checked: true
+        },
+        { name: "processing", text: ReplyStatus.PROCESSING },
+        { name: "done", text: ReplyStatus.DONE }
+      ],
+      contexts: [
+        FormContext.MANAGEMENT_LIST
+      ],
+      flags: {
+        managementEditable: true
+      }
+    };
+  };
+
+  /**
+   * Filter out status from form
+   * 
+   * @param form Metaform form
+   * @returns Metaform without status field
+   */
+  export const removeStatusFieldFromForm = (form: Metaform) => {
+    const sectionsWithoutStatusField = form.sections?.map(section => {
+      const hasNoStatusField = section?.fields?.filter(field => field.name !== "status");
+      const newSection: MetaformSection = jsonToMetaform(section);
+      newSection.fields = hasNoStatusField;
+      return newSection;
+    });
+    const newForm: Metaform = jsonToMetaform(form);
+    newForm.sections = sectionsWithoutStatusField?.length ? sectionsWithoutStatusField : newForm.sections;
+    return newForm;
+  };
+
+  /**
+   * Get draft form based on existing metaform version or new
+   * 
+   * @returns Metaform
+   */
+  export const getDraftForm = (metaformVersion: MetaformVersion | undefined) => {
+    return metaformVersion?.data === undefined ?
+      MetaformUtils.jsonToMetaform({}) :
+      MetaformUtils.removeStatusFieldFromForm(metaformVersion?.data);
+  };
+
+  /**
    * Finds field rules that matches
    *
    * @param fieldRule field rule
@@ -464,7 +518,7 @@ namespace MetaformUtils {
    * @param fieldRule field rule
    * @param match match
    * @param fieldOptionMatch field option match
-     @return boolean whether field rule was matched
+   * @return boolean whether field rule was matched
    */
   export const fieldRuleMatch = (fieldRule: FieldRule, match: string, fieldOptionMatch?: MetaformFieldOption): boolean => {
     if (fieldRule.field === match) {
