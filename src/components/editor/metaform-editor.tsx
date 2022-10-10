@@ -78,6 +78,21 @@ const MetaformEditor: React.FC<Props> = ({
   };
 
   /**
+   * On field update
+   *
+   * @param sectionId section id
+   * @param fieldId field id
+   * @param updatedField updated field
+   */
+  const onFieldUpdate = (sectionIndex: number, fieldIndex: number) => (updatedField: MetaformField) => {
+    const updatedForm = produce(pendingForm, draftForm => {
+      draftForm.sections![sectionIndex].fields![fieldIndex] = updatedField;
+    });
+
+    setPendingForm(updatedForm);
+  };
+
+  /**
    * Event handler for section move
    *
    * @param droppableSource droppable source
@@ -294,8 +309,10 @@ const MetaformEditor: React.FC<Props> = ({
             <AddableFieldRenderer
               key="key"
               field={ field }
+              focus={ selectedSectionIndex === sectionIndex && selectedFieldIndex === fieldIndex }
               fieldId={ DragAndDropUtils.getFieldId(pendingForm, field) }
               fieldLabelId={ DragAndDropUtils.getFieldLabelId(pendingForm, field) }
+              onFieldUpdate={ onFieldUpdate(sectionIndex, fieldIndex) }
             />
           </FieldDragHandle>
         </Box>

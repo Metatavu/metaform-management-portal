@@ -7,14 +7,14 @@ import { MetaformField } from "../generated/client/models";
  * Component props
  */
 interface Props {
-  field: MetaformField,
-  fieldId: string,
-  notInteractive?: boolean
+  field: MetaformField;
+  fieldId: string;
+  notInteractive?: boolean;
 }
 
 /**
  * Component for Metaform html field
- * 
+ *
  * @param props component properties
  */
 export const MetaformHtmlComponent: React.FC<Props> = ({
