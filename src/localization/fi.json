@@ -227,7 +227,7 @@
         "formVisibilityLabel": "Lomakkeen näkyvyys",
         "private": "Yksityinen (Suomi.fi)",
         "public": "Julkinen",
-        "tooltipDescription": "Edit form title and set form to public or private."
+        "tooltipDescription": "Muokkaa lomakkeen otsikkoa ja näkyvyyttä."
       },
       "fields": {
         "tabTitle": "Kentät",
