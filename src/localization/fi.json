@@ -250,7 +250,7 @@
         "files": "Liitteet",
         "table": "Taulukko",
         "submit": "Lähetä",
-        "tooltipDescription": "Select fields to add to form."
+        "tooltipDescription": "Valitse kenttiä, joita haluat lisätä lomakkeelle."
       },
       "features": {
         "tabTitle": "Ominaisuudet",
