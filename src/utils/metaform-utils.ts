@@ -440,7 +440,7 @@ namespace MetaformUtils {
    * 
    * @returns status section for form
    */
-  export const formStatusSection = (): MetaformField => {
+  export const createFormStatusField = (): MetaformField => {
     return {
       name: "status",
       type: MetaformFieldType.Radio,
