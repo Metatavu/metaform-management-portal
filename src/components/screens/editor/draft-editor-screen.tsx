@@ -27,9 +27,7 @@ const DraftEditorScreen: React.FC = () => {
   const errorContext = useContext(ErrorContext);
   const dispatch = useAppDispatch();
   const { metaformVersion } = useAppSelector(selectMetaform);
-  const draftForm = metaformVersion?.data === undefined ?
-    MetaformUtils.jsonToMetaform({}) :
-    metaformVersion?.data as Metaform;
+  const draftForm = MetaformUtils.getDraftForm(metaformVersion);
 
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, versionsApi } = apiClient;
@@ -98,9 +96,13 @@ const DraftEditorScreen: React.FC = () => {
 
     try {
       const form = await metaformsApi.findMetaform({ metaformSlug: formSlug });
+
+      const newDraftForm: Metaform = JSON.parse(JSON.stringify(draftForm));
+      newDraftForm?.sections?.[0]?.fields?.push(MetaformUtils.formStatusSection());
+
       await metaformsApi.updateMetaform({
         metaformId: form.id!,
-        metaform: draftForm
+        metaform: newDraftForm
       });
 
       await versionsApi.updateMetaformVersion({
@@ -170,6 +172,7 @@ const DraftEditorScreen: React.FC = () => {
       <RoundActionButton
         startIcon={ <Public/> }
         onClick={ () => setPublishDialogOpen(true) }
+        disabled={ !draftForm?.sections || draftForm?.sections?.length! === 0 }
       >
         <Typography>{ strings.draftEditorScreen.publish }</Typography>
       </RoundActionButton>

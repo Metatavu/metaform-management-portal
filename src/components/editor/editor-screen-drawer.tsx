@@ -8,7 +8,6 @@ import slugify from "slugify";
 import SosmetaUtils from "utils/sosmeta-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { ErrorContext } from "components/contexts/error-handler";
-import MetaformUtils from "utils/metaform-utils";
 
 /**
  * Component props
@@ -48,8 +47,7 @@ const EditorScreenDrawer: FC<Props> = ({
     formUrl: "",
     formTemplate: true,
     formSchema: "",
-    formAuthentication: true,
-    formSections: [ MetaformUtils.formStatusSection() ]
+    formAuthentication: true
   });
   const [ valid, setValid ] = useState<boolean>(false);
   const [ converting, setConverting ] = useState<boolean>(false);
@@ -73,7 +71,7 @@ const EditorScreenDrawer: FC<Props> = ({
       setFormSettings({
         ...formSettings,
         formName: convertedForm.title!,
-        formSections: [ ...convertedForm.sections!, MetaformUtils.formStatusSection() ]
+        formSections: convertedForm.sections!
       });
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.convertSosmetaError, e);
