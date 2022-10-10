@@ -76,7 +76,6 @@ export const MetaformEditableHtmlComponent: React.FC<Props> = ({
     <Box>
       <ReactQuill
         theme="snow"
-        style={{ height: 200 }}
         value={ field.html || "" }
         onChange={ onFieldHtmlUpdate }
         modules={ modules }

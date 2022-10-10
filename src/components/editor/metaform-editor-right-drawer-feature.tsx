@@ -524,7 +524,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
             <Divider/>
           </>
         );
-      case MetaformFieldType.Html:
       case MetaformFieldType.Table:
         return (
           <>
