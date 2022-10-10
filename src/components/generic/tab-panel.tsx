@@ -31,17 +31,13 @@ const TabPanel: React.FC<Props> = ({
       style={{
         overflowY: "auto",
         overflowX: "hidden",
-        height: "auto",
+        height: "100%",
         display: "flex",
         gap: "1rem",
         flexWrap: "wrap",
-        flexDirection: "row",
-        maxHeight: "100%"
+        flexDirection: "row"
       }}
-      pl={ padding ?? 2 }
-      pr={ padding ?? 2 }
-      pt={ padding ?? 2 }
-      pb={ padding ?? 7 }
+      p={ padding ?? 2 }
     >
       { children }
     </Stack>

@@ -1,11 +1,14 @@
-import { Button, Checkbox, Divider, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
-import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType, MetaformFieldType } from "generated/client";
+import { Button, Checkbox, Divider, FormControl, FormControlLabel, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType, MetaformFieldType, FieldRule } from "generated/client";
 import produce from "immer";
 import slugify from "slugify";
 import strings from "localization/strings";
 import React, { useEffect, FC, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { FormContext } from "../../types/index";
+import MetaformUtils from "utils/metaform-utils";
+import LocalizationUtils from "utils/localization-utils";
+
 /**
  * Component properties
  */
@@ -19,77 +22,93 @@ interface Props {
 /**
  * Draft editor right drawer feature component
  */
-const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
+const MetaformEditorRightDrawerFeature: FC<Props> = ({
   sectionIndex,
   fieldIndex,
   pendingForm,
   setPendingForm
 }) => {
-  const [ metaformSectionTitle, setMetaformSectionTitle ] = useState<string | undefined>("");
-  const [ columnType, setColumnType ] = useState<string>("");
-  const [ contextOption, setContextOption ] = useState<FormContext[]>([]);
+  const [ newColumnType, setNewColumnType ] = useState<MetaformTableColumnType>();
+  const [ selectedSection, setSelectedSection ] = useState<MetaformSection>();
+  const [ selectedField, setSelectedField ] = useState<MetaformField>();
+  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
+
   /**
-   * Get title of current section
+   * Updates selected section and field states
    */
-  const getSelectedSectionTitle = () => {
-    if (fieldIndex === undefined && sectionIndex !== undefined) {
-      setMetaformSectionTitle(pendingForm.sections![sectionIndex].title ?? "");
-    }
+  const updateSelected = () => {
+    setSelectedField(MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex));
+    setSelectedSection(MetaformUtils.getMetaformSection(pendingForm, sectionIndex));
+    setDebounceTimerId(undefined);
   };
 
+  useEffect(() => {
+    updateSelected();
+  }, [ sectionIndex, fieldIndex, pendingForm ]);
+
   /**
-   * Updates metaform field and check if its used as visibleIf condition and change them 
+   * Updates field with visibility
    *
-   * @param metaformField Metaform field what we are editing
+   * @param field edited field
+   * @param optionIndex option index
    */
-  const updateFormField = (metaformField: MetaformField) => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
+  const updateFormField = (field: MetaformField, optionIndex?: number) => {
+    if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
-    const selectedField = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
 
     const updatedForm = produce(pendingForm, draftForm => {
-      if (metaformField.type === "select" || metaformField.type === "checklist" || metaformField.type === "radio") {
-        draftForm.sections?.forEach((currentSection, sectionIndexOfSection) => {
-          if (currentSection.visibleIf) {
-            if (currentSection.visibleIf.field === selectedField.name) {
-              const metaFormFieldSection = pendingForm.sections![sectionIndexOfSection];
-              const editedSection = {
-                ...metaFormFieldSection,
-                visibleIf: {
-                  field: metaformField.name,
-                  equals: currentSection.visibleIf.equals,
-                  notEquals: "",
-                  and: [],
-                  or: []
-                }
-              };
-              draftForm.sections?.splice(sectionIndexOfSection, 1, editedSection as MetaformSection);
+      if (MetaformUtils.fieldTypesAllowVisibility.includes(field.type)) {
+        if ((selectedField.name !== undefined && field.name !== selectedField.name) || optionIndex !== undefined) {
+          const fieldOptionMatch = optionIndex !== undefined ?
+            pendingForm.sections![sectionIndex].fields![fieldIndex].options![optionIndex] :
+            undefined;
+          const fieldRules: FieldRule[] = [];
+
+          draftForm.sections?.forEach(draftSection => {
+            if (draftSection.visibleIf !== undefined) {
+              MetaformUtils.fieldRuleScan(draftSection.visibleIf, selectedField.name || "", fieldRules, fieldOptionMatch);
             }
-          }
-          currentSection.fields?.forEach((currentField, fieldIndexOfField) => {
-            if (currentField.visibleIf) {
-              if (currentField.visibleIf.field === selectedField.name) {
-                const metaFormFieldSection = pendingForm.sections![sectionIndexOfSection].fields![fieldIndexOfField];
-                const editedField = {
-                  ...metaFormFieldSection,
-                  visibleIf: {
-                    field: metaformField.name,
-                    equals: currentField.visibleIf.equals,
-                    notEquals: "",
-                    and: [],
-                    or: []
-                  }
-                };
-                draftForm.sections?.[sectionIndexOfSection]?.fields?.splice(fieldIndexOfField, 1, editedField as MetaformField);
+            draftSection.fields?.forEach(draftField => {
+              if (draftField.visibleIf !== undefined) {
+                MetaformUtils.fieldRuleScan(draftField.visibleIf, selectedField.name || "", fieldRules, fieldOptionMatch);
+              }
+            });
+          });
+
+          fieldRules.forEach(rule => {
+            if ((selectedField.name !== undefined && field.name !== selectedField.name)) {
+              rule.field = field.name;
+            // option update
+            } else if (optionIndex !== undefined) {
+              const fieldOptionToUpdate = field.options![optionIndex];
+              if (rule.equals === fieldOptionMatch!.name) {
+                rule.equals = fieldOptionToUpdate.name;
+              } else if (rule.notEquals === fieldOptionMatch!.name) {
+                rule.notEquals = fieldOptionToUpdate.name;
               }
             }
           });
-        });
+        }
       }
-      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, metaformField);
+
+      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, field);
     });
+
     setPendingForm(updatedForm);
+  };
+
+  /**
+   * Debounced update field
+   *
+   * @param field edited field
+   * @param optionIndex option index
+   */
+  const updateFormFieldDebounced = (field: MetaformField, optionIndex?: number) => {
+    setSelectedField(field);
+
+    debounceTimerId && clearTimeout(debounceTimerId);
+    setDebounceTimerId(setTimeout(() => updateFormField(field, optionIndex), 500));
   };
 
   /**
@@ -101,110 +120,89 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (sectionIndex === undefined) {
       return;
     }
+
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.splice(sectionIndex, 1, metaformSection);
     });
+
     setPendingForm(updatedForm);
   };
 
   /**
    * Update option text and check if its used as VisibleIf change text also in that field
-   * 
+   *
    * @param updateTextOption FieldOption text we are changing
    * @param optionIndex option index value
    */
   const updateOptionText = (updateTextOption: MetaformFieldOption, optionIndex: number) => {
-    const selectedField = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
-    if (sectionIndex === undefined || fieldIndex === undefined) {
+    if (!selectedField) {
       return;
     }
 
-    const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.forEach((currentSection, sectionIndexOfSection) => {
-        if (currentSection.visibleIf) {
-          if (currentSection.visibleIf.field === selectedField.name && currentSection.visibleIf.equals === selectedField.options![optionIndex].name) {
-            const metaFormSection = pendingForm.sections![sectionIndexOfSection];
-            const editedSection = {
-              ...metaFormSection,
-              visibleIf: {
-                field: currentSection.visibleIf.field,
-                equals: updateTextOption.name,
-                notEquals: "",
-                and: [],
-                or: []
-              }
-            };
-            draftForm.sections?.splice(sectionIndexOfSection, 1, editedSection as MetaformSection);
-          }
-        }
-        currentSection.fields?.forEach((currentField, fieldIndexOfField) => {
-          if (currentField.visibleIf) {
-            if (currentField.visibleIf.field === selectedField.name && currentField.visibleIf.equals === selectedField.options![optionIndex].name) {
-              const metaFormField = pendingForm.sections![sectionIndexOfSection].fields![fieldIndexOfField];
-              const editedField = {
-                ...metaFormField,
-                visibleIf: {
-                  field: currentField.visibleIf.field,
-                  equals: updateTextOption.name,
-                  notEquals: "",
-                  and: [],
-                  or: []
-                }
-              };
-              draftForm.sections?.[sectionIndexOfSection]?.fields?.splice(fieldIndexOfField, 1, editedField as MetaformField);
-            }
-          }
-        });
-      });
-      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.splice(optionIndex, 1, updateTextOption);
+    const updatedField: MetaformField = produce(selectedField, draftField => {
+      draftField?.options?.splice(optionIndex, 1, updateTextOption);
     });
-    setPendingForm(updatedForm);
+
+    updateFormFieldDebounced(updatedField, optionIndex);
   };
 
   /**
    * Add new Radio / Checklist / Select field option
    */
   const addNewFieldOption = () => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
+    if (!selectedField) {
       return;
     }
-    const optionsAmount = JSON.stringify(pendingForm.sections![sectionIndex].fields![fieldIndex].options?.length);
-    const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.push({
-        name: `${strings.draftEditorScreen.editor.features.newFieldOption}-${optionsAmount}`,
-        text: `${strings.draftEditorScreen.editor.features.newFieldOption}-${optionsAmount}`
-      });
+
+    const optionsAmount = selectedField.options?.length;
+    const newOption: MetaformFieldOption = {
+      name: `${strings.draftEditorScreen.editor.features.field.newFieldOption}-${optionsAmount}`,
+      text: `${strings.draftEditorScreen.editor.features.field.newFieldOption}-${optionsAmount}`
+    };
+
+    const updatedField: MetaformField = produce(selectedField, draftField => {
+      draftField.options = [ ...(draftField.options || []), newOption ];
     });
-    setPendingForm(updatedForm);
+
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
    * Delete option field and VisibleIf conditions where its used
-   * 
+   *
    * @param optionIndex Option index value of option field what we delete
    */
   const deleteFieldOptions = (optionIndex: number) => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
+    if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
-    const selectedField = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
+    const optionMatch = pendingForm.sections?.[sectionIndex].fields?.[fieldIndex].options?.[optionIndex];
+    const fieldNameMatch = selectedField.name;
+
+    if (!optionMatch || !fieldNameMatch) {
+      return;
+    }
+
     const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.forEach(currentSection => {
-        if (currentSection.visibleIf) {
-          if (currentSection.visibleIf.field === selectedField.name && currentSection.visibleIf.equals === selectedField.options![optionIndex].name) {
-            delete currentSection.visibleIf;
-          }
+      draftForm.sections?.forEach(draftSection => {
+        if (draftSection.visibleIf &&
+          MetaformUtils.fieldRuleMatch(draftSection.visibleIf, fieldNameMatch, optionMatch)
+        ) {
+          draftSection.visibleIf = undefined;
         }
-        currentSection.fields?.forEach(currentField => {
-          if (currentField.visibleIf) {
-            if (currentField.visibleIf.field === selectedField.name && currentField.visibleIf.equals === selectedField.options![optionIndex].name) {
-              delete currentField.visibleIf;
-            }
+
+        draftSection.fields?.forEach(draftField => {
+          if (draftField.visibleIf &&
+            MetaformUtils.fieldRuleMatch(draftField.visibleIf, fieldNameMatch, optionMatch)
+          ) {
+            draftField.visibleIf = undefined;
           }
         });
       });
+
       draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.splice(optionIndex, 1);
     });
+
     setPendingForm(updatedForm);
   };
 
@@ -215,105 +213,102 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
    * @param scopeValue Min or Max, depending which value we are changing
    */
   const updateSliderValue = (eventValue: string, scopeValue: string) => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
+    if (!selectedField) {
       return;
     }
-    const metaFormField = pendingForm.sections![sectionIndex].fields![fieldIndex];
-    if (scopeValue === "min") {
-      const updateField = {
-        ...metaFormField,
-        min: Number(eventValue)
-      };
-      const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, updateField);
-      });
-      setPendingForm(updatedForm);
-    }
-    if (scopeValue === "max") {
-      const updateField = {
-        ...metaFormField,
-        max: Number(eventValue)
-      };
-      const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, updateField);
-      });
-      setPendingForm(updatedForm);
-    }
+
+    const updatedField = produce(selectedField, draftField => {
+      if (scopeValue === "min") {
+        draftField.min = Number(eventValue);
+      } else {
+        draftField.max = Number(eventValue);
+      }
+    });
+
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
-   * Update column title value
+   * Update column value
    *
    * @param tableColumn Metaform table column where we are changing title
    * @param columnIndex index value of current column title
    */
-  const updateColumnTitle = (tableColumn: MetaformTableColumn, columnIndex: number) => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
+  const updateTableColumn = (tableColumn: MetaformTableColumn, columnIndex: number) => {
+    if (!selectedField) {
       return;
     }
-    const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.columns?.splice(columnIndex, 1, tableColumn);
+
+    const updatedField = produce(selectedField, draftField => {
+      draftField.columns?.splice(columnIndex, 1, tableColumn);
     });
-    setPendingForm(updatedForm);
+
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
    * Delete column
    *
-   * @param columnIndex indexvalue of current column we are deleting
+   * @param columnIndex index value of current column we are deleting
    */
   const deleteColumn = (columnIndex: number) => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
+    if (!selectedField) {
       return;
     }
-    const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.columns?.splice(columnIndex, 1);
+
+    const updatedField = produce(selectedField, draftField => {
+      draftField.columns?.splice(columnIndex, 1);
     });
-    setPendingForm(updatedForm);
+
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
    * Add new column in table
    */
   const addNewColumn = () => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
+    if (!selectedField) {
       return;
     }
-    const columnsAmount = JSON.stringify(pendingForm.sections![sectionIndex].fields![fieldIndex].columns?.length);
-    const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.columns?.push({
-        type: columnType as MetaformTableColumnType,
-        name: columnsAmount,
-        title: columnsAmount
-      });
+
+    const columnsAmount = selectedField.columns?.length || 0;
+
+    const newColumn: MetaformTableColumn = {
+      type: newColumnType!,
+      name: columnsAmount.toString(),
+      title: columnsAmount.toString()
+    };
+
+    const updatedField = produce(selectedField, draftField => {
+      draftField.columns = [ ...(draftField.columns || []), newColumn ];
     });
-    setPendingForm(updatedForm);
+
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
    * Update contexts of field
-   * 
+   *
    * @param selectedContext Selected context Option
    * @param checked Is context option checked or not
    */
   const updateContexts = (selectedContext: FormContext, checked: boolean) => {
-    if (sectionIndex !== undefined && fieldIndex !== undefined) {
-      if (!checked) {
-        pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.forEach((context, index) => {
-          if (selectedContext === context) {
-            const updatedForm = produce(pendingForm, draftForm => {
-              draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.contexts?.splice(index, 1);
-            });
-            setPendingForm(updatedForm);
-          }
-        });
-      } else {
-        const updatedForm = produce(pendingForm, draftForm => {
-          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.contexts?.push(selectedContext);
-        });
-        setPendingForm(updatedForm);
-      }
+    if (!selectedField) {
+      return;
     }
+
+    const updatedField = produce(selectedField, draftField => {
+      let updatedContexts: string[] = [ ...(draftField.contexts || []) ];
+      if (checked) {
+        updatedContexts.push(selectedContext);
+      } else {
+        updatedContexts = updatedContexts.filter(context => context !== selectedContext);
+      }
+
+      draftField.contexts = updatedContexts;
+    });
+
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
@@ -325,422 +320,444 @@ const MetaformEditorRightDrawerFeatureComponent: FC<Props> = ({
     if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
+
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, htmlField);
     });
+
     setPendingForm(updatedForm);
   };
 
   /**
-   * Check fields contexts
+   * Renders context option
+   *
+   * @param context context
+   * @param selectedContexts selected contexts
    */
-  const checkContextSettings = () => {
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      if (!pendingForm.sections![sectionIndex].fields![fieldIndex]) {
-        return;
+  const renderContextOption = (context: FormContext, selectedContexts: string[]) => (
+    <FormControlLabel
+      key={ context.toString() }
+      label={ LocalizationUtils.getLocalizedFormContext(context) }
+      control={
+        <Checkbox
+          checked={ selectedContexts.includes(context) }
+          onChange={ event => updateContexts(context, event.target.checked) }
+        />
       }
-      setContextOption([]);
-      pendingForm.sections![sectionIndex].fields![fieldIndex].contexts!.forEach(context => {
-        setContextOption(contextOptionList => [...contextOptionList, context as FormContext]);
-      });
-    }
-  };
+    />
+  );
 
   /**
-   * Render contexts options
+   * Renders contexts options
+   *
+   * @param field field
    */
-  const renderContextOptions = () => (
+  const renderContextOptions = (field: MetaformField) => (
     <Stack spacing={ 2 }>
-      <Divider/>
-      <Typography variant="subtitle1">{ strings.draftEditorScreen.editor.features.contextVisibilityInfo }</Typography>
-      <FormControl>
-        <FormControlLabel
-          label={ strings.draftEditorScreen.editor.features.contextFormVisibility }
-          control={
-            <Checkbox
-              checked={ contextOption.includes(FormContext.FORM) }
-              onChange={ event => updateContexts(FormContext.FORM, event.target.checked) }
-            />
-          }
-        />
-      </FormControl>
-      <FormControl>
-        <FormControlLabel
-          label={ strings.draftEditorScreen.editor.features.contextManagementVisibility }
-          control={
-            <Checkbox
-              checked={ contextOption.includes(FormContext.MANAGEMENT) }
-              onChange={ event => updateContexts(FormContext.MANAGEMENT, event.target.checked) }
-            />
-          }
-        />
-      </FormControl>
-      <FormControl>
-        <FormControlLabel
-          label={ strings.draftEditorScreen.editor.features.contextManagementListVisibility }
-          control={
-            <Checkbox
-              checked={ contextOption.includes(FormContext.MANAGEMENT_LIST) }
-              onChange={ event => updateContexts(FormContext.MANAGEMENT_LIST, event.target.checked) }
-            />
-          }
-        />
-      </FormControl>
+      <Typography variant="subtitle1">
+        { strings.draftEditorScreen.editor.features.field.contextVisibilityInfo }
+      </Typography>
+      { Object.values(FormContext).map(context => renderContextOption(context, field.contexts || [])) }
     </Stack>
   );
 
   /**
-   * Render slider scope values
+   * Renders slider scope values
    *
-   * @param selectedField selected metaformField
+   * @param field field
    */
-  const renderSliderScopeValues = (selectedField: MetaformField) => {
-    const { max, min } = selectedField;
-    const { sliderMinValueLabel, sliderMaxValueLabel } = strings.draftEditorScreen.editor.features;
-    
+  const renderSliderProperties = (field: MetaformField) => {
+    const { max, min } = field;
+    const { minValueLabel, maxValueLabel } = strings.draftEditorScreen.editor.features.field.slider;
+
     return (
-      <>
+      <Stack spacing={ 2 }>
         <TextField
           fullWidth
           type="number"
-          sx={{ height: "50px" }}
-          label={ sliderMinValueLabel }
+          label={ minValueLabel }
           value={ min }
           onChange={ event => updateSliderValue(event.target.value, "min") }
         />
         <TextField
           fullWidth
           type="number"
-          sx={{ height: "50px" }}
-          label={ sliderMaxValueLabel }
+          label={ maxValueLabel }
           value={ max }
           onChange={ event => updateSliderValue(event.target.value, "max") }
         />
-      </>
+      </Stack>
     );
   };
 
   /**
-   * Render options if selected field type is radio, checklist or select
+   * Render multi-choice option edit
    */
-  const renderFieldOptions = () => {
-    if (sectionIndex !== undefined && fieldIndex !== undefined) {
-      return (
-        <>
-          { pendingForm.sections![sectionIndex].fields![fieldIndex].options!.map((field, index) => {
-            return (
-              <Stack spacing={ 2 } direction="row">
-                <TextField
-                  sx={{ height: "50px" }}
-                  value={ field.text }
-                  label={ index }
-                  onChange={ event => updateOptionText({
-                    ...field,
-                    name: slugify(event.target.value),
-                    text: event.target.value
-                  }, index)}
-                />
-                <Button
-                  variant="outlined"
-                  color="error"
-                  sx={{
-                    alignContent: "center",
-                    height: "40px"
-                  }}
-                  value={ index }
-                  onClick={ () => deleteFieldOptions(index) }
-                >
-                  <DeleteIcon
-                    color="error"
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}
-                  />
-                </Button>
-              </Stack>
-            );
-          })}
-          <Button
-            fullWidth
-            sx={{
-              height: "50px"
-            }}
-            onClick={ addNewFieldOption }
-          >
-            { strings.draftEditorScreen.editor.features.addSelectionField }
-          </Button>
-        </>
-      );
-    }
-  };
-
-  /**
-   * Render html editor
-   *
-   * @param selectedField selected field
-   */
-  const renderHtmlEditor = (selectedField: MetaformField) => {
-    const { html } = selectedField;
-    return (
+  const renderMultiChoiceOptionEdit = (option: MetaformFieldOption, index: number) => (
+    <Stack
+      key={ `option-${index}` }
+      spacing={ 2 }
+      direction="row"
+    >
       <TextField
-        fullWidth
-        placeholder={ strings.draftEditorScreen.editor.features.addCustomHtml }
-        multiline
-        rows={ 4 }
-        value={ html }
-        onChange={ event => updateHtmlField({ ...selectedField, html: event.target.value }) }
+        value={ option.text }
+        label={ index }
+        onChange={ event => updateOptionText({
+          ...option,
+          name: slugify(event.target.value),
+          text: event.target.value
+        }, index)}
       />
-    );
-  };
+      <IconButton
+        color="error"
+        value={ index }
+        onClick={ () => deleteFieldOptions(index) }
+      >
+        <DeleteIcon
+          color="error"
+        />
+      </IconButton>
+    </Stack>
+  );
 
   /**
-   * Render features for adding, editing and deleting columns in table field
+   * Renders multi-choice field properties
+   *
+   * @param field field
    */
-  const renderTableColumnFeatures = () => {
-    const tableColumn = pendingForm.sections![sectionIndex!].fields![fieldIndex!].columns;
-    return (
-      <>
-        { pendingForm.sections![sectionIndex!].fields![fieldIndex!].columns!.map((field, index) => {
-          return (
-            <Stack spacing={ 2 } direction="row">
-              <TextField
-                sx={{ height: "50px" }}
-                value={ field.title }
-                label={ index }
-                onChange={ event => updateColumnTitle({
-                  ...tableColumn,
-                  name: slugify(`${event.target.value}-${index}`),
-                  title: event.target.value,
-                  type: "text" as MetaformTableColumnType,
-                  values: undefined
-                }, index)}
-              />
-              <Button
-                variant="outlined"
-                color="error"
-                sx={{
-                  alignContent: "center",
-                  height: "40px"
-                }}
-                value={ index }
-                onClick={ () => deleteColumn(index) }
-              >
-                <DeleteIcon
-                  color="error"
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}
-                />
-              </Button>
-            </Stack>
-          );
-        })}
-        <Divider/>
-        <Typography variant="subtitle1" style={{ width: "100%" }}>
-          { strings.draftEditorScreen.editor.features.addNewColumn }
-        </Typography>
-        <FormControl fullWidth>
-          <InputLabel id="fieldCategoryVisibilityConditionLabel">
-            { strings.draftEditorScreen.editor.features.addColumnType }
-          </InputLabel>
-          <Select
-            fullWidth
-            labelId="fieldCategoryVisibilityConditionLabel"
-            label={ strings.draftEditorScreen.editor.features.addColumnType }
-            sx={{ height: "50px" }}
-            value={ columnType }
-            onChange={ event => setColumnType(event.target.value) }
-          >
-            <MenuItem value="text">{ strings.draftEditorScreen.editor.features.columnTextType}</MenuItem>
-            <MenuItem value="number">{ strings.draftEditorScreen.editor.features.columnNumberType}</MenuItem>
-          </Select>
-          <Button
-            fullWidth
-            sx={{
-              height: "50px",
-              mt: "5px"
-            }}
-            onClick={ addNewColumn }
-          >
-            { strings.draftEditorScreen.editor.features.addNewColumn }
-          </Button>
-        </FormControl>
-      </>
-    );
-  };
+  const renderMultiChoiceFieldProperties = (field: MetaformField) => (
+    <Stack spacing={ 2 }>
+      { field.options?.map(renderMultiChoiceOptionEdit) }
+      <Button
+        fullWidth
+        sx={{ height: "50px" }}
+        onClick={ addNewFieldOption }
+      >
+        { strings.draftEditorScreen.editor.features.field.addFieldOption }
+      </Button>
+    </Stack>
+  );
 
   /**
-   * Render options depending what field type is selected
+   * Renders html editor
+   *
+   * @param field field
    */
-  const renderOptions = () => {
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      const selectedField = pendingForm.sections![sectionIndex].fields![fieldIndex];
-      const { type } = selectedField;
-      switch (type) {
-        case MetaformFieldType.Slider:
-          return renderSliderScopeValues(selectedField);
-        case MetaformFieldType.Checklist:
-        case MetaformFieldType.Radio:
-        case MetaformFieldType.Select:
-          return renderFieldOptions();
-        case MetaformFieldType.Html:
-          return renderHtmlEditor(selectedField);
-        case MetaformFieldType.Table:
-          return renderTableColumnFeatures();
-        default:
-          break;
-      }
+  const renderHtmlProperties = (field: MetaformField) => (
+    <TextField
+      fullWidth
+      placeholder={ strings.draftEditorScreen.editor.features.field.addCustomHtml }
+      multiline
+      rows={ 4 }
+      value={ field.html }
+      onChange={ event => updateHtmlField({ ...field, html: event.target.value }) }
+    />
+  );
+
+  /**
+   * Renders table column edit
+   *
+   * @param column column
+   * @param index index
+   */
+  const renderTableColumnEdit = (column: MetaformTableColumn, index: number) => (
+    <Stack
+      key={ `column-${index}` }
+      spacing={ 2 }
+      direction="row"
+    >
+      <TextField
+        value={ column.title }
+        label={ index }
+        onChange={ event => updateTableColumn({
+          ...column,
+          name: slugify(`${event.target.value}-${index}`),
+          title: event.target.value,
+          type: "text" as MetaformTableColumnType,
+          values: undefined
+        }, index)}
+      />
+      <IconButton
+        color="error"
+        value={ index }
+        onClick={ () => deleteColumn(index) }
+      >
+        <DeleteIcon color="error"/>
+      </IconButton>
+    </Stack>
+  );
+
+  /**
+   * Renders table new column
+   */
+  const renderTableNewColumn = () => (
+    <Stack spacing={ 2 }>
+      <Typography variant="subtitle1" style={{ width: "100%" }}>
+        { strings.draftEditorScreen.editor.features.field.addNewColumn }
+      </Typography>
+      <TextField
+        select
+        fullWidth
+        label={ strings.draftEditorScreen.editor.features.field.addColumnType }
+        value={ newColumnType }
+        onChange={ ({ target }) => setNewColumnType(target.value as MetaformTableColumnType) }
+      >
+        <MenuItem value={ MetaformTableColumnType.Text }>
+          { strings.draftEditorScreen.editor.features.field.columnTextType }
+        </MenuItem>
+        <MenuItem value={ MetaformTableColumnType.Number }>
+          { strings.draftEditorScreen.editor.features.field.columnNumberType }
+        </MenuItem>
+      </TextField>
+      <Button
+        fullWidth
+        disabled={ newColumnType === undefined }
+        onClick={ addNewColumn }
+      >
+        { strings.draftEditorScreen.editor.features.field.addNewColumn }
+      </Button>
+    </Stack>
+  );
+
+  /**
+   * Renders features for adding, editing and deleting columns in table field
+   *
+   * @param field field
+   */
+  const renderTableProperties = (field: MetaformField) => (
+    <Stack spacing={ 2 }>
+      { field.columns?.map(renderTableColumnEdit) }
+      <Divider/>
+      { renderTableNewColumn() }
+    </Stack>
+  );
+
+  /**
+   * Renders field properties
+   *
+   * @param field field
+   */
+  const renderFieldProperties = (field: MetaformField) => {
+    const { type } = field;
+
+    switch (type) {
+      case MetaformFieldType.Slider:
+        return (
+          <>
+            { renderSliderProperties(field) }
+            <Divider/>
+          </>
+        );
+      case MetaformFieldType.Checklist:
+      case MetaformFieldType.Radio:
+      case MetaformFieldType.Select:
+        return (
+          <>
+            { renderMultiChoiceFieldProperties(field) }
+            <Divider/>
+          </>
+        );
+      case MetaformFieldType.Html:
+        return (
+          <>
+            { renderHtmlProperties(field) }
+            <Divider/>
+          </>
+        );
+      case MetaformFieldType.Table:
+        return (
+          <>
+            { renderTableProperties(field) }
+            <Divider/>
+          </>
+        );
+      default:
+        break;
     }
   };
 
   /**
-   * Render define user group component
+   * Renders define user group component
    *
    *  @param field selected field
    */
   const renderDefineUserGroup = (field: MetaformField) => {
     const { type } = field;
-    const allowToDefineUserGroup = type === "select" || type === "date-time" || type === "radio" || type === "checklist" || type === "date";
+    const userGroupAllowed = MetaformUtils.fieldTypesAllowUserGroup.includes(type);
+
     return (
-      <>
+      <Stack spacing={ 2 }>
         <Typography variant="subtitle1" style={{ width: "100%" }}>
-          { strings.draftEditorScreen.editor.features.defineUserGroup }
+          { strings.draftEditorScreen.editor.features.field.defineUserGroup }
         </Typography>
-        <FormControl disabled={ !allowToDefineUserGroup }>
+        <FormControl disabled={ !userGroupAllowed }>
           <FormControlLabel
             label={ strings.generic.yes }
             control={
-              <Checkbox
-                checked
-              />
+              <Checkbox checked/>
             }
           />
           <Typography variant="body2">
-            { strings.draftEditorScreen.editor.features.selectableFieldsInfo }
+            { strings.draftEditorScreen.editor.features.field.selectableFieldsInfo }
           </Typography>
         </FormControl>
-      </>
+      </Stack>
     );
   };
 
   /**
-   * Render fieldTitle and Required or not component
+   * Renders field title
    *
-   * @param field current field
+   * @param section field
+   * @param field field
    */
-  const renderFieldTitleAndRequired = (field: MetaformField) => {
-    if (field === undefined) {
-      return null;
-    }
-    const {
-      text,
-      title,
-      type,
-      required
-    } = field;
-    return (
-      <>
-        <Typography variant="subtitle1" style={{ width: "100%" }}>
-          { strings.draftEditorScreen.editor.features.fieldDatas }
-        </Typography>
-        <TextField
-          fullWidth
-          label={ type === "submit" ? strings.draftEditorScreen.editor.features.textOfSubmitButton : strings.draftEditorScreen.editor.features.fieldTitle }
-          value={ type === "submit" ? text : title }
-          onChange={ event => {
-            if (type === "submit") {
-              updateFormField({
-                ...field,
-                text: event.target.value,
-                name: slugify(`${metaformSectionTitle}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
-              });
-            } else {
-              updateFormField({
-                ...field,
-                title: event.target.value,
-                name: slugify(`${metaformSectionTitle}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
-              });
-            }
-          }
-          }
-        />
-        { renderOptions() }
-        { renderContextOptions() }
-        <Divider/>
-        <Typography variant="subtitle1" style={{ width: "100%" }}>
-          { strings.draftEditorScreen.editor.features.required }
-        </Typography>
-        <FormControlLabel
-          label={ strings.generic.yes }
-          control={
-            <Checkbox
-              checked={ required }
-              onChange={ event => updateFormField({ ...field, required: event.target.checked }) }
-            />
-          }
-        />
-      </>
-    );
-  };
+  const renderFieldTitleEdit = (section: MetaformSection, field: MetaformField) => (
+    <Stack spacing={ 2 }>
+      <Typography variant="subtitle1" style={{ width: "100%" }}>
+        { strings.draftEditorScreen.editor.features.field.fieldData }
+      </Typography>
+      <TextField
+        fullWidth
+        label={ strings.draftEditorScreen.editor.features.field.fieldTitle }
+        value={ field.title }
+        onChange={ event => updateFormFieldDebounced({
+          ...field,
+          title: event.target.value,
+          name: slugify(`${section.title}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
+        })
+        }
+      />
+    </Stack>
+  );
 
   /**
-   * Renders feature component
+   * Renders submit title
+   *
+   * @param section field
+   * @param field field
    */
-  const renderFeatures = () => {
-    if (sectionIndex !== undefined && fieldIndex === undefined) {
-      const section = pendingForm.sections![sectionIndex];
-      return (
-        <>
-          <Typography variant="subtitle1" style={{ width: "100%" }}>
-            { strings.draftEditorScreen.editor.features.fieldDatas }
-          </Typography>
-          <TextField
-            fullWidth
-            value={ section.title ?? "" }
-            label={ strings.draftEditorScreen.editor.features.sectionTitle }
-            onChange={ event => updateFormSection({
-              ...section,
-              title: event.target.value
+  const renderSubmitTitleEdit = (section: MetaformSection, field: MetaformField) => (
+    <Stack spacing={ 2 }>
+      <Typography variant="subtitle1" style={{ width: "100%" }}>
+        { strings.draftEditorScreen.editor.features.field.fieldData }
+      </Typography>
+      <TextField
+        fullWidth
+        label={ strings.draftEditorScreen.editor.features.field.submitButtonText }
+        value={ field.text }
+        onChange={ event => updateFormFieldDebounced({
+          ...field,
+          text: event.target.value,
+          name: slugify(`${section.title}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
+        })
+        }
+      />
+    </Stack>
+  );
+
+  /**
+   * Renders field required edit
+   *
+   * @param field field
+   */
+  const renderFieldRequiredEdit = (field: MetaformField) => (
+    <Stack spacing={ 2 }>
+      <Typography variant="subtitle1" style={{ width: "100%" }}>
+        { strings.draftEditorScreen.editor.features.field.required }
+      </Typography>
+      <FormControlLabel
+        label={ strings.generic.yes }
+        control={
+          <Checkbox
+            checked={ field.required }
+            onChange={ event => updateFormFieldDebounced({
+              ...field,
+              required: event.target.checked
             }) }
           />
-        </>
-      );
-    }
+        }
+      />
+    </Stack>
+  );
 
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      const field = pendingForm.sections![sectionIndex].fields![fieldIndex];
-      if (field === undefined) {
-        return null;
+  /**
+   * Renders section editor
+   *
+   * @param section section
+   */
+  const renderSectionEditor = (section: MetaformSection) => (
+    <>
+      <Typography variant="subtitle1" style={{ width: "100%" }}>
+        { strings.draftEditorScreen.editor.features.section.sectionData }
+      </Typography>
+      <TextField
+        fullWidth
+        value={ section.title ?? "" }
+        label={ strings.draftEditorScreen.editor.features.section.sectionTitle }
+        onChange={ event => updateFormSection({
+          ...section,
+          title: event.target.value
+        }) }
+      />
+    </>
+  );
+
+  /**
+   * Renders field editor
+   *
+   * @param field field
+   * @param section section
+   */
+  const renderFieldEditor = (field: MetaformField, section: MetaformSection) => (
+    <>
+      { field.type === MetaformFieldType.Submit ?
+        renderSubmitTitleEdit(section, field) :
+        renderFieldTitleEdit(section, field)
       }
-      return (
-        <Stack spacing={ 2 }>
-          { renderFieldTitleAndRequired(field) }
-          <Divider/>
-          { renderDefineUserGroup(field) }
-        </Stack>
-      );
+      <Divider/>
+      { renderFieldProperties(field) }
+      { renderContextOptions(field) }
+      <Divider/>
+      { renderFieldRequiredEdit(field) }
+      <Divider/>
+      { renderDefineUserGroup(field) }
+    </>
+  );
+
+  /**
+   * Renders empty selection
+   */
+  const renderEmptySelection = () => (
+    <Typography>{ strings.draftEditorScreen.editor.emptySelection}</Typography>
+  );
+
+  /**
+   * Renders feature editor
+   */
+  const renderFeatureEditor = () => {
+    if (selectedField !== undefined && selectedSection !== undefined) {
+      return renderFieldEditor(selectedField, selectedSection);
     }
-    return (
-      <Typography>{ strings.draftEditorScreen.editor.visibility.selectVisibilityInfo }</Typography>
-    );
+
+    if (selectedSection !== undefined) {
+      return renderSectionEditor(selectedSection);
+    }
+
+    return renderEmptySelection();
   };
-
-  useEffect(() => {
-    checkContextSettings();
-  }, [fieldIndex, pendingForm]);
-
-  useEffect(() => {
-    getSelectedSectionTitle();
-  }, [ fieldIndex, sectionIndex ]);
 
   /**
    * Component render
    */
-  return renderFeatures();
+  return (
+    <Stack
+      spacing={ 2 }
+      width="100%"
+      overflow="hidden"
+    >
+      { renderFeatureEditor() }
+    </Stack>
+  );
 };
 
-export default MetaformEditorRightDrawerFeatureComponent;
+export default MetaformEditorRightDrawerFeature;
