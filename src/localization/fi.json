@@ -213,6 +213,7 @@
       "addSection": "Lisää osio",
       "emptySection": "Tyhjä osio",
       "emptySelection": "Aloita muokkaaminen valitsemalla osio tai kenttä.",
+      "defaultSectionTitle": "Osio",
       "form": {
         "tabTitle": "Lomake",
         "formTitle": "Lomakkeen otsikko",
@@ -221,7 +222,11 @@
         "formVersion": "Versio",
         "formStyling": "Lomakkeen ulkoasu",
         "backgroundImage": "Taustakuva",
-        "backgroundColor": "Taustaväri"
+        "backgroundColor": "Taustaväri",
+        "formVisibility": "Lomakkeen tiedot",
+        "formVisibilityLabel": "Lomakkeen näkyvyys",
+        "private": "Yksityinen (Suomi.fi)",
+        "public": "Julkinen"
       },
       "fields": {
         "tabTitle": "Kentät",
@@ -248,12 +253,14 @@
       "features": {
         "tabTitle": "Ominaisuudet",
         "title": "Title",
+        "type": "Tyyppi",
         "section": {
           "sectionData": "Osion tiedot",
           "sectionTitle": "Osion otsikko"
         },
         "field": {
           "fieldData": "Kentän tiedot",
+          "fieldType": "Kentän tyyppi",
           "required": "Pakollisuus",
           "defineUserGroup": "Määrittää käyttäjäryhmän",
           "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
@@ -284,11 +291,7 @@
         "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
         "fieldDefiningCondition": "Ehdon määrittävä kenttä",
         "fieldConditionLabel": "Tämä kenttä näkyy, jos {0} arvo on {1}",
-        "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}",
-        "formVisibility": "Lomakkeen tiedot",
-        "formVisibilityLabel": "Lomakkeen näkyvyys",
-        "private": "Yksityinen",
-        "public": "Julkinen"
+        "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}"
       }
     },
     "formPreview": {

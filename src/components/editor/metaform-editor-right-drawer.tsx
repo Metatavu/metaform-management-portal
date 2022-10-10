@@ -1,4 +1,4 @@
-import { Tab, Tabs } from "@mui/material";
+import { Tab, Tabs, Tooltip } from "@mui/material";
 import TabPanel from "components/generic/tab-panel";
 import { Metaform } from "generated/client";
 import strings from "localization/strings";
@@ -37,14 +37,18 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
         onChange={ (_, value: number) => setTabIndex(value) }
         value={ tabIndex }
       >
-        <Tab
-          value={ 0 }
-          label={ strings.draftEditorScreen.editor.features.tabTitle }
-        />
-        <Tab
-          value={ 1 }
-          label={ strings.draftEditorScreen.editor.visibility.tabTitle }
-        />
+        <Tooltip title="Features description here">
+          <Tab
+            value={ 0 }
+            label={ strings.draftEditorScreen.editor.features.tabTitle }
+          />
+        </Tooltip>
+        <Tooltip title="Visibility description here">
+          <Tab
+            value={ 1 }
+            label={ strings.draftEditorScreen.editor.visibility.tabTitle }
+          />
+        </Tooltip>
       </Tabs>
       <TabPanel value={ tabIndex } index={ 0 }>
         <MetaFormRightDrawerFeature

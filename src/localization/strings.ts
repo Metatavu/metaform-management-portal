@@ -249,6 +249,7 @@ export interface Localized extends LocalizedStringsMethods {
       addSection: string;
       emptySection: string;
       emptySelection: string;
+      defaultSectionTitle: string;
       form: {
         tabTitle: string;
         formTitle: string;
@@ -258,6 +259,10 @@ export interface Localized extends LocalizedStringsMethods {
         formStyling: string;
         backgroundImage: string;
         backgroundColor: string;
+        formVisibility: string;
+        formVisibilityLabel: string;
+        private: string;
+        public: string;
       };
       fields: {
         tabTitle: string;
@@ -290,6 +295,7 @@ export interface Localized extends LocalizedStringsMethods {
         };
         field: {
           fieldData: string;
+          fieldType: string;
           fieldTitle: string;
           defineUserGroup: string;
           selectableFieldsInfo: string;
@@ -321,10 +327,6 @@ export interface Localized extends LocalizedStringsMethods {
         fieldDefiningCondition: string;
         fieldConditionLabel: string;
         sectionConditionLabel: string;
-        formVisibility: string;
-        formVisibilityLabel: string;
-        private: string;
-        public: string;
       };
     };
     formPreview: {

@@ -214,6 +214,7 @@
       "addSection": "Add section",
       "emptySection": "Empty section",
       "emptySelection": "Selection a section or field to start editing.",
+      "defaultSectionTitle": "Section",
       "form": {
         "tabTitle": "Form",
         "formTitle": "Form title",
@@ -222,7 +223,11 @@
         "formVersion": "Version",
         "formStyling": "Form outfit",
         "backgroundImage": "Background image",
-        "backgroundColor": "Background color"
+        "backgroundColor": "Background color",
+        "formVisibility": "Form information",
+        "formVisibilityLabel": "Form visibility",
+        "private": "Private (Suomi.fi)",
+        "public": "Public"
       },
       "fields": {
         "tabTitle": "Fields",
@@ -255,6 +260,7 @@
         },
         "field":{
           "fieldData": "Field information",
+          "fieldType": "Field type",
           "required": "Required",
           "defineUserGroup": "Define a user group",
           "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
@@ -285,11 +291,7 @@
         "conditionalFieldValueInfo":"Select or enter the field value that determines the visibility.",
         "fieldDefiningCondition": "Field defining the condition",
         "fieldConditionLabel": "This field appears, if {0} value is {1}",
-        "sectionConditionLabel": "This section appears, if {0} value is {1}",
-        "formVisibility": "Form information",
-        "formVisibilityLabel": "Form visibility",
-        "private": "Private",
-        "public": "Public"
+        "sectionConditionLabel": "This section appears, if {0} value is {1}"
       }
     },
     "formPreview": {

@@ -214,7 +214,7 @@ namespace MetaformUtils {
    */
   export const createSection = (title?: string, fields?: any[]): MetaformSection => {
     return {
-      title: title ?? "Section",
+      title: title ?? strings.draftEditorScreen.editor.defaultSectionTitle,
       fields: fields ?? []
     };
   };
