@@ -281,7 +281,7 @@
             "maxValueLabel": "Kentän suurin arvo"
           }
         },
-        "tooltipDescription": "Edit form section information. Edit field information, attributes, and display settings."
+        "tooltipDescription": "Muokkaa osion tai kentän tietoja ja ominaisuuksia."
       },
       "visibility": {
         "tabTitle": "näkyvyys",
