@@ -295,7 +295,7 @@
         "fieldDefiningCondition": "Ehdon määrittävä kenttä",
         "fieldConditionLabel": "Tämä kenttä näkyy, jos {0} arvo on {1}",
         "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}",
-        "tooltipDescription": "Set conditions whether field is visible on form."
+        "tooltipDescription": "Aseta ehdollinen näkyvyys osiolle tai kentälle."
       }
     },
     "formPreview": {
