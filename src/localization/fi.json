@@ -106,6 +106,7 @@
   },
 
   "formComponent": {
+    "html": "Tyhjä html",
     "datePicker": "Päivämäärä",
     "dateTimePicker": "Päivämäärä ja aika"
   },
@@ -265,7 +266,6 @@
           "columnNumberType": "Numerokenttä",
           "submitButtonText": "Painikkeen teksti",
           "newFieldOption": "Valintakenttä",
-          "addCustomHtml": "Lisää tähän HTML-sisältöä",
           "contextVisibilityInfo": "Kentän hallinnointi asetukset",
           "slider": {
             "minValueLabel": "Kentän pienin arvo",

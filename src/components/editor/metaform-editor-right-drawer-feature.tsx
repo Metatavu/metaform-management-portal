@@ -312,23 +312,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
-   * Add custom html code in field
-   *
-   * @param htmlField html field
-   */
-  const updateHtmlField = (htmlField: MetaformField) => {
-    if (sectionIndex === undefined || fieldIndex === undefined) {
-      return;
-    }
-
-    const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, htmlField);
-    });
-
-    setPendingForm(updatedForm);
-  };
-
-  /**
    * Renders context option
    *
    * @param context context
@@ -439,22 +422,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   );
 
   /**
-   * Renders html editor
-   *
-   * @param field field
-   */
-  const renderHtmlProperties = (field: MetaformField) => (
-    <TextField
-      fullWidth
-      placeholder={ strings.draftEditorScreen.editor.features.field.addCustomHtml }
-      multiline
-      rows={ 4 }
-      value={ field.html }
-      onChange={ event => updateHtmlField({ ...field, html: event.target.value }) }
-    />
-  );
-
-  /**
    * Renders table column edit
    *
    * @param column column
@@ -554,13 +521,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
         return (
           <>
             { renderMultiChoiceFieldProperties(field) }
-            <Divider/>
-          </>
-        );
-      case MetaformFieldType.Html:
-        return (
-          <>
-            { renderHtmlProperties(field) }
             <Divider/>
           </>
         );
