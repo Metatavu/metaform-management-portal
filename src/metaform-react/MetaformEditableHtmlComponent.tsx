@@ -31,7 +31,6 @@ export const MetaformEditableHtmlComponent: React.FC<Props> = ({
    * @param updatedHtml updated html
    */
   const onFieldHtmlUpdate = (updatedHtml: string) => {
-    console.log(updatedHtml);
     onFieldUpdate({
       ...field,
       html: updatedHtml
@@ -42,7 +41,8 @@ export const MetaformEditableHtmlComponent: React.FC<Props> = ({
     toolbar: {
       container: [
         ["bold", "italic", "underline", "strike", "blockquote"],
-        ["headingOne", "headingTwo", "headingThree"],
+        [{ header: [ 1, 2, 3, 4, 5, 6, false ] }],
+        [{ color: [] }],
         [
           { list: "ordered" },
           { list: "bullet" },
@@ -68,8 +68,7 @@ export const MetaformEditableHtmlComponent: React.FC<Props> = ({
     "bullet",
     "indent",
     "link",
-    "image",
-    "imageBlot"
+    "color"
   ];
 
   return (

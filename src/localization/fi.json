@@ -267,10 +267,6 @@
           "submitButtonText": "Painikkeen teksti",
           "newFieldOption": "Valintakenttä",
           "contextVisibilityInfo": "Kentän hallinnointi asetukset",
-          "html": {
-            "openEditor": "Avaa editori",
-            "editHtml": "Muokkaa html"
-          },
           "slider": {
             "minValueLabel": "Kentän pienin arvo",
             "maxValueLabel": "Kentän suurin arvo"

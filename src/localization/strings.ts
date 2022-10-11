@@ -303,10 +303,6 @@ export interface Localized extends LocalizedStringsMethods {
           submitButtonText: string;
           newFieldOption: string;
           contextVisibilityInfo: string;
-          html: {
-            openEditor: string;
-            editHtml: string;
-          }
           slider: {
             minValueLabel: string;
             maxValueLabel: string;
