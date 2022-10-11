@@ -223,7 +223,10 @@ namespace SosmetaUtils {
       const request = await fetch(`${corsProxy}/${schemaUrl}`);
 
       if (request.status === 200) {
-        return await request.json();
+        const responseBuffer = await request.arrayBuffer();
+        const decoder = new TextDecoder("iso-8859-1");
+        const decodedResponse = decoder.decode(responseBuffer);
+        return JSON.parse(decodedResponse);
       }
     } catch (e) {
       throw new Error("Error happened while fetching Sosmeta Schema");
