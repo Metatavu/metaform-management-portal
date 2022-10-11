@@ -15,6 +15,7 @@ import { ErrorContext } from "components/contexts/error-handler";
 import { ReplyStatus } from "types";
 import { useNavigate } from "react-router-dom";
 import FormRestrictedContent from "components/containers/form-restricted-content";
+import moment from "moment";
 
 /**
  * Interface for single form row
@@ -47,11 +48,11 @@ const FormsScreen: React.FC = () => {
       return "";
     }
 
-    if (!replies[0].modifiedAt) {
+    if (!replies[replies.length - 1].modifiedAt) {
       return "";
     }
 
-    return replies[0].modifiedAt.toLocaleString().slice(0, -3);
+    return moment(replies[replies.length - 1].modifiedAt).format("LLL");
   };
 
   /**
