@@ -188,7 +188,7 @@ namespace MetaformUtils {
       case MetaformFieldType.Html:
         return {
           name: name ?? fieldType,
-          title: " ",
+          title: title ?? fieldType,
           required: required ?? false,
           type: fieldType,
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
