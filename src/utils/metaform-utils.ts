@@ -5,6 +5,7 @@ import { Dictionary, ReplyAuditLog, ReplyStatus } from "types";
 import strings from "localization/strings";
 import moment from "moment";
 import { FormContext } from "../types/index";
+import LocalizationUtils from "./localization-utils";
 
 /**
  * Utility class for metaform
@@ -446,17 +447,26 @@ namespace MetaformUtils {
       type: MetaformFieldType.Radio,
       options: [
         {
-          name: "waiting", text: ReplyStatus.WAITING, checked: true
+          name: "waiting",
+          text: LocalizationUtils.getLocalizedStatusOfReply(ReplyStatus.WAITING),
+          checked: true
         },
-        { name: "processing", text: ReplyStatus.PROCESSING },
-        { name: "done", text: ReplyStatus.DONE }
+        {
+          name: "processing",
+          text: LocalizationUtils.getLocalizedStatusOfReply(ReplyStatus.PROCESSING)
+        },
+        {
+          name: "done",
+          text: LocalizationUtils.getLocalizedStatusOfReply(ReplyStatus.DONE)
+        }
       ],
       contexts: [
         FormContext.MANAGEMENT_LIST
       ],
       flags: {
         managementEditable: true
-      }
+      },
+      title: "Status"
     };
   };
 
