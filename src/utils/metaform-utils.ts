@@ -143,7 +143,7 @@ namespace MetaformUtils {
           options: options ?? [
             {
               name: "option",
-              text: "option1",
+              text: "valinta",
               permissionGroups:
                 {
                   viewGroupIds: [],

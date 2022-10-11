@@ -294,18 +294,18 @@
         "public": "Julkinen"
       },
       "memberGroups": {
-        "memberGroupDefineSettings": "Käyttäjäryhmä määritys asetukset",
-        "defaultMemberGroupInfo": "Oletus käyttäjäryhmä",
-        "defaultMemberGroupInfoLabel": "Valitse oletus käyttäjäryhmä",
+        "memberGroupDefineSettings": "Käyttäjäryhmän asetukset",
+        "defaultMemberGroupInfo": "Oletus-käyttäjäryhmä",
+        "defaultMemberGroupInfoLabel": "Valitse oletus-käyttäjäryhmä",
         "memberGroupPermission": "Käyttäjäryhmän oikeudet",
         "memberGroup": "Käyttäjäryhmä",
-        "selectedMemberGroup": "Valittu ehtokenttä",
+        "selectedMemberGroup": "Valittu käyttäjäryhmä",
         "view": "Katselu",
         "edit": "Muokkaus",
         "none": "Ei oikeuksia",
         "fieldValueLabel": "Kentän arvo",
         "notifications": "Ilmoitukset",
-        "noDefaultPermissionMemberGroup": "Ei oletuskäyttäjäryhmää"
+        "noDefaultPermissionMemberGroup": "Ei oletus-käyttäjäryhmää"
       }
     },
     "formPreview": {

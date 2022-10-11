@@ -303,7 +303,7 @@
         "memberGroup": "Member group",
         "view":"View",
         "edit":"Edit",
-        "none":"Ei oikeuksia",
+        "none":"No permissions",
         "fieldValueLabel": "Field value",
         "notifications": "Notifications",
         "noDefaultPermissionMemberGroup": "No default permission member group"

@@ -4,7 +4,7 @@ import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
 import TabPanel from "components/generic/tab-panel";
 import strings from "localization/strings";
-import React, { ChangeEventHandler, useEffect } from "react";
+import React, { ChangeEventHandler, useEffect, useState, FC } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
 import { DraggingMode, NOT_SELECTED } from "types";
 import slugify from "slugify";
@@ -22,13 +22,13 @@ interface Props {
 /**
  * Draft editor left drawer component
  */
-const MetaformEditorLeftDrawer: React.FC<Props> = ({
+const MetaformEditorLeftDrawer: FC<Props> = ({
   memberGroups,
   pendingForm,
   setPendingForm
 }) => {
-  const [ tabIndex, setTabIndex ] = React.useState(0);
-  const [ selectedMemberGroup, setSelectedMemberGroup ] = React.useState<string>("");
+  const [ tabIndex, setTabIndex ] = useState(0);
+  const [ selectedMemberGroup, setSelectedMemberGroup ] = useState<string>("");
   const currentHostname = window.location.hostname;
 
   /**
@@ -59,11 +59,11 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
   };
 
   /**
-   * Event handler for metaform permission member group change
+   * Event handler for metaform permission member group change, Editing is default right for default permission member group and cannot be changed to view atm.
    * 
    * @param permissionMemberGroup selected member group
    */
-  const onMemberGroupChange = (permissionMemberGroup: string) => {
+  const onDefaultMemberGroupChange = (permissionMemberGroup: string) => {
     if (permissionMemberGroup === NOT_SELECTED) {
       pendingForm && setPendingForm({
         ...pendingForm,
@@ -87,10 +87,11 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
   };
 
   /**
-   * Set member group notifications on or off 
+   * Set default member group notifications on or off 
+   * 
    * @param event true or false
    */
-  const setNotifications = (event : boolean) => {
+  const setNotificationsForDefaultMemberGroup = (event : boolean) => {
     const updatedForm = produce(pendingForm, draftForm => {
       if (event) {
         draftForm!.defaultPermissionGroups!.notifyGroupIds!.push(selectedMemberGroup);
@@ -113,7 +114,7 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
           control={
             <Checkbox
               checked={ notifyChecked }
-              onChange={ event => setNotifications(event.target.checked) }
+              onChange={ event => setNotificationsForDefaultMemberGroup(event.target.checked) }
             />
           }
         />
@@ -155,7 +156,7 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
           select
           label={ strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfoLabel }
           value={ selectedMemberGroup }
-          onChange={ event => onMemberGroupChange(event.target.value) }
+          onChange={ event => onDefaultMemberGroupChange(event.target.value) }
         >
           <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.noDefaultPermissionMemberGroup }</MenuItem>
           { memberGroups.map(field => {
