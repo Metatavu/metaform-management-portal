@@ -1,11 +1,10 @@
 import Api from "api";
 import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, Metaform, FieldRule, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, MetaformVersion, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
-import { Dictionary, ReplyAuditLog, ReplyStatus } from "types";
+import { Dictionary, ReplyAuditLog } from "types";
 import strings from "localization/strings";
 import moment from "moment";
 import { FormContext } from "../types/index";
-import LocalizationUtils from "./localization-utils";
 
 /**
  * Utility class for metaform
@@ -448,16 +447,16 @@ namespace MetaformUtils {
       options: [
         {
           name: "waiting",
-          text: LocalizationUtils.getLocalizedStatusOfReply(ReplyStatus.WAITING),
+          text: "Odottaa",
           checked: true
         },
         {
           name: "processing",
-          text: LocalizationUtils.getLocalizedStatusOfReply(ReplyStatus.PROCESSING)
+          text: "Käsittelyssä"
         },
         {
           name: "done",
-          text: LocalizationUtils.getLocalizedStatusOfReply(ReplyStatus.DONE)
+          text: "Käsitelty"
         }
       ],
       contexts: [
@@ -466,7 +465,7 @@ namespace MetaformUtils {
       flags: {
         managementEditable: true
       },
-      title: "Status"
+      title: "Tila"
     };
   };
 
