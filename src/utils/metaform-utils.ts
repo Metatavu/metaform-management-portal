@@ -1,5 +1,5 @@
 import Api from "api";
-import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, Metaform, FieldRule, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, MetaformVersion, Reply } from "generated/client";
+import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, MetaformVersion, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
 import { Dictionary, ReplyAuditLog } from "types";
 import strings from "localization/strings";
@@ -79,6 +79,11 @@ namespace MetaformUtils {
       allowInvitations: undefined,
       autosave: undefined,
       slug: "form",
+      defaultPermissionGroups: {
+        viewGroupIds: [],
+        editGroupIds: [],
+        notifyGroupIds: []
+      },
       sections: [
         {
           title: "Osion otsikko",
@@ -138,7 +143,13 @@ namespace MetaformUtils {
           options: options ?? [
             {
               name: "option",
-              text: "option1"
+              text: "option1",
+              permissionGroups:
+                {
+                  viewGroupIds: [],
+                  editGroupIds: [],
+                  notifyGroupIds: []
+                }
             }
           ]
         };

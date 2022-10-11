@@ -1,6 +1,6 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { Metaform, MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
-import React from "react";
+import { Metaform, MetaformField, MetaformFieldType, MetaformMemberGroup, MetaformSection } from "generated/client";
+import React, { useState, useEffect } from "react";
 import { DraggingMode } from "types";
 import { DraggableLocation, DropResult, DragStart, DragDropContext } from "react-beautiful-dnd";
 import MetaformUtils from "utils/metaform-utils";
@@ -16,6 +16,8 @@ import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper
 import DragAndDropUtils from "utils/drag-and-drop-utils";
 import AddableFieldRenderer from "./field-renderer/addable-field-renderer";
 import strings from "localization/strings";
+import { useApiClient } from "app/hooks";
+import Api from "api";
 
 /**
  * Component properties
@@ -37,7 +39,24 @@ const MetaformEditor: React.FC<Props> = ({
   const [ selectedFieldIndex, setSelectedFieldIndex ] = React.useState<number>();
   const [ selectedSectionIndex, setSelectedSectionIndex ] = React.useState<number>();
   const [ draggingMode, setDraggingMode ] = React.useState<DraggingMode>();
+  const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
 
+  const apiClient = useApiClient(Api.getApiClient);
+  const { metaformMemberGroupsApi } = apiClient;
+
+  /**
+   * Load metaform member groups from the API
+   */
+  const loadMemberGroups = async () => {
+    if (!pendingForm.id) {
+      setMemberGroups([]);
+      return;
+    }
+    setMemberGroups(await metaformMemberGroupsApi.listMetaformMemberGroups({
+      metaformId: pendingForm.id
+    }));
+  };
+  
   /**
    * Event handler for empty space click
    */
@@ -392,6 +411,10 @@ const MetaformEditor: React.FC<Props> = ({
     </EditorContent>
   );
 
+  useEffect(() => {
+    loadMemberGroups();
+  }, []);
+
   /**
    * Component render
    */
@@ -402,12 +425,14 @@ const MetaformEditor: React.FC<Props> = ({
         onDragStart={ onDragStart }
       >
         <MetaformEditorLeftDrawer
+          memberGroups={ memberGroups }
           pendingForm={ pendingForm }
           setPendingForm={ setPendingForm }
         />
         { renderFormEditor() }
       </DragDropContext>
       <MetaformEditorRightDrawer
+        memberGroups={ memberGroups }
         pendingForm={ pendingForm }
         setPendingForm={ setPendingForm }
         fieldIndex={ selectedFieldIndex }

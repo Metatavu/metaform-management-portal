@@ -1,11 +1,11 @@
-import { Button, Checkbox, Divider, FormControl, FormControlLabel, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
-import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType, MetaformFieldType, FieldRule } from "generated/client";
+import { Button, Checkbox, Divider, FormControl, FormControlLabel, IconButton, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
+import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType, MetaformFieldType, FieldRule, MetaformMemberGroup } from "generated/client";
 import produce from "immer";
 import slugify from "slugify";
 import strings from "localization/strings";
 import React, { useEffect, FC, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { FormContext } from "../../types/index";
+import { FormContext, memberGroupPermissions, NOT_SELECTED } from "../../types/index";
 import MetaformUtils from "utils/metaform-utils";
 import LocalizationUtils from "utils/localization-utils";
 
@@ -13,6 +13,7 @@ import LocalizationUtils from "utils/localization-utils";
  * Component properties
  */
 interface Props {
+  memberGroups: MetaformMemberGroup[],
   sectionIndex?: number;
   fieldIndex?: number;
   pendingForm: Metaform;
@@ -23,6 +24,7 @@ interface Props {
  * Draft editor right drawer feature component
  */
 const MetaformEditorRightDrawerFeature: FC<Props> = ({
+  memberGroups,
   sectionIndex,
   fieldIndex,
   pendingForm,
@@ -32,6 +34,10 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const [ selectedSection, setSelectedSection ] = useState<MetaformSection>();
   const [ selectedField, setSelectedField ] = useState<MetaformField>();
   const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
+  const [ switchChecked, setSwitchChecked ] = useState<boolean>(false);
+  const [ selectedMemberGroup, setSelectedMemberGroup ] = useState<string>("");
+  const [ selectedMemberGroupRole, setSelectedMemberGroupRole ] = useState<string>("");
+  const [ memberGroupOptIndex, setMemberGroupOptIndex ] = useState<number | null>(null);
 
   /**
    * Updates selected section and field states
@@ -157,7 +163,12 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
     const optionsAmount = selectedField.options?.length;
     const newOption: MetaformFieldOption = {
       name: `${strings.draftEditorScreen.editor.features.field.newFieldOption}-${optionsAmount}`,
-      text: `${strings.draftEditorScreen.editor.features.field.newFieldOption}-${optionsAmount}`
+      text: `${strings.draftEditorScreen.editor.features.field.newFieldOption}-${optionsAmount}`,
+      permissionGroups: {
+        editGroupIds: [],
+        viewGroupIds: [],
+        notifyGroupIds: []
+      }
     };
 
     const updatedField: MetaformField = produce(selectedField, draftField => {
@@ -173,6 +184,8 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * @param optionIndex Option index value of option field what we delete
    */
   const deleteFieldOptions = (optionIndex: number) => {
+    setSwitchChecked(false);
+
     if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -309,6 +322,188 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
     });
 
     updateFormFieldDebounced(updatedField);
+  };
+  
+  /**
+   * Set permission group notify group settings
+   * @param event event is checkbox value true or false
+   */
+  const setMemberGroupNotify = (event : boolean) => {
+    const updatedForm = produce(pendingForm, draftForm => {
+      if (event) {
+        draftForm.sections?.[sectionIndex!].fields?.[fieldIndex!]?.options?.[memberGroupOptIndex!]!.permissionGroups!.notifyGroupIds!.push(selectedMemberGroup);
+      } else {
+        draftForm.sections?.[sectionIndex!].fields?.[fieldIndex!]?.options?.[memberGroupOptIndex!]!.permissionGroups!.notifyGroupIds!.splice(0, 1);
+      }
+    });
+    setPendingForm(updatedForm);
+  };
+
+  /**
+   * Set member group role
+   * 
+   * @param selectedGroupRole selected member group role
+   */
+  const setMemberGroupRole = (selectedGroupRole: string) => {
+    setSelectedMemberGroupRole(selectedGroupRole);
+    if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      const updatedForm = produce(pendingForm, draftForm => {
+        if (selectedGroupRole === memberGroupPermissions.EDIT) {
+          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.push(selectedMemberGroup);
+          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.splice(0, 1);
+        }
+        if (selectedGroupRole === memberGroupPermissions.VIEW) {
+          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.push(selectedMemberGroup);
+          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.splice(0, 1);
+        }
+        if (selectedGroupRole === NOT_SELECTED) {
+          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.splice(0, 1);
+          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.splice(0, 1);
+        }
+      });
+      setPendingForm(updatedForm);
+    }
+  };
+
+  /**
+   * Render member group role options
+   * @param field selected metaform field
+   */
+  const memberGroupOptions = (field: MetaformField) => {
+    if (selectedMemberGroup) {
+      const notifyChecked = field.options![memberGroupOptIndex!].permissionGroups!.notifyGroupIds!.length !== 0;
+      return (
+        <FormControl fullWidth>
+          <TextField
+            select
+            label={ strings.draftEditorScreen.editor.memberGroups.memberGroupPermission }
+            value={ selectedMemberGroupRole }
+            onChange={ event => setMemberGroupRole(event.target.value) }
+          >
+            <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.none }</MenuItem>
+            <MenuItem value={ memberGroupPermissions.EDIT }>{ strings.draftEditorScreen.editor.memberGroups.edit }</MenuItem>
+            <MenuItem value={ memberGroupPermissions.VIEW }>{ strings.draftEditorScreen.editor.memberGroups.view }</MenuItem>
+          </TextField>
+          <FormControlLabel
+            label={ strings.draftEditorScreen.editor.memberGroups.notifications }
+            control={
+              <Checkbox
+                checked={ notifyChecked }
+                onChange={ event => setMemberGroupNotify(event.target.checked) }
+              />
+            }
+          />
+        </FormControl>
+      );
+    }
+  };
+
+  /**
+   *  Empty permission groups from selected option
+   *
+   */
+  const removePermissionGroups = () => {
+    if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      const updatedForm = produce(pendingForm, draftForm => {
+        draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.splice(0, 1);
+        draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.splice(0, 1);
+        draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.notifyGroupIds!.splice(0, 1);
+      });
+      setPendingForm(updatedForm);
+    }
+  };
+
+  /**
+   * Changing member group empty permission groups and set member group role not selected
+   * 
+   * @param event selected member group Id
+   */
+  const onMemberGroupChange = (event: string) => {
+    setSelectedMemberGroup(event);
+    setSelectedMemberGroupRole(NOT_SELECTED);
+    removePermissionGroups();
+  };
+
+  /**
+   * Render Membergroups of current metaform
+   * 
+   * @param field selected metaform field
+   */
+  const renderMemberGroups = (field: MetaformField) => {
+    if (memberGroupOptIndex !== null) {
+      return (
+        <>
+          <FormControl fullWidth>
+            <TextField
+              fullWidth
+              select
+              label={ strings.draftEditorScreen.editor.memberGroups.memberGroup }
+              value={ selectedMemberGroup }
+              onChange={ event => onMemberGroupChange(event.target.value) }
+            >
+              <MenuItem sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.selectField }</MenuItem>
+              { memberGroups.map(field2 => {
+                return (
+                  <MenuItem value={ field2.id } key={ field2.id }>
+                    { field2.displayName }
+                  </MenuItem>
+                );
+              })
+              }
+            </TextField>
+          </FormControl>
+          { memberGroupOptions(field) }
+        </>
+      );
+    }
+  };
+
+  /**
+   * Render options of current field if its Select, Radio or Checkbox
+   * 
+   * @param field selected metaform field
+   */
+  const renderFieldValues = (field: MetaformField) => {
+    if (switchChecked) {
+      return (
+        <>
+          <FormControl fullWidth>
+            <TextField
+              select
+              fullWidth
+              label={ strings.draftEditorScreen.editor.memberGroups.fieldValueLabel }
+              value={ memberGroupOptIndex }
+              onChange={ event => setMemberGroupOptIndex(Number(event.target.value))}
+            >
+              <MenuItem sx={{ color: "gray" }}>{ strings.draftEditorScreen.editor.visibility.selectField }</MenuItem>
+              { field.options!.map((fieldValue, index) => {
+                const constructedKey = `${fieldValue.name}-${index}`;
+                return (
+                  <MenuItem value={ index } key={ constructedKey }>
+                    { fieldValue.text }
+                  </MenuItem>
+                );
+              })
+              }
+            </TextField>
+          </FormControl>
+          { renderMemberGroups(field) }
+        </>
+      );
+    }
+  };
+
+  /**
+   * Set switch value depending param value if false remove permission group from selected option
+   * 
+   * @param value value of switch true or false
+   */
+  const setSwitchValue = (value: boolean) => {
+    setSwitchChecked(value);
+    setMemberGroupOptIndex(null);
+    if (!value) {
+      removePermissionGroups();
+    }
   };
 
   /**
@@ -487,6 +682,42 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   );
 
   /**
+   * Render define member group permission switch
+   * 
+   * @param field selected metaform field
+   */
+  const renderDefineUserGroup = (field: MetaformField) => {
+    const currentField = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
+    if (currentField) {
+      if (MetaformUtils.fieldTypesAllowVisibility.includes(currentField.type)) {
+        return (
+          <>
+            <Typography variant="subtitle1">
+              { strings.draftEditorScreen.editor.memberGroups.memberGroupDefineSettings }
+            </Typography>
+            <FormControl>
+              <FormControlLabel
+                label={ strings.draftEditorScreen.editor.features.field.defineUserGroup }
+                control={
+                  <Switch
+                    checked={switchChecked}
+                    onChange={ event => setSwitchValue(event.target.checked) }
+                    sx={{ mb: "20px" }}
+                  />
+                }
+              />
+              <Typography variant="body2" sx={{ display: "none" }}>
+                { strings.draftEditorScreen.editor.features.field.selectableFieldsInfo }
+              </Typography>
+            </FormControl>
+            { renderFieldValues(field) }
+          </>
+        );
+      }
+    }
+  };
+
+  /**
    * Renders features for adding, editing and deleting columns in table field
    *
    * @param field field
@@ -522,6 +753,8 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           <>
             { renderMultiChoiceFieldProperties(field) }
             <Divider/>
+            { renderDefineUserGroup(field) }
+            <Divider/>
           </>
         );
       case MetaformFieldType.Table:
@@ -534,35 +767,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       default:
         break;
     }
-  };
-
-  /**
-   * Renders define user group component
-   *
-   *  @param field selected field
-   */
-  const renderDefineUserGroup = (field: MetaformField) => {
-    const { type } = field;
-    const userGroupAllowed = MetaformUtils.fieldTypesAllowUserGroup.includes(type);
-
-    return (
-      <Stack spacing={ 2 }>
-        <Typography variant="subtitle1" style={{ width: "100%" }}>
-          { strings.draftEditorScreen.editor.features.field.defineUserGroup }
-        </Typography>
-        <FormControl disabled={ !userGroupAllowed }>
-          <FormControlLabel
-            label={ strings.generic.yes }
-            control={
-              <Checkbox checked/>
-            }
-          />
-          <Typography variant="body2">
-            { strings.draftEditorScreen.editor.features.field.selectableFieldsInfo }
-          </Typography>
-        </FormControl>
-      </Stack>
-    );
   };
 
   /**
@@ -680,7 +884,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       <Divider/>
       { renderFieldRequiredEdit(field) }
       <Divider/>
-      { renderDefineUserGroup(field) }
     </>
   );
 
@@ -705,6 +908,82 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
 
     return renderEmptySelection();
   };
+
+  /**
+   * Check if selected field have member groups
+   * 
+   */
+  const checkIfMemberGroups = () => {
+    setMemberGroupOptIndex(null);
+    setSelectedMemberGroup("");
+    setSelectedMemberGroupRole(NOT_SELECTED);
+    if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      const currentField = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
+      if (MetaformUtils.fieldTypesAllowVisibility.includes(currentField.type)) {
+        let findFirst = true;
+        currentField.options?.forEach((field, index) => {
+          if (field.permissionGroups && findFirst) {
+            if (field.permissionGroups.editGroupIds!.length !== 0) {
+              setSwitchChecked(true);
+              setMemberGroupOptIndex(index);
+              setSelectedMemberGroup(field.permissionGroups.editGroupIds![0]);
+              setSelectedMemberGroupRole(memberGroupPermissions.EDIT);
+              findFirst = false;
+            }
+            if (field.permissionGroups.viewGroupIds!.length !== 0) {
+              setSwitchChecked(true);
+              setMemberGroupOptIndex(index);
+              setSelectedMemberGroup(field.permissionGroups.viewGroupIds![0]);
+              setSelectedMemberGroupRole(memberGroupPermissions.VIEW);
+              findFirst = false;
+            }
+            if (field.permissionGroups.notifyGroupIds!.length !== 0) {
+              setSwitchChecked(true);
+              setMemberGroupOptIndex(index);
+              setSelectedMemberGroup(field.permissionGroups.notifyGroupIds![0]);
+              findFirst = false;
+            }
+          }
+        });
+      }
+    }
+  };
+
+  /**
+   * When changing member group option check if option have member group.
+   */
+  const setMemberGroupsIfFound = () => {
+    setSelectedMemberGroup("");
+    setSelectedMemberGroupRole("");
+    if (memberGroupOptIndex !== null) {
+      setSwitchChecked(true);
+      const currentField = pendingForm.sections![sectionIndex!].fields![fieldIndex!].options![memberGroupOptIndex!].permissionGroups;
+      if (currentField?.editGroupIds!.length !== 0) {
+        setSelectedMemberGroup(currentField!.editGroupIds![0]);
+        setSelectedMemberGroupRole(memberGroupPermissions.EDIT);
+      }
+      if (currentField?.viewGroupIds!.length !== 0) {
+        setSelectedMemberGroup(currentField!.viewGroupIds![0]);
+        setSelectedMemberGroupRole(memberGroupPermissions.VIEW);
+      }
+      if (currentField?.notifyGroupIds!.length !== 0) {
+        setSelectedMemberGroup(currentField!.notifyGroupIds![0]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkIfMemberGroups();
+  }, [switchChecked]);
+
+  useEffect(() => {
+    setSwitchChecked(false);
+    checkIfMemberGroups();
+  }, [fieldIndex]);
+
+  useEffect(() => {
+    setMemberGroupsIfFound();
+  }, [memberGroupOptIndex]);
 
   /**
    * Component render
