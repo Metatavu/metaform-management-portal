@@ -350,6 +350,8 @@ const FormScreen: React.FC<Props> = () => {
    */
   const setFieldValue = (fieldName: string, fieldValue: FieldValue) => {
     if (formValues[fieldName] !== fieldValue) {
+      // TODO this timeout does delay all input but not working as required.
+      // setTimeout(() => setFormValues({ ...formValues, [fieldName]: fieldValue }), 500);
       setFormValues({ ...formValues, [fieldName]: fieldValue });
 
       if (formValid && metaform?.autosave) {
