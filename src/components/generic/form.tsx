@@ -4,16 +4,15 @@ import { FileFieldValueItem, ValidationErrors, FieldValue, FileFieldValue, IconN
 import React from "react";
 import { FormContainer, FormLayout } from "styled/generic/form";
 import strings from "localization/strings";
-import DatePicker from "@mui/lab/DatePicker";
-import { DateTimePicker, LocalizationProvider } from "@mui/lab";
 import fiLocale from "date-fns/locale/fi";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import MetaformComponent from "metaform-react/MetaformComponent";
 import Api from "api";
 import { useApiClient } from "app/hooks";
 import moment from "moment";
 import MetaformUtils from "utils/metaform-utils";
 import FormAutocomplete from "./form-autocomplete";
+import { LocalizationProvider, DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 
 /**
  * Component props
@@ -47,7 +46,6 @@ const Form: React.FC<Props> = ({
   const [ uploadingFields, setUploadingFields ] = React.useState<string[]>([]);
 
   const apiClient = useApiClient(Api.getApiClient);
-
   /**
    * Method for rendering form icons
    * @param icon Icon
@@ -83,11 +81,13 @@ const Form: React.FC<Props> = ({
     return (
       <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
         <DatePicker
+          label={ strings.formComponent.dateTimePicker }
+          aria-label={ fieldName }
           value={ value ? new Date(value as string) : null }
           onChange={ (date: Date | null) => handleDateChange(date, fieldName) }
           views={["day", "month", "year"]}
           renderInput={ params =>
-            <TextField label={ strings.formComponent.dateTimePicker } aria-label={ fieldName } { ...params }/>
+            <TextField { ...params }/>
           }
         />
       </LocalizationProvider>
@@ -239,7 +239,7 @@ const Form: React.FC<Props> = ({
           getFieldValue={ getFieldValue }
           setFieldValue={ setFieldValue }
           datePicker={ renderDatePicker }
-          datetimePicker={ renderDatetimePicker }
+          datetimePickerRender={ renderDatetimePicker }
           renderAutocomplete={ renderAutocomplete }
           uploadFile={ uploadFile }
           onFileDelete={ deleteFile }

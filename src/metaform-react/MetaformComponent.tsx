@@ -24,7 +24,7 @@ interface Props {
   getFieldValue: (fieldName: string) => FieldValue
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
-  datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  datetimePickerRender: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
@@ -49,7 +49,7 @@ const MetaformComponent: React.FC<Props> = ({
   getFieldValue,
   setFieldValue,
   datePicker,
-  datetimePicker,
+  datetimePickerRender,
   renderAutocomplete,
   uploadFile,
   renderIcon,
@@ -162,7 +162,7 @@ const MetaformComponent: React.FC<Props> = ({
               validationErrors={ validationErrors }
               renderBeforeField={ renderBeforeField }
               datePicker={ datePicker }
-              datetimePicker={ datetimePicker }
+              datetimePickerRender={ datetimePickerRender }
               renderAutocomplete={ renderAutocomplete }
               uploadFile={ uploadFile }
               renderIcon={ renderIcon }
