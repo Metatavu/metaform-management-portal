@@ -560,10 +560,15 @@ namespace MetaformUtils {
   /**
    * Checks is a day holiday
    *
-   * @date date
+   * @param workDaysOnly work days only
+   * @return boolean on should the day be disabled
    */
-  export const isWeekday = (date: Date): boolean => {
-    return ![0, 6].includes(date.getDay()) && !holiday.isHoliday(date);
+  export const shouldDisableHolidays = (workDaysOnly: boolean) => (date: Date): boolean => {
+    if (!workDaysOnly) {
+      return false;
+    }
+
+    return [0, 6].includes(date.getDay()) || !!holiday.isHoliday(date);
   };
 }
 

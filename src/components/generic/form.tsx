@@ -72,17 +72,20 @@ const Form: React.FC<Props> = ({
   };
 
   /**
-   * Method for setting date
+   * Renders date picker
    *
-   * @param fieldName field name
+   * @param field field
    */
-  const renderDatePicker = (fieldName: string) => {
+  const renderDatePicker = (field: MetaformField) => {
+    const fieldName = field.name || "";
     const value = getFieldValue(fieldName);
+
     return (
       <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
         <DatePicker
           label={ strings.formComponent.dateTimePicker }
           aria-label={ fieldName }
+          shouldDisableDate={ MetaformUtils.shouldDisableHolidays(field.workdaysOnly || false) }
           value={ value ? new Date(value as string) : null }
           onChange={ (date: Date | null) => handleDateChange(date, fieldName) }
           views={["day", "month", "year"]}
@@ -95,14 +98,17 @@ const Form: React.FC<Props> = ({
   };
 
   /**
-   * Method for setting datetime
+   * Renders date time picker
    */
-  const renderDatetimePicker = (fieldName: string) => {
+  const renderDatetimePicker = (field: MetaformField) => {
+    const fieldName = field.name || "";
     const value = getFieldValue(fieldName);
+
     return (
       <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
         <DateTimePicker
           value={ value ? new Date(value as string) : null }
+          shouldDisableDate={ MetaformUtils.shouldDisableHolidays(field.workdaysOnly || false) }
           onChange={ (date: Date | null) => handleDateTimeChange(date, fieldName) }
           renderInput={ params =>
             <TextField label={ strings.formComponent.dateTimePicker } aria-label={ fieldName } { ...params }/>
@@ -238,8 +244,8 @@ const Form: React.FC<Props> = ({
           titleColor={ titleColor }
           getFieldValue={ getFieldValue }
           setFieldValue={ setFieldValue }
-          datePicker={ renderDatePicker }
-          datetimePickerRender={ renderDatetimePicker }
+          renderDatePicker={ renderDatePicker }
+          renderDatetimePicker={ renderDatetimePicker }
           renderAutocomplete={ renderAutocomplete }
           uploadFile={ uploadFile }
           onFileDelete={ deleteFile }

@@ -300,6 +300,23 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
+   * Updates allows work days only for date, date-time field
+   *
+   * @param checked checked value of the checkbox value true or false
+   */
+  const updateWorkDaysOnly = (checked: boolean) => {
+    if (!selectedField) {
+      return;
+    }
+
+    const updatedField = produce(selectedField, draftField => {
+      draftField.workdaysOnly = checked;
+    });
+
+    updateFormFieldDebounced(updatedField);
+  };
+
+  /**
    * Update contexts of field
    *
    * @param selectedContext Selected context Option
@@ -323,26 +340,31 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
 
     updateFormFieldDebounced(updatedField);
   };
-  
+
   /**
    * Set permission group notify group settings
-   * 
-   * @param event event is checkbox value true or false
+   *
+   * @param checked checked value of the checkbox value true or false
    */
-  const setMemberGroupNotify = (event: boolean) => {
-    const updatedForm = produce(pendingForm, draftForm => {
-      if (event) {
-        draftForm.sections?.[sectionIndex!].fields?.[fieldIndex!]?.options?.[memberGroupOptIndex!]!.permissionGroups!.notifyGroupIds!.push(selectedMemberGroup);
+  const setMemberGroupNotify = (checked: boolean) => {
+    if (!selectedField) {
+      return;
+    }
+
+    const updatedField = produce(selectedField, draftField => {
+      if (checked) {
+        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.notifyGroupIds!.push(selectedMemberGroup);
       } else {
-        draftForm.sections?.[sectionIndex!].fields?.[fieldIndex!]?.options?.[memberGroupOptIndex!]!.permissionGroups!.notifyGroupIds!.splice(0, 1);
+        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.notifyGroupIds!.splice(0, 1);
       }
     });
-    setPendingForm(updatedForm);
+
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
    * Set member group permission view or edit
-   * 
+   *
    * @param selectedGroupPermission selected member group permission
    */
   const setMemberGroupPermission = (selectedGroupPermission: string) => {
@@ -383,7 +405,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
 
   /**
    * Handle member group change and empty member group permission selection. Also if option had permission member groups remove them.
-   * 
+   *
    * @param groupId selected member group Id
    */
   const handleMemberGroupChange = (groupId: string) => {
@@ -393,7 +415,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
   /**
    * Set switch value depending param value if false remove permission group from selected option
-   * 
+   *
    * @param value value of switch true or false
    */
   const setNotifyPermissionSwitchValue = (hasNotifyPermissions: boolean) => {
@@ -500,8 +522,8 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
-   * Render Membergroups of current metaform
-   * 
+   * Render member groups of current metaform
+   *
    * @param field selected metaform field
    */
   const renderMemberGroups = (field: MetaformField) => {
@@ -535,7 +557,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
 
   /**
    * Render options of current field if its Select, Radio or Checkbox
-   * 
+   *
    * @param field selected metaform field
    */
   const renderFieldValues = (field: MetaformField) => {
@@ -757,8 +779,28 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   );
 
   /**
+   * Renders properties for date, date-time fields
+   *
+   * @param field field
+   */
+  const renderDateTimeProperties = (field: MetaformField) => (
+    <Stack spacing={ 2 }>
+      <FormControlLabel
+        label={ strings.draftEditorScreen.editor.features.field.workDaysOnly }
+        control={
+          <Switch
+            checked={ field.workdaysOnly }
+            onChange={ ({ target }) => updateWorkDaysOnly(target.checked) }
+            sx={{ mb: "20px" }}
+          />
+        }
+      />
+    </Stack>
+  );
+
+  /**
    * Render define member group permission switch
-   * 
+   *
    * @param field selected metaform field
    */
   const renderDefineMemberGroupSwitch = (field: MetaformField) => {
@@ -820,6 +862,14 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           </>
         );
       case MetaformFieldType.Table:
+        return (
+          <>
+            { renderDateTimeProperties(field) }
+            <Divider/>
+          </>
+        );
+      case MetaformFieldType.Date:
+      case MetaformFieldType.DateTime:
         return (
           <>
             { renderTableProperties(field) }

@@ -159,14 +159,14 @@ const AddableFieldRenderer: React.FC<Prop> = ({
       return (
         <MetaformDateTimeFieldComponent
           field={ field }
-          datetimePickerRender={ dateTimePicker }
+          renderDatetimePicker={ dateTimePicker }
         />
       );
     case MetaformFieldType.Date:
       return (
         <MetaformDateFieldComponent
           field={ field }
-          datePicker={ datePicker }
+          renderDatePicker={ datePicker }
         />
       );
     case MetaformFieldType.Checklist:

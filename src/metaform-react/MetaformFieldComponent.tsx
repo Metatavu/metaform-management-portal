@@ -39,8 +39,8 @@ interface Props {
   validationErrors: ValidationErrors;
   getFieldValue: (fieldName: string) => FieldValue;
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
-  datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
-  datetimePickerRender: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  renderDatePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element;
+  renderDatetimePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element;
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   onFileShow: (value: FileFieldValueItem) => void;
@@ -64,8 +64,8 @@ export const MetaformFieldComponent: React.FC<Props> = ({
   validationErrors,
   getFieldValue,
   setFieldValue,
-  datePicker,
-  datetimePickerRender,
+  renderDatePicker,
+  renderDatetimePicker,
   renderAutocomplete,
   uploadFile,
   onFileShow,
@@ -209,13 +209,13 @@ export const MetaformFieldComponent: React.FC<Props> = ({
                 />;
       case MetaformFieldType.Date:
         return  <MetaformDateFieldComponent
-                  datePicker={ datePicker }
+                  renderDatePicker={ renderDatePicker }
                   field={ field }
                   onValueChange={ onValueChange }
                 />;
       case MetaformFieldType.DateTime:
         return  <MetaformDateTimeFieldComponent
-                  datetimePickerRender={ datetimePickerRender }
+                  renderDatetimePicker={ renderDatetimePicker }
                   field={ field }
                   onValueChange={ onValueChange }
                 />;

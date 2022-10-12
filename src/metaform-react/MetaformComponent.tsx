@@ -23,8 +23,8 @@ interface Props {
   renderBeforeField?: (fieldName?: string) => JSX.Element | void;
   getFieldValue: (fieldName: string) => FieldValue
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
-  datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
-  datetimePickerRender: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  renderDatePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element;
+  renderDatetimePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element;
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
@@ -48,8 +48,8 @@ const MetaformComponent: React.FC<Props> = ({
   renderBeforeField,
   getFieldValue,
   setFieldValue,
-  datePicker,
-  datetimePickerRender,
+  renderDatePicker,
+  renderDatetimePicker,
   renderAutocomplete,
   uploadFile,
   renderIcon,
@@ -161,8 +161,8 @@ const MetaformComponent: React.FC<Props> = ({
               key={`${metaformSectionKeyPrefix}-${sectionId}`}
               validationErrors={ validationErrors }
               renderBeforeField={ renderBeforeField }
-              datePicker={ datePicker }
-              datetimePickerRender={ datetimePickerRender }
+              renderDatePicker={ renderDatePicker }
+              renderDatetimePicker={ renderDatetimePicker }
               renderAutocomplete={ renderAutocomplete }
               uploadFile={ uploadFile }
               renderIcon={ renderIcon }
