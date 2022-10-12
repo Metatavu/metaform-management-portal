@@ -43,19 +43,19 @@ namespace SosmetaUtils {
    * @param field field
    * @returns MetaformField
    */
-  const handleSosmetaBooleanField = (sectionName: string, field: any) => {
+  const handleSosmetaBooleanField = (sectionName: string, field: any, required?: boolean) => {
     const fieldData = field.sosmeta;
 
     return MetaformUtils.createField(
       MetaformFieldType.Boolean,
       fieldData.name[0].value,
       `${sectionName.toLowerCase()}.${fieldData.name[0].value.toLowerCase()}`,
-      fieldData.required
+      required ?? fieldData.required
     );
   };
 
   /**
-   * TODO: Figure out a more descriptive TSDoc
+   * Handles creation of MetaformField with MetaformFieldType of object
    *
    * @param sectionName
    * @param field field
@@ -154,6 +154,18 @@ namespace SosmetaUtils {
   };
 
   /**
+   * Handles creation of MetaformFields from Sosmeta Schema Properties of type boolean
+   *
+   * @param sosmetaSection
+   * @returns MetaformField
+   */
+  const handleSosmetaBooleanSection = (sosmetaSection: any) => {
+    const { required } = sosmetaSection;
+
+    return [ handleSosmetaBooleanField(sosmetaSection.sosmeta.name[0].value, sosmetaSection, required) ];
+  };
+
+  /**
    * Maps through Sosmeta Schema Properties
    * and creates Metaform Section from each property
    * based on type (SosmetaType) of given property
@@ -172,7 +184,10 @@ namespace SosmetaUtils {
             handleSosmetaArraySection(sosmetaSection)
           );
         case SosmetaType.BOOLEAN:
-          return MetaformUtils.createSection();
+          return MetaformUtils.createSection(
+            sosmetaSection.sosmeta.name[0].value,
+            handleSosmetaBooleanSection(sosmetaSection)
+          );
         case SosmetaType.INTEGER:
           return MetaformUtils.createSection();
         case SosmetaType.NULL:
@@ -223,7 +238,10 @@ namespace SosmetaUtils {
       const request = await fetch(`${corsProxy}/${schemaUrl}`);
 
       if (request.status === 200) {
-        return await request.json();
+        const responseBuffer = await request.arrayBuffer();
+        const decoder = new TextDecoder("iso-8859-1");
+        const decodedResponse = decoder.decode(responseBuffer);
+        return JSON.parse(decodedResponse);
       }
     } catch (e) {
       throw new Error("Error happened while fetching Sosmeta Schema");

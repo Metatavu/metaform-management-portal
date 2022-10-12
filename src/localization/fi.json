@@ -106,6 +106,7 @@
   },
 
   "formComponent": {
+    "html": "Tyhjä html",
     "datePicker": "Päivämäärä",
     "dateTimePicker": "Päivämäärä ja aika"
   },
@@ -283,12 +284,28 @@
         "conditionalFieldInfo": "Valitse se lomakkeen kenttä, joka määrittää näkyvyyden.",
         "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
         "fieldDefiningCondition": "Ehdon määrittävä kenttä",
+        "selectField": "Valitse kenttä",
         "fieldConditionLabel": "Tämä kenttä näkyy, jos {0} arvo on {1}",
         "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}",
+        "selectVisibilityInfo": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja.",
         "formVisibility": "Lomakkeen tiedot",
         "formVisibilityLabel": "Lomakkeen näkyvyys",
         "private": "Yksityinen",
         "public": "Julkinen"
+      },
+      "memberGroups": {
+        "memberGroupDefineSettings": "Käyttäjäryhmän asetukset",
+        "defaultMemberGroupInfo": "Oletus-käyttäjäryhmä",
+        "defaultMemberGroupInfoLabel": "Valitse oletus-käyttäjäryhmä",
+        "memberGroupPermission": "Käyttäjäryhmän oikeudet",
+        "memberGroup": "Käyttäjäryhmä",
+        "selectedMemberGroup": "Valittu käyttäjäryhmä",
+        "view": "Katselu",
+        "edit": "Muokkaus",
+        "none": "Ei oikeuksia",
+        "fieldValueLabel": "Kentän arvo",
+        "notifications": "Ilmoitukset",
+        "noDefaultPermissionMemberGroup": "Ei oletus-käyttäjäryhmää"
       }
     },
     "formPreview": {
