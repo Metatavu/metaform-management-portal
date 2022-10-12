@@ -28,7 +28,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
   setPendingForm
 }) => {
   const [ tabIndex, setTabIndex ] = useState(0);
-  const [ selectedMemberGroup, setSelectedMemberGroup ] = useState<string>("");
+  const [ selectedDefaultMemberGroup, setSelectedDefaultMemberGroup ] = useState<string>("");
   const currentHostname = window.location.hostname;
 
   /**
@@ -59,7 +59,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
   };
 
   /**
-   * Event handler for metaform permission member group change, Editing is default right for default permission member group and cannot be changed to view atm.
+   * Event handler for metaform default member group change Permission for default member group is defaulted to "edit"
    * 
    * @param permissionMemberGroup selected member group
    */
@@ -83,7 +83,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
         }
       });
     }
-    setSelectedMemberGroup(permissionMemberGroup);
+    setSelectedDefaultMemberGroup(permissionMemberGroup);
   };
 
   /**
@@ -94,7 +94,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
   const setNotificationsForDefaultMemberGroup = (event : boolean) => {
     const updatedForm = produce(pendingForm, draftForm => {
       if (event) {
-        draftForm!.defaultPermissionGroups!.notifyGroupIds!.push(selectedMemberGroup);
+        draftForm!.defaultPermissionGroups!.notifyGroupIds!.push(selectedDefaultMemberGroup);
       } else {
         draftForm!.defaultPermissionGroups!.notifyGroupIds!.splice(0, 1);
       }
@@ -107,7 +107,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
    */
   const renderNotifications = () => {
     const notifyChecked = pendingForm?.defaultPermissionGroups?.notifyGroupIds?.length! > 0;
-    if (selectedMemberGroup && selectedMemberGroup !== NOT_SELECTED) {
+    if (selectedDefaultMemberGroup && selectedDefaultMemberGroup !== NOT_SELECTED) {
       return (
         <FormControlLabel
           label={ strings.draftEditorScreen.editor.memberGroups.notifications }
@@ -155,7 +155,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
         <TextField
           select
           label={ strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfoLabel }
-          value={ selectedMemberGroup }
+          value={ selectedDefaultMemberGroup }
           onChange={ event => onDefaultMemberGroupChange(event.target.value) }
         >
           <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.noDefaultPermissionMemberGroup }</MenuItem>
@@ -210,11 +210,11 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
   );
 
   /**
-   * Find current visibility value of form
+   * When open form in form editor, check if form have default member group.
    */
   useEffect(() => {
-    const permissionGroup = pendingForm?.defaultPermissionGroups;
-    setSelectedMemberGroup(permissionGroup?.editGroupIds!.length ? permissionGroup?.editGroupIds![0] : selectedMemberGroup);
+    const defaultPermissionGroups = pendingForm?.defaultPermissionGroups;
+    setSelectedDefaultMemberGroup(defaultPermissionGroups?.editGroupIds!.length ? defaultPermissionGroups?.editGroupIds![0] : selectedDefaultMemberGroup);
   }, []);
 
   /**

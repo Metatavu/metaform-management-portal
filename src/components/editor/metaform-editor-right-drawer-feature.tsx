@@ -8,6 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { FormContext, memberGroupPermissions, NOT_SELECTED } from "../../types/index";
 import MetaformUtils from "utils/metaform-utils";
 import LocalizationUtils from "utils/localization-utils";
+import { uuid4 } from "@sentry/utils";
 
 /**
  * Component properties
@@ -160,10 +161,9 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       return;
     }
 
-    const optionsAmount = selectedField.options?.length;
     const newOption: MetaformFieldOption = {
-      name: `${strings.draftEditorScreen.editor.features.field.newFieldOption}-${optionsAmount}`,
-      text: `${strings.draftEditorScreen.editor.features.field.newFieldOption}-${optionsAmount}`,
+      name: `${strings.draftEditorScreen.editor.features.field.newFieldOption}-${uuid4()}`,
+      text: `${strings.draftEditorScreen.editor.features.field.newFieldOption}`,
       permissionGroups: {
         editGroupIds: [],
         viewGroupIds: [],
@@ -401,6 +401,68 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
     setMemberGroupOptIndex(null);
     if (!hasNotifyPermissions) {
       removePermissionGroups();
+    }
+  };
+
+  /**
+   * Set member groups for selected field
+   */
+  const checkIfMemberGroupsAreSelected = () => {
+    setMemberGroupOptIndex(null);
+    setSelectedMemberGroup("");
+    setSelectedMemberGroupPermission(NOT_SELECTED);
+    if (fieldIndex !== undefined && sectionIndex !== undefined) {
+      const currentField = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
+      if (MetaformUtils.fieldTypesAllowVisibility.includes(currentField.type)) {
+        let memberGroupNotFound = true;
+        currentField.options?.forEach((field, index) => {
+          if (field.permissionGroups && memberGroupNotFound) {
+            if (field.permissionGroups.editGroupIds!.length !== 0) {
+              setMemberGroupSwitch(true);
+              setMemberGroupOptIndex(index);
+              setSelectedMemberGroup(field.permissionGroups.editGroupIds![0]);
+              setSelectedMemberGroupPermission(memberGroupPermissions.EDIT);
+              memberGroupNotFound = false;
+            }
+            if (field.permissionGroups.viewGroupIds!.length !== 0) {
+              setMemberGroupSwitch(true);
+              setMemberGroupOptIndex(index);
+              setSelectedMemberGroup(field.permissionGroups.viewGroupIds![0]);
+              setSelectedMemberGroupPermission(memberGroupPermissions.VIEW);
+              memberGroupNotFound = false;
+            }
+            if (field.permissionGroups.notifyGroupIds!.length !== 0) {
+              setMemberGroupSwitch(true);
+              setMemberGroupOptIndex(index);
+              setSelectedMemberGroup(field.permissionGroups.notifyGroupIds![0]);
+              memberGroupNotFound = false;
+            }
+          }
+        });
+      }
+    }
+  };
+
+  /**
+   * Set member group for selected option
+   */
+  const setMemberGroupsIfFound = () => {
+    setSelectedMemberGroup("");
+    setSelectedMemberGroupPermission("");
+    if (memberGroupOptIndex !== null) {
+      setMemberGroupSwitch(true);
+      const currentFieldsPermissionGroups = pendingForm.sections![sectionIndex!].fields![fieldIndex!].options![memberGroupOptIndex!].permissionGroups;
+      if (currentFieldsPermissionGroups?.editGroupIds!.length !== 0) {
+        setSelectedMemberGroup(currentFieldsPermissionGroups!.editGroupIds![0]);
+        setSelectedMemberGroupPermission(memberGroupPermissions.EDIT);
+      }
+      if (currentFieldsPermissionGroups?.viewGroupIds!.length !== 0) {
+        setSelectedMemberGroup(currentFieldsPermissionGroups!.viewGroupIds![0]);
+        setSelectedMemberGroupPermission(memberGroupPermissions.VIEW);
+      }
+      if (currentFieldsPermissionGroups?.notifyGroupIds!.length !== 0) {
+        setSelectedMemberGroup(currentFieldsPermissionGroups!.notifyGroupIds![0]);
+      }
     }
   };
 
@@ -681,11 +743,24 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   );
 
   /**
+   * Renders features for adding, editing and deleting columns in table field
+   *
+   * @param field field
+   */
+  const renderTableProperties = (field: MetaformField) => (
+    <Stack spacing={ 2 }>
+      { field.columns?.map(renderTableColumnEdit) }
+      <Divider/>
+      { renderTableNewColumn() }
+    </Stack>
+  );
+
+  /**
    * Render define member group permission switch
    * 
    * @param field selected metaform field
    */
-  const renderDefineMemberGroup = (field: MetaformField) => {
+  const renderDefineMemberGroupSwitch = (field: MetaformField) => {
     const currentField = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
     if (currentField) {
       if (MetaformUtils.fieldTypesAllowVisibility.includes(currentField.type)) {
@@ -717,19 +792,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
-   * Renders features for adding, editing and deleting columns in table field
-   *
-   * @param field field
-   */
-  const renderTableProperties = (field: MetaformField) => (
-    <Stack spacing={ 2 }>
-      { field.columns?.map(renderTableColumnEdit) }
-      <Divider/>
-      { renderTableNewColumn() }
-    </Stack>
-  );
-
-  /**
    * Renders field properties
    *
    * @param field field
@@ -752,7 +814,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           <>
             { renderMultiChoiceFieldProperties(field) }
             <Divider/>
-            { renderDefineMemberGroup(field) }
+            { renderDefineMemberGroupSwitch(field) }
             <Divider/>
           </>
         );
@@ -906,68 +968,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
     }
 
     return renderEmptySelection();
-  };
-
-  /**
-   * Check if selected field have member groups
-   */
-  const checkIfMemberGroupsAreSelected = () => {
-    setMemberGroupOptIndex(null);
-    setSelectedMemberGroup("");
-    setSelectedMemberGroupPermission(NOT_SELECTED);
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      const currentField = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
-      if (MetaformUtils.fieldTypesAllowVisibility.includes(currentField.type)) {
-        let memberGroupNotFound = true;
-        currentField.options?.forEach((field, index) => {
-          if (field.permissionGroups && memberGroupNotFound) {
-            if (field.permissionGroups.editGroupIds!.length !== 0) {
-              setMemberGroupSwitch(true);
-              setMemberGroupOptIndex(index);
-              setSelectedMemberGroup(field.permissionGroups.editGroupIds![0]);
-              setSelectedMemberGroupPermission(memberGroupPermissions.EDIT);
-              memberGroupNotFound = false;
-            }
-            if (field.permissionGroups.viewGroupIds!.length !== 0) {
-              setMemberGroupSwitch(true);
-              setMemberGroupOptIndex(index);
-              setSelectedMemberGroup(field.permissionGroups.viewGroupIds![0]);
-              setSelectedMemberGroupPermission(memberGroupPermissions.VIEW);
-              memberGroupNotFound = false;
-            }
-            if (field.permissionGroups.notifyGroupIds!.length !== 0) {
-              setMemberGroupSwitch(true);
-              setMemberGroupOptIndex(index);
-              setSelectedMemberGroup(field.permissionGroups.notifyGroupIds![0]);
-              memberGroupNotFound = false;
-            }
-          }
-        });
-      }
-    }
-  };
-
-  /**
-   * When changing member group option check if option have member group.
-   */
-  const setMemberGroupsIfFound = () => {
-    setSelectedMemberGroup("");
-    setSelectedMemberGroupPermission("");
-    if (memberGroupOptIndex !== null) {
-      setMemberGroupSwitch(true);
-      const currentFieldsPermissionGroups = pendingForm.sections![sectionIndex!].fields![fieldIndex!].options![memberGroupOptIndex!].permissionGroups;
-      if (currentFieldsPermissionGroups?.editGroupIds!.length !== 0) {
-        setSelectedMemberGroup(currentFieldsPermissionGroups!.editGroupIds![0]);
-        setSelectedMemberGroupPermission(memberGroupPermissions.EDIT);
-      }
-      if (currentFieldsPermissionGroups?.viewGroupIds!.length !== 0) {
-        setSelectedMemberGroup(currentFieldsPermissionGroups!.viewGroupIds![0]);
-        setSelectedMemberGroupPermission(memberGroupPermissions.VIEW);
-      }
-      if (currentFieldsPermissionGroups?.notifyGroupIds!.length !== 0) {
-        setSelectedMemberGroup(currentFieldsPermissionGroups!.notifyGroupIds![0]);
-      }
-    }
   };
 
   useEffect(() => {
