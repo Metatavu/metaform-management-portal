@@ -55,7 +55,7 @@ namespace SosmetaUtils {
   };
 
   /**
-   * TODO: Figure out a more descriptive TSDoc
+   * Handles creation of MetaformField with MetaformFieldType of object
    *
    * @param sectionName
    * @param field field
@@ -160,13 +160,9 @@ namespace SosmetaUtils {
    * @returns MetaformField
    */
   const handleSosmetaBooleanSection = (sosmetaSection: any) => {
-    try {
-      const { required } = sosmetaSection;
+    const { required } = sosmetaSection;
 
-      return [ handleSosmetaBooleanField(sosmetaSection.sosmeta.name[0].value, sosmetaSection, required) ];
-    } catch (e) {
-      // TODO: Error handling/messages
-    }
+    return [ handleSosmetaBooleanField(sosmetaSection.sosmeta.name[0].value, sosmetaSection, required) ];
   };
 
   /**
