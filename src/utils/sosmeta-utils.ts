@@ -44,14 +44,18 @@ namespace SosmetaUtils {
    * @returns MetaformField
    */
   const handleSosmetaBooleanField = (sectionName: string, field: any, required?: boolean) => {
-    const fieldData = field.sosmeta;
+    try {
+      const fieldData = field.sosmeta;
 
-    return MetaformUtils.createField(
-      MetaformFieldType.Boolean,
-      fieldData.name[0].value,
-      `${sectionName.toLowerCase()}.${fieldData.name[0].value.toLowerCase()}`,
-      required ?? fieldData.required
-    );
+      return MetaformUtils.createField(
+        MetaformFieldType.Boolean,
+        fieldData.name[0].value,
+        `${sectionName.toLowerCase()}.${fieldData.name[0].value.toLowerCase()}`,
+        required ?? fieldData.required
+      );
+    } catch (e) {
+      // TODO: Error handling/messages
+    }
   };
 
   /**
@@ -168,9 +172,13 @@ namespace SosmetaUtils {
    * @returns MetaformField
    */
   const handleSosmetaBooleanSection = (sosmetaSection: any) => {
-    const { required } = sosmetaSection;
+    try {
+      const { required } = sosmetaSection;
 
-    return [ handleSosmetaBooleanField(sosmetaSection.sosmeta.name[0].value, sosmetaSection, required) ];
+      return [ handleSosmetaBooleanField(sosmetaSection.sosmeta.name[0].value, sosmetaSection, required) ];
+    } catch (e) {
+      // TODO: Error handling/messagess
+    }
   };
 
   /**
