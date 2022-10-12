@@ -498,6 +498,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       );
     }
   };
+
   /**
    * Render Membergroups of current metaform
    * 
