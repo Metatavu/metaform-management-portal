@@ -5,6 +5,9 @@ import { Dictionary, ReplyAuditLog, ReplyStatus } from "types";
 import strings from "localization/strings";
 import moment from "moment";
 import { FormContext } from "../types/index";
+import Holidays from "date-holidays";
+
+const holiday = new Holidays("FI");
 
 /**
  * Utility class for metaform
@@ -437,7 +440,7 @@ namespace MetaformUtils {
 
   /**
    * Create status section for new metaform
-   * 
+   *
    * @returns status section for form
    */
   export const formStatusSection = (): MetaformField => {
@@ -462,7 +465,7 @@ namespace MetaformUtils {
 
   /**
    * Filter out status from form
-   * 
+   *
    * @param form Metaform form
    * @returns Metaform without status field
    */
@@ -480,7 +483,7 @@ namespace MetaformUtils {
 
   /**
    * Get draft form based on existing metaform version or new
-   * 
+   *
    * @returns Metaform
    */
   export const getDraftForm = (metaformVersion: MetaformVersion | undefined) => {
@@ -532,6 +535,15 @@ namespace MetaformUtils {
 
     return !!fieldRule.and?.some(rule => fieldRuleMatch(rule, match, fieldOptionMatch)) ||
     !!fieldRule.or?.some(rule => fieldRuleMatch(rule, match, fieldOptionMatch));
+  };
+
+  /**
+   * Checks is a day holiday
+   *
+   * @date date
+   */
+  export const isWeekday = (date: Date): boolean => {
+    return ![0, 6].includes(date.getDay()) && !holiday.isHoliday(date);
   };
 }
 
