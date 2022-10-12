@@ -72,11 +72,19 @@ namespace SosmetaUtils {
             required
           );
         case SosmetaType.OBJECT:
-          return Object.keys(field.properties).map(x =>
-            handleSosmetaStringField(
-              sectionName,
-              field.properties[x]
-            ));
+          // eslint-disable-next-line no-case-declarations
+          const firstKey = Object.keys(field.properties)[0];
+          if (field.properties[firstKey].sosmeta) {
+            return Object.keys(field.properties).map(x =>
+              handleSosmetaStringField(
+                sectionName,
+                field.properties[x]
+              ));
+          }
+          return handleSosmetaStringField(
+            sectionName,
+            field
+          );
         case SosmetaType.BOOLEAN:
           return handleSosmetaBooleanField(
             sectionName,
@@ -261,7 +269,7 @@ namespace SosmetaUtils {
       metaform.title = schema.title.split("'")[1];
       const sosmetaFormPropertyName = Object.keys(schema.properties)[0];
       const sosmetaForm = schema.properties[sosmetaFormPropertyName];
-      metaform.sections = convertSections(sosmetaForm);
+      metaform.sections = convertSections(sosmetaForm).filter(section => section.fields && section.fields.length);
       return validateConvertedField();
     } catch (e) {
       throw new Error(`Error happened while converting Sosmeta Schema: ${e}`);
