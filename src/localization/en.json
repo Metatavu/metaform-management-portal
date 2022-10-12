@@ -267,6 +267,7 @@
           "columnNumberType": "Number field",
           "submitButtonText": "Button text",
           "newFieldOption": "Option field",
+          "addCustomHtml": "Add HTML code in field",
           "contextVisibilityInfo": "Field management settings",
           "slider": {
             "minValueLabel": "Field minimum value",
@@ -284,12 +285,28 @@
         "conditionalFieldInfo": "Select the form field that determines visibility.",
         "conditionalFieldValueInfo":"Select or enter the field value that determines the visibility.",
         "fieldDefiningCondition": "Field defining the condition",
+        "selectField": "Select a field",
         "fieldConditionLabel": "This field appears, if {0} value is {1}",
         "sectionConditionLabel": "This section appears, if {0} value is {1}",
+        "selectVisibilityInfo": "Select a field in the form to edit the field information.",
         "formVisibility": "Form information",
         "formVisibilityLabel": "Form visibility",
         "private": "Private",
         "public": "Public"
+      },
+      "memberGroups": {
+        "memberGroupDefineSettings": "Member group defining settings",
+        "defaultMemberGroupInfo": "Default member group",
+        "defaultMemberGroupInfoLabel": "Select default member group",
+        "memberGroupPermission": "Member group permissions",
+        "selectedMemberGroup": "Selected field",
+        "memberGroup": "Member group",
+        "view":"View",
+        "edit":"Edit",
+        "none":"No permissions",
+        "fieldValueLabel": "Field value",
+        "notifications": "Notifications",
+        "noDefaultPermissionMemberGroup": "No default permission member group"
       }
     },
     "formPreview": {
