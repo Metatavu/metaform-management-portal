@@ -10,6 +10,8 @@ import { FormListContainer, FormPagination, FormsContainer } from "styled/editor
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 import { DataGrid, GridActionsCellItem, GridColumns, GridRowParams } from "@mui/x-data-grid";
 import { DataValidation } from "utils/data-validation-utils";
+import { useApiClient } from "app/hooks";
+import Api from "api";
 /**
 * Component props
 */
@@ -30,7 +32,7 @@ interface MetaformVersionRow {
   type?: MetaformVersionType;
   createdAt?: Date;
   modifiedAt?: Date;
-  modifierId?: string;
+  modifierEmail?: string;
 }
 
 /**
@@ -43,8 +45,9 @@ const EditorScreenTable: FC<Props> = ({
   deleteMetaformOrVersion,
   goToEditor
 }) => {
-  // TODO: Currently API doesn't return metadata (created/modified dates etc) for Metaforms.
-  // That needs to be changed and after that, this components version row functionality need slight refactoring.
+  /* eslint-disable */
+  const apiClient = useApiClient(Api.getApiClient);
+  const { usersApi } = apiClient;
   const [ deleteDialogOpen, setDeleteDialogOpen ] = useState<boolean>(false);
   const [ selectedId, setSelectedId ] = useState<string | undefined>();
   const [ page, setPage ] = useState(0);
@@ -90,16 +93,18 @@ const EditorScreenTable: FC<Props> = ({
    *
    * @param id metaform id
    */
-  const buildProductionVersion = (id: string): MetaformVersionRow => {
+  const buildProductionVersion = async (id: string): Promise<MetaformVersionRow> => {
     const metaform = metaforms.find(form => form.id === id);
     const { createdAt, modifiedAt, lastModifierId } = metaform!;
-    
+    // const lastModifier = await usersApi.findUser({ userId: lastModifierId! });
+
     return {
       id: id,
       typeString: strings.editorScreen.formProductionVersion,
       createdAt: createdAt,
       modifiedAt: modifiedAt,
-      modifierId: lastModifierId
+      modifierEmail: lastModifierId
+      // modifierEmail: lastModifier.email
     };
   };
 
@@ -108,14 +113,14 @@ const EditorScreenTable: FC<Props> = ({
    *
    * @param metaform metaform
    */
-  const buildVersionRows = (metaform: Metaform): MetaformVersionRow[] => {
+  const buildVersionRows = async (metaform: Metaform): Promise<MetaformVersionRow[]> => {
     const versions = metaformVersions.filter(version =>
       (version.data as Metaform).id === metaform.id &&
       DataValidation.validateValueIsNotUndefinedNorNull(version.modifiedAt));
 
     versions.sort((a, b) => (a.modifiedAt!.getTime() > b.modifiedAt!.getTime() ? -1 : 1));
 
-    const productionVersion = buildProductionVersion(metaform.id!);
+    const productionVersion = await buildProductionVersion(metaform.id!);
     const versionRows: MetaformVersionRow[] = versions.map((version: MetaformVersion) => {
       const { formVersionArchived, formVersionDraft } = strings.editorScreen;
       const typeString = version.type === MetaformVersionType.Archived ? formVersionArchived : formVersionDraft;
@@ -302,8 +307,8 @@ const EditorScreenTable: FC<Props> = ({
    *
    * @param metaform metaform
    */
-  const renderVersionDataGrid = (metaform: Metaform) => {
-    const versions = buildVersionRows(metaform);
+  const renderVersionDataGrid = async (metaform: Metaform) => {
+    const versions = await buildVersionRows(metaform);
 
     if (!versions) {
       return;

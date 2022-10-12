@@ -355,35 +355,36 @@ export interface Localized extends LocalizedStringsMethods {
       group: string;
       user: string;
     };
-    addMemberButton: string
-    addMemberGroupButton: string
+    addMemberButton: string;
+    addMemberGroupButton: string;
     addMemberDialog: {
-      title: string
-      text: string
-      emailLabel: string
-      firstNameLabel: string
-      lastNameLabel: string
-      createButton: string
-      cancelButton: string
-      roleAdministrator: string
-      roleManager: string
+      title: string;
+      text: string;
+      freeTextSearchLabel: string;
+      searchButton: string;
+      emailLabel: string;
+      firstNameLabel: string;
+      lastNameLabel: string;
+      upnNumberLabel: string;
+      createButton: string;
+      cancelButton: string;
     }
     addMemberGroupDialog: {
-      title: string
-      text: string
-      displayNameLabel: string
-      createButton: string
-      cancelButton: string
+      title: string;
+      text: string;
+      displayNameLabel: string;
+      createButton: string;
+      cancelButton: string;
     }
     usersTable: {
       nameColumn: {
-        label: string
+        label: string;
       }
       emailColumn: {
-        label: string
+        label: string;
       }
       groupsColumn: {
-        label: string
+        label: string;
       }
     }
   };

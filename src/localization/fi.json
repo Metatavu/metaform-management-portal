@@ -321,13 +321,14 @@
     "addMemberDialog": {
       "title": "Uusi käyttäjä",
       "text": "Lisää uusi käyttäjä lomakkeelle",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "searchButton": "Hae",
       "emailLabel": "Sähköpostiosoite",
       "firstNameLabel": "Etunimi",
       "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
       "createButton": "Luo käyttäjä",
-      "cancelButton": "Peruuta",
-      "roleAdministrator": "Ylläpitäjä",
-      "roleManager": "Ammattilainen"
+      "cancelButton": "Peruuta"
     },
     "addMemberGroupDialog": {
       "title": "Uusi käyttäjäryhmä",

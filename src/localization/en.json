@@ -322,13 +322,14 @@
     "addMemberDialog": {
       "title": "New member",
       "text": "Add new member to the form",
+      "freeTextSearchLabel": "User search",
+      "searchButton": "Search",
       "emailLabel": "Email",
       "firstNameLabel": "First name",
       "lastNameLabel": "Last name",
+      "upnNumberLabel": "UPN number",
       "createButton": "Add member",
-      "cancelButton": "Cancel",
-      "roleAdministrator": "Administrator",
-      "roleManager": "Manager"
+      "cancelButton": "Cancel"
     },
     "addMemberGroupDialog": {
       "title": "New group",
