@@ -58,6 +58,7 @@ export interface Localized extends LocalizedStringsMethods {
       deleteVersion: string;
       createFormDuplicateNameError: string;
       convertSosmetaError: string;
+      getLastModifiers: string;
     };
     draftEditorScreen: {
       findDraft: string;

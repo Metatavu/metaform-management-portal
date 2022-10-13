@@ -267,6 +267,7 @@ const UsersScreen: React.FC = () => {
         open={ addMemberOpen }
         onCreate={ onAddMemberDialogCreate }
         onCancel={ onAddMemberDialogCancel }
+        setLoading={ setLoading }
       />
       <AddMemberGroupDialog
         loading={ loading }

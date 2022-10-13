@@ -36,17 +36,24 @@ const EditorScreen: React.FC = () => {
    * Gets last modifiers for Metaforms and Metaform Versions
    */
   const loadLastModifiers = async () => {
-    const formUsers = metaforms.map(form => form.lastModifierId);
-    const versionUsers = metaformVersions.map(version => version.lastModifierId);
-    const allUsers = [ ...formUsers, ...versionUsers ];
-    const distinctUsers = [ ...new Set(allUsers) ];
-    const lastModifierUsers = await Promise.all(distinctUsers.map(user =>
-      usersApi.findUser({ userId: user! })));
+    setLoading(true);
 
-    setLastModifiers(lastModifierUsers);
+    try {
+      const formUsers = metaforms.map(form => form.lastModifierId);
+      const versionUsers = metaformVersions.map(version => version.lastModifierId);
+      const allUsers = [ ...formUsers, ...versionUsers ];
+      const distinctUsers = [ ...new Set(allUsers) ];
+      const lastModifierUsers = await Promise.all(distinctUsers.map(user =>
+        usersApi.findUser({ userId: user! })));
+
+      setLastModifiers(lastModifierUsers);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.getLastModifiers, e);
+    }
+
+    setLoading(false);
   };
 
-  /* eslint-disable @typescript-eslint/return-await */
   /**
    * Gets Metaforms and Metaform Versions
    */
@@ -59,14 +66,12 @@ const EditorScreen: React.FC = () => {
 
       setMetaforms(forms);
       setMetaformVersions(versions.flat());
-      await loadLastModifiers();
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
 
     setLoading(false);
   };
-  /* eslint-enable @typescript-eslint/return-await */
 
   /**
    * Creates new Metaform and  MetaformVersion and navigates to DraftEditorScreen
@@ -209,6 +214,10 @@ const EditorScreen: React.FC = () => {
   const toggleEditorDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
+
+  useEffect(() => {
+    loadLastModifiers();
+  }, [ metaforms, metaformVersions ]);
 
   useEffect(() => {
     loadMetaforms();

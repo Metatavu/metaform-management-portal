@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import strings from "../../localization/strings";
 import { Autocomplete, AutocompleteChangeDetails, AutocompleteRenderOptionState, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ListItem, ListItemIcon, Stack, TextField } from "@mui/material";
-import { MetaformMember, MetaformMemberRole, User, UserFederationSource } from "generated/client";
+import { MetaformMember, MetaformMemberRole, User } from "generated/client";
 import * as EmailValidator from "email-validator";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import LinkIcon from "@mui/icons-material/Link";
 import SdCardIcon from "@mui/icons-material/SdCard";
-
+import { useApiClient } from "app/hooks";
+import Api from "api";
+/* eslint-disable */
 /**
  * Interface representing component properties
  */
@@ -15,6 +17,7 @@ interface Props {
   open: boolean;
   onCancel: () => void;
   onCreate: (member: MetaformMember) => void;
+  setLoading: (value: boolean) => void;
 }
 /**
  * React component for add member dialog
@@ -23,8 +26,11 @@ const AddMemberGroupDialog: React.FC<Props> = ({
   loading,
   open,
   onCancel,
-  onCreate
+  onCreate,
+  setLoading
 }) => {
+  const apiClient = useApiClient(Api.getApiClient);
+  const { usersApi } = apiClient;
   const [ member, setMember ] = useState({
     email: "",
     firstName: "",
@@ -32,47 +38,8 @@ const AddMemberGroupDialog: React.FC<Props> = ({
     role: MetaformMemberRole.Manager
   });
   const [ selectedUser, setSelectedUser ] = useState<User | undefined>();
-
-  const users: User[] = [
-    {
-      firstName: "Tommi",
-      lastName: "Turmiola",
-      email: "tommi.turmiola@example.com",
-      displayName: "turmiola tommi",
-      id: "4d561993-c2e7-497d-bd7e-8258bb48fa4d"
-    },
-    {
-      firstName: "Käyttäjä1",
-      lastName: "Testi",
-      email: "käyttäjä1.testi@example.com",
-      id: "1cb13a4c-b81b-436a-b5da-9bf9bcb5ed3f",
-      displayName: "testi käyttäjä1 12345678901",
-      federatedIdentities: [{
-        source: UserFederationSource.Card,
-        userId: "24e33737-4bba-4711-970b-e9bccdf2bc87",
-        userName: "testi käyttäjä1 12345678901"
-      }]
-    },
-    {
-      firstName: "Käyttäjä2",
-      lastName: "Testi",
-      email: "käyttäjä2.testi@example.com",
-      id: "532a92b3-62c9-46ff-9fff-5c070e4574f3",
-      displayName: "testi käyttäjä2 12345678902",
-      federatedIdentities: [{
-        source: UserFederationSource.Card,
-        userId: "0ad9ace8-f690-4256-a6c3-5d4e41553a26",
-        userName: "testi käyttäjä2 12345678902"
-      }]
-    },
-    {
-      firstName: "Käyttäjä3",
-      lastName: "Testi",
-      email: "käyttäjä3.testi@example.com",
-      displayName: "testi käyttäjä3 12345678902",
-      federatedIdentities: []
-    }
-  ];
+  const [ userSearch, setUserSearch ] = useState<string>("");
+  const [ foundUsers, setFoundUsers ] = useState<User[]>([]);
 
   /**
    * Renders correct icon for User selection dialog
@@ -127,6 +94,32 @@ const AddMemberGroupDialog: React.FC<Props> = ({
   };
 
   /**
+   * Event handler for free text search change
+   * 
+   * @param event event
+   */
+  const handleUserSearchChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { target: { value } } = event;
+    setUserSearch(value);
+  };
+
+  /**
+   * Searches users by text search
+   */
+  const searchUsers = async () => {
+    setLoading(true);
+
+    try {
+      const users = await usersApi.listUsers({  search: userSearch });
+      setFoundUsers(users);
+    } catch (e) {
+      console.log(e);
+    }
+
+    setLoading(false);
+  };
+
+  /**
    * Event handler for name create click
    */
   const onCreateClick = () => {
@@ -147,38 +140,39 @@ const AddMemberGroupDialog: React.FC<Props> = ({
           { strings.userManagementScreen.addMemberDialog.text }
         </DialogContentText>
         <Stack spacing={ 1 }>
-          <Stack spacing={ 1 } direction="row">
-            <Autocomplete
-              disablePortal
-              fullWidth
-              id="combo-box-demo"
-              options={ users }
-              sx={{ border: 0 }}
-              onChange={ (event, options, reason, details) => handleAutocompleteChange(details) }
-              getOptionLabel={ option => `${option.firstName} ${option.lastName}` }
-              renderOption={ (props, option, state) => renderAutocompleteOption(props, option, state) }
-              renderInput={ params =>
-                <TextField
-                  {...params}
-                  size="medium"
-                  label={ strings.userManagementScreen.addMemberDialog.freeTextSearchLabel }
-                />
-              }
-            />
-            {/* <TextField
-              sx={{ flex: 1 }}
-              fullWidth
-              size="medium"
-              name="freeTextSearch"
-              label={ strings.userManagementScreen.addMemberDialog.freeTextSearchLabel }
-            /> */}
-            <Button
-              sx={{ flex: 0.25 }}
-              size="medium"
-            >
-              { strings.userManagementScreen.addMemberDialog.searchButton }
-            </Button>
-          </Stack>
+          <GenericLoaderWrapper
+            loading={ loading }
+          >
+            <Stack spacing={ 1 } direction="row">
+              <Autocomplete
+                disablePortal
+                fullWidth
+                freeSolo
+                id="combo-box-demo"
+                options={ foundUsers }
+                sx={{ border: 0 }}
+                onChange={ (event, options, reason, details) => handleAutocompleteChange(details) }
+                getOptionLabel={ option => `${(option as User).firstName} ${(option as User).lastName}` }
+                renderOption={ (props, option, state) => renderAutocompleteOption(props, option, state) }
+                renderInput={ params =>
+                  <TextField
+                    {...params}
+                    size="medium"
+                    onChange={ handleUserSearchChange }
+                    value={ userSearch }
+                    label={ strings.userManagementScreen.addMemberDialog.freeTextSearchLabel }
+                  />
+                }
+              />
+              <Button
+                sx={{ flex: 0.25 }}
+                size="large"
+                onClick={ searchUsers }
+              >
+                { strings.userManagementScreen.addMemberDialog.searchButton }
+              </Button>
+            </Stack>
+          </GenericLoaderWrapper>
           <TextField
             disabled
             fullWidth
