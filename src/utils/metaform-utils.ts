@@ -204,6 +204,17 @@ namespace MetaformUtils {
           type: fieldType,
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
         };
+      case MetaformFieldType.Number:
+        return {
+          name: name ?? fieldType,
+          title: title ?? fieldType,
+          required: required ?? false,
+          text: fieldType,
+          min: undefined,
+          max: undefined,
+          type: fieldType,
+          contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
+        };
       default:
         return {
           name: name ?? fieldType,
@@ -517,8 +528,9 @@ namespace MetaformUtils {
    * @param foundFieldRules found field rule list
    * @param fieldOptionMatch field option match
    */
-  export const fieldRuleScan = (fieldRule: FieldRule, match: string, foundFieldRules: FieldRule[], fieldOptionMatch?: MetaformFieldOption) => {
-    if (fieldRule.field === match) {
+  export const fieldRuleScan =
+  (fieldRule: FieldRule, match: string, fieldNameBeforeUpdate: string | undefined, foundFieldRules: FieldRule[], fieldOptionMatch?: MetaformFieldOption) => {
+    if (fieldRule.field === fieldNameBeforeUpdate) {
       if (fieldOptionMatch !== undefined) {
         if (fieldOptionMatch.name === fieldRule.equals || fieldOptionMatch.name === fieldRule.notEquals) {
           foundFieldRules.push(fieldRule);
@@ -528,8 +540,8 @@ namespace MetaformUtils {
       }
     }
 
-    fieldRule.and?.forEach(rule => fieldRuleScan(rule, match, foundFieldRules, fieldOptionMatch));
-    fieldRule.or?.forEach(rule => fieldRuleScan(rule, match, foundFieldRules, fieldOptionMatch));
+    fieldRule.and?.forEach(rule => fieldRuleScan(rule, match, fieldNameBeforeUpdate, foundFieldRules, fieldOptionMatch));
+    fieldRule.or?.forEach(rule => fieldRuleScan(rule, match, fieldNameBeforeUpdate, foundFieldRules, fieldOptionMatch));
   };
 
   /**
@@ -549,7 +561,7 @@ namespace MetaformUtils {
       }
       return true;
     }
-
+    
     return !!fieldRule.and?.some(rule => fieldRuleMatch(rule, match, fieldOptionMatch)) ||
     !!fieldRule.or?.some(rule => fieldRuleMatch(rule, match, fieldOptionMatch));
   };
