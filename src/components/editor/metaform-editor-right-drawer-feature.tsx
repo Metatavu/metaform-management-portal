@@ -225,7 +225,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * @param eventValue Value of min or max value
    * @param scopeValue Min or Max, depending which value we are changing
    */
-  const updateSliderOrNumberValue = (eventValue: Number, scopeValue: string) => {
+  const updateSliderOrNumberValue = (eventValue: number, scopeValue: string) => {
     if (!selectedField) {
       return;
     }
