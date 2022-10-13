@@ -204,6 +204,17 @@ namespace MetaformUtils {
           type: fieldType,
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
         };
+      case MetaformFieldType.Number:
+        return {
+          name: name ?? fieldType,
+          title: title ?? fieldType,
+          required: required ?? false,
+          text: fieldType,
+          min: undefined,
+          max: undefined,
+          type: fieldType,
+          contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
+        };
       default:
         return {
           name: name ?? fieldType,
