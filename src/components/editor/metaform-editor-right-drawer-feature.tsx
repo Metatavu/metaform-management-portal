@@ -71,14 +71,14 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
             pendingForm.sections![sectionIndex].fields![fieldIndex].options![optionIndex] :
             undefined;
           const fieldRules: FieldRule[] = [];
-
+          const updatedFieldName = pendingForm.sections![sectionIndex].fields![fieldIndex].name;
           draftForm.sections?.forEach(draftSection => {
             if (draftSection.visibleIf !== undefined) {
-              MetaformUtils.fieldRuleScan(draftSection.visibleIf, selectedField.name || "", fieldRules, fieldOptionMatch);
+              MetaformUtils.fieldRuleScan(draftSection.visibleIf, selectedField.name || "", updatedFieldName, fieldRules, fieldOptionMatch);
             }
             draftSection.fields?.forEach(draftField => {
               if (draftField.visibleIf !== undefined) {
-                MetaformUtils.fieldRuleScan(draftField.visibleIf, selectedField.name || "", fieldRules, fieldOptionMatch);
+                MetaformUtils.fieldRuleScan(draftField.visibleIf, selectedField.name || "", updatedFieldName, fieldRules, fieldOptionMatch);
               }
             });
           });

@@ -143,7 +143,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
           select
           disabled={ selectedVisibleIf === undefined }
           label={ labelText }
-          value={ selectedVisibleIf?.field }
+          value={ selectedVisibleIf?.field !== undefined ? selectedVisibleIf.field : "" }
           onChange={ event => updateVisibleIfValue("field", event.target.value) }
         >
           { pendingForm.sections!.flatMap(section => section.fields || [])
