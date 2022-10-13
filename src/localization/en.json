@@ -45,7 +45,8 @@
       "createForm": "Creating form failed",
       "deleteVersion": "Deleting form failed",
       "createFormDuplicateNameError": "Form with that name already exists!",
-      "convertSosmetaError": "Converting Sosmeta failed"
+      "convertSosmetaError": "Converting Sosmeta failed",
+      "getLastModifiers": "Fetching forms last modifiers dailed"
     },
     "draftEditorScreen": {
       "findDraft": "Fetching form version failed",
@@ -436,6 +437,7 @@
     "formCreatedAt": "CREATED AT",
     "formModifiedAt": "MODIFIED AT",
     "formLastModifier": "LAST MODIFIER",
+    "formLastModifierNotFound": "Not found",
     "formVersionArchived": "archived",
     "formVersionDraft": "draft",
     "drawer": {

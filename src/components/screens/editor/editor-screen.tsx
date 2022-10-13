@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Api from "api";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
-import { Metaform, MetaformVersion, MetaformVersionType } from "generated/client";
+import { Metaform, MetaformVersion, MetaformVersionType, User } from "generated/client";
 import EditorScreenDrawer from "../../editor/editor-screen-drawer";
 import { useNavigate } from "react-router-dom";
 import GenericLoaderWrapper from "components/generic/generic-loader";
@@ -24,20 +24,34 @@ const EditorScreen: React.FC = () => {
   const navigate = useNavigate();
 
   const apiClient = useApiClient(Api.getApiClient);
-  const { metaformsApi, versionsApi } = apiClient;
+  const { metaformsApi, versionsApi, usersApi } = apiClient;
 
   const [ metaforms, setMetaforms ] = useState<Metaform[]>([]);
   const [ metaformVersions, setMetaformVersions ] = useState<MetaformVersion[]>([]);
+  const [ lastModifiers, setLastModifiers ] = useState<User[]>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
   const [ drawerOpen, setDrawerOpen ] = useState<boolean>(false);
 
-  /* eslint-disable @typescript-eslint/return-await */
+  /**
+   * Gets last modifiers for Metaforms and Metaform Versions
+   */
+  const loadLastModifiers = async () => {
+    try {
+      const formUsers = metaforms.map(metaform => metaform.lastModifierId);
+      const versionUsers = metaformVersions.map(metaformVersion => metaformVersion.lastModifierId);
+      const distinctUsers = [ ...new Set([ ...formUsers, ...versionUsers]) ];
+      const lastModifierUsers = await Promise.all(distinctUsers.map(user => usersApi.findUser({ userId: user! })));
+    
+      setLastModifiers(lastModifierUsers);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.getLastModifiers, e);
+    }
+  };
+
   /**
    * Gets Metaforms and Metaform Versions
    */
   const loadMetaforms = async () => {
-    setLoading(true);
-
     try {
       const forms = await metaformsApi.listMetaforms({});
       const versions = await Promise.all(forms.map(form => versionsApi.listMetaformVersions({ metaformId: form.id! })));
@@ -47,10 +61,25 @@ const EditorScreen: React.FC = () => {
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
+  };
+
+  /**
+   * Handles loading data from API
+   */
+  const loadData = async () => {
+    setLoading(true);
+
+    try {
+      await Promise.all([
+        loadMetaforms(),
+        loadLastModifiers()
+      ]);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.getLastModifiers, e);
+    }
 
     setLoading(false);
   };
-  /* eslint-enable @typescript-eslint/return-await */
 
   /**
    * Creates new Metaform and  MetaformVersion and navigates to DraftEditorScreen
@@ -195,7 +224,7 @@ const EditorScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    loadMetaforms();
+    loadData();
   }, []);
 
   return (
@@ -224,6 +253,7 @@ const EditorScreen: React.FC = () => {
             loading={ loading }
             metaforms={ metaforms }
             metaformVersions={ metaformVersions }
+            lastModifiers={ lastModifiers }
             deleteMetaformOrVersion={ deleteMetaformOrVersion }
             goToEditor={ goToEditor }
           />
