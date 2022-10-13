@@ -369,23 +369,27 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    */
   const setMemberGroupPermission = (selectedGroupPermission: string) => {
     setSelectedMemberGroupPermission(selectedGroupPermission);
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      const updatedForm = produce(pendingForm, draftForm => {
-        if (selectedGroupPermission === memberGroupPermissions.EDIT) {
-          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.push(selectedMemberGroup);
-          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.splice(0, 1);
-        }
-        if (selectedGroupPermission === memberGroupPermissions.VIEW) {
-          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.push(selectedMemberGroup);
-          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.splice(0, 1);
-        }
-        if (selectedGroupPermission === NOT_SELECTED) {
-          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.splice(0, 1);
-          draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.splice(0, 1);
-        }
-      });
-      setPendingForm(updatedForm);
+
+    if (!selectedField) {
+      return;
     }
+
+    const updatedField = produce(selectedField, draftField => {
+      if (selectedGroupPermission === memberGroupPermissions.EDIT) {
+        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.push(selectedMemberGroup);
+        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.splice(0, 1);
+      }
+      if (selectedGroupPermission === memberGroupPermissions.VIEW) {
+        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.push(selectedMemberGroup);
+        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.splice(0, 1);
+      }
+      if (selectedGroupPermission === NOT_SELECTED) {
+        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.splice(0, 1);
+        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.splice(0, 1);
+      }
+    });
+
+    updateFormField(updatedField);
   };
 
   /**
@@ -393,14 +397,17 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    *
    */
   const removePermissionGroups = () => {
-    if (fieldIndex !== undefined && sectionIndex !== undefined) {
-      const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.splice(0, 1);
-        draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.splice(0, 1);
-        draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.[memberGroupOptIndex!]!.permissionGroups!.notifyGroupIds!.splice(0, 1);
-      });
-      setPendingForm(updatedForm);
+    if (!selectedField) {
+      return;
     }
+
+    const updatedField = produce(selectedField, draftField => {
+      draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.splice(0, 1);
+      draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.splice(0, 1);
+      draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.notifyGroupIds!.splice(0, 1);
+    });
+
+    updateFormField(updatedField);
   };
 
   /**
@@ -815,7 +822,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
                 label={ strings.draftEditorScreen.editor.features.field.defineUserGroup }
                 control={
                   <Switch
-                    checked={memberGroupSwitch}
+                    checked={ memberGroupSwitch }
                     onChange={ event => setNotifyPermissionSwitchValue(event.target.checked) }
                   />
                 }
