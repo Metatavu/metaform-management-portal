@@ -1,7 +1,7 @@
 import Api from "api";
-import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, Metaform, FieldRule, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, MetaformVersion, Reply } from "generated/client";
+import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, MetaformVersion, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
-import { Dictionary, ReplyAuditLog, ReplyStatus } from "types";
+import { Dictionary, ReplyAuditLog } from "types";
 import strings from "localization/strings";
 import moment from "moment";
 import { FormContext } from "../types/index";
@@ -79,6 +79,11 @@ namespace MetaformUtils {
       allowInvitations: undefined,
       autosave: undefined,
       slug: "form",
+      defaultPermissionGroups: {
+        viewGroupIds: [],
+        editGroupIds: [],
+        notifyGroupIds: []
+      },
       sections: [
         {
           title: "Osion otsikko",
@@ -138,7 +143,13 @@ namespace MetaformUtils {
           options: options ?? [
             {
               name: "option",
-              text: "option1"
+              text: "valinta",
+              permissionGroups:
+                {
+                  viewGroupIds: [],
+                  editGroupIds: [],
+                  notifyGroupIds: []
+                }
             }
           ]
         };
@@ -188,7 +199,7 @@ namespace MetaformUtils {
       case MetaformFieldType.Html:
         return {
           name: name ?? fieldType,
-          title: " ",
+          title: title ?? fieldType,
           required: required ?? false,
           type: fieldType,
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
@@ -446,17 +457,26 @@ namespace MetaformUtils {
       type: MetaformFieldType.Radio,
       options: [
         {
-          name: "waiting", text: ReplyStatus.WAITING, checked: true
+          name: "waiting",
+          text: "Odottaa",
+          checked: true
         },
-        { name: "processing", text: ReplyStatus.PROCESSING },
-        { name: "done", text: ReplyStatus.DONE }
+        {
+          name: "processing",
+          text: "Käsittelyssä"
+        },
+        {
+          name: "done",
+          text: "Käsitelty"
+        }
       ],
       contexts: [
         FormContext.MANAGEMENT_LIST
       ],
       flags: {
         managementEditable: true
-      }
+      },
+      title: "Tila"
     };
   };
 

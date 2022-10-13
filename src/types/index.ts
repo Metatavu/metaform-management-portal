@@ -151,6 +151,12 @@ export enum FormContext {
   MANAGEMENT_LIST = "MANAGEMENT_LIST"
 }
 
+export enum memberGroupPermissions {
+  NOTIFY = "notify",
+  VIEW = "view",
+  EDIT = "edit"
+}
+
 declare module "@mui/material/styles" {
   interface CustomTheme {
     logo: {

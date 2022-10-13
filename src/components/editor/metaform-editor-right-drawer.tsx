@@ -1,6 +1,6 @@
 import { Tab, Tabs, Tooltip } from "@mui/material";
 import TabPanel from "components/generic/tab-panel";
-import { Metaform } from "generated/client";
+import { Metaform, MetaformMemberGroup } from "generated/client";
 import strings from "localization/strings";
 import React from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
@@ -11,6 +11,7 @@ import MetaFormRightDrawerVisibility from "./metaform-editor-right-drawer-visibi
  * Component properties
  */
 interface Props {
+  memberGroups: MetaformMemberGroup[],
   sectionIndex?: number;
   fieldIndex?: number;
   pendingForm: Metaform;
@@ -21,6 +22,7 @@ interface Props {
  * Draft editor right drawer component
  */
 const MetaformEditorRightDrawer: React.FC<Props> = ({
+  memberGroups,
   sectionIndex,
   fieldIndex,
   pendingForm,
@@ -52,6 +54,7 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
       </Tabs>
       <TabPanel value={ tabIndex } index={ 0 }>
         <MetaFormRightDrawerFeature
+          memberGroups={ memberGroups }
           pendingForm={ pendingForm }
           setPendingForm={ setPendingForm }
           fieldIndex={ fieldIndex }

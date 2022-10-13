@@ -121,6 +121,7 @@ export interface Localized extends LocalizedStringsMethods {
    * Translations related to form component
    */
   formComponent: {
+    html: string;
     datePicker: string;
     dateTimePicker: string;
   };
@@ -326,9 +327,25 @@ export interface Localized extends LocalizedStringsMethods {
         conditionalFieldInfo: string;
         conditionalFieldValueInfo: string;
         fieldDefiningCondition: string;
+        selectField: string;
+        selectVisibilityInfo: string;
         fieldConditionLabel: string;
         sectionConditionLabel: string;
         tooltipDescription: string;
+      };
+      memberGroups: {
+        memberGroupDefineSettings: string;
+        defaultMemberGroupInfo: string;
+        defaultMemberGroupInfoLabel: string;
+        memberGroupPermission: string;
+        memberGroup: string;
+        selectedMemberGroup: string;
+        edit: string;
+        view: string;
+        none: string;
+        fieldValueLabel: string;
+        notifications: string;
+        noDefaultPermissionMemberGroup: string;
       };
     };
     formPreview: {

@@ -77,7 +77,7 @@ const EditorScreen: React.FC = () => {
 
   /**
    * Handle Archive to Draft conversion
-   * 
+   *
    * @param versionToEdit Version to edit
    */
   const handleArchiveToDraft = async (versionToEdit: MetaformVersion) => {
@@ -91,7 +91,7 @@ const EditorScreen: React.FC = () => {
     const oldDraftVersion = metaformVersions.find(metaformVersion =>
       (metaformVersion.data as Metaform).id === id &&
       metaformVersion.type === MetaformVersionType.Draft);
-    
+
     if (oldDraftVersion) {
       await versionsApi.updateMetaformVersion({
         metaformId: id,
@@ -117,7 +117,7 @@ const EditorScreen: React.FC = () => {
 
   /**
    * Navigates to MetaformEditor.
-   * Creates new MetaformVersion when 
+   * Creates new MetaformVersion when
    * user wants to edit production grade Metaform.
    *
    *  @param id id
@@ -140,11 +140,11 @@ const EditorScreen: React.FC = () => {
             data: { ...metaformToEdit } as { [key: string]: object }
           }
         });
-  
+
         navigate(`${currentPath}/${metaformToEdit.slug}/${newMetaformVersion.id}`);
       }
     }
-    
+
     const versionToEdit = metaformVersions.find(version => version.id === id);
 
     if (!versionToEdit) {
@@ -156,7 +156,7 @@ const EditorScreen: React.FC = () => {
     if (versionToEdit.type === MetaformVersionType.Archived) {
       handleArchiveToDraft(versionToEdit);
     }
-    
+
     navigate(`${currentPath}/${slug}/${versionToEdit.id}`);
   };
 
