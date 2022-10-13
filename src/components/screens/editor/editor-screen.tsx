@@ -58,8 +58,6 @@ const EditorScreen: React.FC = () => {
    * Gets Metaforms and Metaform Versions
    */
   const loadMetaforms = async () => {
-    setLoading(true);
-
     try {
       const forms = await metaformsApi.listMetaforms({});
       const versions = await Promise.all(forms.map(form => versionsApi.listMetaformVersions({ metaformId: form.id! })));
@@ -68,6 +66,22 @@ const EditorScreen: React.FC = () => {
       setMetaformVersions(versions.flat());
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
+    }
+  };
+
+  /**
+   * Handles loading data from API
+   */
+  const loadData = async () => {
+    setLoading(true);
+
+    try {
+      await Promise.all([
+        loadMetaforms(),
+        loadLastModifiers()
+      ]);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.getLastModifiers, e);
     }
 
     setLoading(false);
@@ -216,11 +230,7 @@ const EditorScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    loadLastModifiers();
-  }, [ metaforms, metaformVersions ]);
-
-  useEffect(() => {
-    loadMetaforms();
+    loadData();
   }, []);
 
   return (
