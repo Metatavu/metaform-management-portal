@@ -773,7 +773,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const renderTableProperties = (field: MetaformField) => (
     <Stack spacing={ 2 }>
       { field.columns?.map(renderTableColumnEdit) }
-      <Divider/>
       { renderTableNewColumn() }
     </Stack>
   );
@@ -864,7 +863,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       case MetaformFieldType.Table:
         return (
           <>
-            { renderDateTimeProperties(field) }
+            { renderTableProperties(field) }
             <Divider/>
           </>
         );
@@ -872,7 +871,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       case MetaformFieldType.DateTime:
         return (
           <>
-            { renderTableProperties(field) }
+            { renderDateTimeProperties(field) }
             <Divider/>
           </>
         );
