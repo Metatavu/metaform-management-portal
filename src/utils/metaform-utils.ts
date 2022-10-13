@@ -531,9 +531,8 @@ namespace MetaformUtils {
    * @param foundFieldRules found field rule list
    * @param fieldOptionMatch field option match
    */
-  export const fieldRuleScan =
-  (fieldRule: FieldRule, match: string, fieldNameBeforeUpdate: string | undefined, foundFieldRules: FieldRule[], fieldOptionMatch?: MetaformFieldOption) => {
-    if (fieldRule.field === fieldNameBeforeUpdate) {
+  export const fieldRuleScan = (fieldRule: FieldRule, fieldNameMatch: string, foundFieldRules: FieldRule[], fieldOptionMatch?: MetaformFieldOption) => {
+    if (fieldRule.field === fieldNameMatch) {
       if (fieldOptionMatch !== undefined) {
         if (fieldOptionMatch.name === fieldRule.equals || fieldOptionMatch.name === fieldRule.notEquals) {
           foundFieldRules.push(fieldRule);
@@ -543,8 +542,8 @@ namespace MetaformUtils {
       }
     }
 
-    fieldRule.and?.forEach(rule => fieldRuleScan(rule, match, fieldNameBeforeUpdate, foundFieldRules, fieldOptionMatch));
-    fieldRule.or?.forEach(rule => fieldRuleScan(rule, match, fieldNameBeforeUpdate, foundFieldRules, fieldOptionMatch));
+    fieldRule.and?.forEach(rule => fieldRuleScan(rule, fieldNameMatch, foundFieldRules, fieldOptionMatch));
+    fieldRule.or?.forEach(rule => fieldRuleScan(rule, fieldNameMatch, foundFieldRules, fieldOptionMatch));
   };
 
   /**
