@@ -790,7 +790,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           <Switch
             checked={ field.workdaysOnly }
             onChange={ ({ target }) => updateWorkDaysOnly(target.checked) }
-            sx={{ mb: "20px" }}
           />
         }
       />
@@ -818,7 +817,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
                   <Switch
                     checked={memberGroupSwitch}
                     onChange={ event => setNotifyPermissionSwitchValue(event.target.checked) }
-                    sx={{ mb: "20px" }}
                   />
                 }
               />
