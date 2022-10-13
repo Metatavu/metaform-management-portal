@@ -17,9 +17,9 @@ import MetaformHiddenFieldComponent from './MetaformHiddenFieldComponent';
 import MetaformFilesFieldComponent from './MetaformFilesFieldComponent';
 import MetaformDateFieldComponent from './MetaformDateFieldComponent';
 import MetaformDateTimeFieldComponent from './MetaformDateTimeFieldComponent';
-import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent'; 
-import { MetaformSliderFieldComponent } from './MetaformSliderFieldComponent'; 
-import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent"; 
+import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent';
+import { MetaformSliderFieldComponent } from './MetaformSliderFieldComponent';
+import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent";
 import { MetaformChecklistFieldComponent } from "./MetaformChecklistFieldComponent";
 import ContextUtils from '../utils/context-utils';
 import { MetaformFieldWrapper } from 'styled/generic/form';
@@ -282,10 +282,10 @@ export const MetaformFieldComponent: React.FC<Props> = ({
     }
 
     return (
-      <div className="metaform-field-help-container"> 
-        <small className="metaform-field-help"> { field.help } </small> 
+      <div className="metaform-field-help-container">
+        <small className="metaform-field-help"> { field.help } </small>
       </div>
-    ) 
+    )
   }
 
   /**
@@ -304,7 +304,7 @@ export const MetaformFieldComponent: React.FC<Props> = ({
 
   /**
    * Returns field's value
-   * 
+   *
    * @returns field's value
    */
   const thisFieldValue  = (): FieldValue => {
@@ -328,13 +328,13 @@ export const MetaformFieldComponent: React.FC<Props> = ({
     if (!field.name) {
       return null;
     }
-    
+
     setFieldValue(field.name, value);
   }
 
   /**
    * Event handler for file upload
-   * 
+   *
    * @param files file list
    * @param path string
    * @param maxFileSize number

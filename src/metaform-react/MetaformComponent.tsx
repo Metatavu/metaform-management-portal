@@ -8,6 +8,7 @@ import ContextUtils from "../utils/context-utils";
 import deepEqual from "fast-deep-equal";
 import { MetaformBody, MetaformTitle } from "styled/generic/form";
 import theme from "theme";
+import { Dictionary } from "types";
 
 /**
  * Component props
@@ -20,6 +21,7 @@ interface Props {
   contexts?: string[];
   requiredFieldsMissingError?: string;
   showRequiredFieldsMissingError?: boolean;
+  formValues?: Dictionary<FieldValue>;
   renderBeforeField?: (fieldName?: string) => JSX.Element | void;
   getFieldValue: (fieldName: string) => FieldValue
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
@@ -45,6 +47,7 @@ const MetaformComponent: React.FC<Props> = ({
   contexts,
   requiredFieldsMissingError,
   showRequiredFieldsMissingError,
+  formValues,
   renderBeforeField,
   getFieldValue,
   setFieldValue,
@@ -101,7 +104,7 @@ const MetaformComponent: React.FC<Props> = ({
    * Validates all visible form fields
    */
   const validateFields = () => {
-    const localValidationErros: ValidationErrors = {};
+    const localValidationErrors: ValidationErrors = {};
 
     (form.sections || [])
       .filter(section => {
@@ -118,34 +121,23 @@ const MetaformComponent: React.FC<Props> = ({
             const fieldName = field.name || "";
             const validationError = validateFieldValue(field, getFieldValue(fieldName!));
             if (validationError) {
-              localValidationErros[fieldName] = validationError;
+              localValidationErrors[fieldName] = validationError;
             }
           });
       });
 
-    if (!deepEqual(localValidationErros, validationErrors)) {
-      setValidationErrors(localValidationErros);
+    if (!deepEqual(localValidationErrors, validationErrors)) {
+      setValidationErrors(localValidationErrors);
 
       if (onValidationErrorsChange) {
-        onValidationErrorsChange(localValidationErros);
+        onValidationErrorsChange(localValidationErrors);
       }
     }
   };
 
   useEffect(() => {
     validateFields();
-  }, []);
-
-  /**
-   * Sets field value
-   *
-   * @param fieldName field name
-   * @param fieldValue field value
-   */
-  const setThisFieldValue = (fieldName: string, fieldValue: FieldValue) => {
-    setFieldValue(fieldName, fieldValue);
-    validateFields();
-  };
+  }, [ form, formValues ]);
 
   const sections = form.sections || [];
 
@@ -167,7 +159,7 @@ const MetaformComponent: React.FC<Props> = ({
               uploadFile={ uploadFile }
               renderIcon={ renderIcon }
               getFieldValue={ getFieldValue }
-              setFieldValue={ setThisFieldValue }
+              setFieldValue={ setFieldValue }
               metaformId={ metaformId }
               sectionId={ sectionId }
               formReadOnly={ formReadOnly }

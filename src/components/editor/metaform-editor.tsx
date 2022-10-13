@@ -56,7 +56,7 @@ const MetaformEditor: React.FC<Props> = ({
       metaformId: pendingForm.id
     }));
   };
-  
+
   /**
    * Event handler for empty space click
    */

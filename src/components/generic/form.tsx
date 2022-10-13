@@ -13,6 +13,7 @@ import moment from "moment";
 import MetaformUtils from "utils/metaform-utils";
 import FormAutocomplete from "./form-autocomplete";
 import { LocalizationProvider, DatePicker, MobileDateTimePicker } from "@mui/x-date-pickers";
+import { Dictionary } from "types";
 
 /**
  * Component props
@@ -22,6 +23,7 @@ interface Props {
   metaform: Metaform;
   ownerKey?: string;
   titleColor?: string;
+  formValues?: Dictionary<FieldValue>;
   getFieldValue: (fieldName: string) => FieldValue;
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   onSubmit: (source: Metaform) => void;
@@ -38,6 +40,7 @@ const Form: React.FC<Props> = ({
   ownerKey,
   saving,
   titleColor,
+  formValues,
   getFieldValue,
   setFieldValue,
   onValidationErrorsChange,
@@ -239,6 +242,7 @@ const Form: React.FC<Props> = ({
       <FormLayout>
         <MetaformComponent
           form={ metaform }
+          formValues={ formValues }
           contexts={ contexts }
           formReadOnly={ false }
           titleColor={ titleColor }

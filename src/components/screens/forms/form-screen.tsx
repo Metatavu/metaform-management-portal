@@ -589,6 +589,7 @@ const FormScreen: React.FC<Props> = () => {
 
     return (
       <Form
+        formValues={ formValues }
         ownerKey={ ownerKey || "" }
         contexts={ ["FORM"] }
         metaform={ metaform }

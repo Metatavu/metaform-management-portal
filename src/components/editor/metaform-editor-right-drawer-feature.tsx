@@ -370,22 +370,22 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const setMemberGroupPermission = (selectedGroupPermission: string) => {
     setSelectedMemberGroupPermission(selectedGroupPermission);
 
-    if (!selectedField) {
+    if (!selectedField || !memberGroupOptIndex) {
       return;
     }
 
     const updatedField = produce(selectedField, draftField => {
       if (selectedGroupPermission === memberGroupPermissions.EDIT) {
-        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.push(selectedMemberGroup);
-        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.splice(0, 1);
+        draftField.options?.[memberGroupOptIndex]!.permissionGroups!.editGroupIds!.push(selectedMemberGroup);
+        draftField.options?.[memberGroupOptIndex]!.permissionGroups!.viewGroupIds!.splice(0, 1);
       }
       if (selectedGroupPermission === memberGroupPermissions.VIEW) {
-        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.push(selectedMemberGroup);
-        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.splice(0, 1);
+        draftField.options?.[memberGroupOptIndex]!.permissionGroups!.viewGroupIds!.push(selectedMemberGroup);
+        draftField.options?.[memberGroupOptIndex]!.permissionGroups!.editGroupIds!.splice(0, 1);
       }
       if (selectedGroupPermission === NOT_SELECTED) {
-        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.splice(0, 1);
-        draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.splice(0, 1);
+        draftField.options?.[memberGroupOptIndex]!.permissionGroups!.editGroupIds!.splice(0, 1);
+        draftField.options?.[memberGroupOptIndex]!.permissionGroups!.viewGroupIds!.splice(0, 1);
       }
     });
 
@@ -397,14 +397,14 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    *
    */
   const removePermissionGroups = () => {
-    if (!selectedField) {
+    if (!selectedField || !memberGroupOptIndex) {
       return;
     }
 
     const updatedField = produce(selectedField, draftField => {
-      draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.editGroupIds!.splice(0, 1);
-      draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.viewGroupIds!.splice(0, 1);
-      draftField.options?.[memberGroupOptIndex!]!.permissionGroups!.notifyGroupIds!.splice(0, 1);
+      draftField.options?.[memberGroupOptIndex]!.permissionGroups!.editGroupIds!.splice(0, 1);
+      draftField.options?.[memberGroupOptIndex]!.permissionGroups!.viewGroupIds!.splice(0, 1);
+      draftField.options?.[memberGroupOptIndex]!.permissionGroups!.notifyGroupIds!.splice(0, 1);
     });
 
     updateFormField(updatedField);
