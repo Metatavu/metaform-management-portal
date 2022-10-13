@@ -226,7 +226,7 @@
         "formVisibilityLabel": "Lomakkeen näkyvyys",
         "private": "Yksityinen (Suomi.fi)",
         "public": "Julkinen",
-        "tooltipDescription": "Muokkaa lomakkeen otsikkoa ja näkyvyyttä."
+        "tooltipDescription": "Lomakkeen perustiedot: otsikko, näkyvyys ja oletus-käyttäjäryhmä."
       },
       "fields": {
         "tabTitle": "Kentät",
@@ -249,7 +249,7 @@
         "files": "Liitteet",
         "table": "Taulukko",
         "submit": "Lähetä",
-        "tooltipDescription": "Valitse kenttiä, joita haluat lisätä lomakkeelle."
+        "tooltipDescription": "Lisää kenttiä lomakkeelle raahaamalla."
       },
       "features": {
         "tabTitle": "Ominaisuudet",
