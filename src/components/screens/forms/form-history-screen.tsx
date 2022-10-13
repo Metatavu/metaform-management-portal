@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, fiFI, GridColDef } from "@mui/x-data-grid";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 import { useApiClient } from "app/hooks";
 import Api from "api";
-import { AuditLogEntry, MetaformMember } from "generated/client";
+import { AuditLogEntry, User } from "generated/client";
 import { ErrorContext } from "components/contexts/error-handler";
 import { useNavigate, useParams } from "react-router-dom";
 import FormRestrictedContent from "components/containers/form-restricted-content";
@@ -19,13 +19,39 @@ import LocalizationUtils from "utils/localization-utils";
 const FormHistoryScreen: React.FC = () => {
   const errorContext = useContext(ErrorContext);
 
-  const apiClient = useApiClient(Api.getApiClient);
-  const { metaformMembersApi, auditLogEntriesApi, metaformsApi } = apiClient;
-  const [ auditLogEntries, setAuditLogEntries ] = useState<AuditLogEntry[]>([]);
-  const [ metaformMembers, setMetaformMembers ] = useState<MetaformMember[]>([]);
-  const [ loading, setLoading ] = useState(false);
   const navigate = useNavigate();
   const { formSlug } = useParams();
+
+  const apiClient = useApiClient(Api.getApiClient);
+  const { auditLogEntriesApi, metaformsApi, usersApi } = apiClient;
+
+  const [ auditLogEntries, setAuditLogEntries ] = useState<AuditLogEntry[]>([]);
+  const [ actors, setActors ] = useState<User[]>([]);
+  const [ loading, setLoading ] = useState(false);
+
+  /**
+   * Gets audit log entry actors
+   * 
+   * @param entries entries
+   */
+  const loadAuditLogEntryActors = async (entries: AuditLogEntry[]) => {
+    try {
+      const entryActors = entries.map(auditLogEntry => auditLogEntry.userId);
+      const distinctActors = [ ...new Set([ ...entryActors ]) ];
+      const actorUsers = await Promise.allSettled(distinctActors.map(actor => usersApi.findUser({ userId: actor! })));
+      const resolvedActors = actorUsers.reduce<User[]>((allActors, actor) => {
+        if (actor.status === "fulfilled") {
+          allActors.push(actor.value);
+        }
+
+        return allActors;
+      }, []);
+
+      setActors(resolvedActors);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormHistoryScreen.listMetaformMembers, e);
+    }
+  };
 
   /**
    * Loads audit log entries
@@ -40,25 +66,9 @@ const FormHistoryScreen: React.FC = () => {
       });
 
       setAuditLogEntries(logEntries);
+      await loadAuditLogEntryActors(logEntries);
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormHistoryScreen.listAuditLogEntries, e);
-    }
-  };
-
-  /**
-   * Loads metaform members
-   *
-   * @param metaformId metaform id
-   */
-  const loadMetaformMembers = async (metaformId: string) => {
-    try {
-      const members = await metaformMembersApi.listMetaformMembers({
-        metaformId: metaformId
-      });
-
-      setMetaformMembers(members);
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.adminFormHistoryScreen.listMetaformMembers, e);
     }
   };
 
@@ -72,7 +82,6 @@ const FormHistoryScreen: React.FC = () => {
       const metaformData = await metaformsApi.findMetaform({ metaformSlug: formSlug });
 
       await loadAuditLogEntries(metaformData.id!);
-      await loadMetaformMembers(metaformData.id!);
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormHistoryScreen.findMetaform, e);
     }
@@ -89,6 +98,7 @@ const FormHistoryScreen: React.FC = () => {
       field: "createdAt",
       headerName: strings.formHistoryScreen.historyTable.date,
       width: 400,
+      type: "dateTime",
       renderHeader: params => {
         return (
           <AdminFormListStack direction="row">
@@ -117,7 +127,7 @@ const FormHistoryScreen: React.FC = () => {
         );
       },
       renderCell: params => {
-        const user = metaformMembers.find(member => member.id === params.row.userId);
+        const user = actors.find(actor => actor.id === params.row.userId);
         const userName = user === undefined ? strings.generic.unknown : `${user.firstName} ${user.lastName}`;
         return (
           <AdminFormListStack direction="row">
@@ -186,11 +196,7 @@ const FormHistoryScreen: React.FC = () => {
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
-        componentsProps={{
-          pagination: {
-            labelRowsPerPage: strings.dataGrid.rowsPerPage
-          }
-        }}
+        localeText={ fiFI.components.MuiDataGrid.defaultProps.localeText }
         loading={ loading }
         rows={ auditLogEntries }
         columns={ columns }

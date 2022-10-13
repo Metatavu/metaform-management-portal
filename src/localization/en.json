@@ -29,7 +29,7 @@
       "reloadPage": "Try reloading the page.",
       "tryAgain": "Please check your internet connection and try again.",
       "unsavedContents": "Please note that unsaved content will not be saved when reloading. If you have unsaved content on this page, you can close this message and copy the content to the clipboard before reloading.",
-      "reportIssue": "If the problem persists, contact support@metatavu.fi by email. Please include technical details in the email to speed up resolution of the problem.",
+      "reportIssue": "If the problem persists it is possible that the fault is in background services we're using. Feel free to contact support@metatavu.fi by email. Please include technical details in the email to speed up resolution of the problem.",
       "technicalDetails": "Technical details:",
       "time": "Time: {0}",
       "url": "URL: {0}",
@@ -106,6 +106,13 @@
       "listForms": "Fetching forms failed",
       "listReplies": "Fetching replies failed",
       "listAuditLogEntries": "Fetching audit log entries failed"
+    }
+  },
+
+  "protectedForm": {
+    "redirectDialog": {
+      "title": "Strong authentication required",
+      "text": "This form requires strong authentication, press confirm to precede to the authentication page"
     }
   },
 
@@ -207,8 +214,7 @@
     "welcomeInfo": "If you are a professional, you can log in. The visitor please return to the home page.",
     "backToEssote": "Return to front page"
   },
-
-
+  
   "draftEditorScreen": {
     "preview": "Preview",
     "publish": "Publish",
@@ -245,6 +251,8 @@
         "html": "Html",
         "boolean": "Boolean",
         "select": "Dropdown",
+        "socialServicesSelect": "Social services dropdown",
+        "socialServicesChecklist": "Social services checklist",
         "slider": "Slider",
         "checklist": "Checklist",
         "radio": "Radio",
@@ -273,6 +281,9 @@
           "defineUserGroup": "Define a user group",
           "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
           "fieldTitle": "Field title",
+          "addFieldsAsText": "Text mode",
+          "addFieldsAsTextHelper": "Enter options seperated by line break.",
+          "updateFields": "Update fields",
           "addFieldOption": "Add field",
           "addNewColumn": "Add new column",
           "addColumnType": "Add column type",
@@ -308,7 +319,14 @@
         "formVisibilityLabel": "Form visibility",
         "private": "Private",
         "public": "Public",
-        "tooltipDescription": "Set conditions whether field is visible on form."
+        "tooltipDescription": "Set conditions whether field is visible on form.",
+        "or": "Or",
+        "addVisibleOrButtonText": "Add optional condition",
+        "showConditionChain": "Show condition chain",
+        "closeConditionChain": "Close condition chain",
+        "allChoices": "Any choice",
+        "andConditionChainTerms": "And condition chain terms",
+        "visibilityConditionTooltip": "The visibility condition determines the visibility of the field on the form. There can be several conditions for visibility, so when any condition is met, the field is visible on the form. \n If the field's visibility also depends on the visibility of another field, the 'SHOW CONDITIONAL LINE' button can be used to view the condition line."
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Member group defining settings",
@@ -323,8 +341,7 @@
         "notifications": "Notifications",
         "noMemberGroup":"No Member group",
         "noPermission":"No permission",
-        "noDefaultPermissionMemberGroup": "No default permission member group",
-        "tooltipDescription": ""
+        "noDefaultPermissionMemberGroup": "No default permission member group"
       }
     },
     "formPreview": {
@@ -366,7 +383,13 @@
       "lastNameLabel": "Last name",
       "upnNumberLabel": "UPN number",
       "createButton": "Add member",
-      "cancelButton": "Cancel"
+      "cancelButton": "Cancel",
+      "tooltip": {
+        "tooltipGeneral": "Add existing user or create new user to form.",
+        "tooltipNoIconDescription": "User without icon exists only in Portals user registry.",
+        "tooltipLinkIconDescription": "User with link icon exists in Portals user registry and is linked with professional card.",
+        "tooltipCardIconDescription": "User with card icon exists only in DVVs user registry."
+      }
     },
     "addMemberGroupDialog": {
       "title": "New group",
@@ -388,7 +411,10 @@
       "lastNameLabel": "Last name",
       "upnNumberLabel": "UPN number",
       "cancelButton": "Cancel",
-      "editButton": "Edit user"
+      "editButton": "Edit user",
+      "tooltip": {
+        "tooltipGeneral": "Edit users information and add or remove link with professional card."
+      }
     },
     "usersTable": {
       "nameColumn": {
@@ -424,7 +450,7 @@
       "form": "Form",
       "latestReply": "Latest",
       "newReply": "New",
-      "notProcessed": "Untreated"
+      "notProcessed": "Untreated ({0})"
     }
   },
 
@@ -473,8 +499,9 @@
     "formModifiedAt": "MODIFIED AT",
     "formLastModifier": "LAST MODIFIER",
     "formLastModifierNotFound": "Not found",
-    "formVersionArchived": "archived",
-    "formVersionDraft": "draft",
+    "formVersionArchived": "Archived",
+    "formVersionDraft": "Draft",
+    "formProductionVersion": "Production",
     "drawer": {
       "newForm": "Create new form",
       "helper": "Forms general settings that affect all versions of form.",
@@ -494,8 +521,7 @@
       "formIdentificationNone": "No identification"
     },
     "confirmDeleteVersionTitle": "Are you sure?",
-    "confirmDeleteVersionText": "Are you sure that you wish to delete the form version?",
-    "formProductionVersion": "production"
+    "confirmDeleteVersionText": "Are you sure that you wish to delete the form version?"
   },
 
   "emailDialog": {
@@ -534,5 +560,30 @@
 
   "dataGrid": {
     "rowsPerPage": "Rows per page:"
+  },
+
+  "successSnackbars": {
+    "formEditor": {
+      "deleteFormSuccessText": "Production form deleted successfully!",
+      "deleteFormVersionSuccessText": "Draft form deleted successfully!",
+      "restoreArchiveFormSuccessText": "Archived form restored successfully!",
+      "createFormSuccessText": "New form created successfully!",
+      "convertSchemaSuccessText": "Sosmeta schema converted successfully!"
+    },
+    "draftEditor": {
+      "saveDraftSuccessText": "Draft form saved successfully!",
+      "publishDraftSuccessText": "Form published successfully!"
+    },
+    "users": {
+      "addMemberSuccessText": "Added user successfully!",
+      "editUserSuccessText": "Edited user successfully!",
+      "addMemberGroupSuccessText": "Created group successfully!",
+      "groupMembershipAddSuccessText": "Added user to group successfully!",
+      "groupMembershipRemoveSuccessText": "Removed user from group successfully!"
+    },
+    "replies": {
+      "replyDeleteSuccessText": "Form deleted successfully!",
+      "replyEditSuccessText": "Form edited successfully!"
+    }
   }
 }

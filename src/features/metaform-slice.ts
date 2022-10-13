@@ -4,13 +4,17 @@ import { MetaformVersion } from "generated/client";
 
 interface MetaformState {
   metaformVersion?: MetaformVersion;
+  metaformSectionIndex?: number;
+  metaformFieldIndex?: number;
 }
 
 /**
  * Initial metaform state
  */
 const initialState: MetaformState = {
-  metaformVersion: undefined
+  metaformVersion: undefined,
+  metaformSectionIndex: undefined,
+  metaformFieldIndex: undefined
 };
 
 /**
@@ -22,6 +26,16 @@ export const metaformSlice = createSlice({
   reducers: {
     setMetaformVersion: (state, { payload }: PayloadAction<MetaformVersion | undefined>) => {
       state.metaformVersion = payload;
+    },
+    setMetaformSectionIndex: (state, { payload }: PayloadAction<number | undefined>) => {
+      state.metaformSectionIndex = payload;
+    },
+    setMetaformFieldIndex: (state, { payload }: PayloadAction<number | undefined>) => {
+      state.metaformFieldIndex = payload;
+    },
+    setMetaformSelectionsUndefined: (state, { payload }: PayloadAction<undefined>) => {
+      state.metaformSectionIndex = payload;
+      state.metaformFieldIndex = payload;
     }
   }
 });
@@ -29,7 +43,9 @@ export const metaformSlice = createSlice({
 /**
  * Metaform actions from created metaform slice
  */
-export const { setMetaformVersion } = metaformSlice.actions;
+export const {
+  setMetaformVersion, setMetaformFieldIndex, setMetaformSectionIndex, setMetaformSelectionsUndefined
+} = metaformSlice.actions;
 
 /**
  * Select metaform selector

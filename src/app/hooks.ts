@@ -1,4 +1,4 @@
-import { selectKeycloak } from "features/auth-slice";
+import { selectAccessToken, selectAnonymousAccessToken, selectIdpAccessToken } from "features/auth-slice";
 import React from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "./store";
@@ -67,6 +67,8 @@ export const useDebounce = (value: string, delay: number) => {
  * @param apiClientFactory factory function for creating API client
  */
 export const useApiClient = <T extends {}>(apiClientFactory: (accessToken?: string) => T): T => {
-  const { token } = useAppSelector(selectKeycloak) || {};
-  return React.useMemo(() => apiClientFactory(token), [ token ]);
+  const token = useAppSelector(selectAccessToken);
+  const anonymousToken = useAppSelector(selectAnonymousAccessToken);
+  const idpToken = useAppSelector(selectIdpAccessToken);
+  return React.useMemo(() => apiClientFactory(token ?? idpToken ?? anonymousToken), [ token, idpToken, anonymousToken ]);
 };

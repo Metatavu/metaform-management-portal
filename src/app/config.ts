@@ -14,7 +14,9 @@ const env = cleanEnv(process.env, {
   REACT_APP_CORS_PROXY: str({ default: undefined }),
   REACT_APP_ANONYMOUS_USER: str(),
   REACT_APP_ANONYMOUS_PASSWORD: str(),
-  REACT_APP_TUTORIAL_URL: str({ default: "" })
+  REACT_APP_TUTORIAL_URL: str({ default: "" }),
+  REACT_APP_DEFAULT_EXPORT_THEME_ID: str({ default: undefined }),
+  REACT_APP_FORM_IDPHINT: str({ default: undefined })
 });
 
 /**
@@ -39,12 +41,24 @@ export default class Config {
     },
     api: {
       baseUrl: env.REACT_APP_API_BASE_URL
+    },
+    form: {
+      idpHint: env.REACT_APP_FORM_IDPHINT
     }
   });
 
   /**
+   * Returns default export theme id
+   *
+   * @returns export theme id
+   */
+  public static getDefaultExportThemeId(): string {
+    return env.REACT_APP_DEFAULT_EXPORT_THEME_ID;
+  }
+
+  /**
    * Returns tutorial url
-   * 
+   *
    * @returns tutorial url
    */
   public static getTutorialUrl(): string | undefined {
@@ -53,7 +67,7 @@ export default class Config {
 
   /**
    * Returns sentry dsn
-   * 
+   *
    * @returns sentry dsn
    */
   public static getSentryDsn(): string | undefined {
@@ -62,7 +76,7 @@ export default class Config {
 
   /**
    * Returns sentry environment
-   * 
+   *
    * @returns sentry environment
    */
   public static getSentryEnvironment(): string {
@@ -71,7 +85,7 @@ export default class Config {
 
   /**
    * Returns address for CORS proxy service
-   * 
+   *
    * @returns address for CORS proxy service
    */
   public static getCorsProxy(): string {
