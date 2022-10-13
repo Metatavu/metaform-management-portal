@@ -476,6 +476,7 @@ export interface Localized extends LocalizedStringsMethods {
     formCreatedAt: string;
     formModifiedAt: string;
     formLastModifier: string;
+    formLastModifierNotFound: string;
     formVersionArchived: string;
     formVersionDraft: string;
     drawer: {

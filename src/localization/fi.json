@@ -419,6 +419,7 @@
     "formCreatedAt": "LUOTU",
     "formModifiedAt": "MUOKATTU",
     "formLastModifier": "VIIMEISIN MUOKKAAJA",
+    "formLastModifierNotFound": "Ei löytynyt",
     "formVersionArchived": "arkistoitu",
     "formVersionDraft": "luonnos",
     "drawer": {

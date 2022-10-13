@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Api from "api";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
-import { Metaform, MetaformVersion, MetaformVersionType } from "generated/client";
+import { Metaform, MetaformVersion, MetaformVersionType, User } from "generated/client";
 import EditorScreenDrawer from "../../editor/editor-screen-drawer";
 import { useNavigate } from "react-router-dom";
 import GenericLoaderWrapper from "components/generic/generic-loader";
@@ -24,12 +24,27 @@ const EditorScreen: React.FC = () => {
   const navigate = useNavigate();
 
   const apiClient = useApiClient(Api.getApiClient);
-  const { metaformsApi, versionsApi } = apiClient;
+  const { metaformsApi, versionsApi, usersApi } = apiClient;
 
   const [ metaforms, setMetaforms ] = useState<Metaform[]>([]);
   const [ metaformVersions, setMetaformVersions ] = useState<MetaformVersion[]>([]);
+  const [ lastModifiers, setLastModifiers ] = useState<User[]>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
   const [ drawerOpen, setDrawerOpen ] = useState<boolean>(false);
+
+  /**
+   * Gets last modifiers for Metaforms and Metaform Versions
+   */
+  const loadLastModifiers = async () => {
+    const formUsers = metaforms.map(form => form.lastModifierId);
+    const versionUsers = metaformVersions.map(version => version.lastModifierId);
+    const allUsers = [ ...formUsers, ...versionUsers ];
+    const distinctUsers = [ ...new Set(allUsers) ];
+    const lastModifierUsers = await Promise.all(distinctUsers.map(user =>
+      usersApi.findUser({ userId: user! })));
+
+    setLastModifiers(lastModifierUsers);
+  };
 
   /* eslint-disable @typescript-eslint/return-await */
   /**
@@ -44,6 +59,7 @@ const EditorScreen: React.FC = () => {
 
       setMetaforms(forms);
       setMetaformVersions(versions.flat());
+      await loadLastModifiers();
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
@@ -224,6 +240,7 @@ const EditorScreen: React.FC = () => {
             loading={ loading }
             metaforms={ metaforms }
             metaformVersions={ metaformVersions }
+            lastModifiers={ lastModifiers }
             deleteMetaformOrVersion={ deleteMetaformOrVersion }
             goToEditor={ goToEditor }
           />

@@ -420,6 +420,7 @@
     "formCreatedAt": "CREATED AT",
     "formModifiedAt": "MODIFIED AT",
     "formLastModifier": "LAST MODIFIER",
+    "formLastModifierNotFound": "Not found",
     "formVersionArchived": "archived",
     "formVersionDraft": "draft",
     "drawer": {
