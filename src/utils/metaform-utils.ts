@@ -524,7 +524,8 @@ namespace MetaformUtils {
    * Finds field rules that matches
    *
    * @param fieldRule field rule
-   * @param match match
+   * @param match match and new field name
+   * @param fieldNameBeforeUpdate old field name what used in comparing visibleIf conditions
    * @param foundFieldRules found field rule list
    * @param fieldOptionMatch field option match
    */
