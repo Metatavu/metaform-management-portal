@@ -39,9 +39,16 @@ export const MetaformSliderFieldComponent: React.FC<Props> = ({
       max={ field.max }
       min={ field.min }
       name={ field.name }
+      marks={
+        [
+          { value: field.min!, label: field.min },
+          { value: field.max!, label: field.max }
+        ]
+      }
       placeholder={ field.placeholder }
       disabled={ readOnly }
       value={ value as number }
+      valueLabelDisplay="auto"
       onChange={ (event: Event, newValue: number | number[]) => {
         setFieldValue && setFieldValue(fieldName, newValue as number);
       }}

@@ -222,24 +222,36 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
-   * Update slider value
+   * Update slider or number field min or max values. Number field can have empty min/max values but slider have to have min and max values
    *
-   * @param eventValue Value of min or max slider value
+   * @param eventValue Value of min or max value
    * @param scopeValue Min or Max, depending which value we are changing
    */
-  const updateSliderValue = (eventValue: string, scopeValue: string) => {
+  const updateSliderOrNumberValue = (eventValue: number, scopeValue: string) => {
     if (!selectedField) {
       return;
     }
-
+    const field = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
     const updatedField = produce(selectedField, draftField => {
       if (scopeValue === "min") {
-        draftField.min = Number(eventValue);
-      } else {
-        draftField.max = Number(eventValue);
+        if (!eventValue && field.type === MetaformFieldType.Number) {
+          draftField.min = undefined;
+        } else {
+          draftField.min = Number(eventValue);
+        }
+      }
+      if (scopeValue === "max") {
+        if (!eventValue) {
+          if (field.type === MetaformFieldType.Number) {
+            draftField.max = undefined;
+          } else {
+            draftField.max = field.min! + 1;
+          }
+        } else {
+          draftField.max = Number(eventValue);
+        }
       }
     });
-
     updateFormFieldDebounced(updatedField);
   };
 
@@ -647,15 +659,15 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           fullWidth
           type="number"
           label={ minValueLabel }
-          value={ min }
-          onChange={ event => updateSliderValue(event.target.value, "min") }
+          value={ min !== undefined ? min : "" }
+          onChange={ event => updateSliderOrNumberValue(Number(event.target.value), "min") }
         />
         <TextField
           fullWidth
           type="number"
           label={ maxValueLabel }
-          value={ max }
-          onChange={ event => updateSliderValue(event.target.value, "max") }
+          value={ max !== undefined ? max : "" }
+          onChange={ event => updateSliderOrNumberValue(Number(event.target.value), "max") }
         />
       </Stack>
     );
@@ -850,6 +862,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
 
     switch (type) {
       case MetaformFieldType.Slider:
+      case MetaformFieldType.Number:
         return (
           <>
             { renderSliderProperties(field) }
