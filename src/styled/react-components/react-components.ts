@@ -168,7 +168,6 @@ export const DateFieldWrapper = styled(Box, {
   flex: 1,
   width: "100%",
   height: "auto",
-  border: `1px solid ${theme.palette.grey[400]}`,
   borderRadius: "0.5rem",
   minHeight: 50,
   display: "flex",

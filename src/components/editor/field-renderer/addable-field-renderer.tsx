@@ -1,5 +1,3 @@
-import { DatePicker, DateTimePicker, LocalizationProvider } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { TextField, Icon } from "@mui/material";
 import { MetaformField, MetaformFieldType } from "generated/client";
 import strings from "localization/strings";
@@ -21,6 +19,8 @@ import MetaformSubmitFieldComponent from "metaform-react/MetaformSubmitFieldComp
 import MetaformTextFieldComponent from "metaform-react/MetaformTextFieldComponent";
 import { IconName } from "metaform-react/types";
 import MetaformEditableHtmlComponent from "metaform-react/MetaformEditableHtmlComponent";
+import { DatePicker, DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 interface Prop {
   field: MetaformField;
@@ -59,27 +59,13 @@ const AddableFieldRenderer: React.FC<Prop> = ({
   const datePicker = () => (
     <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
       <DatePicker
+        disabled
+        label={ strings.formComponent.dateTimePicker }
         onChange={ () => {} }
         value={ new Date() }
         views={["day", "month", "year"]}
         renderInput={ params =>
-          <TextField
-            sx={{
-              pointerEvents: "none",
-              width: "100%",
-              ".MuiOutlinedInput-notchedOutline": {
-                border: "none"
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                border: "none"
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                border: "none"
-              }
-            }}
-            label={ strings.formComponent.dateTimePicker }
-            { ...params }
-          />
+          <TextField { ...params }/>
         }
       />
     </LocalizationProvider>
@@ -91,26 +77,12 @@ const AddableFieldRenderer: React.FC<Prop> = ({
   const dateTimePicker = () => (
     <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
       <DateTimePicker
+        disabled
+        label={ strings.formComponent.dateTimePicker }
         onChange={ () => {} }
         value={ new Date() }
         renderInput={ params =>
-          <TextField
-            sx={{
-              pointerEvents: "none",
-              width: "100%",
-              ".MuiOutlinedInput-notchedOutline": {
-                border: "none"
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                border: "none"
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                border: "none"
-              }
-            }}
-            label={ strings.formComponent.dateTimePicker }
-            { ...params }
-          />
+          <TextField { ...params }/>
         }
       />
     </LocalizationProvider>
@@ -187,14 +159,14 @@ const AddableFieldRenderer: React.FC<Prop> = ({
       return (
         <MetaformDateTimeFieldComponent
           field={ field }
-          datetimePicker={ dateTimePicker }
+          renderDatetimePicker={ dateTimePicker }
         />
       );
     case MetaformFieldType.Date:
       return (
         <MetaformDateFieldComponent
           field={ field }
-          datePicker={ datePicker }
+          renderDatePicker={ datePicker }
         />
       );
     case MetaformFieldType.Checklist:

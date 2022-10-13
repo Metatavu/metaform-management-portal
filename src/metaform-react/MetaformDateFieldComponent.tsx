@@ -10,7 +10,7 @@ import { DateFieldWrapper } from "styled/react-components/react-components";
 interface Props {
   field: MetaformField,
   onValueChange?: (value: FieldValue) => void,
-  datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element
+  renderDatePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element
 }
 
 /**
@@ -19,7 +19,7 @@ interface Props {
 const MetaformDateFieldComponent: React.FC<Props> = ({
   field,
   onValueChange,
-  datePicker
+  renderDatePicker
 }) => {
   /**
    * Event handler for field input change
@@ -32,7 +32,7 @@ const MetaformDateFieldComponent: React.FC<Props> = ({
 
   return (
     <DateFieldWrapper>
-      { datePicker(field.name || "", onChange) }
+      { renderDatePicker(field, onChange) }
     </DateFieldWrapper>
   );
 };
