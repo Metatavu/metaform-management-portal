@@ -12,7 +12,7 @@ import { useApiClient } from "app/hooks";
 import moment from "moment";
 import MetaformUtils from "utils/metaform-utils";
 import FormAutocomplete from "./form-autocomplete";
-import { LocalizationProvider, DatePicker, DateTimePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider, DatePicker, MobileDateTimePicker } from "@mui/x-date-pickers";
 
 /**
  * Component props
@@ -106,7 +106,7 @@ const Form: React.FC<Props> = ({
 
     return (
       <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
-        <DateTimePicker
+        <MobileDateTimePicker
           value={ value ? new Date(value as string) : null }
           shouldDisableDate={ MetaformUtils.shouldDisableHolidays(field.workdaysOnly || false) }
           onChange={ (date: Date | null) => handleDateTimeChange(date, fieldName) }
