@@ -795,7 +795,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
         label={ strings.draftEditorScreen.editor.features.field.workDaysOnly }
         control={
           <Switch
-            checked={ field.workdaysOnly }
+            checked={ !!field.workdaysOnly }
             onChange={ ({ target }) => updateWorkDaysOnly(target.checked) }
           />
         }
