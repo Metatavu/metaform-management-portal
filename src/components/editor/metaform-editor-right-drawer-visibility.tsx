@@ -129,6 +129,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
     const labelText = selectedVisibleIf !== undefined
       ? strings.draftEditorScreen.editor.visibility.conditionLabelTitle
       : strings.draftEditorScreen.editor.visibility.fieldDefiningCondition;
+    const selectedField = MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex);
 
     return (
       <Stack spacing={ 2 }>
@@ -146,7 +147,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
           onChange={ event => updateVisibleIfValue("field", event.target.value) }
         >
           { pendingForm.sections!.flatMap(section => section.fields || [])
-            .filter(field => MetaformUtils.fieldTypesAllowVisibility.includes(field.type))
+            .filter(field => MetaformUtils.fieldTypesAllowVisibility.includes(field.type) && field.name !== selectedField!.name)
             .map(renderConditionFieldOption)
           }
         </TextField>
