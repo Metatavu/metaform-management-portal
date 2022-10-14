@@ -411,17 +411,18 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    *
    */
   const removePermissionGroups = () => {
-    if (!selectedField || !memberGroupOptIndex) {
+    if (!selectedField || memberGroupOptIndex === undefined) {
       return;
     }
+    if (memberGroupOptIndex !== null) {
+      const updatedField = produce(selectedField, draftField => {
+        draftField.options?.[memberGroupOptIndex]!.permissionGroups!.editGroupIds!.splice(0, 1);
+        draftField.options?.[memberGroupOptIndex]!.permissionGroups!.viewGroupIds!.splice(0, 1);
+        draftField.options?.[memberGroupOptIndex]!.permissionGroups!.notifyGroupIds!.splice(0, 1);
+      });
 
-    const updatedField = produce(selectedField, draftField => {
-      draftField.options?.[memberGroupOptIndex]!.permissionGroups!.editGroupIds!.splice(0, 1);
-      draftField.options?.[memberGroupOptIndex]!.permissionGroups!.viewGroupIds!.splice(0, 1);
-      draftField.options?.[memberGroupOptIndex]!.permissionGroups!.notifyGroupIds!.splice(0, 1);
-    });
-
-    updateFormField(updatedField);
+      updateFormField(updatedField);
+    }
   };
 
   /**

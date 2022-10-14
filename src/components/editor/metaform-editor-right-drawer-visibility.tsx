@@ -114,7 +114,10 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    */
   const renderConditionFieldOption = (field: MetaformField, index: number) => {
     const constructedKey = `${field.title}-${index}`;
-
+    const selectedField = MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex);
+    if (selectedField && selectedField.name === field.name) {
+      return;
+    }
     return (
       <MenuItem value={ field.name } key={ constructedKey }>
         { field.title }
@@ -129,8 +132,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
     const labelText = selectedVisibleIf !== undefined
       ? strings.draftEditorScreen.editor.visibility.conditionLabelTitle
       : strings.draftEditorScreen.editor.visibility.fieldDefiningCondition;
-    const selectedField = MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex);
-
     return (
       <Stack spacing={ 2 }>
         <Typography
@@ -147,7 +148,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
           onChange={ event => updateVisibleIfValue("field", event.target.value) }
         >
           { pendingForm.sections!.flatMap(section => section.fields || [])
-            .filter(field => MetaformUtils.fieldTypesAllowVisibility.includes(field.type) && field.name !== selectedField!.name)
+            .filter(field => MetaformUtils.fieldTypesAllowVisibility.includes(field.type))
             .map(renderConditionFieldOption)
           }
         </TextField>
