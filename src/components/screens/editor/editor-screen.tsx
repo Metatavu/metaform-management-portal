@@ -34,14 +34,18 @@ const EditorScreen: React.FC = () => {
 
   /**
    * Gets last modifiers for Metaforms and Metaform Versions
+   * 
+   * @param forms forms
+   * @params versions versions
    */
-  const loadLastModifiers = async () => {
+  const loadLastModifiers = async (forms: Metaform[], versions: MetaformVersion[]) => {
     try {
-      const formUsers = metaforms.map(metaform => metaform.lastModifierId);
-      const versionUsers = metaformVersions.map(metaformVersion => metaformVersion.lastModifierId);
-      const distinctUsers = [ ...new Set([ ...formUsers, ...versionUsers]) ];
-      const lastModifierUsers = await Promise.all(distinctUsers.map(user => usersApi.findUser({ userId: user! })));
-    
+      const formUsers = forms.map(form => form.lastModifierId);
+      const versionUsers = versions.map(version => version.lastModifierId);
+      const distinctUsers = [ ...new Set([ ...formUsers, ...versionUsers ]) ];
+      const lastModifierUsers = await Promise.all(distinctUsers.map(user =>
+        usersApi.findUser({ userId: user! })));
+
       setLastModifiers(lastModifierUsers);
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.getLastModifiers, e);
@@ -52,30 +56,17 @@ const EditorScreen: React.FC = () => {
    * Gets Metaforms and Metaform Versions
    */
   const loadMetaforms = async () => {
-    try {
-      const forms = await metaformsApi.listMetaforms({});
-      const versions = await Promise.all(forms.map(form => versionsApi.listMetaformVersions({ metaformId: form.id! })));
-
-      setMetaforms(forms);
-      setMetaformVersions(versions.flat());
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
-    }
-  };
-
-  /**
-   * Handles loading data from API
-   */
-  const loadData = async () => {
     setLoading(true);
 
     try {
-      await Promise.all([
-        loadMetaforms(),
-        loadLastModifiers()
-      ]);
+      const forms = await metaformsApi.listMetaforms({});
+      const versions = await (await Promise.all(forms.map(form => versionsApi.listMetaformVersions({ metaformId: form.id! })))).flat();
+
+      setMetaforms(forms);
+      setMetaformVersions(versions);
+      await loadLastModifiers(forms, versions);
     } catch (e) {
-      errorContext.setError(strings.errorHandling.adminFormsScreen.getLastModifiers, e);
+      errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
 
     setLoading(false);
@@ -224,7 +215,7 @@ const EditorScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    loadData();
+    loadMetaforms();
   }, []);
 
   return (
