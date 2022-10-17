@@ -79,10 +79,10 @@ namespace SosmetaUtils {
           // eslint-disable-next-line no-case-declarations
           const firstKey = Object.keys(field.properties)[0];
           if (field.properties[firstKey].sosmeta) {
-            return Object.keys(field.properties).map(x =>
+            return Object.keys(field.properties).map(property =>
               handleSosmetaStringField(
                 sectionName,
-                field.properties[x]
+                field.properties[property]
               ));
           }
           return handleSosmetaStringField(
