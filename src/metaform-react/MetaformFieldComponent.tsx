@@ -17,9 +17,9 @@ import MetaformHiddenFieldComponent from './MetaformHiddenFieldComponent';
 import MetaformFilesFieldComponent from './MetaformFilesFieldComponent';
 import MetaformDateFieldComponent from './MetaformDateFieldComponent';
 import MetaformDateTimeFieldComponent from './MetaformDateTimeFieldComponent';
-import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent'; 
-import { MetaformSliderFieldComponent } from './MetaformSliderFieldComponent'; 
-import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent"; 
+import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent';
+import { MetaformSliderFieldComponent } from './MetaformSliderFieldComponent';
+import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent";
 import { MetaformChecklistFieldComponent } from "./MetaformChecklistFieldComponent";
 import ContextUtils from '../utils/context-utils';
 import { MetaformFieldWrapper } from 'styled/generic/form';
@@ -39,8 +39,8 @@ interface Props {
   validationErrors: ValidationErrors;
   getFieldValue: (fieldName: string) => FieldValue;
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
-  datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
-  datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  renderDatePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element;
+  renderDatetimePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element;
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   onFileShow: (value: FileFieldValueItem) => void;
@@ -64,8 +64,8 @@ export const MetaformFieldComponent: React.FC<Props> = ({
   validationErrors,
   getFieldValue,
   setFieldValue,
-  datePicker,
-  datetimePicker,
+  renderDatePicker,
+  renderDatetimePicker,
   renderAutocomplete,
   uploadFile,
   onFileShow,
@@ -209,13 +209,13 @@ export const MetaformFieldComponent: React.FC<Props> = ({
                 />;
       case MetaformFieldType.Date:
         return  <MetaformDateFieldComponent
-                  datePicker={ datePicker }
+                  renderDatePicker={ renderDatePicker }
                   field={ field }
                   onValueChange={ onValueChange }
                 />;
       case MetaformFieldType.DateTime:
         return  <MetaformDateTimeFieldComponent
-                  datetimePicker={ datetimePicker }
+                  renderDatetimePicker={ renderDatetimePicker }
                   field={ field }
                   onValueChange={ onValueChange }
                 />;
@@ -282,10 +282,10 @@ export const MetaformFieldComponent: React.FC<Props> = ({
     }
 
     return (
-      <div className="metaform-field-help-container"> 
-        <small className="metaform-field-help"> { field.help } </small> 
+      <div className="metaform-field-help-container">
+        <small className="metaform-field-help"> { field.help } </small>
       </div>
-    ) 
+    )
   }
 
   /**
@@ -304,7 +304,7 @@ export const MetaformFieldComponent: React.FC<Props> = ({
 
   /**
    * Returns field's value
-   * 
+   *
    * @returns field's value
    */
   const thisFieldValue  = (): FieldValue => {
@@ -328,13 +328,13 @@ export const MetaformFieldComponent: React.FC<Props> = ({
     if (!field.name) {
       return null;
     }
-    
+
     setFieldValue(field.name, value);
   }
 
   /**
    * Event handler for file upload
-   * 
+   *
    * @param files file list
    * @param path string
    * @param maxFileSize number

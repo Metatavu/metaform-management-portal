@@ -35,12 +35,30 @@ export const MetaformNumberFieldComponent: React.FC<Props> = ({
   }
 
   /**
-   * Event handler for field input change
+   * Event handler for field input change and check also if field have min or max settings.
    * 
    * @param event event
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onValueChange && onValueChange(event.target.value);
+    const { min, max } = field;
+    const numberValue = Number(event.target.value);
+
+    if (numberValue > max!) {
+      onValueChange && onValueChange(max!);
+    }
+    if (numberValue <= min!) {
+      onValueChange && onValueChange(min!);
+    }
+    if (
+      (numberValue >= min! && numberValue <= max!) ||
+      (numberValue && !min && numberValue < max!) ||
+      (numberValue && !max && numberValue > min!)
+    ) {
+      onValueChange && onValueChange(numberValue);
+    }
+    if ((!numberValue && !min) || (numberValue && !min && !max)) {
+      onValueChange && onValueChange(numberValue);
+    }
   };
 
   return (

@@ -9,7 +9,7 @@ import { FieldValue } from "./types";
 interface Props {
   field: MetaformField,
   onValueChange?: (value: FieldValue) => void,
-  datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element
+  renderDatetimePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element
 }
 
 /**
@@ -18,11 +18,11 @@ interface Props {
 const MetaformDateTimeFieldComponent: React.FC<Props> = ({
   field,
   onValueChange,
-  datetimePicker
+  renderDatetimePicker
 }) => {
   /**
    * Event handler for field input change
-   * 
+   *
    * @param date date
    */
   const onChange = (date: Date) => {
@@ -32,10 +32,10 @@ const MetaformDateTimeFieldComponent: React.FC<Props> = ({
   if (!field.name) {
     return null;
   }
-  
+
   return (
     <DateFieldWrapper>
-      { datetimePicker(field.name || "", onChange) }
+      { renderDatetimePicker(field, onChange) }
     </DateFieldWrapper>
   );
 };

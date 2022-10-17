@@ -1,6 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
 import { Divider, Stack, Typography } from "@mui/material";
-import { Metaform, MetaformVersion, MetaformVersionType } from "generated/client";
+import { Metaform, MetaformMemberGroup, MetaformVersion, MetaformVersionType } from "generated/client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import MetaformUtils from "utils/metaform-utils";
 import MetaformEditor from "components/editor/metaform-editor";
@@ -23,32 +23,39 @@ import ConfirmDialog from "components/generic/confirm-dialog";
 const DraftEditorScreen: React.FC = () => {
   const params = useParams();
   const { formSlug, draftId } = params;
+
+  const [ loading, setLoading ] = useState(false);
+  const [ publishDialogOpen, setPublishDialogOpen ] = useState(false);
+  const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
+
   const navigate = useNavigate();
   const errorContext = useContext(ErrorContext);
   const dispatch = useAppDispatch();
+  const apiClient = useApiClient(Api.getApiClient);
+  const { metaformMemberGroupsApi, metaformsApi, versionsApi } = apiClient;
   const { metaformVersion } = useAppSelector(selectMetaform);
   const draftForm = MetaformUtils.getDraftForm(metaformVersion);
-
-  const apiClient = useApiClient(Api.getApiClient);
-  const { metaformsApi, versionsApi } = apiClient;
-
   const editorRef = useRef<HTMLDivElement>(null);
-  const [ loading, setLoading ] = useState(false);
-  const [ publishDialogOpen, setPublishDialogOpen ] = useState(false);
 
   /**
    * Loads MetaformVersion to edit.
    */
-  const loadMetaformVersion = async () => {
+  const loadData = async () => {
     setLoading(true);
 
     try {
       const form = await metaformsApi.findMetaform({ metaformSlug: formSlug });
+
+      const loadedMemberGroups = await metaformMemberGroupsApi.listMetaformMemberGroups({
+        metaformId: form.id!
+      });
+
       const draft = await versionsApi.findMetaformVersion({
         metaformId: form.id!,
         versionId: draftId!
       });
 
+      setMemberGroups(loadedMemberGroups);
       dispatch(setMetaformVersion(draft));
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.findDraft, e);
@@ -138,7 +145,7 @@ const DraftEditorScreen: React.FC = () => {
 
   useEffect(() => {
     if (metaformVersion === undefined || metaformVersion.id !== draftId) {
-      loadMetaformVersion();
+      loadData();
     }
   }, []);
 
@@ -192,6 +199,7 @@ const DraftEditorScreen: React.FC = () => {
       <GenericLoaderWrapper loading={ loading }>
         <MetaformEditor
           editorRef={ editorRef }
+          memberGroups={ memberGroups }
           pendingForm={ MetaformUtils.jsonToMetaform(draftForm) }
           setPendingForm={ setPendingForm }
         />
