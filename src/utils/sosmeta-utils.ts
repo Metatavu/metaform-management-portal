@@ -32,7 +32,7 @@ namespace SosmetaUtils {
         required ?? fieldData.required
       );
     } catch (e) {
-      // TODO: Error handling/messages
+      console.error("Error happened while handling Sosmeta string field", e);
     }
   };
 
@@ -54,7 +54,7 @@ namespace SosmetaUtils {
         required ?? fieldData.required
       );
     } catch (e) {
-      // TODO: Error handling/messages
+      console.error("Error happened while handling Sosmeta boolean field", e);
     }
   };
 
@@ -98,7 +98,7 @@ namespace SosmetaUtils {
           break;
       }
     } catch (e) {
-      // TODO: Error handling/messages
+      console.error("Error happened while handling Sosmeta object field", e);
     }
   };
 
@@ -121,7 +121,7 @@ namespace SosmetaUtils {
           requiredFieldNames.includes(field.sosmeta.name[0].value.toLowerCase())
         ));
     } catch (e) {
-      // TODO: Error handling/messages
+      console.error("Error happened while handling Sosmeta array section", e);
     }
   };
 
@@ -145,7 +145,7 @@ namespace SosmetaUtils {
           requiredFieldNames.includes(field.sosmeta.name[0].value.toLowerCase())
         ));
     } catch (e) {
-      // TODO: Error handling/messages
+      console.error("Error happened while handling Sosmeta object section", e);
     }
   };
 
@@ -161,7 +161,7 @@ namespace SosmetaUtils {
 
       return [ handleSosmetaStringField(sosmetaSection.sosmeta.name[0].value, sosmetaSection, required) ];
     } catch (e) {
-      // TODO: Error handling/messages
+      console.error("Error happened while handling Sosmeta string section", e);
     }
   };
 
@@ -177,7 +177,7 @@ namespace SosmetaUtils {
 
       return [ handleSosmetaBooleanField(sosmetaSection.sosmeta.name[0].value, sosmetaSection, required) ];
     } catch (e) {
-      // TODO: Error handling/messagess
+      console.error("Error happened while handling Sosmeta boolean section", e);
     }
   };
 
