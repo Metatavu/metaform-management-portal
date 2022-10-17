@@ -1,4 +1,4 @@
-import { AuditLogEntryType } from "generated/client";
+import { AuditLogEntryType, MetaformFieldType } from "generated/client";
 import strings from "localization/strings";
 import moment from "moment";
 import { FormContext, NavigationLinks, ReplyStatus } from "types";
@@ -68,6 +68,37 @@ namespace LocalizationUtils {
     [FormContext.MANAGEMENT]: strings.formContext.management,
     [FormContext.MANAGEMENT_LIST]: strings.formContext.managementList
   })[context];
+
+  /**
+   * Returns localized metaform form context
+   *
+   * @param context metaform context
+   */
+  export const getLocalizedFieldType = (fieldType: MetaformFieldType) => ({
+    [MetaformFieldType.Html]: strings.draftEditorScreen.editor.fields.html,
+    [MetaformFieldType.Boolean]: strings.draftEditorScreen.editor.fields.boolean,
+    [MetaformFieldType.Select]: strings.draftEditorScreen.editor.fields.select,
+    [MetaformFieldType.Slider]: strings.draftEditorScreen.editor.fields.slider,
+    [MetaformFieldType.Checklist]: strings.draftEditorScreen.editor.fields.checklist,
+    [MetaformFieldType.Radio]: strings.draftEditorScreen.editor.fields.radio,
+    [MetaformFieldType.Text]: strings.draftEditorScreen.editor.fields.text,
+    [MetaformFieldType.Number]: strings.draftEditorScreen.editor.fields.number,
+    [MetaformFieldType.Memo]: strings.draftEditorScreen.editor.fields.memo,
+    [MetaformFieldType.Date]: strings.draftEditorScreen.editor.fields.date,
+    [MetaformFieldType.DateTime]: strings.draftEditorScreen.editor.fields.dateAndTime,
+    [MetaformFieldType.Files]: strings.draftEditorScreen.editor.fields.files,
+    [MetaformFieldType.Table]: strings.draftEditorScreen.editor.fields.table,
+    [MetaformFieldType.Submit]: strings.draftEditorScreen.editor.fields.submit,
+    [MetaformFieldType.Url]: strings.draftEditorScreen.editor.fields.url,
+    [MetaformFieldType.Email]: strings.draftEditorScreen.editor.fields.email,
+    // MetaformFieldTypes below are not currently used and have no localization
+    [MetaformFieldType.Hidden]: strings.generic.unknown,
+    [MetaformFieldType.Time]: strings.generic.unknown,
+    [MetaformFieldType.Logo]: strings.generic.unknown,
+    [MetaformFieldType.SmallText]: strings.generic.unknown,
+    [MetaformFieldType.Autocomplete]: strings.generic.unknown,
+    [MetaformFieldType.AutocompleteMultiple]: strings.generic.unknown
+  })[fieldType];
 
   /**
    * Returns localized name boolean value

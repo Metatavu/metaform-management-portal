@@ -105,7 +105,7 @@ const DraftEditorScreen: React.FC = () => {
       const form = await metaformsApi.findMetaform({ metaformSlug: formSlug });
 
       const newDraftForm: Metaform = MetaformUtils.jsonToMetaform(draftForm);
-      newDraftForm?.sections?.[0]?.fields?.push(MetaformUtils.formStatusSection());
+      newDraftForm?.sections?.[0]?.fields?.push(MetaformUtils.createFormStatusField());
 
       await metaformsApi.updateMetaform({
         metaformId: form.id!,
