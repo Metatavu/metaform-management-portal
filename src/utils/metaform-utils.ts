@@ -5,6 +5,9 @@ import { Dictionary, ReplyAuditLog } from "types";
 import strings from "localization/strings";
 import moment from "moment";
 import { FormContext } from "../types/index";
+import Holidays from "date-holidays";
+
+const holiday = new Holidays("FI");
 
 /**
  * Utility class for metaform
@@ -201,6 +204,17 @@ namespace MetaformUtils {
           name: name ?? fieldType,
           title: title ?? fieldType,
           required: required ?? false,
+          type: fieldType,
+          contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
+        };
+      case MetaformFieldType.Number:
+        return {
+          name: name ?? fieldType,
+          title: title ?? fieldType,
+          required: required ?? false,
+          text: fieldType,
+          min: undefined,
+          max: undefined,
           type: fieldType,
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
         };
@@ -448,7 +462,7 @@ namespace MetaformUtils {
 
   /**
    * Create status section for new metaform
-   * 
+   *
    * @returns status section for form
    */
   export const formStatusSection = (): MetaformField => {
@@ -482,7 +496,7 @@ namespace MetaformUtils {
 
   /**
    * Filter out status from form
-   * 
+   *
    * @param form Metaform form
    * @returns Metaform without status field
    */
@@ -500,7 +514,7 @@ namespace MetaformUtils {
 
   /**
    * Get draft form based on existing metaform version or new
-   * 
+   *
    * @returns Metaform
    */
   export const getDraftForm = (metaformVersion: MetaformVersion | undefined) => {
@@ -517,8 +531,8 @@ namespace MetaformUtils {
    * @param foundFieldRules found field rule list
    * @param fieldOptionMatch field option match
    */
-  export const fieldRuleScan = (fieldRule: FieldRule, match: string, foundFieldRules: FieldRule[], fieldOptionMatch?: MetaformFieldOption) => {
-    if (fieldRule.field === match) {
+  export const fieldRuleScan = (fieldRule: FieldRule, fieldNameMatch: string, foundFieldRules: FieldRule[], fieldOptionMatch?: MetaformFieldOption) => {
+    if (fieldRule.field === fieldNameMatch) {
       if (fieldOptionMatch !== undefined) {
         if (fieldOptionMatch.name === fieldRule.equals || fieldOptionMatch.name === fieldRule.notEquals) {
           foundFieldRules.push(fieldRule);
@@ -528,8 +542,8 @@ namespace MetaformUtils {
       }
     }
 
-    fieldRule.and?.forEach(rule => fieldRuleScan(rule, match, foundFieldRules, fieldOptionMatch));
-    fieldRule.or?.forEach(rule => fieldRuleScan(rule, match, foundFieldRules, fieldOptionMatch));
+    fieldRule.and?.forEach(rule => fieldRuleScan(rule, fieldNameMatch, foundFieldRules, fieldOptionMatch));
+    fieldRule.or?.forEach(rule => fieldRuleScan(rule, fieldNameMatch, foundFieldRules, fieldOptionMatch));
   };
 
   /**
@@ -549,9 +563,23 @@ namespace MetaformUtils {
       }
       return true;
     }
-
+    
     return !!fieldRule.and?.some(rule => fieldRuleMatch(rule, match, fieldOptionMatch)) ||
     !!fieldRule.or?.some(rule => fieldRuleMatch(rule, match, fieldOptionMatch));
+  };
+
+  /**
+   * Checks is a day holiday
+   *
+   * @param workDaysOnly work days only
+   * @return boolean on should the day be disabled
+   */
+  export const shouldDisableHolidays = (workDaysOnly: boolean) => (date: Date): boolean => {
+    if (!workDaysOnly) {
+      return false;
+    }
+
+    return [0, 6].includes(date.getDay()) || !!holiday.isHoliday(date);
   };
 }
 
