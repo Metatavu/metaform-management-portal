@@ -200,9 +200,9 @@ const LeavePageHandler: FC<Props> = ({
   const renderConfirmLeavePageWithoutSaving = () => {
     return (
       <ConfirmDialog
-        onClose={ () => resetNavLinks() }
-        onCancel={ () => resetNavLinks() }
-        onConfirm={ () => navigateToPage() }
+        onClose={ resetNavLinks }
+        onCancel={ resetNavLinks }
+        onConfirm={ navigateToPage }
         cancelButtonText={ strings.generic.cancel }
         positiveButtonText={ strings.generic.confirm }
         title={ strings.draftEditorScreen.unsavedChanges }
