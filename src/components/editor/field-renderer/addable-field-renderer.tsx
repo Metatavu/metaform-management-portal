@@ -20,12 +20,15 @@ import MetaformTableFieldComponent from "metaform-react/MetaformTableFieldCompon
 import MetaformSubmitFieldComponent from "metaform-react/MetaformSubmitFieldComponent";
 import MetaformTextFieldComponent from "metaform-react/MetaformTextFieldComponent";
 import { IconName } from "metaform-react/types";
+import MetaformEditableHtmlComponent from "metaform-react/MetaformEditableHtmlComponent";
 
 interface Prop {
   field: MetaformField;
   fieldLabelId: string;
   fieldId: string;
   key: string;
+  focus: boolean;
+  onFieldUpdate: (updatedField: MetaformField) => void
 }
 
 /**
@@ -35,11 +38,13 @@ interface Prop {
 const AddableFieldRenderer: React.FC<Prop> = ({
   field,
   fieldId,
-  fieldLabelId
+  fieldLabelId,
+  focus,
+  onFieldUpdate
 }) => {
   /**
    * Method for rendering form icons
-   * @param IconName Icon
+   * @param icon Icon
    * @param key IconKey
    */
   const renderIcon = (icon: IconName, key: string) => {
@@ -163,15 +168,19 @@ const AddableFieldRenderer: React.FC<Prop> = ({
         />
       );
     case MetaformFieldType.Html:
+      if (focus) {
+        return (
+          <MetaformEditableHtmlComponent
+            field={ field }
+            onFieldUpdate={ onFieldUpdate }
+          />
+        );
+      }
       return (
         <MetaformHtmlComponent
           notInteractive={ true }
           fieldId={ fieldId }
-          field={{
-            ...field,
-            name: "Custom-HTML",
-            html: field.html
-          }}
+          field={ field }
         />
       );
     case MetaformFieldType.DateTime:

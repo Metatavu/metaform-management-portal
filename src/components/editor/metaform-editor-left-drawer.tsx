@@ -1,18 +1,20 @@
-import { Divider, FormControl, FormLabel, Icon, MenuItem, Stack, Tab, Tabs, TextField, Tooltip, Typography } from "@mui/material";
-import { Metaform, MetaformFieldType, MetaformVisibility } from "generated/client";
+import { Checkbox, Divider, FormControl, FormControlLabel, FormLabel, Icon, MenuItem, Stack, Tab, Tabs, TextField, Tooltip, Typography } from "@mui/material";
+import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVisibility } from "generated/client";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
 import TabPanel from "components/generic/tab-panel";
 import strings from "localization/strings";
-import React, { ChangeEventHandler } from "react";
+import React, { ChangeEventHandler, useEffect, useState, FC } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
-import { DraggingMode } from "types";
+import { DraggingMode, NOT_SELECTED } from "types";
 import slugify from "slugify";
+import produce from "immer";
 
 /**
  * Component properties
  */
 interface Props {
+  memberGroups: MetaformMemberGroup[],
   pendingForm?: Metaform;
   setPendingForm: (metaform: Metaform) => void;
 }
@@ -20,11 +22,13 @@ interface Props {
 /**
  * Draft editor left drawer component
  */
-const MetaformEditorLeftDrawer: React.FC<Props> = ({
+const MetaformEditorLeftDrawer: FC<Props> = ({
+  memberGroups,
   pendingForm,
   setPendingForm
 }) => {
-  const [ tabIndex, setTabIndex ] = React.useState(0);
+  const [ tabIndex, setTabIndex ] = useState(0);
+  const [ selectedDefaultMemberGroup, setSelectedDefaultMemberGroup ] = useState<string>("");
   const currentHostname = window.location.hostname;
 
   /**
@@ -55,6 +59,70 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
   };
 
   /**
+   * Event handler for metaform default member group change Permission for default member group is defaulted to "edit"
+   * 
+   * @param permissionMemberGroup selected member group
+   */
+  const onDefaultMemberGroupChange = (permissionMemberGroup: string) => {
+    if (permissionMemberGroup === NOT_SELECTED) {
+      pendingForm && setPendingForm({
+        ...pendingForm,
+        defaultPermissionGroups: {
+          viewGroupIds: [],
+          editGroupIds: [],
+          notifyGroupIds: []
+        }
+      });
+    } else {
+      pendingForm && setPendingForm({
+        ...pendingForm,
+        defaultPermissionGroups: {
+          viewGroupIds: [],
+          editGroupIds: [permissionMemberGroup],
+          notifyGroupIds: []
+        }
+      });
+    }
+    setSelectedDefaultMemberGroup(permissionMemberGroup);
+  };
+
+  /**
+   * Set default member group notifications on or off 
+   * 
+   * @param event true or false
+   */
+  const setNotificationsForDefaultMemberGroup = (event : boolean) => {
+    const updatedForm = produce(pendingForm, draftForm => {
+      if (event) {
+        draftForm!.defaultPermissionGroups!.notifyGroupIds!.push(selectedDefaultMemberGroup);
+      } else {
+        draftForm!.defaultPermissionGroups!.notifyGroupIds!.splice(0, 1);
+      }
+    });
+    setPendingForm(updatedForm!);
+  };
+  
+  /**
+   * Render notifications checkbox if default permission member group
+   */
+  const renderNotifications = () => {
+    const notifyChecked = pendingForm?.defaultPermissionGroups?.notifyGroupIds?.length! > 0;
+    if (selectedDefaultMemberGroup && selectedDefaultMemberGroup !== NOT_SELECTED) {
+      return (
+        <FormControlLabel
+          label={ strings.draftEditorScreen.editor.memberGroups.notifications }
+          control={
+            <Checkbox
+              checked={ notifyChecked }
+              onChange={ event => setNotificationsForDefaultMemberGroup(event.target.checked) }
+            />
+          }
+        />
+      );
+    }
+  };
+
+  /**
    * Renders form tab
    */
   const renderFormTab = () => (
@@ -82,6 +150,25 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
           <MenuItem value={ MetaformVisibility.Public }>{ strings.draftEditorScreen.editor.form.public }</MenuItem>
           <MenuItem value={ MetaformVisibility.Private }>{ strings.draftEditorScreen.editor.form.private }</MenuItem>
         </TextField>
+        <Divider/>
+        <FormLabel>{ strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfo }</FormLabel>
+        <TextField
+          select
+          label={ strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfoLabel }
+          value={ selectedDefaultMemberGroup }
+          onChange={ event => onDefaultMemberGroupChange(event.target.value) }
+        >
+          <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.noDefaultPermissionMemberGroup }</MenuItem>
+          { memberGroups.map(field => {
+            return (
+              <MenuItem value={ field.id } key={ field.id }>
+                { field.displayName }
+              </MenuItem>
+            );
+          })
+          }
+        </TextField>
+        { renderNotifications() }
       </Stack>
     </FormControl>
   );
@@ -121,6 +208,14 @@ const MetaformEditorLeftDrawer: React.FC<Props> = ({
       { title }
     </Typography>
   );
+
+  /**
+   * When open form in form editor, check if form have default member group.
+   */
+  useEffect(() => {
+    const defaultPermissionGroups = pendingForm?.defaultPermissionGroups;
+    setSelectedDefaultMemberGroup(defaultPermissionGroups?.editGroupIds!.length ? defaultPermissionGroups?.editGroupIds![0] : selectedDefaultMemberGroup);
+  }, []);
 
   /**
    * Render fields tab

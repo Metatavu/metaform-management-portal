@@ -1,3 +1,4 @@
+import strings from "localization/strings";
 import React from "react";
 import { HtmlFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField } from "../generated/client/models";
@@ -6,14 +7,14 @@ import { MetaformField } from "../generated/client/models";
  * Component props
  */
 interface Props {
-  field: MetaformField,
-  fieldId: string,
-  notInteractive?: boolean
+  field: MetaformField;
+  fieldId: string;
+  notInteractive?: boolean;
 }
 
 /**
  * Component for Metaform html field
- * 
+ *
  * @param props component properties
  */
 export const MetaformHtmlComponent: React.FC<Props> = ({
@@ -25,7 +26,7 @@ export const MetaformHtmlComponent: React.FC<Props> = ({
     return null;
   }
 
-  const dangerousInnerHTML = field.html || "";
+  const dangerousInnerHTML = field.html || strings.formComponent.html;
 
   return (
     <HtmlFieldWrapper
