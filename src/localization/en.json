@@ -89,7 +89,10 @@
       "createMemberGroup": "Error occurred while creating a user group",
       "loadMembers": "Error occurred while loading users",
       "removeMemberNotFound": "Could not remove user from the group. User was not found",
-      "addMemberNotFound": "Could not add user to the group. User was not found"
+      "addMemberNotFound": "Could not add user to the group. User was not found",
+      "loadUsers": "Error occurred while loading users",
+      "createUser": "Error eccorred while creating user",
+      "updateUser": "Error occurred while updating user"
     },
     "previewScreen": {
       "shareLink": "Error occurred while sharing link"
@@ -159,7 +162,7 @@
       "description": "View users and manage user groups.",
       "subheader": {
         "title": "User management",
-        "description": "Help text"
+        "description": "Forms users and groups management."
       }
     },
     "editorScreens": {
@@ -336,12 +339,14 @@
       "group": "Select group",
       "user": "Select user"
     },
+    "editMemberButton": "Muokkaa käyttäjää",
     "addMemberButton": "New member",
     "addMemberGroupButton": "New group",
     "addMemberDialog": {
       "title": "New member",
       "text": "Add new member to the form",
       "freeTextSearchLabel": "User search",
+      "usersSelectLabel": "Users",
       "searchButton": "Search",
       "emailLabel": "Email",
       "firstNameLabel": "First name",
@@ -356,6 +361,21 @@
       "displayNameLabel": "Group's name",
       "createButton": "Add group",
       "cancelButton": "Cancel"
+    },
+    "editMemberDialog": {
+      "title": "Edit user",
+      "text": "Edit existing members",
+      "freeTextSearchLabel": "User search",
+      "metaformUsersSelectLabel": "Portal users",
+      "cardAuthUsersSelectLabel": "Card users",
+      "emptySelection": "No selection",
+      "searchButton": "Search",
+      "emailLabel": "Email",
+      "firstNameLabel": "First name",
+      "lastNameLabel": "Last name",
+      "upnNumberLabel": "UPN number",
+      "cancelButton": "Cancel",
+      "editButton": "Edit user"
     },
     "usersTable": {
       "nameColumn": {

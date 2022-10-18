@@ -3,7 +3,7 @@ import Api from "api";
 import strings from "localization/strings";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import { NavigationTabContainer } from "styled/layouts/navigations";
-import { PersonAdd, GroupAdd } from "@mui/icons-material";
+import { PersonAdd, GroupAdd, Edit } from "@mui/icons-material";
 import { ErrorContext } from "components/contexts/error-handler";
 import { useApiClient } from "app/hooks";
 import { Metaform, MetaformMember, MetaformMemberGroup } from "generated/client";
@@ -13,6 +13,7 @@ import AddMemberDialog from "components/users/add-member-dialog";
 import UsersFilter from "components/users/users-filter";
 import { RoundActionButton } from "styled/generic/form";
 import theme from "theme";
+import EditMemberDialog from "components/users/edit-member-dialog";
 
 /**
  * Users screen component
@@ -31,6 +32,7 @@ const UsersScreen: React.FC = () => {
   const [ selectedMemberGroupId, setSelectedMemberGroupId ] = React.useState<string>();
   const [ addMemberGroupOpen, setAddMemberGroupOpen ] = React.useState<boolean>(false);
   const [ addMemberOpen, setAddMemberOpen ] = React.useState<boolean>(false);
+  const [ editMemberOpen, setEditMemberOpen ] = React.useState<boolean>(false);
 
   /**
    * Load metaforms from the API
@@ -168,13 +170,6 @@ const UsersScreen: React.FC = () => {
   };
 
   /**
-   * New member group button click listener
-   */
-  const onNewMemberGroupButtonClick = () => {
-    setAddMemberGroupOpen(true);
-  };
-
-  /**
    * Event handler for member group dialog create
    *
    * @param displayName group's display name
@@ -205,25 +200,34 @@ const UsersScreen: React.FC = () => {
   };
 
   /**
+   * New member group button click listener
+   */
+  const onNewMemberGroupButtonClick = () => setAddMemberGroupOpen(true);
+
+  /**
    * Event handler for member group dialog cancel
    */
-  const onAddMemberGroupDialogCancel = () => {
-    setAddMemberGroupOpen(false);
-  };
+  const onAddMemberGroupDialogCancel = () => setAddMemberGroupOpen(false);
 
   /**
    * New member button click listener
    */
-  const onNewMemberButtonClick = () => {
-    setAddMemberOpen(true);
-  };
+  const onNewMemberButtonClick = () => setAddMemberOpen(true);
 
   /**
    * Event handler for member dialog cancel
    */
-  const onAddMemberDialogCancel = () => {
-    setAddMemberOpen(false);
-  };
+  const onAddMemberDialogCancel = () => setAddMemberOpen(false);
+
+  /**
+   * Edit User button click listener
+   */
+  const onEditMemberButtonClick = () => setEditMemberOpen(true);
+
+  /**
+   * Event handler for User edit dialog cancel
+   */
+  const onEditMemberDialogCancel = () => setEditMemberOpen(false);
 
   /**
    * Event handler for member dialog create
@@ -275,10 +279,25 @@ const UsersScreen: React.FC = () => {
         onCreate={ onAddMemberGroupDialogCreate }
         onCancel={ onAddMemberGroupDialogCancel }
       />
+      <EditMemberDialog
+        loading={ loading }
+        open={ editMemberOpen }
+        onEdit={ () => null }
+        setLoading={ setLoading }
+        onCancel={ onEditMemberDialogCancel }
+      />
       <NavigationTabContainer>
         <NavigationTab
           text={ strings.navigationHeader.usersScreens.subheader }
         />
+        <RoundActionButton
+          variant="outlined"
+          endIcon={ <Edit/> }
+          onClick={ onEditMemberButtonClick }
+          sx={{ mr: theme.spacing(2) }}
+        >
+          { strings.userManagementScreen.editMemberButton }
+        </RoundActionButton>
         <RoundActionButton
           disabled={ !selectedMetaformId }
           variant="outlined"

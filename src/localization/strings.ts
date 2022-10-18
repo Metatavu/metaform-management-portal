@@ -102,6 +102,9 @@ export interface Localized extends LocalizedStringsMethods {
       loadMembers: string;
       removeMemberNotFound: string;
       addMemberNotFound: string;
+      loadUsers: string;
+      createUser: string;
+      updateUser: string;
     };
     previewScreen: {
       shareLink: string;
@@ -374,12 +377,14 @@ export interface Localized extends LocalizedStringsMethods {
       group: string;
       user: string;
     };
+    editMemberButton: string;
     addMemberButton: string;
     addMemberGroupButton: string;
     addMemberDialog: {
       title: string;
       text: string;
       freeTextSearchLabel: string;
+      usersSelectLabel: string;
       searchButton: string;
       emailLabel: string;
       firstNameLabel: string;
@@ -394,6 +399,21 @@ export interface Localized extends LocalizedStringsMethods {
       displayNameLabel: string;
       createButton: string;
       cancelButton: string;
+    }
+    editMemberDialog: {
+      title: string;
+      text: string;
+      freeTextSearchLabel: string;
+      metaformUsersSelectLabel: string;
+      cardAuthUsersSelectLabel: string;
+      emptySelection: string;
+      searchButton: string;
+      emailLabel: string;
+      firstNameLabel: string;
+      lastNameLabel: string;
+      upnNumberLabel: string;
+      cancelButton: string;
+      editButton: string;
     }
     usersTable: {
       nameColumn: {
