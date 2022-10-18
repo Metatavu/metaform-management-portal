@@ -91,7 +91,7 @@
       "removeMemberNotFound": "Could not remove user from the group. User was not found",
       "addMemberNotFound": "Could not add user to the group. User was not found",
       "loadUsers": "Error occurred while loading users",
-      "createUser": "Error occurred while creating user",
+      "createUser": "Error eccorred while creating user",
       "updateUser": "Error occurred while updating user"
     },
     "previewScreen": {
@@ -371,7 +371,7 @@
       "group": "Select group",
       "user": "Select user"
     },
-    "editMemberButton": "Edit user",
+    "editMemberButton": "Muokkaa käyttäjää",
     "addMemberButton": "New member",
     "addMemberGroupButton": "New group",
     "addMemberDialog": {
@@ -406,17 +406,14 @@
       "freeTextSearchLabel": "User search",
       "metaformUsersSelectLabel": "Portal users",
       "cardAuthUsersSelectLabel": "Card users",
-      "userIsLinked": "User is linked to card",
+      "emptySelection": "No selection",
       "searchButton": "Search",
       "emailLabel": "Email",
       "firstNameLabel": "First name",
       "lastNameLabel": "Last name",
       "upnNumberLabel": "UPN number",
       "cancelButton": "Cancel",
-      "editButton": "Edit user",
-      "tooltip": {
-        "tooltipGeneral": "Edit users information and add or remove link with professional card."
-      }
+      "editButton": "Edit user"
     },
     "usersTable": {
       "nameColumn": {

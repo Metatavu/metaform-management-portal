@@ -24,78 +24,16 @@ const UsersScreen: React.FC = () => {
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, metaformMemberGroupsApi, metaformMembersApi, usersApi } = apiClient;
 
-  const dispatch = useAppDispatch();
-
-  const [ loading, setLoading ] = useState<boolean>(false);
-  const [ loadingMemberId, setLoadingMemberId ] = useState<string>();
-  const [ metaforms, setMetaforms ] = useState<Metaform[]>([]);
-  const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
-  const [ members, setMembers ] = useState<MetaformMember[]>([]);
-  const [ selectedMetaformId, setSelectedMetaformId ] = useState<string>();
-  const [ selectedMemberGroupId, setSelectedMemberGroupId ] = useState<string>();
-  const [ addMemberGroupOpen, setAddMemberGroupOpen ] = useState<boolean>(false);
-  const [ addMemberOpen, setAddMemberOpen ] = useState<boolean>(false);
-  const [ editMemberOpen, setEditMemberOpen ] = useState<boolean>(false);
-
-  /**
-   * Searches users from the API
-   * 
-   * @param search search
-   */
-  const searchUsers = async (search: string): Promise<User[]> => {
-    setLoading(true);
-
-    try {
-      const users = await usersApi.listUsers({ search: search });
-      
-      return users;
-    } catch (err) {
-      errorContext.setError(strings.errorHandling.usersScreen.loadUsers, err);
-    }
-
-    setLoading(false);
-
-    return [];
-  };
-
-  /**
-   * Creates new User
-   * 
-   * @param user user
-   */
-  const createUser = async (user: User): Promise<User | undefined> => {
-    setLoading(true);
-    
-    try {
-      const createdUser = await usersApi.createUser({ user: user });
-
-      return createdUser;
-    } catch (err) {
-      errorContext.setError(strings.errorHandling.usersScreen.createUser, err);
-    }
-
-    setLoading(false);
-  };
-
-  /**
-   * Edits User
-   * 
-   * @param user User
-   */
-  const editUser = async (user: User) => {
-    setLoading(true);
-
-    try {
-      await usersApi.updateUser({
-        userId: user.id!,
-        user: user
-      });
-
-      dispatch(setSnackbarMessage(strings.successSnackbars.users.editUserSuccessText));
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.usersScreen.updateUser, e);
-    }
-  };
+  const [ loading, setLoading ] = React.useState<boolean>(false);
+  const [ loadingMemberId, setLoadingMemberId ] = React.useState<string>();
+  const [ metaforms, setMetaforms ] = React.useState<Metaform[]>([]);
+  const [ memberGroups, setMemberGroups ] = React.useState<MetaformMemberGroup[]>([]);
+  const [ members, setMembers ] = React.useState<MetaformMember[]>([]);
+  const [ selectedMetaformId, setSelectedMetaformId ] = React.useState<string>();
+  const [ selectedMemberGroupId, setSelectedMemberGroupId ] = React.useState<string>();
+  const [ addMemberGroupOpen, setAddMemberGroupOpen ] = React.useState<boolean>(false);
+  const [ addMemberOpen, setAddMemberOpen ] = React.useState<boolean>(false);
+  const [ editMemberOpen, setEditMemberOpen ] = React.useState<boolean>(false);
 
   /**
    * Load metaforms from the API
@@ -266,6 +204,36 @@ const UsersScreen: React.FC = () => {
   };
 
   /**
+   * New member group button click listener
+   */
+  const onNewMemberGroupButtonClick = () => setAddMemberGroupOpen(true);
+
+  /**
+   * Event handler for member group dialog cancel
+   */
+  const onAddMemberGroupDialogCancel = () => setAddMemberGroupOpen(false);
+
+  /**
+   * New member button click listener
+   */
+  const onNewMemberButtonClick = () => setAddMemberOpen(true);
+
+  /**
+   * Event handler for member dialog cancel
+   */
+  const onAddMemberDialogCancel = () => setAddMemberOpen(false);
+
+  /**
+   * Edit User button click listener
+   */
+  const onEditMemberButtonClick = () => setEditMemberOpen(true);
+
+  /**
+   * Event handler for User edit dialog cancel
+   */
+  const onEditMemberDialogCancel = () => setEditMemberOpen(false);
+
+  /**
    * Event handler for member dialog create
    *
    * @param member member's details
@@ -351,10 +319,9 @@ const UsersScreen: React.FC = () => {
       <EditMemberDialog
         loading={ loading }
         open={ editMemberOpen }
+        onEdit={ () => null }
         setLoading={ setLoading }
         onCancel={ onEditMemberDialogCancel }
-        searchUsers={ searchUsers }
-        editUser={ editUser }
       />
       <NavigationTabContainer>
         <NavigationTab

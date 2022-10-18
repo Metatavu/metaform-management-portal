@@ -426,6 +426,21 @@
       "groupMembershipAddSnackbarText": "Käyttäjä lisääminen ryhmään onnistui!",
       "groupMembershipRemoveSnackbarText": "Käyttäjän poistaminen ryhmästä onnistui!"
     },
+    "editMemberDialog": {
+      "title": "Muokkaa käyttäjää",
+      "text": "Muokkaa olemassa olevaa käyttäjää",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "metaformUsersSelectLabel": "Portaali käyttäjät",
+      "cardAuthUsersSelectLabel": "Kortti käyttäjät",
+      "emptySelection": "Ei valintaa",
+      "searchButton": "Hae",
+      "emailLabel": "Sähköpostiosoite",
+      "firstNameLabel": "Etunimi",
+      "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
+      "cancelButton": "Peruuta",
+      "editButton": "Muokkaa käyttäjää"
+    },
     "usersTable": {
       "nameColumn": {
         "label": "Nimi"

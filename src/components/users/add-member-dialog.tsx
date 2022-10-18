@@ -7,9 +7,12 @@ import GenericLoaderWrapper from "components/generic/generic-loader";
 import LinkIcon from "@mui/icons-material/Link";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useApiClient } from "app/hooks";
+import Api from "api";
+import { ErrorContext } from "components/contexts/error-handler";
 import UsersScreenDialog from "./users-screen-dialog";
-import produce from "immer";
-import { API_ADMIN_USER } from "consts";
+
+const API_ADMIN_USER = "api-admin";
 
 /**
  * Interface representing component properties
@@ -27,7 +30,7 @@ interface Props {
 /**
  * React component for add member dialog
  */
-const AddMemberDialog: FC<Props> = ({
+const AddMemberDialog: React.FC<Props> = ({
   loading,
   open,
   onCancel,
@@ -36,16 +39,34 @@ const AddMemberDialog: FC<Props> = ({
   searchUsers,
   createUser
 }) => {
-  const [ selectedUser, setSelectedUser ] = useState<User>();
+  const errorContext = React.useContext(ErrorContext);
+  const apiClient = useApiClient(Api.getApiClient);
+  const { usersApi } = apiClient;
+  const [ selectedUser, setSelectedUser ] = useState<User | undefined>();
   const [ userSearch, setUserSearch ] = useState<string>("");
   const [ foundUsers, setFoundUsers ] = useState<User[]>([]);
+
+  /**
+   * Renders correct icon for User selection dialog
+   * 
+   * @param user User
+   */
+  const renderSelectOptionIcon = (user: User) => {
+    if (!user.id) {
+      return <CreditCardIcon/>;
+    }
+    const userIsLinkedToCard = user.federatedIdentities?.some(federatedIdentity => federatedIdentity.source === UserFederationSource.Card);
+    if (userIsLinkedToCard) {
+      return <LinkIcon/>;
+    }
+  };
 
   /**
    * Gets Users UPN number from their display name
    * 
    * @param user User
    */
-  const getUsersUpnNumber = (user: User) => {
+  const getUsersUPNNumber = (user: User) => {
     const digits = user.displayName?.match(/\d/g);
     return digits?.join("");
   };
@@ -61,20 +82,10 @@ const AddMemberDialog: FC<Props> = ({
     }
 
     const { target: { name, value } } = event;
-    const updatedUser = produce(selectedUser, draftUser => {
-      return { ...draftUser, [name]: value };
-    });
-
+    const fieldName = name;
+    const updatedUser: any = { ...selectedUser };
+    updatedUser[fieldName] = value;
     setSelectedUser(updatedUser);
-  };
-
-  /**
-   * Event handler for cancel click
-   */
-  const handleCancelClick = () => {
-    setSelectedUser(undefined);
-    setFoundUsers([]);
-    onCancel();
   };
 
   /**
@@ -104,6 +115,23 @@ const AddMemberDialog: FC<Props> = ({
   };
 
   /**
+   * Searches users by text search
+   */
+  const handleSelectChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { target: { value } } = event;
+    const metaformKeycloakUser = foundUsers.find(user => user.id === value);
+
+    try {
+      const users = await usersApi.listUsers({ search: userSearch });
+      users.sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
+      const filteredUsers = users.filter((user: User, idx: number) => user.displayName !== API_ADMIN_USER && idx < 10);
+      setFoundUsers(filteredUsers);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.usersScreen.loadUsers, e);
+    }
+  };
+
+  /**
    * Event handler for search button click
    */
   const handleSearchButtonClick = async () => {
@@ -121,55 +149,43 @@ const AddMemberDialog: FC<Props> = ({
   const handleSearchClear = () => setUserSearch("");
 
   /**
-   * Event handler for create button click
+   * Event handler for name create click
    */
-  const handleCreateClick = async () => {
+  const onCreateClick = async () => {
+    setLoading(true);
+
     if (!selectedUser) {
       return;
     }
 
-    if (!selectedUser.id) {
-      const createdUser = await createUser({
-        ...selectedUser,
-        username: selectedUser.displayName ?? selectedUser.email
-      });
-
-      if (!createdUser) {
-        return;
+    try {
+      if (!selectedUser.id) {
+        const userToCreate: User = {
+          ...selectedUser,
+          username: selectedUser.displayName ?? selectedUser.email
+        };
+        const createdUser = await usersApi.createUser({ user: userToCreate });
+        const { firstName, lastName, email } = createdUser;
+        onCreate({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          role: MetaformMemberRole.Manager
+        });
+      } else {
+        const { firstName, lastName, email } = selectedUser;
+        onCreate({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          role: MetaformMemberRole.Manager
+        });
       }
-
-      onCreate({
-        firstName: createdUser.firstName,
-        lastName: createdUser.lastName,
-        email: createdUser.email,
-        role: MetaformMemberRole.Manager
-      });
-    } else {
-      onCreate({
-        firstName: selectedUser.firstName,
-        lastName: selectedUser.lastName,
-        email: selectedUser.email,
-        role: MetaformMemberRole.Manager
-      });
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.usersScreen.createUser, e);
     }
 
-    handleCancelClick();
     setLoading(false);
-  };
-
-  /**
-   * Renders correct icon for User selection dialog
-   * 
-   * @param user User
-   */
-  const renderSelectOptionIcon = (user: User) => {
-    if (!user.id) {
-      return <CreditCardIcon/>;
-    }
-    const userIsLinkedToCard = user.federatedIdentities?.some(federatedIdentity => federatedIdentity.source === UserFederationSource.Card);
-    if (userIsLinkedToCard) {
-      return <LinkIcon/>;
-    }
   };
 
   /**
@@ -191,11 +207,7 @@ const AddMemberDialog: FC<Props> = ({
    */
   const renderDialogContent = () => (
     <Stack spacing={ 1 }>
-      <Stack
-        spacing={ 1 }
-        direction="row"
-        alignItems="center"
-      >
+      <Stack spacing={ 1 } direction="row" alignItems="center">
         <TextField
           sx={{ flex: 1 }}
           value={ userSearch }
@@ -214,7 +226,7 @@ const AddMemberDialog: FC<Props> = ({
         <Button
           sx={{ flex: 0.25, height: 56 }}
           size="large"
-          onClick={ handleSearchButtonClick }
+          onClick={ searchUsers }
           disabled={ loading }
         >
           { strings.userManagementScreen.addMemberDialog.searchButton }
@@ -223,7 +235,6 @@ const AddMemberDialog: FC<Props> = ({
       <TextField
         select
         fullWidth
-        disabled={ !foundUsers.length }
         size="medium"
         onChange={ handleSelectChange }
         label={ strings.userManagementScreen.addMemberDialog.usersSelectLabel }
@@ -234,40 +245,42 @@ const AddMemberDialog: FC<Props> = ({
         disabled={ !selectedUser ?? loading }
         fullWidth
         size="medium"
-        required
+        required={ true }
         value={ selectedUser?.email ?? "" }
         type="email"
         name="email"
         label={ strings.userManagementScreen.addMemberDialog.emailLabel }
-        onChange={ handleTextFieldChange }
+        onChange={ onTextFieldChange }
       />
       <TextField
         disabled={ !selectedUser ?? loading }
         fullWidth
         size="medium"
-        required
+        required={ true }
         value={ selectedUser?.firstName ?? "" }
         name="firstName"
         label={ strings.userManagementScreen.addMemberDialog.firstNameLabel }
-        onChange={ handleTextFieldChange }
+        onChange={ onTextFieldChange }
       />
       <TextField
         disabled={ !selectedUser ?? loading }
         fullWidth
         size="medium"
-        required
+        required={ true }
         name="lastName"
         value={ selectedUser?.lastName ?? "" }
         label={ strings.userManagementScreen.addMemberDialog.lastNameLabel }
-        onChange={ handleTextFieldChange }
+        onChange={ onTextFieldChange }
       />
       <TextField
-        disabled
+        disabled={ !selectedUser ?? loading }
         fullWidth
         size="medium"
-        value={ (selectedUser && getUsersUpnNumber(selectedUser)) ?? "" }
+        value={ (selectedUser && getUsersUPNNumber(selectedUser)) ?? "" }
         label={ strings.userManagementScreen.addMemberDialog.upnNumberLabel }
-        onChange={ handleTextFieldChange }
+        onChange={ onTextFieldChange }
+        required={ true }
+        name="upnNumber"
       />
     </Stack>
   );
@@ -275,52 +288,22 @@ const AddMemberDialog: FC<Props> = ({
   /**
    * Renders dialog actions
    */
-  const renderDialogActions = () => (
+  const renderDialogActions = () => [
+    <Button disableElevation variant="contained" onClick={ onCancel } color="secondary" autoFocus>
+      { strings.userManagementScreen.addMemberDialog.cancelButton }
+    </Button>,
     <GenericLoaderWrapper loading={ loading }>
-      <>
-        <Button disableElevation variant="contained" onClick={ handleCancelClick } color="warning" autoFocus>
-          { strings.userManagementScreen.addMemberDialog.cancelButton }
-        </Button>
-        <Button onClick={ handleCreateClick } color="primary" disabled={ !valid }>
-          { strings.userManagementScreen.addMemberDialog.createButton }
-        </Button>
-      </>
+      <Button onClick={ onCreateClick } color="primary" disabled={ !valid }>
+        { strings.userManagementScreen.addMemberDialog.createButton }
+      </Button>
     </GenericLoaderWrapper>
-  );
-
-  /**
-   * Renders dialog tooltip text
-   */
-  const renderDialogTooltipText = () => (
-    <Stack spacing={ 1 }>
-      <span>
-        { strings.userManagementScreen.addMemberDialog.tooltip.tooltipGeneral }
-      </span>
-      <span>
-        { strings.userManagementScreen.addMemberDialog.tooltip.tooltipNoIconDescription }
-      </span>
-      <Stack spacing={ 1 } direction="row" alignItems="center">
-        <LinkIcon/>
-        <span>
-          { strings.userManagementScreen.addMemberDialog.tooltip.tooltipLinkIconDescription }
-        </span>
-      </Stack>
-      <Stack spacing={ 1 } direction="row" alignItems="center">
-        <CreditCardIcon/>
-        <span>
-          { strings.userManagementScreen.addMemberDialog.tooltip.tooltipCardIconDescription }
-        </span>
-      </Stack>
-    </Stack>
-  );
+  ];
 
   return (
     <UsersScreenDialog
       open={ open }
       dialogTitle={ strings.userManagementScreen.addMemberDialog.title }
       dialogDescription={ strings.userManagementScreen.addMemberDialog.text }
-      helperIcon
-      tooltipText={ renderDialogTooltipText() }
       dialogContent={ renderDialogContent() }
       dialogActions={ renderDialogActions() }
       onCancel={ onCancel }

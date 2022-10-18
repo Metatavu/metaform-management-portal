@@ -1,7 +1,5 @@
-import { HelpOutline } from "@mui/icons-material";
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Stack, Tooltip } from "@mui/material";
-import React, { useState } from "react";
-import theme from "theme";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack } from "@mui/material";
+import React from "react";
 
 /**
  * Interface representing component properties
@@ -10,10 +8,8 @@ interface Props {
   open: boolean;
   dialogTitle: string;
   dialogDescription: string;
-  helperIcon?: boolean;
-  tooltipText?: string | JSX.Element;
   dialogContent: JSX.Element;
-  dialogActions: JSX.Element;
+  dialogActions: JSX.Element[];
   onCancel: () => void;
 }
 
@@ -24,41 +20,13 @@ const UsersScreenDialog: React.FC<Props> = ({
   open,
   dialogTitle,
   dialogDescription,
-  helperIcon,
-  tooltipText,
   dialogContent,
   dialogActions,
   onCancel
 }) => {
-  const [ helperTooltipOpen, setHelperTooltipOpen ] = useState<boolean>(false);
-
   if (!open) {
     return null;
   }
-
-  /**
-   * Event handler for help icon
-   */
-  const handleHelpIconClick = () => setHelperTooltipOpen(!helperTooltipOpen);
-
-  /**
-   * Renders helper icon
-   */
-  const renderHelperIcon = () => {
-    if (!helperIcon || !tooltipText) {
-      return;
-    }
-
-    return (
-      <Tooltip open={ helperTooltipOpen } title={ tooltipText } placement="top">
-        <IconButton
-          onClick={ handleHelpIconClick }
-        >
-          <HelpOutline/>
-        </IconButton>
-      </Tooltip>
-    );
-  };
 
   return (
     <Dialog
@@ -71,11 +39,10 @@ const UsersScreenDialog: React.FC<Props> = ({
       <DialogContent sx={{ width: 500 }}>
         <DialogContentText
           variant="body1"
-          color={ theme.palette.text.secondary }
+          color="#ccc"
           sx={{ paddingBottom: 2 }}
         >
           { dialogDescription }
-          { renderHelperIcon() }
         </DialogContentText>
         { dialogContent }
       </DialogContent>

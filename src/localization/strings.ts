@@ -435,14 +435,14 @@ export interface Localized extends LocalizedStringsMethods {
       displayNameLabel: string;
       createButton: string;
       cancelButton: string;
-    };
+    }
     editMemberDialog: {
       title: string;
       text: string;
       freeTextSearchLabel: string;
       metaformUsersSelectLabel: string;
       cardAuthUsersSelectLabel: string;
-      userIsLinked: string;
+      emptySelection: string;
       searchButton: string;
       emailLabel: string;
       firstNameLabel: string;
@@ -450,10 +450,7 @@ export interface Localized extends LocalizedStringsMethods {
       upnNumberLabel: string;
       cancelButton: string;
       editButton: string;
-      tooltip: {
-        tooltipGeneral: string;
-      };
-    };
+    }
     usersTable: {
       nameColumn: {
         label: string;

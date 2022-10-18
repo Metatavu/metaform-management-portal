@@ -66,18 +66,16 @@ const AddMemberGroupDialog: React.FC<Props> = ({
   /**
    * Renders dialog actions
    */
-  const renderDialogActions = () => (
+  const renderDialogActions = () => [
+    <Button disableElevation variant="contained" onClick={ onCancelClick } color="secondary" autoFocus>
+      { strings.userManagementScreen.addMemberGroupDialog.cancelButton }
+    </Button>,
     <GenericLoaderWrapper loading={ loading }>
-      <>
-        <Button disableElevation variant="contained" onClick={ onCancelClick } color="warning" autoFocus>
-          { strings.userManagementScreen.addMemberGroupDialog.cancelButton }
-        </Button>
-        <Button onClick={ onCreateClick } color="primary" disabled={ !displayName }>
-          { strings.userManagementScreen.addMemberGroupDialog.createButton }
-        </Button>
-      </>
+      <Button onClick={ onCreateClick } color="primary" disabled={ !displayName }>
+        { strings.userManagementScreen.addMemberGroupDialog.createButton }
+      </Button>
     </GenericLoaderWrapper>
-  );
+  ];
 
   return (
     <UsersScreenDialog
