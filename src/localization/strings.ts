@@ -371,6 +371,8 @@ export interface Localized extends LocalizedStringsMethods {
         selectedMemberGroup: string;
         edit: string;
         view: string;
+        none: string;
+        noMemberGroupSelected: string;
         fieldValueLabel: string;
         notifications: string;
         noMemberGroup: string;

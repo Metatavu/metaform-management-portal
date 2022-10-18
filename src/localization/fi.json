@@ -339,6 +339,8 @@
         "selectedMemberGroup": "Valittu käyttäjäryhmä",
         "view": "Katselu",
         "edit": "Muokkaus",
+        "none": "Ei oikeuksia",
+        "noMemberGroupSelected": "Ei käyttäjäryhmää valittuna",
         "fieldValueLabel": "Kentän arvo",
         "notifications": "Ilmoitukset",
         "noMemberGroup": "Ei Käyttäjäryhmää",

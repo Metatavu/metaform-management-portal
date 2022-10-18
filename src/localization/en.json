@@ -338,6 +338,8 @@
         "memberGroup": "Member group",
         "view":"View",
         "edit":"Edit",
+        "none":"No permissions",
+        "noMemberGroupSelected": "No member group selected",
         "fieldValueLabel": "Field value",
         "notifications": "Notifications",
         "noMemberGroup":"No Member group",
