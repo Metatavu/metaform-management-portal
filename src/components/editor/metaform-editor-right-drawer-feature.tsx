@@ -571,7 +571,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           onChange={ event => handleMemberGroupChange(event.target.value) }
         >
           <MenuItem value={ NOT_SELECTED } key={uuid4()}>
-            { strings.draftEditorScreen.editor.memberGroups.none }
+            { strings.draftEditorScreen.editor.memberGroups.noMemberGroupSelected }
           </MenuItem>
           { memberGroups.map(memberGroup => (
             <MenuItem value={ memberGroup.id } key={ memberGroup.id }>

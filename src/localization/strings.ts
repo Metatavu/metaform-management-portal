@@ -340,6 +340,7 @@ export interface Localized extends LocalizedStringsMethods {
         edit: string;
         view: string;
         none: string;
+        noMemberGroupSelected: string;
         fieldValueLabel: string;
         notifications: string;
         noDefaultPermissionMemberGroup: string;

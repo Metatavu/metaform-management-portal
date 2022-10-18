@@ -304,6 +304,7 @@
         "view": "Katselu",
         "edit": "Muokkaus",
         "none": "Ei oikeuksia",
+        "noMemberGroupSelected": "Ei käyttäjäryhmää valittuna",
         "fieldValueLabel": "Kentän arvo",
         "notifications": "Ilmoitukset",
         "noDefaultPermissionMemberGroup": "Ei oletus-käyttäjäryhmää"
