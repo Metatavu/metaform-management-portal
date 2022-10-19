@@ -219,6 +219,7 @@
       "addSection": "Add section",
       "emptySection": "Empty section",
       "emptySelection": "Selection a section or field to start editing.",
+      "defaultSectionTitle": "Section",
       "form": {
         "tabTitle": "Form",
         "formTitle": "Form title",
@@ -226,8 +227,11 @@
         "versionInfo": "Version info",
         "formVersion": "Version",
         "formStyling": "Form outfit",
-        "backgroundImage": "Background image",
-        "backgroundColor": "Background color"
+        "formVisibility": "Form information",
+        "formVisibilityLabel": "Form visibility",
+        "private": "Private (Suomi.fi)",
+        "public": "Public",
+        "tooltipDescription": "Edit form title and set form to public or private."
       },
       "fields": {
         "tabTitle": "Fields",
@@ -249,7 +253,8 @@
         "dateAndTime": "Date & time",
         "files": "Files",
         "table": "Table",
-        "submit": "Submit"
+        "submit": "Submit",
+        "tooltipDescription": "Select fields to add to form."
       },
       "features": {
         "tabTitle": "Features",
@@ -260,6 +265,7 @@
         },
         "field":{
           "fieldData": "Field information",
+          "fieldType": "Field type",
           "required": "Required",
           "defineUserGroup": "Define a user group",
           "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
@@ -278,7 +284,8 @@
             "minValueLabel": "Field minimum value",
             "maxValueLabel": "Field maximum value"
           }
-        }
+        },
+        "tooltipDescription": "Edit form section information. Edit field information, attributes, and display settings."
       },
       "visibility": {
         "tabTitle": "Visibility",
@@ -297,7 +304,8 @@
         "formVisibility": "Form information",
         "formVisibilityLabel": "Form visibility",
         "private": "Private",
-        "public": "Public"
+        "public": "Public",
+        "tooltipDescription": "Set conditions whether field is visible on form."
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Member group defining settings",
@@ -311,7 +319,8 @@
         "none":"No permissions",
         "fieldValueLabel": "Field value",
         "notifications": "Notifications",
-        "noDefaultPermissionMemberGroup": "No default permission member group"
+        "noDefaultPermissionMemberGroup": "No default permission member group",
+        "tooltipDescription": ""
       }
     },
     "formPreview": {

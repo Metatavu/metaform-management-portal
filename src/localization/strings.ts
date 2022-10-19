@@ -254,6 +254,7 @@ export interface Localized extends LocalizedStringsMethods {
       addSection: string;
       emptySection: string;
       emptySelection: string;
+      defaultSectionTitle: string;
       form: {
         tabTitle: string;
         formTitle: string;
@@ -261,8 +262,11 @@ export interface Localized extends LocalizedStringsMethods {
         versionInfo: string;
         formVersion: string;
         formStyling: string;
-        backgroundImage: string;
-        backgroundColor: string;
+        formVisibility: string;
+        formVisibilityLabel: string;
+        private: string;
+        public: string;
+        tooltipDescription: string;
       };
       fields: {
         tabTitle: string;
@@ -285,6 +289,7 @@ export interface Localized extends LocalizedStringsMethods {
         files: string;
         table: string;
         submit: string;
+        tooltipDescription: string;
       };
       features: {
         tabTitle: string;
@@ -295,6 +300,7 @@ export interface Localized extends LocalizedStringsMethods {
         };
         field: {
           fieldData: string;
+          fieldType: string;
           fieldTitle: string;
           defineUserGroup: string;
           selectableFieldsInfo: string;
@@ -314,6 +320,7 @@ export interface Localized extends LocalizedStringsMethods {
             maxValueLabel: string;
           }
         };
+        tooltipDescription: string;
       };
       visibility: {
         tabTitle: string;
@@ -329,10 +336,7 @@ export interface Localized extends LocalizedStringsMethods {
         selectVisibilityInfo: string;
         fieldConditionLabel: string;
         sectionConditionLabel: string;
-        formVisibility: string;
-        formVisibilityLabel: string;
-        private: string;
-        public: string;
+        tooltipDescription: string;
       };
       memberGroups: {
         memberGroupDefineSettings: string;

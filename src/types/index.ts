@@ -151,11 +151,19 @@ export enum FormContext {
   MANAGEMENT_LIST = "MANAGEMENT_LIST"
 }
 
-export enum memberGroupPermissions {
+/**
+ * Enum for member group permission
+ */
+export enum MemberGroupPermission {
   NOTIFY = "notify",
   VIEW = "view",
   EDIT = "edit"
 }
+
+/**
+ * Type for nullable member group permissions
+ */
+export type NullableMemberGroupPermission = MemberGroupPermission | typeof NOT_SELECTED;
 
 declare module "@mui/material/styles" {
   interface CustomTheme {

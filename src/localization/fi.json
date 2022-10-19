@@ -218,6 +218,7 @@
       "addSection": "Lisää osio",
       "emptySection": "Tyhjä osio",
       "emptySelection": "Aloita muokkaaminen valitsemalla osio tai kenttä.",
+      "defaultSectionTitle": "Osio",
       "form": {
         "tabTitle": "Lomake",
         "formTitle": "Lomakkeen otsikko",
@@ -225,8 +226,11 @@
         "versionInfo": "Version tiedot",
         "formVersion": "Versio",
         "formStyling": "Lomakkeen ulkoasu",
-        "backgroundImage": "Taustakuva",
-        "backgroundColor": "Taustaväri"
+        "formVisibility": "Lomakkeen tiedot",
+        "formVisibilityLabel": "Lomakkeen näkyvyys",
+        "private": "Yksityinen (Suomi.fi)",
+        "public": "Julkinen",
+        "tooltipDescription": "Lomakkeen perustiedot: otsikko, näkyvyys ja oletus-käyttäjäryhmä."
       },
       "fields": {
         "tabTitle": "Kentät",
@@ -248,17 +252,20 @@
         "dateAndTime": "Päivämäärä & aika",
         "files": "Liitteet",
         "table": "Taulukko",
-        "submit": "Lähetä"
+        "submit": "Lähetä",
+        "tooltipDescription": "Lisää kenttiä lomakkeelle raahaamalla."
       },
       "features": {
         "tabTitle": "Ominaisuudet",
         "title": "Title",
+        "type": "Tyyppi",
         "section": {
           "sectionData": "Osion tiedot",
           "sectionTitle": "Osion otsikko"
         },
         "field": {
           "fieldData": "Kentän tiedot",
+          "fieldType": "Kentän tyyppi",
           "required": "Pakollisuus",
           "defineUserGroup": "Määrittää käyttäjäryhmän",
           "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
@@ -277,7 +284,8 @@
             "minValueLabel": "Kentän pienin arvo",
             "maxValueLabel": "Kentän suurin arvo"
           }
-        }
+        },
+        "tooltipDescription": "Muokkaa osion tai kentän tietoja ja ominaisuuksia."
       },
       "visibility": {
         "tabTitle": "näkyvyys",
@@ -296,7 +304,8 @@
         "formVisibility": "Lomakkeen tiedot",
         "formVisibilityLabel": "Lomakkeen näkyvyys",
         "private": "Yksityinen",
-        "public": "Julkinen"
+        "public": "Julkinen",
+        "tooltipDescription": "Aseta ehdollinen näkyvyys osiolle tai kentälle."
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Käyttäjäryhmän asetukset",

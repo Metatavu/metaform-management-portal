@@ -1,4 +1,4 @@
-import { Checkbox, Divider, FormControl, FormControlLabel, FormLabel, Icon, MenuItem, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Checkbox, Divider, FormControl, FormControlLabel, FormLabel, Icon, MenuItem, Stack, Tab, Tabs, TextField, Tooltip, Typography } from "@mui/material";
 import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVisibility } from "generated/client";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
@@ -140,15 +140,15 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
           disabled
         />
         <Divider/>
-        <FormLabel>{ strings.draftEditorScreen.editor.visibility.formVisibility }</FormLabel>
+        <FormLabel>{ strings.draftEditorScreen.editor.form.formVisibility }</FormLabel>
         <TextField
           select
-          label={ strings.draftEditorScreen.editor.visibility.formVisibilityLabel }
+          label={ strings.draftEditorScreen.editor.form.formVisibilityLabel }
           value={ pendingForm?.visibility }
           onChange={ event => onFormVisibilityChange(event.target.value as MetaformVisibility) }
         >
-          <MenuItem value={ MetaformVisibility.Public }>{ strings.draftEditorScreen.editor.visibility.public }</MenuItem>
-          <MenuItem value={ MetaformVisibility.Private }>{ strings.draftEditorScreen.editor.visibility.private }</MenuItem>
+          <MenuItem value={ MetaformVisibility.Public }>{ strings.draftEditorScreen.editor.form.public }</MenuItem>
+          <MenuItem value={ MetaformVisibility.Private }>{ strings.draftEditorScreen.editor.form.private }</MenuItem>
         </TextField>
         <Divider/>
         <FormLabel>{ strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfo }</FormLabel>
@@ -251,14 +251,18 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
         onChange={ (_, value: number) => setTabIndex(value) }
         value={ tabIndex }
       >
-        <Tab
-          value={ 0 }
-          label={ strings.draftEditorScreen.editor.form.tabTitle }
-        />
-        <Tab
-          value={ 1 }
-          label={ strings.draftEditorScreen.editor.fields.tabTitle }
-        />
+        <Tooltip title={ strings.draftEditorScreen.editor.form.tooltipDescription }>
+          <Tab
+            value={ 0 }
+            label={ strings.draftEditorScreen.editor.form.tabTitle }
+          />
+        </Tooltip>
+        <Tooltip title={ strings.draftEditorScreen.editor.fields.tooltipDescription }>
+          <Tab
+            value={ 1 }
+            label={ strings.draftEditorScreen.editor.fields.tabTitle }
+          />
+        </Tooltip>
       </Tabs>
       <TabPanel value={ tabIndex } index={ 0 }>
         { renderFormTab() }

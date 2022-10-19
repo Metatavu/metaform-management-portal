@@ -1,7 +1,7 @@
 import Api from "api";
 import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, MetaformVersion, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
-import { Dictionary, ReplyAuditLog } from "types";
+import { Dictionary, MemberGroupPermission, ReplyAuditLog } from "types";
 import strings from "localization/strings";
 import moment from "moment";
 import { FormContext } from "../types/index";
@@ -239,7 +239,7 @@ namespace MetaformUtils {
    */
   export const createSection = (title?: string, fields?: any[]): MetaformSection => {
     return {
-      title: title ?? "Section",
+      title: title ?? strings.draftEditorScreen.editor.defaultSectionTitle,
       fields: fields ?? []
     };
   };
@@ -465,7 +465,7 @@ namespace MetaformUtils {
    *
    * @returns status section for form
    */
-  export const formStatusSection = (): MetaformField => {
+  export const createFormStatusField = (): MetaformField => {
     return {
       name: "status",
       type: MetaformFieldType.Radio,
@@ -563,7 +563,7 @@ namespace MetaformUtils {
       }
       return true;
     }
-    
+
     return !!fieldRule.and?.some(rule => fieldRuleMatch(rule, match, fieldOptionMatch)) ||
     !!fieldRule.or?.some(rule => fieldRuleMatch(rule, match, fieldOptionMatch));
   };
@@ -580,6 +580,29 @@ namespace MetaformUtils {
     }
 
     return [0, 6].includes(date.getDay()) || !!holiday.isHoliday(date);
+  };
+
+  /**
+   * Gets option permission group
+   *
+   * @param option metaform field option
+   * @return a (groupId, permission) tuple, undefined if no permission defined
+   */
+  export const getOptionPermissionGroup = (option: MetaformFieldOption): [ string, MemberGroupPermission ] | undefined => {
+    if (option.permissionGroups === undefined) {
+      return undefined;
+    }
+    const { permissionGroups } = option;
+
+    if (permissionGroups.editGroupIds?.length) {
+      return [ permissionGroups.editGroupIds[0], MemberGroupPermission.EDIT ];
+    } if (permissionGroups.viewGroupIds?.length) {
+      return [ permissionGroups.viewGroupIds[0], MemberGroupPermission.VIEW ];
+    } if (permissionGroups.notifyGroupIds?.length) {
+      return [ permissionGroups.notifyGroupIds[0], MemberGroupPermission.NOTIFY ];
+    }
+
+    return undefined;
   };
 }
 
