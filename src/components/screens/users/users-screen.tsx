@@ -6,7 +6,7 @@ import { NavigationTabContainer } from "styled/layouts/navigations";
 import { PersonAdd, GroupAdd, Edit } from "@mui/icons-material";
 import { ErrorContext } from "components/contexts/error-handler";
 import { useApiClient } from "app/hooks";
-import { Metaform, MetaformMember, MetaformMemberGroup } from "generated/client";
+import { Metaform, MetaformMember, MetaformMemberGroup, User } from "generated/client";
 import AddMemberGroupDialog from "components/users/add-member-group-dialog";
 import UsersTable from "components/users/users-table";
 import AddMemberDialog from "components/users/add-member-dialog";
@@ -21,7 +21,7 @@ import EditMemberDialog from "components/users/edit-member-dialog";
 const UsersScreen: React.FC = () => {
   const errorContext = React.useContext(ErrorContext);
   const apiClient = useApiClient(Api.getApiClient);
-  const { metaformsApi, metaformMemberGroupsApi, metaformMembersApi } = apiClient;
+  const { metaformsApi, metaformMemberGroupsApi, metaformMembersApi, usersApi } = apiClient;
 
   const [ loading, setLoading ] = React.useState<boolean>(false);
   const [ loadingMemberId, setLoadingMemberId ] = React.useState<string>();
@@ -33,6 +33,64 @@ const UsersScreen: React.FC = () => {
   const [ addMemberGroupOpen, setAddMemberGroupOpen ] = React.useState<boolean>(false);
   const [ addMemberOpen, setAddMemberOpen ] = React.useState<boolean>(false);
   const [ editMemberOpen, setEditMemberOpen ] = React.useState<boolean>(false);
+
+  /**
+   * Search users from the API
+   * 
+   * @param search search
+   */
+  const searchUsers = async (search: string): Promise<User[]> => {
+    setLoading(true);
+
+    try {
+      const users = await usersApi.listUsers({ search: search });
+      
+      return users;
+    } catch (err) {
+      errorContext.setError(strings.errorHandling.usersScreen.loadUsers, err);
+    }
+
+    setLoading(false);
+
+    return [];
+  };
+
+  /**
+   * Creates new User
+   * 
+   * @param user user
+   */
+  const createUser = async (user: User): Promise<User | undefined> => {
+    setLoading(true);
+    
+    try {
+      const createdUser = await usersApi.createUser({ user: user });
+
+      return createdUser;
+    } catch (err) {
+      errorContext.setError(strings.errorHandling.usersScreen.createUser, err);
+    }
+
+    setLoading(false);
+  };
+
+  /**
+   * Edits User
+   * 
+   * @param user User
+   */
+  const editUser = async (user: User) => {
+    setLoading(true);
+
+    try {
+      await usersApi.updateUser({
+        userId: user.id!,
+        user: user
+      });
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.usersScreen.updateUser, e);
+    }
+  };
 
   /**
    * Load metaforms from the API
@@ -200,6 +258,33 @@ const UsersScreen: React.FC = () => {
   };
 
   /**
+   * Event handler for member dialog create
+   *
+   * @param member member's details
+   */
+  const onAddMemberDialogCreate = async (member: MetaformMember) => {
+    if (!selectedMetaformId) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const createdMember = await metaformMembersApi.createMetaformMember({
+        metaformId: selectedMetaformId,
+        metaformMember: member
+      });
+
+      setMembers([ ...members, createdMember ]);
+    } catch (err) {
+      errorContext.setError(strings.errorHandling.usersScreen.createMember, err);
+    }
+
+    setAddMemberOpen(false);
+    setLoading(false);
+  };
+
+  /**
    * New member group button click listener
    */
   const onNewMemberGroupButtonClick = () => setAddMemberGroupOpen(true);
@@ -229,33 +314,6 @@ const UsersScreen: React.FC = () => {
    */
   const onEditMemberDialogCancel = () => setEditMemberOpen(false);
 
-  /**
-   * Event handler for member dialog create
-   *
-   * @param member member's details
-   */
-  const onAddMemberDialogCreate = async (member: MetaformMember) => {
-    if (!selectedMetaformId) {
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const createdMember = await metaformMembersApi.createMetaformMember({
-        metaformId: selectedMetaformId,
-        metaformMember: member
-      });
-
-      setMembers([ ...members, createdMember ]);
-    } catch (err) {
-      errorContext.setError(strings.errorHandling.usersScreen.createMember, err);
-    }
-
-    setAddMemberOpen(false);
-    setLoading(false);
-  };
-
   React.useEffect(() => {
     loadMetaforms();
   }, []);
@@ -272,6 +330,8 @@ const UsersScreen: React.FC = () => {
         onCreate={ onAddMemberDialogCreate }
         onCancel={ onAddMemberDialogCancel }
         setLoading={ setLoading }
+        searchUsers={ searchUsers }
+        createUser={ createUser }
       />
       <AddMemberGroupDialog
         loading={ loading }
@@ -282,9 +342,10 @@ const UsersScreen: React.FC = () => {
       <EditMemberDialog
         loading={ loading }
         open={ editMemberOpen }
-        onEdit={ () => null }
         setLoading={ setLoading }
         onCancel={ onEditMemberDialogCancel }
+        searchUsers={ searchUsers }
+        editUser={ editUser }
       />
       <NavigationTabContainer>
         <NavigationTab

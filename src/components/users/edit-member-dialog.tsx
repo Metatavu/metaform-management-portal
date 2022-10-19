@@ -1,11 +1,8 @@
-import { ErrorContext } from "components/contexts/error-handler";
 import { User, UserFederationSource } from "generated/client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import strings from "../../localization/strings";
 import * as EmailValidator from "email-validator";
-import { useApiClient } from "app/hooks";
-import Api from "api";
-import { Button, IconButton, InputAdornment, MenuItem, Stack, TextField } from "@mui/material";
+import { Button, FormControlLabel, IconButton, InputAdornment, MenuItem, Stack, Switch, TextField } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import UsersScreenDialog from "./users-screen-dialog";
 import GenericLoaderWrapper from "components/generic/generic-loader";
@@ -20,10 +17,11 @@ interface Props {
   loading: boolean;
   open: boolean;
   onCancel: () => void;
-  onEdit: (user: User) => void;
   setLoading: (value: boolean) => void;
+  searchUsers: (search: string) => Promise<User[]>;
+  editUser: (user: User) => Promise<void>;
 }
-/* eslint-disable */
+
 /**
  * React component for edit member dialog
  */
@@ -31,35 +29,41 @@ const EditMemberDialog: React.FC<Props> = ({
   loading,
   open,
   onCancel,
-  onEdit,
-  setLoading
+  setLoading,
+  searchUsers,
+  editUser
 }) => {
-  const errorContext = React.useContext(ErrorContext);
-  const apiClient = useApiClient(Api.getApiClient);
-  const { usersApi } = apiClient;
   const [ selectedMetaformUser, setSelectedMetaformUser ] = useState<User | undefined>();
   const [ selectedCardUser, setSelectedCardUser ] = useState<User | undefined>();
-  const [ updatedUser, setUpdatedUser ] = useState<User | undefined>();
   const [ userSearch, setUserSearch ] = useState<string>("");
   const [ foundMetaformUsers, setFoundMetaformUsers ] = useState<User[]>([]);
   const [ foundCardUsers, setFoundCardUsers ] = useState<User[]>([]);
+  const [ linkSwitchChecked, setLinkSwitchChecked ] = useState<boolean>(false);
 
   /**
-   * Event handler for create button click
+   * Event handler for edit button click
    */
-  const onEditClick = async () => {
-    setLoading(true);
-
-    try {
-      if (selectedCardUser === undefined) {
-        if (!selectedMetaformUser) return;
-        await usersApi.updateUser({
-          userId: selectedMetaformUser?.id!,
-          user: { ...selectedMetaformUser, federatedIdentities: [] }
-        });
+  const handleEditClick = async () => {
+    if (!selectedMetaformUser) {
+      return;
+    }
+    
+    if (linkSwitchChecked) {
+      if (!selectedCardUser) {
+        return;
       }
-    } catch (e) {
-      errorContext.setError((e as string).toString(), e);
+      const federatedUser = selectedCardUser?.federatedIdentities?.find(federatedIdentitty =>
+        federatedIdentitty.source === UserFederationSource.Card);
+
+      await editUser({
+        ...selectedMetaformUser,
+        federatedIdentities: [ ...selectedMetaformUser.federatedIdentities!, federatedUser! ]
+      });
+    } else {
+      await editUser({
+        ...selectedMetaformUser,
+        federatedIdentities: []
+      });
     }
 
     setLoading(false);
@@ -68,7 +72,7 @@ const EditMemberDialog: React.FC<Props> = ({
   /**
    * Event handler for cancel click
    */
-  const onCancelClick = () => {
+  const handleCancelClick = () => {
     onCancel();
   };
 
@@ -92,9 +96,18 @@ const EditMemberDialog: React.FC<Props> = ({
    * 
    * @param event event
    */
-  const handleMetaformUserSelectChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMetaformUserSelectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target: { value } } = event;
     setSelectedMetaformUser(foundMetaformUsers.find(user => user.id === value));
+  };
+
+  /**
+   * Event handler for changing switch value
+   * 
+   * @param event event
+   */
+  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLinkSwitchChecked(event.target.checked);
   };
 
   /**
@@ -118,20 +131,13 @@ const EditMemberDialog: React.FC<Props> = ({
   /**
    * Searches users by text search
    */
-  const searchUsers = async () => {
-    setLoading(true);
+  const handleSearchButtonClick = async () => {
+    const users = (await searchUsers(userSearch))
+      .filter(user => user.displayName !== API_ADMIN_USER)
+      .sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
 
-    try {
-      const users = await usersApi.listUsers({ search: userSearch });
-      const filteredUsers = users
-        .filter(user => user.displayName !== API_ADMIN_USER)
-        .sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
-      setFoundMetaformUsers(filteredUsers.filter(user => user.id));
-      setFoundCardUsers(filteredUsers.filter(user => !user.id));
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.usersScreen.loadUsers, e);
-    }
-
+    setFoundMetaformUsers(users.filter(user => user.id));
+    setFoundCardUsers(users.filter(user => !user.id));
     setLoading(false);
   };
 
@@ -148,7 +154,7 @@ const EditMemberDialog: React.FC<Props> = ({
     setSelectedMetaformUser(updatedUser);
   };
 
-  const valid = updatedUser?.firstName && updatedUser?.lastName && EmailValidator.validate(updatedUser.email);
+  const valid = selectedMetaformUser?.firstName && selectedMetaformUser?.lastName && EmailValidator.validate(selectedMetaformUser.email);
   
   /**
    * Renders dialog content
@@ -174,7 +180,7 @@ const EditMemberDialog: React.FC<Props> = ({
         <Button
           sx={{ flex: 0.25, height: 56 }}
           size="large"
-          onClick={ searchUsers }
+          onClick={ handleSearchButtonClick }
           disabled={ loading }
         >
           { strings.userManagementScreen.editMemberDialog.searchButton }
@@ -200,9 +206,6 @@ const EditMemberDialog: React.FC<Props> = ({
         onChange={ handleCardUserSelectChange }
         label={ strings.userManagementScreen.editMemberDialog.cardAuthUsersSelectLabel }
       >
-        <MenuItem value={ EMPTY_SELECTION }>
-          { strings.userManagementScreen.editMemberDialog.emptySelection }
-        </MenuItem>
         { foundCardUsers.map(user => {
           const federatedUser = user.federatedIdentities?.find(federatedIdentity => federatedIdentity.source === UserFederationSource.Card);
           return (
@@ -212,6 +215,15 @@ const EditMemberDialog: React.FC<Props> = ({
         })
         }
       </TextField>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={ linkSwitchChecked }
+            onChange={ handleSwitchChange }
+          />
+        }
+        label={ strings.userManagementScreen.editMemberDialog.userIsLinked }
+      />
       <TextField
         disabled={ !selectedMetaformUser ?? loading }
         fullWidth
@@ -259,21 +271,27 @@ const EditMemberDialog: React.FC<Props> = ({
    * Renders dialog actions
    */
   const renderDialogActions = () => [
-    <Button disableElevation variant="contained" onClick={ onCancelClick } color="secondary" autoFocus>
+    <Button disableElevation variant="contained" onClick={ handleCancelClick } color="secondary" autoFocus>
       { strings.userManagementScreen.editMemberDialog.cancelButton }
     </Button>,
     <GenericLoaderWrapper loading={ loading }>
-      <Button onClick={ onEditClick } color="primary" disabled={ false }>
+      <Button onClick={ handleEditClick } color="primary" disabled={ !valid }>
         { strings.userManagementScreen.editMemberDialog.editButton }
       </Button>
     </GenericLoaderWrapper>
   ];
+
+  useEffect(() => {
+    setLinkSwitchChecked(!!selectedMetaformUser?.federatedIdentities?.length ?? false);
+  }, [ selectedMetaformUser ]);
 
   return (
     <UsersScreenDialog
       open={ open }
       dialogTitle={ strings.userManagementScreen.editMemberDialog.title }
       dialogDescription={ strings.userManagementScreen.editMemberDialog.text }
+      helperIcon
+      tooltipText={ strings.generic.notImplemented }
       dialogContent={ renderDialogContent() }
       dialogActions={ renderDialogActions() }
       onCancel={ onCancel }

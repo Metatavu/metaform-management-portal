@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import strings from "../../localization/strings";
-import { Button, IconButton, InputAdornment, ListItem, ListItemIcon, MenuItem, Stack, TextField } from "@mui/material";
+import { Button, IconButton, InputAdornment, ListItem, ListItemIcon, MenuItem, Stack, TextField, Tooltip } from "@mui/material";
 import { MetaformMember, MetaformMemberRole, User, UserFederationSource } from "generated/client";
 import * as EmailValidator from "email-validator";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import LinkIcon from "@mui/icons-material/Link";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useApiClient } from "app/hooks";
-import Api from "api";
-import { ErrorContext } from "components/contexts/error-handler";
 import UsersScreenDialog from "./users-screen-dialog";
 
 const API_ADMIN_USER = "api-admin";
@@ -23,6 +20,8 @@ interface Props {
   onCancel: () => void;
   onCreate: (member: MetaformMember) => void;
   setLoading: (value: boolean) => void;
+  searchUsers: (search: string) => Promise<User[]>;
+  createUser: (user: User) => Promise<User | undefined>;
 }
 
 /**
@@ -33,11 +32,10 @@ const AddMemberDialog: React.FC<Props> = ({
   open,
   onCancel,
   onCreate,
-  setLoading
+  setLoading,
+  searchUsers,
+  createUser
 }) => {
-  const errorContext = React.useContext(ErrorContext);
-  const apiClient = useApiClient(Api.getApiClient);
-  const { usersApi } = apiClient;
   const [ selectedUser, setSelectedUser ] = useState<User | undefined>();
   const [ userSearch, setUserSearch ] = useState<string>("");
   const [ foundUsers, setFoundUsers ] = useState<User[]>([]);
@@ -107,19 +105,15 @@ const AddMemberDialog: React.FC<Props> = ({
   };
 
   /**
-   * Searches users by text search
+   * Event handler for search button click
    */
-  const searchUsers = async () => {
-    setLoading(true);
+  const handleSearchButtonClick = async () => {
+    const users = (await searchUsers(userSearch))
+      .filter(user => user.displayName !== API_ADMIN_USER)
+      .sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
+    // users.sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
 
-    try {
-      const users = await usersApi.listUsers({ search: userSearch });
-      users.sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
-      const filteredUsers = users.filter((user: User, idx: number) => user.displayName !== API_ADMIN_USER && idx < 10);
-      setFoundUsers(filteredUsers);
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.usersScreen.loadUsers, e);
-    }
+    setFoundUsers(users.length <= 10 ? users : users.slice(10));
 
     setLoading(false);
   };
@@ -130,40 +124,36 @@ const AddMemberDialog: React.FC<Props> = ({
   const handleSearchClear = () => setUserSearch("");
 
   /**
-   * Event handler for name create click
+   * Event handler for create button click
    */
-  const onCreateClick = async () => {
-    setLoading(true);
-
+  const handleCreateClick = async () => {
     if (!selectedUser) {
       return;
     }
 
-    try {
-      if (!selectedUser.id) {
-        const userToCreate: User = {
-          ...selectedUser,
-          username: selectedUser.displayName ?? selectedUser.email
-        };
-        const createdUser = await usersApi.createUser({ user: userToCreate });
-        const { firstName, lastName, email } = createdUser;
-        onCreate({
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          role: MetaformMemberRole.Manager
-        });
-      } else {
-        const { firstName, lastName, email } = selectedUser;
-        onCreate({
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          role: MetaformMemberRole.Manager
-        });
+    if (!selectedUser.id) {
+      const createdUser = await createUser({
+        ...selectedUser,
+        username: selectedUser.displayName ?? selectedUser.email
+      });
+
+      if (!createdUser) {
+        return;
       }
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.usersScreen.createUser, e);
+
+      onCreate({
+        firstName: createdUser.firstName,
+        lastName: createdUser.lastName,
+        email: createdUser.email,
+        role: MetaformMemberRole.Manager
+      });
+    } else {
+      onCreate({
+        firstName: selectedUser.firstName,
+        lastName: selectedUser.lastName,
+        email: selectedUser.email,
+        role: MetaformMemberRole.Manager
+      });
     }
 
     setLoading(false);
@@ -189,25 +179,27 @@ const AddMemberDialog: React.FC<Props> = ({
   const renderDialogContent = () => (
     <Stack spacing={ 1 }>
       <Stack spacing={ 1 } direction="row" alignItems="center">
-        <TextField
-          sx={{ flex: 1 }}
-          value={ userSearch }
-          onChange={ handleUserSearchChange }
-          size="medium"
-          label={ strings.userManagementScreen.addMemberDialog.freeTextSearchLabel }
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton disabled={ !userSearch } onClick={ handleSearchClear }>
-                  <ClearIcon/>
-                </IconButton>
-              </InputAdornment>)
-          }}
-        />
+        <Tooltip title="TOOLTIPPI">
+          <TextField
+            sx={{ flex: 1 }}
+            value={ userSearch }
+            onChange={ handleUserSearchChange }
+            size="medium"
+            label={ strings.userManagementScreen.addMemberDialog.freeTextSearchLabel }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton disabled={ !userSearch } onClick={ handleSearchClear }>
+                    <ClearIcon/>
+                  </IconButton>
+                </InputAdornment>)
+            }}
+          />
+        </Tooltip>
         <Button
           sx={{ flex: 0.25, height: 56 }}
           size="large"
-          onClick={ searchUsers }
+          onClick={ handleSearchButtonClick }
           disabled={ loading }
         >
           { strings.userManagementScreen.addMemberDialog.searchButton }
@@ -226,7 +218,7 @@ const AddMemberDialog: React.FC<Props> = ({
         disabled={ !selectedUser ?? loading }
         fullWidth
         size="medium"
-        required={ true }
+        required
         value={ selectedUser?.email ?? "" }
         type="email"
         name="email"
@@ -237,7 +229,7 @@ const AddMemberDialog: React.FC<Props> = ({
         disabled={ !selectedUser ?? loading }
         fullWidth
         size="medium"
-        required={ true }
+        required
         value={ selectedUser?.firstName ?? "" }
         name="firstName"
         label={ strings.userManagementScreen.addMemberDialog.firstNameLabel }
@@ -247,7 +239,7 @@ const AddMemberDialog: React.FC<Props> = ({
         disabled={ !selectedUser ?? loading }
         fullWidth
         size="medium"
-        required={ true }
+        required
         name="lastName"
         value={ selectedUser?.lastName ?? "" }
         label={ strings.userManagementScreen.addMemberDialog.lastNameLabel }
@@ -260,7 +252,6 @@ const AddMemberDialog: React.FC<Props> = ({
         value={ (selectedUser && getUsersUPNNumber(selectedUser)) ?? "" }
         label={ strings.userManagementScreen.addMemberDialog.upnNumberLabel }
         onChange={ onTextFieldChange }
-        required={ true }
         name="upnNumber"
       />
     </Stack>
@@ -274,7 +265,7 @@ const AddMemberDialog: React.FC<Props> = ({
       { strings.userManagementScreen.addMemberDialog.cancelButton }
     </Button>,
     <GenericLoaderWrapper loading={ loading }>
-      <Button onClick={ onCreateClick } color="primary" disabled={ !valid }>
+      <Button onClick={ handleCreateClick } color="primary" disabled={ !valid }>
         { strings.userManagementScreen.addMemberDialog.createButton }
       </Button>
     </GenericLoaderWrapper>
@@ -285,6 +276,8 @@ const AddMemberDialog: React.FC<Props> = ({
       open={ open }
       dialogTitle={ strings.userManagementScreen.addMemberDialog.title }
       dialogDescription={ strings.userManagementScreen.addMemberDialog.text }
+      helperIcon
+      tooltipText={ strings.generic.notImplemented }
       dialogContent={ renderDialogContent() }
       dialogActions={ renderDialogActions() }
       onCancel={ onCancel }
