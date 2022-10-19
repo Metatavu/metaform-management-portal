@@ -45,7 +45,8 @@
       "createForm": "Lomakkeen luominen epäonnistui",
       "deleteVersion": "Lomakeversion poistaminen epäonnistui",
       "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
-      "convertSosmetaError": "Sosmetan muuntaminen epäonnistui"
+      "convertSosmetaError": "Sosmetan muuntaminen epäonnistui",
+      "getLastModifiers": "Lomakkeiden viimeisten muokkaajien haku epäonnistui"
     },
     "draftEditorScreen": {
       "findDraft": "Lomakeversion haku epäonnistui",
@@ -445,6 +446,7 @@
     "formCreatedAt": "LUOTU",
     "formModifiedAt": "MUOKATTU",
     "formLastModifier": "VIIMEISIN MUOKKAAJA",
+    "formLastModifierNotFound": "Ei löytynyt",
     "formVersionArchived": "arkistoitu",
     "formVersionDraft": "luonnos",
     "drawer": {
