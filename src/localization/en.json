@@ -406,7 +406,7 @@
       "freeTextSearchLabel": "User search",
       "metaformUsersSelectLabel": "Portal users",
       "cardAuthUsersSelectLabel": "Card users",
-      "emptySelection": "No selection",
+      "userIsLinked": "User is linked to card",
       "searchButton": "Search",
       "emailLabel": "Email",
       "firstNameLabel": "First name",

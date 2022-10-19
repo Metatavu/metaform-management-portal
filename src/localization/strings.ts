@@ -442,7 +442,7 @@ export interface Localized extends LocalizedStringsMethods {
       freeTextSearchLabel: string;
       metaformUsersSelectLabel: string;
       cardAuthUsersSelectLabel: string;
-      emptySelection: string;
+      userIsLinked: string;
       searchButton: string;
       emailLabel: string;
       firstNameLabel: string;
