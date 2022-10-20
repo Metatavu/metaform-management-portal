@@ -3,16 +3,17 @@ import Api from "api";
 import strings from "localization/strings";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import { NavigationTabContainer } from "styled/layouts/navigations";
-import { PersonAdd, GroupAdd } from "@mui/icons-material";
+import { PersonAdd, GroupAdd, Edit } from "@mui/icons-material";
 import { ErrorContext } from "components/contexts/error-handler";
 import { useApiClient } from "app/hooks";
-import { Metaform, MetaformMember, MetaformMemberGroup } from "generated/client";
+import { Metaform, MetaformMember, MetaformMemberGroup, User } from "generated/client";
 import AddMemberGroupDialog from "components/users/add-member-group-dialog";
 import UsersTable from "components/users/users-table";
 import AddMemberDialog from "components/users/add-member-dialog";
 import UsersFilter from "components/users/users-filter";
 import { RoundActionButton } from "styled/generic/form";
 import theme from "theme";
+import EditMemberDialog from "components/users/edit-member-dialog";
 
 /**
  * Users screen component
@@ -20,7 +21,7 @@ import theme from "theme";
 const UsersScreen: React.FC = () => {
   const errorContext = React.useContext(ErrorContext);
   const apiClient = useApiClient(Api.getApiClient);
-  const { metaformsApi, metaformMemberGroupsApi, metaformMembersApi } = apiClient;
+  const { metaformsApi, metaformMemberGroupsApi, metaformMembersApi, usersApi } = apiClient;
 
   const [ loading, setLoading ] = React.useState<boolean>(false);
   const [ loadingMemberId, setLoadingMemberId ] = React.useState<string>();
@@ -31,6 +32,65 @@ const UsersScreen: React.FC = () => {
   const [ selectedMemberGroupId, setSelectedMemberGroupId ] = React.useState<string>();
   const [ addMemberGroupOpen, setAddMemberGroupOpen ] = React.useState<boolean>(false);
   const [ addMemberOpen, setAddMemberOpen ] = React.useState<boolean>(false);
+  const [ editMemberOpen, setEditMemberOpen ] = React.useState<boolean>(false);
+
+  /**
+   * Searches users from the API
+   * 
+   * @param search search
+   */
+  const searchUsers = async (search: string): Promise<User[]> => {
+    setLoading(true);
+
+    try {
+      const users = await usersApi.listUsers({ search: search });
+      
+      return users;
+    } catch (err) {
+      errorContext.setError(strings.errorHandling.usersScreen.loadUsers, err);
+    }
+
+    setLoading(false);
+
+    return [];
+  };
+
+  /**
+   * Creates new User
+   * 
+   * @param user user
+   */
+  const createUser = async (user: User): Promise<User | undefined> => {
+    setLoading(true);
+    
+    try {
+      const createdUser = await usersApi.createUser({ user: user });
+
+      return createdUser;
+    } catch (err) {
+      errorContext.setError(strings.errorHandling.usersScreen.createUser, err);
+    }
+
+    setLoading(false);
+  };
+
+  /**
+   * Edits User
+   * 
+   * @param user User
+   */
+  const editUser = async (user: User) => {
+    setLoading(true);
+
+    try {
+      await usersApi.updateUser({
+        userId: user.id!,
+        user: user
+      });
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.usersScreen.updateUser, e);
+    }
+  };
 
   /**
    * Load metaforms from the API
@@ -168,13 +228,6 @@ const UsersScreen: React.FC = () => {
   };
 
   /**
-   * New member group button click listener
-   */
-  const onNewMemberGroupButtonClick = () => {
-    setAddMemberGroupOpen(true);
-  };
-
-  /**
    * Event handler for member group dialog create
    *
    * @param displayName group's display name
@@ -205,27 +258,6 @@ const UsersScreen: React.FC = () => {
   };
 
   /**
-   * Event handler for member group dialog cancel
-   */
-  const onAddMemberGroupDialogCancel = () => {
-    setAddMemberGroupOpen(false);
-  };
-
-  /**
-   * New member button click listener
-   */
-  const onNewMemberButtonClick = () => {
-    setAddMemberOpen(true);
-  };
-
-  /**
-   * Event handler for member dialog cancel
-   */
-  const onAddMemberDialogCancel = () => {
-    setAddMemberOpen(false);
-  };
-
-  /**
    * Event handler for member dialog create
    *
    * @param member member's details
@@ -252,6 +284,36 @@ const UsersScreen: React.FC = () => {
     setLoading(false);
   };
 
+  /**
+   * New member group button click listener
+   */
+  const onNewMemberGroupButtonClick = () => setAddMemberGroupOpen(true);
+
+  /**
+   * Event handler for member group dialog cancel
+   */
+  const onAddMemberGroupDialogCancel = () => setAddMemberGroupOpen(false);
+
+  /**
+   * New member button click listener
+   */
+  const onNewMemberButtonClick = () => setAddMemberOpen(true);
+
+  /**
+   * Event handler for member dialog cancel
+   */
+  const onAddMemberDialogCancel = () => setAddMemberOpen(false);
+
+  /**
+   * Edit User button click listener
+   */
+  const onEditMemberButtonClick = () => setEditMemberOpen(true);
+
+  /**
+   * Event handler for User edit dialog cancel
+   */
+  const onEditMemberDialogCancel = () => setEditMemberOpen(false);
+
   React.useEffect(() => {
     loadMetaforms();
   }, []);
@@ -267,6 +329,9 @@ const UsersScreen: React.FC = () => {
         open={ addMemberOpen }
         onCreate={ onAddMemberDialogCreate }
         onCancel={ onAddMemberDialogCancel }
+        setLoading={ setLoading }
+        searchUsers={ searchUsers }
+        createUser={ createUser }
       />
       <AddMemberGroupDialog
         loading={ loading }
@@ -274,10 +339,26 @@ const UsersScreen: React.FC = () => {
         onCreate={ onAddMemberGroupDialogCreate }
         onCancel={ onAddMemberGroupDialogCancel }
       />
+      <EditMemberDialog
+        loading={ loading }
+        open={ editMemberOpen }
+        setLoading={ setLoading }
+        onCancel={ onEditMemberDialogCancel }
+        searchUsers={ searchUsers }
+        editUser={ editUser }
+      />
       <NavigationTabContainer>
         <NavigationTab
           text={ strings.navigationHeader.usersScreens.subheader }
         />
+        <RoundActionButton
+          variant="outlined"
+          endIcon={ <Edit/> }
+          onClick={ onEditMemberButtonClick }
+          sx={{ mr: theme.spacing(2) }}
+        >
+          { strings.userManagementScreen.editMemberButton }
+        </RoundActionButton>
         <RoundActionButton
           disabled={ !selectedMetaformId }
           variant="outlined"

@@ -45,7 +45,8 @@
       "createForm": "Lomakkeen luominen epäonnistui",
       "deleteVersion": "Lomakeversion poistaminen epäonnistui",
       "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
-      "convertSosmetaError": "Sosmetan muuntaminen epäonnistui"
+      "convertSosmetaError": "Sosmetan muuntaminen epäonnistui",
+      "getLastModifiers": "Lomakkeiden viimeisten muokkaajien haku epäonnistui"
     },
     "draftEditorScreen": {
       "findDraft": "Lomakeversion haku epäonnistui",
@@ -84,11 +85,14 @@
     "usersScreen": {
       "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",
       "loadMemberGroups": "Käyttäjäryhmien latauksessa tapahtui virhe",
-      "createMember": "Käyttäjän luonnissa tapahtui virhe",
+      "createMember": "Käyttäjän lisäämisessä lomakkeelle tapahtui virhe",
       "createMemberGroup": "Käyttäjäryhmän luonnissa tapahtui virhe",
       "loadMembers": "Käyttäjien latauksessa tapahtui virhe",
       "removeMemberNotFound": "Ryhmän poistossa tapahtui virhe, käyttäjää ei löytynyt",
-      "addMemberNotFound": "Ryhmän lisäämisessä tapahtui virhe, käyttäjää ei löytynyt"
+      "addMemberNotFound": "Ryhmän lisäämisessä tapahtui virhe, käyttäjää ei löytynyt",
+      "loadUsers": "Käyttäjien latauksessa tapahtui virhe",
+      "createUser": "Käyttäjän luonnissa tapahtui virhe",
+      "updateUser": "Käyttäjän päivityksessä tapahtui virhe"
     },
     "previewScreen": {
       "shareLink": "Linkin jakamisessa tapahtui virhe"
@@ -158,7 +162,7 @@
       "description": "Käyttäjien tarkastelu ja käyttäjäryhmien hallinta.",
       "subheader": {
         "title": "Käyttäjänhallinta",
-        "description": "Ohjeteksti"
+        "description": "Lomakkeiden käyttäjien ja ryhmien hallinnointi."
       }
     },
     "editorScreens": {
@@ -214,6 +218,7 @@
       "addSection": "Lisää osio",
       "emptySection": "Tyhjä osio",
       "emptySelection": "Aloita muokkaaminen valitsemalla osio tai kenttä.",
+      "defaultSectionTitle": "Osio",
       "form": {
         "tabTitle": "Lomake",
         "formTitle": "Lomakkeen otsikko",
@@ -221,8 +226,11 @@
         "versionInfo": "Version tiedot",
         "formVersion": "Versio",
         "formStyling": "Lomakkeen ulkoasu",
-        "backgroundImage": "Taustakuva",
-        "backgroundColor": "Taustaväri"
+        "formVisibility": "Lomakkeen tiedot",
+        "formVisibilityLabel": "Lomakkeen näkyvyys",
+        "private": "Yksityinen (Suomi.fi)",
+        "public": "Julkinen",
+        "tooltipDescription": "Lomakkeen perustiedot: otsikko, näkyvyys ja oletus-käyttäjäryhmä."
       },
       "fields": {
         "tabTitle": "Kentät",
@@ -244,17 +252,20 @@
         "dateAndTime": "Päivämäärä & aika",
         "files": "Liitteet",
         "table": "Taulukko",
-        "submit": "Lähetä"
+        "submit": "Lähetä",
+        "tooltipDescription": "Lisää kenttiä lomakkeelle raahaamalla."
       },
       "features": {
         "tabTitle": "Ominaisuudet",
         "title": "Title",
+        "type": "Tyyppi",
         "section": {
           "sectionData": "Osion tiedot",
           "sectionTitle": "Osion otsikko"
         },
         "field": {
           "fieldData": "Kentän tiedot",
+          "fieldType": "Kentän tyyppi",
           "required": "Pakollisuus",
           "defineUserGroup": "Määrittää käyttäjäryhmän",
           "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
@@ -273,7 +284,8 @@
             "minValueLabel": "Kentän pienin arvo",
             "maxValueLabel": "Kentän suurin arvo"
           }
-        }
+        },
+        "tooltipDescription": "Muokkaa osion tai kentän tietoja ja ominaisuuksia."
       },
       "visibility": {
         "tabTitle": "näkyvyys",
@@ -292,7 +304,8 @@
         "formVisibility": "Lomakkeen tiedot",
         "formVisibilityLabel": "Lomakkeen näkyvyys",
         "private": "Yksityinen",
-        "public": "Julkinen"
+        "public": "Julkinen",
+        "tooltipDescription": "Aseta ehdollinen näkyvyys osiolle tai kentälle."
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Käyttäjäryhmän asetukset",
@@ -334,18 +347,21 @@
       "group": "Valitse ryhmä",
       "user": "Valitse käyttäjä"
     },
+    "editMemberButton": "Muokkaa käyttäjää",
     "addMemberButton": "Uusi käyttäjä",
     "addMemberGroupButton": "Uusi käyttäjäryhmä",
     "addMemberDialog": {
       "title": "Uusi käyttäjä",
       "text": "Lisää uusi käyttäjä lomakkeelle",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "usersSelectLabel": "Käyttäjät",
+      "searchButton": "Hae",
       "emailLabel": "Sähköpostiosoite",
       "firstNameLabel": "Etunimi",
       "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
       "createButton": "Luo käyttäjä",
-      "cancelButton": "Peruuta",
-      "roleAdministrator": "Ylläpitäjä",
-      "roleManager": "Ammattilainen"
+      "cancelButton": "Peruuta"
     },
     "addMemberGroupDialog": {
       "title": "Uusi käyttäjäryhmä",
@@ -353,6 +369,21 @@
       "displayNameLabel": "Ryhmän nimi",
       "createButton": "Luo ryhmä",
       "cancelButton": "Peruuta"
+    },
+    "editMemberDialog": {
+      "title": "Muokkaa käyttäjää",
+      "text": "Muokkaa olemassa olevaa käyttäjää",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "metaformUsersSelectLabel": "Portaali-käyttäjät",
+      "cardAuthUsersSelectLabel": "Kortti-käyttäjät",
+      "userIsLinked": "Käyttäjä on linkitetty korttiin",
+      "searchButton": "Hae",
+      "emailLabel": "Sähköpostiosoite",
+      "firstNameLabel": "Etunimi",
+      "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
+      "cancelButton": "Peruuta",
+      "editButton": "Muokkaa käyttäjää"
     },
     "usersTable": {
       "nameColumn": {
@@ -436,6 +467,7 @@
     "formCreatedAt": "LUOTU",
     "formModifiedAt": "MUOKATTU",
     "formLastModifier": "VIIMEISIN MUOKKAAJA",
+    "formLastModifierNotFound": "Ei löytynyt",
     "formVersionArchived": "arkistoitu",
     "formVersionDraft": "luonnos",
     "drawer": {

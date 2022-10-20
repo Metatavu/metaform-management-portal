@@ -32,7 +32,7 @@ namespace SosmetaUtils {
         required ?? fieldData.required
       );
     } catch (e) {
-      // TODO: Error handling/messages
+      console.error("Error happened while handling Sosmeta string field", e);
     }
   };
 
@@ -44,14 +44,18 @@ namespace SosmetaUtils {
    * @returns MetaformField
    */
   const handleSosmetaBooleanField = (sectionName: string, field: any, required?: boolean) => {
-    const fieldData = field.sosmeta;
+    try {
+      const fieldData = field.sosmeta;
 
-    return MetaformUtils.createField(
-      MetaformFieldType.Boolean,
-      fieldData.name[0].value,
-      `${sectionName.toLowerCase()}.${fieldData.name[0].value.toLowerCase()}`,
-      required ?? fieldData.required
-    );
+      return MetaformUtils.createField(
+        MetaformFieldType.Boolean,
+        fieldData.name[0].value,
+        `${sectionName.toLowerCase()}.${fieldData.name[0].value.toLowerCase()}`,
+        required ?? fieldData.required
+      );
+    } catch (e) {
+      console.error("Error happened while handling Sosmeta boolean field", e);
+    }
   };
 
   /**
@@ -72,11 +76,19 @@ namespace SosmetaUtils {
             required
           );
         case SosmetaType.OBJECT:
-          return Object.keys(field.properties).map(x =>
-            handleSosmetaStringField(
-              sectionName,
-              field.properties[x]
-            ));
+          // eslint-disable-next-line no-case-declarations
+          const firstKey = Object.keys(field.properties)[0];
+          if (field.properties[firstKey].sosmeta) {
+            return Object.keys(field.properties).map(property =>
+              handleSosmetaStringField(
+                sectionName,
+                field.properties[property]
+              ));
+          }
+          return handleSosmetaStringField(
+            sectionName,
+            field
+          );
         case SosmetaType.BOOLEAN:
           return handleSosmetaBooleanField(
             sectionName,
@@ -86,7 +98,7 @@ namespace SosmetaUtils {
           break;
       }
     } catch (e) {
-      // TODO: Error handling/messages
+      console.error("Error happened while handling Sosmeta object field", e);
     }
   };
 
@@ -109,7 +121,7 @@ namespace SosmetaUtils {
           requiredFieldNames.includes(field.sosmeta.name[0].value.toLowerCase())
         ));
     } catch (e) {
-      // TODO: Error handling/messages
+      console.error("Error happened while handling Sosmeta array section", e);
     }
   };
 
@@ -133,7 +145,7 @@ namespace SosmetaUtils {
           requiredFieldNames.includes(field.sosmeta.name[0].value.toLowerCase())
         ));
     } catch (e) {
-      // TODO: Error handling/messages
+      console.error("Error happened while handling Sosmeta object section", e);
     }
   };
 
@@ -149,7 +161,7 @@ namespace SosmetaUtils {
 
       return [ handleSosmetaStringField(sosmetaSection.sosmeta.name[0].value, sosmetaSection, required) ];
     } catch (e) {
-      // TODO: Error handling/messages
+      console.error("Error happened while handling Sosmeta string section", e);
     }
   };
 
@@ -160,9 +172,13 @@ namespace SosmetaUtils {
    * @returns MetaformField
    */
   const handleSosmetaBooleanSection = (sosmetaSection: any) => {
-    const { required } = sosmetaSection;
+    try {
+      const { required } = sosmetaSection;
 
-    return [ handleSosmetaBooleanField(sosmetaSection.sosmeta.name[0].value, sosmetaSection, required) ];
+      return [ handleSosmetaBooleanField(sosmetaSection.sosmeta.name[0].value, sosmetaSection, required) ];
+    } catch (e) {
+      console.error("Error happened while handling Sosmeta boolean section", e);
+    }
   };
 
   /**
@@ -261,7 +277,7 @@ namespace SosmetaUtils {
       metaform.title = schema.title.split("'")[1];
       const sosmetaFormPropertyName = Object.keys(schema.properties)[0];
       const sosmetaForm = schema.properties[sosmetaFormPropertyName];
-      metaform.sections = convertSections(sosmetaForm);
+      metaform.sections = convertSections(sosmetaForm).filter(section => section.fields && section.fields.length);
       return validateConvertedField();
     } catch (e) {
       throw new Error(`Error happened while converting Sosmeta Schema: ${e}`);

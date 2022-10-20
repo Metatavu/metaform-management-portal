@@ -940,6 +940,9 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
         })
         }
       />
+      <Typography variant="body2">
+        { `${strings.draftEditorScreen.editor.features.field.fieldType}: ${LocalizationUtils.getLocalizedFieldType(field.type)}` }
+      </Typography>
     </Stack>
   );
 

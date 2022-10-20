@@ -58,6 +58,7 @@ export interface Localized extends LocalizedStringsMethods {
       deleteVersion: string;
       createFormDuplicateNameError: string;
       convertSosmetaError: string;
+      getLastModifiers: string;
     };
     draftEditorScreen: {
       findDraft: string;
@@ -101,6 +102,9 @@ export interface Localized extends LocalizedStringsMethods {
       loadMembers: string;
       removeMemberNotFound: string;
       addMemberNotFound: string;
+      loadUsers: string;
+      createUser: string;
+      updateUser: string;
     };
     previewScreen: {
       shareLink: string;
@@ -250,6 +254,7 @@ export interface Localized extends LocalizedStringsMethods {
       addSection: string;
       emptySection: string;
       emptySelection: string;
+      defaultSectionTitle: string;
       form: {
         tabTitle: string;
         formTitle: string;
@@ -257,8 +262,11 @@ export interface Localized extends LocalizedStringsMethods {
         versionInfo: string;
         formVersion: string;
         formStyling: string;
-        backgroundImage: string;
-        backgroundColor: string;
+        formVisibility: string;
+        formVisibilityLabel: string;
+        private: string;
+        public: string;
+        tooltipDescription: string;
       };
       fields: {
         tabTitle: string;
@@ -281,6 +289,7 @@ export interface Localized extends LocalizedStringsMethods {
         files: string;
         table: string;
         submit: string;
+        tooltipDescription: string;
       };
       features: {
         tabTitle: string;
@@ -291,6 +300,7 @@ export interface Localized extends LocalizedStringsMethods {
         };
         field: {
           fieldData: string;
+          fieldType: string;
           fieldTitle: string;
           defineUserGroup: string;
           selectableFieldsInfo: string;
@@ -310,6 +320,7 @@ export interface Localized extends LocalizedStringsMethods {
             maxValueLabel: string;
           }
         };
+        tooltipDescription: string;
       };
       visibility: {
         tabTitle: string;
@@ -325,10 +336,7 @@ export interface Localized extends LocalizedStringsMethods {
         selectVisibilityInfo: string;
         fieldConditionLabel: string;
         sectionConditionLabel: string;
-        formVisibility: string;
-        formVisibilityLabel: string;
-        private: string;
-        public: string;
+        tooltipDescription: string;
       };
       memberGroups: {
         memberGroupDefineSettings: string;
@@ -373,35 +381,53 @@ export interface Localized extends LocalizedStringsMethods {
       group: string;
       user: string;
     };
-    addMemberButton: string
-    addMemberGroupButton: string
+    editMemberButton: string;
+    addMemberButton: string;
+    addMemberGroupButton: string;
     addMemberDialog: {
-      title: string
-      text: string
-      emailLabel: string
-      firstNameLabel: string
-      lastNameLabel: string
-      createButton: string
-      cancelButton: string
-      roleAdministrator: string
-      roleManager: string
+      title: string;
+      text: string;
+      freeTextSearchLabel: string;
+      usersSelectLabel: string;
+      searchButton: string;
+      emailLabel: string;
+      firstNameLabel: string;
+      lastNameLabel: string;
+      upnNumberLabel: string;
+      createButton: string;
+      cancelButton: string;
     }
     addMemberGroupDialog: {
-      title: string
-      text: string
-      displayNameLabel: string
-      createButton: string
-      cancelButton: string
+      title: string;
+      text: string;
+      displayNameLabel: string;
+      createButton: string;
+      cancelButton: string;
+    }
+    editMemberDialog: {
+      title: string;
+      text: string;
+      freeTextSearchLabel: string;
+      metaformUsersSelectLabel: string;
+      cardAuthUsersSelectLabel: string;
+      userIsLinked: string;
+      searchButton: string;
+      emailLabel: string;
+      firstNameLabel: string;
+      lastNameLabel: string;
+      upnNumberLabel: string;
+      cancelButton: string;
+      editButton: string;
     }
     usersTable: {
       nameColumn: {
-        label: string
+        label: string;
       }
       emailColumn: {
-        label: string
+        label: string;
       }
       groupsColumn: {
-        label: string
+        label: string;
       }
     }
   };
@@ -493,6 +519,7 @@ export interface Localized extends LocalizedStringsMethods {
     formCreatedAt: string;
     formModifiedAt: string;
     formLastModifier: string;
+    formLastModifierNotFound: string;
     formVersionArchived: string;
     formVersionDraft: string;
     drawer: {

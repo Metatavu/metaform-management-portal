@@ -239,7 +239,7 @@ namespace MetaformUtils {
    */
   export const createSection = (title?: string, fields?: any[]): MetaformSection => {
     return {
-      title: title ?? "Section",
+      title: title ?? strings.draftEditorScreen.editor.defaultSectionTitle,
       fields: fields ?? []
     };
   };
@@ -465,7 +465,7 @@ namespace MetaformUtils {
    *
    * @returns status section for form
    */
-  export const formStatusSection = (): MetaformField => {
+  export const createFormStatusField = (): MetaformField => {
     return {
       name: "status",
       type: MetaformFieldType.Radio,
