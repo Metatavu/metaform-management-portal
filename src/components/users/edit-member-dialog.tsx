@@ -8,7 +8,6 @@ import UsersScreenDialog from "./users-screen-dialog";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 
 const API_ADMIN_USER = "api-admin";
-const EMPTY_SELECTION = "EMPTY_SELECTION";
 
 /**
  * Interface representing component properties
@@ -55,13 +54,18 @@ const EditMemberDialog: React.FC<Props> = ({
       const federatedUser = selectedCardUser?.federatedIdentities?.find(federatedIdentitty =>
         federatedIdentitty.source === UserFederationSource.Card);
 
+      if (!federatedUser) {
+        return;
+      }
+
       await editUser({
         ...selectedMetaformUser,
-        federatedIdentities: [ ...selectedMetaformUser.federatedIdentities!, federatedUser! ]
+        federatedIdentities: [ ...selectedMetaformUser.federatedIdentities!, federatedUser ]
       });
     } else {
       await editUser({
         ...selectedMetaformUser,
+        username: selectedMetaformUser.email,
         federatedIdentities: []
       });
     }
@@ -73,6 +77,8 @@ const EditMemberDialog: React.FC<Props> = ({
    * Event handler for cancel click
    */
   const handleCancelClick = () => {
+    setSelectedMetaformUser(undefined);
+    setSelectedCardUser(undefined);
     onCancel();
   };
 
@@ -117,11 +123,6 @@ const EditMemberDialog: React.FC<Props> = ({
    */
   const handleCardUserSelectChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target: { value } } = event;
-    
-    if (value === EMPTY_SELECTION) {
-      setSelectedCardUser(undefined);
-      return;
-    }
 
     const federatedUser = foundCardUsers.find(user =>
       user.federatedIdentities?.find(federatedIdentity => federatedIdentity.userId === value));
@@ -154,8 +155,26 @@ const EditMemberDialog: React.FC<Props> = ({
     setSelectedMetaformUser(updatedUser);
   };
 
+  /**
+   * Gets UPN number from federated users displayname
+   * if user doesn't contain federated user, returns null
+   */
+  const getUpnNumber = () => {
+    if (selectedCardUser) {
+      return selectedCardUser.displayName?.match(/\d/g)!.join("");
+    }
+
+    const federatedUser = selectedMetaformUser!.federatedIdentities?.find(user => user.source === UserFederationSource.Card);
+    
+    if (!federatedUser) {
+      return "";
+    }
+
+    return federatedUser.username.match(/\d/g)!.join("");
+  };
+
   const valid = selectedMetaformUser?.firstName && selectedMetaformUser?.lastName && EmailValidator.validate(selectedMetaformUser.email);
-  
+
   /**
    * Renders dialog content
    */
@@ -189,6 +208,7 @@ const EditMemberDialog: React.FC<Props> = ({
       <TextField
         select
         fullWidth
+        disabled={ !foundMetaformUsers.length }
         size="medium"
         onChange={ handleMetaformUserSelectChange }
         label={ strings.userManagementScreen.editMemberDialog.metaformUsersSelectLabel }
@@ -202,6 +222,7 @@ const EditMemberDialog: React.FC<Props> = ({
       <TextField
         select
         fullWidth
+        disabled={ !foundCardUsers.length }
         size="medium"
         onChange={ handleCardUserSelectChange }
         label={ strings.userManagementScreen.editMemberDialog.cardAuthUsersSelectLabel }
@@ -256,13 +277,11 @@ const EditMemberDialog: React.FC<Props> = ({
         onChange={ onTextFieldChange }
       />
       <TextField
-        disabled={ !selectedMetaformUser ?? loading }
+        disabled
         fullWidth
         size="medium"
-        required={ true }
-        name="upnNumber"
         label={ strings.userManagementScreen.editMemberDialog.upnNumberLabel }
-        onChange={ onTextFieldChange }
+        value={ (selectedMetaformUser && getUpnNumber()) ?? "" }
       />
     </Stack>
   );
