@@ -218,7 +218,7 @@
     "editor": {
       "addSection": "Add section",
       "emptySection": "Empty section",
-      "emptySelection": "Selection a section or field to start editing.",
+      "emptySelection": "Select a section or field to start editing.",
       "defaultSectionTitle": "Section",
       "form": {
         "tabTitle": "Form",
@@ -316,9 +316,10 @@
         "memberGroup": "Member group",
         "view":"View",
         "edit":"Edit",
-        "none":"No permissions",
         "fieldValueLabel": "Field value",
         "notifications": "Notifications",
+        "noMemberGroup":"No Member group",
+        "noPermission":"No permission",
         "noDefaultPermissionMemberGroup": "No default permission member group",
         "tooltipDescription": ""
       }
