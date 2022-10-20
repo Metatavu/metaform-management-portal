@@ -85,11 +85,14 @@
     "usersScreen": {
       "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",
       "loadMemberGroups": "Käyttäjäryhmien latauksessa tapahtui virhe",
-      "createMember": "Käyttäjän luonnissa tapahtui virhe",
+      "createMember": "Käyttäjän lisäämisessä lomakkeelle tapahtui virhe",
       "createMemberGroup": "Käyttäjäryhmän luonnissa tapahtui virhe",
       "loadMembers": "Käyttäjien latauksessa tapahtui virhe",
       "removeMemberNotFound": "Ryhmän poistossa tapahtui virhe, käyttäjää ei löytynyt",
-      "addMemberNotFound": "Ryhmän lisäämisessä tapahtui virhe, käyttäjää ei löytynyt"
+      "addMemberNotFound": "Ryhmän lisäämisessä tapahtui virhe, käyttäjää ei löytynyt",
+      "loadUsers": "Käyttäjien latauksessa tapahtui virhe",
+      "createUser": "Käyttäjän luonnissa tapahtui virhe",
+      "updateUser": "Käyttäjän päivityksessä tapahtui virhe"
     },
     "previewScreen": {
       "shareLink": "Linkin jakamisessa tapahtui virhe"
@@ -159,7 +162,7 @@
       "description": "Käyttäjien tarkastelu ja käyttäjäryhmien hallinta.",
       "subheader": {
         "title": "Käyttäjänhallinta",
-        "description": "Ohjeteksti"
+        "description": "Lomakkeiden käyttäjien ja ryhmien hallinnointi."
       }
     },
     "editorScreens": {
@@ -344,18 +347,21 @@
       "group": "Valitse ryhmä",
       "user": "Valitse käyttäjä"
     },
+    "editMemberButton": "Muokkaa käyttäjää",
     "addMemberButton": "Uusi käyttäjä",
     "addMemberGroupButton": "Uusi käyttäjäryhmä",
     "addMemberDialog": {
       "title": "Uusi käyttäjä",
       "text": "Lisää uusi käyttäjä lomakkeelle",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "usersSelectLabel": "Käyttäjät",
+      "searchButton": "Hae",
       "emailLabel": "Sähköpostiosoite",
       "firstNameLabel": "Etunimi",
       "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
       "createButton": "Luo käyttäjä",
-      "cancelButton": "Peruuta",
-      "roleAdministrator": "Ylläpitäjä",
-      "roleManager": "Ammattilainen"
+      "cancelButton": "Peruuta"
     },
     "addMemberGroupDialog": {
       "title": "Uusi käyttäjäryhmä",
@@ -363,6 +369,21 @@
       "displayNameLabel": "Ryhmän nimi",
       "createButton": "Luo ryhmä",
       "cancelButton": "Peruuta"
+    },
+    "editMemberDialog": {
+      "title": "Muokkaa käyttäjää",
+      "text": "Muokkaa olemassa olevaa käyttäjää",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "metaformUsersSelectLabel": "Portaali-käyttäjät",
+      "cardAuthUsersSelectLabel": "Kortti-käyttäjät",
+      "userIsLinked": "Käyttäjä on linkitetty korttiin",
+      "searchButton": "Hae",
+      "emailLabel": "Sähköpostiosoite",
+      "firstNameLabel": "Etunimi",
+      "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
+      "cancelButton": "Peruuta",
+      "editButton": "Muokkaa käyttäjää"
     },
     "usersTable": {
       "nameColumn": {

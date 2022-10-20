@@ -93,8 +93,8 @@ const EditorScreenTable: FC<Props> = ({
   const buildProductionVersion = (id: string): MetaformVersionRow => {
     const metaform = metaforms.find(form => form.id === id);
     const { createdAt, modifiedAt, lastModifierId } = metaform!;
-    const lastModifier = lastModifiers.find(user => user.id === lastModifierId);
-    
+    const lastModifier = lastModifiers.find(modifier => modifier.id === lastModifierId);
+
     return {
       id: id,
       typeString: strings.editorScreen.formProductionVersion,
@@ -120,8 +120,8 @@ const EditorScreenTable: FC<Props> = ({
     const versionRows: MetaformVersionRow[] = versions.map((version: MetaformVersion) => {
       const { id, type, createdAt, modifiedAt, lastModifierId } = version;
       const { formVersionArchived, formVersionDraft } = strings.editorScreen;
-      const typeString = version.type === MetaformVersionType.Archived ? formVersionArchived : formVersionDraft;
-      const lastModifier = lastModifiers.find(user => user.id === lastModifierId);
+      const typeString = type === MetaformVersionType.Archived ? formVersionArchived : formVersionDraft;
+      const lastModifier = lastModifiers.find(modifier => modifier.id === lastModifierId);
 
       return {
         id: id!,
