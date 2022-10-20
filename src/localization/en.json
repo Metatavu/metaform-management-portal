@@ -342,7 +342,8 @@
         "notifications": "Notifications",
         "noMemberGroup":"No Member group",
         "noPermission":"No permission",
-        "noDefaultPermissionMemberGroup": "No default permission member group"
+        "noDefaultPermissionMemberGroup": "No default permission member group",
+        "tooltipDescription": ""
       }
     },
     "formPreview": {
