@@ -1,6 +1,5 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable */
 import * as React from "react";
 import { useEffect, useState } from "react";
 import BasicLayout, { SnackbarMessage } from "components/layouts/basic-layout";
@@ -64,8 +63,13 @@ const FormScreen: React.FC<Props> = () => {
   const params = useParams();
   const { metaformSlug } = params;
 
-  const { repliesApi, draftsApi, attachmentsApi, metaformsApi } = useApiClient(Api.getApiClient);
   const keycloak = useAppSelector(selectKeycloak);
+  const {
+    repliesApi,
+    draftsApi,
+    attachmentsApi,
+    metaformsApi
+  } = useApiClient(Api.getApiClient);
 
   /**
    * Checks if form has unsaved changes
@@ -264,7 +268,7 @@ const FormScreen: React.FC<Props> = () => {
           if (!value) {
             value = { files: [] };
           }
-          values[field.name as string] = (value as FileFieldValue).files.map(file => file.id);
+          values[field.name as string] = (value as FileFieldValue).files?.map(file => file.id);
         }
       });
     });
@@ -362,7 +366,7 @@ const FormScreen: React.FC<Props> = () => {
     return repliesApi.createReply({
       metaformId: metaformId!!,
       reply: {
-        data: {}
+        data: getFormValues(currentMetaform)
       },
       replyMode: "CUMULATIVE"
     });
