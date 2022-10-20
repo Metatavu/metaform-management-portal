@@ -1,6 +1,7 @@
 import { HelpOutline } from "@mui/icons-material";
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Stack, Tooltip } from "@mui/material";
 import React, { useState } from "react";
+import theme from "theme";
 
 /**
  * Interface representing component properties
@@ -12,7 +13,7 @@ interface Props {
   helperIcon?: boolean;
   tooltipText?: string | JSX.Element;
   dialogContent: JSX.Element;
-  dialogActions: JSX.Element[];
+  dialogActions: JSX.Element;
   onCancel: () => void;
 }
 
@@ -70,7 +71,7 @@ const UsersScreenDialog: React.FC<Props> = ({
       <DialogContent sx={{ width: 500 }}>
         <DialogContentText
           variant="body1"
-          color="#ccc"
+          color={ theme.palette.text.secondary }
           sx={{ paddingBottom: 2 }}
         >
           { dialogDescription }

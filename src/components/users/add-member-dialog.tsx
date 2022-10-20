@@ -8,8 +8,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import ClearIcon from "@mui/icons-material/Clear";
 import UsersScreenDialog from "./users-screen-dialog";
-
-const API_ADMIN_USER = "api-admin";
+import { API_ADMIN_USER } from "types";
 
 /**
  * Interface representing component properties
@@ -27,7 +26,7 @@ interface Props {
 /**
  * React component for add member dialog
  */
-const AddMemberDialog: React.FC<Props> = ({
+const AddMemberDialog: FC<Props> = ({
   loading,
   open,
   onCancel,
@@ -36,24 +35,9 @@ const AddMemberDialog: React.FC<Props> = ({
   searchUsers,
   createUser
 }) => {
-  const [ selectedUser, setSelectedUser ] = useState<User | undefined>();
+  const [ selectedUser, setSelectedUser ] = useState<User>();
   const [ userSearch, setUserSearch ] = useState<string>("");
   const [ foundUsers, setFoundUsers ] = useState<User[]>([]);
-
-  /**
-   * Renders correct icon for User selection dialog
-   * 
-   * @param user User
-   */
-  const renderSelectOptionIcon = (user: User) => {
-    if (!user.id) {
-      return <CreditCardIcon/>;
-    }
-    const userIsLinkedToCard = user.federatedIdentities?.some(federatedIdentity => federatedIdentity.source === UserFederationSource.Card);
-    if (userIsLinkedToCard) {
-      return <LinkIcon/>;
-    }
-  };
 
   /**
    * Gets Users UPN number from their display name
@@ -83,6 +67,7 @@ const AddMemberDialog: React.FC<Props> = ({
    */
   const handleCancelClick = () => {
     setSelectedUser(undefined);
+    setFoundUsers([]);
     onCancel();
   };
 
@@ -162,7 +147,23 @@ const AddMemberDialog: React.FC<Props> = ({
       });
     }
 
+    handleCancelClick();
     setLoading(false);
+  };
+
+  /**
+   * Renders correct icon for User selection dialog
+   * 
+   * @param user User
+   */
+  const renderSelectOptionIcon = (user: User) => {
+    if (!user.id) {
+      return <CreditCardIcon/>;
+    }
+    const userIsLinkedToCard = user.federatedIdentities?.some(federatedIdentity => federatedIdentity.source === UserFederationSource.Card);
+    if (userIsLinkedToCard) {
+      return <LinkIcon/>;
+    }
   };
 
   /**
@@ -265,16 +266,18 @@ const AddMemberDialog: React.FC<Props> = ({
   /**
    * Renders dialog actions
    */
-  const renderDialogActions = () => [
-    <Button disableElevation variant="contained" onClick={ handleCancelClick } color="secondary" autoFocus>
-      { strings.userManagementScreen.addMemberDialog.cancelButton }
-    </Button>,
+  const renderDialogActions = () => (
     <GenericLoaderWrapper loading={ loading }>
-      <Button onClick={ handleCreateClick } color="primary" disabled={ !valid }>
-        { strings.userManagementScreen.addMemberDialog.createButton }
-      </Button>
+      <>
+        <Button disableElevation variant="contained" onClick={ handleCancelClick } color="secondary" autoFocus>
+          { strings.userManagementScreen.addMemberDialog.cancelButton }
+        </Button>
+        <Button onClick={ handleCreateClick } color="primary" disabled={ !valid }>
+          { strings.userManagementScreen.addMemberDialog.createButton }
+        </Button>
+      </>
     </GenericLoaderWrapper>
-  ];
+  );
 
   return (
     <UsersScreenDialog

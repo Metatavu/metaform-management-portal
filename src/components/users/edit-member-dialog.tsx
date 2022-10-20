@@ -1,13 +1,12 @@
 import { User, UserFederationSource } from "generated/client";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import strings from "../../localization/strings";
 import * as EmailValidator from "email-validator";
 import { Button, FormControlLabel, IconButton, InputAdornment, MenuItem, Stack, Switch, TextField } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import UsersScreenDialog from "./users-screen-dialog";
 import GenericLoaderWrapper from "components/generic/generic-loader";
-
-const API_ADMIN_USER = "api-admin";
+import { API_ADMIN_USER } from "types";
 
 /**
  * Interface representing component properties
@@ -24,7 +23,7 @@ interface Props {
 /**
  * React component for edit member dialog
  */
-const EditMemberDialog: React.FC<Props> = ({
+const EditMemberDialog: FC<Props> = ({
   loading,
   open,
   onCancel,
@@ -42,6 +41,17 @@ const EditMemberDialog: React.FC<Props> = ({
   useEffect(() => {
     setLinkSwitchChecked(!!selectedMetaformUser?.federatedIdentities?.length ?? false);
   }, [ selectedMetaformUser ]);
+
+  /**
+   * Event handler for cancel click
+   */
+  const handleCancelClick = () => {
+    setSelectedMetaformUser(undefined);
+    setSelectedCardUser(undefined);
+    setFoundMetaformUsers([]);
+    setFoundCardUsers([]);
+    onCancel();
+  };
 
   /**
    * Event handler for edit button click
@@ -74,16 +84,8 @@ const EditMemberDialog: React.FC<Props> = ({
       });
     }
 
+    handleCancelClick();
     setLoading(false);
-  };
-
-  /**
-   * Event handler for cancel click
-   */
-  const handleCancelClick = () => {
-    setSelectedMetaformUser(undefined);
-    setSelectedCardUser(undefined);
-    onCancel();
   };
 
   /**
@@ -139,7 +141,7 @@ const EditMemberDialog: React.FC<Props> = ({
   const handleSearchButtonClick = async () => {
     const users = (await searchUsers(userSearch))
       .filter(user => user.displayName !== API_ADMIN_USER)
-      .sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
+      .sort((userA: User, userB: User) => (userA.displayName! < userB.displayName! ? -1 : 1));
 
     setFoundMetaformUsers(users.filter(user => user.id));
     setFoundCardUsers(users.filter(user => !user.id));
@@ -310,16 +312,18 @@ const EditMemberDialog: React.FC<Props> = ({
   /**
    * Renders dialog actions
    */
-  const renderDialogActions = () => [
-    <Button disableElevation variant="contained" onClick={ handleCancelClick } color="secondary" autoFocus>
-      { strings.userManagementScreen.editMemberDialog.cancelButton }
-    </Button>,
+  const renderDialogActions = () => (
     <GenericLoaderWrapper loading={ loading }>
-      <Button onClick={ handleEditClick } color="primary" disabled={ !valid }>
-        { strings.userManagementScreen.editMemberDialog.editButton }
-      </Button>
+      <>
+        <Button disableElevation variant="contained" onClick={ handleCancelClick } color="secondary" autoFocus>
+          { strings.userManagementScreen.editMemberDialog.cancelButton }
+        </Button>
+        <Button onClick={ handleEditClick } color="primary" disabled={ !valid }>
+          { strings.userManagementScreen.editMemberDialog.editButton }
+        </Button>
+      </>
     </GenericLoaderWrapper>
-  ];
+  );
 
   return (
     <UsersScreenDialog

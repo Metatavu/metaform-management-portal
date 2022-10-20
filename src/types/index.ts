@@ -91,6 +91,11 @@ export const NOT_SELECTED = "NOT_SELECTED";
 export const SYSTEM_ADMIN_ROLE = "system-admin";
 
 /**
+ * Api admin user
+ */
+export const API_ADMIN_USER = "api-admin";
+
+/**
  * React dnd dragging mode
  */
 export enum DraggingMode {
