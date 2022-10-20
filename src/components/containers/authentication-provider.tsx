@@ -12,6 +12,7 @@ import { ErrorContext } from "components/contexts/error-handler";
 import strings from "localization/strings";
 
 const MIN_VALIDITY_IN_SECONDS = 70;
+const REFRESH_INTERVAL = 30;
 
 /**
  * Interface representing a decoded access token
@@ -158,8 +159,8 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   /**
    * Begins token refresh interval
    */
-  useInterval(refreshAuthentication, 1000 * 60);
-  useInterval(refreshAnonymousAuthentication, 1000 * 60);
+  useInterval(refreshAuthentication, 1000 * REFRESH_INTERVAL);
+  useInterval(refreshAnonymousAuthentication, 1000 * REFRESH_INTERVAL);
 
   if (!keycloak?.token) return null;
 
