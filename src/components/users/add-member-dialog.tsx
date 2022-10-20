@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import strings from "../../localization/strings";
-import { Button, IconButton, InputAdornment, ListItem, ListItemIcon, MenuItem, Stack, TextField, Tooltip } from "@mui/material";
+import { Button, IconButton, InputAdornment, ListItem, ListItemIcon, MenuItem, Stack, TextField } from "@mui/material";
 import { MetaformMember, MetaformMemberRole, User, UserFederationSource } from "generated/client";
 import * as EmailValidator from "email-validator";
 import GenericLoaderWrapper from "components/generic/generic-loader";
@@ -185,24 +185,26 @@ const AddMemberDialog: FC<Props> = ({
    */
   const renderDialogContent = () => (
     <Stack spacing={ 1 }>
-      <Stack spacing={ 1 } direction="row" alignItems="center">
-        <Tooltip title="TOOLTIPPI">
-          <TextField
-            sx={{ flex: 1 }}
-            value={ userSearch }
-            onChange={ handleUserSearchChange }
-            size="medium"
-            label={ strings.userManagementScreen.addMemberDialog.freeTextSearchLabel }
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton disabled={ !userSearch } onClick={ handleSearchClear }>
-                    <ClearIcon/>
-                  </IconButton>
-                </InputAdornment>)
-            }}
-          />
-        </Tooltip>
+      <Stack
+        spacing={ 1 }
+        direction="row"
+        alignItems="center"
+      >
+        <TextField
+          sx={{ flex: 1 }}
+          value={ userSearch }
+          onChange={ handleUserSearchChange }
+          size="medium"
+          label={ strings.userManagementScreen.addMemberDialog.freeTextSearchLabel }
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton disabled={ !userSearch } onClick={ handleSearchClear }>
+                  <ClearIcon/>
+                </IconButton>
+              </InputAdornment>)
+          }}
+        />
         <Button
           sx={{ flex: 0.25, height: 56 }}
           size="large"
