@@ -118,8 +118,8 @@ const EditorScreenTable: FC<Props> = ({
 
     const productionVersion = buildProductionVersion(metaform.id!);
     const versionRows: MetaformVersionRow[] = versions.map((version: MetaformVersion) => {
-      const { formVersionArchived, formVersionDraft } = strings.editorScreen;
       const { id, type, createdAt, modifiedAt, lastModifierId } = version;
+      const { formVersionArchived, formVersionDraft } = strings.editorScreen;
       const typeString = type === MetaformVersionType.Archived ? formVersionArchived : formVersionDraft;
       const lastModifier = lastModifiers.find(modifier => modifier.id === lastModifierId);
 
