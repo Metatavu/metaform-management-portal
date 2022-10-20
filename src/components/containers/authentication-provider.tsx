@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from "react";
 import Keycloak from "keycloak-js";
-import { anonymousLogin, login, selectAnonymousKeycloak, selectKeycloak } from "features/auth-slice";
+import { login, selectKeycloak } from "features/auth-slice";
 import { useAppDispatch, useAppSelector, useInterval } from "app/hooks";
 import Config from "app/config";
 import jwt_decode from "jwt-decode";
@@ -12,7 +12,7 @@ import { ErrorContext } from "components/contexts/error-handler";
 import strings from "localization/strings";
 
 const MIN_VALIDITY_IN_SECONDS = 70;
-const REFRESH_INTERVAL = 30;
+const REFRESH_INTERVAL = 60;
 
 /**
  * Interface representing a decoded access token
@@ -33,7 +33,6 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   const errorContext = React.useContext(ErrorContext);
 
   const keycloak = useAppSelector(selectKeycloak);
-  const anonymousKeycloak = useAppSelector(selectAnonymousKeycloak);
   const dispatch = useAppDispatch();
   const location = useLocation();
 
@@ -88,7 +87,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       });
 
       await keycloakInstance.loadUserProfile();
-      dispatch(anonymousLogin(keycloakInstance));
+      dispatch(login(keycloakInstance));
     } catch (error) {
       errorContext.setError(strings.errorHandling.authentication, error);
     }
@@ -126,41 +125,20 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   };
 
   /**
-   * Refreshes anonymous authentication
-   */
-  const refreshAnonymousAuthentication = async () => {
-    try {
-      if (!anonymousKeycloak?.authenticated) {
-        throw new Error("Not authenticated");
-      }
-
-      await anonymousKeycloak.updateToken(MIN_VALIDITY_IN_SECONDS);
-      dispatch(login(anonymousKeycloak));
-    } catch (error) {
-      errorContext.setError(strings.errorHandling.authentication, error);
-    }
-  };
-
-  /**
    * Initializes authentication
    */
   React.useEffect(() => {
     if (!location.pathname.startsWith("/admin")) {
       initializeAnonymousAuthentication();
-    }
-  }, []);
-
-  React.useEffect(() => {
-    if (!keycloak && location.pathname.startsWith("/admin")) {
+    } else {
       initializeLogin();
     }
-  }, [location]);
+  }, [ location ]);
 
   /**
    * Begins token refresh interval
    */
   useInterval(refreshAuthentication, 1000 * REFRESH_INTERVAL);
-  useInterval(refreshAnonymousAuthentication, 1000 * REFRESH_INTERVAL);
 
   if (!keycloak?.token) return null;
 

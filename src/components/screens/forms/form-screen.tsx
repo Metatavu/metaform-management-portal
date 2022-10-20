@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable */
 import * as React from "react";
 import { useEffect, useState } from "react";
 import BasicLayout, { SnackbarMessage } from "components/layouts/basic-layout";
@@ -20,10 +21,12 @@ import DraftSavedDialog from "./form/DraftSavedDialog";
 import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
-import { selectKeycloak } from "features/auth-slice";
 import { Dictionary } from "types";
 import { useParams } from "react-router-dom";
 import LeavePageHandler from "components/contexts/leave-page-handler";
+import { selectKeycloak } from "features/auth-slice";
+
+const AUTOSAVE_COOLDOWN = 500;
 
 /**
  * Component props
@@ -35,8 +38,6 @@ interface Props {
  * Component for exhibitions screen
  */
 const FormScreen: React.FC<Props> = () => {
-  const AUTOSAVE_COOLDOWN = 500;
-
   const errorContext = React.useContext(ErrorContext);
 
   const [ , setLoading ] = useState(false);
@@ -63,7 +64,7 @@ const FormScreen: React.FC<Props> = () => {
   const params = useParams();
   const { metaformSlug } = params;
 
-  const apiClient = useApiClient(Api.getApiClient);
+  const { repliesApi, draftsApi, attachmentsApi, metaformsApi } = useApiClient(Api.getApiClient);
   const keycloak = useAppSelector(selectKeycloak);
 
   /**
@@ -92,7 +93,7 @@ const FormScreen: React.FC<Props> = () => {
    */
   const findReply = async (replyId: string, currentOwnerKey: string) => {
     try {
-      const replyApi = apiClient.repliesApi;
+      const replyApi = repliesApi;
       return await replyApi.findReply({
         metaformId: metaformId!!,
         replyId: replyId,
@@ -111,7 +112,6 @@ const FormScreen: React.FC<Props> = () => {
    */
   const findDraft = async (draftToFindId: string) => {
     try {
-      const { draftsApi } = apiClient;
       return await draftsApi.findDraft({
         metaformId: metaformId!!,
         draftId: draftToFindId
@@ -137,8 +137,6 @@ const FormScreen: React.FC<Props> = () => {
 
     try {
       setLoading(true);
-      const { metaformsApi } = apiClient;
-
       const foundMetaform = await metaformsApi.findMetaform({
         metaformSlug: metaformSlug
       });
@@ -150,7 +148,7 @@ const FormScreen: React.FC<Props> = () => {
       if (replyId && currentOwnerKey) {
         const foundReply = await findReply(replyId, currentOwnerKey);
         if (foundReply) {
-          const replyData = await MetaformUtils.processReplyData(foundMetaform, foundReply, apiClient.attachmentsApi, currentOwnerKey);
+          const replyData = await MetaformUtils.processReplyData(foundMetaform, foundReply, attachmentsApi, currentOwnerKey);
           if (replyData) {
             Object.keys(replyData as any).forEach(replyKey => {
               preparedFormValues[replyKey] = replyData[replyKey] as any;
@@ -213,7 +211,6 @@ const FormScreen: React.FC<Props> = () => {
       setLoading(true);
       setDraftSaveVisible(false);
 
-      const { draftsApi } = apiClient;
       let draft;
 
       if (draftId) {
@@ -279,8 +276,6 @@ const FormScreen: React.FC<Props> = () => {
    * Implement later
    */
   const updateReply = async (currentMetaform: Metaform, currentReply: Reply, currentOwnerKey: string | null | undefined) => {
-    const { repliesApi } = apiClient;
-
     await repliesApi.updateReply({
       metaformId: metaformId!!,
       replyId: currentReply.id!,
@@ -364,12 +359,10 @@ const FormScreen: React.FC<Props> = () => {
    * @param currentMetaform metaform
    */
   const createReply = async (currentMetaform: Metaform) => {
-    const { repliesApi } = apiClient;
-
     return repliesApi.createReply({
       metaformId: metaformId!!,
       reply: {
-        data: getFormValues(currentMetaform)
+        data: {}
       },
       replyMode: "CUMULATIVE"
     });
@@ -395,7 +388,7 @@ const FormScreen: React.FC<Props> = () => {
       const updatedOwnerKey = ownerKey || reply?.ownerKey;
       let updatedValues = replyToUpdate?.data;
       if (updatedOwnerKey && reply) {
-        updatedValues = await MetaformUtils.processReplyData(metaform, replyToUpdate, apiClient.attachmentsApi, updatedOwnerKey);
+        updatedValues = await MetaformUtils.processReplyData(metaform, replyToUpdate, attachmentsApi, updatedOwnerKey);
       }
 
       setSaving(false);
@@ -476,8 +469,6 @@ const FormScreen: React.FC<Props> = () => {
     try {
       setReplyDeleteConfirmVisble(false);
       setLoading(true);
-
-      const { repliesApi } = apiClient;
 
       if (reply && reply.id && ownerKey) {
         await repliesApi.deleteReply({
