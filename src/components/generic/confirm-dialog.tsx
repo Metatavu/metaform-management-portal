@@ -35,13 +35,7 @@ const ConfirmDialog: React.FC<Props> = ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle
-        sx={{
-          fontSize: 18,
-          fontWeight: "bold"
-        }}
-        id="alert-dialog-title"
-      >
+      <DialogTitle variant="h2" id="alert-dialog-title">
         { title }
       </DialogTitle>
       <DialogContent>
