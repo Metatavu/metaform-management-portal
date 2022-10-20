@@ -32,12 +32,16 @@ const EditMemberDialog: React.FC<Props> = ({
   searchUsers,
   editUser
 }) => {
-  const [ selectedMetaformUser, setSelectedMetaformUser ] = useState<User | undefined>();
-  const [ selectedCardUser, setSelectedCardUser ] = useState<User | undefined>();
+  const [ selectedMetaformUser, setSelectedMetaformUser ] = useState<User>();
+  const [ selectedCardUser, setSelectedCardUser ] = useState<User>();
   const [ userSearch, setUserSearch ] = useState<string>("");
   const [ foundMetaformUsers, setFoundMetaformUsers ] = useState<User[]>([]);
   const [ foundCardUsers, setFoundCardUsers ] = useState<User[]>([]);
   const [ linkSwitchChecked, setLinkSwitchChecked ] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLinkSwitchChecked(!!selectedMetaformUser?.federatedIdentities?.length ?? false);
+  }, [ selectedMetaformUser ]);
 
   /**
    * Event handler for edit button click
@@ -164,7 +168,7 @@ const EditMemberDialog: React.FC<Props> = ({
       return selectedCardUser.displayName?.match(/\d/g)!.join("");
     }
 
-    const federatedUser = selectedMetaformUser!.federatedIdentities?.find(user => user.source === UserFederationSource.Card);
+    const federatedUser = selectedMetaformUser?.federatedIdentities?.find(user => user.source === UserFederationSource.Card);
     
     if (!federatedUser) {
       return "";
@@ -176,11 +180,39 @@ const EditMemberDialog: React.FC<Props> = ({
   const valid = selectedMetaformUser?.firstName && selectedMetaformUser?.lastName && EmailValidator.validate(selectedMetaformUser.email);
 
   /**
+   * Renders metaform users menu items
+   */
+  const renderMetaformUsersMenuItems = (user: User) => (
+    <MenuItem key={ user.id} value={ user.id }>
+      { `${user.firstName} ${user.lastName}` }
+    </MenuItem>
+  );
+
+  /**
+   * Renders card users menu items
+   * 
+   * @param user user
+   */
+  const renderCardUsersMenuItems = (user: User) => {
+    const federatedUser = user.federatedIdentities?.find(federatedIdentity => federatedIdentity.source === UserFederationSource.Card);
+  
+    return (
+      <MenuItem key={ user.displayName } value={ federatedUser?.userId }>
+        { `${user.firstName} ${user.lastName}` }
+      </MenuItem>
+    );
+  };
+
+  /**
    * Renders dialog content
    */
   const renderDialogContent = () => (
     <Stack spacing={ 1 }>
-      <Stack spacing={ 1 } direction="row" alignItems="center">
+      <Stack
+        spacing={ 1 }
+        direction="row"
+        alignItems="center"
+      >
         <TextField
           sx={{ flex: 1 }}
           value={ userSearch }
@@ -213,11 +245,7 @@ const EditMemberDialog: React.FC<Props> = ({
         onChange={ handleMetaformUserSelectChange }
         label={ strings.userManagementScreen.editMemberDialog.metaformUsersSelectLabel }
       >
-        { foundMetaformUsers.map(user =>
-          <MenuItem key={ user.id} value={ user.id }>
-            { `${user.firstName} ${user.lastName}` }
-          </MenuItem>)
-        }
+        { foundMetaformUsers.map(renderMetaformUsersMenuItems) }
       </TextField>
       <TextField
         select
@@ -227,14 +255,7 @@ const EditMemberDialog: React.FC<Props> = ({
         onChange={ handleCardUserSelectChange }
         label={ strings.userManagementScreen.editMemberDialog.cardAuthUsersSelectLabel }
       >
-        { foundCardUsers.map(user => {
-          const federatedUser = user.federatedIdentities?.find(federatedIdentity => federatedIdentity.source === UserFederationSource.Card);
-          return (
-            <MenuItem key={ user.displayName} value={ federatedUser?.userId }>
-              { `${user.firstName} ${user.lastName}` }
-            </MenuItem>);
-        })
-        }
+        { foundCardUsers.map(renderCardUsersMenuItems) }
       </TextField>
       <FormControlLabel
         control={
@@ -299,10 +320,6 @@ const EditMemberDialog: React.FC<Props> = ({
       </Button>
     </GenericLoaderWrapper>
   ];
-
-  useEffect(() => {
-    setLinkSwitchChecked(!!selectedMetaformUser?.federatedIdentities?.length ?? false);
-  }, [ selectedMetaformUser ]);
 
   return (
     <UsersScreenDialog

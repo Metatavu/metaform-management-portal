@@ -119,19 +119,8 @@ const AddMemberDialog: React.FC<Props> = ({
     const users = (await searchUsers(userSearch))
       .filter(user => user.displayName !== API_ADMIN_USER)
       .sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
-    // users.sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
 
     setFoundUsers(users.length <= 10 ? users : users.slice(10));
-
-  /**
-   * Event handler for search button click
-   */
-  const handleSearchButtonClick = async () => {
-    const users = (await searchUsers(userSearch))
-      .filter(user => user.displayName !== API_ADMIN_USER)
-      .sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
-
-    setFoundUsers(users);
     setLoading(false);
   };
 
