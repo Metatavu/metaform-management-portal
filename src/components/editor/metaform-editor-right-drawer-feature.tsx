@@ -542,7 +542,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           value={ selectedMemberGroupPermission }
           onChange={ ({ target }) => setMemberGroupPermission(target.value as NullableMemberGroupPermission) }
         >
-          <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.noMemberGroup }</MenuItem>
+          <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.noPermission }</MenuItem>
           <MenuItem value={ MemberGroupPermission.EDIT }>{ strings.draftEditorScreen.editor.memberGroups.edit }</MenuItem>
           <MenuItem value={ MemberGroupPermission.VIEW }>{ strings.draftEditorScreen.editor.memberGroups.view }</MenuItem>
         </TextField>
