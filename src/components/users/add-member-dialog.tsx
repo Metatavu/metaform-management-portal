@@ -60,7 +60,7 @@ const AddMemberDialog: React.FC<Props> = ({
    * 
    * @param user User
    */
-  const getUsersUPNNumber = (user: User) => {
+  const getUsersUpnNumber = (user: User) => {
     const digits = user.displayName?.match(/\d/g);
     return digits?.join("");
   };
@@ -70,12 +70,20 @@ const AddMemberDialog: React.FC<Props> = ({
    * 
    * @param event event
    */
-  const onTextFieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleTextFieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const { target: { name, value } } = event;
     const fieldName = name;
     const updatedUser: any = { ...selectedUser };
     updatedUser[fieldName] = value;
     setSelectedUser(updatedUser);
+  };
+
+  /**
+   * Event handler for cancel click
+   */
+  const handleCancelClick = () => {
+    setSelectedUser(undefined);
+    onCancel();
   };
 
   /**
@@ -223,7 +231,7 @@ const AddMemberDialog: React.FC<Props> = ({
         type="email"
         name="email"
         label={ strings.userManagementScreen.addMemberDialog.emailLabel }
-        onChange={ onTextFieldChange }
+        onChange={ handleTextFieldChange }
       />
       <TextField
         disabled={ !selectedUser ?? loading }
@@ -233,7 +241,7 @@ const AddMemberDialog: React.FC<Props> = ({
         value={ selectedUser?.firstName ?? "" }
         name="firstName"
         label={ strings.userManagementScreen.addMemberDialog.firstNameLabel }
-        onChange={ onTextFieldChange }
+        onChange={ handleTextFieldChange }
       />
       <TextField
         disabled={ !selectedUser ?? loading }
@@ -243,16 +251,15 @@ const AddMemberDialog: React.FC<Props> = ({
         name="lastName"
         value={ selectedUser?.lastName ?? "" }
         label={ strings.userManagementScreen.addMemberDialog.lastNameLabel }
-        onChange={ onTextFieldChange }
+        onChange={ handleTextFieldChange }
       />
       <TextField
-        disabled={ !selectedUser ?? loading }
+        disabled
         fullWidth
         size="medium"
-        value={ (selectedUser && getUsersUPNNumber(selectedUser)) ?? "" }
+        value={ (selectedUser && getUsersUpnNumber(selectedUser)) ?? "" }
         label={ strings.userManagementScreen.addMemberDialog.upnNumberLabel }
-        onChange={ onTextFieldChange }
-        name="upnNumber"
+        onChange={ handleTextFieldChange }
       />
     </Stack>
   );
@@ -261,7 +268,7 @@ const AddMemberDialog: React.FC<Props> = ({
    * Renders dialog actions
    */
   const renderDialogActions = () => [
-    <Button disableElevation variant="contained" onClick={ onCancel } color="secondary" autoFocus>
+    <Button disableElevation variant="contained" onClick={ handleCancelClick } color="secondary" autoFocus>
       { strings.userManagementScreen.addMemberDialog.cancelButton }
     </Button>,
     <GenericLoaderWrapper loading={ loading }>

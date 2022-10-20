@@ -10,7 +10,7 @@ interface Props {
   dialogTitle: string;
   dialogDescription: string;
   helperIcon?: boolean;
-  tooltipText?: string;
+  tooltipText?: string | JSX.Element;
   dialogContent: JSX.Element;
   dialogActions: JSX.Element[];
   onCancel: () => void;
