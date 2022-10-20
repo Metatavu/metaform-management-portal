@@ -35,7 +35,7 @@ const UsersScreen: React.FC = () => {
   const [ editMemberOpen, setEditMemberOpen ] = React.useState<boolean>(false);
 
   /**
-   * Search users from the API
+   * Searches users from the API
    * 
    * @param search search
    */
