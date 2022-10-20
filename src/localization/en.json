@@ -316,9 +316,10 @@
         "memberGroup": "Member group",
         "view":"View",
         "edit":"Edit",
-        "none":"No permissions",
         "fieldValueLabel": "Field value",
         "notifications": "Notifications",
+        "noMemberGroup":"No Member group",
+        "noPermission":"No permission",
         "noDefaultPermissionMemberGroup": "No default permission member group",
         "tooltipDescription": ""
       }

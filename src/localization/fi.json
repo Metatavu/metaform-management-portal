@@ -316,9 +316,10 @@
         "selectedMemberGroup": "Valittu käyttäjäryhmä",
         "view": "Katselu",
         "edit": "Muokkaus",
-        "none": "Ei oikeuksia",
         "fieldValueLabel": "Kentän arvo",
         "notifications": "Ilmoitukset",
+        "noMemberGroup": "Ei Käyttäjäryhmää",
+        "noPermission": "Ei oikeuksia",
         "noDefaultPermissionMemberGroup": "Ei oletus-käyttäjäryhmää"
       }
     },

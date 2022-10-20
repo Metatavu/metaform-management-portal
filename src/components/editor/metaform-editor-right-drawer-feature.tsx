@@ -542,7 +542,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           value={ selectedMemberGroupPermission }
           onChange={ ({ target }) => setMemberGroupPermission(target.value as NullableMemberGroupPermission) }
         >
-          <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.none }</MenuItem>
+          <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.noMemberGroup }</MenuItem>
           <MenuItem value={ MemberGroupPermission.EDIT }>{ strings.draftEditorScreen.editor.memberGroups.edit }</MenuItem>
           <MenuItem value={ MemberGroupPermission.VIEW }>{ strings.draftEditorScreen.editor.memberGroups.view }</MenuItem>
         </TextField>
@@ -576,7 +576,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           onChange={ event => handleMemberGroupChange(event.target.value) }
         >
           <MenuItem value={ NOT_SELECTED } key={ NOT_SELECTED }>
-            { strings.draftEditorScreen.editor.memberGroups.none }
+            { strings.draftEditorScreen.editor.memberGroups.noMemberGroup }
           </MenuItem>
           { memberGroups.map(memberGroup => (
             <MenuItem value={ memberGroup.id } key={ memberGroup.id }>
