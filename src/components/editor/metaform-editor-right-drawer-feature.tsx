@@ -529,11 +529,11 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Render member group role options
    *
    */
-  const renderMemberGroupPermissionSelect = () => {
-    if (memberGroupOptIndex === undefined || selectedMemberGroupId === undefined || selectedMemberGroupId === NOT_SELECTED || !selectedField) {
+  const renderMemberGroupPermissionSelect = (field: MetaformField) => {
+    if (memberGroupOptIndex === undefined || selectedMemberGroupId === undefined || selectedMemberGroupId === NOT_SELECTED) {
       return null;
     }
-    const notifyChecked = !!selectedField.options?.[memberGroupOptIndex].permissionGroups?.notifyGroupIds?.length;
+    const notifyChecked = !!field.options?.[memberGroupOptIndex].permissionGroups?.notifyGroupIds?.length;
     return (
       <FormControl fullWidth>
         <TextField
@@ -866,7 +866,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       { renderDefineMemberGroupSwitch() }
       { renderMemberGroupOptionSelect(field) }
       { renderMemberGroupSelect() }
-      { renderMemberGroupPermissionSelect() }
+      { renderMemberGroupPermissionSelect(field) }
     </Stack>
   );
 
