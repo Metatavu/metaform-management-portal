@@ -50,27 +50,38 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
+   * Empties member group settings
+   */
+  const emptyMemberGroupSettings = () => {
+    setSelectMemberGroupEnabled(false);
+    setMemberGroupOptIndex(undefined);
+    setSelectedMemberGroupId(undefined);
+    setSelectedMemberGroupPermission(NOT_SELECTED);
+  };
+
+  /**
    * Set member groups for selected field to the found first group
    */
   const checkIfMemberGroupsAreSelected = () => {
-    if (!selectedField || !MetaformUtils.fieldTypesAllowVisibility.includes(selectedField.type)) {
+    if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
 
-    const foundOptionIndex = selectedField.options?.findIndex(option => MetaformUtils.getOptionPermissionGroup(option) !== undefined);
+    const updatedSelectedField = pendingForm.sections?.[sectionIndex].fields?.[fieldIndex];
+
+    if (!updatedSelectedField || !MetaformUtils.fieldTypesAllowVisibility.includes(updatedSelectedField.type)) {
+      return;
+    }
+
+    const foundOptionIndex = updatedSelectedField.options?.findIndex(option => MetaformUtils.getOptionPermissionGroup(option) !== undefined);
 
     if (foundOptionIndex !== -1 && foundOptionIndex !== undefined) {
-      const [ groupId, permission ] = MetaformUtils.getOptionPermissionGroup(selectedField.options![foundOptionIndex])!;
+      const [ groupId, permission ] = MetaformUtils.getOptionPermissionGroup(updatedSelectedField.options![foundOptionIndex])!;
 
       setSelectMemberGroupEnabled(true);
       setSelectedMemberGroupId(groupId);
       setSelectedMemberGroupPermission(permission !== MemberGroupPermission.NOTIFY ? permission : NOT_SELECTED);
       setMemberGroupOptIndex(foundOptionIndex);
-    } else {
-      setSelectMemberGroupEnabled(false);
-      setMemberGroupOptIndex(undefined);
-      setSelectedMemberGroupId(undefined);
-      setSelectedMemberGroupPermission(NOT_SELECTED);
     }
   };
 
@@ -79,15 +90,9 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   }, [ sectionIndex, fieldIndex, pendingForm ]);
 
   useEffect(() => {
-    setSelectMemberGroupEnabled(false);
-    setMemberGroupOptIndex(undefined);
-    setSelectedMemberGroupId(undefined);
-    setSelectedMemberGroupPermission(NOT_SELECTED);
-  }, [ sectionIndex, fieldIndex ]);
-
-  useEffect(() => {
+    emptyMemberGroupSettings();
     checkIfMemberGroupsAreSelected();
-  }, [ selectedField?.name, selectedField?.options?.length ]);
+  }, [ sectionIndex, fieldIndex, selectedField?.options?.length ]);
 
   /**
    * Updates field with visibility
@@ -567,10 +572,10 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           fullWidth
           select
           label={ strings.draftEditorScreen.editor.memberGroups.memberGroup }
-          value={ selectedMemberGroupId }
+          value={ selectedMemberGroupId || "" }
           onChange={ event => handleMemberGroupChange(event.target.value) }
         >
-          <MenuItem value={ NOT_SELECTED } key={uuid4()}>
+          <MenuItem value={ NOT_SELECTED } key={ NOT_SELECTED }>
             { strings.draftEditorScreen.editor.memberGroups.none }
           </MenuItem>
           { memberGroups.map(memberGroup => (
