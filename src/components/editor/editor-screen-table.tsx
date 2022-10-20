@@ -126,7 +126,7 @@ const EditorScreenTable: FC<Props> = ({
       return {
         id: id!,
         typeString: typeString,
-        type: type!,
+        type: type,
         createdAt: createdAt!,
         modifiedAt: modifiedAt!,
         lastModifier: lastModifier

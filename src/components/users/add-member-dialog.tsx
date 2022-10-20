@@ -9,6 +9,7 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import ClearIcon from "@mui/icons-material/Clear";
 import UsersScreenDialog from "./users-screen-dialog";
 import { API_ADMIN_USER } from "types";
+import produce from "immer";
 
 /**
  * Interface representing component properties
@@ -55,10 +56,15 @@ const AddMemberDialog: FC<Props> = ({
    * @param event event
    */
   const handleTextFieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    if (!selectedUser) {
+      return;
+    }
+
     const { target: { name, value } } = event;
-    const fieldName = name;
-    const updatedUser: any = { ...selectedUser };
-    updatedUser[fieldName] = value;
+    const updatedUser = produce(selectedUser, draftUser => {
+      return { ...draftUser, [name]: value };
+    });
+
     setSelectedUser(updatedUser);
   };
 
@@ -217,6 +223,7 @@ const AddMemberDialog: FC<Props> = ({
       <TextField
         select
         fullWidth
+        disabled={ !foundUsers.length }
         size="medium"
         onChange={ handleSelectChange }
         label={ strings.userManagementScreen.addMemberDialog.usersSelectLabel }
