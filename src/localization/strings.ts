@@ -147,6 +147,7 @@ export interface Localized extends LocalizedStringsMethods {
     user: string;
     logo: string;
     selectLanguage: string;
+    infoLabel: string;
     languages: {
       fi: string;
       en: string;
