@@ -43,26 +43,48 @@ const DraftEditorScreen: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
 
+    let formId: string;
+
     try {
-      const form = await metaformsApi.findMetaform({ metaformSlug: formSlug });
+      if (metaformVersion === undefined || metaformVersion.id !== draftId) {
+        const form = await metaformsApi.findMetaform({ metaformSlug: formSlug });
+
+        formId = form.id!;
+        const draft = await versionsApi.findMetaformVersion({
+          metaformId: form.id!,
+          versionId: draftId!
+        });
+        dispatch(setMetaformVersion(draft));
+      } else {
+        const form = MetaformUtils.jsonToMetaform(metaformVersion.data);
+        formId = form.id!;
+      }
 
       const loadedMemberGroups = await metaformMemberGroupsApi.listMetaformMemberGroups({
-        metaformId: form.id!
-      });
-
-      const draft = await versionsApi.findMetaformVersion({
-        metaformId: form.id!,
-        versionId: draftId!
+        metaformId: formId
       });
 
       setMemberGroups(loadedMemberGroups);
-      dispatch(setMetaformVersion(draft));
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.findDraft, e);
       navigate("./../..");
     }
 
     setLoading(false);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  /**
+   * Sets pending form
+   *
+   * @param form pending form
+   */
+  const setPendingForm = async (form: Metaform) => {
+    const updatedMetaformVersion = { ...metaformVersion, data: form } as MetaformVersion;
+    dispatch(setMetaformVersion(updatedMetaformVersion));
   };
 
   /**
@@ -90,7 +112,7 @@ const DraftEditorScreen: React.FC = () => {
 
     navigate("./../..");
   };
-  
+
   /**
    * Publishes Metaform
    */
@@ -142,22 +164,6 @@ const DraftEditorScreen: React.FC = () => {
       open={ publishDialogOpen }
     />
   );
-
-  useEffect(() => {
-    if (metaformVersion === undefined || metaformVersion.id !== draftId) {
-      loadData();
-    }
-  }, []);
-
-  /**
-   * Sets pending form
-   *
-   * @param form pending form
-   */
-  const setPendingForm = async (form: Metaform) => {
-    const updatedMetaformVersion = { ...metaformVersion, data: form } as MetaformVersion;
-    dispatch(setMetaformVersion(updatedMetaformVersion));
-  };
 
   /**
    * Renders draft editor actions
