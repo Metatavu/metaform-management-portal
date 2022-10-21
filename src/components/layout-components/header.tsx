@@ -8,6 +8,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { selectLocale, setLocale } from "features/locale-slice";
 import { HelpOutline } from "@mui/icons-material";
 import Config from "app/config";
+import theme from "theme";
 
 /**
  * Header component
@@ -39,7 +40,8 @@ const Header: React.FC = ({
       <Tooltip title={ strings.header.infoLabel } placement="left" arrow>
         <IconButton href={ tutorialUrl }>
           <HelpOutline
-            style={{ color: "white", fontSize: "40px" }}
+            fontSize="large"
+            sx={{ color: theme.palette.grey[200] }}
           />
         </IconButton>
       </Tooltip>
