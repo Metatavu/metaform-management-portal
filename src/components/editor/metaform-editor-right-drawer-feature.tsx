@@ -533,7 +533,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
     if (memberGroupOptIndex === undefined || selectedMemberGroupId === undefined || selectedMemberGroupId === NOT_SELECTED) {
       return null;
     }
-    const notifyChecked = !!field.options?.[memberGroupOptIndex].permissionGroups?.notifyGroupIds?.length;
+    const notifyChecked = !!field.options?.[memberGroupOptIndex]?.permissionGroups?.notifyGroupIds?.length;
     return (
       <FormControl fullWidth>
         <TextField
@@ -598,14 +598,14 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
     if (!selectMemberGroupEnabled) {
       return null;
     }
-
+    const currentIndex = memberGroupOptIndex ?? "";
     return (
       <FormControl fullWidth>
         <TextField
           select
           fullWidth
           label={ strings.draftEditorScreen.editor.memberGroups.fieldValueLabel }
-          value={ memberGroupOptIndex }
+          value={ currentIndex }
           onChange={ event => onSelectedOptionChange(Number(event.target.value))}
         >
           { field.options!.map((option, index) => {
