@@ -83,40 +83,6 @@ const DraftEditorScreen: React.FC = () => {
   }, []);
 
   /**
-   * Check if form have some member groups defined
-   */
-  const checkIfMemberGroups = () => {
-    if (pendingForm.defaultPermissionGroups) {
-      if (pendingForm.defaultPermissionGroups!.editGroupIds!.length > 0 ||
-          pendingForm.defaultPermissionGroups!.notifyGroupIds!.length > 0 ||
-          pendingForm.defaultPermissionGroups!.viewGroupIds!.length > 0) {
-        setHasMemberGroups(true);
-      } else {
-        pendingForm.sections?.forEach((section => {
-          section.fields?.forEach((field => {
-            if (field.type === MetaformFieldType.Select || field.type === MetaformFieldType.Checklist || field.type === MetaformFieldType.Radio) {
-              field.options?.forEach((option => {
-                if (option.permissionGroups) {
-                  if (option.permissionGroups!.editGroupIds!.length > 0 ||
-                      option.permissionGroups!.notifyGroupIds!.length > 0 ||
-                      option.permissionGroups!.viewGroupIds!.length > 0) {
-                    setHasMemberGroups(true);
-                  }
-                }
-              }));
-            }
-          }));
-        }));
-      }
-    }
-  };
-
-  useEffect(() => {
-    setHasMemberGroups(false);
-    checkIfMemberGroups();
-  }, [pendingForm]);
-
-  /**
    * Sets pending form
    *
    * @param form pending form

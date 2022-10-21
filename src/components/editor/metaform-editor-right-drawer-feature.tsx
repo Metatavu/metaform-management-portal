@@ -1,4 +1,4 @@
-import { Button, Divider, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, Divider, FormControl, FormControlLabel, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformSection, MetaformFieldType, FieldRule, MetaformMemberGroup, MetaformFieldOption } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
@@ -14,6 +14,9 @@ import MetaformFieldAndSubmitEditTitleComponent from "./feature-components/Metaf
 import MetaformFieldRequiredComponent from "./feature-components/MetaformFieldRequiredComponent";
 import { selectMetaform } from "../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
+import slugify from "slugify";
+import { FormContext } from "types";
+import LocalizationUtils from "utils/localization-utils";
 
 /**
  * Component properties
@@ -34,8 +37,55 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
 }) => {
   const { metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
   const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
-  const [ metaformField, setMetaformField ] = useState<MetaformField>();
-  const [ metaformSection, setMetaformSection ] = useState<MetaformSection>();
+  const [ selectMemberGroupEnabled, setSelectMemberGroupEnabled ] = useState<boolean>(false);
+  const [ selectedMemberGroupId, setSelectedMemberGroupId ] = useState<string>();
+  const [ selectedMemberGroupPermission, setSelectedMemberGroupPermission ] = useState<NullableMemberGroupPermission>(NOT_SELECTED);
+  const [ memberGroupOptIndex, setMemberGroupOptIndex ] = useState<number>(-1);
+
+  /**
+   * Updates selected section and field states
+   */
+  const updateSelected = () => {
+    setSelectedField(MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex));
+    setSelectedSection(MetaformUtils.getMetaformSection(pendingForm, sectionIndex));
+    setDebounceTimerId(undefined);
+  };
+
+  /**
+   * Empties member group settings
+   */
+  const emptyMemberGroupSettings = () => {
+    setSelectMemberGroupEnabled(false);
+    setMemberGroupOptIndex(-1);
+    setSelectedMemberGroupId(undefined);
+    setSelectedMemberGroupPermission(NOT_SELECTED);
+  };
+
+  /**
+   * Set member groups for selected field to the found first group
+   */
+  const checkIfMemberGroupsAreSelected = () => {
+    if (sectionIndex === undefined || fieldIndex === undefined) {
+      return;
+    }
+
+    const updatedSelectedField = pendingForm.sections?.[sectionIndex].fields?.[fieldIndex];
+
+    if (!updatedSelectedField || !MetaformUtils.fieldTypesAllowVisibility.includes(updatedSelectedField.type)) {
+      return;
+    }
+
+    const foundOptionIndex = updatedSelectedField.options?.findIndex(option => MetaformUtils.getOptionPermissionGroup(option) !== undefined);
+
+    if (foundOptionIndex !== -1 && foundOptionIndex !== undefined) {
+      const [ groupId, permission ] = MetaformUtils.getOptionPermissionGroup(updatedSelectedField.options![foundOptionIndex])!;
+
+      setSelectMemberGroupEnabled(true);
+      setSelectedMemberGroupId(groupId);
+      setSelectedMemberGroupPermission(permission !== MemberGroupPermission.NOTIFY ? permission : NOT_SELECTED);
+      setMemberGroupOptIndex(foundOptionIndex);
+    }
+  };
 
   useEffect(() => {
     if (metaformSectionIndex !== undefined) {
@@ -189,7 +239,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * @param optionIndex Option index value of option field what we delete
    */
   const deleteFieldOptions = (optionIndex: number) => {
-    setMemberGroupOptIndex(undefined);
+    setMemberGroupOptIndex(-1);
     if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -363,7 +413,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * @param checked checked value of the checkbox value true or false
    */
   const setMemberGroupNotify = (checked: boolean) => {
-    if (!selectedField || selectedMemberGroupId === undefined || memberGroupOptIndex === undefined) {
+    if (!selectedField || selectedMemberGroupId === undefined || memberGroupOptIndex === -1) {
       return;
     }
 
@@ -428,7 +478,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
     const updatedField = produce(selectedField, draftField => {
       draftField.options?.forEach(option => { option.permissionGroups = undefined; });
     });
-    setMemberGroupOptIndex(undefined);
+    setMemberGroupOptIndex(-1);
     setSelectedMemberGroupId(undefined);
     setSelectedMemberGroupPermission(NOT_SELECTED);
     updateFormField(updatedField);
@@ -499,7 +549,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
     if (memberGroupOptIndex === undefined || selectedMemberGroupId === undefined || selectedMemberGroupId === NOT_SELECTED) {
       return null;
     }
-    const notifyChecked = !!field.options?.[memberGroupOptIndex].permissionGroups?.notifyGroupIds?.length;
+    const notifyChecked = !!field.options?.[memberGroupOptIndex]?.permissionGroups?.notifyGroupIds?.length;
     return (
       <FormControl fullWidth>
         <TextField
@@ -571,7 +621,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
           select
           fullWidth
           label={ strings.draftEditorScreen.editor.memberGroups.fieldValueLabel }
-          value={ memberGroupOptIndex }
+          value={ memberGroupOptIndex || 0 }
           onChange={ event => onSelectedOptionChange(Number(event.target.value))}
         >
           { field.options!.map((option, index) => {
