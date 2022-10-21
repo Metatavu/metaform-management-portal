@@ -14,7 +14,7 @@ const env = cleanEnv(process.env, {
   REACT_APP_CORS_PROXY: str({ default: undefined }),
   REACT_APP_ANONYMOUS_USER: str(),
   REACT_APP_ANONYMOUS_PASSWORD: str(),
-  REACT_APP_TUTORIAL_URL: str({ default: "w" })
+  REACT_APP_TUTORIAL_URL: str({ default: "" })
 });
 
 /**
