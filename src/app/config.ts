@@ -13,7 +13,8 @@ const env = cleanEnv(process.env, {
   REACT_APP_SENTRY_ENVIRONMENT: str({ default: "production" }),
   REACT_APP_CORS_PROXY: str({ default: undefined }),
   REACT_APP_ANONYMOUS_USER: str(),
-  REACT_APP_ANONYMOUS_PASSWORD: str()
+  REACT_APP_ANONYMOUS_PASSWORD: str(),
+  REACT_APP_TUTORIAL_URL: str()
 });
 
 /**
@@ -40,6 +41,15 @@ export default class Config {
       baseUrl: env.REACT_APP_API_BASE_URL
     }
   });
+
+  /**
+   * Returns tutorial url
+   * 
+   * @returns tutorial url
+   */
+  public static getTutorialUrl(): string | undefined {
+    return env.REACT_APP_TUTORIAL_URL;
+  }
 
   /**
    * Returns sentry dsn

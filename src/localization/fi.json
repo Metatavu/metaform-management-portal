@@ -119,6 +119,7 @@
     "user": "Käyttäjä",
     "logo": "Essote logo",
     "selectLanguage": "Valitse kieli",
+    "infoLabel": "Ohjeet",
     "languages": {
       "fi": "Suomi",
       "en": "English"
