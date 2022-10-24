@@ -13,10 +13,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { selectKeycloak } from "features/auth-slice";
-import { ReplyStatus } from "types";
+import { FormContext, ReplyStatus } from "types";
 import FormRestrictedContent from "components/containers/form-restricted-content";
 import AuthUtils from "utils/auth-utils";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
+import { CheckCircle, NewReleases, Pending } from "@mui/icons-material";
+import theme from "theme";
+import LocalizationUtils from "utils/localization-utils";
 
 /**
  * Form replies screen component
@@ -55,9 +58,41 @@ const FormRepliesScreen: React.FC = () => {
 
     const fieldData = (metaformData.sections || [])
       .flatMap(section => section.fields || [])
-      .filter(field => (field.contexts || []).includes("MANAGEMENT_LIST"));
+      .filter(field => (field.contexts || []).includes(FormContext.MANAGEMENT_LIST));
     return fieldData;
   };
+
+  /**
+   * Renders reply status icon
+   * 
+   * @param replyStatus replyStatus
+   */
+  const renderReplyStatusIcon = (replyStatus: ReplyStatus) => {
+    switch (replyStatus) {
+      case ReplyStatus.WAITING:
+        return <NewReleases sx={{ color: theme.palette.error.light }}/>;
+      case ReplyStatus.PROCESSING:
+        return <Pending sx={{ color: theme.palette.warning.light }}/>;
+      case ReplyStatus.DONE:
+        return <CheckCircle sx={{ color: theme.palette.success.light }}/>;
+      default:
+        break;
+    }
+  };
+
+  /**
+   * Renders reply status column
+   * 
+   * @param replyStatus replyStatus
+   */
+  const renderReplyStatusColumn = (replyStatus: ReplyStatus) => (
+    <AdminFormListStack direction="row" spacing={ 2 }>
+      { renderReplyStatusIcon(replyStatus) }
+      <AdminFormTypographyField>
+        { LocalizationUtils.getLocalizedStatusOfReply(replyStatus) }
+      </AdminFormTypographyField>
+    </AdminFormListStack>
+  );
 
   /**
    * Builds the columns for the table
@@ -71,7 +106,7 @@ const FormRepliesScreen: React.FC = () => {
       return;
     }
 
-    const managementListColumns = await getManagementListFields(metaformData);
+    const managementListColumns = getManagementListFields(metaformData);
 
     if (!managementListColumns) {
       return;
@@ -90,6 +125,9 @@ const FormRepliesScreen: React.FC = () => {
         );
       },
       renderCell: params => {
+        if (column.name === "status") {
+          return renderReplyStatusColumn(params.row.replyStatus);
+        }
         return (
           <AdminFormListStack direction="row">
             <AdminFormTypographyField>{ column.name ? params.row[column.name] : "" }</AdminFormTypographyField>
