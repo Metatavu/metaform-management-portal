@@ -45,7 +45,8 @@
       "createForm": "Lomakkeen luominen epäonnistui",
       "deleteVersion": "Lomakeversion poistaminen epäonnistui",
       "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
-      "convertSosmetaError": "Sosmetan muuntaminen epäonnistui"
+      "convertSosmetaError": "Sosmetan muuntaminen epäonnistui",
+      "getLastModifiers": "Lomakkeiden viimeisten muokkaajien haku epäonnistui"
     },
     "draftEditorScreen": {
       "findDraft": "Lomakeversion haku epäonnistui",
@@ -84,11 +85,14 @@
     "usersScreen": {
       "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",
       "loadMemberGroups": "Käyttäjäryhmien latauksessa tapahtui virhe",
-      "createMember": "Käyttäjän luonnissa tapahtui virhe",
+      "createMember": "Käyttäjän lisäämisessä lomakkeelle tapahtui virhe",
       "createMemberGroup": "Käyttäjäryhmän luonnissa tapahtui virhe",
       "loadMembers": "Käyttäjien latauksessa tapahtui virhe",
       "removeMemberNotFound": "Ryhmän poistossa tapahtui virhe, käyttäjää ei löytynyt",
-      "addMemberNotFound": "Ryhmän lisäämisessä tapahtui virhe, käyttäjää ei löytynyt"
+      "addMemberNotFound": "Ryhmän lisäämisessä tapahtui virhe, käyttäjää ei löytynyt",
+      "loadUsers": "Käyttäjien latauksessa tapahtui virhe",
+      "createUser": "Käyttäjän luonnissa tapahtui virhe",
+      "updateUser": "Käyttäjän päivityksessä tapahtui virhe"
     },
     "previewScreen": {
       "shareLink": "Linkin jakamisessa tapahtui virhe"
@@ -115,6 +119,7 @@
     "user": "Käyttäjä",
     "logo": "Essote logo",
     "selectLanguage": "Valitse kieli",
+    "infoLabel": "Ohjeet",
     "languages": {
       "fi": "Suomi",
       "en": "English"
@@ -158,7 +163,7 @@
       "description": "Käyttäjien tarkastelu ja käyttäjäryhmien hallinta.",
       "subheader": {
         "title": "Käyttäjänhallinta",
-        "description": "Ohjeteksti"
+        "description": "Lomakkeiden käyttäjien ja ryhmien hallinnointi."
       }
     },
     "editorScreens": {
@@ -314,9 +319,10 @@
         "selectedMemberGroup": "Valittu käyttäjäryhmä",
         "view": "Katselu",
         "edit": "Muokkaus",
-        "none": "Ei oikeuksia",
         "fieldValueLabel": "Kentän arvo",
         "notifications": "Ilmoitukset",
+        "noMemberGroup": "Ei Käyttäjäryhmää",
+        "noPermission": "Ei oikeuksia",
         "noDefaultPermissionMemberGroup": "Ei oletus-käyttäjäryhmää"
       }
     },
@@ -345,18 +351,21 @@
       "group": "Valitse ryhmä",
       "user": "Valitse käyttäjä"
     },
+    "editMemberButton": "Muokkaa käyttäjää",
     "addMemberButton": "Uusi käyttäjä",
     "addMemberGroupButton": "Uusi käyttäjäryhmä",
     "addMemberDialog": {
       "title": "Uusi käyttäjä",
       "text": "Lisää uusi käyttäjä lomakkeelle",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "usersSelectLabel": "Käyttäjät",
+      "searchButton": "Hae",
       "emailLabel": "Sähköpostiosoite",
       "firstNameLabel": "Etunimi",
       "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
       "createButton": "Luo käyttäjä",
-      "cancelButton": "Peruuta",
-      "roleAdministrator": "Ylläpitäjä",
-      "roleManager": "Ammattilainen"
+      "cancelButton": "Peruuta"
     },
     "addMemberGroupDialog": {
       "title": "Uusi käyttäjäryhmä",
@@ -364,6 +373,21 @@
       "displayNameLabel": "Ryhmän nimi",
       "createButton": "Luo ryhmä",
       "cancelButton": "Peruuta"
+    },
+    "editMemberDialog": {
+      "title": "Muokkaa käyttäjää",
+      "text": "Muokkaa olemassa olevaa käyttäjää",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "metaformUsersSelectLabel": "Portaali-käyttäjät",
+      "cardAuthUsersSelectLabel": "Kortti-käyttäjät",
+      "userIsLinked": "Käyttäjä on linkitetty korttiin",
+      "searchButton": "Hae",
+      "emailLabel": "Sähköpostiosoite",
+      "firstNameLabel": "Etunimi",
+      "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
+      "cancelButton": "Peruuta",
+      "editButton": "Muokkaa käyttäjää"
     },
     "usersTable": {
       "nameColumn": {
@@ -447,6 +471,7 @@
     "formCreatedAt": "LUOTU",
     "formModifiedAt": "MUOKATTU",
     "formLastModifier": "VIIMEISIN MUOKKAAJA",
+    "formLastModifierNotFound": "Ei löytynyt",
     "formVersionArchived": "arkistoitu",
     "formVersionDraft": "luonnos",
     "drawer": {

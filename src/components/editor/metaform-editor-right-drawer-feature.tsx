@@ -50,27 +50,38 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
+   * Empties member group settings
+   */
+  const emptyMemberGroupSettings = () => {
+    setSelectMemberGroupEnabled(false);
+    setMemberGroupOptIndex(undefined);
+    setSelectedMemberGroupId(undefined);
+    setSelectedMemberGroupPermission(NOT_SELECTED);
+  };
+
+  /**
    * Set member groups for selected field to the found first group
    */
   const checkIfMemberGroupsAreSelected = () => {
-    if (!selectedField || !MetaformUtils.fieldTypesAllowVisibility.includes(selectedField.type)) {
+    if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
 
-    const foundOptionIndex = selectedField.options?.findIndex(option => MetaformUtils.getOptionPermissionGroup(option) !== undefined);
+    const updatedSelectedField = pendingForm.sections?.[sectionIndex].fields?.[fieldIndex];
+
+    if (!updatedSelectedField || !MetaformUtils.fieldTypesAllowVisibility.includes(updatedSelectedField.type)) {
+      return;
+    }
+
+    const foundOptionIndex = updatedSelectedField.options?.findIndex(option => MetaformUtils.getOptionPermissionGroup(option) !== undefined);
 
     if (foundOptionIndex !== -1 && foundOptionIndex !== undefined) {
-      const [ groupId, permission ] = MetaformUtils.getOptionPermissionGroup(selectedField.options![foundOptionIndex])!;
+      const [ groupId, permission ] = MetaformUtils.getOptionPermissionGroup(updatedSelectedField.options![foundOptionIndex])!;
 
       setSelectMemberGroupEnabled(true);
       setSelectedMemberGroupId(groupId);
-      setSelectedMemberGroupPermission(permission);
+      setSelectedMemberGroupPermission(permission !== MemberGroupPermission.NOTIFY ? permission : NOT_SELECTED);
       setMemberGroupOptIndex(foundOptionIndex);
-    } else {
-      setSelectMemberGroupEnabled(false);
-      setMemberGroupOptIndex(undefined);
-      setSelectedMemberGroupId(undefined);
-      setSelectedMemberGroupPermission(NOT_SELECTED);
     }
   };
 
@@ -79,8 +90,9 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   }, [ sectionIndex, fieldIndex, pendingForm ]);
 
   useEffect(() => {
+    emptyMemberGroupSettings();
     checkIfMemberGroupsAreSelected();
-  }, [ selectedField?.name, selectedField?.options?.length ]);
+  }, [ sectionIndex, fieldIndex, selectedField?.options?.length ]);
 
   /**
    * Updates field with visibility
@@ -211,8 +223,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * @param optionIndex Option index value of option field what we delete
    */
   const deleteFieldOptions = (optionIndex: number) => {
-    setSelectMemberGroupEnabled(false);
-
+    setMemberGroupOptIndex(undefined);
     if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -451,7 +462,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
     const updatedField = produce(selectedField, draftField => {
       draftField.options?.forEach(option => { option.permissionGroups = undefined; });
     });
-
+    setMemberGroupOptIndex(undefined);
     setSelectedMemberGroupId(undefined);
     setSelectedMemberGroupPermission(NOT_SELECTED);
     updateFormField(updatedField);
@@ -517,14 +528,12 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   /**
    * Render member group role options
    *
-   * @param field selected metaform field
    */
   const renderMemberGroupPermissionSelect = (field: MetaformField) => {
-    if (memberGroupOptIndex === undefined || selectedMemberGroupId === undefined) {
+    if (memberGroupOptIndex === undefined || selectedMemberGroupId === undefined || selectedMemberGroupId === NOT_SELECTED) {
       return null;
     }
-
-    const notifyChecked = !!field.options?.[memberGroupOptIndex].permissionGroups?.notifyGroupIds?.length;
+    const notifyChecked = !!field.options?.[memberGroupOptIndex]?.permissionGroups?.notifyGroupIds?.length;
     return (
       <FormControl fullWidth>
         <TextField
@@ -533,7 +542,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           value={ selectedMemberGroupPermission }
           onChange={ ({ target }) => setMemberGroupPermission(target.value as NullableMemberGroupPermission) }
         >
-          <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.none }</MenuItem>
+          <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.noPermission }</MenuItem>
           <MenuItem value={ MemberGroupPermission.EDIT }>{ strings.draftEditorScreen.editor.memberGroups.edit }</MenuItem>
           <MenuItem value={ MemberGroupPermission.VIEW }>{ strings.draftEditorScreen.editor.memberGroups.view }</MenuItem>
         </TextField>
@@ -554,19 +563,21 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Render member groups of current metaform
    */
   const renderMemberGroupSelect = () => {
-    if (memberGroupOptIndex === undefined) {
+    if (memberGroupOptIndex === undefined || !selectMemberGroupEnabled) {
       return null;
     }
-
     return (
       <FormControl fullWidth>
         <TextField
           fullWidth
           select
           label={ strings.draftEditorScreen.editor.memberGroups.memberGroup }
-          value={ selectedMemberGroupId }
+          value={ selectedMemberGroupId || "" }
           onChange={ event => handleMemberGroupChange(event.target.value) }
         >
+          <MenuItem value={ NOT_SELECTED } key={ NOT_SELECTED }>
+            { strings.draftEditorScreen.editor.memberGroups.noMemberGroup }
+          </MenuItem>
           { memberGroups.map(memberGroup => (
             <MenuItem value={ memberGroup.id } key={ memberGroup.id }>
               { memberGroup.displayName }
@@ -587,14 +598,14 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
     if (!selectMemberGroupEnabled) {
       return null;
     }
-
+    const currentIndex = memberGroupOptIndex ?? "";
     return (
       <FormControl fullWidth>
         <TextField
           select
           fullWidth
           label={ strings.draftEditorScreen.editor.memberGroups.fieldValueLabel }
-          value={ memberGroupOptIndex }
+          value={ currentIndex }
           onChange={ event => onSelectedOptionChange(Number(event.target.value))}
         >
           { field.options!.map((option, index) => {
@@ -685,6 +696,8 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       <TextField
         value={ option.text }
         label={ index }
+        focused={ memberGroupOptIndex === index }
+        color="success"
         onChange={ event => updateOptionText({
           ...option,
           name: slugify(event.target.value),
@@ -830,6 +843,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           label={ strings.draftEditorScreen.editor.features.field.defineUserGroup }
           control={
             <Switch
+              disabled={ selectedField?.options!.length === 0 }
               checked={ selectMemberGroupEnabled }
               onChange={ event => toggleMemberGroupEnabled(event.target.checked) }
             />
