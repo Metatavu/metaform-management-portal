@@ -15,8 +15,9 @@ import ReplySaved from "./form/ReplySaved";
 import { Divider, MenuItem, Stack, TextField } from "@mui/material";
 import LocalizationUtils from "utils/localization-utils";
 import { FormReplyAction, FormReplyContent, ReplyViewContainer } from "styled/form/form-reply";
-import { ArrowBack, SaveAlt } from "@mui/icons-material";
+import { ArrowBack, SaveAlt, CheckCircle, NewReleases, Pending } from "@mui/icons-material";
 import { RoundActionButton } from "styled/generic/form";
+import theme from "theme";
 
 /**
  * Component for single reply screen
@@ -206,6 +207,23 @@ const ReplyScreen: FC = () => {
     setReply({ ...reply, data: values as { [index: string]: object } });
     setFormValues(values);
   };
+  /**
+   * Renders reply status icon
+   * 
+   * @param replyStatus replyStatus
+   */
+  const renderReplyStatusIcon = (replyStatus: ReplyStatus) => {
+    switch (replyStatus) {
+      case ReplyStatus.WAITING:
+        return <NewReleases sx={{ color: theme.palette.error.light, mr: 1 }}/>;
+      case ReplyStatus.PROCESSING:
+        return <Pending sx={{ color: theme.palette.warning.light, mr: 1 }}/>;
+      case ReplyStatus.DONE:
+        return <CheckCircle sx={{ color: theme.palette.success.light, mr: 1 }}/>;
+      default:
+        break;
+    }
+  };
 
   /**
    * Renter status switch
@@ -225,7 +243,10 @@ const ReplyScreen: FC = () => {
               key={ `metaform-reply-status-${status}` }
               value={ status }
             >
-              { LocalizationUtils.getLocalizedStatusOfReply(status) }
+              <Stack direction="row">
+                { renderReplyStatusIcon(status) }
+                { LocalizationUtils.getLocalizedStatusOfReply(status) }
+              </Stack>
             </MenuItem>)
         }
       </TextField>
