@@ -398,14 +398,16 @@ export interface Localized extends LocalizedStringsMethods {
       upnNumberLabel: string;
       createButton: string;
       cancelButton: string;
-    }
+      snackbarText: string;
+    };
     addMemberGroupDialog: {
       title: string;
       text: string;
       displayNameLabel: string;
       createButton: string;
       cancelButton: string;
-    }
+      snackbarText: string;
+    };
     editMemberDialog: {
       title: string;
       text: string;
@@ -420,18 +422,23 @@ export interface Localized extends LocalizedStringsMethods {
       upnNumberLabel: string;
       cancelButton: string;
       editButton: string;
-    }
+      snackbarText: string;
+    };
+    groupMembership: {
+      groupMembershipAddSnackbarText: string;
+      groupMembershipRemoveSnackbarText: string;
+    };
     usersTable: {
       nameColumn: {
         label: string;
-      }
+      };
       emailColumn: {
         label: string;
-      }
+      };
       groupsColumn: {
         label: string;
-      }
-    }
+      };
+    };
   };
 
   /**

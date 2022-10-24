@@ -29,7 +29,7 @@
       "reloadPage": "Try reloading the page.",
       "tryAgain": "Please check your internet connection and try again.",
       "unsavedContents": "Please note that unsaved content will not be saved when reloading. If you have unsaved content on this page, you can close this message and copy the content to the clipboard before reloading.",
-      "reportIssue": "If the problem persists, contact support@metatavu.fi by email. Please include technical details in the email to speed up resolution of the problem.",
+      "reportIssue": "If the problem persists it is possible that the fault is in background services we're using. Feel free to contact support@metatavu.fi by email. Please include technical details in the email to speed up resolution of the problem.",
       "technicalDetails": "Technical details:",
       "time": "Time: {0}",
       "url": "URL: {0}",
@@ -364,14 +364,16 @@
       "lastNameLabel": "Last name",
       "upnNumberLabel": "UPN number",
       "createButton": "Add member",
-      "cancelButton": "Cancel"
+      "cancelButton": "Cancel",
+      "snackbarText": "Creating user was successful!"
     },
     "addMemberGroupDialog": {
       "title": "New group",
       "text": "Add new group to the form",
       "displayNameLabel": "Group's name",
       "createButton": "Add group",
-      "cancelButton": "Cancel"
+      "cancelButton": "Cancel",
+      "snackbarText": "Creating group was successful!"
     },
     "editMemberDialog": {
       "title": "Edit user",
@@ -386,7 +388,12 @@
       "lastNameLabel": "Last name",
       "upnNumberLabel": "UPN number",
       "cancelButton": "Cancel",
-      "editButton": "Edit user"
+      "editButton": "Edit user",
+      "snackbarText": "Editing user was successful!"
+    },
+    "groupMembership": {
+      "groupMembershipAddSnackbarText": "Adding user to form was successful!",
+      "groupMembershipRemoveSnackbarText": "Removing user from form was successful!"
     },
     "usersTable": {
       "nameColumn": {

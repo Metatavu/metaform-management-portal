@@ -14,6 +14,8 @@ import UsersFilter from "components/users/users-filter";
 import { RoundActionButton } from "styled/generic/form";
 import theme from "theme";
 import EditMemberDialog from "components/users/edit-member-dialog";
+import GenericSnackbar from "components/generic/generic-snackbar";
+import { Typography } from "@mui/material";
 
 /**
  * Users screen component
@@ -33,6 +35,8 @@ const UsersScreen: React.FC = () => {
   const [ addMemberGroupOpen, setAddMemberGroupOpen ] = React.useState<boolean>(false);
   const [ addMemberOpen, setAddMemberOpen ] = React.useState<boolean>(false);
   const [ editMemberOpen, setEditMemberOpen ] = React.useState<boolean>(false);
+  const [ snackbarMessage, setSnackbarMessage ] = React.useState<string>("");
+  const [ snackbarOpen, setSnackbarOpen ] = React.useState<boolean>(false);
 
   /**
    * Searches users from the API
@@ -65,6 +69,8 @@ const UsersScreen: React.FC = () => {
     
     try {
       const createdUser = await usersApi.createUser({ user: user });
+      
+      setSnackbarMessage(strings.userManagementScreen.addMemberDialog.snackbarText);
 
       return createdUser;
     } catch (err) {
@@ -87,6 +93,8 @@ const UsersScreen: React.FC = () => {
         userId: user.id!,
         user: user
       });
+
+      setSnackbarMessage(strings.userManagementScreen.editMemberDialog.snackbarText);
     } catch (e) {
       errorContext.setError(strings.errorHandling.usersScreen.updateUser, e);
     }
@@ -183,6 +191,7 @@ const UsersScreen: React.FC = () => {
 
       const updatedGroups = memberGroups.map(metaformMemberGroup => (metaformMemberGroup.id === updatedGroup.id ? updatedGroup : metaformMemberGroup));
 
+      setSnackbarMessage(strings.userManagementScreen.groupMembership.groupMembershipRemoveSnackbarText);
       setMemberGroups(updatedGroups);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.loadMembers, err);
@@ -219,6 +228,7 @@ const UsersScreen: React.FC = () => {
 
       const updatedGroups = memberGroups.map(metaformMemberGroup => (metaformMemberGroup.id === updatedGroup.id ? updatedGroup : metaformMemberGroup));
 
+      setSnackbarMessage(strings.userManagementScreen.groupMembership.groupMembershipAddSnackbarText);
       setMemberGroups(updatedGroups);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.loadMembers, err);
@@ -248,6 +258,7 @@ const UsersScreen: React.FC = () => {
         }
       });
 
+      setSnackbarMessage(strings.userManagementScreen.addMemberGroupDialog.snackbarText);
       setMemberGroups([ ...memberGroups, createdMemberGroup ]);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.createMemberGroup, err);
@@ -314,6 +325,11 @@ const UsersScreen: React.FC = () => {
    */
   const onEditMemberDialogCancel = () => setEditMemberOpen(false);
 
+  /**
+   * Event handler for snackbar close event
+   */
+  const handleSnackbarClose = () => (setSnackbarOpen(false));
+
   React.useEffect(() => {
     loadMetaforms();
   }, []);
@@ -322,8 +338,24 @@ const UsersScreen: React.FC = () => {
     loadMembersAndGroups();
   }, [ selectedMetaformId, metaforms ]);
 
+  React.useEffect(() => {
+    if (snackbarMessage) {
+      setSnackbarOpen(true);
+    }
+  }, [ snackbarMessage ]);
+
   return (
     <>
+      <GenericSnackbar
+        open={ snackbarOpen }
+        onClose={ handleSnackbarClose }
+        autoHideDuration={ 6000 }
+        severity="success"
+      >
+        <Typography variant="caption">
+          { snackbarMessage }
+        </Typography>
+      </GenericSnackbar>
       <AddMemberDialog
         loading={ loading }
         open={ addMemberOpen }
