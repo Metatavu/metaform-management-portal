@@ -45,7 +45,8 @@
       "createForm": "Creating form failed",
       "deleteVersion": "Deleting form failed",
       "createFormDuplicateNameError": "Form with that name already exists!",
-      "convertSosmetaError": "Converting Sosmeta failed"
+      "convertSosmetaError": "Converting Sosmeta failed",
+      "getLastModifiers": "Fetching forms last modifiers dailed"
     },
     "draftEditorScreen": {
       "findDraft": "Fetching form version failed",
@@ -88,7 +89,10 @@
       "createMemberGroup": "Error occurred while creating a user group",
       "loadMembers": "Error occurred while loading users",
       "removeMemberNotFound": "Could not remove user from the group. User was not found",
-      "addMemberNotFound": "Could not add user to the group. User was not found"
+      "addMemberNotFound": "Could not add user to the group. User was not found",
+      "loadUsers": "Error occurred while loading users",
+      "createUser": "Error occurred while creating user",
+      "updateUser": "Error occurred while updating user"
     },
     "previewScreen": {
       "shareLink": "Error occurred while sharing link"
@@ -115,6 +119,7 @@
     "user": "User",
     "logo": "Essote logo",
     "selectLanguage": "Select language",
+    "infoLabel": "Instructions",
     "languages": {
       "fi": "Suomi",
       "en": "English"
@@ -158,7 +163,7 @@
       "description": "View users and manage user groups.",
       "subheader": {
         "title": "User management",
-        "description": "Help text"
+        "description": "Forms users and groups management."
       }
     },
     "editorScreens": {
@@ -216,7 +221,7 @@
     "editor": {
       "addSection": "Add section",
       "emptySection": "Empty section",
-      "emptySelection": "Selection a section or field to start editing.",
+      "emptySelection": "Select a section or field to start editing.",
       "defaultSectionTitle": "Section",
       "form": {
         "tabTitle": "Form",
@@ -314,9 +319,10 @@
         "memberGroup": "Member group",
         "view":"View",
         "edit":"Edit",
-        "none":"No permissions",
         "fieldValueLabel": "Field value",
         "notifications": "Notifications",
+        "noMemberGroup":"No Member group",
+        "noPermission":"No permission",
         "noDefaultPermissionMemberGroup": "No default permission member group",
         "tooltipDescription": ""
       }
@@ -346,18 +352,21 @@
       "group": "Select group",
       "user": "Select user"
     },
+    "editMemberButton": "Edit user",
     "addMemberButton": "New member",
     "addMemberGroupButton": "New group",
     "addMemberDialog": {
       "title": "New member",
       "text": "Add new member to the form",
+      "freeTextSearchLabel": "User search",
+      "usersSelectLabel": "Users",
+      "searchButton": "Search",
       "emailLabel": "Email",
       "firstNameLabel": "First name",
       "lastNameLabel": "Last name",
+      "upnNumberLabel": "UPN number",
       "createButton": "Add member",
-      "cancelButton": "Cancel",
-      "roleAdministrator": "Administrator",
-      "roleManager": "Manager"
+      "cancelButton": "Cancel"
     },
     "addMemberGroupDialog": {
       "title": "New group",
@@ -365,6 +374,21 @@
       "displayNameLabel": "Group's name",
       "createButton": "Add group",
       "cancelButton": "Cancel"
+    },
+    "editMemberDialog": {
+      "title": "Edit user",
+      "text": "Edit existing members",
+      "freeTextSearchLabel": "User search",
+      "metaformUsersSelectLabel": "Portal users",
+      "cardAuthUsersSelectLabel": "Card users",
+      "userIsLinked": "User is linked to card",
+      "searchButton": "Search",
+      "emailLabel": "Email",
+      "firstNameLabel": "First name",
+      "lastNameLabel": "Last name",
+      "upnNumberLabel": "UPN number",
+      "cancelButton": "Cancel",
+      "editButton": "Edit user"
     },
     "usersTable": {
       "nameColumn": {
@@ -448,6 +472,7 @@
     "formCreatedAt": "CREATED AT",
     "formModifiedAt": "MODIFIED AT",
     "formLastModifier": "LAST MODIFIER",
+    "formLastModifierNotFound": "Not found",
     "formVersionArchived": "archived",
     "formVersionDraft": "draft",
     "drawer": {
