@@ -16,6 +16,7 @@ import GenericLoaderWrapper from "components/generic/generic-loader";
 import { RoundActionButton } from "styled/generic/form";
 import { selectMetaform, setMetaformVersion } from "features/metaform-slice";
 import ConfirmDialog from "components/generic/confirm-dialog";
+import LeavePageHandler from "components/contexts/leave-page-handler";
 
 /**
  * Draft editor screen component
@@ -163,27 +164,29 @@ const DraftEditorScreen: React.FC = () => {
    * Renders draft editor actions
    */
   const draftEditorActions = () => (
-    <Stack direction="row" spacing={ 2 }>
-      <RoundActionButton
-        startIcon={ <Save/> }
-        onClick={ saveMetaformVersion }
-      >
-        <Typography>{ strings.generic.save }</Typography>
-      </RoundActionButton>
-      <RoundActionButton
-        onClick={ () => navigate(window.location.pathname.replace("editor", "preview")) }
-        startIcon={ <Preview/> }
-      >
-        <Typography>{ strings.draftEditorScreen.preview }</Typography>
-      </RoundActionButton>
-      <RoundActionButton
-        startIcon={ <Public/> }
-        onClick={ () => setPublishDialogOpen(true) }
-        disabled={ !draftForm?.sections || draftForm?.sections?.length! === 0 }
-      >
-        <Typography>{ strings.draftEditorScreen.publish }</Typography>
-      </RoundActionButton>
-    </Stack>
+    <LeavePageHandler active={ true }>
+      <Stack direction="row" spacing={ 2 }>
+        <RoundActionButton
+          startIcon={ <Save/> }
+          onClick={ saveMetaformVersion }
+        >
+          <Typography>{ strings.generic.save }</Typography>
+        </RoundActionButton>
+        <RoundActionButton
+          onClick={ () => navigate(window.location.pathname.replace("editor", "preview")) }
+          startIcon={ <Preview/> }
+        >
+          <Typography>{ strings.draftEditorScreen.preview }</Typography>
+        </RoundActionButton>
+        <RoundActionButton
+          startIcon={ <Public/> }
+          onClick={ () => setPublishDialogOpen(true) }
+          disabled={ !draftForm?.sections || draftForm?.sections?.length! === 0 }
+        >
+          <Typography>{ strings.draftEditorScreen.publish }</Typography>
+        </RoundActionButton>
+      </Stack>
+    </LeavePageHandler>
   );
 
   return (

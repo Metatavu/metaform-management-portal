@@ -242,6 +242,8 @@ export interface Localized extends LocalizedStringsMethods {
   draftEditorScreen: {
     preview: string;
     publish: string;
+    confirmLeavePageWithoutSaving: string;
+    unsavedChanges: string;
     publishDialog: {
       title: string;
       contentText: string;

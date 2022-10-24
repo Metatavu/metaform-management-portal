@@ -206,6 +206,8 @@
   "draftEditorScreen": {
     "preview": "Esikatsele",
     "publish": "Julkaise",
+    "confirmLeavePageWithoutSaving": "Haluatko varmasti poistua sivulta tallentamatta?",
+    "unsavedChanges": "Tallentamattomat muutokset",
     "publishDialog": {
       "title": "Julkaise versio",
       "contentText": "Oletko varma, että haluat julkaista lomakkeen {0}?"
