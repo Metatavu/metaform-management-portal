@@ -12,13 +12,12 @@ import { Dictionary, ReplyStatus } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import ReplySaved from "./form/ReplySaved";
-import { Divider, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { Divider, MenuItem, Stack, TextField } from "@mui/material";
 import LocalizationUtils from "utils/localization-utils";
 import { FormReplyAction, FormReplyContent, ReplyViewContainer } from "styled/form/form-reply";
 import { ArrowBack, SaveAlt } from "@mui/icons-material";
 import { RoundActionButton } from "styled/generic/form";
-import { selectSnackbar, setSnackbarMessage, setSnackbarOpen } from "features/snackbar-slice";
-import GenericSnackbar from "components/generic/generic-snackbar";
+import { setSnackbarMessage } from "features/snackbar-slice";
 
 /**
  * Component for single reply screen
@@ -34,7 +33,6 @@ const ReplyScreen: FC = () => {
 
   const dispatch = useAppDispatch();
   const keycloak = useAppSelector(selectKeycloak);
-  const { snackbarMessage, snackbarOpen } = useAppSelector(selectSnackbar);
 
   const [ loading, setLoading ] = useState(false);
   const [ metaform, setMetaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
@@ -238,35 +236,8 @@ const ReplyScreen: FC = () => {
     </GenericLoaderWrapper>
   );
 
-  /**
-   * Event handler for snackbar close event
-   */
-  const handleSnackbarClose = () => {
-    dispatch(setSnackbarOpen(false));
-    dispatch(setSnackbarMessage());
-  };
-
-  /**
-   * Event handler for snackbar open
-   */
-  const handleSnackbarOpen = () => snackbarMessage && dispatch(setSnackbarOpen(true));
-
-  useEffect(() => {
-    handleSnackbarOpen();
-  }, [ snackbarMessage ]);
-
   return (
     <ReplyViewContainer>
-      <GenericSnackbar
-        open={ snackbarOpen }
-        onClose={ handleSnackbarClose }
-        autoHideDuration={ 4000 }
-        severity="success"
-      >
-        <Typography variant="body2">
-          { snackbarMessage }
-        </Typography>
-      </GenericSnackbar>
       <FormReplyAction>
         <RoundActionButton
           startIcon={ <ArrowBack/> }

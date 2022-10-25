@@ -5,7 +5,7 @@ import NavigationTab from "components/layouts/navigations/navigation-tab";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import { PersonAdd, GroupAdd, Edit } from "@mui/icons-material";
 import { ErrorContext } from "components/contexts/error-handler";
-import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
+import { useApiClient, useAppDispatch } from "app/hooks";
 import { Metaform, MetaformMember, MetaformMemberGroup, User } from "generated/client";
 import AddMemberGroupDialog from "components/users/add-member-group-dialog";
 import UsersTable from "components/users/users-table";
@@ -14,9 +14,7 @@ import UsersFilter from "components/users/users-filter";
 import { RoundActionButton } from "styled/generic/form";
 import theme from "theme";
 import EditMemberDialog from "components/users/edit-member-dialog";
-import GenericSnackbar from "components/generic/generic-snackbar";
-import { Typography } from "@mui/material";
-import { selectSnackbar, setSnackbarMessage, setSnackbarOpen } from "features/snackbar-slice";
+import { setSnackbarMessage } from "features/snackbar-slice";
 
 /**
  * Users screen component
@@ -27,7 +25,6 @@ const UsersScreen: React.FC = () => {
   const { metaformsApi, metaformMemberGroupsApi, metaformMembersApi, usersApi } = apiClient;
 
   const dispatch = useAppDispatch();
-  const { snackbarMessage, snackbarOpen } = useAppSelector(selectSnackbar);
 
   const [ loading, setLoading ] = React.useState<boolean>(false);
   const [ loadingMemberId, setLoadingMemberId ] = React.useState<string>();
@@ -325,20 +322,6 @@ const UsersScreen: React.FC = () => {
    * Event handler for User edit dialog cancel
    */
   const onEditMemberDialogCancel = () => setEditMemberOpen(false);
-
-  /**
-   * Event handler for snackbar close event
-   */
-  const handleSnackbarClose = () => {
-    dispatch(setSnackbarOpen(false));
-    dispatch(setSnackbarMessage());
-  };
-
-  /**
-   * Event handler for snackbar open
-   */
-  const handleSnackbarOpen = () => snackbarMessage && dispatch(setSnackbarOpen(true));
-
   React.useEffect(() => {
     loadMetaforms();
   }, []);
@@ -347,22 +330,8 @@ const UsersScreen: React.FC = () => {
     loadMembersAndGroups();
   }, [ selectedMetaformId, metaforms ]);
 
-  React.useEffect(() => {
-    handleSnackbarOpen();
-  }, [ snackbarMessage ]);
-
   return (
     <>
-      <GenericSnackbar
-        open={ snackbarOpen }
-        onClose={ handleSnackbarClose }
-        autoHideDuration={ 4000 }
-        severity="success"
-      >
-        <Typography variant="body2">
-          { snackbarMessage }
-        </Typography>
-      </GenericSnackbar>
       <AddMemberDialog
         loading={ loading }
         open={ addMemberOpen }

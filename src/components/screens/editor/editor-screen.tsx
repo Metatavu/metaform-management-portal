@@ -1,6 +1,6 @@
-import { Divider, Stack, Typography } from "@mui/material";
+import { Button, Divider, Stack } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
+import { useApiClient, useAppDispatch } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
 import strings from "localization/strings";
 import React, { useContext, useEffect, useState } from "react";
@@ -14,8 +14,7 @@ import GenericLoaderWrapper from "components/generic/generic-loader";
 import EditorScreenTable from "../../editor/editor-screen-table";
 import theme from "theme";
 import { RoundActionButton } from "styled/generic/form";
-import GenericSnackbar from "components/generic/generic-snackbar";
-import { selectSnackbar, setSnackbarMessage, setSnackbarOpen } from "features/snackbar-slice";
+import { setSnackbarMessage } from "features/snackbar-slice";
 
 /**
  * Editor screen component
@@ -29,7 +28,6 @@ const EditorScreen: React.FC = () => {
   const { metaformsApi, versionsApi, usersApi } = apiClient;
 
   const dispatch = useAppDispatch();
-  const { snackbarMessage, snackbarOpen } = useAppSelector(selectSnackbar);
 
   const [ metaforms, setMetaforms ] = useState<Metaform[]>([]);
   const [ metaformVersions, setMetaformVersions ] = useState<MetaformVersion[]>([]);
@@ -215,20 +213,7 @@ const EditorScreen: React.FC = () => {
 
     setLoading(false);
   };
-
-  /**
-   * Event handler for snackbar close event
-   */
-  const handleSnackbarClose = () => {
-    dispatch(setSnackbarOpen(false));
-    dispatch(setSnackbarMessage());
-  };
-
-  /**
-   * Event handler for snackbar open
-   */
-  const handleSnackbarOpen = () => snackbarMessage && dispatch(setSnackbarOpen(true));
-
+  
   /**
    * Toggles drawer
    */
@@ -240,22 +225,8 @@ const EditorScreen: React.FC = () => {
     loadMetaforms();
   }, []);
 
-  useEffect(() => {
-    handleSnackbarOpen();
-  }, [ snackbarMessage ]);
-
   return (
     <>
-      <GenericSnackbar
-        open={ snackbarOpen }
-        onClose={ handleSnackbarClose }
-        autoHideDuration={ 4000 }
-        severity="success"
-      >
-        <Typography variant="body2">
-          { snackbarMessage }
-        </Typography>
-      </GenericSnackbar>
       <EditorScreenDrawer
         open={ drawerOpen }
         setOpen={ setDrawerOpen }
@@ -276,6 +247,11 @@ const EditorScreen: React.FC = () => {
           </RoundActionButton>
         </NavigationTabContainer>
         <Divider/>
+        <Button
+          onClick={ () => dispatch(setSnackbarMessage("MOI")) }
+        >
+          Click
+        </Button>
         <GenericLoaderWrapper loading={ loading }>
           <EditorScreenTable
             loading={ loading }

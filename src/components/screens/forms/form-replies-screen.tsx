@@ -17,8 +17,7 @@ import { ReplyStatus } from "types";
 import FormRestrictedContent from "components/containers/form-restricted-content";
 import AuthUtils from "utils/auth-utils";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
-import { selectSnackbar, setSnackbarMessage, setSnackbarOpen } from "features/snackbar-slice";
-import GenericSnackbar from "components/generic/generic-snackbar";
+import { setSnackbarMessage } from "features/snackbar-slice";
 
 /**
  * Form replies screen component
@@ -32,7 +31,6 @@ const FormRepliesScreen: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const keycloak = useAppSelector(selectKeycloak);
-  const { snackbarMessage, snackbarOpen } = useAppSelector(selectSnackbar);
 
   const [ rows, setRows ] = useState<any[]>([]);
   const [ filteredRows, setFilteredRows] = useState<any[]>([]);
@@ -302,35 +300,8 @@ const FormRepliesScreen: React.FC = () => {
     </AdminFormListStack>
   );
 
-  /**
-   * Event handler for snackbar close event
-   */
-  const handleSnackbarClose = () => {
-    dispatch(setSnackbarOpen(false));
-    dispatch(setSnackbarMessage());
-  };
-
-  /**
-   * Event handler for snackbar open
-   */
-  const handleSnackbarOpen = () => snackbarMessage && dispatch(setSnackbarOpen(true));
-
-  useEffect(() => {
-    handleSnackbarOpen();
-  }, [ snackbarMessage ]);
-
   return (
     <>
-      <GenericSnackbar
-        open={ snackbarOpen }
-        onClose={ handleSnackbarClose }
-        autoHideDuration={ 4000 }
-        severity="success"
-      >
-        <Typography variant="body2">
-          { snackbarMessage }
-        </Typography>
-      </GenericSnackbar>
       <NavigationTabContainer>
         <NavigationTab
           text={ strings.navigationHeader.formsScreens.formRepliesScreen }

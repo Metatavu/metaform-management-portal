@@ -29,6 +29,10 @@ export const snackbarSlice = createSlice({
     },
     setSnackbarOpen: (state, { payload }: PayloadAction<boolean>) => {
       state.snackbarOpen = payload;
+    },
+    handleSnackbarClose: state => {
+      state.snackbarMessage = initialState.snackbarMessage;
+      state.snackbarOpen = initialState.snackbarOpen;
     }
   }
 });
@@ -36,7 +40,7 @@ export const snackbarSlice = createSlice({
 /**
  * snackbar actions from created snackbar slice
  */
-export const { setSnackbarMessage, setSnackbarOpen } = snackbarSlice.actions;
+export const { setSnackbarMessage, setSnackbarOpen, handleSnackbarClose } = snackbarSlice.actions;
 
 /**
  * Select snackbar selector
