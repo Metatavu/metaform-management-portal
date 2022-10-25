@@ -72,7 +72,7 @@ const GenericDialog: React.FC<Props> = ({
       fullWidth={ fullWidth }
       disableEnforceFocus={ disableEnforceFocus }
     >
-      <DialogTitle align="center" sx={{ fontSize: 18, fontWeight: "bold" }}>
+      <DialogTitle variant="h2">
         { title }
         <IconButton
           style={{ float: "right" }}
