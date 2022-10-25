@@ -1,7 +1,7 @@
 import { FormControlLabel, Switch, Typography } from "@mui/material";
-import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, fiFI, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Api from "api";
-import { useApiClient, useAppSelector } from "app/hooks";
+import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
 import ConfirmDialog from "components/generic/confirm-dialog";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
@@ -17,16 +17,22 @@ import { ReplyStatus } from "types";
 import FormRestrictedContent from "components/containers/form-restricted-content";
 import AuthUtils from "utils/auth-utils";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
+import { selectSnackbar, setSnackbarMessage, setSnackbarOpen } from "features/snackbar-slice";
+import GenericSnackbar from "components/generic/generic-snackbar";
 
 /**
  * Form replies screen component
  */
 const FormRepliesScreen: React.FC = () => {
   const errorContext = useContext(ErrorContext);
-  const keycloak = useAppSelector(selectKeycloak);
+  const navigate = useNavigate();
+
   const apiClient = useApiClient(Api.getApiClient);
   const { repliesApi, metaformsApi } = apiClient;
-  const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+  const keycloak = useAppSelector(selectKeycloak);
+  const { snackbarMessage, snackbarOpen } = useAppSelector(selectSnackbar);
 
   const [ rows, setRows ] = useState<any[]>([]);
   const [ filteredRows, setFilteredRows] = useState<any[]>([]);
@@ -240,6 +246,7 @@ const FormRepliesScreen: React.FC = () => {
         replyId: replyId
       });
 
+      dispatch(setSnackbarMessage(strings.successSnackbars.replies.replyDeleteSuccessText));
       setRows(rows?.filter(row => row.id !== replyId));
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.deleteReply, e);
@@ -295,8 +302,35 @@ const FormRepliesScreen: React.FC = () => {
     </AdminFormListStack>
   );
 
+  /**
+   * Event handler for snackbar close event
+   */
+  const handleSnackbarClose = () => {
+    dispatch(setSnackbarOpen(false));
+    dispatch(setSnackbarMessage());
+  };
+
+  /**
+   * Event handler for snackbar open
+   */
+  const handleSnackbarOpen = () => snackbarMessage && dispatch(setSnackbarOpen(true));
+
+  useEffect(() => {
+    handleSnackbarOpen();
+  }, [ snackbarMessage ]);
+
   return (
     <>
+      <GenericSnackbar
+        open={ snackbarOpen }
+        onClose={ handleSnackbarClose }
+        autoHideDuration={ 4000 }
+        severity="success"
+      >
+        <Typography variant="body2">
+          { snackbarMessage }
+        </Typography>
+      </GenericSnackbar>
       <NavigationTabContainer>
         <NavigationTab
           text={ strings.navigationHeader.formsScreens.formRepliesScreen }
@@ -313,11 +347,7 @@ const FormRepliesScreen: React.FC = () => {
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
-        componentsProps={{
-          pagination: {
-            labelRowsPerPage: strings.dataGrid.rowsPerPage
-          }
-        }}
+        localeText={ fiFI.components.MuiDataGrid.defaultProps.localeText }
         loading={ loading }
         rows={ filteredRows }
         columns={ columns }

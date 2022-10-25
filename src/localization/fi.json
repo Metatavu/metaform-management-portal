@@ -477,8 +477,9 @@
     "formModifiedAt": "MUOKATTU",
     "formLastModifier": "VIIMEISIN MUOKKAAJA",
     "formLastModifierNotFound": "Ei löytynyt",
-    "formVersionArchived": "arkistoitu",
-    "formVersionDraft": "luonnos",
+    "formVersionArchived": "Arkistoitu",
+    "formVersionDraft": "Luonnos",
+    "formProductionVersion": "Tuotanto",
     "drawer": {
       "newForm": "Luo uusi lomake",
       "helper": "Lomakkeen yleiset asetukset, jotka vaikuttavat valitun lomakkeen kaikkiin lomakeversioihin.",
@@ -498,8 +499,7 @@
       "formIdentificationNone": "Ei vaadi tunnistautumista"
     },
     "confirmDeleteVersionTitle": "Oletko varma?",
-    "confirmDeleteVersionText": "Oletko varma, että haluat poistaa lomakeversion?",
-    "formProductionVersion": "tuotanto"
+    "confirmDeleteVersionText": "Oletko varma, että haluat poistaa lomakeversion?"
   },
 
   "emailDialog": {
@@ -538,6 +538,30 @@
 
   "dataGrid": {
     "rowsPerPage": "Rivejä sivulla:"
-  }
+  },
 
+  "successSnackbars": {
+    "formEditor": {
+      "deleteFormSuccessText": "Tuotantolomake poistettu onnistuneesti!",
+      "deleteFormVersionSuccessText": "Lomake luonnos poistettu onnistuneesti!",
+      "createFormSuccessText": "Uusi lomake luotu onnistuneesti!",
+      "restoreArchiveFormSuccessText": "Arkistoitu lomake palautettu onnistuneesti!",
+      "convertSchemaSuccessText": "Sosmeta skeema konvertoitu onnistuneesti!"
+    },
+    "draftEditor": {
+      "saveDraftSuccessText": "Lomake luonnos tallennettu onnistuneesti!",
+      "publishDraftSuccessText": "Lomake julkaistu onnistuneesti!"
+    },
+    "users": {
+      "addMemberSuccessText": "Käyttäjän lisääminen onnistui!",
+      "editUserSuccessText": "Käyttäjän muokkaaminen onnistui!",
+      "addMemberGroupSuccessText": "Käyttäjäryhmän lisääminen onnistui!",
+      "groupMembershipAddSuccessText": "Käyttäjän lisääminen ryhmään onnistui!",
+      "groupMembershipRemoveSuccessText": "Käyttäjän poistaminen ryhmästä onnistui!"
+    },
+    "replies": {
+      "replyDeleteSuccessText": "Lomakkeen poistaminen onnistui!",
+      "replyEditSuccessText": "Lomakkeen muokkaus onnistui!"
+    }
+  }
 }

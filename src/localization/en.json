@@ -364,16 +364,14 @@
       "lastNameLabel": "Last name",
       "upnNumberLabel": "UPN number",
       "createButton": "Add member",
-      "cancelButton": "Cancel",
-      "snackbarText": "Creating user was successful!"
+      "cancelButton": "Cancel"
     },
     "addMemberGroupDialog": {
       "title": "New group",
       "text": "Add new group to the form",
       "displayNameLabel": "Group's name",
       "createButton": "Add group",
-      "cancelButton": "Cancel",
-      "snackbarText": "Creating group was successful!"
+      "cancelButton": "Cancel"
     },
     "editMemberDialog": {
       "title": "Edit user",
@@ -388,12 +386,7 @@
       "lastNameLabel": "Last name",
       "upnNumberLabel": "UPN number",
       "cancelButton": "Cancel",
-      "editButton": "Edit user",
-      "snackbarText": "Editing user was successful!"
-    },
-    "groupMembership": {
-      "groupMembershipAddSnackbarText": "Adding user to form was successful!",
-      "groupMembershipRemoveSnackbarText": "Removing user from form was successful!"
+      "editButton": "Edit user"
     },
     "usersTable": {
       "nameColumn": {
@@ -478,8 +471,9 @@
     "formModifiedAt": "MODIFIED AT",
     "formLastModifier": "LAST MODIFIER",
     "formLastModifierNotFound": "Not found",
-    "formVersionArchived": "archived",
-    "formVersionDraft": "draft",
+    "formVersionArchived": "Archived",
+    "formVersionDraft": "Draft",
+    "formProductionVersion": "Production",
     "drawer": {
       "newForm": "Create new form",
       "helper": "Forms general settings that affect all versions of form.",
@@ -499,8 +493,7 @@
       "formIdentificationNone": "No identification"
     },
     "confirmDeleteVersionTitle": "Are you sure?",
-    "confirmDeleteVersionText": "Are you sure that you wish to delete the form version?",
-    "formProductionVersion": "production"
+    "confirmDeleteVersionText": "Are you sure that you wish to delete the form version?"
   },
 
   "emailDialog": {
@@ -539,5 +532,30 @@
 
   "dataGrid": {
     "rowsPerPage": "Rows per page:"
+  },
+
+  "successSnackbars": {
+    "formEditor": {
+      "deleteFormSuccessText": "Production form deleted successfully!",
+      "deleteFormVersionSuccessText": "Draft form deleted successfully!",
+      "restoreArchiveFormSuccessText": "Archived form restored successfully!",
+      "createFormSuccessText": "New form created successfully!",
+      "convertSchemaSuccessText": "Sosmeta schema converted successfully!"
+    },
+    "draftEditor": {
+      "saveDraftSuccessText": "Draft form saved successfully!",
+      "publishDraftSuccessText": "Form published successfully!"
+    },
+    "users": {
+      "addMemberSuccessText": "Added user successfully!",
+      "editUserSuccessText": "Edited user successfully!",
+      "addMemberGroupSuccessText": "Created group successfully!",
+      "groupMembershipAddSuccessText": "Added user to group successfully!",
+      "groupMembershipRemoveSuccessText": "Removed user from group successfully!"
+    },
+    "replies": {
+      "replyDeleteSuccessText": "Form deleted successfully!",
+      "replyEditSuccessText": "Form edited successfully!"
+    }
   }
 }

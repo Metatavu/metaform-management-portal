@@ -6,37 +6,41 @@ import MetaformUtils from "utils/metaform-utils";
 import Form from "components/generic/form";
 import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
-import { useApiClient, useAppSelector } from "app/hooks";
+import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
 import { Dictionary, ReplyStatus } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import ReplySaved from "./form/ReplySaved";
-import { Divider, MenuItem, Stack, TextField } from "@mui/material";
+import { Divider, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import LocalizationUtils from "utils/localization-utils";
 import { FormReplyAction, FormReplyContent, ReplyViewContainer } from "styled/form/form-reply";
 import { ArrowBack, SaveAlt } from "@mui/icons-material";
 import { RoundActionButton } from "styled/generic/form";
+import { selectSnackbar, setSnackbarMessage, setSnackbarOpen } from "features/snackbar-slice";
+import GenericSnackbar from "components/generic/generic-snackbar";
 
 /**
  * Component for single reply screen
  */
 const ReplyScreen: FC = () => {
   const errorContext = useContext(ErrorContext);
+  const navigate = useNavigate();
+  const params = useParams();
+  const { formSlug, replyId } = params;
+
+  const apiClient = useApiClient(Api.getApiClient);
+  const { metaformsApi, repliesApi, attachmentsApi } = apiClient;
+
+  const dispatch = useAppDispatch();
+  const keycloak = useAppSelector(selectKeycloak);
+  const { snackbarMessage, snackbarOpen } = useAppSelector(selectSnackbar);
 
   const [ loading, setLoading ] = useState(false);
   const [ metaform, setMetaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});
   const [ reply, setReply ] = useState<Reply>();
   const [ replySavedVisible, setReplySavedVisible ] = useState(false);
-
-  const params = useParams();
-  const { formSlug, replyId } = params;
-  const navigate = useNavigate();
-
-  const apiClient = useApiClient(Api.getApiClient);
-  const keycloak = useAppSelector(selectKeycloak);
-  const { metaformsApi, repliesApi, attachmentsApi } = apiClient;
 
   if (!formSlug) {
     errorContext.setError(strings.errorHandling.adminRepliesScreen.formSlugNotFound);
@@ -124,6 +128,8 @@ const ReplyScreen: FC = () => {
         replyId: reply.id
       });
       const updatedValues = await MetaformUtils.processReplyData(metaform, updatedReply, attachmentsApi);
+      
+      dispatch(setSnackbarMessage(strings.successSnackbars.replies.replyEditSuccessText));
       setReply(updatedReply);
       setFormValues(updatedValues as any);
     } catch (e) {
@@ -232,8 +238,35 @@ const ReplyScreen: FC = () => {
     </GenericLoaderWrapper>
   );
 
+  /**
+   * Event handler for snackbar close event
+   */
+  const handleSnackbarClose = () => {
+    dispatch(setSnackbarOpen(false));
+    dispatch(setSnackbarMessage());
+  };
+
+  /**
+   * Event handler for snackbar open
+   */
+  const handleSnackbarOpen = () => snackbarMessage && dispatch(setSnackbarOpen(true));
+
+  useEffect(() => {
+    handleSnackbarOpen();
+  }, [ snackbarMessage ]);
+
   return (
     <ReplyViewContainer>
+      <GenericSnackbar
+        open={ snackbarOpen }
+        onClose={ handleSnackbarClose }
+        autoHideDuration={ 4000 }
+        severity="success"
+      >
+        <Typography variant="body2">
+          { snackbarMessage }
+        </Typography>
+      </GenericSnackbar>
       <FormReplyAction>
         <RoundActionButton
           startIcon={ <ArrowBack/> }

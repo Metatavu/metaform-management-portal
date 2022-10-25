@@ -15,27 +15,31 @@ import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { RoundActionButton } from "styled/generic/form";
 import { selectMetaform, setMetaformVersion } from "features/metaform-slice";
+import { selectSnackbar, setSnackbarMessage, setSnackbarOpen } from "features/snackbar-slice";
 import ConfirmDialog from "components/generic/confirm-dialog";
+import GenericSnackbar from "components/generic/generic-snackbar";
 
 /**
  * Draft editor screen component
  */
 const DraftEditorScreen: React.FC = () => {
+  const errorContext = useContext(ErrorContext);
   const params = useParams();
+  const navigate = useNavigate();
   const { formSlug, draftId } = params;
 
+  const apiClient = useApiClient(Api.getApiClient);
+  const { metaformMemberGroupsApi, metaformsApi, versionsApi } = apiClient;
+
+  const dispatch = useAppDispatch();
+  const { metaformVersion } = useAppSelector(selectMetaform);
+  const { snackbarMessage, snackbarOpen } = useAppSelector(selectSnackbar);
+  
+  const draftForm = MetaformUtils.getDraftForm(metaformVersion);
+  const editorRef = useRef<HTMLDivElement>(null);
   const [ loading, setLoading ] = useState(false);
   const [ publishDialogOpen, setPublishDialogOpen ] = useState(false);
   const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
-
-  const navigate = useNavigate();
-  const errorContext = useContext(ErrorContext);
-  const dispatch = useAppDispatch();
-  const apiClient = useApiClient(Api.getApiClient);
-  const { metaformMemberGroupsApi, metaformsApi, versionsApi } = apiClient;
-  const { metaformVersion } = useAppSelector(selectMetaform);
-  const draftForm = MetaformUtils.getDraftForm(metaformVersion);
-  const editorRef = useRef<HTMLDivElement>(null);
 
   /**
    * Loads MetaformVersion to edit.
@@ -110,6 +114,7 @@ const DraftEditorScreen: React.FC = () => {
       errorContext.setError(strings.errorHandling.draftEditorScreen.saveDraft, e);
     }
 
+    dispatch(setSnackbarMessage(strings.successSnackbars.draftEditor.saveDraftSuccessText));
     navigate("./../..");
   };
 
@@ -142,6 +147,8 @@ const DraftEditorScreen: React.FC = () => {
           data: { ...form } as { [key: string]: object }
         }
       });
+
+      dispatch(setSnackbarMessage(strings.successSnackbars.draftEditor.publishDraftSuccessText));
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.publishDraft, e);
     }
@@ -192,25 +199,54 @@ const DraftEditorScreen: React.FC = () => {
     </Stack>
   );
 
+  /**
+   * Event handler for snackbar close
+   */
+  const handleSnackbarClose = () => {
+    dispatch(setSnackbarOpen(false));
+    dispatch(setSnackbarMessage());
+  };
+
+  /**
+   * Event handler for snackbar open
+   */
+  const handleSnackbarOpen = () => snackbarMessage && dispatch(setSnackbarOpen(true));
+
+  useEffect(() => {
+    handleSnackbarOpen();
+  }, [ snackbarMessage ]);
+
   return (
-    <Stack flex={ 1 } overflow="hidden">
-      { renderPublishConfirmDialog() }
-      <NavigationTabContainer>
-        <NavigationTab
-          text={ strings.navigationHeader.editorScreens.draftEditorScreen }
-          renderActions={ draftEditorActions }
-        />
-      </NavigationTabContainer>
-      <Divider/>
-      <GenericLoaderWrapper loading={ loading }>
-        <MetaformEditor
-          editorRef={ editorRef }
-          memberGroups={ memberGroups }
-          pendingForm={ MetaformUtils.jsonToMetaform(draftForm) }
-          setPendingForm={ setPendingForm }
-        />
-      </GenericLoaderWrapper>
-    </Stack>
+    <>
+      <GenericSnackbar
+        open={ snackbarOpen }
+        onClose={ handleSnackbarClose }
+        autoHideDuration={ 4000 }
+        severity="success"
+      >
+        <Typography variant="body2">
+          { snackbarMessage }
+        </Typography>
+      </GenericSnackbar>
+      <Stack flex={ 1 } overflow="hidden">
+        { renderPublishConfirmDialog() }
+        <NavigationTabContainer>
+          <NavigationTab
+            text={ strings.navigationHeader.editorScreens.draftEditorScreen }
+            renderActions={ draftEditorActions }
+          />
+        </NavigationTabContainer>
+        <Divider/>
+        <GenericLoaderWrapper loading={ loading }>
+          <MetaformEditor
+            editorRef={ editorRef }
+            memberGroups={ memberGroups }
+            pendingForm={ MetaformUtils.jsonToMetaform(draftForm) }
+            setPendingForm={ setPendingForm }
+          />
+        </GenericLoaderWrapper>
+      </Stack>
+    </>
   );
 };
 

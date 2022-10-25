@@ -5,7 +5,7 @@ import NavigationTab from "components/layouts/navigations/navigation-tab";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import { PersonAdd, GroupAdd, Edit } from "@mui/icons-material";
 import { ErrorContext } from "components/contexts/error-handler";
-import { useApiClient } from "app/hooks";
+import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import { Metaform, MetaformMember, MetaformMemberGroup, User } from "generated/client";
 import AddMemberGroupDialog from "components/users/add-member-group-dialog";
 import UsersTable from "components/users/users-table";
@@ -16,6 +16,7 @@ import theme from "theme";
 import EditMemberDialog from "components/users/edit-member-dialog";
 import GenericSnackbar from "components/generic/generic-snackbar";
 import { Typography } from "@mui/material";
+import { selectSnackbar, setSnackbarMessage, setSnackbarOpen } from "features/snackbar-slice";
 
 /**
  * Users screen component
@@ -24,6 +25,9 @@ const UsersScreen: React.FC = () => {
   const errorContext = React.useContext(ErrorContext);
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, metaformMemberGroupsApi, metaformMembersApi, usersApi } = apiClient;
+
+  const dispatch = useAppDispatch();
+  const { snackbarMessage, snackbarOpen } = useAppSelector(selectSnackbar);
 
   const [ loading, setLoading ] = React.useState<boolean>(false);
   const [ loadingMemberId, setLoadingMemberId ] = React.useState<string>();
@@ -35,8 +39,6 @@ const UsersScreen: React.FC = () => {
   const [ addMemberGroupOpen, setAddMemberGroupOpen ] = React.useState<boolean>(false);
   const [ addMemberOpen, setAddMemberOpen ] = React.useState<boolean>(false);
   const [ editMemberOpen, setEditMemberOpen ] = React.useState<boolean>(false);
-  const [ snackbarMessage, setSnackbarMessage ] = React.useState<string>("");
-  const [ snackbarOpen, setSnackbarOpen ] = React.useState<boolean>(false);
 
   /**
    * Searches users from the API
@@ -69,8 +71,6 @@ const UsersScreen: React.FC = () => {
     
     try {
       const createdUser = await usersApi.createUser({ user: user });
-      
-      setSnackbarMessage(strings.userManagementScreen.addMemberDialog.snackbarText);
 
       return createdUser;
     } catch (err) {
@@ -94,7 +94,7 @@ const UsersScreen: React.FC = () => {
         user: user
       });
 
-      setSnackbarMessage(strings.userManagementScreen.editMemberDialog.snackbarText);
+      dispatch(setSnackbarMessage(strings.successSnackbars.users.editUserSuccessText));
     } catch (e) {
       errorContext.setError(strings.errorHandling.usersScreen.updateUser, e);
     }
@@ -191,7 +191,7 @@ const UsersScreen: React.FC = () => {
 
       const updatedGroups = memberGroups.map(metaformMemberGroup => (metaformMemberGroup.id === updatedGroup.id ? updatedGroup : metaformMemberGroup));
 
-      setSnackbarMessage(strings.userManagementScreen.groupMembership.groupMembershipRemoveSnackbarText);
+      dispatch(setSnackbarMessage(strings.successSnackbars.users.groupMembershipRemoveSuccessText));
       setMemberGroups(updatedGroups);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.loadMembers, err);
@@ -228,7 +228,7 @@ const UsersScreen: React.FC = () => {
 
       const updatedGroups = memberGroups.map(metaformMemberGroup => (metaformMemberGroup.id === updatedGroup.id ? updatedGroup : metaformMemberGroup));
 
-      setSnackbarMessage(strings.userManagementScreen.groupMembership.groupMembershipAddSnackbarText);
+      dispatch(setSnackbarMessage(strings.successSnackbars.users.groupMembershipAddSuccessText));
       setMemberGroups(updatedGroups);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.loadMembers, err);
@@ -258,7 +258,7 @@ const UsersScreen: React.FC = () => {
         }
       });
 
-      setSnackbarMessage(strings.userManagementScreen.addMemberGroupDialog.snackbarText);
+      dispatch(setSnackbarMessage(strings.successSnackbars.users.addMemberGroupSuccessText));
       setMemberGroups([ ...memberGroups, createdMemberGroup ]);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.createMemberGroup, err);
@@ -286,6 +286,7 @@ const UsersScreen: React.FC = () => {
         metaformMember: member
       });
 
+      dispatch(setSnackbarMessage(strings.successSnackbars.users.addMemberSuccessText));
       setMembers([ ...members, createdMember ]);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.createMember, err);
@@ -328,7 +329,15 @@ const UsersScreen: React.FC = () => {
   /**
    * Event handler for snackbar close event
    */
-  const handleSnackbarClose = () => (setSnackbarOpen(false));
+  const handleSnackbarClose = () => {
+    dispatch(setSnackbarOpen(false));
+    dispatch(setSnackbarMessage());
+  };
+
+  /**
+   * Event handler for snackbar open
+   */
+  const handleSnackbarOpen = () => snackbarMessage && dispatch(setSnackbarOpen(true));
 
   React.useEffect(() => {
     loadMetaforms();
@@ -339,9 +348,7 @@ const UsersScreen: React.FC = () => {
   }, [ selectedMetaformId, metaforms ]);
 
   React.useEffect(() => {
-    if (snackbarMessage) {
-      setSnackbarOpen(true);
-    }
+    handleSnackbarOpen();
   }, [ snackbarMessage ]);
 
   return (
@@ -349,10 +356,10 @@ const UsersScreen: React.FC = () => {
       <GenericSnackbar
         open={ snackbarOpen }
         onClose={ handleSnackbarClose }
-        autoHideDuration={ 6000 }
+        autoHideDuration={ 4000 }
         severity="success"
       >
-        <Typography variant="caption">
+        <Typography variant="body2">
           { snackbarMessage }
         </Typography>
       </GenericSnackbar>
