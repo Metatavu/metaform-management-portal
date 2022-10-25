@@ -89,7 +89,8 @@ const EditorScreenDrawer: FC<Props> = ({
       visibility: formSettings.formAuthentication ? MetaformVisibility.Private : MetaformVisibility.Public,
       title: formSettings.formName,
       slug: formSettings.formSlug,
-      sections: formSettings.formSections
+      sections: formSettings.formSections,
+      exportThemeId: "1e7a0019-6a3a-41da-9cb6-6cb01e192ff9"
     });
   };
 
