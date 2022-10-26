@@ -5,10 +5,11 @@ import slugify from "slugify";
 import strings from "localization/strings";
 import React, { useEffect, FC, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { FormContext, MemberGroupPermission, NOT_SELECTED, NullableMemberGroupPermission } from "../../types/index";
+import { FormContext, MemberGroupPermission, NullableMemberGroupPermission } from "../../types/index";
 import MetaformUtils from "utils/metaform-utils";
 import LocalizationUtils from "utils/localization-utils";
 import { uuid4 } from "@sentry/utils";
+import { NOT_SELECTED } from "consts";
 
 /**
  * Component properties

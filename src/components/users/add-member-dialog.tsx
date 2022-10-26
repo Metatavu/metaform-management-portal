@@ -8,8 +8,8 @@ import LinkIcon from "@mui/icons-material/Link";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import ClearIcon from "@mui/icons-material/Clear";
 import UsersScreenDialog from "./users-screen-dialog";
-import { API_ADMIN_USER } from "types";
 import produce from "immer";
+import { API_ADMIN_USER } from "consts";
 
 /**
  * Interface representing component properties

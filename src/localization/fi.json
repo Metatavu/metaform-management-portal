@@ -242,6 +242,7 @@
         "html": "Html",
         "boolean": "Totuusarvo",
         "select": "Pudotusvalikko",
+        "departmentsSelect": "Osasto pudotusvalikko",
         "slider": "Liukuvalinta",
         "checklist": "Valintalista",
         "radio": "Radiovalinta",

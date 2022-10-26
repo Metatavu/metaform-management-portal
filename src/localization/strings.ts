@@ -278,6 +278,7 @@ export interface Localized extends LocalizedStringsMethods {
         html: string;
         boolean: string;
         select: string;
+        departmentsSelect: string;
         slider: string;
         checklist: string;
         radio: string;

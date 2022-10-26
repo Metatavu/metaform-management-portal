@@ -16,6 +16,7 @@ import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper
 import DragAndDropUtils from "utils/drag-and-drop-utils";
 import AddableFieldRenderer from "./field-renderer/addable-field-renderer";
 import strings from "localization/strings";
+import { DEPARTMENTS } from "consts";
 
 /**
  * Component properties
@@ -61,8 +62,15 @@ const MetaformEditor: React.FC<Props> = ({
    * @param fieldType metaform field type
    * @param droppableDestination droppable destination
    */
-  const onFieldAdd = (fieldType: MetaformFieldType, droppableDestination: DraggableLocation) => {
-    const defaultField = MetaformUtils.createField(fieldType);
+  const onFieldAdd = (fieldType: MetaformFieldType, droppableDestination: DraggableLocation, departments: boolean) => {
+    const defaultField = departments ?
+      MetaformUtils.createField(
+        MetaformFieldType.Select,
+        strings.draftEditorScreen.editor.fields.departmentsSelect,
+        strings.draftEditorScreen.editor.fields.departmentsSelect,
+        false,
+        DEPARTMENTS
+      ) : MetaformUtils.createField(fieldType);
     const sectionIndex = parseInt(droppableDestination.droppableId, 10);
     const fieldIndex = droppableDestination.index;
 
@@ -174,7 +182,8 @@ const MetaformEditor: React.FC<Props> = ({
     if (DragAndDropUtils.isMovingSection(draggableId, destination.droppableId)) {
       onSectionMove(source, destination);
     } else if (DragAndDropUtils.isAddingField(source.droppableId, destination.droppableId)) {
-      onFieldAdd(draggableId as MetaformFieldType, destination);
+      const departments = draggableId.split("-").includes("x");
+      onFieldAdd(draggableId as MetaformFieldType, destination, departments);
     } else if (DragAndDropUtils.isMovingField(draggableId, destination.droppableId)) {
       onSectionFieldMove(source, destination);
     }

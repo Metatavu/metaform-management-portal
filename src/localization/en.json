@@ -243,6 +243,7 @@
         "html": "Html",
         "boolean": "Boolean",
         "select": "Dropdown",
+        "departmentsSelect": "Departments dropdown",
         "slider": "Slider",
         "checklist": "Checklist",
         "radio": "Radio",

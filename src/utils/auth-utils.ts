@@ -1,5 +1,5 @@
+import { SYSTEM_ADMIN_ROLE } from "consts";
 import Keycloak from "keycloak-js";
-import { SYSTEM_ADMIN_ROLE } from "types";
 
 /**
  * Utility class for auth

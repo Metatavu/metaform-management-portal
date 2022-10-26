@@ -8,6 +8,7 @@ import slugify from "slugify";
 import SosmetaUtils from "utils/sosmeta-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { ErrorContext } from "components/contexts/error-handler";
+import { EXPORT_THEME_ID } from "consts";
 
 /**
  * Component props
@@ -90,7 +91,7 @@ const EditorScreenDrawer: FC<Props> = ({
       title: formSettings.formName,
       slug: formSettings.formSlug,
       sections: formSettings.formSections,
-      exportThemeId: "1e7a0019-6a3a-41da-9cb6-6cb01e192ff9"
+      exportThemeId: EXPORT_THEME_ID
     });
   };
 
