@@ -278,7 +278,6 @@ export interface Localized extends LocalizedStringsMethods {
         html: string;
         boolean: string;
         select: string;
-        departmentsSelect: string;
         slider: string;
         checklist: string;
         radio: string;
@@ -307,6 +306,9 @@ export interface Localized extends LocalizedStringsMethods {
           defineUserGroup: string;
           selectableFieldsInfo: string;
           required: string;
+          addFieldsAsText: string;
+          addFieldsAsTextHelper: string;
+          updateFields: string;
           addFieldOption: string;
           addNewColumn: string;
           addColumnType: string;

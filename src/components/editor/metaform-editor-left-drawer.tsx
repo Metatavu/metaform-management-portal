@@ -181,14 +181,14 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
    * @param name name
    * @param icon icon
    */
-  const renderFieldDraggable = (fieldType: MetaformFieldType, name: string, icon: string, departments?: boolean) => (
+  const renderFieldDraggable = (fieldType: MetaformFieldType, name: string, icon: string) => (
     <DroppableComponentWrapper
       isDropDisabled
       droppableId={ `${DraggingMode.ADD_FIELD.toString()}-${fieldType.toString()}` }
     >
       <DraggableWrapper
         index={ 0 }
-        draggableId={ departments ? `${fieldType.toString()}-x` : fieldType.toString() }
+        draggableId={ fieldType.toString() }
         isDragDisabled={ false }
       >
         <Stack style={{ alignItems: "center", textAlign: "center" }}>
@@ -231,7 +231,6 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
       { renderFieldDraggable(MetaformFieldType.Slider, strings.draftEditorScreen.editor.fields.slider, "linear_scale") }
       { renderFieldDraggable(MetaformFieldType.Checklist, strings.draftEditorScreen.editor.fields.checklist, "fact_check") }
       { renderFieldDraggable(MetaformFieldType.Radio, strings.draftEditorScreen.editor.fields.radio, "radio_button_checked") }
-      { renderFieldDraggable(MetaformFieldType.Select, strings.draftEditorScreen.editor.fields.departmentsSelect, "expand_circle_down", true) }
       { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.fields.inputFields) }
       { renderFieldDraggable(MetaformFieldType.Text, strings.draftEditorScreen.editor.fields.text, "text_fields") }
       { renderFieldDraggable(MetaformFieldType.Number, strings.draftEditorScreen.editor.fields.number, "looks_one") }
