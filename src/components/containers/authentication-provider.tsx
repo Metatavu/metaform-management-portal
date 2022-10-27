@@ -112,14 +112,26 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   /**
    * Refreshes signed authentication
    */
-  const refreshAuthentication = async () => {
+  const refreshAuthentication = async (keycloakInstance: Keycloak) => {
     try {
-      if (!keycloak?.authenticated) {
+      if (!keycloakInstance?.authenticated) {
         throw new Error("Not authenticated");
       }
 
-      await keycloak.updateToken(MIN_VALIDITY_IN_SECONDS);
-      dispatch(login(keycloak));
+      const refreshed = await keycloakInstance.updateToken(MIN_VALIDITY_IN_SECONDS);
+
+      if (!refreshed) {
+        return;
+      }
+
+      const { token, tokenParsed } = keycloakInstance;
+
+      if (!tokenParsed || !tokenParsed.sub || !token) {
+        return;
+      }
+
+      return keycloakInstance;
+      // dispatch(login(keycloak));
     } catch (error) {
       errorContext.setError(strings.errorHandling.authentication, error);
     }
@@ -157,9 +169,18 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   }, [location]);
 
   /**
+   * Dispatches Keycloak to Redux
+   * 
+   * @param keycloak Keycloak
+   */
+  const updateKeycloak = (updatedKeycloak?: Keycloak) => {
+    updatedKeycloak && dispatch(login(updatedKeycloak));
+  };
+
+  /**
    * Begins token refresh interval
    */
-  useInterval(refreshAuthentication, 1000 * REFRESH_INTERVAL);
+  useInterval(() => refreshAuthentication(keycloak!!).then(updateKeycloak), 1000 * REFRESH_INTERVAL);
   useInterval(refreshAnonymousAuthentication, 1000 * REFRESH_INTERVAL);
 
   if (!keycloak?.token) return null;
