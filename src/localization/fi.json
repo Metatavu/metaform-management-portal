@@ -29,7 +29,7 @@
       "reloadPage": "Kokeile ladata sivu uudelleen.",
       "tryAgain": "Tarkista internet-yhteytesi ja yritä uudelleen.",
       "unsavedContents": "Huomaathan, että tallentamattomat sisällöt häviävät uudelleen ladattaessa. Mikäli sinulla on sivulla tallentamattomia sisältöjä, voit sulkea tämän ilmoituksen ja kopioida sisällöt leikepöydälle ennen uudelleenlatausta.",
-      "reportIssue": "Mikäli ongelma jatkuu, ota sähköpostilla yhteyttä osoitteeseen support@metatavu.fi. Liitä tekniset lisätiedot osaksi sähköpostia nopeuttaaksesi ongelman selvittelyä.",
+      "reportIssue": "Mikäli ongelma jatkuu, voi vika olla myös käyttämissämme taustajärjestelmissä. Voit halutessasi ottaa sähköpostilla yhteyttä osoitteeseen support@metatavu.fi. Liitä tekniset lisätiedot osaksi sähköpostia nopeuttaaksesi ongelman selvittelyä.",
       "technicalDetails": "Teknisiä lisätietoja:",
       "time": "Aika: {0}",
       "url": "Osoite: {0}",
@@ -368,14 +368,16 @@
       "lastNameLabel": "Sukunimi",
       "upnNumberLabel": "UPN-numero",
       "createButton": "Luo käyttäjä",
-      "cancelButton": "Peruuta"
+      "cancelButton": "Peruuta",
+      "snackbarText": "Käyttäjän lisääminen onnistui!"
     },
     "addMemberGroupDialog": {
       "title": "Uusi käyttäjäryhmä",
       "text": "Lisää uusi käyttäjäryhmä lomakkeelle",
       "displayNameLabel": "Ryhmän nimi",
       "createButton": "Luo ryhmä",
-      "cancelButton": "Peruuta"
+      "cancelButton": "Peruuta",
+      "snackbarText": "Käyttäjäryhmän lisääminen onnistui!"
     },
     "editMemberDialog": {
       "title": "Muokkaa käyttäjää",
@@ -390,7 +392,12 @@
       "lastNameLabel": "Sukunimi",
       "upnNumberLabel": "UPN-numero",
       "cancelButton": "Peruuta",
-      "editButton": "Muokkaa käyttäjää"
+      "editButton": "Muokkaa käyttäjää",
+      "snackbarText": "Käyttäjän muokkaaminen onnistui!"
+    },
+    "groupMembership": {
+      "groupMembershipAddSnackbarText": "Käyttäjä lisääminen ryhmään onnistui!",
+      "groupMembershipRemoveSnackbarText": "Käyttäjän poistaminen ryhmästä onnistui!"
     },
     "usersTable": {
       "nameColumn": {
@@ -475,8 +482,9 @@
     "formModifiedAt": "MUOKATTU",
     "formLastModifier": "VIIMEISIN MUOKKAAJA",
     "formLastModifierNotFound": "Ei löytynyt",
-    "formVersionArchived": "arkistoitu",
-    "formVersionDraft": "luonnos",
+    "formVersionArchived": "Arkistoitu",
+    "formVersionDraft": "Luonnos",
+    "formProductionVersion": "Tuotanto",
     "drawer": {
       "newForm": "Luo uusi lomake",
       "helper": "Lomakkeen yleiset asetukset, jotka vaikuttavat valitun lomakkeen kaikkiin lomakeversioihin.",
@@ -496,8 +504,7 @@
       "formIdentificationNone": "Ei vaadi tunnistautumista"
     },
     "confirmDeleteVersionTitle": "Oletko varma?",
-    "confirmDeleteVersionText": "Oletko varma, että haluat poistaa lomakeversion?",
-    "formProductionVersion": "tuotanto"
+    "confirmDeleteVersionText": "Oletko varma, että haluat poistaa lomakeversion?"
   },
 
   "emailDialog": {
@@ -536,6 +543,30 @@
 
   "dataGrid": {
     "rowsPerPage": "Rivejä sivulla:"
-  }
+  },
 
+  "successSnackbars": {
+    "formEditor": {
+      "deleteFormSuccessText": "Tuotantolomake poistettu onnistuneesti!",
+      "deleteFormVersionSuccessText": "Lomakkeen luonnos poistettu onnistuneesti!",
+      "createFormSuccessText": "Uusi lomake luotu onnistuneesti!",
+      "restoreArchiveFormSuccessText": "Arkistoitu lomake palautettu onnistuneesti!",
+      "convertSchemaSuccessText": "Sosmetan lomakepohja luotu onnistuneesti!"
+    },
+    "draftEditor": {
+      "saveDraftSuccessText": "Lomakkeen luonnos tallennettu onnistuneesti!",
+      "publishDraftSuccessText": "Lomake julkaistu onnistuneesti!"
+    },
+    "users": {
+      "addMemberSuccessText": "Käyttäjän lisääminen onnistui!",
+      "editUserSuccessText": "Käyttäjän muokkaaminen onnistui!",
+      "addMemberGroupSuccessText": "Käyttäjäryhmän lisääminen onnistui!",
+      "groupMembershipAddSuccessText": "Käyttäjän lisääminen ryhmään onnistui!",
+      "groupMembershipRemoveSuccessText": "Käyttäjän poistaminen ryhmästä onnistui!"
+    },
+    "replies": {
+      "replyDeleteSuccessText": "Vastauksen poistaminen onnistui!",
+      "replyEditSuccessText": "Vastauksen muokkaus onnistui!"
+    }
+  }
 }

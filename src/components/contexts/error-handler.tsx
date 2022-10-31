@@ -103,7 +103,7 @@ const ErrorHandler: React.FC = ({ children }) => {
           <Typography marginBottom={ 2 }>
             { strings.errorHandling.dialog.reportIssue }
           </Typography>
-          <Typography>
+          <Typography fontWeight="bold">
             { strings.errorHandling.dialog.technicalDetails }
           </Typography>
           <Typography>

@@ -17,6 +17,7 @@ interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
   createMetaform: (metaform: Metaform) => void;
+  setSnackbarMessage: (message: string) => void;
 }
 
 /**
@@ -38,7 +39,8 @@ interface FormSettings {
 const EditorScreenDrawer: FC<Props> = ({
   open,
   setOpen,
-  createMetaform
+  createMetaform,
+  setSnackbarMessage
 }) => {
   const currentHostname = window.location.hostname;
   const errorContext = useContext(ErrorContext);
@@ -69,6 +71,7 @@ const EditorScreenDrawer: FC<Props> = ({
     try {
       const convertedForm = await SosmetaUtils.convertSosmetaToMetaform(formSettings.formSchema);
 
+      setSnackbarMessage(strings.successSnackbars.formEditor.convertSchemaSuccessText);
       setFormSettings({
         ...formSettings,
         formName: convertedForm.title!,
