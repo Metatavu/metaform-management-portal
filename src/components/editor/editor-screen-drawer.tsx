@@ -8,6 +8,7 @@ import slugify from "slugify";
 import SosmetaUtils from "utils/sosmeta-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { ErrorContext } from "components/contexts/error-handler";
+import Config from "app/config";
 
 /**
  * Component props
@@ -16,6 +17,7 @@ interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
   createMetaform: (metaform: Metaform) => void;
+  setSnackbarMessage: (message: string) => void;
 }
 
 /**
@@ -37,7 +39,8 @@ interface FormSettings {
 const EditorScreenDrawer: FC<Props> = ({
   open,
   setOpen,
-  createMetaform
+  createMetaform,
+  setSnackbarMessage
 }) => {
   const currentHostname = window.location.hostname;
   const errorContext = useContext(ErrorContext);
@@ -68,6 +71,7 @@ const EditorScreenDrawer: FC<Props> = ({
     try {
       const convertedForm = await SosmetaUtils.convertSosmetaToMetaform(formSettings.formSchema);
 
+      setSnackbarMessage(strings.successSnackbars.formEditor.convertSchemaSuccessText);
       setFormSettings({
         ...formSettings,
         formName: convertedForm.title!,
@@ -89,7 +93,8 @@ const EditorScreenDrawer: FC<Props> = ({
       visibility: formSettings.formAuthentication ? MetaformVisibility.Private : MetaformVisibility.Public,
       title: formSettings.formName,
       slug: formSettings.formSlug,
-      sections: formSettings.formSections
+      sections: formSettings.formSections,
+      exportThemeId: Config.getDefaultExportThemeId()
     });
   };
 

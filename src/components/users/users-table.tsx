@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import strings from "localization/strings";
 import { MetaformMember, MetaformMemberGroup } from "generated/client";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, fiFI, GridColDef } from "@mui/x-data-grid";
 import UsersTableGroups from "./users-table-groups";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 import PersonIcon from "@mui/icons-material/Person";
@@ -138,11 +138,7 @@ const UsersTable: FC<Props> = ({
       sx={{
         border: "none"
       }}
-      componentsProps={{
-        pagination: {
-          labelRowsPerPage: strings.dataGrid.rowsPerPage
-        }
-      }}
+      localeText={ fiFI.components.MuiDataGrid.defaultProps.localeText }
       loading={ loading }
       columns={ columns }
       rows={ data }

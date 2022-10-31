@@ -306,6 +306,9 @@ export interface Localized extends LocalizedStringsMethods {
           defineUserGroup: string;
           selectableFieldsInfo: string;
           required: string;
+          addFieldsAsText: string;
+          addFieldsAsTextHelper: string;
+          updateFields: string;
           addFieldOption: string;
           addNewColumn: string;
           addColumnType: string;
@@ -398,14 +401,14 @@ export interface Localized extends LocalizedStringsMethods {
       upnNumberLabel: string;
       createButton: string;
       cancelButton: string;
-    }
+    };
     addMemberGroupDialog: {
       title: string;
       text: string;
       displayNameLabel: string;
       createButton: string;
       cancelButton: string;
-    }
+    };
     editMemberDialog: {
       title: string;
       text: string;
@@ -420,18 +423,18 @@ export interface Localized extends LocalizedStringsMethods {
       upnNumberLabel: string;
       cancelButton: string;
       editButton: string;
-    }
+    };
     usersTable: {
       nameColumn: {
         label: string;
-      }
+      };
       emailColumn: {
         label: string;
-      }
+      };
       groupsColumn: {
         label: string;
-      }
-    }
+      };
+    };
   };
 
   /**
@@ -524,6 +527,7 @@ export interface Localized extends LocalizedStringsMethods {
     formLastModifierNotFound: string;
     formVersionArchived: string;
     formVersionDraft: string;
+    formProductionVersion: string;
     drawer: {
       newForm: string;
       helper: string;
@@ -544,7 +548,6 @@ export interface Localized extends LocalizedStringsMethods {
     };
     confirmDeleteVersionTitle: string;
     confirmDeleteVersionText: string;
-    formProductionVersion: string;
   };
 
   /**
@@ -598,6 +601,34 @@ export interface Localized extends LocalizedStringsMethods {
    */
   dataGrid: {
     rowsPerPage: string;
+  }
+
+  /**
+   * Translation related to success snackbars
+   */
+  successSnackbars: {
+    formEditor: {
+      deleteFormSuccessText: string;
+      deleteFormVersionSuccessText: string;
+      createFormSuccessText: string;
+      restoreArchiveFormSuccessText: string;
+      convertSchemaSuccessText: string;
+    };
+    draftEditor: {
+      saveDraftSuccessText: string;
+      publishDraftSuccessText: string;
+    };
+    users: {
+      editUserSuccessText: string;
+      addMemberGroupSuccessText: string;
+      addMemberSuccessText: string;
+      groupMembershipAddSuccessText: string;
+      groupMembershipRemoveSuccessText: string;
+    };
+    replies: {
+      replyDeleteSuccessText: string;
+      replyEditSuccessText: string;
+    }
   }
 }
 /**

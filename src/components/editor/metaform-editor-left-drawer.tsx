@@ -6,9 +6,10 @@ import TabPanel from "components/generic/tab-panel";
 import strings from "localization/strings";
 import React, { ChangeEventHandler, useEffect, useState, FC } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
-import { DraggingMode, NOT_SELECTED } from "types";
+import { DraggingMode } from "types";
 import slugify from "slugify";
 import produce from "immer";
+import { NOT_SELECTED } from "consts";
 
 /**
  * Component properties

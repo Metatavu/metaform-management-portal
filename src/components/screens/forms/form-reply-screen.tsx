@@ -6,7 +6,7 @@ import MetaformUtils from "utils/metaform-utils";
 import Form from "components/generic/form";
 import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
-import { useApiClient, useAppSelector } from "app/hooks";
+import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
 import { Dictionary, ReplyStatus } from "types";
 import { useNavigate, useParams } from "react-router-dom";
@@ -17,6 +17,7 @@ import LocalizationUtils from "utils/localization-utils";
 import { FormReplyAction, FormReplyContent, ReplyViewContainer } from "styled/form/form-reply";
 import { ArrowBack, SaveAlt, CheckCircle, NewReleases, Pending } from "@mui/icons-material";
 import { RoundActionButton } from "styled/generic/form";
+import { setSnackbarMessage } from "features/snackbar-slice";
 import theme from "theme";
 
 /**
@@ -24,20 +25,21 @@ import theme from "theme";
  */
 const ReplyScreen: FC = () => {
   const errorContext = useContext(ErrorContext);
+  const navigate = useNavigate();
+  const params = useParams();
+  const { formSlug, replyId } = params;
+
+  const apiClient = useApiClient(Api.getApiClient);
+  const { metaformsApi, repliesApi, attachmentsApi } = apiClient;
+
+  const dispatch = useAppDispatch();
+  const keycloak = useAppSelector(selectKeycloak);
 
   const [ loading, setLoading ] = useState(false);
   const [ metaform, setMetaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});
   const [ reply, setReply ] = useState<Reply>();
   const [ replySavedVisible, setReplySavedVisible ] = useState(false);
-
-  const params = useParams();
-  const { formSlug, replyId } = params;
-  const navigate = useNavigate();
-
-  const apiClient = useApiClient(Api.getApiClient);
-  const keycloak = useAppSelector(selectKeycloak);
-  const { metaformsApi, repliesApi, attachmentsApi } = apiClient;
 
   if (!formSlug) {
     errorContext.setError(strings.errorHandling.adminRepliesScreen.formSlugNotFound);
@@ -125,6 +127,8 @@ const ReplyScreen: FC = () => {
         replyId: reply.id
       });
       const updatedValues = await MetaformUtils.processReplyData(metaform, updatedReply, attachmentsApi);
+      
+      dispatch(setSnackbarMessage(strings.successSnackbars.replies.replyEditSuccessText));
       setReply(updatedReply);
       setFormValues(updatedValues as any);
     } catch (e) {
