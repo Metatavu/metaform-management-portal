@@ -1,3 +1,4 @@
+import { NOT_SELECTED } from "consts";
 import { AuditLogEntryType } from "generated/client";
 
 /**
@@ -75,26 +76,6 @@ export type ListItemData = {
   title: string;
   description: string;
 };
-
-/**
- * Not selected for placeholder
- */
-export const NOT_SELECTED = "NOT_SELECTED";
-
-/**
- * System admin role
- */
-export const SYSTEM_ADMIN_ROLE = "system-admin";
-
-/**
- * Metaform manager role
- */
-export const METAFORM_MANAGER_ROLE = "metaform-manager";
-
-/**
- * Api admin user
- */
-export const API_ADMIN_USER = "api-admin";
 
 /**
  * React dnd dragging mode

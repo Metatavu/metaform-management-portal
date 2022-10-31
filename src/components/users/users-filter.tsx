@@ -4,7 +4,7 @@ import strings from "localization/strings";
 import { Metaform, MetaformMemberGroup } from "generated/client";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { MenuItem, TextField } from "@mui/material";
-import { NOT_SELECTED } from "types";
+import { NOT_SELECTED } from "consts";
 
 /**
  * Component props

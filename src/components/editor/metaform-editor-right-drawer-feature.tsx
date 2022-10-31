@@ -1,14 +1,16 @@
-import { Button, Checkbox, Divider, FormControl, FormControlLabel, IconButton, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, Divider, FormControl, FormControlLabel, IconButton, MenuItem, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType, MetaformFieldType, FieldRule, MetaformMemberGroup } from "generated/client";
 import produce from "immer";
 import slugify from "slugify";
 import strings from "localization/strings";
 import React, { useEffect, FC, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { FormContext, MemberGroupPermission, NOT_SELECTED, NullableMemberGroupPermission } from "../../types/index";
+import { FormContext, MemberGroupPermission, NullableMemberGroupPermission } from "../../types/index";
 import MetaformUtils from "utils/metaform-utils";
 import LocalizationUtils from "utils/localization-utils";
 import { uuid4 } from "@sentry/utils";
+import { NOT_SELECTED } from "consts";
+import theme from "theme";
 
 /**
  * Component properties
@@ -39,6 +41,8 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const [ selectedMemberGroupId, setSelectedMemberGroupId ] = useState<string>();
   const [ selectedMemberGroupPermission, setSelectedMemberGroupPermission ] = useState<NullableMemberGroupPermission>(NOT_SELECTED);
   const [ memberGroupOptIndex, setMemberGroupOptIndex ] = useState<number>();
+  const [ multiSelectRawTextMode, setMultiSelectRawTextMode ] = useState<boolean>(false);
+  const [ multiSelectRawText, setMultiSelectRawText ] = useState<string>("");
 
   /**
    * Updates selected section and field states
@@ -452,6 +456,25 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
+   * Event handler for changing edit mode of multi-select type fields
+   * 
+   * @param _event event
+   * @param checked checked
+   */
+  const handleMultiSelectOptionEditMode = (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    if (!selectedField) {
+      return;
+    }
+
+    if (selectedField.options?.length) {
+      const existingOptions = selectedField.options.map(option => option.text);
+      setMultiSelectRawText(existingOptions.join("\n"));
+    }
+
+    setMultiSelectRawTextMode(checked);
+  };
+
+  /**
    * Empty permission groups for all options
    */
   const removeAllPermissionGroups = () => {
@@ -717,20 +740,104 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   );
 
   /**
+   * Handles converting text input into multi-select options
+   */
+  const onMultiSelectTextModeUpdate = () => {
+    if (!selectedField) {
+      return;
+    }
+    const updatedField = produce(selectedField, draftField => {
+      const rawOptions = multiSelectRawText.split("\n");
+
+      draftField.options?.splice(0, draftField.options?.length, ...rawOptions.map((parsedValue: string, index: number) => {
+        return {
+          name: parsedValue.concat(`-${index}`),
+          text: parsedValue
+        };
+      }));
+    });
+    
+    updateFormField(updatedField);
+    setMultiSelectRawTextMode(false);
+  };
+
+  /**
+   * Gets existing multi-select options as text
+   * 
+   * @param field field
+   */
+  const getExistingMultiSelectOptions = (field: MetaformField) => field.options?.map(option => option.text).join("\n");
+
+  /** 
+   * Event handler for multi-select options text input
+   * 
+   * @param event event
+   */
+  const handleMultiSelectTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { target: { value } } = event;
+    setMultiSelectRawText(value);
+  };
+
+  /**
+   * Renders multi-choice field raw text edit
+   * 
+   * @param field field
+   */
+  const renderMultiSelectOptions = (field: MetaformField) => {
+    if (multiSelectRawTextMode) {
+      return (
+        <>
+          <Typography color={ theme.palette.text.secondary } variant="body2">
+            { strings.draftEditorScreen.editor.features.field.addFieldsAsTextHelper }
+          </Typography>
+          <TextField
+            multiline
+            defaultValue={ getExistingMultiSelectOptions(field) }
+            onChange={ handleMultiSelectTextChange }
+          />
+          <Button
+            sx={{ height: "50px" }}
+            onClick={ onMultiSelectTextModeUpdate }
+          >
+            { strings.draftEditorScreen.editor.features.field.updateFields }
+          </Button>
+        </>
+      );
+    }
+
+    return (
+      <>
+        { field.options?.map(renderMultiChoiceOptionEdit) }
+        <Button
+          fullWidth
+          sx={{ height: "50px" }}
+          onClick={ addNewFieldOption }
+        >
+          { strings.draftEditorScreen.editor.features.field.addFieldOption }
+        </Button>
+      </>
+    );
+  };
+
+  /**
    * Renders multi-choice field properties
    *
    * @param field field
    */
   const renderMultiChoiceFieldProperties = (field: MetaformField) => (
     <Stack spacing={ 2 }>
-      { field.options?.map(renderMultiChoiceOptionEdit) }
-      <Button
-        fullWidth
-        sx={{ height: "50px" }}
-        onClick={ addNewFieldOption }
-      >
-        { strings.draftEditorScreen.editor.features.field.addFieldOption }
-      </Button>
+      <Tooltip title={ strings.draftEditorScreen.editor.features.field.addFieldsAsTextHelper }>
+        <FormControlLabel
+          label={ strings.draftEditorScreen.editor.features.field.addFieldsAsText }
+          control={
+            <Switch
+              checked={ multiSelectRawTextMode }
+              onChange={ handleMultiSelectOptionEditMode }
+            />
+          }
+        />
+      </Tooltip>
+      { renderMultiSelectOptions(field) }
     </Stack>
   );
 

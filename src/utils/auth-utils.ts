@@ -1,5 +1,5 @@
 import Keycloak from "keycloak-js";
-import { METAFORM_MANAGER_ROLE, SYSTEM_ADMIN_ROLE } from "types";
+import { METAFORM_MANAGER_ROLE, SYSTEM_ADMIN_ROLE } from "consts";
 
 /**
  * Utility class for auth

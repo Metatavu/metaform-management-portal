@@ -306,6 +306,9 @@ export interface Localized extends LocalizedStringsMethods {
           defineUserGroup: string;
           selectableFieldsInfo: string;
           required: string;
+          addFieldsAsText: string;
+          addFieldsAsTextHelper: string;
+          updateFields: string;
           addFieldOption: string;
           addNewColumn: string;
           addColumnType: string;
