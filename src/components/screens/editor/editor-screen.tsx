@@ -23,7 +23,6 @@ const EditorScreen: React.FC = () => {
   const currentPath = window.location.pathname;
   const errorContext = useContext(ErrorContext);
   const navigate = useNavigate();
-
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, versionsApi, usersApi } = apiClient;
 

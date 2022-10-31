@@ -1,5 +1,5 @@
 import { FormControlLabel, Switch, Typography } from "@mui/material";
-import { DataGrid, fiFI, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, fiFI, GridActionsCellItem, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import Api from "api";
 import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
@@ -303,6 +303,19 @@ const FormRepliesScreen: React.FC = () => {
   };
 
   /**
+   * Event handler for row double click
+   * 
+   * @param rowParams rowParams
+   */
+  const onRowDoubleClick = async (rowParams: GridRowParams<any>) => {
+    if (!AuthUtils.isMetaformManager(keycloak)) {
+      return;
+    }
+
+    return navigate(rowParams.row.id);
+  };
+
+  /**
    * Renders delete reply confirm dialog
    */
   const renderDeleteReplyConfirm = () => {
@@ -361,7 +374,7 @@ const FormRepliesScreen: React.FC = () => {
         rows={ filteredRows }
         columns={ columns }
         getRowId={ row => row.id }
-        onRowDoubleClick={ rowParams => navigate(rowParams.row.id) }
+        onRowDoubleClick={ onRowDoubleClick }
       />
       { renderDeleteReplyConfirm() }
     </>

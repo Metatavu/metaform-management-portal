@@ -12,3 +12,8 @@ export const SYSTEM_ADMIN_ROLE = "system-admin";
   * Api admin user
   */
 export const API_ADMIN_USER = "api-admin";
+
+/**
+ * Metaform manager role
+ */
+export const METAFORM_MANAGER_ROLE = "metaform-manager";
