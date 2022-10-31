@@ -114,7 +114,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
    * 
    * @param keycloakInstance keycloakInstance
    */
-  const refreshAuthentication = async (keycloakInstance: Keycloak) => {
+  const refreshAuthentication = async (keycloakInstance?: Keycloak) => {
     try {
       if (!keycloakInstance) {
         return;
@@ -211,7 +211,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   /**
    * Begins token refresh interval
    */
-  useInterval(() => refreshAuthentication(keycloak!).then(updateKeycloak), 1000 * REFRESH_INTERVAL);
+  useInterval(() => refreshAuthentication(keycloak).then(updateKeycloak), 1000 * REFRESH_INTERVAL);
   useInterval(() => refreshAnonymousAuthentication(anonymousKeycloak).then(updateAnonymousKeycloak), 1000 * REFRESH_INTERVAL);
 
   if (!keycloak?.token) return null;
