@@ -1,6 +1,5 @@
 import { cleanEnv, str, url } from "envalid";
 import { Configuration } from "types";
-import { EXPORT_THEME_ID } from "../consts";
 
 /**
  * Validates that environment variables are in place and have correct form
@@ -16,7 +15,7 @@ const env = cleanEnv(process.env, {
   REACT_APP_ANONYMOUS_USER: str(),
   REACT_APP_ANONYMOUS_PASSWORD: str(),
   REACT_APP_TUTORIAL_URL: str({ default: "" }),
-  REACT_APP_DEFAULT_EXPORT_THEME_ID: str({ default: EXPORT_THEME_ID })
+  REACT_APP_DEFAULT_EXPORT_THEME_ID: str({ default: undefined })
 });
 
 /**
