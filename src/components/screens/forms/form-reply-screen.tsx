@@ -211,6 +211,7 @@ const ReplyScreen: FC = () => {
     setReply({ ...reply, data: values as { [index: string]: object } });
     setFormValues(values);
   };
+
   /**
    * Renders reply status icon
    * 
