@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, fiFI, GridColDef } from "@mui/x-data-grid";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
@@ -186,11 +186,7 @@ const FormHistoryScreen: React.FC = () => {
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
-        componentsProps={{
-          pagination: {
-            labelRowsPerPage: strings.dataGrid.rowsPerPage
-          }
-        }}
+        localeText={ fiFI.components.MuiDataGrid.defaultProps.localeText }
         loading={ loading }
         rows={ auditLogEntries }
         columns={ columns }

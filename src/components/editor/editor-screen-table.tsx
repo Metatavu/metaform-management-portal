@@ -8,7 +8,7 @@ import moment from "moment";
 import React, { FC, useState } from "react";
 import { FormListContainer, FormPagination, FormsContainer } from "styled/editor/metaform-editor";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
-import { DataGrid, GridActionsCellItem, GridColumns, GridRowParams } from "@mui/x-data-grid";
+import { DataGrid, fiFI, GridActionsCellItem, GridColumns, GridRowParams } from "@mui/x-data-grid";
 import { DataValidation } from "utils/data-validation-utils";
 /**
 * Component props
@@ -318,11 +318,7 @@ const EditorScreenTable: FC<Props> = ({
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
-        componentsProps={{
-          pagination: {
-            labelRowsPerPage: strings.dataGrid.rowsPerPage
-          }
-        }}
+        localeText={ fiFI.components.MuiDataGrid.defaultProps.localeText }
         rows={ versions }
         columns={ getColumns() }
         getRowId={ row => row.id }

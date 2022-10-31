@@ -15,27 +15,29 @@ import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { RoundActionButton } from "styled/generic/form";
 import { selectMetaform, setMetaformVersion } from "features/metaform-slice";
+import { setSnackbarMessage } from "features/snackbar-slice";
 import ConfirmDialog from "components/generic/confirm-dialog";
 
 /**
  * Draft editor screen component
  */
 const DraftEditorScreen: React.FC = () => {
+  const errorContext = useContext(ErrorContext);
   const params = useParams();
+  const navigate = useNavigate();
   const { formSlug, draftId } = params;
 
+  const apiClient = useApiClient(Api.getApiClient);
+  const { metaformMemberGroupsApi, metaformsApi, versionsApi } = apiClient;
+
+  const dispatch = useAppDispatch();
+  const { metaformVersion } = useAppSelector(selectMetaform);
+  
+  const draftForm = MetaformUtils.getDraftForm(metaformVersion);
+  const editorRef = useRef<HTMLDivElement>(null);
   const [ loading, setLoading ] = useState(false);
   const [ publishDialogOpen, setPublishDialogOpen ] = useState(false);
   const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
-
-  const navigate = useNavigate();
-  const errorContext = useContext(ErrorContext);
-  const dispatch = useAppDispatch();
-  const apiClient = useApiClient(Api.getApiClient);
-  const { metaformMemberGroupsApi, metaformsApi, versionsApi } = apiClient;
-  const { metaformVersion } = useAppSelector(selectMetaform);
-  const draftForm = MetaformUtils.getDraftForm(metaformVersion);
-  const editorRef = useRef<HTMLDivElement>(null);
 
   /**
    * Loads MetaformVersion to edit.
@@ -110,6 +112,7 @@ const DraftEditorScreen: React.FC = () => {
       errorContext.setError(strings.errorHandling.draftEditorScreen.saveDraft, e);
     }
 
+    dispatch(setSnackbarMessage(strings.successSnackbars.draftEditor.saveDraftSuccessText));
     navigate("./../..");
   };
 
@@ -142,6 +145,8 @@ const DraftEditorScreen: React.FC = () => {
           data: { ...form } as { [key: string]: object }
         }
       });
+
+      dispatch(setSnackbarMessage(strings.successSnackbars.draftEditor.publishDraftSuccessText));
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.publishDraft, e);
     }

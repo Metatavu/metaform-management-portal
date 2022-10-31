@@ -1,6 +1,6 @@
 import { Divider, Stack } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { useApiClient } from "app/hooks";
+import { useApiClient, useAppDispatch } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
 import strings from "localization/strings";
 import React, { useContext, useEffect, useState } from "react";
@@ -14,6 +14,7 @@ import GenericLoaderWrapper from "components/generic/generic-loader";
 import EditorScreenTable from "../../editor/editor-screen-table";
 import theme from "theme";
 import { RoundActionButton } from "styled/generic/form";
+import { setSnackbarMessage } from "features/snackbar-slice";
 
 /**
  * Editor screen component
@@ -24,6 +25,8 @@ const EditorScreen: React.FC = () => {
   const navigate = useNavigate();
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, versionsApi, usersApi } = apiClient;
+
+  const dispatch = useAppDispatch();
 
   const [ metaforms, setMetaforms ] = useState<Metaform[]>([]);
   const [ metaformVersions, setMetaformVersions ] = useState<MetaformVersion[]>([]);
@@ -87,7 +90,8 @@ const EditorScreen: React.FC = () => {
           data: { ...newMetaform } as any
         }
       });
-
+      
+      dispatch(setSnackbarMessage(strings.successSnackbars.formEditor.createFormSuccessText));
       navigate(`${currentPath}/${newMetaform.slug}/${newMetaformVersion.id}`);
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.createForm, e);
@@ -131,6 +135,7 @@ const EditorScreen: React.FC = () => {
       }
     });
 
+    dispatch(setSnackbarMessage(strings.successSnackbars.formEditor.restoreArchiveFormSuccessText));
     return navigate(`${currentPath}/${slug}/${versionToEdit.id!}`);
   };
 
@@ -189,6 +194,7 @@ const EditorScreen: React.FC = () => {
       if (metaforms.find(metaform => metaform.id === id)) {
         await metaformsApi.deleteMetaform({ metaformId: id });
 
+        dispatch(setSnackbarMessage(strings.successSnackbars.formEditor.deleteFormSuccessText));
         setMetaforms(metaforms.filter(metaform => metaform.id !== id));
       } else {
         const metaformToDelete = metaformVersions.find(version => version.id === id)?.data as Metaform;
@@ -197,6 +203,7 @@ const EditorScreen: React.FC = () => {
           versionId: id
         });
 
+        dispatch(setSnackbarMessage(strings.successSnackbars.formEditor.deleteFormVersionSuccessText));
         setMetaformVersions(metaformVersions.filter(version => version.id !== id));
       }
     } catch (e) {
@@ -223,6 +230,7 @@ const EditorScreen: React.FC = () => {
         open={ drawerOpen }
         setOpen={ setDrawerOpen }
         createMetaform={ createMetaform }
+        setSnackbarMessage={ message => dispatch(setSnackbarMessage(message)) }
       />
       <Stack overflow="hidden" flex={ 1 }>
         <NavigationTabContainer>

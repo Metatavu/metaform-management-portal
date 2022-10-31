@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useContext, useState } from "react";
 import Api from "api";
 import strings from "localization/strings";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import { PersonAdd, GroupAdd, Edit } from "@mui/icons-material";
 import { ErrorContext } from "components/contexts/error-handler";
-import { useApiClient } from "app/hooks";
+import { useApiClient, useAppDispatch } from "app/hooks";
 import { Metaform, MetaformMember, MetaformMemberGroup, User } from "generated/client";
 import AddMemberGroupDialog from "components/users/add-member-group-dialog";
 import UsersTable from "components/users/users-table";
@@ -14,25 +14,28 @@ import UsersFilter from "components/users/users-filter";
 import { RoundActionButton } from "styled/generic/form";
 import theme from "theme";
 import EditMemberDialog from "components/users/edit-member-dialog";
+import { setSnackbarMessage } from "features/snackbar-slice";
 
 /**
  * Users screen component
  */
 const UsersScreen: React.FC = () => {
-  const errorContext = React.useContext(ErrorContext);
+  const errorContext = useContext(ErrorContext);
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, metaformMemberGroupsApi, metaformMembersApi, usersApi } = apiClient;
 
-  const [ loading, setLoading ] = React.useState<boolean>(false);
-  const [ loadingMemberId, setLoadingMemberId ] = React.useState<string>();
-  const [ metaforms, setMetaforms ] = React.useState<Metaform[]>([]);
-  const [ memberGroups, setMemberGroups ] = React.useState<MetaformMemberGroup[]>([]);
-  const [ members, setMembers ] = React.useState<MetaformMember[]>([]);
-  const [ selectedMetaformId, setSelectedMetaformId ] = React.useState<string>();
-  const [ selectedMemberGroupId, setSelectedMemberGroupId ] = React.useState<string>();
-  const [ addMemberGroupOpen, setAddMemberGroupOpen ] = React.useState<boolean>(false);
-  const [ addMemberOpen, setAddMemberOpen ] = React.useState<boolean>(false);
-  const [ editMemberOpen, setEditMemberOpen ] = React.useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
+  const [ loading, setLoading ] = useState<boolean>(false);
+  const [ loadingMemberId, setLoadingMemberId ] = useState<string>();
+  const [ metaforms, setMetaforms ] = useState<Metaform[]>([]);
+  const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
+  const [ members, setMembers ] = useState<MetaformMember[]>([]);
+  const [ selectedMetaformId, setSelectedMetaformId ] = useState<string>();
+  const [ selectedMemberGroupId, setSelectedMemberGroupId ] = useState<string>();
+  const [ addMemberGroupOpen, setAddMemberGroupOpen ] = useState<boolean>(false);
+  const [ addMemberOpen, setAddMemberOpen ] = useState<boolean>(false);
+  const [ editMemberOpen, setEditMemberOpen ] = useState<boolean>(false);
 
   /**
    * Searches users from the API
@@ -87,6 +90,8 @@ const UsersScreen: React.FC = () => {
         userId: user.id!,
         user: user
       });
+
+      dispatch(setSnackbarMessage(strings.successSnackbars.users.editUserSuccessText));
     } catch (e) {
       errorContext.setError(strings.errorHandling.usersScreen.updateUser, e);
     }
@@ -183,6 +188,7 @@ const UsersScreen: React.FC = () => {
 
       const updatedGroups = memberGroups.map(metaformMemberGroup => (metaformMemberGroup.id === updatedGroup.id ? updatedGroup : metaformMemberGroup));
 
+      dispatch(setSnackbarMessage(strings.successSnackbars.users.groupMembershipRemoveSuccessText));
       setMemberGroups(updatedGroups);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.loadMembers, err);
@@ -219,6 +225,7 @@ const UsersScreen: React.FC = () => {
 
       const updatedGroups = memberGroups.map(metaformMemberGroup => (metaformMemberGroup.id === updatedGroup.id ? updatedGroup : metaformMemberGroup));
 
+      dispatch(setSnackbarMessage(strings.successSnackbars.users.groupMembershipAddSuccessText));
       setMemberGroups(updatedGroups);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.loadMembers, err);
@@ -248,6 +255,7 @@ const UsersScreen: React.FC = () => {
         }
       });
 
+      dispatch(setSnackbarMessage(strings.successSnackbars.users.addMemberGroupSuccessText));
       setMemberGroups([ ...memberGroups, createdMemberGroup ]);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.createMemberGroup, err);
@@ -275,6 +283,7 @@ const UsersScreen: React.FC = () => {
         metaformMember: member
       });
 
+      dispatch(setSnackbarMessage(strings.successSnackbars.users.addMemberSuccessText));
       setMembers([ ...members, createdMember ]);
     } catch (err) {
       errorContext.setError(strings.errorHandling.usersScreen.createMember, err);
@@ -313,12 +322,12 @@ const UsersScreen: React.FC = () => {
    * Event handler for User edit dialog cancel
    */
   const onEditMemberDialogCancel = () => setEditMemberOpen(false);
-
-  React.useEffect(() => {
+  
+  useEffect(() => {
     loadMetaforms();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadMembersAndGroups();
   }, [ selectedMetaformId, metaforms ]);
 

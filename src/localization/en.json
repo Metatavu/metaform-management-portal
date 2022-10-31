@@ -29,7 +29,7 @@
       "reloadPage": "Try reloading the page.",
       "tryAgain": "Please check your internet connection and try again.",
       "unsavedContents": "Please note that unsaved content will not be saved when reloading. If you have unsaved content on this page, you can close this message and copy the content to the clipboard before reloading.",
-      "reportIssue": "If the problem persists, contact support@metatavu.fi by email. Please include technical details in the email to speed up resolution of the problem.",
+      "reportIssue": "If the problem persists it is possible that the fault is in background services we're using. Feel free to contact support@metatavu.fi by email. Please include technical details in the email to speed up resolution of the problem.",
       "technicalDetails": "Technical details:",
       "time": "Time: {0}",
       "url": "URL: {0}",
@@ -475,8 +475,9 @@
     "formModifiedAt": "MODIFIED AT",
     "formLastModifier": "LAST MODIFIER",
     "formLastModifierNotFound": "Not found",
-    "formVersionArchived": "archived",
-    "formVersionDraft": "draft",
+    "formVersionArchived": "Archived",
+    "formVersionDraft": "Draft",
+    "formProductionVersion": "Production",
     "drawer": {
       "newForm": "Create new form",
       "helper": "Forms general settings that affect all versions of form.",
@@ -496,8 +497,7 @@
       "formIdentificationNone": "No identification"
     },
     "confirmDeleteVersionTitle": "Are you sure?",
-    "confirmDeleteVersionText": "Are you sure that you wish to delete the form version?",
-    "formProductionVersion": "production"
+    "confirmDeleteVersionText": "Are you sure that you wish to delete the form version?"
   },
 
   "emailDialog": {
@@ -536,5 +536,30 @@
 
   "dataGrid": {
     "rowsPerPage": "Rows per page:"
+  },
+
+  "successSnackbars": {
+    "formEditor": {
+      "deleteFormSuccessText": "Production form deleted successfully!",
+      "deleteFormVersionSuccessText": "Draft form deleted successfully!",
+      "restoreArchiveFormSuccessText": "Archived form restored successfully!",
+      "createFormSuccessText": "New form created successfully!",
+      "convertSchemaSuccessText": "Sosmeta schema converted successfully!"
+    },
+    "draftEditor": {
+      "saveDraftSuccessText": "Draft form saved successfully!",
+      "publishDraftSuccessText": "Form published successfully!"
+    },
+    "users": {
+      "addMemberSuccessText": "Added user successfully!",
+      "editUserSuccessText": "Edited user successfully!",
+      "addMemberGroupSuccessText": "Created group successfully!",
+      "groupMembershipAddSuccessText": "Added user to group successfully!",
+      "groupMembershipRemoveSuccessText": "Removed user from group successfully!"
+    },
+    "replies": {
+      "replyDeleteSuccessText": "Form deleted successfully!",
+      "replyEditSuccessText": "Form edited successfully!"
+    }
   }
 }
