@@ -67,6 +67,7 @@ export const useDebounce = (value: string, delay: number) => {
  * @param apiClientFactory factory function for creating API client
  */
 export const useApiClient = <T extends {}>(apiClientFactory: (accessToken?: string) => T): T => {
-  const token = useAppSelector(selectAccessToken) ?? useAppSelector(selectAnonymousAccessToken) ?? "";
-  return React.useMemo(() => apiClientFactory(token), [ token ]);
+  const token = useAppSelector(selectAccessToken);
+  const anonymousToken = useAppSelector(selectAnonymousAccessToken);
+  return React.useMemo(() => apiClientFactory(token ?? anonymousToken), [ token, anonymousToken ]);
 };
