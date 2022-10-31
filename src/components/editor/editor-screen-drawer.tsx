@@ -8,7 +8,7 @@ import slugify from "slugify";
 import SosmetaUtils from "utils/sosmeta-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { ErrorContext } from "components/contexts/error-handler";
-import { EXPORT_THEME_ID } from "consts";
+import Config from "app/config";
 
 /**
  * Component props
@@ -91,7 +91,7 @@ const EditorScreenDrawer: FC<Props> = ({
       title: formSettings.formName,
       slug: formSettings.formSlug,
       sections: formSettings.formSections,
-      exportThemeId: EXPORT_THEME_ID
+      exportThemeId: Config.getDefaultExportThemeId()
     });
   };
 

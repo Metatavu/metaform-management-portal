@@ -1,4 +1,4 @@
-import { Button, Checkbox, Divider, FormControl, FormControlLabel, IconButton, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, Divider, FormControl, FormControlLabel, IconButton, MenuItem, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType, MetaformFieldType, FieldRule, MetaformMemberGroup } from "generated/client";
 import produce from "immer";
 import slugify from "slugify";
@@ -458,6 +458,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   /**
    * Event handler for changing edit mode of multi-select type fields
    * 
+   * @param _event event
    * @param checked checked
    */
   const handleMultiSelectOptionEditMode = (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
@@ -778,7 +779,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
-   * Renders multi-choise field raw text edit
+   * Renders multi-choice field raw text edit
    * 
    * @param field field
    */
@@ -825,15 +826,17 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    */
   const renderMultiChoiceFieldProperties = (field: MetaformField) => (
     <Stack spacing={ 2 }>
-      <FormControlLabel
-        label={ strings.draftEditorScreen.editor.features.field.addFieldsAsText }
-        control={
-          <Switch
-            checked={ multiSelectRawTextMode }
-            onChange={ handleMultiSelectOptionEditMode }
-          />
-        }
-      />
+      <Tooltip title={ strings.draftEditorScreen.editor.features.field.addFieldsAsTextHelper }>
+        <FormControlLabel
+          label={ strings.draftEditorScreen.editor.features.field.addFieldsAsText }
+          control={
+            <Switch
+              checked={ multiSelectRawTextMode }
+              onChange={ handleMultiSelectOptionEditMode }
+            />
+          }
+        />
+      </Tooltip>
       { renderMultiSelectOptions(field) }
     </Stack>
   );
