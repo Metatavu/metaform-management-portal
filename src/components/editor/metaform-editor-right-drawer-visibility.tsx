@@ -3,6 +3,7 @@ import { FieldRule, Metaform, MetaformField, MetaformFieldOption } from "generat
 import produce from "immer";
 import strings from "localization/strings";
 import React, { useEffect, FC } from "react";
+import theme from "theme";
 import { VisibilitySource } from "types";
 import MetaformUtils from "utils/metaform-utils";
 
@@ -152,7 +153,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
             .map(renderConditionFieldOption)
           }
         </TextField>
-        <Typography sx={{ color: "gray" }}>
+        <Typography color={ theme.palette.text.secondary }>
           { strings.draftEditorScreen.editor.visibility.conditionalFieldInfo }
         </Typography>
       </Stack>

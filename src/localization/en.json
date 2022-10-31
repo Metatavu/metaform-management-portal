@@ -243,6 +243,8 @@
         "html": "Html",
         "boolean": "Boolean",
         "select": "Dropdown",
+        "socialServicesSelect": "Social services dropdown",
+        "socialServicesChecklist": "Social services checklist",
         "slider": "Slider",
         "checklist": "Checklist",
         "radio": "Radio",
@@ -271,6 +273,9 @@
           "defineUserGroup": "Define a user group",
           "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
           "fieldTitle": "Field title",
+          "addFieldsAsText": "Text mode",
+          "addFieldsAsTextHelper": "Enter options seperated by line break.",
+          "updateFields": "Update fields",
           "addFieldOption": "Add field",
           "addNewColumn": "Add new column",
           "addColumnType": "Add column type",
@@ -321,8 +326,7 @@
         "notifications": "Notifications",
         "noMemberGroup":"No Member group",
         "noPermission":"No permission",
-        "noDefaultPermissionMemberGroup": "No default permission member group",
-        "tooltipDescription": ""
+        "noDefaultPermissionMemberGroup": "No default permission member group"
       }
     },
     "formPreview": {
