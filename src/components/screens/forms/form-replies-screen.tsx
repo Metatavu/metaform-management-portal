@@ -20,6 +20,7 @@ import { AdminFormListStack, AdminFormTypographyField } from "styled/react-compo
 import { setSnackbarMessage } from "features/snackbar-slice";
 import theme from "theme";
 import LocalizationUtils from "utils/localization-utils";
+import { CheckCircle, NewReleases, Pending } from "@mui/icons-material";
 
 /**
  * Form replies screen component
