@@ -1,5 +1,5 @@
 import { FormControlLabel, Switch, Typography } from "@mui/material";
-import { DataGrid, fiFI, GridActionsCellItem, GridColDef,GridRowParams } from "@mui/x-data-grid";
+import { DataGrid, fiFI, GridActionsCellItem, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import Api from "api";
 import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
