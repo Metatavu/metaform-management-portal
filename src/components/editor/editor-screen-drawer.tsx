@@ -8,6 +8,7 @@ import slugify from "slugify";
 import SosmetaUtils from "utils/sosmeta-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { ErrorContext } from "components/contexts/error-handler";
+import Config from "app/config";
 
 /**
  * Component props
@@ -92,7 +93,8 @@ const EditorScreenDrawer: FC<Props> = ({
       visibility: formSettings.formAuthentication ? MetaformVisibility.Private : MetaformVisibility.Public,
       title: formSettings.formName,
       slug: formSettings.formSlug,
-      sections: formSettings.formSections
+      sections: formSettings.formSections,
+      exportThemeId: Config.getDefaultExportThemeId()
     });
   };
 
