@@ -1,4 +1,4 @@
-import { Button, Divider, Stack } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useApiClient, useAppDispatch } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
@@ -213,7 +213,7 @@ const EditorScreen: React.FC = () => {
 
     setLoading(false);
   };
-  
+
   /**
    * Toggles drawer
    */
@@ -247,11 +247,6 @@ const EditorScreen: React.FC = () => {
           </RoundActionButton>
         </NavigationTabContainer>
         <Divider/>
-        <Button
-          onClick={ () => dispatch(setSnackbarMessage("MOI")) }
-        >
-          Click
-        </Button>
         <GenericLoaderWrapper loading={ loading }>
           <EditorScreenTable
             loading={ loading }

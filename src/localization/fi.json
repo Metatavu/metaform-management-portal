@@ -548,13 +548,13 @@
   "successSnackbars": {
     "formEditor": {
       "deleteFormSuccessText": "Tuotantolomake poistettu onnistuneesti!",
-      "deleteFormVersionSuccessText": "Lomake luonnos poistettu onnistuneesti!",
+      "deleteFormVersionSuccessText": "Lomakkeen luonnos poistettu onnistuneesti!",
       "createFormSuccessText": "Uusi lomake luotu onnistuneesti!",
       "restoreArchiveFormSuccessText": "Arkistoitu lomake palautettu onnistuneesti!",
-      "convertSchemaSuccessText": "Sosmeta skeema konvertoitu onnistuneesti!"
+      "convertSchemaSuccessText": "Sosmetan lomakepohja luotu onnistuneesti!"
     },
     "draftEditor": {
-      "saveDraftSuccessText": "Lomake luonnos tallennettu onnistuneesti!",
+      "saveDraftSuccessText": "Lomakkeen luonnos tallennettu onnistuneesti!",
       "publishDraftSuccessText": "Lomake julkaistu onnistuneesti!"
     },
     "users": {
@@ -565,8 +565,8 @@
       "groupMembershipRemoveSuccessText": "Käyttäjän poistaminen ryhmästä onnistui!"
     },
     "replies": {
-      "replyDeleteSuccessText": "Lomakkeen poistaminen onnistui!",
-      "replyEditSuccessText": "Lomakkeen muokkaus onnistui!"
+      "replyDeleteSuccessText": "Vastauksen poistaminen onnistui!",
+      "replyEditSuccessText": "Vastauksen muokkaus onnistui!"
     }
   }
 }

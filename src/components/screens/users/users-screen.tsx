@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useContext, useState } from "react";
 import Api from "api";
 import strings from "localization/strings";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
@@ -20,22 +20,22 @@ import { setSnackbarMessage } from "features/snackbar-slice";
  * Users screen component
  */
 const UsersScreen: React.FC = () => {
-  const errorContext = React.useContext(ErrorContext);
+  const errorContext = useContext(ErrorContext);
   const apiClient = useApiClient(Api.getApiClient);
   const { metaformsApi, metaformMemberGroupsApi, metaformMembersApi, usersApi } = apiClient;
 
   const dispatch = useAppDispatch();
 
-  const [ loading, setLoading ] = React.useState<boolean>(false);
-  const [ loadingMemberId, setLoadingMemberId ] = React.useState<string>();
-  const [ metaforms, setMetaforms ] = React.useState<Metaform[]>([]);
-  const [ memberGroups, setMemberGroups ] = React.useState<MetaformMemberGroup[]>([]);
-  const [ members, setMembers ] = React.useState<MetaformMember[]>([]);
-  const [ selectedMetaformId, setSelectedMetaformId ] = React.useState<string>();
-  const [ selectedMemberGroupId, setSelectedMemberGroupId ] = React.useState<string>();
-  const [ addMemberGroupOpen, setAddMemberGroupOpen ] = React.useState<boolean>(false);
-  const [ addMemberOpen, setAddMemberOpen ] = React.useState<boolean>(false);
-  const [ editMemberOpen, setEditMemberOpen ] = React.useState<boolean>(false);
+  const [ loading, setLoading ] = useState<boolean>(false);
+  const [ loadingMemberId, setLoadingMemberId ] = useState<string>();
+  const [ metaforms, setMetaforms ] = useState<Metaform[]>([]);
+  const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
+  const [ members, setMembers ] = useState<MetaformMember[]>([]);
+  const [ selectedMetaformId, setSelectedMetaformId ] = useState<string>();
+  const [ selectedMemberGroupId, setSelectedMemberGroupId ] = useState<string>();
+  const [ addMemberGroupOpen, setAddMemberGroupOpen ] = useState<boolean>(false);
+  const [ addMemberOpen, setAddMemberOpen ] = useState<boolean>(false);
+  const [ editMemberOpen, setEditMemberOpen ] = useState<boolean>(false);
 
   /**
    * Searches users from the API
@@ -322,11 +322,12 @@ const UsersScreen: React.FC = () => {
    * Event handler for User edit dialog cancel
    */
   const onEditMemberDialogCancel = () => setEditMemberOpen(false);
-  React.useEffect(() => {
+  
+  useEffect(() => {
     loadMetaforms();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadMembersAndGroups();
   }, [ selectedMetaformId, metaforms ]);
 
