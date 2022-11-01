@@ -341,6 +341,10 @@ export interface Localized extends LocalizedStringsMethods {
         fieldConditionLabel: string;
         sectionConditionLabel: string;
         tooltipDescription: string;
+        and: string;
+        addVisibleOrButtonText: string;
+        conditionChain: string;
+        allChoices: string;
       };
       memberGroups: {
         memberGroupDefineSettings: string;

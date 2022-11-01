@@ -64,6 +64,11 @@ class VisibleIfEvaluator {
    * @returns whether values should be considered as equal.
    */
   private static compareValues(value1: FieldValue, value2: FieldValue): boolean {
+    
+    if (typeof value1 === "boolean" && value1 && value2) {
+      return true;
+    }
+
     if (value1 === value2) {
       return true;
     }
