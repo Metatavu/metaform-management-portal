@@ -792,6 +792,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           </Typography>
           <TextField
             multiline
+            inputProps={ { wrap: "off" } as any }
             defaultValue={ getExistingMultiSelectOptions(field) }
             onChange={ handleMultiSelectTextChange }
           />
