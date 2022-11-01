@@ -6,6 +6,7 @@ import strings from "localization/strings";
 import moment from "moment";
 import { FormContext } from "../types/index";
 import Holidays from "date-holidays";
+import { CREATED_FIELD_NAME, MODIFIED_FIELD_NAME, STATUS_FIELD_NAME } from "consts";
 
 const holiday = new Holidays("FI");
 
@@ -32,6 +33,15 @@ namespace MetaformUtils {
     MetaformFieldType.Select,
     MetaformFieldType.Radio,
     MetaformFieldType.Checklist
+  ];
+
+  /**
+   * Metadata fields names
+   */
+  const METADATA_FIELD_NAMES = [
+    STATUS_FIELD_NAME,
+    CREATED_FIELD_NAME,
+    MODIFIED_FIELD_NAME
   ];
 
   /**
@@ -461,13 +471,13 @@ namespace MetaformUtils {
   };
 
   /**
-   * Create status section for new metaform
+   * Create status field for new metaform
    *
-   * @returns status section for form
+   * @returns status field for form
    */
   export const createFormStatusField = (): MetaformField => {
     return {
-      name: "status",
+      name: STATUS_FIELD_NAME,
       type: MetaformFieldType.Radio,
       options: [
         {
@@ -495,16 +505,70 @@ namespace MetaformUtils {
   };
 
   /**
-   * Filter out status from form
+   * Create created field for new metaform
+   * 
+   * @returns created field for form
+   */
+  export const createFormCreatedField = (): MetaformField => {
+    return {
+      name: CREATED_FIELD_NAME,
+      title: "Luotu",
+      type: MetaformFieldType.DateTime,
+      contexts: [
+        FormContext.META,
+        FormContext.MANAGEMENT_LIST
+      ],
+      flags: {
+        managementEditable: false
+      }
+    };
+  };
+
+  /**
+   * Create modified field for new metaform
+   * 
+   * @returns modified field for form
+   */
+  export const createFormModifiedField = (): MetaformField => {
+    return {
+      name: MODIFIED_FIELD_NAME,
+      title: "Muokattu",
+      type: MetaformFieldType.DateTime,
+      contexts: [
+        FormContext.META,
+        FormContext.MANAGEMENT_LIST
+      ],
+      flags: {
+        managementEditable: true
+      }
+    };
+  };
+
+  /**
+   * Creates forms metadata fields
+   * e.g. status, created and modified
+   * 
+   * @returns MetaformField[]
+   */
+  export const createFormsMetadataFields = () => {
+    return [
+      createFormStatusField(),
+      createFormModifiedField(),
+      createFormCreatedField()
+    ];
+  };
+
+  /**
+   * Filter out metadata fields from form
    *
    * @param form Metaform form
-   * @returns Metaform without status field
+   * @returns Metaform without metadata fields
    */
   export const removeStatusFieldFromForm = (form: Metaform) => {
     const sectionsWithoutStatusField = form.sections?.map(section => {
-      const hasNoStatusField = section?.fields?.filter(field => field.name !== "status");
+      const hasNoMetadataFields = section?.fields?.filter(field => !METADATA_FIELD_NAMES.includes(field.name!));
       const newSection: MetaformSection = jsonToMetaform(section);
-      newSection.fields = hasNoStatusField;
+      newSection.fields = hasNoMetadataFields;
       return newSection;
     });
     const newForm: Metaform = jsonToMetaform(form);
