@@ -104,9 +104,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   };
 
   /**
-   * 
    * Add visible if or field condition
-   *
    */
   const addVisibleIfOrOption = () => {
     if (selectedVisibleIf?.or) {
@@ -131,8 +129,8 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   };
 
   /**
-   * 
    * Delete visible or field condition
+   * 
    * @param index index number of deleted visible or option
    */
   const deleteVisibleOrCondition = (index: number) => {
@@ -162,20 +160,19 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       if (addVisibleIf) {
         const updatedVisibleIf = {
           ...selectedOrValues,
-          [key]: value === "true" ? true : value,
-          and: addVisibleIf
+          [key]: value
         };
         updateSelectedVisibleIf(updatedVisibleIf, true, index);
       } else {
         const updatedVisibleIf = {
           ...selectedOrValues,
-          [key]: value === "true" ? true : value,
-          and: undefined
+          [key]: value
         };
         updateSelectedVisibleIf(updatedVisibleIf, true, index);
       }
     });
   };
+
   /**
    * Updates visible if value
    *
@@ -330,11 +327,11 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   );
 
   /**
-   * 
    * If selected condition field have condition itself, find all and conditions and render them
+   * 
    * @param field selected visible field and condition
    */
-  const findConditions = (field: FieldRule[]) => {
+  const renderConditionChain = (field: FieldRule[]) => {
     if (field !== undefined) {
       return (
         field!.map(selectedField => {
@@ -372,10 +369,11 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
                   .find(sectionField => sectionField.name === selectedField.field)
                   ?.options!.map(renderFieldConditionOption)
                 }
+                <MenuItem value="true" key="selectAllValuesTrueKey">{ strings.draftEditorScreen.editor.visibility.allChoices }</MenuItem>
               </TextField>
               { selectedField.and !== undefined ? selectedField.and!.map(() => {
                 return (
-                  findConditions(selectedField!.and!)
+                  renderConditionChain(selectedField!.and!)
                 );
               }) : "" }
             </Stack>
@@ -396,7 +394,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
     }
     return (
       <>
-        { findConditions(selectedVisibleIf.and) }
+        { renderConditionChain(selectedVisibleIf.and) }
         <Button onClick={ () => setShowAndConditions(!showConditions) }>{ strings.draftEditorScreen.editor.visibility.conditionChain }</Button>
         <Divider/>
       </>
@@ -437,7 +435,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
           .find(field => field.name === selectedField.field)
           ?.options!.map(renderFieldConditionOption)
         }
-        <MenuItem value="true" key="whatEverValue2">{ strings.draftEditorScreen.editor.visibility.allChoices }</MenuItem>
+        <MenuItem value="true" key="selectAllValuesTrueKey2">{ strings.draftEditorScreen.editor.visibility.allChoices }</MenuItem>
       </TextField>
       <Divider/>
     </Stack>
@@ -451,6 +449,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       return (
         selectedVisibleIf!.or!.map((selectedField, index) => {
           return (
+
             <Stack spacing={ 2 }>
               <Stack spacing={ 2 } direction="row" flex={ 2 }>
                 <Typography variant="subtitle1" style={{ width: "100%" }}>
@@ -477,6 +476,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
                   .filter(field => MetaformUtils.fieldTypesAllowVisibility.includes(field.type))
                   .map(renderConditionFieldOption)
                 }
+                <MenuItem value="true" key="whatEverValue2">{ strings.draftEditorScreen.editor.visibility.allChoices }</MenuItem>
               </TextField>
               { renderVisibleOrEqualField(selectedField, index) }
             </Stack>

@@ -65,7 +65,7 @@ class VisibleIfEvaluator {
    */
   private static compareValues(value1: FieldValue, value2: FieldValue): boolean {
     
-    if (typeof value1 === "boolean" && value1 && value2) {
+    if (value1 === "true" && value2) {
       return true;
     }
 
