@@ -62,30 +62,35 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * @param orIndex? index of or value if we are updating or field
    */
   const updateSelectedVisibleIf = (visibleIf: FieldRule | undefined | any, or?: boolean, orIndex?: number) => {
-    if (visibleIfSource === VisibilitySource.FIELD && or) {
-      const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections![sectionIndex!].fields![fieldIndex!].visibleIf!.or![orIndex!] = visibleIf;
-      });
-      setPendingForm(updatedForm);
+    if (sectionIndex === undefined) {
+      return;
     }
+    if (fieldIndex !== undefined) {
+      if (visibleIfSource === VisibilitySource.FIELD && or) {
+        const updatedForm = produce(pendingForm, draftForm => {
+          draftForm.sections![sectionIndex].fields![fieldIndex].visibleIf!.or![orIndex!] = visibleIf;
+        });
+        setPendingForm(updatedForm);
+      }
 
-    if (visibleIfSource === VisibilitySource.FIELD && !or) {
-      const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections![sectionIndex!].fields![fieldIndex!].visibleIf = visibleIf;
-      });
-      setPendingForm(updatedForm);
+      if (visibleIfSource === VisibilitySource.FIELD && !or) {
+        const updatedForm = produce(pendingForm, draftForm => {
+          draftForm.sections![sectionIndex].fields![fieldIndex].visibleIf = visibleIf;
+        });
+        setPendingForm(updatedForm);
+      }
     }
 
     if (visibleIfSource === VisibilitySource.SECTION && !or) {
       const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections![sectionIndex!].visibleIf = visibleIf;
+        draftForm.sections![sectionIndex].visibleIf = visibleIf;
       });
       setPendingForm(updatedForm);
     }
 
     if (visibleIfSource === VisibilitySource.SECTION && or) {
       const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections![sectionIndex!].visibleIf!.or![orIndex!] = visibleIf;
+        draftForm.sections![sectionIndex].visibleIf!.or![orIndex!] = visibleIf;
       });
       setPendingForm(updatedForm);
     }
@@ -107,24 +112,26 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * Add visible if or field condition
    */
   const addVisibleIfOrOption = () => {
-    if (selectedVisibleIf?.or) {
-      const updatedField: FieldRule | undefined = produce(selectedVisibleIf, draftField => {
-        const newVisibleIfOr: FieldRule = {
-          field: "",
-          equals: ""
-        };
-        draftField!.or?.push(newVisibleIfOr);
-      });
-      updateSelectedVisibleIf(updatedField);
-    } else {
-      const updatedField: FieldRule | undefined = produce(selectedVisibleIf, draftField => {
-        const newVisibleIfOr: FieldRule[] = [{
-          field: "",
-          equals: ""
-        }];
-        draftField!.or = newVisibleIfOr;
-      });
-      updateSelectedVisibleIf(updatedField);
+    if (selectedVisibleIf) {
+      if (selectedVisibleIf?.or) {
+        const updatedField: FieldRule | undefined = produce(selectedVisibleIf, draftField => {
+          const newVisibleIfOr: FieldRule = {
+            field: "",
+            equals: ""
+          };
+          draftField.or?.push(newVisibleIfOr);
+        });
+        updateSelectedVisibleIf(updatedField);
+      } else {
+        const updatedField: FieldRule | undefined = produce(selectedVisibleIf, draftField => {
+          const newVisibleIfOr: FieldRule[] = [{
+            field: "",
+            equals: ""
+          }];
+          draftField.or = newVisibleIfOr;
+        });
+        updateSelectedVisibleIf(updatedField);
+      }
     }
   };
 
@@ -134,10 +141,12 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * @param index index number of deleted visible or option
    */
   const deleteVisibleOrCondition = (index: number) => {
-    const updatedField: FieldRule | undefined = produce(selectedVisibleIf, draftField => {
-      draftField!.or!.splice(index, 1);
-    });
-    updateSelectedVisibleIf(updatedField);
+    if (selectedVisibleIf) {
+      const updatedField: FieldRule | undefined = produce(selectedVisibleIf, draftField => {
+        draftField.or!.splice(index, 1);
+      });
+      updateSelectedVisibleIf(updatedField);
+    }
   };
 
   /**
@@ -148,12 +157,14 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * @param index index number of visibleIf or
    */
   const updateVisibleIfOrValue = (key: keyof FieldRule, value: string, index: number) => {
-    const selectedOrValues = selectedVisibleIf!.or![index];
-    const updatedVisibleIf = {
-      ...selectedOrValues,
-      [key]: value
-    };
-    updateSelectedVisibleIf(updatedVisibleIf, true, index);
+    if (selectedVisibleIf && selectedVisibleIf.or) {
+      const selectedOrValues = selectedVisibleIf.or[index];
+      const updatedVisibleIf = {
+        ...selectedOrValues,
+        [key]: value
+      };
+      updateSelectedVisibleIf(updatedVisibleIf, true, index);
+    }
   };
 
   /**
@@ -170,7 +181,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
     
     pendingForm.sections?.forEach(currentSection => {
       currentSection.fields?.forEach(currentField => {
-        if (currentField.name === selectedVisibleIf!.field && currentField.visibleIf !== undefined) {
+        if (currentField.name === selectedVisibleIf.field && currentField.visibleIf !== undefined) {
           addVisibleIf = currentField.visibleIf as string[];
         }
       });
@@ -372,7 +383,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * 
    */
   const renderShowAndConditionButton = () => {
-    if (!selectedVisibleIf?.field || selectedVisibleIf!.and === undefined || selectedVisibleIf!.and![0] === null) {
+    if (!selectedVisibleIf?.field || selectedVisibleIf.and === undefined || selectedVisibleIf.and![0] === null) {
       return null;
     }
     return (
@@ -430,7 +441,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   const renderVisibleOrField = () => {
     if (selectedVisibleIf?.or !== undefined) {
       return (
-        selectedVisibleIf!.or!.map((selectedField, index) => {
+        selectedVisibleIf.or!.map((selectedField, index) => {
           return (
 
             <Stack spacing={ 2 }>
