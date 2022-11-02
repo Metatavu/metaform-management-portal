@@ -539,7 +539,7 @@ namespace MetaformUtils {
         FormContext.MANAGEMENT_LIST
       ],
       flags: {
-        managementEditable: true
+        managementEditable: false
       }
     };
   };
