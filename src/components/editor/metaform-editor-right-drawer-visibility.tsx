@@ -141,36 +141,19 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   };
 
   /**
-   * Update visibleIf Or fieldrule
+   * Update visibleIf Or FieldRule
    * 
    * @param key visible if key
    * @param value visible if value
    * @param index index number of visibleIf or
    */
   const updateVisibleIfOrValue = (key: keyof FieldRule, value: string, index: number) => {
-    let addVisibleIf: string[];
-
-    pendingForm.sections?.forEach(currentSection => {
-      currentSection.fields?.forEach(currentField => {
-        if (currentField.name === selectedVisibleIf!.or![index].field && currentField.visibleIf !== undefined) {
-          addVisibleIf = currentField.visibleIf as string[];
-        }
-      });
-      const selectedOrValues = selectedVisibleIf!.or![index];
-      if (addVisibleIf) {
-        const updatedVisibleIf = {
-          ...selectedOrValues,
-          [key]: value
-        };
-        updateSelectedVisibleIf(updatedVisibleIf, true, index);
-      } else {
-        const updatedVisibleIf = {
-          ...selectedOrValues,
-          [key]: value
-        };
-        updateSelectedVisibleIf(updatedVisibleIf, true, index);
-      }
-    });
+    const selectedOrValues = selectedVisibleIf!.or![index];
+    const updatedVisibleIf = {
+      ...selectedOrValues,
+      [key]: value
+    };
+    updateSelectedVisibleIf(updatedVisibleIf, true, index);
   };
 
   /**
