@@ -312,9 +312,9 @@
         "private": "Yksityinen",
         "public": "Julkinen",
         "tooltipDescription": "Aseta ehdollinen näkyvyys osiolle tai kentälle.",
-        "and": "Ja",
         "addVisibleOrButtonText": "Lisää vaihtoehtoinen ehto",
-        "conditionChain": "Ehtojono",
+        "showConditionChain": "Näytä ehtojono",
+        "closeConditionChain": "Sulje ehtojono",
         "allChoices": "Mikä tahansa valinta"
       },
       "memberGroups": {

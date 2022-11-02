@@ -312,9 +312,9 @@
         "private": "Private",
         "public": "Public",
         "tooltipDescription": "Set conditions whether field is visible on form.",
-        "and": "And",
         "addVisibleOrButtonText": "Add optional condition",
-        "conditionChain": "Condition chain",
+        "showConditionChain": "Show condition chain",
+        "closeConditionChain": "Close condition chain",
         "allChoices": "Any choice"
       },
       "memberGroups": {
