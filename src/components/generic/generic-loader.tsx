@@ -8,7 +8,6 @@ interface Props {
   loading?: boolean;
   style?: React.CSSProperties;
   children: JSX.Element;
-  loaderText?: string;
 }
 
 /**
@@ -19,8 +18,7 @@ interface Props {
 const GenericLoaderWrapper: FC<Props> = ({
   loading,
   style,
-  children,
-  loaderText
+  children
 }) => {
   /**
    * Renders loader if loading is true
@@ -37,7 +35,6 @@ const GenericLoaderWrapper: FC<Props> = ({
         }}
       >
         <CircularProgress/>
-        { loaderText }
       </Stack>
     );
   }

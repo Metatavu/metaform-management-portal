@@ -27,12 +27,16 @@ import GenericLoaderWrapper from "components/generic/generic-loader";
  * Public Form Screen component
  */
 const PublicFormScreen: FC = () => {
-  const AUTOSAVE_COOLDOWN = 500;
-
   const errorContext = React.useContext(ErrorContext);
 
+  const params = useParams();
+  const { metaformSlug } = params;
+
+  const keycloak = useAppSelector(selectKeycloak);
+
+  const { attachmentsApi, draftsApi, metaformsApi, repliesApi } = useApiClient(Api.getApiClient);
+
   const [ loading, setLoading ] = useState(false);
-  const [ savingReply, setSaving ] = useState(false);
   const [ , setReplyConfirmVisible ] = useState(false);
   const [ metaform, setMetaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ ownerKey, setOwnerKey ] = useState<string | null>();
@@ -51,11 +55,8 @@ const PublicFormScreen: FC = () => {
   const [ formValueChangeTimeout, setFormValueChangeTimeout ] = useState<NodeJS.Timeout>();
   const [ metaformId, setMetaformId ] = useState<string>();
   const [ formFilling, setFormFilling ] = useState<boolean>(false);
-  const params = useParams();
-  const { metaformSlug } = params;
 
-  const apiClient = useApiClient(Api.getApiClient);
-  const keycloak = useAppSelector(selectKeycloak);
+  const AUTOSAVE_COOLDOWN = 500;
 
   /**
    * Checks if form has unsaved changes
@@ -82,13 +83,17 @@ const PublicFormScreen: FC = () => {
    * @returns found reply or null if not found
    */
   const findReply = async (replyId: string, currentOwnerKey: string) => {
+    if (!metaformId) {
+      return;
+    }
+
     try {
-      const replyApi = apiClient.repliesApi;
-      return await replyApi.findReply({
-        metaformId: metaformId!,
+      const foundReply = await repliesApi.findReply({
+        metaformId: metaformId,
         replyId: replyId,
         ownerKey: currentOwnerKey
       });
+      return foundReply;
     } catch (e) {
       return null;
     }
@@ -101,12 +106,16 @@ const PublicFormScreen: FC = () => {
    * @returns found draft or null if not found
    */
   const findDraft = async (draftToFindId: string) => {
+    if (!metaformId) {
+      return;
+    }
+
     try {
-      const { draftsApi } = apiClient;
-      return await draftsApi.findDraft({
-        metaformId: metaformId!,
+      const foundDraft = await draftsApi.findDraft({
+        metaformId: metaformId,
         draftId: draftToFindId
       });
+      return foundDraft;
     } catch (e) {
       return null;
     }
@@ -128,7 +137,6 @@ const PublicFormScreen: FC = () => {
 
     try {
       setLoading(true);
-      const { metaformsApi } = apiClient;
 
       const foundMetaform = await metaformsApi.findMetaform({
         metaformSlug: metaformSlug
@@ -141,22 +149,22 @@ const PublicFormScreen: FC = () => {
       if (replyId && currentOwnerKey) {
         const foundReply = await findReply(replyId, currentOwnerKey);
         if (foundReply) {
-          const replyData = await MetaformUtils.processReplyData(foundMetaform, foundReply, apiClient.attachmentsApi, currentOwnerKey);
+          const replyData = await MetaformUtils.processReplyData(foundMetaform, foundReply, attachmentsApi, currentOwnerKey);
           if (replyData) {
-            Object.keys(replyData as any).forEach(replyKey => {
-              preparedFormValues[replyKey] = replyData[replyKey] as any;
+            Object.keys(replyData as { [key: string]: object }).forEach(replyKey => {
+              preparedFormValues[replyKey] = replyData[replyKey] as FieldValue;
             });
           }
 
           setReply(foundReply);
           setOwnerKey(currentOwnerKey);
-          setReplyDeleteVisible(!!currentOwnerKey);
+          setReplyDeleteVisible(true);
         }
       } else if (draftId) {
         const draft = await findDraft(draftId);
         const draftData = draft?.data || {};
         Object.keys(draftData).forEach(draftKey => {
-          formValues[draftKey] = draftData[draftKey] as any;
+          formValues[draftKey] = draftData[draftKey] as FieldValue;
         });
       }
 
@@ -191,35 +199,35 @@ const PublicFormScreen: FC = () => {
    * Saves the current draft
    */
   const saveDraft = async () => {
+    setLoading(true);
+    setDraftSaveVisible(false);
+
     try {
       if (!metaform || !metaform.id) {
         return;
       }
 
-      setLoading(true);
-      setDraftSaveVisible(false);
-
-      const { draftsApi } = apiClient;
-      let draft;
-
       if (draftId) {
-        draft = await draftsApi.updateDraft({
+        const updatedDraft = await draftsApi.updateDraft({
           metaformId: metaform.id,
           draftId: draftId,
           draft: {
-            data: formValues as any
+            data: formValues as { [key: string]: object }
           }
         });
+
+        setDraftId(updatedDraft.id!);
       } else {
-        draft = await draftsApi.createDraft({
+        const createdDraft = await draftsApi.createDraft({
           metaformId: metaform.id,
           draft: {
-            data: formValues as any
+            data: formValues as { [key: string]: object }
           }
         });
+
+        setDraftId(createdDraft.id!);
       }
 
-      setDraftId(draft.id!);
       setDraftSaveVisible(true);
     } catch (e) {
       errorContext.setError(strings.errorHandling.formScreen.saveDraft, e);
@@ -265,22 +273,28 @@ const PublicFormScreen: FC = () => {
    * Implement later
    */
   const updateReply = async (currentMetaform: Metaform, currentReply: Reply, currentOwnerKey: string | null | undefined) => {
-    const { repliesApi } = apiClient;
+    setLoading(true);
 
-    await repliesApi.updateReply({
-      metaformId: metaformId!,
-      replyId: currentReply.id!,
-      ownerKey: currentOwnerKey || undefined,
-      reply: {
-        data: getFormValues(currentMetaform)
-      }
-    });
+    try {
+      await repliesApi.updateReply({
+        metaformId: metaformId!,
+        replyId: currentReply.id!,
+        ownerKey: currentOwnerKey || undefined,
+        reply: {
+          data: getFormValues(currentMetaform)
+        }
+      });
 
-    return repliesApi.findReply({
-      metaformId: metaformId!,
-      replyId: currentReply.id!,
-      ownerKey: currentOwnerKey || undefined
-    });
+      const updatedReply = await repliesApi.findReply({
+        metaformId: metaformId!,
+        replyId: currentReply.id!,
+        ownerKey: currentOwnerKey || undefined
+      });
+
+      return updatedReply;
+    } catch (e) {
+      return null;
+    }
   };
 
   /**
@@ -350,15 +364,20 @@ const PublicFormScreen: FC = () => {
    * @param currentMetaform metaform
    */
   const createReply = async (currentMetaform: Metaform) => {
-    const { repliesApi } = apiClient;
-
-    return repliesApi.createReply({
-      metaformId: metaformId!,
-      reply: {
-        data: getFormValues(currentMetaform)
-      },
-      replyMode: "CUMULATIVE"
-    });
+    setLoading(true);
+    
+    try {
+      const createdReply = await repliesApi.createReply({
+        metaformId: metaformId!,
+        reply: {
+          data: getFormValues(currentMetaform)
+        },
+        replyMode: "CUMULATIVE"
+      });
+      return createdReply;
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.formScreen.saveReply, e);
+    }
   };
 
   /**
@@ -368,24 +387,19 @@ const PublicFormScreen: FC = () => {
     if (!metaform || !metaform.id) {
       return;
     }
-    let replyToUpdate: Reply;
-    setSaving(true);
+    setLoading(true);
 
     try {
-      if (reply && reply.id && ownerKey) {
-        replyToUpdate = await updateReply(metaform, reply, ownerKey);
-      } else {
-        replyToUpdate = await createReply(metaform);
-      }
+      const createdReply = await createReply(metaform);
 
       const updatedOwnerKey = ownerKey || reply?.ownerKey;
-      let updatedValues = replyToUpdate?.data;
+      let updatedValues = createdReply?.data;
       if (updatedOwnerKey && reply) {
-        updatedValues = await MetaformUtils.processReplyData(metaform, replyToUpdate, apiClient.attachmentsApi, updatedOwnerKey);
+        updatedValues = await MetaformUtils.processReplyData(metaform, createdReply!, attachmentsApi, updatedOwnerKey);
       }
 
-      setSaving(false);
-      setReply(replyToUpdate);
+      setLoading(false);
+      setReply(createdReply);
       setOwnerKey(updatedOwnerKey);
       setFormValues(updatedValues as any);
       setReplySavedVisible(true);
@@ -393,7 +407,7 @@ const PublicFormScreen: FC = () => {
       errorContext.setError(strings.errorHandling.formScreen.saveReply, e);
     }
 
-    setSaving(false);
+    setLoading(false);
   };
 
   /**
@@ -458,8 +472,6 @@ const PublicFormScreen: FC = () => {
     try {
       setReplyDeleteConfirmVisble(false);
       setLoading(true);
-
-      const { repliesApi } = apiClient;
 
       if (reply && reply.id && ownerKey) {
         await repliesApi.deleteReply({
@@ -565,7 +577,7 @@ const PublicFormScreen: FC = () => {
         setFieldValue={ setFieldValue }
         onSubmit={ saveReply }
         onValidationErrorsChange={ onValidationErrorsChange }
-        saving={ savingReply }
+        saving={ loading }
       />
     );
   };
@@ -577,7 +589,6 @@ const PublicFormScreen: FC = () => {
       >
         <GenericLoaderWrapper
           loading={ loading }
-          loaderText={ strings.formScreen.loaderText }
         >
           <>
             { renderForm() }
