@@ -207,8 +207,7 @@
     "welcomeInfo": "If you are a professional, you can log in. The visitor please return to the home page.",
     "backToEssote": "Return to front page"
   },
-
-
+  
   "draftEditorScreen": {
     "preview": "Preview",
     "publish": "Publish",
@@ -300,6 +299,7 @@
         "visibilityCondition": "Visibility condition",
         "conditionally": "Conditionally",
         "conditionalFieldValue": "Conditional field value",
+        "orConditionalFieldValue": "Or conditional field value",
         "conditionalFieldInfo": "Select the form field that determines visibility.",
         "conditionalFieldValueInfo":"Select or enter the field value that determines the visibility.",
         "fieldDefiningCondition": "Field defining the condition",
@@ -312,10 +312,14 @@
         "private": "Private",
         "public": "Public",
         "tooltipDescription": "Set conditions whether field is visible on form.",
+        "or": "Or",
+        "and": "And",
         "addVisibleOrButtonText": "Add optional condition",
         "showConditionChain": "Show condition chain",
         "closeConditionChain": "Close condition chain",
-        "allChoices": "Any choice"
+        "allChoices": "Any choice",
+        "newEqualCondition": "New or condition field",
+        "andConditionChainTerms": "And condition chain terms"
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Member group defining settings",
@@ -372,7 +376,8 @@
       "lastNameLabel": "Last name",
       "upnNumberLabel": "UPN number",
       "createButton": "Add member",
-      "cancelButton": "Cancel"
+      "cancelButton": "Cancel",
+      "snackbarText": "User succesfully added!"
     },
     "addMemberGroupDialog": {
       "title": "New group",
