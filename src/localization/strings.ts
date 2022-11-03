@@ -526,6 +526,7 @@ export interface Localized extends LocalizedStringsMethods {
     replyNotFound: string;
     replyDeleted: string;
     noTitle: string;
+    loaderText: string;
   };
 
   /**

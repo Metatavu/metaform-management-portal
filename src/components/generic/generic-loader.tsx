@@ -6,8 +6,9 @@ import { CircularProgress, Stack } from "@mui/material";
  */
 interface Props {
   loading?: boolean;
-  style?: React.CSSProperties
+  style?: React.CSSProperties;
   children: JSX.Element;
+  loaderText?: string;
 }
 
 /**
@@ -18,7 +19,8 @@ interface Props {
 const GenericLoaderWrapper: FC<Props> = ({
   loading,
   style,
-  children
+  children,
+  loaderText
 }) => {
   /**
    * Renders loader if loading is true
@@ -35,6 +37,7 @@ const GenericLoaderWrapper: FC<Props> = ({
         }}
       >
         <CircularProgress/>
+        { loaderText }
       </Stack>
     );
   }

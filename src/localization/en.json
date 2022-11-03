@@ -478,7 +478,8 @@
     "confirmDeleteReplyTitle": "Are you sure?",
     "confirmDeleteReplyText": "Are you sure that you wish to delete the reply?",
     "replyDeleted": "Reply deleted",
-    "noTitle": "No title"
+    "noTitle": "No title",
+    "loaderText": "Loading form..."
   },
 
   "editorScreen": {

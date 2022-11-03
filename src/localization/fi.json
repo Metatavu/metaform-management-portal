@@ -485,7 +485,8 @@
     "confirmDeleteReplyText": "Oletko varma, että haluat poistaa vastauksen?",
     "replyNotFound": "Vastausta ei löytynyt järjestelmästä",
     "replyDeleted": "Vastaus poistettu",
-    "noTitle": "Ei otsikkoa"
+    "noTitle": "Ei otsikkoa",
+    "loaderText": "Ladataan lomaketta..."
   },
 
   "editorScreen": {

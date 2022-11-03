@@ -1,8 +1,5 @@
-/* eslint-disable no-restricted-globals */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import * as React from "react";
-import { useEffect, useState } from "react";
-import BasicLayout, { SnackbarMessage } from "components/layouts/basic-layout";
+import React, { FC, useEffect, useState } from "react";
+import BasicLayout from "components/layouts/basic-layout";
 import strings from "localization/strings";
 import { Metaform, MetaformFieldType, Reply } from "generated/client";
 import { FieldValue, FileFieldValue, ValidationErrors } from "metaform-react/types";
@@ -24,24 +21,18 @@ import { selectKeycloak } from "features/auth-slice";
 import { Dictionary } from "types";
 import { useParams } from "react-router-dom";
 import LeavePageHandler from "components/contexts/leave-page-handler";
+import GenericLoaderWrapper from "components/generic/generic-loader";
 
 /**
- * Component props
+ * Public Form Screen component
  */
-interface Props {
-}
-
-/**
- * Component for exhibitions screen
- */
-const PublicFormScreen: React.FC<Props> = () => {
+const PublicFormScreen: FC = () => {
   const AUTOSAVE_COOLDOWN = 500;
 
   const errorContext = React.useContext(ErrorContext);
 
-  const [ , setLoading ] = useState(false);
+  const [ loading, setLoading ] = useState(false);
   const [ savingReply, setSaving ] = useState(false);
-  const [ , setSnackbarMessage ] = useState<SnackbarMessage>();
   const [ , setReplyConfirmVisible ] = useState(false);
   const [ metaform, setMetaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ ownerKey, setOwnerKey ] = useState<string | null>();
@@ -94,7 +85,7 @@ const PublicFormScreen: React.FC<Props> = () => {
     try {
       const replyApi = apiClient.repliesApi;
       return await replyApi.findReply({
-        metaformId: metaformId!!,
+        metaformId: metaformId!,
         replyId: replyId,
         ownerKey: currentOwnerKey
       });
@@ -113,7 +104,7 @@ const PublicFormScreen: React.FC<Props> = () => {
     try {
       const { draftsApi } = apiClient;
       return await draftsApi.findDraft({
-        metaformId: metaformId!!,
+        metaformId: metaformId!,
         draftId: draftToFindId
       });
     } catch (e) {
@@ -125,7 +116,7 @@ const PublicFormScreen: React.FC<Props> = () => {
    * Loads data
    */
   const loadData = async () => {
-    const query = new URLSearchParams(location.search);
+    const query = new URLSearchParams(window.location.search);
 
     setDraftId(query.get("draft"));
     const replyId = query.get("reply");
@@ -160,11 +151,6 @@ const PublicFormScreen: React.FC<Props> = () => {
           setReply(foundReply);
           setOwnerKey(currentOwnerKey);
           setReplyDeleteVisible(!!currentOwnerKey);
-        } else {
-          setSnackbarMessage({
-            message: strings.formScreen.replyNotFound,
-            severity: "error"
-          });
         }
       } else if (draftId) {
         const draft = await findDraft(draftId);
@@ -282,7 +268,7 @@ const PublicFormScreen: React.FC<Props> = () => {
     const { repliesApi } = apiClient;
 
     await repliesApi.updateReply({
-      metaformId: metaformId!!,
+      metaformId: metaformId!,
       replyId: currentReply.id!,
       ownerKey: currentOwnerKey || undefined,
       reply: {
@@ -291,7 +277,7 @@ const PublicFormScreen: React.FC<Props> = () => {
     });
 
     return repliesApi.findReply({
-      metaformId: metaformId!!,
+      metaformId: metaformId!,
       replyId: currentReply.id!,
       ownerKey: currentOwnerKey || undefined
     });
@@ -367,7 +353,7 @@ const PublicFormScreen: React.FC<Props> = () => {
     const { repliesApi } = apiClient;
 
     return repliesApi.createReply({
-      metaformId: metaformId!!,
+      metaformId: metaformId!,
       reply: {
         data: getFormValues(currentMetaform)
       },
@@ -460,10 +446,6 @@ const PublicFormScreen: React.FC<Props> = () => {
       });
 
       setLoading(false);
-      setSnackbarMessage({
-        message: strings.formScreen.replyEditEmailSent,
-        severity: "success"
-      });
     } catch (e) {
       errorContext.setError(strings.errorHandling.formScreen.sendReplyEmail, e);
     }
@@ -481,7 +463,7 @@ const PublicFormScreen: React.FC<Props> = () => {
 
       if (reply && reply.id && ownerKey) {
         await repliesApi.deleteReply({
-          metaformId: metaformId!!,
+          metaformId: metaformId!,
           replyId: reply.id,
           ownerKey: ownerKey
         });
@@ -492,10 +474,6 @@ const PublicFormScreen: React.FC<Props> = () => {
       setReplyDeleteVisible(false);
       setReply(undefined);
       setOwnerKey(null);
-      setSnackbarMessage({
-        message: strings.formScreen.replyDeleted,
-        severity: "success"
-      });
     } catch (e) {
       errorContext.setError(strings.errorHandling.formScreen.deleteReply, e);
     }
@@ -564,20 +542,10 @@ const PublicFormScreen: React.FC<Props> = () => {
         subject: subject,
         to: email
       });
-
-      setSnackbarMessage({
-        message: strings.formScreen.draftEmailSent,
-        severity: "success"
-      });
     } catch (e) {
       errorContext.setError(strings.errorHandling.formScreen.sendReplyEmail, e);
     }
   };
-
-  /**
-   * Implement later
-   */
-  const renderLogoutLink = () => {};
 
   /**
    * Renders the form
@@ -603,61 +571,62 @@ const PublicFormScreen: React.FC<Props> = () => {
   };
 
   return (
-    /**
-     * Implement layout later
-     */
     <BasicLayout>
       <LeavePageHandler
         active={ formFilling }
       >
-        <>
-          { renderForm() }
-          <ReplySaved
-            getReplyEditLink={ getReplyEditLink }
-            replySavedVisible={ replySavedVisible }
-            onReplyEmailLinkClick={ onReplyEmailLinkClick }
-            setReplySavedVisible={ setReplySavedVisible }
-          />
-          <ReplyEmailDialog
-            replyEmailDialogVisible={ replyEmailDialogVisible }
-            setReplyEmailDialogVisible={ setReplyEmailDialogVisible }
-            sendReplyEmail={ sendReplyEmail }
-          />
-          <ReplyDelete
-            replyDeleteVisible={ replyDeleteVisible }
-            setReplyConfirmVisible={ setReplyConfirmVisible }
-            setReplyDeleteVisible={ setReplyDeleteVisible }
-          />
-          <ConfirmDialog
-            onClose={ () => setReplyConfirmVisible(false) }
-            onCancel={ () => setReplyConfirmVisible(false) }
-            onConfirm={ deleteReply }
-            cancelButtonText={ strings.generic.cancel }
-            positiveButtonText={ strings.generic.confirm }
-            title={ strings.formScreen.confirmDeleteReplyTitle }
-            text={ strings.formScreen.confirmDeleteReplyText }
-            open={ replyDeleteConfirmVisible }
-          />
-          <DraftSaveDialog
-            setDraftSaveVisible={ setDraftSaveVisible }
-            draftSaveVisible={ draftSaveVisible }
-            saveDraft={ saveDraft }
-          />
-          <DraftSavedDialog
-            setDraftSavedVisible={ setDraftSavedVisible }
-            draftSavedVisible={ draftSavedVisible }
-            getDraftLink={ getDraftLink }
-            onDraftEmailLinkClick={ onDraftEmailLinkClick }
-          />
-          <EmailDialog
-            text={ strings.formScreen.draftEmailDialogText }
-            open={ draftEmailDialogVisible }
-            onSend={ sendDraftEmail }
-            onCancel={ () => setDraftEmailDialogVisible(false) }
-          />
-          <Autosaving autosaving={ autosaving }/>
-          { renderLogoutLink() }
-        </>
+        <GenericLoaderWrapper
+          loading={ loading }
+          loaderText={ strings.formScreen.loaderText }
+        >
+          <>
+            { renderForm() }
+            <ReplySaved
+              getReplyEditLink={ getReplyEditLink }
+              replySavedVisible={ replySavedVisible }
+              onReplyEmailLinkClick={ onReplyEmailLinkClick }
+              setReplySavedVisible={ setReplySavedVisible }
+            />
+            <ReplyEmailDialog
+              replyEmailDialogVisible={ replyEmailDialogVisible }
+              setReplyEmailDialogVisible={ setReplyEmailDialogVisible }
+              sendReplyEmail={ sendReplyEmail }
+            />
+            <ReplyDelete
+              replyDeleteVisible={ replyDeleteVisible }
+              setReplyConfirmVisible={ setReplyConfirmVisible }
+              setReplyDeleteVisible={ setReplyDeleteVisible }
+            />
+            <ConfirmDialog
+              onClose={ () => setReplyConfirmVisible(false) }
+              onCancel={ () => setReplyConfirmVisible(false) }
+              onConfirm={ deleteReply }
+              cancelButtonText={ strings.generic.cancel }
+              positiveButtonText={ strings.generic.confirm }
+              title={ strings.formScreen.confirmDeleteReplyTitle }
+              text={ strings.formScreen.confirmDeleteReplyText }
+              open={ replyDeleteConfirmVisible }
+            />
+            <DraftSaveDialog
+              setDraftSaveVisible={ setDraftSaveVisible }
+              draftSaveVisible={ draftSaveVisible }
+              saveDraft={ saveDraft }
+            />
+            <DraftSavedDialog
+              setDraftSavedVisible={ setDraftSavedVisible }
+              draftSavedVisible={ draftSavedVisible }
+              getDraftLink={ getDraftLink }
+              onDraftEmailLinkClick={ onDraftEmailLinkClick }
+            />
+            <EmailDialog
+              text={ strings.formScreen.draftEmailDialogText }
+              open={ draftEmailDialogVisible }
+              onSend={ sendDraftEmail }
+              onCancel={ () => setDraftEmailDialogVisible(false) }
+            />
+            <Autosaving autosaving={ autosaving }/>
+          </>
+        </GenericLoaderWrapper>
       </LeavePageHandler>
     </BasicLayout>
   );

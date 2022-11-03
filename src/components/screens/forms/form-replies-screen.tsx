@@ -136,33 +136,38 @@ const FormRepliesScreen: React.FC = () => {
       return;
     }
 
-    const gridColumns = managementListColumns.map<GridColDef>(column => ({
-      field: column.name || "",
-      headerName: column.title,
-      allowProps: true,
-      flex: 1,
-      type: DATETIME_META_FIELDS.includes(column.name ?? "") ? "dateTime" : "string",
-      renderHeader: params => {
-        return (
-          <AdminFormListStack direction="row">
-            <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
-          </AdminFormListStack>
-        );
-      },
-      renderCell: params => {
-        if (column.name === STATUS_FIELD_NAME) {
-          return renderReplyStatusColumn(params.row.replyStatus);
+    const gridColumns = managementListColumns.map<GridColDef>(column => {
+      const columnName = column.name ?? "";
+      return ({
+        field: columnName,
+        headerName: column.title,
+        allowProps: true,
+        flex: 1,
+        type: DATETIME_META_FIELDS.includes(columnName) ? "dateTime" : "string",
+        renderHeader: params => {
+          return (
+            <AdminFormListStack direction="row">
+              <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
+            </AdminFormListStack>
+          );
+        },
+        renderCell: params => {
+          switch (columnName) {
+            case STATUS_FIELD_NAME:
+              return renderReplyStatusColumn(params.row.replyStatus);
+            case CREATED_FIELD_NAME:
+            case MODIFIED_FIELD_NAME:
+              return renderDateTimeMetaFields(params.row[columnName]);
+            default:
+              return (
+                <AdminFormListStack direction="row">
+                  <AdminFormTypographyField>{ params.row[columnName] }</AdminFormTypographyField>
+                </AdminFormListStack>
+              );
+          }
         }
-        if (DATETIME_META_FIELDS.includes(column.name ?? "")) {
-          return renderDateTimeMetaFields(params.row[column.name!]);
-        }
-        return (
-          <AdminFormListStack direction="row">
-            <AdminFormTypographyField>{ column.name ? params.row[column.name] : "" }</AdminFormTypographyField>
-          </AdminFormListStack>
-        );
-      }
-    }));
+      });
+    });
 
     if (AuthUtils.isSystemAdmin(keycloak)) {
       gridColumns.push({
