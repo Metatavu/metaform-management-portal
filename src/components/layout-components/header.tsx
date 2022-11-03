@@ -35,13 +35,13 @@ const Header: React.FC = ({
    * Renders info button with link to instructions of essote management portal
    */
   const renderInfoButton = () => {
-    const tutorialUrl = Config.getTutorialUrl() || "#";
+    const tutorialUrl = Config.getTutorialUrl() || "";
     return (
-      <Tooltip title={ strings.header.infoLabel } placement="left" arrow>
-        <IconButton href={ tutorialUrl } target="_blank">
+      <Tooltip title={ strings.header.infoLabel } placement="left">
+        <IconButton href={ tutorialUrl } target="_blank" disabled={ !tutorialUrl }>
           <HelpOutline
             fontSize="large"
-            sx={{ color: theme.palette.grey[200] }}
+            sx={{ color: tutorialUrl ? theme.palette.grey[200] : theme.palette.text.disabled }}
           />
         </IconButton>
       </Tooltip>

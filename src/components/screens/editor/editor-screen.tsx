@@ -45,10 +45,17 @@ const EditorScreen: React.FC = () => {
       const formUsers = forms.map(form => form.lastModifierId);
       const versionUsers = versions.map(version => version.lastModifierId);
       const distinctUsers = [ ...new Set([ ...formUsers, ...versionUsers ]) ];
-      const lastModifierUsers = await Promise.all(distinctUsers.map(user =>
+      const lastModifierUsers = await Promise.allSettled(distinctUsers.map(user =>
         usersApi.findUser({ userId: user! })));
+      const resolvedLastModifiers = lastModifierUsers.reduce<User[]>((allLastModifierUsers, lastModifierUser) => {
+        if (lastModifierUser.status === "fulfilled") {
+          allLastModifierUsers.push(lastModifierUser.value);
+        }
 
-      setLastModifiers(lastModifierUsers);
+        return allLastModifierUsers;
+      }, []);
+
+      setLastModifiers(resolvedLastModifiers);
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.getLastModifiers, e);
     }

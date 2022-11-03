@@ -21,6 +21,15 @@ import { setSnackbarMessage } from "features/snackbar-slice";
 import theme from "theme";
 import LocalizationUtils from "utils/localization-utils";
 import { CheckCircle, NewReleases, Pending } from "@mui/icons-material";
+import { CREATED_FIELD_NAME, MODIFIED_FIELD_NAME, STATUS_FIELD_NAME } from "consts";
+
+/**
+ * Meta fields with type of date-time
+ */
+const DATETIME_META_FIELDS = [
+  MODIFIED_FIELD_NAME,
+  CREATED_FIELD_NAME
+];
 
 /**
  * Form replies screen component
@@ -99,6 +108,17 @@ const FormRepliesScreen: React.FC = () => {
   );
 
   /**
+   * Renders metadata datetime columns
+   * 
+   * @param datetime datetime
+   */
+  const renderDateTimeMetaFields = (datetime: string) => (
+    <AdminFormListStack direction="row">
+      <AdminFormTypographyField>{ moment(datetime).format("LLL") }</AdminFormTypographyField>
+    </AdminFormListStack>
+  );
+
+  /**
    * Builds the columns for the table
    * Adds delete button column if user has realm role metaform-admin
    *
@@ -121,6 +141,7 @@ const FormRepliesScreen: React.FC = () => {
       headerName: column.title,
       allowProps: true,
       flex: 1,
+      type: DATETIME_META_FIELDS.includes(column.name ?? "") ? "dateTime" : "string",
       renderHeader: params => {
         return (
           <AdminFormListStack direction="row">
@@ -129,8 +150,11 @@ const FormRepliesScreen: React.FC = () => {
         );
       },
       renderCell: params => {
-        if (column.name === "status") {
+        if (column.name === STATUS_FIELD_NAME) {
           return renderReplyStatusColumn(params.row.replyStatus);
+        }
+        if (DATETIME_META_FIELDS.includes(column.name ?? "")) {
+          return renderDateTimeMetaFields(params.row[column.name!]);
         }
         return (
           <AdminFormListStack direction="row">
@@ -189,12 +213,6 @@ const FormRepliesScreen: React.FC = () => {
       const fieldOptions = field.options || [];
 
       switch (field.type) {
-        case MetaformFieldType.Date:
-          row[fieldName] = moment(replyData[fieldName]).format("LLL");
-          break;
-        case MetaformFieldType.DateTime:
-          row[fieldName] = moment(replyData[fieldName]).format("LLL");
-          break;
         case MetaformFieldType.Select:
         case MetaformFieldType.Radio:
           row[fieldName] = fieldOptions.find(fieldOption => fieldOption.name === fieldValue.toString())?.text || fieldValue.toString();
