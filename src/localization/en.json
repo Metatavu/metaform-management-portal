@@ -311,7 +311,11 @@
         "formVisibilityLabel": "Form visibility",
         "private": "Private",
         "public": "Public",
-        "tooltipDescription": "Set conditions whether field is visible on form."
+        "tooltipDescription": "Set conditions whether field is visible on form.",
+        "addVisibleOrButtonText": "Add optional condition",
+        "showConditionChain": "Show condition chain",
+        "closeConditionChain": "Close condition chain",
+        "allChoices": "Any choice"
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Member group defining settings",

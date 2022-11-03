@@ -311,7 +311,11 @@
         "formVisibilityLabel": "Lomakkeen näkyvyys",
         "private": "Yksityinen",
         "public": "Julkinen",
-        "tooltipDescription": "Aseta ehdollinen näkyvyys osiolle tai kentälle."
+        "tooltipDescription": "Aseta ehdollinen näkyvyys osiolle tai kentälle.",
+        "addVisibleOrButtonText": "Lisää vaihtoehtoinen ehto",
+        "showConditionChain": "Näytä ehtojono",
+        "closeConditionChain": "Sulje ehtojono",
+        "allChoices": "Mikä tahansa valinta"
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Käyttäjäryhmän asetukset",
