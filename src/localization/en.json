@@ -109,6 +109,13 @@
     }
   },
 
+  "protectedForm": {
+    "redirectDialog": {
+      "title": "Strong authentication required",
+      "text": "This form requires strong authentication, press confirm to precede to the authentication page"
+    }
+  },
+
   "formComponent": {
     "html": "Empty html",
     "datePicker": "Date",

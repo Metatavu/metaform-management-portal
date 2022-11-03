@@ -22,7 +22,7 @@ import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
 import { Dictionary } from "types";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LeavePageHandler from "components/contexts/leave-page-handler";
 
 /**
@@ -65,6 +65,7 @@ const FormScreen: React.FC<Props> = () => {
 
   const apiClient = useApiClient(Api.getApiClient);
   const keycloak = useAppSelector(selectKeycloak);
+  const navigate = useNavigate();
 
   /**
    * Checks if form has unsaved changes
@@ -178,6 +179,9 @@ const FormScreen: React.FC<Props> = () => {
       setMetaform(foundMetaform);
       setFormValues(preparedFormValues);
     } catch (e) {
+      if (e instanceof Response && (e as Response).status === 403) {
+        navigate(`/protected/${metaformSlug}`);
+      }
       errorContext.setError(strings.errorHandling.formScreen.findMetaform, e);
     }
 

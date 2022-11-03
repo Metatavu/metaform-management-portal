@@ -1,4 +1,4 @@
-import { selectAccessToken, selectAnonymousAccessToken } from "features/auth-slice";
+import { selectAccessToken, selectAnonymousAccessToken, selectIdpAccessToken } from "features/auth-slice";
 import React from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "./store";
@@ -69,5 +69,6 @@ export const useDebounce = (value: string, delay: number) => {
 export const useApiClient = <T extends {}>(apiClientFactory: (accessToken?: string) => T): T => {
   const token = useAppSelector(selectAccessToken);
   const anonymousToken = useAppSelector(selectAnonymousAccessToken);
-  return React.useMemo(() => apiClientFactory(token ?? anonymousToken), [ token, anonymousToken ]);
+  const idpToken = useAppSelector(selectIdpAccessToken);
+  return React.useMemo(() => apiClientFactory(token ?? idpToken ?? anonymousToken), [ token, idpToken, anonymousToken ]);
 };
