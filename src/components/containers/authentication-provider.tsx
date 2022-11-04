@@ -103,11 +103,12 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   const initializeIDPLogin = async () => {
     try {
       const authConfig = Config.get().auth;
+      const { idpHint } = Config.get().form;
       const keycloakInstance = new Keycloak(authConfig);
       await keycloakInstance.init({
         checkLoginIframe: false
       });
-      await keycloakInstance.login({ idpHint: "suomifi" });
+      await keycloakInstance.login({ idpHint: idpHint });
       await keycloakInstance.loadUserProfile();
       dispatch(idpLogin(keycloakInstance));
     } catch (error) {
