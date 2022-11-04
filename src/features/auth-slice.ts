@@ -89,10 +89,10 @@ export const selectAnonymousAccessToken = (state: RootState) => {
 };
 
 /**
- * Select anonymous access token
+ * Select idp access token
  *
  * @param state Redux store root state
- * @returns anonymous access token
+ * @returns idp access token
  */
 export const selectIdpAccessToken = (state: RootState) => {
   return state.auth.idpAccessToken;
