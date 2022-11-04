@@ -1,7 +1,7 @@
 import { useAppSelector } from "app/hooks";
 import { selectIdpKeycloak } from "features/auth-slice";
 import * as React from "react";
-import FormScreen from "./form-screen";
+import PublicFormScreen from "./public-form-screen";
 
 /**
  * Component for protected form screen
@@ -13,7 +13,7 @@ const ProtectedFormScreen: React.FC = () => {
     return null;
   }
 
-  return <FormScreen/>;
+  return <PublicFormScreen/>;
 };
 
 export default ProtectedFormScreen;
