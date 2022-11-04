@@ -112,7 +112,7 @@
   "protectedForm": {
     "redirectDialog": {
       "title": "Vaaditaan vahva tunnistautuminen",
-      "text": "Siirry eteenpäin tunnistautumispalveluun."
+      "text": "Tämä lomake vaatii vahvan tunnistautumisen. Siirry eteenpäin tunnistautumispalveluun."
     }
   },
 
