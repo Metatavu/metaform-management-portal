@@ -63,6 +63,7 @@ export const { anonymousLogin, idpLogin, login, logout } = authSlice.actions;
 export const selectKeycloak = (state: RootState) => {
   const { auth } = state;
   if (auth.keycloak) return auth.keycloak;
+  if (auth.idpKeycloak) return auth.idpKeycloak;
 
   return auth.anonymousKeycloak;
 };
