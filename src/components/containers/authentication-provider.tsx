@@ -102,8 +102,11 @@ const AuthenticationProvider: React.FC = ({ children }) => {
    */
   const initializeIDPLogin = async () => {
     try {
-      const authConfig = Config.get().auth;
       const { idpHint } = Config.get().form;
+      if (!idpHint) {
+        return;
+      }
+      const authConfig = Config.get().auth;
       const keycloakInstance = new Keycloak(authConfig);
       await keycloakInstance.init({
         checkLoginIframe: false
