@@ -331,7 +331,7 @@ const EditMemberDialog: FC<Props> = ({
       dialogTitle={ strings.userManagementScreen.editMemberDialog.title }
       dialogDescription={ strings.userManagementScreen.editMemberDialog.text }
       helperIcon
-      tooltipText={ strings.generic.notImplemented }
+      tooltipText={ strings.userManagementScreen.editMemberDialog.tooltip.tooltipGeneral }
       dialogContent={ renderDialogContent() }
       dialogActions={ renderDialogActions() }
       onCancel={ onCancel }

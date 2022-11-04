@@ -415,6 +415,12 @@ export interface Localized extends LocalizedStringsMethods {
       upnNumberLabel: string;
       createButton: string;
       cancelButton: string;
+      tooltip: {
+        tooltipGeneral: string;
+        tooltipNoIconDescription: string;
+        tooltipLinkIconDescription: string;
+        tooltipCardIconDescription: string;
+      };
     };
     addMemberGroupDialog: {
       title: string;
@@ -437,6 +443,9 @@ export interface Localized extends LocalizedStringsMethods {
       upnNumberLabel: string;
       cancelButton: string;
       editButton: string;
+      tooltip: {
+        tooltipGeneral: string;
+      };
     };
     usersTable: {
       nameColumn: {

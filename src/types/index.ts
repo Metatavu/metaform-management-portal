@@ -142,7 +142,8 @@ export enum SosmetaType {
 export enum FormContext {
   FORM = "FORM",
   MANAGEMENT = "MANAGEMENT",
-  MANAGEMENT_LIST = "MANAGEMENT_LIST"
+  MANAGEMENT_LIST = "MANAGEMENT_LIST",
+  META = "META"
 }
 
 /**
