@@ -17,6 +17,9 @@ export interface Configuration {
   api: {
     baseUrl: string;
   };
+  form: {
+    idpHint: string;
+  };
 }
 
 /**

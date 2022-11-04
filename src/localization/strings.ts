@@ -122,6 +122,16 @@ export interface Localized extends LocalizedStringsMethods {
   };
 
   /**
+   * Translations related to protected forms
+   */
+  protectedForm: {
+    redirectDialog: {
+      title: string;
+      text: string;
+    }
+  }
+
+  /**
    * Translations related to form component
    */
   formComponent: {

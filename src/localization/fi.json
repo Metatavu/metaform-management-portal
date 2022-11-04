@@ -109,6 +109,13 @@
     }
   },
 
+  "protectedForm": {
+    "redirectDialog": {
+      "title": "Vaaditaan vahva tunnistautuminen",
+      "text": "Tämä lomake vaatii vahvan tunnistautumisen. Siirry eteenpäin tunnistautumispalveluun."
+    }
+  },
+
   "formComponent": {
     "html": "Tyhjä html",
     "datePicker": "Päivämäärä",

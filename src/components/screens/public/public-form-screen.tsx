@@ -19,7 +19,7 @@ import Api from "api";
 import { useApiClient, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
 import { Dictionary } from "types";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LeavePageHandler from "components/contexts/leave-page-handler";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 
@@ -35,6 +35,7 @@ const PublicFormScreen: FC = () => {
   const keycloak = useAppSelector(selectKeycloak);
 
   const { attachmentsApi, draftsApi, metaformsApi, repliesApi } = useApiClient(Api.getApiClient);
+  const navigate = useNavigate();
 
   const [ loading, setLoading ] = useState(false);
   const [ , setReplyConfirmVisible ] = useState(false);
@@ -172,6 +173,9 @@ const PublicFormScreen: FC = () => {
       setMetaform(foundMetaform);
       setFormValues(preparedFormValues);
     } catch (e) {
+      if (e instanceof Response && (e as Response).status === 403) {
+        navigate(`/protected/${metaformSlug}`);
+      }
       errorContext.setError(strings.errorHandling.formScreen.findMetaform, e);
     }
 
