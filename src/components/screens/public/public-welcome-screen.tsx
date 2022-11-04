@@ -5,7 +5,7 @@ import strings from "localization/strings";
 /**
  * Public forms screen component
  */
-const PublicFormsScreen: React.FC = () => {
+const PublicWelcomeScreen: React.FC = () => {
   return (
     <Box bgcolor="#375AA3" height="100vh">
       <Box
@@ -73,4 +73,4 @@ const PublicFormsScreen: React.FC = () => {
   );
 };
 
-export default PublicFormsScreen;
+export default PublicWelcomeScreen;

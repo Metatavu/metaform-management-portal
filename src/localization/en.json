@@ -372,7 +372,13 @@
       "lastNameLabel": "Last name",
       "upnNumberLabel": "UPN number",
       "createButton": "Add member",
-      "cancelButton": "Cancel"
+      "cancelButton": "Cancel",
+      "tooltip": {
+        "tooltipGeneral": "Add existing user or create new user to form.",
+        "tooltipNoIconDescription": "User without icon exists only in Portals user registry.",
+        "tooltipLinkIconDescription": "User with link icon exists in Portals user registry and is linked with professional card.",
+        "tooltipCardIconDescription": "User with card icon exists only in DVVs user registry."
+      }
     },
     "addMemberGroupDialog": {
       "title": "New group",
@@ -394,7 +400,10 @@
       "lastNameLabel": "Last name",
       "upnNumberLabel": "UPN number",
       "cancelButton": "Cancel",
-      "editButton": "Edit user"
+      "editButton": "Edit user",
+      "tooltip": {
+        "tooltipGeneral": "Edit users information and add or remove link with professional card."
+      }
     },
     "usersTable": {
       "nameColumn": {
