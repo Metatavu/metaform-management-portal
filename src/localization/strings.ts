@@ -343,6 +343,7 @@ export interface Localized extends LocalizedStringsMethods {
         conditionLabelTitle: string;
         conditionally: string;
         conditionalFieldValue: string;
+        orConditionalFieldValue: string;
         conditionalFieldInfo: string;
         conditionalFieldValueInfo: string;
         fieldDefiningCondition: string;
@@ -351,10 +352,14 @@ export interface Localized extends LocalizedStringsMethods {
         fieldConditionLabel: string;
         sectionConditionLabel: string;
         tooltipDescription: string;
+        or: string;
+        and: string;
         addVisibleOrButtonText: string;
         showConditionChain: string;
         closeConditionChain: string;
         allChoices: string;
+        newEqualCondition: string;
+        andConditionChainTerms: string;
       };
       memberGroups: {
         memberGroupDefineSettings: string;

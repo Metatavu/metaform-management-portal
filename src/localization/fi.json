@@ -304,9 +304,10 @@
         "tabTitle": "näkyvyys",
         "fieldVisibility": "Kenttä näkyy lomakkeella:",
         "conditionLabelTitle": "Ehtokentän nimi",
-        "visibilityCondition": "Näkyvyyden ehto",
+        "visibilityCondition": "Näkyvyyden ehto ",
         "conditionally": "Ehdollisesti",
         "conditionalFieldValue": "Ehtokentän arvo",
+        "orConditionalFieldValue": "Tai ehtokentän arvo",
         "conditionalFieldInfo": "Valitse se lomakkeen kenttä, joka määrittää näkyvyyden.",
         "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
         "fieldDefiningCondition": "Ehdon määrittävä kenttä",
@@ -319,10 +320,14 @@
         "private": "Yksityinen",
         "public": "Julkinen",
         "tooltipDescription": "Aseta ehdollinen näkyvyys osiolle tai kentälle.",
-        "addVisibleOrButtonText": "Lisää vaihtoehtoinen ehto",
+        "or": "Tai",
+        "and": "Ja",
+        "addVisibleOrButtonText": "Lisää tai ehtokenttä",
         "showConditionChain": "Näytä ehtojono",
         "closeConditionChain": "Sulje ehtojono",
-        "allChoices": "Mikä tahansa valinta"
+        "allChoices": "Mikä tahansa valinta",
+        "newEqualCondition": "Lisää ehtokentälle tai arvo",
+        "andConditionChainTerms": "Näkyvyyden muut ehdot"
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Käyttäjäryhmän asetukset",
