@@ -23,6 +23,7 @@ interface Props {
   fieldIndex?: number;
   pendingForm: Metaform;
   setPendingForm: (metaform: Metaform) => void;
+  setUpdatedMetaformField: (updatedMetaformField: MetaformField) => void;
 }
 
 /**
@@ -38,7 +39,8 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
   sectionIndex,
   fieldIndex,
   pendingForm,
-  setPendingForm
+  setPendingForm,
+  setUpdatedMetaformField
 }) => {
   const [ multiSelectRawTextMode, setMultiSelectRawTextMode ] = useState<boolean>(false);
   const [ multiSelectRawText, setMultiSelectRawText ] = useState<string>("");
@@ -261,7 +263,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
       }));
     });
     
-    updateFormField(updatedField);
+    setUpdatedMetaformField(updatedField);
     setMultiSelectRawTextMode(false);
   };
 

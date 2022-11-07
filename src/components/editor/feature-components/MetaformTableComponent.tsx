@@ -1,11 +1,10 @@
 import { Button, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
-import { FieldRule, Metaform, MetaformField, MetaformTableColumn, MetaformTableColumnType } from "generated/client";
+import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
 import React, { FC, useState } from "react";
 import slugify from "slugify";
 import DeleteIcon from "@mui/icons-material/Delete";
-import MetaformUtils from "utils/metaform-utils";
 
 /**
  * Component properties
@@ -13,12 +12,9 @@ import MetaformUtils from "utils/metaform-utils";
 interface Props {
   selectedField?: MetaformField;
   setSelectedField: (selectedField?: MetaformField) => void;
-  pendingForm: Metaform;
-  sectionIndex?: number;
-  fieldIndex?: number;
   debounceTimerId?: NodeJS.Timeout,
   setDebounceTimerId: (debounceTimerId: NodeJS.Timeout) => void;
-  setPendingForm: (metaform: Metaform) => void;
+  setUpdatedMetaformField: (updatedMetaformField: MetaformField) => void;
 }
 
 /**
@@ -27,80 +23,22 @@ interface Props {
 const MetaformTableComponent: FC<Props> = ({
   selectedField,
   setSelectedField,
-  pendingForm,
-  sectionIndex,
-  fieldIndex,
   debounceTimerId,
   setDebounceTimerId,
-  setPendingForm
+  setUpdatedMetaformField
 }) => {
   const [ newColumnType, setNewColumnType ] = useState<MetaformTableColumnType>();
-
-  /**
-   * Updates field with visibility
-   *
-   * @param field edited field
-   * @param optionIndex option index
-   */
-  const updateFormField = (field: MetaformField, optionIndex?: number) => {
-    if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
-      return;
-    }
-
-    const updatedForm = produce(pendingForm, draftForm => {
-      if (MetaformUtils.fieldTypesAllowVisibility.includes(field.type)) {
-        if ((selectedField.name !== undefined && field.name !== selectedField.name) || optionIndex !== undefined) {
-          const fieldOptionMatch = optionIndex !== undefined ?
-            pendingForm.sections![sectionIndex].fields![fieldIndex].options![optionIndex] :
-            undefined;
-          const fieldNameMatch = pendingForm.sections![sectionIndex].fields![fieldIndex].name || "";
-
-          const fieldRules: FieldRule[] = [];
-
-          draftForm.sections?.forEach(draftSection => {
-            if (draftSection.visibleIf !== undefined) {
-              MetaformUtils.fieldRuleScan(draftSection.visibleIf, fieldNameMatch, fieldRules, fieldOptionMatch);
-            }
-            draftSection.fields?.forEach(draftField => {
-              if (draftField.visibleIf !== undefined) {
-                MetaformUtils.fieldRuleScan(draftField.visibleIf, fieldNameMatch, fieldRules, fieldOptionMatch);
-              }
-            });
-          });
-
-          fieldRules.forEach(rule => {
-            if ((selectedField.name !== undefined && field.name !== selectedField.name)) {
-              rule.field = field.name;
-            // option update
-            } else if (optionIndex !== undefined) {
-              const fieldOptionToUpdate = field.options![optionIndex];
-              if (rule.equals === fieldOptionMatch!.name) {
-                rule.equals = fieldOptionToUpdate.name;
-              } else if (rule.notEquals === fieldOptionMatch!.name) {
-                rule.notEquals = fieldOptionToUpdate.name;
-              }
-            }
-          });
-        }
-      }
-
-      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, field);
-    });
-
-    setPendingForm(updatedForm);
-  };
 
   /**
    * Debounced update field
    *
    * @param field edited field
-   * @param optionIndex option index
    */
-  const updateFormFieldDebounced = (field: MetaformField, optionIndex?: number) => {
+  const updateFormFieldDebounced = (field: MetaformField) => {
     setSelectedField(field);
 
     debounceTimerId && clearTimeout(debounceTimerId);
-    setDebounceTimerId(setTimeout(() => updateFormField(field, optionIndex), 500));
+    setDebounceTimerId(setTimeout(() => setUpdatedMetaformField(field), 500));
   };
 
   /**

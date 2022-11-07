@@ -173,6 +173,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
               fieldIndex={ fieldIndex }
               pendingForm={ pendingForm }
               setPendingForm={ setPendingForm }
+              setUpdatedMetaformField={ setUpdatedMetaformField }
             />
             <Divider/>
             <MetaformDefineMemberGroupComponent
@@ -197,12 +198,9 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
             <MetaformTableComponent
               selectedField={ selectedField }
               setSelectedField={ setSelectedField }
-              pendingForm={ pendingForm }
-              sectionIndex={ sectionIndex }
-              fieldIndex={ fieldIndex }
               debounceTimerId={ debounceTimerId }
               setDebounceTimerId={ setDebounceTimerId }
-              setPendingForm={ setPendingForm }
+              setUpdatedMetaformField={ setUpdatedMetaformField }
             />
             <Divider/>
           </>
