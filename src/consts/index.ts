@@ -17,3 +17,18 @@ export const API_ADMIN_USER = "api-admin";
  * Metaform manager role
  */
 export const METAFORM_MANAGER_ROLE = "metaform-manager";
+
+/**
+ * Status field name
+ */
+export const STATUS_FIELD_NAME = "status";
+
+/**
+ * Created field name
+ */
+export const CREATED_FIELD_NAME = "created";
+
+/**
+ * Modified field name
+ */
+export const MODIFIED_FIELD_NAME = "modified";

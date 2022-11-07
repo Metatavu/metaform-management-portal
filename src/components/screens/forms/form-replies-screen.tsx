@@ -21,6 +21,15 @@ import { setSnackbarMessage } from "features/snackbar-slice";
 import theme from "theme";
 import LocalizationUtils from "utils/localization-utils";
 import { CheckCircle, NewReleases, Pending } from "@mui/icons-material";
+import { CREATED_FIELD_NAME, MODIFIED_FIELD_NAME, STATUS_FIELD_NAME } from "consts";
+
+/**
+ * Meta fields with type of date-time
+ */
+const DATETIME_META_FIELDS = [
+  MODIFIED_FIELD_NAME,
+  CREATED_FIELD_NAME
+];
 
 /**
  * Form replies screen component
@@ -99,6 +108,17 @@ const FormRepliesScreen: React.FC = () => {
   );
 
   /**
+   * Renders metadata datetime columns
+   * 
+   * @param datetime datetime
+   */
+  const renderDateTimeMetaFields = (datetime: string) => (
+    <AdminFormListStack direction="row">
+      <AdminFormTypographyField>{ moment(datetime).format("LLL") }</AdminFormTypographyField>
+    </AdminFormListStack>
+  );
+
+  /**
    * Builds the columns for the table
    * Adds delete button column if user has realm role metaform-admin
    *
@@ -116,29 +136,38 @@ const FormRepliesScreen: React.FC = () => {
       return;
     }
 
-    const gridColumns = managementListColumns.map<GridColDef>(column => ({
-      field: column.name || "",
-      headerName: column.title,
-      allowProps: true,
-      flex: 1,
-      renderHeader: params => {
-        return (
-          <AdminFormListStack direction="row">
-            <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
-          </AdminFormListStack>
-        );
-      },
-      renderCell: params => {
-        if (column.name === "status") {
-          return renderReplyStatusColumn(params.row.replyStatus);
+    const gridColumns = managementListColumns.map<GridColDef>(column => {
+      const columnName = column.name ?? "";
+      return ({
+        field: columnName,
+        headerName: column.title,
+        allowProps: true,
+        flex: 1,
+        type: DATETIME_META_FIELDS.includes(columnName) ? "dateTime" : "string",
+        renderHeader: params => {
+          return (
+            <AdminFormListStack direction="row">
+              <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
+            </AdminFormListStack>
+          );
+        },
+        renderCell: params => {
+          switch (columnName) {
+            case STATUS_FIELD_NAME:
+              return renderReplyStatusColumn(params.row.replyStatus);
+            case CREATED_FIELD_NAME:
+            case MODIFIED_FIELD_NAME:
+              return renderDateTimeMetaFields(params.row[columnName]);
+            default:
+              return (
+                <AdminFormListStack direction="row">
+                  <AdminFormTypographyField>{ params.row[columnName] }</AdminFormTypographyField>
+                </AdminFormListStack>
+              );
+          }
         }
-        return (
-          <AdminFormListStack direction="row">
-            <AdminFormTypographyField>{ column.name ? params.row[column.name] : "" }</AdminFormTypographyField>
-          </AdminFormListStack>
-        );
-      }
-    }));
+      });
+    });
 
     if (AuthUtils.isSystemAdmin(keycloak)) {
       gridColumns.push({
@@ -189,12 +218,6 @@ const FormRepliesScreen: React.FC = () => {
       const fieldOptions = field.options || [];
 
       switch (field.type) {
-        case MetaformFieldType.Date:
-          row[fieldName] = moment(replyData[fieldName]).format("LLL");
-          break;
-        case MetaformFieldType.DateTime:
-          row[fieldName] = moment(replyData[fieldName]).format("LLL");
-          break;
         case MetaformFieldType.Select:
         case MetaformFieldType.Radio:
           row[fieldName] = fieldOptions.find(fieldOption => fieldOption.name === fieldValue.toString())?.text || fieldValue.toString();

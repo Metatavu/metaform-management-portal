@@ -122,6 +122,16 @@ export interface Localized extends LocalizedStringsMethods {
   };
 
   /**
+   * Translations related to protected forms
+   */
+  protectedForm: {
+    redirectDialog: {
+      title: string;
+      text: string;
+    }
+  }
+
+  /**
    * Translations related to form component
    */
   formComponent: {
@@ -410,6 +420,12 @@ export interface Localized extends LocalizedStringsMethods {
       upnNumberLabel: string;
       createButton: string;
       cancelButton: string;
+      tooltip: {
+        tooltipGeneral: string;
+        tooltipNoIconDescription: string;
+        tooltipLinkIconDescription: string;
+        tooltipCardIconDescription: string;
+      };
     };
     addMemberGroupDialog: {
       title: string;
@@ -432,6 +448,9 @@ export interface Localized extends LocalizedStringsMethods {
       upnNumberLabel: string;
       cancelButton: string;
       editButton: string;
+      tooltip: {
+        tooltipGeneral: string;
+      };
     };
     usersTable: {
       nameColumn: {

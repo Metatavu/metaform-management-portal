@@ -674,7 +674,11 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       <Typography variant="subtitle1">
         { strings.draftEditorScreen.editor.features.field.contextVisibilityInfo }
       </Typography>
-      { Object.values(FormContext).map(context => renderContextOption(context, field.contexts || [])) }
+      {
+        Object.values(FormContext)
+          .filter(context => context !== FormContext.META)
+          .map(context => renderContextOption(context, field.contexts || []))
+      }
     </Stack>
   );
 
@@ -792,6 +796,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           </Typography>
           <TextField
             multiline
+            inputProps={ { wrap: "off" } as any }
             defaultValue={ getExistingMultiSelectOptions(field) }
             onChange={ handleMultiSelectTextChange }
           />

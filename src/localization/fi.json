@@ -109,6 +109,13 @@
     }
   },
 
+  "protectedForm": {
+    "redirectDialog": {
+      "title": "Vaaditaan vahva tunnistautuminen",
+      "text": "Tämä lomake vaatii vahvan tunnistautumisen. Siirry eteenpäin tunnistautumispalveluun."
+    }
+  },
+
   "formComponent": {
     "html": "Tyhjä html",
     "datePicker": "Päivämäärä",
@@ -378,7 +385,13 @@
       "upnNumberLabel": "UPN-numero",
       "createButton": "Luo käyttäjä",
       "cancelButton": "Peruuta",
-      "snackbarText": "Käyttäjän lisääminen onnistui!"
+      "snackbarText": "Käyttäjän lisääminen onnistui!",
+      "tooltip": {
+        "tooltipGeneral": "Lisää olemassa oleva käyttäjä tai luo uusi käyttäjä lomakkeelle.",
+        "tooltipNoIconDescription": "Käyttäjä ilman ikonia löytyy vain Portaalin käyttäjärekisteristä.",
+        "tooltipLinkIconDescription": "Käyttäjä linkki-ikonilla löytyy Portaalin käyttäjärekisteristä, ja on linkitetty ammattilaiskorttiin",
+        "tooltipCardIconDescription": "Käyttäjä kortti-ikonilla löytyy vain DVV:n käyttäjärekisteristä, eikä ole vielä tuotu Portaalin käyttäjärekisteriin."
+      }
     },
     "addMemberGroupDialog": {
       "title": "Uusi käyttäjäryhmä",
@@ -402,7 +415,10 @@
       "upnNumberLabel": "UPN-numero",
       "cancelButton": "Peruuta",
       "editButton": "Muokkaa käyttäjää",
-      "snackbarText": "Käyttäjän muokkaaminen onnistui!"
+      "snackbarText": "Käyttäjän muokkaaminen onnistui!",
+      "tooltip": {
+        "tooltipGeneral": "Muokkaa käyttäjän tietoja sekä lisää tai poista linkitys ammattilaiskorttiin."
+      }
     },
     "groupMembership": {
       "groupMembershipAddSnackbarText": "Käyttäjä lisääminen ryhmään onnistui!",

@@ -10,6 +10,7 @@ import { FormListContainer, FormPagination, FormsContainer } from "styled/editor
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 import { DataGrid, fiFI, GridActionsCellItem, GridColumns, GridRowParams } from "@mui/x-data-grid";
 import { DataValidation } from "utils/data-validation-utils";
+
 /**
 * Component props
 */
@@ -220,6 +221,7 @@ const EditorScreenTable: FC<Props> = ({
       field: "createdAt",
       headerName: strings.editorScreen.formCreatedAt,
       width: 250,
+      type: "dateTime",
       renderHeader: params => {
         return (
           <AdminFormListStack direction="row">
@@ -241,6 +243,7 @@ const EditorScreenTable: FC<Props> = ({
       field: "modifiedAt",
       headerName: strings.editorScreen.formModifiedAt,
       width: 250,
+      type: "dateTime",
       renderHeader: params => {
         return (
           <AdminFormListStack direction="row">

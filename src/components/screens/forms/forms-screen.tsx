@@ -24,7 +24,7 @@ interface Row {
   id: string;
   slug?: string;
   title: string;
-  latestReply: string;
+  latestReply?: Date;
   newReply?: string;
 }
 
@@ -45,14 +45,14 @@ const FormsScreen: React.FC = () => {
    */
   const getLatestReplyDate = (replies: Reply[]) => {
     if (replies.length < 1) {
-      return "";
+      return;
     }
 
     if (!replies[replies.length - 1].modifiedAt) {
-      return "";
+      return;
     }
 
-    return moment(replies[replies.length - 1].modifiedAt).format("LLL");
+    return replies[replies.length - 1].modifiedAt;
   };
 
   /**
@@ -145,6 +145,7 @@ const FormsScreen: React.FC = () => {
       field: "latestReply",
       headerName: strings.formsScreen.formTable.latestReply,
       width: 250,
+      type: "dateTime",
       renderHeader: params => {
         return (
           <AdminFormListStack direction="row">
@@ -154,10 +155,11 @@ const FormsScreen: React.FC = () => {
         );
       },
       renderCell: params => {
+        const latestReplyDate = params.row.latestReply;
         return (
           <AdminFormListStack direction="row">
             <DateRangeIcon style={ { fill: "darkgrey" } }/>
-            <AdminFormTypographyField>{ params.row.latestReply }</AdminFormTypographyField>
+            <AdminFormTypographyField>{ latestReplyDate ? moment(latestReplyDate).format("LLL") : "" }</AdminFormTypographyField>
           </AdminFormListStack>
         );
       }
