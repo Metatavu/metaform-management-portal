@@ -117,29 +117,18 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   const addVisibleIfOrOption = (selectedVisibleIfField? : string) => {
     if (selectedVisibleIf) {
       if (selectedVisibleIf?.or) {
-        if (selectedVisibleIfField) {
-          const updatedField: FieldRule | undefined = produce(selectedVisibleIf, draftField => {
-            const newVisibleIfOrRule: FieldRule = {
-              field: selectedVisibleIfField,
-              equals: ""
-            };
-            draftField.or?.push(newVisibleIfOrRule);
-          });
-          updateSelectedVisibleIf(updatedField);
-        } else {
-          const updatedField: FieldRule | undefined = produce(selectedVisibleIf, draftField => {
-            const newVisibleIfOrRule: FieldRule = {
-              field: "",
-              equals: ""
-            };
-            draftField.or?.push(newVisibleIfOrRule);
-          });
-          updateSelectedVisibleIf(updatedField);
-        }
+        const updatedField: FieldRule | undefined = produce(selectedVisibleIf, draftField => {
+          const newVisibleIfOrRule: FieldRule = {
+            field: selectedVisibleIfField !== undefined ? selectedVisibleIfField : "",
+            equals: ""
+          };
+          draftField.or?.push(newVisibleIfOrRule);
+        });
+        updateSelectedVisibleIf(updatedField);
       } else {
         const updatedField: FieldRule | undefined = produce(selectedVisibleIf, draftField => {
           const newVisibleIfOrRule: FieldRule[] = [{
-            field: "",
+            field: selectedVisibleIfField !== undefined ? selectedVisibleIfField : "",
             equals: ""
           }];
           draftField.or = newVisibleIfOrRule;
