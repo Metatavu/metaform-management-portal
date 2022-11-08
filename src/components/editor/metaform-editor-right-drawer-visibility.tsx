@@ -1,4 +1,4 @@
-import { Button, Divider, FormControlLabel, IconButton, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
+import { Button, Divider, FormControlLabel, IconButton, MenuItem, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { FieldRule, Metaform, MetaformField, MetaformFieldOption } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
@@ -8,6 +8,7 @@ import MetaformUtils from "utils/metaform-utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Navigation from "@mui/icons-material/Navigation";
+import { HelpOutline } from "@mui/icons-material";
 
 /**
  * Component properties
@@ -30,7 +31,8 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
 }) => {
   const [ selectedVisibleIf, setSelectedVisibleIf ] = React.useState<FieldRule | undefined>();
   const [ visibleIfSource, setVisibleIfSource ] = React.useState<VisibilitySource>(VisibilitySource.NONE);
-  const [ showConditions, setShowAndConditions ] = React.useState<number | null | undefined>();
+  const [ showVisibleIfProperties, setShowVisibleIfProperties ] = React.useState<number | null | undefined>();
+  const [ showTooltip, setShowTooltip ] = React.useState<boolean>(false);
 
   /**
    * Updates visibleIf source section, field
@@ -112,7 +114,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   /**
    * Add visible if or field condition
    * 
-   * @param selectedVisibleIfField? When adding new visibleIf condition to old visibleIf condition use old condition field name
+   *@param selectedVisibleIfField? Use existing visibleIf-field name if exists
    */
   const addVisibleIfOrOption = (selectedVisibleIfField? : string) => {
     if (selectedVisibleIf) {
@@ -235,12 +237,34 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       : strings.draftEditorScreen.editor.visibility.fieldDefiningCondition;
     return (
       <Stack spacing={ 2 }>
-        <Typography
-          variant="subtitle1"
-          style={{ width: "100%" }}
-        >
-          { strings.draftEditorScreen.editor.visibility.visibilityCondition }
-        </Typography>
+        <Stack spacing={ 2 } direction="row">
+          <Typography
+            variant="subtitle1"
+            style={{ width: "100%" }}
+          >
+            { strings.draftEditorScreen.editor.visibility.visibilityCondition }
+          </Typography>
+          <Tooltip
+            open={ showTooltip }
+            title={
+              <Typography style={{ whiteSpace: "pre-line" }} variant="body1">
+                { strings.draftEditorScreen.editor.visibility.visibilityConditionTooltip }
+              </Typography>
+            }
+            placement="top-start"
+            arrow
+          >
+            <IconButton
+              onClick={ () => setShowTooltip(!showTooltip) }
+              sx={{
+                paddingTop: "0px",
+                whiteSpace: "pre-line"
+              }}
+            >
+              <HelpOutline/>
+            </IconButton>
+          </Tooltip>
+        </Stack>
         <TextField
           fullWidth
           select
@@ -392,7 +416,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       return (
         field!.map(selectedField => {
           return (
-            <Stack spacing={ 2 } sx={{ display: showConditions === index ? "block" : "none" }}>
+            <Stack spacing={ 2 } sx={{ display: showVisibleIfProperties === index ? "block" : "none" }}>
               <Typography variant="subtitle1" style={{ width: "100%", textAlign: "center" }}>
                 <Navigation/>
               </Typography>
@@ -451,9 +475,10 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
     return (
       <>
         { renderConditionChain(selectedVisibleIf.and, index) }
-        <Button onClick={ () => setShowAndConditions(showConditions === index ? null : index) }>
-          { showConditions === index ?
-            strings.draftEditorScreen.editor.visibility.closeConditionChain : strings.draftEditorScreen.editor.visibility.showConditionChain
+        <Button onClick={ () => setShowVisibleIfProperties(showVisibleIfProperties === index ? null : index) }>
+          { showVisibleIfProperties === index ?
+            strings.draftEditorScreen.editor.visibility.closeConditionChain :
+            strings.draftEditorScreen.editor.visibility.showConditionChain
           }
         </Button>
         <Divider/>
@@ -505,18 +530,18 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * Render all visible or fields of selected field / section
    */
   const renderVisibleOrField = () => {
-    let i = 1;
+    let visibilityConditionIndex = 1;
     if (selectedVisibleIf?.or !== undefined) {
       return (
         selectedVisibleIf.or!.map((selectedField, index) => {
           if (selectedVisibleIf.field !== selectedField.field) {
-            i += 1;
+            visibilityConditionIndex += 1;
             return (
               <Stack spacing={ 2 }>
                 <Stack spacing={ 2 } direction="row" flex={ 2 }>
                   <Typography variant="subtitle1" style={{ width: "100%" }}>
                     { strings.draftEditorScreen.editor.visibility.visibilityCondition }
-                    { i }
+                    { visibilityConditionIndex }
                   </Typography>
                   <IconButton
                     color="error"

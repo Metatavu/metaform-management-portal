@@ -321,13 +321,12 @@
         "public": "Julkinen",
         "tooltipDescription": "Aseta ehdollinen näkyvyys osiolle tai kentälle.",
         "or": "Tai",
-        "and": "Ja",
-        "addVisibleOrButtonText": "Lisää tai ehtokenttä",
+        "addVisibleOrButtonText": "Lisää ehtokenttä",
         "showConditionChain": "Näytä ehtojono",
         "closeConditionChain": "Sulje ehtojono",
         "allChoices": "Mikä tahansa valinta",
-        "newEqualCondition": "Lisää ehtokentälle tai arvo",
-        "andConditionChainTerms": "Näkyvyyden muut ehdot"
+        "andConditionChainTerms": "Näkyvyyden muut ehdot",
+        "visibilityConditionTooltip": "Näkyvyyden ehto määrittää kentän näkyvyyden lomakkeella. Näkyvyyden ehtoja voi olla useita, jolloin minkä tahansa ehdon täyttyessä kenttä näkyy lomakkeella. \n Jos kentän näkyvyys riippuu myös jonkin toisen kentän näkyvyydestä, 'NÄYTÄ EHTOJONO'-nappia painamalla voidaan tarkastella ehtojonoa."
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Käyttäjäryhmän asetukset",
