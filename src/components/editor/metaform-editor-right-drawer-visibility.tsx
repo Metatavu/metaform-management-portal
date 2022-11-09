@@ -1,12 +1,14 @@
-import { Button, Divider, FormControlLabel, IconButton, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
+import { Button, Divider, FormControlLabel, IconButton, MenuItem, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { FieldRule, Metaform, MetaformField, MetaformFieldOption } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
 import React, { useEffect, FC } from "react";
 import { VisibilitySource } from "types";
 import MetaformUtils from "utils/metaform-utils";
-import Navigation from "@mui/icons-material/Navigation";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import Navigation from "@mui/icons-material/Navigation";
+import { HelpOutline } from "@mui/icons-material";
 
 /**
  * Component properties
@@ -29,7 +31,8 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
 }) => {
   const [ selectedVisibleIf, setSelectedVisibleIf ] = React.useState<FieldRule | undefined>();
   const [ visibleIfSource, setVisibleIfSource ] = React.useState<VisibilitySource>(VisibilitySource.NONE);
-  const [ showConditions, setShowAndConditions ] = React.useState<boolean>(false);
+  const [ showVisibleIfProperties, setShowVisibleIfProperties ] = React.useState<number | null | undefined>();
+  const [ showTooltip, setShowTooltip ] = React.useState<boolean>(false);
 
   /**
    * Updates visibleIf source section, field
@@ -110,13 +113,15 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
 
   /**
    * Add visible if or field condition
+   * 
+   *@param selectedVisibleIfField? Use existing visibleIf-field name if exists
    */
-  const addVisibleIfOrOption = () => {
+  const addVisibleIfOrOption = (selectedVisibleIfField? : string) => {
     if (selectedVisibleIf) {
       if (selectedVisibleIf?.or) {
         const updatedField: FieldRule | undefined = produce(selectedVisibleIf, draftField => {
           const newVisibleIfOrRule: FieldRule = {
-            field: "",
+            field: selectedVisibleIfField !== undefined ? selectedVisibleIfField : "",
             equals: ""
           };
           draftField.or?.push(newVisibleIfOrRule);
@@ -125,7 +130,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       } else {
         const updatedField: FieldRule | undefined = produce(selectedVisibleIf, draftField => {
           const newVisibleIfOrRule: FieldRule[] = [{
-            field: "",
+            field: selectedVisibleIfField !== undefined ? selectedVisibleIfField : "",
             equals: ""
           }];
           draftField.or = newVisibleIfOrRule;
@@ -189,7 +194,8 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
         const updatedVisibleIf = {
           ...selectedVisibleIf,
           [key]: value,
-          and: [ addVisibleIf ]
+          and: [ addVisibleIf ],
+          or: undefined
         };
         updateSelectedVisibleIf(updatedVisibleIf);
       } else {
@@ -231,13 +237,36 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       : strings.draftEditorScreen.editor.visibility.fieldDefiningCondition;
     return (
       <Stack spacing={ 2 }>
-        <Typography
-          variant="subtitle1"
-          style={{ width: "100%" }}
-        >
-          { strings.draftEditorScreen.editor.visibility.visibilityCondition }
-        </Typography>
+        <Stack spacing={ 2 } direction="row">
+          <Typography
+            variant="subtitle1"
+            style={{ width: "100%" }}
+          >
+            { strings.draftEditorScreen.editor.visibility.visibilityCondition }
+          </Typography>
+          <Tooltip
+            open={ showTooltip }
+            title={
+              <Typography style={{ whiteSpace: "pre-line" }} variant="body1">
+                { strings.draftEditorScreen.editor.visibility.visibilityConditionTooltip }
+              </Typography>
+            }
+            placement="top-start"
+            arrow
+          >
+            <IconButton
+              onClick={ () => setShowTooltip(!showTooltip) }
+              sx={{
+                paddingTop: "0px",
+                whiteSpace: "pre-line"
+              }}
+            >
+              <HelpOutline/>
+            </IconButton>
+          </Tooltip>
+        </Stack>
         <TextField
+          fullWidth
           select
           disabled={ selectedVisibleIf === undefined }
           label={ labelText }
@@ -272,37 +301,94 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   };
 
   /**
+   * Render equal fields for visibleIf Or values
+   * 
+   * @param currentVisibleIfOr VisibleIf or value what render 
+   * @param orIndex index of rendered visibleIf or value
+   */
+  const renderEqualsForField = (currentVisibleIfOr: FieldRule, orIndex: number) => {
+    if (selectedVisibleIf!.field === currentVisibleIfOr.field) {
+      return (
+        <Stack spacing={ 1 } direction="row">
+          <TextField
+            select
+            fullWidth
+            label={ strings.draftEditorScreen.editor.visibility.or }
+            value={ currentVisibleIfOr.equals }
+            onChange={ event => updateVisibleIfOrValue("equals", event.target.value, orIndex) }
+          >
+            { pendingForm.sections!.flatMap(section => section.fields || [])!
+              .find(field => field.name === currentVisibleIfOr.field)
+              ?.options!.map(renderFieldConditionOption)
+            }
+            <MenuItem value="true" key="selectAllValuesTrueKey4">{ strings.draftEditorScreen.editor.visibility.allChoices }</MenuItem>
+          </TextField>
+          <IconButton
+            color="error"
+            value={ orIndex }
+            sx={{ alignContent: "center", padding: "0px" }}
+            onClick={ () => deleteVisibleOrCondition(orIndex) }
+          >
+            <DeleteIcon
+              color="error"
+            />
+          </IconButton>
+        </Stack>
+      );
+    }
+  };
+
+  /**
    * Renders visibility condition select menu
    */
   const renderConditionValueField = () => {
     if (!selectedVisibleIf?.field) {
       return null;
     }
-
     return (
-      <Stack spacing={ 2 }>
-        <TextField
-          select
-          label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
-          value={ selectedVisibleIf.equals }
-          onChange={ event => updateVisibleIfValue("equals", event.target.value) }
-        >
-          { pendingForm.sections!.flatMap(section => section.fields || [])!
-            .find(field => field.name === selectedVisibleIf.field)
-            ?.options!.map(renderFieldConditionOption)
-          }
-          <MenuItem value="true" key="allAndTrue">{ strings.draftEditorScreen.editor.visibility.allChoices }</MenuItem>
-        </TextField>
+      <>
+        <Stack spacing={ 1 } direction="row">
+          <TextField
+            select
+            fullWidth
+            label={ strings.draftEditorScreen.editor.visibility.conditionalFieldValue }
+            value={ selectedVisibleIf.equals }
+            onChange={ event => updateVisibleIfValue("equals", event.target.value) }
+          >
+            { pendingForm.sections!.flatMap(section => section.fields || [])!
+              .find(field => field.name === selectedVisibleIf.field)
+              ?.options!.map(renderFieldConditionOption)
+            }
+            <MenuItem value="true" key="allAndTrue">{ strings.draftEditorScreen.editor.visibility.allChoices }</MenuItem>
+          </TextField>
+          <IconButton
+            color="success"
+            sx={{ alignContent: "center", padding: "0px" }}
+            onClick={ () => addVisibleIfOrOption(selectedVisibleIf.field) }
+          >
+            <AddCircleIcon
+              color="success"
+            />
+          </IconButton>
+        </Stack>
         <Typography sx={{ color: "gray" }} hidden={ selectedVisibleIf.equals !== undefined }>
           { strings.draftEditorScreen.editor.visibility.conditionalFieldValueInfo }
         </Typography>
-      </Stack>
+        { selectedVisibleIf.or !== undefined ? selectedVisibleIf.or!.map((field, index) => {
+          return (
+            renderEqualsForField(field!, index)
+          );
+        }) : "" }
+        <Typography variant="subtitle1" style={{ width: "100%", textAlign: "center" }} hidden={ selectedVisibleIf!.and === undefined }>
+          { strings.draftEditorScreen.editor.visibility.andConditionChainTerms }
+        </Typography>
+        <Divider/>
+      </>
     );
   };
-
   /**
-   * Renders visibility switch component
-   */
+ * Renders visibility switch component
+ */
   const renderVisibilitySwitch = () => (
     <Stack spacing={ 2 }>
       <Typography variant="subtitle1" style={{ width: "100%" }}>
@@ -325,12 +411,12 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * 
    * @param field selected visible field and condition
    */
-  const renderConditionChain = (field: FieldRule[]) => {
+  const renderConditionChain = (field: FieldRule[], index?: number) => {
     if (field !== undefined) {
       return (
         field!.map(selectedField => {
           return (
-            <Stack spacing={ 2 } sx={{ display: showConditions ? "block" : "none" }}>
+            <Stack spacing={ 2 } sx={{ display: showVisibleIfProperties === index ? "block" : "none" }}>
               <Typography variant="subtitle1" style={{ width: "100%", textAlign: "center" }}>
                 <Navigation/>
               </Typography>
@@ -382,15 +468,18 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   /**
    * Render button for and conditions
    */
-  const renderShowAndConditionButton = () => {
+  const renderShowAndConditionButton = (index?: number) => {
     if (!selectedVisibleIf?.field || selectedVisibleIf.and === undefined || selectedVisibleIf.and![0] === null) {
       return null;
     }
     return (
       <>
-        { renderConditionChain(selectedVisibleIf.and) }
-        <Button onClick={ () => setShowAndConditions(!showConditions) }>
-          { showConditions ? strings.draftEditorScreen.editor.visibility.closeConditionChain : strings.draftEditorScreen.editor.visibility.showConditionChain }
+        { renderConditionChain(selectedVisibleIf.and, index) }
+        <Button onClick={ () => setShowVisibleIfProperties(showVisibleIfProperties === index ? null : index) }>
+          { showVisibleIfProperties === index ?
+            strings.draftEditorScreen.editor.visibility.closeConditionChain :
+            strings.draftEditorScreen.editor.visibility.showConditionChain
+          }
         </Button>
         <Divider/>
       </>
@@ -401,14 +490,11 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * Render button for adding visible or fields
    */
   const renderAddVisibleOrFieldButton = () => {
-    if (!selectedVisibleIf?.equals || !selectedVisibleIf?.field) {
+    if (!selectedVisibleIf?.equals || !selectedVisibleIf?.field || selectedVisibleIf.and) {
       return null;
     }
-    
     return (
-      <Button onClick={ () => addVisibleIfOrOption() }>
-        { strings.draftEditorScreen.editor.visibility.addVisibleOrButtonText }
-      </Button>
+      <Button onClick={ () => addVisibleIfOrOption() }>{ strings.draftEditorScreen.editor.visibility.addVisibleOrButtonText }</Button>
     );
   };
 
@@ -417,7 +503,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * 
    * @param selectedField field where we get visibleIf or condition
    * @param index index number of selected field visibleIf or condition
-   * 
    */
   const renderVisibleOrEqualField = (selectedField: FieldRule, index: number) => (
     <Stack spacing={ 2 }>
@@ -433,6 +518,10 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
         }
         <MenuItem value="true" key="selectAllValuesTrueKey2">{ strings.draftEditorScreen.editor.visibility.allChoices }</MenuItem>
       </TextField>
+      <Typography variant="subtitle1" style={{ width: "100%", textAlign: "center" }} hidden={ selectedVisibleIf!.and === undefined }>
+        { strings.draftEditorScreen.editor.visibility.andConditionChainTerms }
+      </Typography>
+      { renderShowAndConditionButton(index) }
       <Divider/>
     </Stack>
   );
@@ -441,41 +530,47 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * Render all visible or fields of selected field / section
    */
   const renderVisibleOrField = () => {
+    let visibilityConditionIndex = 1;
     if (selectedVisibleIf?.or !== undefined) {
       return (
         selectedVisibleIf.or!.map((selectedField, index) => {
-          return (
-            <Stack spacing={ 2 }>
-              <Stack spacing={ 2 } direction="row" flex={ 2 }>
-                <Typography variant="subtitle1" style={{ width: "100%" }}>
-                  { `${strings.draftEditorScreen.editor.visibility.visibilityCondition} ${index + 2}`}
-                </Typography>
-                <IconButton
-                  color="error"
-                  value={ index }
-                  sx={{ alignContent: "center", paddingTop: "0px" }}
-                  onClick={ () => deleteVisibleOrCondition(index) }
-                >
-                  <DeleteIcon
+          if (selectedVisibleIf.field !== selectedField.field) {
+            visibilityConditionIndex += 1;
+            return (
+              <Stack spacing={ 2 }>
+                <Stack spacing={ 2 } direction="row" flex={ 2 }>
+                  <Typography variant="subtitle1" style={{ width: "100%" }}>
+                    { strings.draftEditorScreen.editor.visibility.visibilityCondition }
+                    { visibilityConditionIndex }
+                  </Typography>
+                  <IconButton
                     color="error"
-                  />
-                </IconButton>
+                    value={ index }
+                    sx={{ alignContent: "center", paddingTop: "0px" }}
+                    onClick={ () => deleteVisibleOrCondition(index) }
+                  >
+                    <DeleteIcon
+                      color="error"
+                    />
+                  </IconButton>
+                </Stack>
+                <TextField
+                  select
+                  label={ strings.draftEditorScreen.editor.visibility.conditionLabelTitle }
+                  value={ selectedField.field }
+                  onChange={ (event => updateVisibleIfOrValue("field", event.target.value, index)) }
+                >
+                  { pendingForm.sections!.flatMap(section => section.fields || [])
+                    .filter(field => MetaformUtils.fieldTypesAllowVisibility.includes(field.type))
+                    .map(renderConditionFieldOption)
+                  }
+                  <MenuItem value="true" key="selectAllValuesTrueKey3">{ strings.draftEditorScreen.editor.visibility.allChoices }</MenuItem>
+                </TextField>
+                { renderVisibleOrEqualField(selectedField, index) }
               </Stack>
-              <TextField
-                select
-                label={ strings.draftEditorScreen.editor.visibility.conditionLabelTitle }
-                value={ selectedField.field }
-                onChange={ (event => updateVisibleIfOrValue("field", event.target.value, index)) }
-              >
-                { pendingForm.sections!.flatMap(section => section.fields || [])
-                  .filter(field => MetaformUtils.fieldTypesAllowVisibility.includes(field.type))
-                  .map(renderConditionFieldOption)
-                }
-                <MenuItem value="true" key="selectAllValueTrueKey3">{ strings.draftEditorScreen.editor.visibility.allChoices }</MenuItem>
-              </TextField>
-              { renderVisibleOrEqualField(selectedField, index) }
-            </Stack>
-          );
+            );
+          }
+          return null;
         }));
     }
   };

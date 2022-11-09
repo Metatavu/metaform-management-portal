@@ -351,10 +351,13 @@ export interface Localized extends LocalizedStringsMethods {
         fieldConditionLabel: string;
         sectionConditionLabel: string;
         tooltipDescription: string;
+        or: string;
         addVisibleOrButtonText: string;
         showConditionChain: string;
         closeConditionChain: string;
         allChoices: string;
+        andConditionChainTerms: string;
+        visibilityConditionTooltip: string;
       };
       memberGroups: {
         memberGroupDefineSettings: string;
