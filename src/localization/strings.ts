@@ -343,7 +343,6 @@ export interface Localized extends LocalizedStringsMethods {
         conditionLabelTitle: string;
         conditionally: string;
         conditionalFieldValue: string;
-        orConditionalFieldValue: string;
         conditionalFieldInfo: string;
         conditionalFieldValueInfo: string;
         fieldDefiningCondition: string;

@@ -307,7 +307,6 @@
         "visibilityCondition": "Näkyvyyden ehto ",
         "conditionally": "Ehdollisesti",
         "conditionalFieldValue": "Ehtokentän arvo",
-        "orConditionalFieldValue": "Tai ehtokentän arvo",
         "conditionalFieldInfo": "Valitse se lomakkeen kenttä, joka määrittää näkyvyyden.",
         "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
         "fieldDefiningCondition": "Ehdon määrittävä kenttä",

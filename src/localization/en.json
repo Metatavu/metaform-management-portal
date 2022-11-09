@@ -306,7 +306,6 @@
         "visibilityCondition": "Visibility condition",
         "conditionally": "Conditionally",
         "conditionalFieldValue": "Conditional field value",
-        "orConditionalFieldValue": "Or conditional field value",
         "conditionalFieldInfo": "Select the form field that determines visibility.",
         "conditionalFieldValueInfo":"Select or enter the field value that determines the visibility.",
         "fieldDefiningCondition": "Field defining the condition",
