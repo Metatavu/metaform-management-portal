@@ -1,20 +1,14 @@
 import { Stack, TextField } from "@mui/material";
-import { Metaform, MetaformField, MetaformFieldType } from "generated/client";
+import { MetaformField, MetaformFieldType } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
-import React, { FC } from "react";
-
+import React, { FC, useState } from "react";
+import { setMetaformField, selectMetaform } from "../../../features/metaform-slice";
+import { useAppSelector, useAppDispatch } from "app/hooks";
 /**
  * Component properties
  */
 interface Props {
-  selectedField?: MetaformField;
-  setSelectedField: (selectedField?: MetaformField) => void;
-  pendingForm: Metaform;
-  sectionIndex?: number;
-  fieldIndex?: number;
-  debounceTimerId?: NodeJS.Timeout,
-  setDebounceTimerId: (debounceTimerId: NodeJS.Timeout) => void;
   setUpdatedMetaformField: (updatedMetaformField: MetaformField) => void;
 }
 
@@ -22,15 +16,12 @@ interface Props {
  * Draft editor right drawer feature define member group component
  */
 const MetaformSliderComponent: FC<Props> = ({
-  selectedField,
-  setSelectedField,
-  pendingForm,
-  sectionIndex,
-  fieldIndex,
-  debounceTimerId,
-  setDebounceTimerId,
   setUpdatedMetaformField
 }) => {
+  const dispatch = useAppDispatch();
+  const { metaformSectionIndex, metaformFieldIndex, metaformField } = useAppSelector(selectMetaform);
+  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
+
   /**
    * Debounced update field
    *
@@ -38,7 +29,7 @@ const MetaformSliderComponent: FC<Props> = ({
    * @param optionIndex option index
    */
   const updateFormFieldDebounced = (field: MetaformField) => {
-    setSelectedField(field);
+    dispatch(setMetaformField(field));
     debounceTimerId && clearTimeout(debounceTimerId);
     setDebounceTimerId(setTimeout(() => setUpdatedMetaformField(field), 500));
   };
@@ -50,11 +41,11 @@ const MetaformSliderComponent: FC<Props> = ({
    * @param scopeValue Min or Max, depending which value we are changing
    */
   const updateSliderOrNumberValue = (eventValue: number, scopeValue: string) => {
-    if (!selectedField) {
+    if (!metaformField || metaformSectionIndex === undefined || metaformFieldIndex === undefined) {
       return;
     }
-    const field = pendingForm.sections![sectionIndex!].fields![fieldIndex!];
-    const updatedField = produce(selectedField, draftField => {
+    const field = metaformField;
+    const updatedField = produce(metaformField, draftField => {
       if (scopeValue === "min") {
         if (!eventValue && field.type === MetaformFieldType.Number) {
           draftField.min = undefined;
@@ -113,7 +104,7 @@ const MetaformSliderComponent: FC<Props> = ({
    */
   return (
     <>
-      { renderSliderProperties(selectedField) }
+      { renderSliderProperties(metaformField) }
     </>
   );
 };

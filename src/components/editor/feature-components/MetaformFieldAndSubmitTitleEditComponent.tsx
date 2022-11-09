@@ -1,44 +1,35 @@
 import { Stack, TextField, Typography } from "@mui/material";
 import { MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
 import strings from "localization/strings";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import slugify from "slugify";
 import LocalizationUtils from "utils/localization-utils";
-
+import { selectMetaform, setMetaformField } from "../../../features/metaform-slice";
+import { useAppDispatch, useAppSelector } from "app/hooks";
 /**
  * Component properties
  */
 interface Props {
-  selectedField?: MetaformField;
-  setSelectedField: (selectedField?: MetaformField) => void;
-  selectedSection?: MetaformSection;
-  debounceTimerId?: NodeJS.Timeout,
-  setDebounceTimerId: (debounceTimerId?: NodeJS.Timeout) => void;
   setUpdatedMetaformField: (updatedMetaformField?: MetaformField) => void;
-  sectionIndex?: number;
-  fieldIndex?: number;
 }
 
 /**
  * Draft editor right drawer feature define member group component
  */
 const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
-  selectedField,
-  setSelectedField,
-  selectedSection,
-  debounceTimerId,
-  setDebounceTimerId,
-  setUpdatedMetaformField,
-  sectionIndex,
-  fieldIndex
+  setUpdatedMetaformField
 }) => {
+  const { metaformField, metaformSectionIndex, metaformFieldIndex, metaformSection } = useAppSelector(selectMetaform);
+  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
+  const dispatch = useAppDispatch();
+
   /**
    * Debounced update field
    *
    * @param field edited field
    */
   const updateFormFieldDebounced = (field: MetaformField) => {
-    setSelectedField(field);
+    dispatch(setMetaformField(field));
     debounceTimerId && clearTimeout(debounceTimerId);
     setDebounceTimerId(setTimeout(() => setUpdatedMetaformField(field), 500));
   };
@@ -63,7 +54,7 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
             onChange={ event => updateFormFieldDebounced({
               ...field,
               title: event.target.value,
-              name: slugify(`${section.title}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
+              name: slugify(`${section.title}-${event.target.value}-${metaformSectionIndex}-${metaformFieldIndex}`)
             })
             }
           />
@@ -95,7 +86,7 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
             onChange={ event => updateFormFieldDebounced({
               ...field,
               text: event.target.value,
-              name: slugify(`${section.title}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
+              name: slugify(`${section.title}-${event.target.value}-${metaformSectionIndex}-${metaformFieldIndex}`)
             })
             }
           />
@@ -103,14 +94,15 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
       );
     }
   };
+
   /**
    * Component render
    */
   return (
     <Stack>
-      { selectedField!.type === MetaformFieldType.Submit ?
-        renderSubmitTitleEdit(selectedSection, selectedField) :
-        renderFieldTitleEdit(selectedSection, selectedField)
+      { metaformField!.type === MetaformFieldType.Submit ?
+        renderSubmitTitleEdit(metaformSection, metaformField) :
+        renderFieldTitleEdit(metaformSection, metaformField)
       }
     </Stack>
   );

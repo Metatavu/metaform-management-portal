@@ -8,20 +8,12 @@ import slugify from "slugify";
 import theme from "theme";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MetaformUtils from "utils/metaform-utils";
-
+import { selectMetaform, setMetaformField } from "../../../features/metaform-slice";
+import { useAppSelector, useAppDispatch } from "app/hooks";
 /**
  * Component properties
  */
 interface Props {
-  selectedField?: MetaformField;
-  setSelectedField: (selectedField?: MetaformField) => void;
-  debounceTimerId?: NodeJS.Timeout,
-  setDebounceTimerId: (debounceTimerId: NodeJS.Timeout) => void;
-  memberGroupOptIndex?: number;
-  setMemberGroupOptIndex: (memberGroupOptIndex?: number) => void;
-  sectionIndex?: number;
-  fieldIndex?: number;
-  pendingForm: Metaform;
   setPendingForm: (metaform: Metaform) => void;
   setUpdatedMetaformField: (updatedMetaformField: MetaformField) => void;
 }
@@ -30,21 +22,16 @@ interface Props {
  * Draft editor right drawer feature define member group component
  */
 const MetaformMultiChoiceFieldComponent: FC<Props> = ({
-  selectedField,
-  setSelectedField,
-  debounceTimerId,
-  setDebounceTimerId,
-  memberGroupOptIndex,
-  setMemberGroupOptIndex,
-  sectionIndex,
-  fieldIndex,
-  pendingForm,
   setPendingForm,
   setUpdatedMetaformField
 }) => {
   const [ multiSelectRawTextMode, setMultiSelectRawTextMode ] = useState<boolean>(false);
   const [ multiSelectRawText, setMultiSelectRawText ] = useState<string>("");
-
+  const [ memberGroupOptIndex, setMemberGroupOptIndex ] = useState<number>();
+  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
+  const { metaformSectionIndex, metaformFieldIndex, metaformVersion, metaformField } = useAppSelector(selectMetaform);
+  const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
+  const dispatch = useAppDispatch();
   /**
    * Updates field with visibility
    *
@@ -52,17 +39,17 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
    * @param optionIndex option index
    */
   const updateFormField = (field: MetaformField, optionIndex?: number) => {
-    if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
+    if (!metaformField || metaformSectionIndex === undefined || metaformFieldIndex === undefined) {
       return;
     }
 
     const updatedForm = produce(pendingForm, draftForm => {
       if (MetaformUtils.fieldTypesAllowVisibility.includes(field.type)) {
-        if ((selectedField.name !== undefined && field.name !== selectedField.name) || optionIndex !== undefined) {
+        if ((metaformField.name !== undefined && field.name !== metaformField.name) || optionIndex !== undefined) {
           const fieldOptionMatch = optionIndex !== undefined ?
-            pendingForm.sections![sectionIndex].fields![fieldIndex].options![optionIndex] :
+            pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex].options![optionIndex] :
             undefined;
-          const fieldNameMatch = pendingForm.sections![sectionIndex].fields![fieldIndex].name || "";
+          const fieldNameMatch = pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex].name || "";
 
           const fieldRules: FieldRule[] = [];
 
@@ -78,7 +65,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
           });
 
           fieldRules.forEach(rule => {
-            if ((selectedField.name !== undefined && field.name !== selectedField.name)) {
+            if ((metaformField.name !== undefined && field.name !== metaformField.name)) {
               rule.field = field.name;
             // option update
             } else if (optionIndex !== undefined) {
@@ -93,7 +80,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
         }
       }
 
-      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, field);
+      draftForm.sections?.[metaformSectionIndex]?.fields?.splice(metaformFieldIndex, 1, field);
     });
 
     setPendingForm(updatedForm);
@@ -106,7 +93,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
    * @param optionIndex option index
    */
   const updateFormFieldDebounced = (field: MetaformField, optionIndex?: number) => {
-    setSelectedField(field);
+    dispatch(setMetaformField(field));
 
     debounceTimerId && clearTimeout(debounceTimerId);
     setDebounceTimerId(setTimeout(() => updateFormField(field, optionIndex), 500));
@@ -119,11 +106,11 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
    * @param optionIndex option index value
    */
   const updateOptionText = (updateTextOption: MetaformFieldOption, optionIndex: number) => {
-    if (!selectedField) {
+    if (!metaformField) {
       return;
     }
 
-    const updatedField: MetaformField = produce(selectedField, draftField => {
+    const updatedField: MetaformField = produce(metaformField, draftField => {
       draftField?.options?.splice(optionIndex, 1, updateTextOption);
     });
 
@@ -137,15 +124,19 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
    */
   const deleteFieldOptions = (optionIndex: number) => {
     setMemberGroupOptIndex(undefined);
-    if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
+    if (!metaformField || metaformSectionIndex === undefined || metaformFieldIndex === undefined) {
       return;
     }
-    const optionMatch = pendingForm.sections?.[sectionIndex].fields?.[fieldIndex].options?.[optionIndex];
-    const fieldNameMatch = selectedField.name;
+    const optionMatch = pendingForm.sections?.[metaformSectionIndex].fields?.[metaformFieldIndex].options?.[optionIndex];
+    const fieldNameMatch = metaformField.name;
 
     if (!optionMatch || !fieldNameMatch) {
       return;
     }
+    const updatedField: MetaformField = produce(metaformField, draftField => {
+      draftField?.options?.splice(optionIndex, 1);
+    });
+    updateFormFieldDebounced(updatedField);
 
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.forEach(draftSection => {
@@ -164,9 +155,8 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
         });
       });
 
-      draftForm.sections?.[sectionIndex]?.fields?.[fieldIndex]?.options?.splice(optionIndex, 1);
+      draftForm.sections?.[metaformSectionIndex]?.fields?.[metaformFieldIndex]?.options?.splice(optionIndex, 1);
     });
-
     setPendingForm(updatedForm);
   };
 
@@ -209,7 +199,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
    * Add new Radio / Checklist / Select field option
    */
   const addNewFieldOption = () => {
-    if (!selectedField) {
+    if (!metaformField) {
       return;
     }
 
@@ -219,7 +209,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
       permissionGroups: undefined
     };
 
-    const updatedField: MetaformField = produce(selectedField, draftField => {
+    const updatedField: MetaformField = produce(metaformField, draftField => {
       draftField.options = [ ...(draftField.options || []), newOption ];
     });
 
@@ -233,12 +223,12 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
    * @param checked checked
    */
   const handleMultiSelectOptionEditMode = (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    if (!selectedField) {
+    if (!metaformField) {
       return;
     }
 
-    if (selectedField.options?.length) {
-      const existingOptions = selectedField.options.map(option => option.text);
+    if (metaformField.options?.length) {
+      const existingOptions = metaformField.options.map(option => option.text);
       setMultiSelectRawText(existingOptions.join("\n"));
     }
 
@@ -249,10 +239,10 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
    * Handles converting text input into multi-select options
    */
   const onMultiSelectTextModeUpdate = () => {
-    if (!selectedField || !multiSelectRawText) {
+    if (!metaformField || !multiSelectRawText) {
       return;
     }
-    const updatedField = produce(selectedField, draftField => {
+    const updatedField = produce(metaformField, draftField => {
       const rawOptions = multiSelectRawText.split("\n");
 
       draftField.options?.splice(0, draftField.options?.length, ...rawOptions.map((parsedValue: string, index: number) => {
@@ -352,7 +342,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
    */
   return (
     <>
-      { renderMultiChoiceFieldProperties(selectedField) }
+      { renderMultiChoiceFieldProperties(metaformField) }
     </>
   );
 };

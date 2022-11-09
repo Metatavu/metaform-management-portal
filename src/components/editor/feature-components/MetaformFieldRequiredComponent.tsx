@@ -1,35 +1,33 @@
 import { Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
 import { MetaformField } from "generated/client";
 import strings from "localization/strings";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
+import { selectMetaform, setMetaformField } from "../../../features/metaform-slice";
+import { useAppSelector, useAppDispatch } from "app/hooks";
 
 /**
  * Component properties
  */
 interface Props {
-  selectedField?: MetaformField;
-  setSelectedField: (selectedField?: MetaformField) => void;
-  debounceTimerId?: NodeJS.Timeout,
-  setDebounceTimerId: (debounceTimerId?: NodeJS.Timeout) => void;
   setUpdatedMetaformField: (updatedMetaformField?: MetaformField) => void;
 }
 /**
  * Draft editor right drawer feature define member group component
  */
 const MetaformFieldRequiredComponent: FC<Props> = ({
-  selectedField,
-  setSelectedField,
-  debounceTimerId,
-  setDebounceTimerId,
   setUpdatedMetaformField
 }) => {
+  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
+  const { metaformField } = useAppSelector(selectMetaform);
+  const dispatch = useAppDispatch();
+
   /**
    * Debounced update field
    *
    * @param field edited field
    */
   const updateFormFieldDebounced = (field: MetaformField) => {
-    setSelectedField(field);
+    dispatch(setMetaformField(field));
     debounceTimerId && clearTimeout(debounceTimerId);
     setDebounceTimerId(setTimeout(() => setUpdatedMetaformField(field), 500));
   };
@@ -39,32 +37,36 @@ const MetaformFieldRequiredComponent: FC<Props> = ({
    *
    * @param field field
    */
-  const renderFieldRequiredEdit = (field?: MetaformField) => (
-    <Stack spacing={ 2 }>
-      <Typography variant="subtitle1" style={{ width: "100%" }}>
-        { strings.draftEditorScreen.editor.features.field.required }
-      </Typography>
-      <FormControlLabel
-        label={ strings.generic.yes }
-        control={
-          <Checkbox
-            checked={ field!.required }
-            onChange={ event => updateFormFieldDebounced({
-              ...field!,
-              required: event.target.checked
-            }) }
+  const renderFieldRequiredEdit = (field?: MetaformField) => {
+    if (field) {
+      return (
+        <Stack spacing={ 2 }>
+          <Typography variant="subtitle1" style={{ width: "100%" }}>
+            { strings.draftEditorScreen.editor.features.field.required }
+          </Typography>
+          <FormControlLabel
+            label={ strings.generic.yes }
+            control={
+              <Checkbox
+                checked={ field!.required }
+                onChange={ event => updateFormFieldDebounced({
+                  ...field!,
+                  required: event.target.checked
+                }) }
+              />
+            }
           />
-        }
-      />
-    </Stack>
-  );
+        </Stack>
+      );
+    }
+  };
 
   /**
    * Component render
    */
   return (
     <>
-      { renderFieldRequiredEdit(selectedField) }
+      { renderFieldRequiredEdit(metaformField) }
     </>
   );
 };

@@ -1,16 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "app/store";
-import { MetaformVersion } from "generated/client";
+import { MetaformVersion, MetaformSection, MetaformField } from "generated/client";
 
 interface MetaformState {
   metaformVersion?: MetaformVersion;
+  metaformSection?: MetaformSection;
+  metaformField?: MetaformField;
+  metaformSectionIndex?: number;
+  metaformFieldIndex?: number;
 }
 
 /**
  * Initial metaform state
  */
 const initialState: MetaformState = {
-  metaformVersion: undefined
+  metaformVersion: undefined,
+  metaformSection: undefined,
+  metaformField: undefined,
+  metaformSectionIndex: undefined,
+  metaformFieldIndex: undefined
 };
 
 /**
@@ -22,6 +30,18 @@ export const metaformSlice = createSlice({
   reducers: {
     setMetaformVersion: (state, { payload }: PayloadAction<MetaformVersion | undefined>) => {
       state.metaformVersion = payload;
+    },
+    setMetaformSection: (state, { payload }: PayloadAction<MetaformSection>) => {
+      state.metaformSection = payload;
+    },
+    setMetaformField: (state, { payload }: PayloadAction<MetaformField>) => {
+      state.metaformField = payload;
+    },
+    setMetaformSectionIndex: (state, { payload }: PayloadAction<number | undefined>) => {
+      state.metaformSectionIndex = payload;
+    },
+    setMetaformFieldIndex: (state, { payload }: PayloadAction<number | undefined>) => {
+      state.metaformFieldIndex = payload;
     }
   }
 });
@@ -29,7 +49,7 @@ export const metaformSlice = createSlice({
 /**
  * Metaform actions from created metaform slice
  */
-export const { setMetaformVersion } = metaformSlice.actions;
+export const { setMetaformVersion, setMetaformSection, setMetaformField, setMetaformFieldIndex, setMetaformSectionIndex } = metaformSlice.actions;
 
 /**
  * Select metaform selector

@@ -5,15 +5,12 @@ import strings from "localization/strings";
 import React, { FC, useState } from "react";
 import slugify from "slugify";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import { setMetaformField, selectMetaform } from "../../../features/metaform-slice";
+import { useAppSelector, useAppDispatch } from "app/hooks";
 /**
  * Component properties
  */
 interface Props {
-  selectedField?: MetaformField;
-  setSelectedField: (selectedField?: MetaformField) => void;
-  debounceTimerId?: NodeJS.Timeout,
-  setDebounceTimerId: (debounceTimerId: NodeJS.Timeout) => void;
   setUpdatedMetaformField: (updatedMetaformField: MetaformField) => void;
 }
 
@@ -21,21 +18,19 @@ interface Props {
  * Draft editor right drawer feature define member group component
  */
 const MetaformTableComponent: FC<Props> = ({
-  selectedField,
-  setSelectedField,
-  debounceTimerId,
-  setDebounceTimerId,
   setUpdatedMetaformField
 }) => {
   const [ newColumnType, setNewColumnType ] = useState<MetaformTableColumnType>();
-
+  const { metaformField } = useAppSelector(selectMetaform);
+  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
+  const dispatch = useAppDispatch();
   /**
    * Debounced update field
    *
    * @param field edited field
    */
   const updateFormFieldDebounced = (field: MetaformField) => {
-    setSelectedField(field);
+    dispatch(setMetaformField(field));
 
     debounceTimerId && clearTimeout(debounceTimerId);
     setDebounceTimerId(setTimeout(() => setUpdatedMetaformField(field), 500));
@@ -48,11 +43,11 @@ const MetaformTableComponent: FC<Props> = ({
    * @param columnIndex index value of current column title
    */
   const updateTableColumn = (tableColumn: MetaformTableColumn, columnIndex: number) => {
-    if (!selectedField) {
+    if (!metaformField) {
       return;
     }
 
-    const updatedField = produce(selectedField, draftField => {
+    const updatedField = produce(metaformField, draftField => {
       draftField.columns?.splice(columnIndex, 1, tableColumn);
     });
 
@@ -65,11 +60,11 @@ const MetaformTableComponent: FC<Props> = ({
    * @param columnIndex index value of current column we are deleting
    */
   const deleteColumn = (columnIndex: number) => {
-    if (!selectedField) {
+    if (!metaformField) {
       return;
     }
 
-    const updatedField = produce(selectedField, draftField => {
+    const updatedField = produce(metaformField, draftField => {
       draftField.columns?.splice(columnIndex, 1);
     });
 
@@ -113,11 +108,11 @@ const MetaformTableComponent: FC<Props> = ({
    * Add new column in table
    */
   const addNewColumn = () => {
-    if (!selectedField) {
+    if (!metaformField) {
       return;
     }
 
-    const columnsAmount = selectedField.columns?.length || 0;
+    const columnsAmount = metaformField.columns?.length || 0;
 
     const newColumn: MetaformTableColumn = {
       type: newColumnType!,
@@ -125,7 +120,7 @@ const MetaformTableComponent: FC<Props> = ({
       title: columnsAmount.toString()
     };
 
-    const updatedField = produce(selectedField, draftField => {
+    const updatedField = produce(metaformField, draftField => {
       draftField.columns = [ ...(draftField.columns || []), newColumn ];
     });
 
@@ -170,10 +165,11 @@ const MetaformTableComponent: FC<Props> = ({
    * @param field field
    */
   const renderTableProperties = (field?: MetaformField) => {
-    if (field) {
+    const field2 = field;
+    if (field2) {
       return (
         <Stack spacing={ 2 }>
-          { field.columns?.map(renderTableColumnEdit) }
+          { field2.columns?.map(renderTableColumnEdit) }
           { renderTableNewColumn() }
         </Stack>
       );
@@ -185,7 +181,7 @@ const MetaformTableComponent: FC<Props> = ({
    */
   return (
     <>
-      { renderTableProperties(selectedField) }
+      { renderTableProperties(metaformField) }
     </>
   );
 };

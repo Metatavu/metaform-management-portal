@@ -7,6 +7,8 @@ import moment from "moment";
 import { FormContext } from "../types/index";
 import Holidays from "date-holidays";
 import { CREATED_FIELD_NAME, MODIFIED_FIELD_NAME, STATUS_FIELD_NAME } from "consts";
+import LocalizationUtils from "./localization-utils";
+import { uuid4 } from "@sentry/utils";
 
 const holiday = new Holidays("FI");
 
@@ -134,7 +136,8 @@ namespace MetaformUtils {
 
   /**
    * Create empty field for given field type
-   *
+   * Name is given random name to avoid duplicated names
+   * 
    * @param fieldType metaform field type
    * @param title title
    * @param name name
@@ -148,8 +151,8 @@ namespace MetaformUtils {
       case MetaformFieldType.Radio:
       case MetaformFieldType.Checklist:
         return {
-          name: name ?? fieldType,
-          title: title ?? fieldType,
+          name: name ?? fieldType + uuid4(),
+          title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           type: fieldType,
           required: required ?? false,
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ],
@@ -168,7 +171,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Boolean:
         return {
-          name: name ?? fieldType,
+          name: name ?? fieldType + uuid4(),
           title: title ?? fieldType,
           type: fieldType,
           required: required ?? false,
@@ -177,7 +180,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Slider:
         return {
-          name: name ?? fieldType,
+          name: name ?? fieldType + uuid4(),
           title: title ?? fieldType,
           type: fieldType,
           required: required ?? false,
@@ -187,7 +190,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Table:
         return {
-          name: name ?? fieldType,
+          name: name ?? fieldType + uuid4(),
           title: title ?? fieldType,
           text: fieldType,
           type: fieldType,
@@ -211,7 +214,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Html:
         return {
-          name: name ?? fieldType,
+          name: name ?? fieldType + uuid4(),
           title: title ?? fieldType,
           required: required ?? false,
           type: fieldType,
@@ -219,7 +222,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Number:
         return {
-          name: name ?? fieldType,
+          name: name ?? fieldType + uuid4(),
           title: title ?? fieldType,
           required: required ?? false,
           text: fieldType,
@@ -230,7 +233,7 @@ namespace MetaformUtils {
         };
       default:
         return {
-          name: name ?? fieldType,
+          name: name ?? fieldType + uuid4(),
           title: title ?? fieldType,
           required: required ?? false,
           text: fieldType,

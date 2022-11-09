@@ -2,38 +2,36 @@ import { Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
 import { MetaformField } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { FormContext } from "types";
 import LocalizationUtils from "utils/localization-utils";
+import { selectMetaform, setMetaformField } from "../../../features/metaform-slice";
+import { useAppSelector, useAppDispatch } from "app/hooks";
 
 /**
  * Component properties
  */
 interface Props {
   setUpdatedMetaformField: (updatedMetaformField: MetaformField) => void;
-  selectedField?: MetaformField;
-  setSelectedField: (selectedField?: MetaformField) => void;
-  debounceTimerId?: NodeJS.Timeout,
-  setDebounceTimerId: (debounceTimerId: NodeJS.Timeout) => void;
 }
 
 /**
  * Draft editor right drawer feature define member group component
  */
 const MetaformContextOptionsComponent: FC<Props> = ({
-  setUpdatedMetaformField,
-  selectedField,
-  setSelectedField,
-  debounceTimerId,
-  setDebounceTimerId
+  setUpdatedMetaformField
 }) => {
+  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
+  const { metaformField } = useAppSelector(selectMetaform);
+  const dispatch = useAppDispatch();
+
   /**
    * Debounced update field
    *
    * @param field edited field
    */
   const updateFormFieldDebounced = (field: MetaformField) => {
-    setSelectedField(field);
+    dispatch(setMetaformField(field));
     debounceTimerId && clearTimeout(debounceTimerId);
     setDebounceTimerId(setTimeout(() => setUpdatedMetaformField(field), 500));
   };
@@ -45,11 +43,11 @@ const MetaformContextOptionsComponent: FC<Props> = ({
    * @param checked Is context option checked or not
    */
   const updateContexts = (selectedContext: FormContext, checked: boolean) => {
-    if (!selectedField) {
+    if (!metaformField) {
       return;
     }
 
-    const updatedField = produce(selectedField, draftField => {
+    const updatedField = produce(metaformField, draftField => {
       let updatedContexts: string[] = [ ...(draftField.contexts || []) ];
       if (checked) {
         updatedContexts.push(selectedContext);
@@ -109,7 +107,7 @@ const MetaformContextOptionsComponent: FC<Props> = ({
    */
   return (
     <>
-      { renderContextOptions(selectedField) }
+      { renderContextOptions(metaformField) }
     </>
   );
 };

@@ -12,6 +12,8 @@ import MetaformMultiChoiceFieldPropertiesComponent from "./feature-components/Me
 import MetaformContextOptionsComponent from "./feature-components/MetaformContextOptionsComponent";
 import MetaformFieldAndSubmitEditTitleComponent from "./feature-components/MetaformFieldAndSubmitTitleEditComponent";
 import MetaformFieldRequiredComponent from "./feature-components/MetaformFieldRequiredComponent";
+import { selectMetaform, setMetaformField, setMetaformFieldIndex, setMetaformSectionIndex, setMetaformSection } from "../../features/metaform-slice";
+import { useAppSelector, useAppDispatch } from "app/hooks";
 
 /**
  * Component properties
@@ -34,23 +36,28 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
   pendingForm,
   setPendingForm
 }) => {
-  const [ selectedSection, setSelectedSection ] = useState<MetaformSection>();
-  const [ selectedField, setSelectedField ] = useState<MetaformField>();
-  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
-  const [ memberGroupOptIndex, setMemberGroupOptIndex ] = useState<number>();
   const [ updatedMetaformField, setUpdatedMetaformField ] = useState<MetaformField>();
+  const { metaformField, metaformFieldIndex, metaformSectionIndex, metaformSection } = useAppSelector(selectMetaform);
+  const dispatch = useAppDispatch();
 
   /**
-   * Updates selected section and field states
+   * Load data from redux
    */
-  const updateSelected = () => {
-    setSelectedField(MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex));
-    setSelectedSection(MetaformUtils.getMetaformSection(pendingForm, sectionIndex));
-    setDebounceTimerId(undefined);
+  const loadData = async () => {
+    if (sectionIndex !== undefined && sectionIndex !== metaformSectionIndex) {
+      dispatch(setMetaformSection(MetaformUtils.getMetaformSection(pendingForm, sectionIndex)!));
+    }
+    if (fieldIndex !== undefined && fieldIndex !== metaformFieldIndex) {
+      dispatch(setMetaformField(MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex)!));
+    }
+    if (sectionIndex !== metaformSectionIndex || fieldIndex !== metaformFieldIndex) {
+      dispatch(setMetaformSectionIndex(sectionIndex));
+      dispatch(setMetaformFieldIndex(fieldIndex));
+    }
   };
 
   useEffect(() => {
-    updateSelected();
+    loadData();
   }, [ sectionIndex, fieldIndex, pendingForm ]);
 
   /**
@@ -60,14 +67,14 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * @param optionIndex option index
    */
   const updateFormField = (field: MetaformField, optionIndex?: number) => {
-    console.log(pendingForm);
-    if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
+    if (!metaformField || sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
 
     const updatedForm = produce(pendingForm, draftForm => {
       if (MetaformUtils.fieldTypesAllowVisibility.includes(field.type)) {
-        if ((selectedField.name !== undefined && field.name !== selectedField.name) || optionIndex !== undefined) {
+        const checkedName = pendingForm.sections![metaformSectionIndex!].fields![metaformFieldIndex!];
+        if ((checkedName!.name !== undefined && field.name !== checkedName!.name) || optionIndex !== undefined) {
           const fieldOptionMatch = optionIndex !== undefined ?
             pendingForm.sections![sectionIndex].fields![fieldIndex].options![optionIndex] :
             undefined;
@@ -87,7 +94,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
           });
 
           fieldRules.forEach(rule => {
-            if ((selectedField.name !== undefined && field.name !== selectedField.name)) {
+            if ((checkedName!.name !== undefined && field.name !== checkedName!.name)) {
               rule.field = field.name;
             // option update
             } else if (optionIndex !== undefined) {
@@ -119,13 +126,13 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
    *
    * @param metaformSection metaform section what we are editing
    */
-  const updateFormSection = (metaformSection: MetaformSection) => {
+  const updateFormSection = (selectedMetaformSection: MetaformSection) => {
     if (sectionIndex === undefined) {
       return;
     }
 
     const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.splice(sectionIndex, 1, metaformSection);
+      draftForm.sections?.splice(sectionIndex, 1, selectedMetaformSection);
     });
 
     setPendingForm(updatedForm);
@@ -145,13 +152,6 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         return (
           <>
             <MetaformSliderComponent
-              selectedField={ selectedField }
-              setSelectedField={ setSelectedField }
-              pendingForm={pendingForm}
-              sectionIndex={sectionIndex}
-              fieldIndex={fieldIndex}
-              debounceTimerId={ debounceTimerId }
-              setDebounceTimerId={ setDebounceTimerId }
               setUpdatedMetaformField={ setUpdatedMetaformField }
             />
             <Divider/>
@@ -163,31 +163,13 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         return (
           <>
             <MetaformMultiChoiceFieldPropertiesComponent
-              selectedField={selectedField}
-              setSelectedField={ setSelectedField }
-              debounceTimerId={ debounceTimerId }
-              setDebounceTimerId={ setDebounceTimerId }
-              memberGroupOptIndex={ memberGroupOptIndex }
-              setMemberGroupOptIndex={ setMemberGroupOptIndex }
-              sectionIndex={ sectionIndex }
-              fieldIndex={ fieldIndex }
-              pendingForm={ pendingForm }
               setPendingForm={ setPendingForm }
               setUpdatedMetaformField={ setUpdatedMetaformField }
             />
             <Divider/>
             <MetaformDefineMemberGroupComponent
-              selectedField={selectedField}
-              setSelectedField={ setSelectedField }
-              memberGroupOptIndex={ memberGroupOptIndex }
-              setMemberGroupOptIndex={ setMemberGroupOptIndex }
               memberGroups={ memberGroups }
-              debounceTimerId={ debounceTimerId }
-              setDebounceTimerId={ setDebounceTimerId }
               setUpdatedMetaformField={ setUpdatedMetaformField }
-              sectionIndex={ sectionIndex }
-              fieldIndex={ fieldIndex }
-              pendingForm={ pendingForm }
             />
             <Divider/>
           </>
@@ -196,10 +178,6 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         return (
           <>
             <MetaformTableComponent
-              selectedField={ selectedField }
-              setSelectedField={ setSelectedField }
-              debounceTimerId={ debounceTimerId }
-              setDebounceTimerId={ setDebounceTimerId }
               setUpdatedMetaformField={ setUpdatedMetaformField }
             />
             <Divider/>
@@ -210,10 +188,6 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         return (
           <>
             <MetaformDateTimeComponent
-              selectedField={ selectedField }
-              setSelectedField={ setSelectedField }
-              debounceTimerId={ debounceTimerId }
-              setDebounceTimerId={ setDebounceTimerId }
               setUpdatedMetaformField={ setUpdatedMetaformField }
             />
             <Divider/>
@@ -254,30 +228,15 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const renderFieldEditor = (field: MetaformField) => (
     <>
       <MetaformFieldAndSubmitEditTitleComponent
-        selectedField={ selectedField }
-        setSelectedField={ setSelectedField }
-        selectedSection={ selectedSection }
-        debounceTimerId={ debounceTimerId }
-        setDebounceTimerId={ setDebounceTimerId }
         setUpdatedMetaformField={ setUpdatedMetaformField }
-        sectionIndex={ sectionIndex }
-        fieldIndex={ fieldIndex }
       />
       <Divider/>
       { renderFieldProperties(field) }
       <MetaformContextOptionsComponent
         setUpdatedMetaformField={ setUpdatedMetaformField }
-        selectedField={ selectedField }
-        setSelectedField={ setSelectedField }
-        debounceTimerId={ debounceTimerId }
-        setDebounceTimerId={ setDebounceTimerId }
       />
       <Divider/>
       <MetaformFieldRequiredComponent
-        selectedField={ selectedField }
-        setSelectedField={ setSelectedField }
-        debounceTimerId={ debounceTimerId }
-        setDebounceTimerId={ setDebounceTimerId }
         setUpdatedMetaformField={ setUpdatedMetaformField }
       />
       <Divider/>
@@ -295,12 +254,12 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Renders feature editor
    */
   const renderFeatureEditor = () => {
-    if (selectedField !== undefined && selectedSection !== undefined) {
-      return renderFieldEditor(selectedField);
+    if (metaformField !== undefined && metaformSection !== undefined) {
+      return renderFieldEditor(metaformField);
     }
 
-    if (selectedSection !== undefined) {
-      return renderSectionEditor(selectedSection);
+    if (metaformSection !== undefined) {
+      return renderSectionEditor(metaformSection);
     }
 
     return renderEmptySelection();
