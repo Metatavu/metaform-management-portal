@@ -172,7 +172,7 @@ namespace MetaformUtils {
       case MetaformFieldType.Boolean:
         return {
           name: name ?? fieldType + uuid4(),
-          title: title ?? fieldType,
+          title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           type: fieldType,
           required: required ?? false,
           checked: false,
@@ -181,7 +181,7 @@ namespace MetaformUtils {
       case MetaformFieldType.Slider:
         return {
           name: name ?? fieldType + uuid4(),
-          title: title ?? fieldType,
+          title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           type: fieldType,
           required: required ?? false,
           min: 50,
@@ -191,7 +191,7 @@ namespace MetaformUtils {
       case MetaformFieldType.Table:
         return {
           name: name ?? fieldType + uuid4(),
-          title: title ?? fieldType,
+          title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           text: fieldType,
           type: fieldType,
           required: required ?? false,
@@ -215,7 +215,7 @@ namespace MetaformUtils {
       case MetaformFieldType.Html:
         return {
           name: name ?? fieldType + uuid4(),
-          title: title ?? fieldType,
+          title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           required: required ?? false,
           type: fieldType,
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
@@ -223,7 +223,7 @@ namespace MetaformUtils {
       case MetaformFieldType.Number:
         return {
           name: name ?? fieldType + uuid4(),
-          title: title ?? fieldType,
+          title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           required: required ?? false,
           text: fieldType,
           min: undefined,
@@ -234,7 +234,7 @@ namespace MetaformUtils {
       default:
         return {
           name: name ?? fieldType + uuid4(),
-          title: title ?? fieldType,
+          title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           required: required ?? false,
           text: fieldType,
           type: fieldType,
