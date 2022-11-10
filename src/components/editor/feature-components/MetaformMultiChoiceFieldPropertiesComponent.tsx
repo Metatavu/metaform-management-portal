@@ -64,7 +64,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
    * @param optionIndex option index
    */
   const updateFormField = (field: MetaformField, optionIndex?: number) => {
-    if (!metaformField || metaformSectionIndex === undefined || metaformFieldIndex === undefined) {
+    if (!metaformField) {
       return;
     }
 
@@ -72,9 +72,9 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
       if (MetaformUtils.fieldTypesAllowVisibility.includes(field.type)) {
         if ((metaformField.name !== undefined && field.name !== metaformField.name) || optionIndex !== undefined) {
           const fieldOptionMatch = optionIndex !== undefined ?
-            pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex].options![optionIndex] :
+            pendingForm.sections![metaformSectionIndex!].fields![metaformFieldIndex!].options![optionIndex] :
             undefined;
-          const fieldNameMatch = pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex].name || "";
+          const fieldNameMatch = pendingForm.sections![metaformSectionIndex!].fields![metaformFieldIndex!].name || "";
 
           const fieldRules: FieldRule[] = [];
 
@@ -92,7 +92,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
         }
       }
 
-      draftForm.sections?.[metaformSectionIndex]?.fields?.splice(metaformFieldIndex, 1, field);
+      draftForm.sections?.[metaformSectionIndex!]?.fields?.splice(metaformFieldIndex!, 1, field);
     });
 
     setPendingForm(updatedForm);
