@@ -48,9 +48,9 @@ const MetaformFieldRequiredComponent: FC<Props> = ({
             label={ strings.generic.yes }
             control={
               <Checkbox
-                checked={ field!.required }
+                checked={ field.required }
                 onChange={ event => updateFormFieldDebounced({
-                  ...field!,
+                  ...field,
                   required: event.target.checked
                 }) }
               />

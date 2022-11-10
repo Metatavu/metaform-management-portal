@@ -32,6 +32,31 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
   const { metaformSectionIndex, metaformFieldIndex, metaformVersion, metaformField } = useAppSelector(selectMetaform);
   const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
   const dispatch = useAppDispatch();
+
+  /**
+   * 
+   * @param fieldRules field rules
+   * @param field metaform field
+   * @param optionIndex option index
+   * @param fieldOptionMatch field option match
+   */
+  const checkFieldRules = (fieldRules: FieldRule[], field: MetaformField, optionIndex?: number, fieldOptionMatch?: MetaformFieldOption) => {
+    fieldRules.forEach(rule => {
+      if ((metaformField!.name !== undefined && field.name !== metaformField!.name)) {
+        rule.field = field.name;
+      // option update
+      } else if (optionIndex !== undefined) {
+        const fieldOptionToUpdate = field.options![optionIndex];
+        if (rule.equals === fieldOptionMatch!.name) {
+          rule.equals = fieldOptionToUpdate.name;
+        } else if (rule.notEquals === fieldOptionMatch!.name) {
+          rule.notEquals = fieldOptionToUpdate.name;
+        }
+      }
+      return field;
+    });
+  };
+
   /**
    * Updates field with visibility
    *
@@ -63,20 +88,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
               }
             });
           });
-
-          fieldRules.forEach(rule => {
-            if ((metaformField.name !== undefined && field.name !== metaformField.name)) {
-              rule.field = field.name;
-            // option update
-            } else if (optionIndex !== undefined) {
-              const fieldOptionToUpdate = field.options![optionIndex];
-              if (rule.equals === fieldOptionMatch!.name) {
-                rule.equals = fieldOptionToUpdate.name;
-              } else if (rule.notEquals === fieldOptionMatch!.name) {
-                rule.notEquals = fieldOptionToUpdate.name;
-              }
-            }
-          });
+          checkFieldRules(fieldRules, field, optionIndex, fieldOptionMatch);
         }
       }
 
@@ -85,7 +97,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
 
     setPendingForm(updatedForm);
   };
-  
+
   /**
    * Debounced update field
    *

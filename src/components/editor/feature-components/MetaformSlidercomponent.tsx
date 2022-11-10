@@ -1,5 +1,5 @@
 import { Stack, TextField } from "@mui/material";
-import { MetaformField, MetaformFieldType } from "generated/client";
+import { MetaformField } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
 import React, { FC, useState } from "react";
@@ -19,7 +19,7 @@ const MetaformSliderComponent: FC<Props> = ({
   setUpdatedMetaformField
 }) => {
   const dispatch = useAppDispatch();
-  const { metaformSectionIndex, metaformFieldIndex, metaformField } = useAppSelector(selectMetaform);
+  const { metaformField } = useAppSelector(selectMetaform);
   const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
 
   /**
@@ -41,28 +41,16 @@ const MetaformSliderComponent: FC<Props> = ({
    * @param scopeValue Min or Max, depending which value we are changing
    */
   const updateSliderOrNumberValue = (eventValue: number, scopeValue: string) => {
-    if (!metaformField || metaformSectionIndex === undefined || metaformFieldIndex === undefined) {
+    if (!metaformField) {
       return;
     }
-    const field = metaformField;
+    console.log(eventValue);
     const updatedField = produce(metaformField, draftField => {
       if (scopeValue === "min") {
-        if (!eventValue && field.type === MetaformFieldType.Number) {
-          draftField.min = undefined;
-        } else {
-          draftField.min = Number(eventValue);
-        }
+        draftField.min = Number(eventValue);
       }
       if (scopeValue === "max") {
-        if (!eventValue) {
-          if (field.type === MetaformFieldType.Number) {
-            draftField.max = undefined;
-          } else {
-            draftField.max = field.min! + 1;
-          }
-        } else {
-          draftField.max = Number(eventValue);
-        }
+        draftField.max = Number(eventValue);
       }
     });
     updateFormFieldDebounced(updatedField);
