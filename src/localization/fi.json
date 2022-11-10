@@ -320,7 +320,7 @@
         "public": "Julkinen",
         "tooltipDescription": "Aseta ehdollinen näkyvyys osiolle tai kentälle.",
         "or": "Tai",
-        "addVisibleOrButtonText": "Lisää tai ehtokenttä",
+        "addVisibleOrButtonText": "Lisää ehtokenttä",
         "showConditionChain": "Näytä ehtojono",
         "closeConditionChain": "Sulje ehtojono",
         "allChoices": "Mikä tahansa valinta",
