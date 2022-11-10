@@ -16,6 +16,8 @@ import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper
 import DragAndDropUtils from "utils/drag-and-drop-utils";
 import AddableFieldRenderer from "./field-renderer/addable-field-renderer";
 import strings from "localization/strings";
+import { setMetaformField, setMetaformFieldIndex, setMetaformSection, setMetaformSectionIndex } from "../../features/metaform-slice";
+import { useAppDispatch } from "app/hooks";
 
 /**
  * Component properties
@@ -39,6 +41,8 @@ const MetaformEditor: React.FC<Props> = ({
   const [ selectedFieldIndex, setSelectedFieldIndex ] = React.useState<number>();
   const [ selectedSectionIndex, setSelectedSectionIndex ] = React.useState<number>();
   const [ draggingMode, setDraggingMode ] = React.useState<DraggingMode>();
+  const [ debounceTimerId, setDebounceTimerId ] = React.useState<NodeJS.Timeout>();
+  const dispatch = useAppDispatch();
 
   /**
    * Event handler for empty space click
@@ -47,6 +51,8 @@ const MetaformEditor: React.FC<Props> = ({
     if (editorRef.current?.isEqualNode(event.target as Node)) {
       setSelectedFieldIndex(undefined);
       setSelectedSectionIndex(undefined);
+      dispatch(setMetaformSectionIndex(undefined));
+      dispatch(setMetaformFieldIndex(undefined));
     }
   };
 
@@ -77,6 +83,9 @@ const MetaformEditor: React.FC<Props> = ({
     setPendingForm(updatedForm);
     setSelectedFieldIndex(fieldIndex);
     setSelectedSectionIndex(sectionIndex);
+    dispatch(setMetaformSectionIndex(sectionIndex));
+    dispatch(setMetaformFieldIndex(fieldIndex));
+    dispatch(setMetaformField(defaultField));
   };
 
   /**
@@ -116,6 +125,8 @@ const MetaformEditor: React.FC<Props> = ({
 
     setPendingForm(updatedForm);
     setSelectedSectionIndex(destinationSectionIndex);
+    dispatch(setMetaformSectionIndex(destinationSectionIndex));
+    dispatch(setMetaformSection(pendingForm.sections[destinationSectionIndex]));
   };
 
   /**
@@ -144,6 +155,8 @@ const MetaformEditor: React.FC<Props> = ({
     setPendingForm(updatedForm);
     setSelectedFieldIndex(toFieldIndex);
     setSelectedSectionIndex(toSectionIndex);
+    dispatch(setMetaformSectionIndex(toSectionIndex));
+    dispatch(setMetaformFieldIndex(toFieldIndex));
   };
 
   /**
@@ -204,6 +217,10 @@ const MetaformEditor: React.FC<Props> = ({
     if (selectedSectionIndex !== sectionIndex) {
       setSelectedSectionIndex(sectionIndex);
       setSelectedFieldIndex(undefined);
+      dispatch(setMetaformSectionIndex(sectionIndex));
+      dispatch(setMetaformFieldIndex(undefined));
+      dispatch(setMetaformSection(pendingForm.sections![sectionIndex]));
+      dispatch(setMetaformField(undefined));
     }
   };
 
@@ -216,6 +233,9 @@ const MetaformEditor: React.FC<Props> = ({
   const onFieldClick = (sectionIndex: number, fieldIndex: number) => () => {
     setSelectedFieldIndex(fieldIndex);
     setSelectedSectionIndex(sectionIndex);
+    dispatch(setMetaformSectionIndex(sectionIndex));
+    dispatch(setMetaformFieldIndex(fieldIndex));
+    dispatch(setMetaformField(pendingForm.sections![sectionIndex].fields![fieldIndex]));
   };
 
   /**
@@ -235,6 +255,8 @@ const MetaformEditor: React.FC<Props> = ({
     setPendingForm(updatedForm);
     setSelectedFieldIndex(undefined);
     setSelectedSectionIndex(undefined);
+    dispatch(setMetaformSection(undefined));
+    dispatch(setMetaformField(undefined));
   };
 
   /**
@@ -245,6 +267,17 @@ const MetaformEditor: React.FC<Props> = ({
   const onSectionEditClick = (sectionIndex: number) => () => {
     setSelectedFieldIndex(undefined);
     setSelectedSectionIndex(sectionIndex);
+    dispatch(setMetaformSection(pendingForm.sections![sectionIndex]));
+    dispatch(setMetaformField(undefined));
+  };
+
+  /**
+   * Wait updating to avoid wrong field data.
+   */
+  const timerFunc = () => {
+    dispatch(setMetaformField(undefined));
+    dispatch(setMetaformFieldIndex(undefined));
+    setSelectedFieldIndex(undefined);
   };
 
   /**
@@ -280,7 +313,9 @@ const MetaformEditor: React.FC<Props> = ({
         });
       });
     });
-    setSelectedFieldIndex(undefined);
+
+    debounceTimerId && clearTimeout(debounceTimerId);
+    setDebounceTimerId(setTimeout(() => timerFunc(), 1));
     setPendingForm(updatedForm);
   };
 

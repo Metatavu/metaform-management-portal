@@ -12,7 +12,7 @@ import MetaformMultiChoiceFieldPropertiesComponent from "./feature-components/Me
 import MetaformContextOptionsComponent from "./feature-components/MetaformContextOptionsComponent";
 import MetaformFieldAndSubmitEditTitleComponent from "./feature-components/MetaformFieldAndSubmitTitleEditComponent";
 import MetaformFieldRequiredComponent from "./feature-components/MetaformFieldRequiredComponent";
-import { selectMetaform, setMetaformField, setMetaformFieldIndex, setMetaformSectionIndex, setMetaformSection } from "../../features/metaform-slice";
+import { selectMetaform, setMetaformSection } from "../../features/metaform-slice";
 import { useAppSelector, useAppDispatch } from "app/hooks";
 
 /**
@@ -20,8 +20,6 @@ import { useAppSelector, useAppDispatch } from "app/hooks";
  */
 interface Props {
   memberGroups: MetaformMemberGroup[],
-  sectionIndex?: number;
-  fieldIndex?: number;
   pendingForm: Metaform;
   setPendingForm: (metaform: Metaform) => void;
 }
@@ -31,8 +29,6 @@ interface Props {
  */
 export const MetaformEditorRightDrawerFeature: FC<Props> = ({
   memberGroups,
-  sectionIndex,
-  fieldIndex,
   pendingForm,
   setPendingForm
 }) => {
@@ -41,33 +37,13 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const dispatch = useAppDispatch();
 
   /**
-   * Load data from redux
-   */
-  const loadData = async () => {
-    if (sectionIndex !== undefined && sectionIndex !== metaformSectionIndex) {
-      dispatch(setMetaformSection(MetaformUtils.getMetaformSection(pendingForm, sectionIndex)!));
-    }
-    if (fieldIndex !== undefined && fieldIndex !== metaformFieldIndex) {
-      dispatch(setMetaformField(MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex)!));
-    }
-    if (sectionIndex !== metaformSectionIndex || fieldIndex !== metaformFieldIndex) {
-      dispatch(setMetaformSectionIndex(sectionIndex));
-      dispatch(setMetaformFieldIndex(fieldIndex));
-    }
-  };
-
-  useEffect(() => {
-    loadData();
-  }, [ sectionIndex, fieldIndex, pendingForm ]);
-
-  /**
    * Updates field with visibility
    *
    * @param field edited field
    * @param optionIndex option index
    */
   const updateFormField = (field: MetaformField, optionIndex?: number) => {
-    if (!metaformField || sectionIndex === undefined || fieldIndex === undefined) {
+    if (!metaformField || metaformSectionIndex === undefined || metaformFieldIndex === undefined) {
       return;
     }
 
@@ -76,9 +52,9 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         const checkedName = pendingForm.sections![metaformSectionIndex!].fields![metaformFieldIndex!];
         if ((checkedName!.name !== undefined && field.name !== checkedName!.name) || optionIndex !== undefined) {
           const fieldOptionMatch = optionIndex !== undefined ?
-            pendingForm.sections![sectionIndex].fields![fieldIndex].options![optionIndex] :
+            pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex].options![optionIndex] :
             undefined;
-          const fieldNameMatch = pendingForm.sections![sectionIndex].fields![fieldIndex].name || "";
+          const fieldNameMatch = pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex].name || "";
 
           const fieldRules: FieldRule[] = [];
 
@@ -109,7 +85,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         }
       }
 
-      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, field);
+      draftForm.sections?.[metaformSectionIndex]?.fields?.splice(metaformFieldIndex, 1, field);
     });
 
     setPendingForm(updatedForm);
@@ -127,14 +103,13 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * @param metaformSection metaform section what we are editing
    */
   const updateFormSection = (selectedMetaformSection: MetaformSection) => {
-    if (sectionIndex === undefined) {
+    if (metaformSectionIndex === undefined) {
       return;
     }
-
     const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.splice(sectionIndex, 1, selectedMetaformSection);
+      draftForm.sections?.splice(metaformSectionIndex, 1, selectedMetaformSection);
     });
-
+    dispatch(setMetaformSection(selectedMetaformSection));
     setPendingForm(updatedForm);
   };
 
@@ -254,11 +229,11 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Renders feature editor
    */
   const renderFeatureEditor = () => {
-    if (metaformField !== undefined && metaformSection !== undefined) {
+    if (metaformField && metaformSection) {
       return renderFieldEditor(metaformField);
     }
 
-    if (metaformSection !== undefined) {
+    if (metaformSection) {
       return renderSectionEditor(metaformSection);
     }
 

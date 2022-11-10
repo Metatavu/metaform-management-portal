@@ -31,10 +31,10 @@ export const metaformSlice = createSlice({
     setMetaformVersion: (state, { payload }: PayloadAction<MetaformVersion | undefined>) => {
       state.metaformVersion = payload;
     },
-    setMetaformSection: (state, { payload }: PayloadAction<MetaformSection>) => {
+    setMetaformSection: (state, { payload }: PayloadAction<MetaformSection | undefined>) => {
       state.metaformSection = payload;
     },
-    setMetaformField: (state, { payload }: PayloadAction<MetaformField>) => {
+    setMetaformField: (state, { payload }: PayloadAction<MetaformField | undefined>) => {
       state.metaformField = payload;
     },
     setMetaformSectionIndex: (state, { payload }: PayloadAction<number | undefined>) => {

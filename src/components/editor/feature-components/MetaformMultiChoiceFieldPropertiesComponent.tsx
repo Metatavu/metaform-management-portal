@@ -252,7 +252,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
         };
       }));
     });
-    
+    dispatch(setMetaformField(updatedField));
     setUpdatedMetaformField(updatedField);
     setMultiSelectRawTextMode(false);
   };

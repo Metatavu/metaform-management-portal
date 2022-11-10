@@ -57,8 +57,6 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
           memberGroups={ memberGroups }
           pendingForm={ pendingForm }
           setPendingForm={ setPendingForm }
-          fieldIndex={ fieldIndex }
-          sectionIndex={ sectionIndex }
         />
       </TabPanel>
       <TabPanel value={ tabIndex } index={ 1 }>
