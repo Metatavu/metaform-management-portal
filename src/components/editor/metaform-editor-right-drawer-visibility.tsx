@@ -9,8 +9,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Navigation from "@mui/icons-material/Navigation";
 import { HelpOutline } from "@mui/icons-material";
-import { selectMetaform } from "../../features/metaform-slice";
-import { useAppSelector } from "app/hooks";
+import { selectMetaform, setMetaformField } from "../../features/metaform-slice";
+import { useAppSelector, useAppDispatch } from "app/hooks";
 
 /**
  * Component properties
@@ -32,6 +32,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   const [ showVisibleIfProperties, setShowVisibleIfProperties ] = React.useState<number | null | undefined>();
   const [ showTooltip, setShowTooltip ] = React.useState<boolean>(false);
   const { metaformFieldIndex, metaformSectionIndex, metaformField, metaformSection } = useAppSelector(selectMetaform);
+  const dispatch = useAppDispatch();
 
   /**
    * Updates visibleIf source section, field
@@ -104,6 +105,12 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
     const updatedVisibleIf: FieldRule | undefined = enableVisibleIf ?
       {} :
       undefined;
+
+    const updatedField = produce(metaformField, draftField => {
+      draftField!.visibleIf = updatedVisibleIf;
+    });
+
+    dispatch(setMetaformField(updatedField));
     updateSelectedVisibleIf(updatedVisibleIf);
   };
 
