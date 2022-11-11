@@ -42,6 +42,12 @@ export const metaformSlice = createSlice({
     },
     setMetaformFieldIndex: (state, { payload }: PayloadAction<number | undefined>) => {
       state.metaformFieldIndex = payload;
+    },
+    setMetaformSelectionsUndefined: (state, { payload }: PayloadAction<undefined>) => {
+      state.metaformSectionIndex = payload;
+      state.metaformFieldIndex = payload;
+      state.metaformSection = payload;
+      state.metaformField = payload;
     }
   }
 });
@@ -49,7 +55,9 @@ export const metaformSlice = createSlice({
 /**
  * Metaform actions from created metaform slice
  */
-export const { setMetaformVersion, setMetaformSection, setMetaformField, setMetaformFieldIndex, setMetaformSectionIndex } = metaformSlice.actions;
+export const {
+  setMetaformVersion, setMetaformSection, setMetaformField, setMetaformFieldIndex, setMetaformSectionIndex, setMetaformSelectionsUndefined
+} = metaformSlice.actions;
 
 /**
  * Select metaform selector
