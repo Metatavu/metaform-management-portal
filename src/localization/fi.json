@@ -456,7 +456,7 @@
       "form": "Lomake",
       "latestReply": "Viimeisin",
       "newReply": "Uusia",
-      "notProcessed": "Käsittelemättömiä"
+      "notProcessed": "Käsittelemättömiä ({0})"
     }
   },
 
