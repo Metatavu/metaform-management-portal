@@ -1,16 +1,595 @@
 {
-
   "generic": {
     "cancel": "Peruuta",
     "delete": "Poista",
     "edit": "Muokkaa",
     "logout": "Kirjaudu ulos",
+    "login": "Ammattilaisen kirjautuminen",
     "notImplemented": "Ei vielä toteutettu",
-    "save": "Tallenna"
+    "save": "Tallenna",
+    "yes": "Kyllä",
+    "no": "Ei",
+    "loadingAutoCompleteOptions": "Ladataan vaihtoehtoja...",
+    "confirm": "Vahvista",
+    "close": "Sulje",
+    "reload": "Lataa uudelleen",
+    "show": "Näytä",
+    "addFilesText": "Tiputa tiedosto tähän, tai klikkaa tästä lisätäksesi liitteitä.",
+    "back": "Takaisin",
+    "actions": "Toiminnot",
+    "restore": "Palauta",
+    "unknown": "Tuntematon"
   },
 
   "errorHandling": {
-    "title": "Error"
-  }
+    "title": "Tapahtui virhe",
+    "authentication": "Tunnistautumisessa tapahtui virhe",
+    "dialog": {
+      "title": "Hups! Jokin meni pieleen",
+      "reloadPage": "Kokeile ladata sivu uudelleen.",
+      "tryAgain": "Tarkista internet-yhteytesi ja yritä uudelleen.",
+      "unsavedContents": "Huomaathan, että tallentamattomat sisällöt häviävät uudelleen ladattaessa. Mikäli sinulla on sivulla tallentamattomia sisältöjä, voit sulkea tämän ilmoituksen ja kopioida sisällöt leikepöydälle ennen uudelleenlatausta.",
+      "reportIssue": "Mikäli ongelma jatkuu, voi vika olla myös käyttämissämme taustajärjestelmissä. Voit halutessasi ottaa sähköpostilla yhteyttä osoitteeseen support@metatavu.fi. Liitä tekniset lisätiedot osaksi sähköpostia nopeuttaaksesi ongelman selvittelyä.",
+      "technicalDetails": "Teknisiä lisätietoja:",
+      "time": "Aika: {0}",
+      "url": "Osoite: {0}",
+      "errorMessage": "Virheilmoitus: ",
+      "close": "Sulje"
+    },
+    "accessControl": {
+      "contentNotPermitted": "Sinulla ei ole oikeutta tähän sisältöön"
+    },
+    "adminFormsScreen": {
+      "listForms": "Lomakkeiden haku epäonnistui",
+      "listReplies": "Vastauksien haku epäonnistui",
+      "createForm": "Lomakkeen luominen epäonnistui",
+      "deleteVersion": "Lomakeversion poistaminen epäonnistui",
+      "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
+      "convertSosmetaError": "Sosmetan muuntaminen epäonnistui",
+      "getLastModifiers": "Lomakkeiden viimeisten muokkaajien haku epäonnistui"
+    },
+    "draftEditorScreen": {
+      "findDraft": "Lomakeversion haku epäonnistui",
+      "saveDraft": "Lomakeversion tallentaminen epäonnistui",
+      "publishDraft": "Lomakeversion julkaiseminen epäonnistui"
+    },
+    "formScreen": {
+      "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
+      "sendReplyEmail": "Vastauslinkin lähettämisessä sähköpostiin tapahtui virhe",
+      "sendReplyDraftEmail": "Vastausluonnoksen linkin lähettämisessä sähköpostiin tapahtui virhe",
+      "saveDraft": "Lomakkeen vedoksen tallennus epäonnistui",
+      "autosave": "Lomakkeen automaattinen tallennus epäonnistui",
+      "deleteReply": "Vastauksen poistaminen epäonnistui",
+      "findMetaform": "Lomakkeen hakemisessa tapahtui virhe",
+      "noConnection": "Ei internet-yhteyttä!",
+      "noConnectionHelper": "Lomaketta ei voida lähettää ilman toimivaa internet-yhteyttä. Tarkista verkkoasetuksesi."
+    },
+    "formAutoComplete": {
+      "autocompleteField": "Automaattisen täytön asetusten haku epäonnistui, voit kuitenkin jatkaa lomakkeen täyttöä sulkemalla tämän ilmoituksen."
+    },
+    "publicFormsScreen": {
+      "fetchForms": "Lomakkeiden hakemisessa tapahtui virhe"
+    },
+    "adminRepliesScreen": {
+      "fetchReplies": "Vastauksien hakemisessa tapahtui virhe",
+      "fetchFields": "Lomakekenttien hakemisessa tapahtui virhe",
+      "deleteReply":"Vastauksen poistaminen epäonnistui",
+      "formSlugNotFound": "Lomakkeen slugia ei löytynyt"
+    },
+    "adminReplyScreen": {
+      "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
+      "exportPdf": "PDF:n lataamisessa tapahtui virhe",
+      "replyIdNotFound": "Vastauksen ID:tä ei löytynyt",
+      "fetchReply": "Vastauksen hakemisessa tapahtui virhe"
+    },
+    "usersScreen": {
+      "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",
+      "loadMemberGroups": "Käyttäjäryhmien latauksessa tapahtui virhe",
+      "createMember": "Käyttäjän lisäämisessä lomakkeelle tapahtui virhe",
+      "createMemberGroup": "Käyttäjäryhmän luonnissa tapahtui virhe",
+      "loadMembers": "Käyttäjien latauksessa tapahtui virhe",
+      "removeMemberNotFound": "Ryhmän poistossa tapahtui virhe, käyttäjää ei löytynyt",
+      "addMemberNotFound": "Ryhmän lisäämisessä tapahtui virhe, käyttäjää ei löytynyt",
+      "loadUsers": "Käyttäjien latauksessa tapahtui virhe",
+      "createUser": "Käyttäjän luonnissa tapahtui virhe",
+      "updateUser": "Käyttäjän päivityksessä tapahtui virhe"
+    },
+    "previewScreen": {
+      "shareLink": "Linkin jakamisessa tapahtui virhe"
+    },
+    "adminFormHistoryScreen": {
+      "listAuditLogEntries": "Auditoinnoin haku epäonnistui",
+      "listMetaformMembers": "Lomakkeen käyttäjien haku epäonnistui",
+      "findMetaform": "Lomakkeen haku epäonnistui"
+    },
+    "adminFormsDataScreen": {
+      "listForms": "Lomakkeiden haku epäonnistui",
+      "listReplies": "Vastauksien haku epäonnistui",
+      "listAuditLogEntries": "Auditoinnoin haku epäonnistui"
+    }
+  },
 
+  "protectedForm": {
+    "redirectDialog": {
+      "title": "Vaaditaan vahva tunnistautuminen",
+      "text": "Tämä lomake vaatii vahvan tunnistautumisen. Siirry eteenpäin tunnistautumispalveluun."
+    }
+  },
+
+  "formComponent": {
+    "html": "Tyhjä html",
+    "datePicker": "Päivämäärä",
+    "dateTimePicker": "Päivämäärä ja aika"
+  },
+
+  "header": {
+    "user": "Käyttäjä",
+    "logo": "Essote logo",
+    "selectLanguage": "Valitse kieli",
+    "infoLabel": "Ohjeet",
+    "languages": {
+      "fi": "Suomi",
+      "en": "English"
+    }
+  },
+
+  "breadcrumb": {
+    "home": "Koti",
+    "users": "Käyttäjät",
+    "editor": "Editori",
+    "forms": "Lomakelistaus",
+    "data": "Tiedot",
+    "list": "Lista",
+    "answers": "Vastaukset",
+    "history": "Historia"
+  },
+
+  "navigationHeader": {
+    "formsScreens": {
+      "title": "Lomakkeet",
+      "description": "Lomakkeiden ja vastausten tarkastelu.",
+      "formScreen": {
+        "title": "Lomakelistaus",
+        "description": "Listaus niistä lomakkeista, joihin käyttäjällä on käsittelyoikeus."
+      },
+      "formsDataScreen": {
+        "title": "Datan tarkastelu",
+        "description": "Tietoja mm. lomakkeiden käyttöasteesta."
+      },
+      "formRepliesScreen": {
+        "title": "Vastaukset",
+        "description": "Valitun lomakkeen vastaukset."
+      },
+      "formHistoryScreen": {
+        "title": "Käsittelyhistoria",
+        "description": "Valitun lomakkeen käsittelyhistoria."
+      }
+    },
+    "usersScreens": {
+      "title": "Käyttäjät",
+      "description": "Käyttäjien tarkastelu ja käyttäjäryhmien hallinta.",
+      "subheader": {
+        "title": "Käyttäjänhallinta",
+        "description": "Lomakkeiden käyttäjien ja ryhmien hallinnointi."
+      }
+    },
+    "editorScreens": {
+      "title": "Editori",
+      "description": "Lomakkeiden muokkaus ja uusien lomakkeiden luominen.",
+      "editorScreen": {
+        "title": "Valitse lomake",
+        "description": "Valitse editoitava lomake tai luo uusi lomake."
+      },
+      "draftEditorScreen": {
+        "title": "Luonnoseditori",
+        "description": "Lomakkeen muokkaus"
+      },
+      "newFormButton": "Luo uusi lomake"
+    }
+  },
+
+  "repliesScreen": {
+    "open": "Avaa",
+    "createdColumnTitle": "LUOTU",
+    "modifiedColumnTitle": "MUOKATTU",
+    "statusColumnTitle": "TILA",
+    "nameColumnTitle": "NIMI",
+    "selectorShowOpen": "Näytä avoimet",
+    "selectorShowAll": "Näytä kaikki",
+    "statusWaiting": "Odottaa",
+    "statusProcessing": "Käsittelyssä",
+    "statusDone": "Käsitelty",
+    "confirmDeleteReplyTitle": "Vastauksen poistaminen",
+    "confirmDeleteReplyText":"Oletko varma, että haluat poistaa vastauksen?"
+  },
+
+  "replyScreen": {
+    "exportPdf": "Lataa PDF",
+    "selectStatus": "Valitse tila"
+  },
+
+  "publicFormsScreen": {
+    "title": "Lomakkeet",
+    "welcome": "Tervetuloa lomakeportaaliin",
+    "welcomeInfo": "Jos olet ammattilainen, niin voit kirjautua sisään. Vierailija palaa hyvinvointialueen sivuille.",
+    "backToEssote": "Siirry hyvinvointialueen sivuille"
+  },
+
+  "draftEditorScreen": {
+    "preview": "Esikatsele",
+    "publish": "Julkaise",
+    "publishDialog": {
+      "title": "Julkaise versio",
+      "contentText": "Oletko varma, että haluat julkaista lomakkeen {0}?"
+    },
+    "editor": {
+      "addSection": "Lisää osio",
+      "emptySection": "Tyhjä osio",
+      "emptySelection": "Aloita muokkaaminen valitsemalla osio tai kenttä.",
+      "defaultSectionTitle": "Osio",
+      "form": {
+        "tabTitle": "Lomake",
+        "formTitle": "Lomakkeen otsikko",
+        "formSlugUrl": "Lomakkeen url osoite",
+        "versionInfo": "Version tiedot",
+        "formVersion": "Versio",
+        "formStyling": "Lomakkeen ulkoasu",
+        "formVisibility": "Lomakkeen tiedot",
+        "formVisibilityLabel": "Lomakkeen näkyvyys",
+        "private": "Yksityinen (Suomi.fi)",
+        "public": "Julkinen",
+        "tooltipDescription": "Lomakkeen perustiedot: otsikko, näkyvyys ja oletus-käyttäjäryhmä."
+      },
+      "fields": {
+        "tabTitle": "Kentät",
+        "staticFields": "Staattiset kentät",
+        "selectorFields": "Valintakentät",
+        "inputFields": "Syötekentät",
+        "url": "Url",
+        "html": "Html",
+        "boolean": "Totuusarvo",
+        "select": "Pudotusvalikko",
+        "socialServicesSelect": "Sosiaalipalvelut pudotusvalikko",
+        "socialServicesChecklist": "Sosiaalipalvelut valintalista",
+        "slider": "Liukuvalinta",
+        "checklist": "Valintalista",
+        "radio": "Radiovalinta",
+        "text": "Teksti",
+        "number": "Numero",
+        "email": "Sähköposti",
+        "memo": "Memo",
+        "date": "Päivämäärä",
+        "dateAndTime": "Päivämäärä & aika",
+        "files": "Liitteet",
+        "table": "Taulukko",
+        "submit": "Lähetä",
+        "tooltipDescription": "Lisää kenttiä lomakkeelle raahaamalla."
+      },
+      "features": {
+        "tabTitle": "Ominaisuudet",
+        "title": "Title",
+        "type": "Tyyppi",
+        "section": {
+          "sectionData": "Osion tiedot",
+          "sectionTitle": "Osion otsikko"
+        },
+        "field": {
+          "fieldData": "Kentän tiedot",
+          "fieldType": "Kentän tyyppi",
+          "required": "Pakollisuus",
+          "defineUserGroup": "Määrittää käyttäjäryhmän",
+          "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
+          "fieldTitle": "Kentän otsikko",
+          "addFieldsAsText": "Tekstitila",
+          "addFieldsAsTextHelper": "Syötä valinnat rivinvaihdolla eroteltuna.",
+          "updateFields": "Päivitä kentät",
+          "addFieldOption": "Lisää kenttä",
+          "addNewColumn": "Lisää uusi sarake",
+          "addColumnType": "Anna kentän tyyppi",
+          "columnTextType": "Tekstikenttä",
+          "columnNumberType": "Numerokenttä",
+          "submitButtonText": "Painikkeen teksti",
+          "newFieldOption": "Valintakenttä",
+          "addCustomHtml": "Lisää tähän HTML-sisältöä",
+          "contextVisibilityInfo": "Kentän hallinnointi asetukset",
+          "workDaysOnly": "Vain työpäivät",
+          "slider": {
+            "minValueLabel": "Kentän pienin arvo",
+            "maxValueLabel": "Kentän suurin arvo"
+          }
+        },
+        "tooltipDescription": "Muokkaa osion tai kentän tietoja ja ominaisuuksia."
+      },
+      "visibility": {
+        "tabTitle": "näkyvyys",
+        "fieldVisibility": "Kenttä näkyy lomakkeella:",
+        "conditionLabelTitle": "Ehtokentän nimi",
+        "visibilityCondition": "Näkyvyyden ehto ",
+        "conditionally": "Ehdollisesti",
+        "conditionalFieldValue": "Ehtokentän arvo",
+        "conditionalFieldInfo": "Valitse se lomakkeen kenttä, joka määrittää näkyvyyden.",
+        "conditionalFieldValueInfo": "Valitse tai anna se kentän arvo, joka määrittää näkyvyyden.",
+        "fieldDefiningCondition": "Ehdon määrittävä kenttä",
+        "selectField": "Valitse kenttä",
+        "fieldConditionLabel": "Tämä kenttä näkyy, jos {0} arvo on {1}",
+        "sectionConditionLabel": "Tämä osio näkyy, jos {0} arvo on {1}",
+        "selectVisibilityInfo": "Valitse jokin kenttä lomakkeesta muokataksesi kentän tietoja.",
+        "formVisibility": "Lomakkeen tiedot",
+        "formVisibilityLabel": "Lomakkeen näkyvyys",
+        "private": "Yksityinen",
+        "public": "Julkinen",
+        "tooltipDescription": "Aseta ehdollinen näkyvyys osiolle tai kentälle.",
+        "or": "Tai",
+        "addVisibleOrButtonText": "Lisää ehtokenttä",
+        "showConditionChain": "Näytä ehtojono",
+        "closeConditionChain": "Sulje ehtojono",
+        "allChoices": "Mikä tahansa valinta",
+        "andConditionChainTerms": "Näkyvyyden muut ehdot",
+        "visibilityConditionTooltip": "Näkyvyyden ehto määrittää kentän näkyvyyden lomakkeella. Näkyvyyden ehtoja voi olla useita, jolloin minkä tahansa ehdon täyttyessä kenttä näkyy lomakkeella. \n Jos kentän näkyvyys riippuu myös jonkin toisen kentän näkyvyydestä, 'NÄYTÄ EHTOJONO'-nappia painamalla voidaan tarkastella ehtojonoa."
+      },
+      "memberGroups": {
+        "memberGroupDefineSettings": "Käyttäjäryhmän asetukset",
+        "defaultMemberGroupInfo": "Oletus-käyttäjäryhmä",
+        "defaultMemberGroupInfoLabel": "Valitse oletus-käyttäjäryhmä",
+        "memberGroupPermission": "Käyttäjäryhmän oikeudet",
+        "memberGroup": "Käyttäjäryhmä",
+        "selectedMemberGroup": "Valittu käyttäjäryhmä",
+        "view": "Katselu",
+        "edit": "Muokkaus",
+        "fieldValueLabel": "Kentän arvo",
+        "notifications": "Ilmoitukset",
+        "noMemberGroup": "Ei Käyttäjäryhmää",
+        "noPermission": "Ei oikeuksia",
+        "noDefaultPermissionMemberGroup": "Ei oletus-käyttäjäryhmää"
+      }
+    },
+    "formPreview": {
+      "exit": "Sulje esikatselu",
+      "shareLink": "Jaa linkki",
+      "shareLinkDialog": {
+        "title": "Jaa esikatseluversio lomakkeesta",
+        "text": "Lähetä linkki luonnokseen sähköpostitse, tai kopioi ja jaa se haluamassasi kanavassa. Muistathan tallentaa viimeisimmän luonnoksen ensin.",
+        "link": "Suora linkki",
+        "recipients": "Vastaanottaja(t)",
+        "send": "lähetä",
+        "linkCopied": "Linkki kopioitu"
+      },
+      "previewEmail": {
+        "content": "<p>Hei!</p><p>Ole hyvä ja tarkastele lomaketta {0} seuraavasta linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
+        "subject": "Ole hyvä ja tarkastele lomaketta - {0}",
+        "emailSent": "Linkki lähetetty sähköpostitse"
+      }
+    }
+  },
+
+  "userManagementScreen": {
+    "selector": {
+      "form": "Valitse lomake",
+      "group": "Valitse ryhmä",
+      "user": "Valitse käyttäjä"
+    },
+    "editMemberButton": "Muokkaa käyttäjää",
+    "addMemberButton": "Uusi käyttäjä",
+    "addMemberGroupButton": "Uusi käyttäjäryhmä",
+    "addMemberDialog": {
+      "title": "Uusi käyttäjä",
+      "text": "Lisää uusi käyttäjä lomakkeelle",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "usersSelectLabel": "Käyttäjät",
+      "searchButton": "Hae",
+      "emailLabel": "Sähköpostiosoite",
+      "firstNameLabel": "Etunimi",
+      "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
+      "createButton": "Luo käyttäjä",
+      "cancelButton": "Peruuta",
+      "snackbarText": "Käyttäjän lisääminen onnistui!",
+      "tooltip": {
+        "tooltipGeneral": "Lisää olemassa oleva käyttäjä tai luo uusi käyttäjä lomakkeelle.",
+        "tooltipNoIconDescription": "Käyttäjä ilman ikonia löytyy vain Portaalin käyttäjärekisteristä.",
+        "tooltipLinkIconDescription": "Käyttäjä linkki-ikonilla löytyy Portaalin käyttäjärekisteristä, ja on linkitetty ammattilaiskorttiin",
+        "tooltipCardIconDescription": "Käyttäjä kortti-ikonilla löytyy vain DVV:n käyttäjärekisteristä, eikä ole vielä tuotu Portaalin käyttäjärekisteriin."
+      }
+    },
+    "addMemberGroupDialog": {
+      "title": "Uusi käyttäjäryhmä",
+      "text": "Lisää uusi käyttäjäryhmä lomakkeelle",
+      "displayNameLabel": "Ryhmän nimi",
+      "createButton": "Luo ryhmä",
+      "cancelButton": "Peruuta",
+      "snackbarText": "Käyttäjäryhmän lisääminen onnistui!"
+    },
+    "editMemberDialog": {
+      "title": "Muokkaa käyttäjää",
+      "text": "Muokkaa olemassa olevaa käyttäjää",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "metaformUsersSelectLabel": "Portaali-käyttäjät",
+      "cardAuthUsersSelectLabel": "Kortti-käyttäjät",
+      "userIsLinked": "Käyttäjä on linkitetty korttiin",
+      "searchButton": "Hae",
+      "emailLabel": "Sähköpostiosoite",
+      "firstNameLabel": "Etunimi",
+      "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
+      "cancelButton": "Peruuta",
+      "editButton": "Muokkaa käyttäjää",
+      "snackbarText": "Käyttäjän muokkaaminen onnistui!",
+      "tooltip": {
+        "tooltipGeneral": "Muokkaa käyttäjän tietoja sekä lisää tai poista linkitys ammattilaiskorttiin."
+      }
+    },
+    "groupMembership": {
+      "groupMembershipAddSnackbarText": "Käyttäjä lisääminen ryhmään onnistui!",
+      "groupMembershipRemoveSnackbarText": "Käyttäjän poistaminen ryhmästä onnistui!"
+    },
+    "usersTable": {
+      "nameColumn": {
+        "label": "Nimi"
+      },
+      "emailColumn": {
+        "label": "Sähköposti"
+      },
+      "groupsColumn": {
+        "label": "Ryhmät"
+      }
+    }
+  },
+
+  "formHistoryScreen": {
+    "historyTable": {
+      "date": "Päivämäärä",
+      "actor": "Käsittelijä",
+      "replyId": "Vastaus id",
+      "actionPerformed": "Tehty toiminto"
+    }
+  },
+
+  "fieldComponents": {
+    "tableField": {
+      "addNewRow": "Lisää uusi rivi",
+      "unknownColumnType": "Tuntematon saraketyyppi"
+    }
+  },
+
+  "formsScreen": {
+    "formTable": {
+      "form": "Lomake",
+      "latestReply": "Viimeisin",
+      "newReply": "Uusia",
+      "notProcessed": "Käsittelemättömiä"
+    }
+  },
+
+  "formsDataScreen": {
+    "formDataTable": {
+      "form": "Lomake",
+      "monthlyReplies": "Vastauksia / kk",
+      "processingDelay": "Käsittelyviive",
+      "average": "Keskimäärin",
+      "delayFormat": "{0} pv {1} t {2} min"
+    }
+  },
+
+  "formScreen": {
+    "autosaving": "Vastausta tallennetaan...",
+    "replyEditEmailText": "Voit lähettää linkin itsellesi sähköpostilla klikkaamalla ",
+    "replyEditEmailLink": "tästä",
+    "replyEditEmailContent": "<p>Hei!</p><p>Pääset muokkaamaan {0} -lomakkeen vastauksia seuraavasta linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
+    "replyEditEmailSubject": "{0} -lomakkeen muokkauslinkki",
+    "replyEditEmailSent": "Muokkauslinkki lähetetty!",
+    "saveDraft": "Voit tallentaa lomakkeen vedoksena klikkaamalla",
+    "saveDraftLink": "tästä",
+    "draftEmailSubject": "{0} -lomakkeen vedos",
+    "draftEmailContent": "<p>Hei!</p><p>Pääset jatkamaan {0} -lomakkeen täyttöä linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
+    "draftEmailSent": "Linkki vedokseen lähetetty!",
+    "draftSaved": "Lomake on tallennettu vedoksena. Ota seuraava kirjanmerkki talteen niin voit jatkaa lomakkeen täyttöä myöhemmin: ",
+    "draftEmailText": "Voit lähettää linkin itsellesi sähköpostilla klikkaamalla",
+    "draftEmailLink": "tästä",
+    "draftEmailDialogText": "Kirjoita sähköpostiosoite, johon haluat vedoksen muokkauslinkin lähetettävän",
+    "replySaved": "Lähetetty onnistuneesti!",
+    "replyEdit": "Voit muokata vastaustasi käyttämällä seuraavaa linkkiä:",
+    "replyEditEmailDialogText": "Kirjoita sähköpostiosoite, johon haluat lomakkeen muokkauslinkin lähetettävän",
+    "replyDeleteText": "Voit poistaa tämän vastauksen klikkaamalla",
+    "replyDeleteLink": "tästä",
+    "confirmDeleteReplyTitle": "Oletko varma?",
+    "confirmDeleteReplyText": "Oletko varma, että haluat poistaa vastauksen?",
+    "replyNotFound": "Vastausta ei löytynyt järjestelmästä",
+    "replyDeleted": "Vastaus poistettu",
+    "noTitle": "Ei otsikkoa"
+  },
+
+  "editorScreen": {
+    "noMetaforms": "Lomakkeita ei löytynyt",
+    "formVersion": "LOMAKEVERSIO",
+    "formCreatedAt": "LUOTU",
+    "formModifiedAt": "MUOKATTU",
+    "formLastModifier": "VIIMEISIN MUOKKAAJA",
+    "formLastModifierNotFound": "Ei löytynyt",
+    "formVersionArchived": "Arkistoitu",
+    "formVersionDraft": "Luonnos",
+    "formProductionVersion": "Tuotanto",
+    "drawer": {
+      "newForm": "Luo uusi lomake",
+      "helper": "Lomakkeen yleiset asetukset, jotka vaikuttavat valitun lomakkeen kaikkiin lomakeversioihin.",
+      "formInfo": "Lomakkeen tiedot",
+      "formName": "Nimi",
+      "formUrl": "Url-osoite",
+      "formTemplate": "Lomakkeen pohja",
+      "formTemplateCustom": "Tyhjä pohja",
+      "formTemplateCustomHelper": "Luo uusi lomake tyhjällä pohjalla. Suositeltavaa vain, jos Sosmetasta ei löydy sopivaa pohjaa lomakkeelle.",
+      "formTemplateSosmeta": "Sosmetan pohja",
+      "formTemplateSosmetaHelper": "Luo uusi lomake Sosmetan rakenteiden mukaisesti. Sosmeta on Terveyden ja Hyvinvoinnin laitoksen ylläpitä palvelu. Rakennepohjat löytyvät osoitteesta: ",
+      "formTemplateSosmetaLink": "https://sosmeta.thl.fi/document-definitions/list",
+      "formTemplateSchema": "Schema",
+      "formIdentification": "Vastaajan tunnistautuminen",
+      "formIdentificationService": "Suomi.fi -palvelu",
+      "formIdentificationHelper": "Lomakkeen vastaajan täytyy tunnistatutua Suomi.fi -palvelun kautta vastauksen lähettämisen yhteydessä.",
+      "formIdentificationNone": "Ei vaadi tunnistautumista"
+    },
+    "confirmDeleteVersionTitle": "Oletko varma?",
+    "confirmDeleteVersionText": "Oletko varma, että haluat poistaa lomakeversion?"
+  },
+
+  "emailDialog": {
+    "send": "Lähetä",
+    "title": "Otsikko",
+    "email": "Sähköposti",
+    "cancel": "Peruuta"
+  },
+
+  "autoComplete": {
+    "missingOptions": "Code server autocomplete ei ole määritelty",
+    "missingCodeServerBaseUrl": "Code server autocomplete puuttuu codeServerBaseUrl",
+    "missingCodeServerClassificationId": "Code server autocomplete puuttuu codeServerClassificationId",
+    "missingCodeServerParentConceptCodeId": "Code server autocomplete puuttuu codeServerParentConceptCodeId",
+    "missingAutocomplete": "Autocomplete ei ole määritelty",
+    "unknownAutocompleteService": "TUNTEMATON_AUTO_COMPLETE_SERVICE"
+  },
+
+  "auditLogEntryType": {
+    "viewReply": "Avattu",
+    "listReply": "Listattu",
+    "modifyReply": "Muokattu",
+    "deleteReply": "Poistettu",
+    "createReply": "Luotu",
+    "viewReplyAttachment": "Liite avattu",
+    "downloadReplyAttachment": "Liite ladattu",
+    "exportReplyPdf": "Viety PDF:nä",
+    "exportReplyXlsx": "Viety taulukkona"
+  },
+
+  "formContext": {
+    "form": "Näkyy lomaketta täyttäessä",
+    "management": "Näkyy ammattilaiselle vastausnäkymässä",
+    "managementList": "Näkyy ammattilaiselle vastauslistauksessa"
+  },
+
+  "dataGrid": {
+    "rowsPerPage": "Rivejä sivulla:"
+  },
+
+  "successSnackbars": {
+    "formEditor": {
+      "deleteFormSuccessText": "Tuotantolomake poistettu onnistuneesti!",
+      "deleteFormVersionSuccessText": "Lomakkeen luonnos poistettu onnistuneesti!",
+      "createFormSuccessText": "Uusi lomake luotu onnistuneesti!",
+      "restoreArchiveFormSuccessText": "Arkistoitu lomake palautettu onnistuneesti!",
+      "convertSchemaSuccessText": "Sosmetan lomakepohja luotu onnistuneesti!"
+    },
+    "draftEditor": {
+      "saveDraftSuccessText": "Lomakkeen luonnos tallennettu onnistuneesti!",
+      "publishDraftSuccessText": "Lomake julkaistu onnistuneesti!"
+    },
+    "users": {
+      "addMemberSuccessText": "Käyttäjän lisääminen onnistui!",
+      "editUserSuccessText": "Käyttäjän muokkaaminen onnistui!",
+      "addMemberGroupSuccessText": "Käyttäjäryhmän lisääminen onnistui!",
+      "groupMembershipAddSuccessText": "Käyttäjän lisääminen ryhmään onnistui!",
+      "groupMembershipRemoveSuccessText": "Käyttäjän poistaminen ryhmästä onnistui!"
+    },
+    "replies": {
+      "replyDeleteSuccessText": "Vastauksen poistaminen onnistui!",
+      "replyEditSuccessText": "Vastauksen muokkaus onnistui!"
+    }
+  }
 }

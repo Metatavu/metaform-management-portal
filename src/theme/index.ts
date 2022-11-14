@@ -10,51 +10,54 @@ const { breakpoints, palette } = createTheme();
  */
 export default createTheme({
 
+  logo: {
+    logoPath: "/images/essote_logo.png"
+  },
+
   palette: {
     primary: {
-      main: "#000000"
+      main: "#4FA3DF",
+      dark: "#375AA3"
     },
     secondary: {
-      main: "#F9473B",
-      light: "#39a849"
+      main: "#fff",
+      dark: "#fff"
     },
     text: {
       primary: "#333333",
-      secondary: "#ffffff"
+      secondary: "#bdbdbd"
     },
     background: {
-      default: "#E0E0E0",
+      default: "#375AA3",
       paper: "#ffffff"
     }
   },
 
   typography: {
     allVariants: {
-      fontFamily: "acumin-pro, sans-serif",
-      fontWeight: 400
+      fontFamily: "poppins, sans-serif"
     },
     h1: {
-      fontFamily: "ambroise-std, serif",
-      fontWeight: 800,
-      fontSize: 42,
-      letterSpacing: "0.05em",
+      fontWeight: 600,
+      fontSize: 24,
       [breakpoints.down("sm")]: {
         fontSize: "1.75rem"
       }
     },
     h2: {
-      fontFamily: "ambroise-std, serif",
-      fontWeight: 800,
-      fontSize: 30
-    },
-    h3: {
-      fontSize: 26
-    },
-    h4: {
+      fontWeight: 600,
       fontSize: 20
     },
-    body1: {
+    h3: {
+      fontWeight: 400,
       fontSize: 18
+    },
+    h4: {
+      fontWeight: 100,
+      fontSize: 16
+    },
+    body1: {
+      fontSize: 16
     },
     h5: {
       fontSize: 16
@@ -63,8 +66,16 @@ export default createTheme({
       fontSize: 12
     },
     body2: {
-      fontSize: 16,
-      lineHeight: 1.63
+      fontSize: 14
+    },
+    subtitle1: {
+      color: palette.text.secondary,
+      fontWeight: 600
+    },
+    subtitle2: {
+      fontSize: 14,
+      color: "#fff",
+      fontWeight: 600
     }
   },
 
@@ -76,7 +87,9 @@ export default createTheme({
             textDecoration: "none"
           }
         },
-        body: palette.mode === "dark" ? darkScrollbar() : null
+        body: {
+          ...palette.mode === "dark" ? darkScrollbar() : null
+        }
       }
     },
     MuiAppBar: {
@@ -109,6 +122,13 @@ export default createTheme({
         }
       }
     },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        root: {
+          marginLeft: 0
+        }
+      }
+    },
     MuiTextField: {
       defaultProps: {
         variant: "outlined",
@@ -119,8 +139,46 @@ export default createTheme({
       styleOverrides: {
         root: {
           alignItems: "center",
-          justifyContent: "space-between"
+          justifyContent: "space-between",
+          paddingInline: "16px !important"
         }
+      }
+    },
+    MuiButton: {
+      defaultProps: {
+        variant: "outlined"
+      }
+    },
+    MuiTab: {
+      styleOverrides: {
+        textColorPrimary: {
+          color: "rgba(0, 0, 0, 0.54)"
+        },
+        root: {
+          flex: 1
+        }
+      }
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        root: {
+          padding: "0.5rem 0",
+          borderRadius: "0.5rem",
+          border: "1px solid rgba(0, 0, 0, .5)",
+          maxHeight: 50,
+          display: "flex",
+          alignItems: "center"
+        }
+      }
+    },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          width: "100%"
+        }
+      },
+      defaultProps: {
+        elevation: 0
       }
     }
   }

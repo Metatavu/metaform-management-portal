@@ -1,16 +1,587 @@
 {
-
   "generic": {
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
     "logout": "Logout",
+    "login": "Log in",
     "notImplemented": "Not yet implemented",
-    "save": "Save"
+    "save": "Save",
+    "yes": "Yes",
+    "no": "No",
+    "loadingAutoCompleteOptions": "Loading options..",
+    "confirm": "Confirm",
+    "close": "Close",
+    "reload": "Reload",
+    "show": "Show",
+    "addFilesText": "Drop files here or click here to add files.",
+    "back": "Back",
+    "actions": "Action",
+    "restore": "Restore",
+    "unknown": "Unknown"
   },
 
   "errorHandling": {
-    "title": "Error"
-  }
+    "title": "Error occurred",
+    "authentication": "User authentication failed",
+    "dialog": {
+      "title": "Whoops! Something went wrong",
+      "reloadPage": "Try reloading the page.",
+      "tryAgain": "Please check your internet connection and try again.",
+      "unsavedContents": "Please note that unsaved content will not be saved when reloading. If you have unsaved content on this page, you can close this message and copy the content to the clipboard before reloading.",
+      "reportIssue": "If the problem persists it is possible that the fault is in background services we're using. Feel free to contact support@metatavu.fi by email. Please include technical details in the email to speed up resolution of the problem.",
+      "technicalDetails": "Technical details:",
+      "time": "Time: {0}",
+      "url": "URL: {0}",
+      "errorMessage": "Error message: ",
+      "close": "Close"
+    },
+    "accessControl": {
+      "contentNotPermitted": "Content not permitted"
+    },
+    "adminFormsScreen": {
+      "listForms": "Fetching forms failed",
+      "listReplies": "Fetching replies failed",
+      "createForm": "Creating form failed",
+      "deleteVersion": "Deleting form failed",
+      "createFormDuplicateNameError": "Form with that name already exists!",
+      "convertSosmetaError": "Converting Sosmeta failed",
+      "getLastModifiers": "Fetching forms last modifiers dailed"
+    },
+    "draftEditorScreen": {
+      "findDraft": "Fetching form version failed",
+      "saveDraft": "Saving form version failed",
+      "publishDraft": "Publishing form version failed"
+    },
+    "formScreen": {
+      "saveReply": "Error when saving reply",
+      "sendReplyEmail": "Error when trying to send reply to email",
+      "sendReplyDraftEmail": "Error when trying to send reply draft to email",
+      "saveDraft": "Saving form draft failed",
+      "autosave": "Autosave failed",
+      "deleteReply": "Deleting reply failed",
+      "findMetaform": "Finding Metaform failed",
+      "noConnection": "No internet connection!",
+      "noConnectionHelper": "Form cannot be submitted without internet connection. Please check your settings."
+    },
+    "formAutoComplete": {
+      "autocompleteField": "Fetching autocomplete field options failed. You can still fill and submit the form by closing this dialog." 
+    },
+    "publicFormsScreen": {
+      "fetchForms": "Fetching forms failed"
+    },
+    "adminRepliesScreen": {
+      "fetchReplies": "Fetching replies failed",
+      "fetchFields": "Fetching column fields failed",
+      "deleteReply":"Deleting reply failed",
+      "formSlugNotFound": "Form slug not found"
+    },
+    "adminReplyScreen": {
+      "saveReply": "Saving reply failed",
+      "exportPdf": "Exporting PDF failed",
+      "replyIdNotFound": "Reply id not found",
+      "fetchReply": "Error occurred when trying to fetch reply"
+    },
+    "usersScreen": {
+      "loadMetaforms": "Error occurred while loading metaforms",
+      "loadMemberGroups": "Error occurred while loading user groups",
+      "createMember": "Error occurred while creating a metaform member",
+      "createMemberGroup": "Error occurred while creating a user group",
+      "loadMembers": "Error occurred while loading users",
+      "removeMemberNotFound": "Could not remove user from the group. User was not found",
+      "addMemberNotFound": "Could not add user to the group. User was not found",
+      "loadUsers": "Error occurred while loading users",
+      "createUser": "Error occurred while creating user",
+      "updateUser": "Error occurred while updating user"
+    },
+    "previewScreen": {
+      "shareLink": "Error occurred while sharing link"
+    },
+    "adminFormHistoryScreen": {
+      "listAuditLogEntries": "Fetching audit log entries failed",
+      "listMetaformMembers": "Fetching metaform members failed",
+      "findMetaform": "Finding metaform failed"
+    },
+    "adminFormsDataScreen": {
+      "listForms": "Fetching forms failed",
+      "listReplies": "Fetching replies failed",
+      "listAuditLogEntries": "Fetching audit log entries failed"
+    }
+  },
 
+  "protectedForm": {
+    "redirectDialog": {
+      "title": "Strong authentication required",
+      "text": "This form requires strong authentication, press confirm to precede to the authentication page"
+    }
+  },
+
+  "formComponent": {
+    "html": "Empty html",
+    "datePicker": "Date",
+    "dateTimePicker": "Date and time"
+  },
+
+  "header": {
+    "user": "User",
+    "logo": "Essote logo",
+    "selectLanguage": "Select language",
+    "infoLabel": "Instructions",
+    "languages": {
+      "fi": "Suomi",
+      "en": "English"
+    }
+  },
+
+  "breadcrumb": {
+    "home": "Home",
+    "users": "Users",
+    "editor": "Editor",
+    "forms": "Forms",
+    "data": "Data",
+    "list": "List",
+    "answers": "Answers",
+    "history": "History"
+  },
+
+  "navigationHeader": {
+    "formsScreens": {
+      "title": "Forms",
+      "description": "Review of forms and responses.",
+      "formScreen": {
+        "title": "Form listing",
+        "description": "A list of forms that the user has permission to process."
+      },
+      "formsDataScreen": {
+        "title": "Viewing data",
+        "description": "Information e.g. the utilization rate of the forms."
+      },
+      "formRepliesScreen": {
+        "title": "Answers",
+        "description": "List of answers for the selected form."
+      },
+      "formHistoryScreen": {
+        "title": "History",
+        "description": "Processing history of the selected form."
+      }
+    },
+    "usersScreens": {
+      "title": "Users",
+      "description": "View users and manage user groups.",
+      "subheader": {
+        "title": "User management",
+        "description": "Forms users and groups management."
+      }
+    },
+    "editorScreens": {
+      "title": "Editor",
+      "description": "Edit forms and create new forms.",
+      "editorScreen": {
+        "title": "Select form",
+        "description": "Select form to edit, or create new form."
+      },
+      "draftEditorScreen": {
+        "title": "Draft editor",
+        "description": "Editing the form"
+      },
+      "newFormButton": "Create new form"
+    }
+  },
+
+  "repliesScreen": {
+    "open": "Open",
+    "createdColumnTitle": "CREATED",
+    "modifiedColumnTitle": "MODIFIED",
+    "statusColumnTitle": "STATUS",
+    "nameColumnTitle": "NAME",
+    "selectorShowOpen": "Show open",
+    "selectorShowAll": "Show all",
+    "statusWaiting": "Waiting",
+    "statusProcessing": "Processing",
+    "statusDone": "Done",
+    "confirmDeleteReplyTitle": "Delete answer",
+    "confirmDeleteReplyText":"Are you sure you want to delete this answer?"
+  },
+
+  "replyScreen": {
+    "exportPdf": "Export PDF",
+    "selectStatus": "Select status"
+  },
+
+  "publicFormsScreen": {
+    "title": "Forms",
+    "welcome": "Welcome to form portal",
+    "welcomeInfo": "If you are a professional, you can log in. The visitor please return to the home page.",
+    "backToEssote": "Return to front page"
+  },
+  
+  "draftEditorScreen": {
+    "preview": "Preview",
+    "publish": "Publish",
+    "publishDialog": {
+      "title": "Publish version",
+      "contentText": "Are you sure you wish to publish {0}?"
+    },
+    "editor": {
+      "addSection": "Add section",
+      "emptySection": "Empty section",
+      "emptySelection": "Select a section or field to start editing.",
+      "defaultSectionTitle": "Section",
+      "form": {
+        "tabTitle": "Form",
+        "formTitle": "Form title",
+        "formSlugUrl": "Form url",
+        "versionInfo": "Version info",
+        "formVersion": "Version",
+        "formStyling": "Form outfit",
+        "formVisibility": "Form information",
+        "formVisibilityLabel": "Form visibility",
+        "private": "Private (Suomi.fi)",
+        "public": "Public",
+        "tooltipDescription": "Edit form title and set form to public or private."
+      },
+      "fields": {
+        "tabTitle": "Fields",
+        "staticFields": "Static fields",
+        "selectorFields": "Selector fields",
+        "inputFields": "Input fields",
+        "url": "Url",
+        "html": "Html",
+        "boolean": "Boolean",
+        "select": "Dropdown",
+        "socialServicesSelect": "Social services dropdown",
+        "socialServicesChecklist": "Social services checklist",
+        "slider": "Slider",
+        "checklist": "Checklist",
+        "radio": "Radio",
+        "text": "Text",
+        "number": "Number",
+        "email": "Email",
+        "memo": "Memo",
+        "date": "Date",
+        "dateAndTime": "Date & time",
+        "files": "Files",
+        "table": "Table",
+        "submit": "Submit",
+        "tooltipDescription": "Select fields to add to form."
+      },
+      "features": {
+        "tabTitle": "Features",
+        "title": "Title",
+        "section": {
+          "sectionData": "Section information",
+          "sectionTitle": "Section title"
+        },
+        "field":{
+          "fieldData": "Field information",
+          "fieldType": "Field type",
+          "required": "Required",
+          "defineUserGroup": "Define a user group",
+          "selectableFieldsInfo": "Selectable only for menu elements (radio, pulldown, checkbox, date & time)",
+          "fieldTitle": "Field title",
+          "addFieldsAsText": "Text mode",
+          "addFieldsAsTextHelper": "Enter options seperated by line break.",
+          "updateFields": "Update fields",
+          "addFieldOption": "Add field",
+          "addNewColumn": "Add new column",
+          "addColumnType": "Add column type",
+          "columnTextType": "Text field",
+          "columnNumberType": "Number field",
+          "submitButtonText": "Button text",
+          "newFieldOption": "Option field",
+          "addCustomHtml": "Add HTML code in field",
+          "contextVisibilityInfo": "Field management settings",
+          "workDaysOnly": "Work days only",
+          "slider": {
+            "minValueLabel": "Field minimum value",
+            "maxValueLabel": "Field maximum value"
+          }
+        },
+        "tooltipDescription": "Edit form section information. Edit field information, attributes, and display settings."
+      },
+      "visibility": {
+        "tabTitle": "Visibility",
+        "fieldVisibility": "The field is visible on the form:",
+        "conditionLabelTitle":"Condition field name",
+        "visibilityCondition": "Visibility condition",
+        "conditionally": "Conditionally",
+        "conditionalFieldValue": "Conditional field value",
+        "conditionalFieldInfo": "Select the form field that determines visibility.",
+        "conditionalFieldValueInfo":"Select or enter the field value that determines the visibility.",
+        "fieldDefiningCondition": "Field defining the condition",
+        "selectField": "Select a field",
+        "fieldConditionLabel": "This field appears, if {0} value is {1}",
+        "sectionConditionLabel": "This section appears, if {0} value is {1}",
+        "selectVisibilityInfo": "Select a field in the form to edit the field information.",
+        "formVisibility": "Form information",
+        "formVisibilityLabel": "Form visibility",
+        "private": "Private",
+        "public": "Public",
+        "tooltipDescription": "Set conditions whether field is visible on form.",
+        "or": "Or",
+        "addVisibleOrButtonText": "Add optional condition",
+        "showConditionChain": "Show condition chain",
+        "closeConditionChain": "Close condition chain",
+        "allChoices": "Any choice",
+        "andConditionChainTerms": "And condition chain terms",
+        "visibilityConditionTooltip": "The visibility condition determines the visibility of the field on the form. There can be several conditions for visibility, so when any condition is met, the field is visible on the form. \n If the field's visibility also depends on the visibility of another field, the 'SHOW CONDITIONAL LINE' button can be used to view the condition line."
+      },
+      "memberGroups": {
+        "memberGroupDefineSettings": "Member group defining settings",
+        "defaultMemberGroupInfo": "Default member group",
+        "defaultMemberGroupInfoLabel": "Select default member group",
+        "memberGroupPermission": "Member group permissions",
+        "selectedMemberGroup": "Selected field",
+        "memberGroup": "Member group",
+        "view":"View",
+        "edit":"Edit",
+        "fieldValueLabel": "Field value",
+        "notifications": "Notifications",
+        "noMemberGroup":"No Member group",
+        "noPermission":"No permission",
+        "noDefaultPermissionMemberGroup": "No default permission member group"
+      }
+    },
+    "formPreview": {
+      "exit": "Exit preview",
+      "shareLink": "Share link",
+      "shareLinkDialog": {
+        "title": "Share a preview version of the form",
+        "text": "Send an invitation by e-mail, or copy the link and share it yourself on the channel of your choice. Remember to save the draft version first.",
+        "link": "Direct link",
+        "recipients": "Recipient(s)",
+        "send": "Send",
+        "linkCopied": "Link copied"
+      },
+      "previewEmail": {
+        "content": "<p>Hi!</p><p>Please preview the form {0} from following link:</p><p><a href='{1}'>{1}</a></p><hr/><p>This is an automated message, please do not reply.</p>",
+        "subject": "Please preview the form - {0}",
+        "emailSent": "Email sent"
+      }
+    }
+  },
+
+  "userManagementScreen": {
+    "selector": {
+      "form": "Select form",
+      "group": "Select group",
+      "user": "Select user"
+    },
+    "editMemberButton": "Edit user",
+    "addMemberButton": "New member",
+    "addMemberGroupButton": "New group",
+    "addMemberDialog": {
+      "title": "New member",
+      "text": "Add new member to the form",
+      "freeTextSearchLabel": "User search",
+      "usersSelectLabel": "Users",
+      "searchButton": "Search",
+      "emailLabel": "Email",
+      "firstNameLabel": "First name",
+      "lastNameLabel": "Last name",
+      "upnNumberLabel": "UPN number",
+      "createButton": "Add member",
+      "cancelButton": "Cancel",
+      "tooltip": {
+        "tooltipGeneral": "Add existing user or create new user to form.",
+        "tooltipNoIconDescription": "User without icon exists only in Portals user registry.",
+        "tooltipLinkIconDescription": "User with link icon exists in Portals user registry and is linked with professional card.",
+        "tooltipCardIconDescription": "User with card icon exists only in DVVs user registry."
+      }
+    },
+    "addMemberGroupDialog": {
+      "title": "New group",
+      "text": "Add new group to the form",
+      "displayNameLabel": "Group's name",
+      "createButton": "Add group",
+      "cancelButton": "Cancel"
+    },
+    "editMemberDialog": {
+      "title": "Edit user",
+      "text": "Edit existing members",
+      "freeTextSearchLabel": "User search",
+      "metaformUsersSelectLabel": "Portal users",
+      "cardAuthUsersSelectLabel": "Card users",
+      "userIsLinked": "User is linked to card",
+      "searchButton": "Search",
+      "emailLabel": "Email",
+      "firstNameLabel": "First name",
+      "lastNameLabel": "Last name",
+      "upnNumberLabel": "UPN number",
+      "cancelButton": "Cancel",
+      "editButton": "Edit user",
+      "tooltip": {
+        "tooltipGeneral": "Edit users information and add or remove link with professional card."
+      }
+    },
+    "usersTable": {
+      "nameColumn": {
+        "label": "Name"
+      },
+      "emailColumn": {
+        "label": "Email"
+      },
+      "groupsColumn": {
+        "label": "Groups"
+      }
+    }
+  },
+
+  "formHistoryScreen": {
+    "historyTable": {
+      "date": "Date",
+      "actor": "Actor",
+      "replyId": "Reply id",
+      "actionPerformed": "Action performed"
+    }
+  },
+
+  "fieldComponents": {
+    "tableField": {
+      "addNewRow": "Add new row",
+      "unknownColumnType": "Unknown column type"
+    }
+  },
+
+  "formsScreen": {
+    "formTable": {
+      "form": "Form",
+      "latestReply": "Latest",
+      "newReply": "New",
+      "notProcessed": "Untreated"
+    }
+  },
+
+  "formsDataScreen": {
+    "formDataTable": {
+      "form": "Forms",
+      "monthlyReplies": "Answers / month",
+      "processingDelay": "Processing delay",
+      "average": "Average",
+      "delayFormat": "{0} d {1} h {2} min"
+    }
+  },
+
+  "formScreen": {
+    "autosaving": "Saving reply...",
+    "replyNotFound": "Reply could not be found from the system",
+    "replyEditEmailText": "You can send the link to your email by clicking",
+    "replyEditEmailContent": "<p>Hi!</p><p>You can edit form {0} reply from following link:</p><p><a href='{1}'>{1}</a></p><hr/><p>This is an automated message, please do not reply.</p>",
+    "replyEditEmailSubject": "{0} -form edit link",
+    "replyEditEmailSent": "Edit link has been sent!",
+    "saveDraft": "You can save this form reply as a draft by clicking",
+    "saveDraftLink": "here",
+    "draftEmailSubject": "{0} -form draft link",
+    "draftEmailContent": "<p>Hi!</p><p>You can continue filling the form {0} from following link:</p><p><a href='{1}'>{1}</a></p><hr/><p>This is an automated message, please do not reply.</p>",
+    "draftEmailSent": "Draft link has been sent!",
+    "draftSaved": "The form has been saved as a draft. Please bookmark following link to continue later: ",
+    "draftEmailText": "You can send the link to your email by clicking",
+    "draftEmailLink": "here",
+    "draftEmailDialogText": "Enter the email address to which you want the draft link to be sent",
+    "replySaved": "Reply saved successfully",
+    "replyEdit": "You can modify your reply using following link:",
+    "replyEditEmailLink": "here",
+    "replyEditEmailDialogText": "Enter the email address to which you want the edit form link to be sent",
+    "replyDeleteText": "You can delete this reply by clicking",
+    "replyDeleteLink": "here",
+    "confirmDeleteReplyTitle": "Are you sure?",
+    "confirmDeleteReplyText": "Are you sure that you wish to delete the reply?",
+    "replyDeleted": "Reply deleted",
+    "noTitle": "No title"
+  },
+
+  "editorScreen": {
+    "noMetaforms": "No forms found",
+    "formVersion": "FORM VERSION",
+    "formCreatedAt": "CREATED AT",
+    "formModifiedAt": "MODIFIED AT",
+    "formLastModifier": "LAST MODIFIER",
+    "formLastModifierNotFound": "Not found",
+    "formVersionArchived": "Archived",
+    "formVersionDraft": "Draft",
+    "formProductionVersion": "Production",
+    "drawer": {
+      "newForm": "Create new form",
+      "helper": "Forms general settings that affect all versions of form.",
+      "formInfo": "Form info",
+      "formName": "Name",
+      "formUrl": "Url-address",
+      "formTemplate": "Form template",
+      "formTemplateCustom": "Empty template",
+      "formTemplateCustomHelper": "Create new form with empty template. Recommended only if Sosmeta doesn't contain a suitable form template.",
+      "formTemplateSosmeta": "Sosmeta template",
+      "formTemplateSosmetaHelper": "Create new form with Sosmetas structure. Sosmeta is a service maintained by the Finnish Institute for Health and Welfare. Templates can be found at ",
+      "formTemplateSosmetaLink": "https://sosmeta.thl.fi/document-definitions/list",
+      "formTemplateSchema": "Schema",
+      "formIdentification": "Repliers identification",
+      "formIdentificationService": "Suomi.fi -service",
+      "formIdentificationHelper": "Form replier needs to identificate themself through the Suomi.fi -service when submitting reply.",
+      "formIdentificationNone": "No identification"
+    },
+    "confirmDeleteVersionTitle": "Are you sure?",
+    "confirmDeleteVersionText": "Are you sure that you wish to delete the form version?"
+  },
+
+  "emailDialog": {
+    "send": "Send",
+    "title": "Title",
+    "email": "Address",
+    "cancel": "Cancel"
+  },
+
+  "autoComplete": {
+    "missingOptions": "Code server autocomplete not configured",
+    "missingCodeServerBaseUrl": "Code server autocomplete missing codeServerBaseUrl",
+    "missingCodeServerClassificationId": "Code server autocomplete missing codeServerClassificationId",
+    "missingCodeServerParentConceptCodeId": "Code server autocomplete missing codeServerParentConceptCodeId",
+    "missingAutocomplete": "Autocomplete not configured",
+    "unknownAutocompleteService": "UNKNOWN_AUTO_COMPLETE_SERVICE"
+  },
+
+  "auditLogEntryType": {
+    "viewReply": "Viewed",
+    "listReply": "Listed",
+    "modifyReply": "Modified",
+    "deleteReply": "Deleted",
+    "createReply": "Created",
+    "viewReplyAttachment": "Viewed attachment",
+    "downloadReplyAttachment": "Downloaded attachment",
+    "exportReplyPdf": "Exported pdf",
+    "exportReplyXlsx": "Exported xlsx"
+  },
+
+  "formContext": {
+    "management": "Shown on management screen",
+    "managementList": "Shown on management list screen",
+    "form": "Shown on the form for customer"
+  },
+
+  "dataGrid": {
+    "rowsPerPage": "Rows per page:"
+  },
+
+  "successSnackbars": {
+    "formEditor": {
+      "deleteFormSuccessText": "Production form deleted successfully!",
+      "deleteFormVersionSuccessText": "Draft form deleted successfully!",
+      "restoreArchiveFormSuccessText": "Archived form restored successfully!",
+      "createFormSuccessText": "New form created successfully!",
+      "convertSchemaSuccessText": "Sosmeta schema converted successfully!"
+    },
+    "draftEditor": {
+      "saveDraftSuccessText": "Draft form saved successfully!",
+      "publishDraftSuccessText": "Form published successfully!"
+    },
+    "users": {
+      "addMemberSuccessText": "Added user successfully!",
+      "editUserSuccessText": "Edited user successfully!",
+      "addMemberGroupSuccessText": "Created group successfully!",
+      "groupMembershipAddSuccessText": "Added user to group successfully!",
+      "groupMembershipRemoveSuccessText": "Removed user from group successfully!"
+    },
+    "replies": {
+      "replyDeleteSuccessText": "Form deleted successfully!",
+      "replyEditSuccessText": "Form edited successfully!"
+    }
+  }
 }

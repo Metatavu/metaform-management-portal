@@ -5,10 +5,18 @@ import { Configuration } from "types";
  * Validates that environment variables are in place and have correct form
  */
 const env = cleanEnv(process.env, {
-  REACT_APP_KEYCLOAK_URL: url(),
-  REACT_APP_KEYCLOAK_REALM: str(),
-  REACT_APP_KEYCLOAK_CLIENT_ID: str(),
-  REACT_APP_API_BASE_URL: url()
+  REACT_APP_KEYCLOAK_URL: url({ default: undefined }),
+  REACT_APP_KEYCLOAK_REALM: str({ default: undefined }),
+  REACT_APP_KEYCLOAK_CLIENT_ID: str({ default: undefined }),
+  REACT_APP_API_BASE_URL: url({ default: undefined }),
+  REACT_APP_SENTRY_DSN: url({ default: undefined }),
+  REACT_APP_SENTRY_ENVIRONMENT: str({ default: "production" }),
+  REACT_APP_CORS_PROXY: str({ default: undefined }),
+  REACT_APP_ANONYMOUS_USER: str(),
+  REACT_APP_ANONYMOUS_PASSWORD: str(),
+  REACT_APP_TUTORIAL_URL: str({ default: "" }),
+  REACT_APP_DEFAULT_EXPORT_THEME_ID: str({ default: undefined }),
+  REACT_APP_FORM_IDPHINT: str({ default: undefined })
 });
 
 /**
@@ -27,9 +35,61 @@ export default class Config {
       realm: env.REACT_APP_KEYCLOAK_REALM,
       clientId: env.REACT_APP_KEYCLOAK_CLIENT_ID
     },
+    anonymousUser: {
+      username: env.REACT_APP_ANONYMOUS_USER,
+      password: env.REACT_APP_ANONYMOUS_PASSWORD
+    },
     api: {
       baseUrl: env.REACT_APP_API_BASE_URL
+    },
+    form: {
+      idpHint: env.REACT_APP_FORM_IDPHINT
     }
   });
+
+  /**
+   * Returns default export theme id
+   *
+   * @returns export theme id
+   */
+  public static getDefaultExportThemeId(): string {
+    return env.REACT_APP_DEFAULT_EXPORT_THEME_ID;
+  }
+
+  /**
+   * Returns tutorial url
+   *
+   * @returns tutorial url
+   */
+  public static getTutorialUrl(): string | undefined {
+    return env.REACT_APP_TUTORIAL_URL;
+  }
+
+  /**
+   * Returns sentry dsn
+   *
+   * @returns sentry dsn
+   */
+  public static getSentryDsn(): string | undefined {
+    return env.REACT_APP_SENTRY_DSN;
+  }
+
+  /**
+   * Returns sentry environment
+   *
+   * @returns sentry environment
+   */
+  public static getSentryEnvironment(): string {
+    return env.REACT_APP_SENTRY_ENVIRONMENT;
+  }
+
+  /**
+   * Returns address for CORS proxy service
+   *
+   * @returns address for CORS proxy service
+   */
+  public static getCorsProxy(): string {
+    return env.REACT_APP_CORS_PROXY;
+  }
 
 }

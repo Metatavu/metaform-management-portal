@@ -1,0 +1,3 @@
+[submodule "metaform-api-spec"]
+	path = metaform-api-spec
+	url = https://github.com/Metatavu/metaform-api-spec
