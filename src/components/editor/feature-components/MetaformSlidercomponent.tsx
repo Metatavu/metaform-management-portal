@@ -44,7 +44,6 @@ const MetaformSliderComponent: FC<Props> = ({
     if (!metaformField) {
       return;
     }
-    console.log(eventValue);
     const updatedField = produce(metaformField, draftField => {
       if (scopeValue === "min") {
         draftField.min = Number(eventValue);

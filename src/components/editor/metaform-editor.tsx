@@ -78,6 +78,7 @@ const MetaformEditor: React.FC<Props> = ({
     });
 
     setPendingForm(updatedForm);
+    dispatch(setMetaformSection(pendingForm.sections[sectionIndex]));
     dispatch(setMetaformSectionIndex(sectionIndex));
     dispatch(setMetaformFieldIndex(fieldIndex));
     dispatch(setMetaformField(defaultField));
