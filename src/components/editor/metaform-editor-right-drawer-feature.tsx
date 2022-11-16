@@ -39,10 +39,10 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
 
   useEffect(() => {
     if (metaformSectionIndex !== undefined) {
-      setMetaformSection(pendingForm.sections![metaformSectionIndex]);
+      setMetaformSection(pendingForm.sections?.[metaformSectionIndex]);
     }
     if (metaformFieldIndex !== undefined && metaformSectionIndex !== undefined) {
-      setMetaformField(pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex]);
+      setMetaformField(pendingForm.sections?.[metaformSectionIndex].fields?.[metaformFieldIndex]);
     }
     if (metaformFieldIndex === undefined) {
       setMetaformField(undefined);

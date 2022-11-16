@@ -26,7 +26,7 @@ const MetaformDateTimeComponent: FC<Props> = ({
 
   useEffect(() => {
     if (metaformSectionIndex !== undefined && metaformFieldIndex !== undefined) {
-      setMetaformField(pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex]);
+      setMetaformField(pendingForm.sections?.[metaformSectionIndex].fields?.[metaformFieldIndex]);
     }
   }, [metaformFieldIndex, metaformSectionIndex, metaformVersion]);
   /**

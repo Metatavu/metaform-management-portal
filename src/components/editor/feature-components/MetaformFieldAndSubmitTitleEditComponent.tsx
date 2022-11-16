@@ -27,10 +27,10 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
 
   useEffect(() => {
     if (metaformSectionIndex !== undefined) {
-      setMetaformSection(pendingForm.sections![metaformSectionIndex]);
+      setMetaformSection(pendingForm.sections?.[metaformSectionIndex]);
     }
     if (metaformSectionIndex !== undefined && metaformFieldIndex !== undefined) {
-      setMetaformField(pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex]);
+      setMetaformField(pendingForm.sections?.[metaformSectionIndex].fields?.[metaformFieldIndex]);
     }
   }, [metaformFieldIndex, metaformSectionIndex, metaformVersion]);
 
