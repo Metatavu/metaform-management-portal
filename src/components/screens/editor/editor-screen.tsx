@@ -103,7 +103,7 @@ const EditorScreen: React.FC = () => {
         emailNotification: {
           emails: [],
           subjectTemplate: "Uusi vastaus sähköiselle lomakkeelle",
-          contentTemplate: "Järjestelmään on jätetty uusi vastaus sähköiselle lomakkeelle. Voit käydä tarkastelemassa vastausta osoitteessa https://metaform-portal.etelasavonha.fi/admin"
+          contentTemplate: "Järjestelmään on jätetty uusi vastaus sähköiselle lomakkeelle. <br/><br/> Voit käydä tarkastelemassa vastausta osoitteessa https://metaform-portal.etelasavonha.fi/admin"
         }
       });
       
