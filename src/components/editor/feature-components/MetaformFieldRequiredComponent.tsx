@@ -1,7 +1,7 @@
 import { Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
 import { MetaformField } from "generated/client";
 import strings from "localization/strings";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { selectMetaform, setMetaformField } from "../../../features/metaform-slice";
 import { useAppSelector, useAppDispatch } from "app/hooks";
 
@@ -9,15 +9,14 @@ import { useAppSelector, useAppDispatch } from "app/hooks";
  * Component properties
  */
 interface Props {
-  setUpdatedMetaformField: (updatedMetaformField?: MetaformField) => void;
+  updateFormFieldDebounced: (updatedField: MetaformField) => void;
 }
 /**
  * Draft editor right drawer feature define member group component
  */
 const MetaformFieldRequiredComponent: FC<Props> = ({
-  setUpdatedMetaformField
+  updateFormFieldDebounced
 }) => {
-  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
   const { metaformField } = useAppSelector(selectMetaform);
   const dispatch = useAppDispatch();
 
@@ -26,10 +25,9 @@ const MetaformFieldRequiredComponent: FC<Props> = ({
    *
    * @param field edited field
    */
-  const updateFormFieldDebounced = (field: MetaformField) => {
+  const updateFormField = (field: MetaformField) => {
     dispatch(setMetaformField(field));
-    debounceTimerId && clearTimeout(debounceTimerId);
-    setDebounceTimerId(setTimeout(() => setUpdatedMetaformField(field), 500));
+    updateFormFieldDebounced(field);
   };
 
   /**
@@ -49,7 +47,7 @@ const MetaformFieldRequiredComponent: FC<Props> = ({
             control={
               <Checkbox
                 checked={ field.required }
-                onChange={ event => updateFormFieldDebounced({
+                onChange={ event => updateFormField({
                   ...field,
                   required: event.target.checked
                 }) }

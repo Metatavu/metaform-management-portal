@@ -1,8 +1,8 @@
 import { Divider, Stack, TextField, Typography } from "@mui/material";
-import { Metaform, MetaformField, MetaformSection, MetaformFieldType, FieldRule, MetaformMemberGroup } from "generated/client";
+import { Metaform, MetaformField, MetaformSection, MetaformFieldType, FieldRule, MetaformMemberGroup, MetaformFieldOption } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
-import React, { useEffect, FC, useState } from "react";
+import React, { FC, useState } from "react";
 import MetaformUtils from "utils/metaform-utils";
 import MetaformDefineMemberGroupComponent from "./feature-components/MetaformDefineMemberGroupComponent";
 import MetaformSliderComponent from "./feature-components/MetaformSlidercomponent";
@@ -32,10 +32,34 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
   pendingForm,
   setPendingForm
 }) => {
-  const [ updatedMetaformField, setUpdatedMetaformField ] = useState<MetaformField>();
   const { metaformField, metaformFieldIndex, metaformSectionIndex, metaformSection } = useAppSelector(selectMetaform);
+  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
   const dispatch = useAppDispatch();
 
+  /**
+   * 
+   * @param fieldRules field rules
+   * @param field metaform field
+   * @param optionIndex option index
+   * @param fieldOptionMatch field option match
+   */
+  const checkFieldRules = (fieldRules: FieldRule[], field: MetaformField, optionIndex?: number, fieldOptionMatch?: MetaformFieldOption) => {
+    fieldRules.forEach(rule => {
+      if ((metaformField!.name !== undefined && field.name !== metaformField!.name)) {
+        rule.field = field.name;
+      // option update
+      } else if (optionIndex !== undefined) {
+        const fieldOptionToUpdate = field.options![optionIndex];
+        if (rule.equals === fieldOptionMatch!.name) {
+          rule.equals = fieldOptionToUpdate.name;
+        } else if (rule.notEquals === fieldOptionMatch!.name) {
+          rule.notEquals = fieldOptionToUpdate.name;
+        }
+      }
+      return field;
+    });
+  };
+  
   /**
    * Updates field with visibility
    *
@@ -68,20 +92,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
               }
             });
           });
-
-          fieldRules.forEach(rule => {
-            if ((checkedName!.name !== undefined && field.name !== checkedName!.name)) {
-              rule.field = field.name;
-            // option update
-            } else if (optionIndex !== undefined) {
-              const fieldOptionToUpdate = field.options![optionIndex];
-              if (rule.equals === fieldOptionMatch!.name) {
-                rule.equals = fieldOptionToUpdate.name;
-              } else if (rule.notEquals === fieldOptionMatch!.name) {
-                rule.notEquals = fieldOptionToUpdate.name;
-              }
-            }
-          });
+          checkFieldRules(fieldRules, field, optionIndex, fieldOptionMatch);
         }
       }
 
@@ -91,11 +102,15 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
     setPendingForm(updatedForm);
   };
 
-  useEffect(() => {
-    if (updatedMetaformField) {
-      updateFormField(updatedMetaformField);
-    }
-  }, [updatedMetaformField]);
+  /**
+   * Debounced update field
+   *
+   * @param field edited field
+   */
+  const updateFormFieldDebounced = (field: MetaformField, optionIndex?: number) => {
+    debounceTimerId && clearTimeout(debounceTimerId);
+    setDebounceTimerId(setTimeout(() => updateFormField(field, optionIndex), 500));
+  };
 
   /**
    * Updates metaform section
@@ -127,7 +142,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         return (
           <>
             <MetaformSliderComponent
-              setUpdatedMetaformField={ setUpdatedMetaformField }
+              updateFormFieldDebounced={ updateFormFieldDebounced }
             />
             <Divider/>
           </>
@@ -138,13 +153,12 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         return (
           <>
             <MetaformMultiChoiceFieldPropertiesComponent
-              setPendingForm={ setPendingForm }
-              setUpdatedMetaformField={ setUpdatedMetaformField }
+              updateFormFieldDebounced={ updateFormFieldDebounced }
             />
             <Divider/>
             <MetaformDefineMemberGroupComponent
               memberGroups={ memberGroups }
-              setUpdatedMetaformField={ setUpdatedMetaformField }
+              updateFormFieldDebounced={ updateFormFieldDebounced }
             />
             <Divider/>
           </>
@@ -153,7 +167,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         return (
           <>
             <MetaformTableComponent
-              setUpdatedMetaformField={ setUpdatedMetaformField }
+              updateFormFieldDebounced={ updateFormFieldDebounced }
             />
             <Divider/>
           </>
@@ -163,7 +177,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         return (
           <>
             <MetaformDateTimeComponent
-              setUpdatedMetaformField={ setUpdatedMetaformField }
+              updateFormFieldDebounced={ updateFormFieldDebounced }
             />
             <Divider/>
           </>
@@ -203,16 +217,16 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const renderFieldEditor = (field: MetaformField) => (
     <>
       <MetaformFieldAndSubmitEditTitleComponent
-        setUpdatedMetaformField={ setUpdatedMetaformField }
+        updateFormFieldDebounced={ updateFormFieldDebounced }
       />
       <Divider/>
       { renderFieldProperties(field) }
       <MetaformContextOptionsComponent
-        setUpdatedMetaformField={ setUpdatedMetaformField }
+        updateFormFieldDebounced={ updateFormFieldDebounced }
       />
       <Divider/>
       <MetaformFieldRequiredComponent
-        setUpdatedMetaformField={ setUpdatedMetaformField }
+        updateFormFieldDebounced={ updateFormFieldDebounced }
       />
       <Divider/>
     </>

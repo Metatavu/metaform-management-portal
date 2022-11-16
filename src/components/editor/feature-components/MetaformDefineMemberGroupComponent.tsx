@@ -14,7 +14,7 @@ import { useAppSelector, useAppDispatch } from "app/hooks";
  */
 interface Props {
   memberGroups: MetaformMemberGroup[],
-  setUpdatedMetaformField: (updatedMetaformField: MetaformField) => void;
+  updateFormFieldDebounced: (updatedField: MetaformField) => void;
 }
 
 /**
@@ -22,29 +22,16 @@ interface Props {
  */
 const RenderDefineMemberGroupComponent: FC<Props> = ({
   memberGroups,
-  setUpdatedMetaformField
+  updateFormFieldDebounced
 }) => {
   const [ selectMemberGroupEnabled, setSelectMemberGroupEnabled ] = useState<boolean>(false);
   const [ selectedMemberGroupId, setSelectedMemberGroupId ] = useState<string>();
   const [ selectedMemberGroupPermission, setSelectedMemberGroupPermission ] = useState<NullableMemberGroupPermission>(NOT_SELECTED);
   const [ memberGroupOptIndex, setMemberGroupOptIndex ] = useState<number>();
-  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
   const { metaformField, metaformFieldIndex, metaformSectionIndex, metaformVersion } = useAppSelector(selectMetaform);
   const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
 
   const dispatch = useAppDispatch();
-
-  /**
-   * Debounced update field
-   *
-   * @param field edited field
-   */
-  const updateFormFieldDebounced = (field: MetaformField) => {
-    dispatch(setMetaformField(field));
-
-    debounceTimerId && clearTimeout(debounceTimerId);
-    setDebounceTimerId(setTimeout(() => setUpdatedMetaformField(field), 500));
-  };
 
   /**
    * Empties member group settings
@@ -152,7 +139,8 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
       draftField.options![memberGroupOptIndex].permissionGroups = undefined;
     });
 
-    setUpdatedMetaformField(updatedField);
+    dispatch(setMetaformField(updatedField));
+    updateFormFieldDebounced(updatedField);
   };
 
   /**
@@ -190,7 +178,7 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
         draftField.options![memberGroupOptIndex]!.permissionGroups = undefined;
       }
     });
-
+    dispatch(setMetaformField(updatedField));
     updateFormFieldDebounced(updatedField);
   };
 
@@ -211,7 +199,7 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
         notifyGroupIds: checked ? [ selectedMemberGroupId ] : []
       };
     });
-
+    dispatch(setMetaformField(updatedField));
     updateFormFieldDebounced(updatedField);
   };
 

@@ -2,7 +2,7 @@ import { FormControlLabel, Stack, Switch } from "@mui/material";
 import { MetaformField } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { selectMetaform, setMetaformField } from "../../../features/metaform-slice";
 import { useAppSelector, useAppDispatch } from "app/hooks";
 
@@ -10,31 +10,17 @@ import { useAppSelector, useAppDispatch } from "app/hooks";
  * Component properties
  */
 interface Props {
-  setUpdatedMetaformField: (updatedMetaformField: MetaformField) => void;
+  updateFormFieldDebounced: (updatedField: MetaformField) => void;
 }
 
 /**
  * Draft editor right drawer feature define member group component
  */
 const MetaformDateTimeComponent: FC<Props> = ({
-  setUpdatedMetaformField
+  updateFormFieldDebounced
 }) => {
   const dispatch = useAppDispatch();
   const { metaformField } = useAppSelector(selectMetaform);
-  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
-
-  /**
-   * Debounced update field
-   *
-   * @param field edited field
-   * @param optionIndex option index
-   */
-  const updateFormFieldDebounced = (field: MetaformField) => {
-    dispatch(setMetaformField(field));
-
-    debounceTimerId && clearTimeout(debounceTimerId);
-    setDebounceTimerId(setTimeout(() => setUpdatedMetaformField(field), 500));
-  };
 
   /**
    * Updates allows work days only for date, date-time field
@@ -49,7 +35,7 @@ const MetaformDateTimeComponent: FC<Props> = ({
     const updatedField = produce(metaformField, draftField => {
       draftField.workdaysOnly = checked;
     });
-
+    dispatch(setMetaformField(updatedField));
     updateFormFieldDebounced(updatedField);
   };
 

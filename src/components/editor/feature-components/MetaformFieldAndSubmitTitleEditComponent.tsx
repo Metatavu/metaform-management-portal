@@ -1,7 +1,7 @@
 import { Stack, TextField, Typography } from "@mui/material";
 import { MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
 import strings from "localization/strings";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import slugify from "slugify";
 import LocalizationUtils from "utils/localization-utils";
 import { selectMetaform, setMetaformField } from "../../../features/metaform-slice";
@@ -10,17 +10,16 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
  * Component properties
  */
 interface Props {
-  setUpdatedMetaformField: (updatedMetaformField?: MetaformField) => void;
+  updateFormFieldDebounced: (updatedField: MetaformField) => void;
 }
 
 /**
  * Draft editor right drawer feature define member group component
  */
 const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
-  setUpdatedMetaformField
+  updateFormFieldDebounced
 }) => {
   const { metaformField, metaformSectionIndex, metaformFieldIndex, metaformSection } = useAppSelector(selectMetaform);
-  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
   const dispatch = useAppDispatch();
 
   /**
@@ -28,10 +27,9 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
    *
    * @param field edited field
    */
-  const updateFormFieldDebounced = (field: MetaformField) => {
+  const updateFormField = (field: MetaformField) => {
     dispatch(setMetaformField(field));
-    debounceTimerId && clearTimeout(debounceTimerId);
-    setDebounceTimerId(setTimeout(() => setUpdatedMetaformField(field), 500));
+    updateFormFieldDebounced(field);
   };
 
   /**
@@ -51,7 +49,7 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
             fullWidth
             label={ strings.draftEditorScreen.editor.features.field.fieldTitle }
             value={ field.title }
-            onChange={ event => updateFormFieldDebounced({
+            onChange={ event => updateFormField({
               ...field,
               title: event.target.value,
               name: slugify(`${section.title}-${event.target.value}-${metaformSectionIndex}-${metaformFieldIndex}`)
@@ -83,7 +81,7 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
             fullWidth
             label={ strings.draftEditorScreen.editor.features.field.submitButtonText }
             value={ field.text }
-            onChange={ event => updateFormFieldDebounced({
+            onChange={ event => updateFormField({
               ...field,
               text: event.target.value,
               name: slugify(`${section.title}-${event.target.value}-${metaformSectionIndex}-${metaformFieldIndex}`)

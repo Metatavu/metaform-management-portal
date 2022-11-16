@@ -2,38 +2,25 @@ import { Stack, TextField } from "@mui/material";
 import { MetaformField } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { setMetaformField, selectMetaform } from "../../../features/metaform-slice";
 import { useAppSelector, useAppDispatch } from "app/hooks";
 /**
  * Component properties
  */
 interface Props {
-  setUpdatedMetaformField: (updatedMetaformField: MetaformField) => void;
+  updateFormFieldDebounced: (updatedField: MetaformField) => void;
 }
 
 /**
  * Draft editor right drawer feature define member group component
  */
 const MetaformSliderComponent: FC<Props> = ({
-  setUpdatedMetaformField
+  updateFormFieldDebounced
 }) => {
   const dispatch = useAppDispatch();
   const { metaformField } = useAppSelector(selectMetaform);
-  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
 
-  /**
-   * Debounced update field
-   *
-   * @param field edited field
-   * @param optionIndex option index
-   */
-  const updateFormFieldDebounced = (field: MetaformField) => {
-    dispatch(setMetaformField(field));
-    debounceTimerId && clearTimeout(debounceTimerId);
-    setDebounceTimerId(setTimeout(() => setUpdatedMetaformField(field), 500));
-  };
-  
   /**
    * Update slider or number field min or max values. Number field can have empty min/max values but slider have to have min and max values
    *
@@ -52,6 +39,7 @@ const MetaformSliderComponent: FC<Props> = ({
         draftField.max = Number(eventValue);
       }
     });
+    dispatch(setMetaformField(updatedField));
     updateFormFieldDebounced(updatedField);
   };
 

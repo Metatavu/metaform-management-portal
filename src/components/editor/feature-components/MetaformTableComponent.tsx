@@ -2,7 +2,7 @@ import { Button, IconButton, MenuItem, Stack, TextField, Typography } from "@mui
 import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import slugify from "slugify";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { setMetaformField, selectMetaform } from "../../../features/metaform-slice";
@@ -11,30 +11,18 @@ import { useAppSelector, useAppDispatch } from "app/hooks";
  * Component properties
  */
 interface Props {
-  setUpdatedMetaformField: (updatedMetaformField: MetaformField) => void;
+  updateFormFieldDebounced: (updatedField: MetaformField) => void;
 }
 
 /**
  * Draft editor right drawer feature define member group component
  */
 const MetaformTableComponent: FC<Props> = ({
-  setUpdatedMetaformField
+  updateFormFieldDebounced
 }) => {
-  const [ newColumnType, setNewColumnType ] = useState<MetaformTableColumnType>();
+  const [ newColumnType, setNewColumnType ] = React.useState<MetaformTableColumnType>();
   const { metaformField } = useAppSelector(selectMetaform);
-  const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
   const dispatch = useAppDispatch();
-  /**
-   * Debounced update field
-   *
-   * @param field edited field
-   */
-  const updateFormFieldDebounced = (field: MetaformField) => {
-    dispatch(setMetaformField(field));
-
-    debounceTimerId && clearTimeout(debounceTimerId);
-    setDebounceTimerId(setTimeout(() => setUpdatedMetaformField(field), 500));
-  };
 
   /**
    * Update column value
@@ -50,7 +38,7 @@ const MetaformTableComponent: FC<Props> = ({
     const updatedField = produce(metaformField, draftField => {
       draftField.columns?.splice(columnIndex, 1, tableColumn);
     });
-
+    dispatch(setMetaformField(updatedField));
     updateFormFieldDebounced(updatedField);
   };
   
@@ -67,7 +55,7 @@ const MetaformTableComponent: FC<Props> = ({
     const updatedField = produce(metaformField, draftField => {
       draftField.columns?.splice(columnIndex, 1);
     });
-
+    dispatch(setMetaformField(updatedField));
     updateFormFieldDebounced(updatedField);
   };
 
@@ -123,7 +111,7 @@ const MetaformTableComponent: FC<Props> = ({
     const updatedField = produce(metaformField, draftField => {
       draftField.columns = [ ...(draftField.columns || []), newColumn ];
     });
-
+    dispatch(setMetaformField(updatedField));
     updateFormFieldDebounced(updatedField);
   };
 
