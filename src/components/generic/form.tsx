@@ -215,7 +215,11 @@ const Form: React.FC<Props> = ({
 
     const { attachmentsApi } = apiClient;
     const data = await attachmentsApi.findAttachmentData({ attachmentId: value.id, ownerKey: ownerKey });
-    MetaformUtils.downloadBlob(data, value.name || "attachment");
+    const img = URL.createObjectURL(data);
+    window.open(img);
+
+    /* Download image */
+    /* MetaformUtils.downloadBlob(data, value.name || "attachment"); */
   };
 
   /**
