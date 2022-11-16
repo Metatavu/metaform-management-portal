@@ -2,7 +2,7 @@ import { Divider, Stack, TextField, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformSection, MetaformFieldType, FieldRule, MetaformMemberGroup, MetaformFieldOption } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import MetaformUtils from "utils/metaform-utils";
 import MetaformDefineMemberGroupComponent from "./feature-components/MetaformDefineMemberGroupComponent";
 import MetaformSliderComponent from "./feature-components/MetaformSlidercomponent";
@@ -12,8 +12,8 @@ import MetaformMultiChoiceFieldPropertiesComponent from "./feature-components/Me
 import MetaformContextOptionsComponent from "./feature-components/MetaformContextOptionsComponent";
 import MetaformFieldAndSubmitEditTitleComponent from "./feature-components/MetaformFieldAndSubmitTitleEditComponent";
 import MetaformFieldRequiredComponent from "./feature-components/MetaformFieldRequiredComponent";
-import { selectMetaform, setMetaformSection } from "../../features/metaform-slice";
-import { useAppSelector, useAppDispatch } from "app/hooks";
+import { selectMetaform } from "../../features/metaform-slice";
+import { useAppSelector } from "app/hooks";
 
 /**
  * Component properties
@@ -32,10 +32,26 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
   pendingForm,
   setPendingForm
 }) => {
-  const { metaformField, metaformFieldIndex, metaformSectionIndex, metaformSection } = useAppSelector(selectMetaform);
+  const { metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
   const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
-  const dispatch = useAppDispatch();
+  const [ metaformField, setMetaformField ] = useState<MetaformField>();
+  const [ metaformSection, setMetaformSection ] = useState<MetaformSection>();
 
+  useEffect(() => {
+    if (metaformSectionIndex !== undefined) {
+      setMetaformSection(pendingForm.sections![metaformSectionIndex]);
+    }
+    if (metaformFieldIndex !== undefined && metaformSectionIndex !== undefined) {
+      setMetaformField(pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex]);
+    }
+    if (metaformFieldIndex === undefined) {
+      setMetaformField(undefined);
+    }
+    if (metaformSectionIndex === undefined) {
+      setMetaformSection(undefined);
+    }
+  }, [pendingForm, metaformSectionIndex, metaformFieldIndex]);
+  
   /**
    * 
    * @param fieldRules field rules
@@ -124,7 +140,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
     const updatedForm = produce(pendingForm, draftForm => {
       draftForm.sections?.splice(metaformSectionIndex, 1, selectedMetaformSection);
     });
-    dispatch(setMetaformSection(selectedMetaformSection));
+    setMetaformSection(selectedMetaformSection);
     setPendingForm(updatedForm);
   };
 

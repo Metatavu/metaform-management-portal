@@ -2,9 +2,10 @@ import { Stack, TextField } from "@mui/material";
 import { MetaformField } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
-import React, { FC } from "react";
-import { setMetaformField, selectMetaform } from "../../../features/metaform-slice";
-import { useAppSelector, useAppDispatch } from "app/hooks";
+import React, { FC, useEffect } from "react";
+import { selectMetaform } from "../../../features/metaform-slice";
+import { useAppSelector } from "app/hooks";
+import MetaformUtils from "utils/metaform-utils";
 /**
  * Component properties
  */
@@ -18,8 +19,15 @@ interface Props {
 const MetaformSliderComponent: FC<Props> = ({
   updateFormFieldDebounced
 }) => {
-  const dispatch = useAppDispatch();
-  const { metaformField } = useAppSelector(selectMetaform);
+  const { metaformVersion, metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
+  const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
+  const [ metaformField, setMetaformField ] = React.useState<MetaformField>();
+
+  useEffect(() => {
+    if (metaformSectionIndex !== undefined && metaformFieldIndex !== undefined) {
+      setMetaformField(pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex]);
+    }
+  }, [metaformFieldIndex, metaformSectionIndex, metaformVersion]);
 
   /**
    * Update slider or number field min or max values. Number field can have empty min/max values but slider have to have min and max values
@@ -39,7 +47,7 @@ const MetaformSliderComponent: FC<Props> = ({
         draftField.max = Number(eventValue);
       }
     });
-    dispatch(setMetaformField(updatedField));
+    setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
   };
 

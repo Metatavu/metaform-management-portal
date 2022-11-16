@@ -1,11 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "app/store";
-import { MetaformVersion, MetaformSection, MetaformField } from "generated/client";
+import { MetaformVersion } from "generated/client";
 
 interface MetaformState {
   metaformVersion?: MetaformVersion;
-  metaformSection?: MetaformSection;
-  metaformField?: MetaformField;
   metaformSectionIndex?: number;
   metaformFieldIndex?: number;
 }
@@ -15,8 +13,6 @@ interface MetaformState {
  */
 const initialState: MetaformState = {
   metaformVersion: undefined,
-  metaformSection: undefined,
-  metaformField: undefined,
   metaformSectionIndex: undefined,
   metaformFieldIndex: undefined
 };
@@ -31,12 +27,6 @@ export const metaformSlice = createSlice({
     setMetaformVersion: (state, { payload }: PayloadAction<MetaformVersion | undefined>) => {
       state.metaformVersion = payload;
     },
-    setMetaformSection: (state, { payload }: PayloadAction<MetaformSection | undefined>) => {
-      state.metaformSection = payload;
-    },
-    setMetaformField: (state, { payload }: PayloadAction<MetaformField | undefined>) => {
-      state.metaformField = payload;
-    },
     setMetaformSectionIndex: (state, { payload }: PayloadAction<number | undefined>) => {
       state.metaformSectionIndex = payload;
     },
@@ -46,8 +36,6 @@ export const metaformSlice = createSlice({
     setMetaformSelectionsUndefined: (state, { payload }: PayloadAction<undefined>) => {
       state.metaformSectionIndex = payload;
       state.metaformFieldIndex = payload;
-      state.metaformSection = payload;
-      state.metaformField = payload;
     }
   }
 });
@@ -56,7 +44,7 @@ export const metaformSlice = createSlice({
  * Metaform actions from created metaform slice
  */
 export const {
-  setMetaformVersion, setMetaformSection, setMetaformField, setMetaformFieldIndex, setMetaformSectionIndex, setMetaformSelectionsUndefined
+  setMetaformVersion, setMetaformFieldIndex, setMetaformSectionIndex, setMetaformSelectionsUndefined
 } = metaformSlice.actions;
 
 /**

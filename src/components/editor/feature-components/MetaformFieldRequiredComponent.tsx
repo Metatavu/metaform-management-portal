@@ -1,9 +1,10 @@
 import { Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
 import { MetaformField } from "generated/client";
 import strings from "localization/strings";
-import React, { FC } from "react";
-import { selectMetaform, setMetaformField } from "../../../features/metaform-slice";
-import { useAppSelector, useAppDispatch } from "app/hooks";
+import React, { FC, useEffect } from "react";
+import { selectMetaform } from "../../../features/metaform-slice";
+import { useAppSelector } from "app/hooks";
+import MetaformUtils from "utils/metaform-utils";
 
 /**
  * Component properties
@@ -17,16 +18,22 @@ interface Props {
 const MetaformFieldRequiredComponent: FC<Props> = ({
   updateFormFieldDebounced
 }) => {
-  const { metaformField } = useAppSelector(selectMetaform);
-  const dispatch = useAppDispatch();
+  const { metaformVersion, metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
+  const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
+  const [ metaformField, setMetaformField ] = React.useState<MetaformField>();
 
+  useEffect(() => {
+    if (metaformSectionIndex !== undefined && metaformFieldIndex !== undefined) {
+      setMetaformField(pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex]);
+    }
+  }, [metaformFieldIndex, metaformSectionIndex, metaformVersion]);
   /**
    * Debounced update field
    *
    * @param field edited field
    */
   const updateFormField = (field: MetaformField) => {
-    dispatch(setMetaformField(field));
+    setMetaformField(field);
     updateFormFieldDebounced(field);
   };
 
@@ -37,6 +44,7 @@ const MetaformFieldRequiredComponent: FC<Props> = ({
    */
   const renderFieldRequiredEdit = (field?: MetaformField) => {
     if (field) {
+      const requiredField = field.required;
       return (
         <Stack spacing={ 2 }>
           <Typography variant="subtitle1" style={{ width: "100%" }}>
@@ -46,7 +54,7 @@ const MetaformFieldRequiredComponent: FC<Props> = ({
             label={ strings.generic.yes }
             control={
               <Checkbox
-                checked={ field.required }
+                checked={ requiredField }
                 onChange={ event => updateFormField({
                   ...field,
                   required: event.target.checked

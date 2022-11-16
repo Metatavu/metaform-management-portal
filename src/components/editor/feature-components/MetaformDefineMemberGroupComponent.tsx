@@ -6,8 +6,8 @@ import React, { FC, useEffect, useState } from "react";
 import { NullableMemberGroupPermission, MemberGroupPermission } from "types";
 import MetaformUtils from "utils/metaform-utils";
 import { NOT_SELECTED } from "consts";
-import { setMetaformField, selectMetaform } from "../../../features/metaform-slice";
-import { useAppSelector, useAppDispatch } from "app/hooks";
+import { selectMetaform } from "../../../features/metaform-slice";
+import { useAppSelector } from "app/hooks";
 
 /**
  * Component properties
@@ -28,10 +28,15 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
   const [ selectedMemberGroupId, setSelectedMemberGroupId ] = useState<string>();
   const [ selectedMemberGroupPermission, setSelectedMemberGroupPermission ] = useState<NullableMemberGroupPermission>(NOT_SELECTED);
   const [ memberGroupOptIndex, setMemberGroupOptIndex ] = useState<number>();
-  const { metaformField, metaformFieldIndex, metaformSectionIndex, metaformVersion } = useAppSelector(selectMetaform);
+  const { metaformVersion, metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
   const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
+  const [ metaformField, setMetaformField ] = React.useState<MetaformField>();
 
-  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (metaformSectionIndex !== undefined && metaformFieldIndex !== undefined) {
+      setMetaformField(pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex]);
+    }
+  }, [metaformFieldIndex, metaformSectionIndex, metaformVersion]);
 
   /**
    * Empties member group settings
@@ -139,7 +144,7 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
       draftField.options![memberGroupOptIndex].permissionGroups = undefined;
     });
 
-    dispatch(setMetaformField(updatedField));
+    setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
   };
 
@@ -178,7 +183,7 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
         draftField.options![memberGroupOptIndex]!.permissionGroups = undefined;
       }
     });
-    dispatch(setMetaformField(updatedField));
+    setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
   };
 
@@ -199,7 +204,7 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
         notifyGroupIds: checked ? [ selectedMemberGroupId ] : []
       };
     });
-    dispatch(setMetaformField(updatedField));
+    setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
   };
 

@@ -16,7 +16,7 @@ import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper
 import DragAndDropUtils from "utils/drag-and-drop-utils";
 import AddableFieldRenderer from "./field-renderer/addable-field-renderer";
 import strings from "localization/strings";
-import { setMetaformField, setMetaformFieldIndex, setMetaformSection, setMetaformSectionIndex, setMetaformSelectionsUndefined, selectMetaform } from "../../features/metaform-slice";
+import { setMetaformFieldIndex, setMetaformSectionIndex, setMetaformSelectionsUndefined, selectMetaform } from "../../features/metaform-slice";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 
 /**
@@ -78,10 +78,8 @@ const MetaformEditor: React.FC<Props> = ({
     });
 
     setPendingForm(updatedForm);
-    dispatch(setMetaformSection(pendingForm.sections[sectionIndex]));
     dispatch(setMetaformSectionIndex(sectionIndex));
     dispatch(setMetaformFieldIndex(fieldIndex));
-    dispatch(setMetaformField(defaultField));
   };
 
   /**
@@ -208,8 +206,6 @@ const MetaformEditor: React.FC<Props> = ({
     if (metaformSectionIndex !== sectionIndex) {
       dispatch(setMetaformSectionIndex(sectionIndex));
       dispatch(setMetaformFieldIndex(undefined));
-      dispatch(setMetaformSection(pendingForm.sections![sectionIndex]));
-      dispatch(setMetaformField(undefined));
     }
   };
 
@@ -222,7 +218,6 @@ const MetaformEditor: React.FC<Props> = ({
   const onFieldClick = (sectionIndex: number, fieldIndex: number) => () => {
     dispatch(setMetaformSectionIndex(sectionIndex));
     dispatch(setMetaformFieldIndex(fieldIndex));
-    dispatch(setMetaformField(pendingForm.sections![sectionIndex].fields![fieldIndex]));
   };
 
   /**
@@ -249,8 +244,7 @@ const MetaformEditor: React.FC<Props> = ({
    * @param sectionIndex section index
    */
   const onSectionEditClick = (sectionIndex: number) => () => {
-    dispatch(setMetaformSection(pendingForm.sections![sectionIndex]));
-    dispatch(setMetaformField(undefined));
+    dispatch(setMetaformSectionIndex(sectionIndex));
     dispatch(setMetaformFieldIndex(undefined));
   };
 
@@ -258,7 +252,6 @@ const MetaformEditor: React.FC<Props> = ({
    * Wait updating to avoid wrong field data.
    */
   const timerFunc = () => {
-    dispatch(setMetaformField(undefined));
     dispatch(setMetaformFieldIndex(undefined));
   };
 

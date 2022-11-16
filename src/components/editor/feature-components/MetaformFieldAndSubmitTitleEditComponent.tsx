@@ -1,11 +1,12 @@
 import { Stack, TextField, Typography } from "@mui/material";
 import { MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
 import strings from "localization/strings";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import slugify from "slugify";
 import LocalizationUtils from "utils/localization-utils";
-import { selectMetaform, setMetaformField } from "../../../features/metaform-slice";
-import { useAppDispatch, useAppSelector } from "app/hooks";
+import { selectMetaform } from "../../../features/metaform-slice";
+import { useAppSelector } from "app/hooks";
+import MetaformUtils from "utils/metaform-utils";
 /**
  * Component properties
  */
@@ -19,8 +20,19 @@ interface Props {
 const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
   updateFormFieldDebounced
 }) => {
-  const { metaformField, metaformSectionIndex, metaformFieldIndex, metaformSection } = useAppSelector(selectMetaform);
-  const dispatch = useAppDispatch();
+  const { metaformVersion, metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
+  const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
+  const [ metaformField, setMetaformField ] = React.useState<MetaformField>();
+  const [ metaformSection, setMetaformSection ] = React.useState<MetaformSection>();
+
+  useEffect(() => {
+    if (metaformSectionIndex !== undefined) {
+      setMetaformSection(pendingForm.sections![metaformSectionIndex]);
+    }
+    if (metaformSectionIndex !== undefined && metaformFieldIndex !== undefined) {
+      setMetaformField(pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex]);
+    }
+  }, [metaformFieldIndex, metaformSectionIndex, metaformVersion]);
 
   /**
    * Debounced update field
@@ -28,7 +40,7 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
    * @param field edited field
    */
   const updateFormField = (field: MetaformField) => {
-    dispatch(setMetaformField(field));
+    setMetaformField(field);
     updateFormFieldDebounced(field);
   };
 
@@ -98,7 +110,7 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
    */
   return (
     <Stack>
-      { metaformField!.type === MetaformFieldType.Submit ?
+      { metaformField?.type === MetaformFieldType.Submit ?
         renderSubmitTitleEdit(metaformSection, metaformField) :
         renderFieldTitleEdit(metaformSection, metaformField)
       }

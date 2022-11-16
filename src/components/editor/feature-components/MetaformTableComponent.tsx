@@ -2,11 +2,12 @@ import { Button, IconButton, MenuItem, Stack, TextField, Typography } from "@mui
 import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import slugify from "slugify";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { setMetaformField, selectMetaform } from "../../../features/metaform-slice";
-import { useAppSelector, useAppDispatch } from "app/hooks";
+import { selectMetaform } from "../../../features/metaform-slice";
+import { useAppSelector } from "app/hooks";
+import MetaformUtils from "utils/metaform-utils";
 /**
  * Component properties
  */
@@ -21,8 +22,15 @@ const MetaformTableComponent: FC<Props> = ({
   updateFormFieldDebounced
 }) => {
   const [ newColumnType, setNewColumnType ] = React.useState<MetaformTableColumnType>();
-  const { metaformField } = useAppSelector(selectMetaform);
-  const dispatch = useAppDispatch();
+  const { metaformVersion, metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
+  const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
+  const [ metaformField, setMetaformField ] = React.useState<MetaformField>();
+
+  useEffect(() => {
+    if (metaformSectionIndex !== undefined && metaformFieldIndex !== undefined) {
+      setMetaformField(pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex]);
+    }
+  }, [metaformFieldIndex, metaformSectionIndex, metaformVersion]);
 
   /**
    * Update column value
@@ -38,7 +46,7 @@ const MetaformTableComponent: FC<Props> = ({
     const updatedField = produce(metaformField, draftField => {
       draftField.columns?.splice(columnIndex, 1, tableColumn);
     });
-    dispatch(setMetaformField(updatedField));
+    setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
   };
   
@@ -55,7 +63,7 @@ const MetaformTableComponent: FC<Props> = ({
     const updatedField = produce(metaformField, draftField => {
       draftField.columns?.splice(columnIndex, 1);
     });
-    dispatch(setMetaformField(updatedField));
+    setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
   };
 
@@ -111,7 +119,7 @@ const MetaformTableComponent: FC<Props> = ({
     const updatedField = produce(metaformField, draftField => {
       draftField.columns = [ ...(draftField.columns || []), newColumn ];
     });
-    dispatch(setMetaformField(updatedField));
+    setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
   };
 

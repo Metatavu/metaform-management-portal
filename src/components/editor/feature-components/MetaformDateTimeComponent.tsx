@@ -2,9 +2,10 @@ import { FormControlLabel, Stack, Switch } from "@mui/material";
 import { MetaformField } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
-import React, { FC } from "react";
-import { selectMetaform, setMetaformField } from "../../../features/metaform-slice";
-import { useAppSelector, useAppDispatch } from "app/hooks";
+import React, { FC, useEffect } from "react";
+import { selectMetaform } from "../../../features/metaform-slice";
+import { useAppSelector } from "app/hooks";
+import MetaformUtils from "utils/metaform-utils";
 
 /**
  * Component properties
@@ -19,9 +20,15 @@ interface Props {
 const MetaformDateTimeComponent: FC<Props> = ({
   updateFormFieldDebounced
 }) => {
-  const dispatch = useAppDispatch();
-  const { metaformField } = useAppSelector(selectMetaform);
+  const { metaformVersion, metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
+  const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
+  const [ metaformField, setMetaformField ] = React.useState<MetaformField>();
 
+  useEffect(() => {
+    if (metaformSectionIndex !== undefined && metaformFieldIndex !== undefined) {
+      setMetaformField(pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex]);
+    }
+  }, [metaformFieldIndex, metaformSectionIndex, metaformVersion]);
   /**
    * Updates allows work days only for date, date-time field
    *
@@ -35,7 +42,7 @@ const MetaformDateTimeComponent: FC<Props> = ({
     const updatedField = produce(metaformField, draftField => {
       draftField.workdaysOnly = checked;
     });
-    dispatch(setMetaformField(updatedField));
+    setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
   };
 

@@ -3,13 +3,13 @@ import { uuid4 } from "@sentry/utils";
 import { MetaformField, MetaformFieldOption } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import slugify from "slugify";
 import theme from "theme";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MetaformUtils from "utils/metaform-utils";
-import { selectMetaform, setMetaformField } from "../../../features/metaform-slice";
-import { useAppSelector, useAppDispatch } from "app/hooks";
+import { selectMetaform } from "../../../features/metaform-slice";
+import { useAppSelector } from "app/hooks";
 /**
  * Component properties
  */
@@ -26,9 +26,16 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
   const [ multiSelectRawTextMode, setMultiSelectRawTextMode ] = useState<boolean>(false);
   const [ multiSelectRawText, setMultiSelectRawText ] = useState<string>("");
   const [ memberGroupOptIndex, setMemberGroupOptIndex ] = useState<number>();
-  const { metaformSectionIndex, metaformFieldIndex, metaformVersion, metaformField } = useAppSelector(selectMetaform);
+  const { metaformVersion, metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
   const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
-  const dispatch = useAppDispatch();
+  const [ metaformField, setMetaformField ] = React.useState<MetaformField>();
+
+  useEffect(() => {
+    if (metaformSectionIndex !== undefined && metaformFieldIndex !== undefined) {
+      setMetaformField(pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex]);
+    }
+  }, [metaformFieldIndex, metaformSectionIndex, metaformVersion]);
+
   /**
    * Update option text and check if its used as VisibleIf change text also in that field
    *
@@ -44,7 +51,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
       draftField?.options?.splice(optionIndex, 1, updateTextOption);
     });
 
-    dispatch(setMetaformField(updatedField));
+    setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField, optionIndex);
   };
 
@@ -68,7 +75,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
       draftField?.options?.splice(optionIndex, 1);
     });
 
-    dispatch(setMetaformField(updatedField));
+    setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
   };
 
@@ -125,7 +132,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
       draftField.options = [ ...(draftField.options || []), newOption ];
     });
 
-    dispatch(setMetaformField(updatedField));
+    setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
   };
 
@@ -165,7 +172,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
         };
       }));
     });
-    dispatch(setMetaformField(updatedField));
+    setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
     setMultiSelectRawTextMode(false);
   };
