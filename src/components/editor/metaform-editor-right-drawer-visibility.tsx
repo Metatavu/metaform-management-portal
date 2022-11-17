@@ -9,13 +9,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Navigation from "@mui/icons-material/Navigation";
 import { HelpOutline } from "@mui/icons-material";
-
+import { selectMetaform } from "../../features/metaform-slice";
+import { useAppSelector } from "app/hooks";
 /**
  * Component properties
  */
 interface Props {
-  sectionIndex?: number;
-  fieldIndex?: number;
   pendingForm: Metaform;
   setPendingForm: (metaform: Metaform) => void;
 }
@@ -24,8 +23,6 @@ interface Props {
  * Draft editor right drawer visibility component
  */
 const MetaFormRightDrawerVisibility: FC<Props> = ({
-  sectionIndex,
-  fieldIndex,
   pendingForm,
   setPendingForm
 }) => {
@@ -33,13 +30,14 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   const [ visibleIfSource, setVisibleIfSource ] = React.useState<VisibilitySource>(VisibilitySource.NONE);
   const [ showVisibleIfProperties, setShowVisibleIfProperties ] = React.useState<number | null | undefined>();
   const [ showTooltip, setShowTooltip ] = React.useState<boolean>(false);
+  const { metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
 
   /**
    * Updates visibleIf source section, field
    */
   const updateSelected = () => {
-    const field = MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex);
-    const section = MetaformUtils.getMetaformSection(pendingForm, sectionIndex);
+    const field = MetaformUtils.getMetaformField(pendingForm, metaformSectionIndex, metaformFieldIndex);
+    const section = MetaformUtils.getMetaformSection(pendingForm, metaformSectionIndex);
 
     if (field !== undefined) {
       setSelectedVisibleIf(field.visibleIf);
@@ -55,7 +53,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
 
   useEffect(() => {
     updateSelected();
-  }, [ sectionIndex, fieldIndex, pendingForm]);
+  }, [ metaformSectionIndex, metaformFieldIndex, pendingForm]);
 
   /**
    * Updated visibleIfSource visible if
@@ -65,20 +63,20 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * @param orIndex? index of or value if we are updating or field
    */
   const updateSelectedVisibleIf = (visibleIf: FieldRule | undefined | any, updateOrField?: boolean, orIndex?: number) => {
-    if (sectionIndex === undefined) {
+    if (metaformSectionIndex === undefined) {
       return;
     }
-    if (fieldIndex !== undefined) {
+    if (metaformFieldIndex !== undefined) {
       if (visibleIfSource === VisibilitySource.FIELD && updateOrField) {
         const updatedForm = produce(pendingForm, draftForm => {
-          draftForm.sections![sectionIndex].fields![fieldIndex].visibleIf!.or![orIndex!] = visibleIf;
+          draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].visibleIf!.or![orIndex!] = visibleIf;
         });
         setPendingForm(updatedForm);
       }
 
       if (visibleIfSource === VisibilitySource.FIELD && !updateOrField) {
         const updatedForm = produce(pendingForm, draftForm => {
-          draftForm.sections![sectionIndex].fields![fieldIndex].visibleIf = visibleIf;
+          draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].visibleIf = visibleIf;
         });
         setPendingForm(updatedForm);
       }
@@ -86,14 +84,14 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
 
     if (visibleIfSource === VisibilitySource.SECTION && !updateOrField) {
       const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections![sectionIndex].visibleIf = visibleIf;
+        draftForm.sections![metaformSectionIndex].visibleIf = visibleIf;
       });
       setPendingForm(updatedForm);
     }
 
     if (visibleIfSource === VisibilitySource.SECTION && updateOrField) {
       const updatedForm = produce(pendingForm, draftForm => {
-        draftForm.sections![sectionIndex].visibleIf!.or![orIndex!] = visibleIf;
+        draftForm.sections![metaformSectionIndex].visibleIf!.or![orIndex!] = visibleIf;
       });
       setPendingForm(updatedForm);
     }
@@ -217,7 +215,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    */
   const renderConditionFieldOption = (field: MetaformField, index: number) => {
     const constructedKey = `${field.title}-${index}`;
-    const selectedField = MetaformUtils.getMetaformField(pendingForm, sectionIndex, fieldIndex);
+    const selectedField = MetaformUtils.getMetaformField(pendingForm, metaformSectionIndex, metaformFieldIndex);
     if (selectedField && selectedField.name === field.name) {
       return;
     }

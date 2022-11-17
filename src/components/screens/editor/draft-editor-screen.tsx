@@ -14,7 +14,7 @@ import Api from "api";
 import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { RoundActionButton } from "styled/generic/form";
-import { selectMetaform, setMetaformVersion } from "features/metaform-slice";
+import { selectMetaform, setMetaformVersion, setMetaformSelectionsUndefined } from "features/metaform-slice";
 import { setSnackbarMessage } from "features/snackbar-slice";
 import ConfirmDialog from "components/generic/confirm-dialog";
 
@@ -43,6 +43,7 @@ const DraftEditorScreen: React.FC = () => {
    * Loads MetaformVersion to edit.
    */
   const loadData = async () => {
+    dispatch(setMetaformSelectionsUndefined(undefined));
     setLoading(true);
 
     let formId: string;

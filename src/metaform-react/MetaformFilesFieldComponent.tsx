@@ -73,24 +73,21 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
    * @param fieldValue
    * @returns 
    */
-  const ensureFileFieldType = (fieldValue: FieldValue): FileFieldValue => {
-    if (!fieldValue) {
+  const ensureFileFieldType = (fieldValue: FieldValue | any): FileFieldValue => {
+    const files : any[] = [];
+    if (!fieldValue || typeof fieldValue === "string") {
       return { files: [] };
     }
     if (isFileFieldValue(fieldValue)) return fieldValue as FileFieldValue;
-
-    return {
-      files: [
-        {
-          id: fieldValue as string,
-          persisted: false
-        }
-      ]
-    };
+    fieldValue.map((imgId: string) => (
+      files.push({
+        id: imgId,
+        persisted: true
+      })));
+    return { files: files };
   };
 
   const normalizedValue = ensureFileFieldType(value);
-
   const valueItems = normalizedValue.files.map(valueItem => {
     return (
       <FilesRowWrapper direction="row" spacing={ 1 } key={valueItem.id}>
@@ -108,6 +105,7 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
           variant="contained"
           size="small"
           color="error"
+          sx={{ display: valueItem.persisted ? "none" : "block" }}
           onClick={ () => onFileDelete && onFileDelete(field.name || "", valueItem) }
         >
           { strings.generic.delete }

@@ -25,7 +25,7 @@ interface Row {
   slug?: string;
   title: string;
   latestReply?: Date;
-  newReply?: string;
+  newReply?: number;
 }
 
 /**
@@ -76,7 +76,7 @@ const FormsScreen: React.FC = () => {
       slug: form.slug || "",
       title: form.title || strings.formScreen.noTitle,
       latestReply: getLatestReplyDate(replies),
-      newReply: amountWaiting > 0 ? `${strings.formsScreen.formTable.notProcessed} (${amountWaiting})` : undefined
+      newReply: amountWaiting > 0 ? amountWaiting : 0
     };
   };
 
@@ -168,6 +168,7 @@ const FormsScreen: React.FC = () => {
       field: "newReply",
       headerName: strings.formsScreen.formTable.newReply,
       width: 250,
+      type: "number",
       renderHeader: params => {
         return (
           <AdminFormListStack direction="row">
@@ -178,10 +179,11 @@ const FormsScreen: React.FC = () => {
       },
       renderCell: params => {
         const fill = params.row.newReply ? "red" : "gray";
+        const newReplies = params.row.newReply > 0 ? strings.formatString(strings.formsScreen.formTable.notProcessed, params.row.newReply) : undefined;
         return (
           <AdminFormListStack direction="row">
             <NotificationsActiveIcon style={{ fill: fill }}/>
-            <AdminFormTypographyField>{ params.row.newReply }</AdminFormTypographyField>
+            <AdminFormTypographyField>{ newReplies }</AdminFormTypographyField>
           </AdminFormListStack>
         );
       }

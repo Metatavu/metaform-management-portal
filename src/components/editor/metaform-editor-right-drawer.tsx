@@ -12,8 +12,6 @@ import MetaFormRightDrawerVisibility from "./metaform-editor-right-drawer-visibi
  */
 interface Props {
   memberGroups: MetaformMemberGroup[],
-  sectionIndex?: number;
-  fieldIndex?: number;
   pendingForm: Metaform;
   setPendingForm: (metaform: Metaform) => void;
 }
@@ -23,8 +21,6 @@ interface Props {
  */
 const MetaformEditorRightDrawer: React.FC<Props> = ({
   memberGroups,
-  sectionIndex,
-  fieldIndex,
   pendingForm,
   setPendingForm
 }) => {
@@ -57,16 +53,12 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
           memberGroups={ memberGroups }
           pendingForm={ pendingForm }
           setPendingForm={ setPendingForm }
-          fieldIndex={ fieldIndex }
-          sectionIndex={ sectionIndex }
         />
       </TabPanel>
       <TabPanel value={ tabIndex } index={ 1 }>
         <MetaFormRightDrawerVisibility
           pendingForm={ pendingForm }
           setPendingForm={ setPendingForm }
-          fieldIndex={ fieldIndex }
-          sectionIndex={ sectionIndex }
         />
       </TabPanel>
     </EditorDrawer>

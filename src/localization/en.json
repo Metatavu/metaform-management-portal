@@ -448,7 +448,7 @@
       "form": "Form",
       "latestReply": "Latest",
       "newReply": "New",
-      "notProcessed": "Untreated"
+      "notProcessed": "Untreated ({0})"
     }
   },
 
