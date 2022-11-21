@@ -41,7 +41,7 @@ const Header: React.FC = ({
         <IconButton href={ tutorialUrl } target="_blank" disabled={ !tutorialUrl }>
           <HelpOutline
             fontSize="large"
-            sx={{ color: tutorialUrl ? theme.palette.grey[200] : theme.palette.text.disabled }}
+            sx={{ color: tutorialUrl ? theme.palette.secondary.main : theme.palette.text.disabled }}
           />
         </IconButton>
       </Tooltip>
