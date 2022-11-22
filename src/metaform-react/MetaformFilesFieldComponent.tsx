@@ -88,7 +88,6 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
   };
 
   const normalizedValue = ensureFileFieldType(value);
-
   const valueItems = normalizedValue.files.map(valueItem => {
     return (
       <FilesRowWrapper direction="row" spacing={ 1 } key={valueItem.id}>
