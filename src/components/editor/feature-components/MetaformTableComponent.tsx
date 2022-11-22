@@ -1,4 +1,4 @@
-import { Button, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
@@ -8,6 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { selectMetaform } from "../../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
 import MetaformUtils from "utils/metaform-utils";
+import { RoundActionButton } from "styled/generic/form";
 /**
  * Component properties
  */
@@ -145,13 +146,15 @@ const MetaformTableComponent: FC<Props> = ({
           { strings.draftEditorScreen.editor.features.field.columnNumberType }
         </MenuItem>
       </TextField>
-      <Button
+      <RoundActionButton
         fullWidth
         disabled={ newColumnType === undefined }
         onClick={ addNewColumn }
       >
-        { strings.draftEditorScreen.editor.features.field.addNewColumn }
-      </Button>
+        <Typography>
+          { strings.draftEditorScreen.editor.features.field.addNewColumn }
+        </Typography>
+      </RoundActionButton>
     </Stack>
   );
   

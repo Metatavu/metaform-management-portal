@@ -278,7 +278,7 @@ const AddMemberDialog: FC<Props> = ({
   const renderDialogActions = () => (
     <GenericLoaderWrapper loading={ loading }>
       <>
-        <Button disableElevation variant="contained" onClick={ handleCancelClick } color="secondary" autoFocus>
+        <Button disableElevation variant="contained" onClick={ handleCancelClick } color="warning" autoFocus>
           { strings.userManagementScreen.addMemberDialog.cancelButton }
         </Button>
         <Button onClick={ handleCreateClick } color="primary" disabled={ !valid }>
