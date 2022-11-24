@@ -7,6 +7,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Mail from "mail/mail";
 import { ErrorContext } from "components/contexts/error-handler";
 import isEmail from "validator/lib/isEmail";
+import Config from "app/config";
 
 /**
  * Interface representing component properties
@@ -31,7 +32,6 @@ const DraftPreviewShareDialog: React.FC<Props> = ({
 }) => {
   const [ email, setEmail ] = useState("");
   const errorContext = React.useContext(ErrorContext);
-  const { REACT_APP_EMAIL_FROM } = process.env;
 
   /**
    * On copy click handler
@@ -46,11 +46,8 @@ const DraftPreviewShareDialog: React.FC<Props> = ({
    */
   const onSendEmailClick = async () => {
     try {
-      if (!REACT_APP_EMAIL_FROM) {
-        throw new Error("Missing REACT_APP_EMAIL_FROM env");
-      }
       Mail.sendMail({
-        from: REACT_APP_EMAIL_FROM,
+        from: Config.getEmailFrom(),
         to: email,
         html: strings.draftEditorScreen.formPreview.previewEmail.content,
         subject: strings.draftEditorScreen.formPreview.previewEmail.subject
