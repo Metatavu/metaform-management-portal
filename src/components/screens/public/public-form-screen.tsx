@@ -22,6 +22,7 @@ import { Dictionary } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import LeavePageHandler from "components/contexts/leave-page-handler";
 import GenericLoaderWrapper from "components/generic/generic-loader";
+import Config from "app/config";
 
 /**
  * Public Form Screen component
@@ -437,7 +438,6 @@ const PublicFormScreen: FC = () => {
    * @param email email
    */
   const sendReplyEmail = async (email: string) => {
-    const { REACT_APP_EMAIL_FROM } = process.env;
     const replyEditLink = getReplyEditLink();
 
     if (!replyEditLink || !metaform) {
@@ -448,16 +448,12 @@ const PublicFormScreen: FC = () => {
       setReplyEmailDialogVisible(false);
       setLoading(true);
 
-      if (!REACT_APP_EMAIL_FROM) {
-        throw new Error("Missing REACT_APP_EMAIL_FROM env");
-      }
-
       const formTitle = metaform.title || "";
       const subject = strings.formatString(strings.formScreen.replyEditEmailSubject, formTitle) as string;
       const html = strings.formatString(strings.formScreen.replyEditEmailContent, formTitle, replyEditLink) as string;
 
       await Mail.sendMail({
-        from: REACT_APP_EMAIL_FROM,
+        from: Config.getEmailFrom(),
         html: html,
         subject: subject,
         to: email
@@ -533,7 +529,6 @@ const PublicFormScreen: FC = () => {
    * @param email email
    */
   const sendDraftEmail = async (email: string) => {
-    const { REACT_APP_EMAIL_FROM } = process.env;
     const draftLink = getDraftLink();
 
     if (!draftLink || !metaform) {
@@ -544,16 +539,12 @@ const PublicFormScreen: FC = () => {
       setDraftEmailDialogVisible(false);
       setLoading(true);
 
-      if (!REACT_APP_EMAIL_FROM) {
-        throw new Error("Missing REACT_APP_EMAIL_FROM env");
-      }
-
       const formTitle = metaform.title || "";
       const subject = strings.formatString(strings.formScreen.draftEmailSubject, formTitle) as string;
       const html = strings.formatString(strings.formScreen.draftEmailContent, formTitle, draftLink) as string;
 
       await Mail.sendMail({
-        from: REACT_APP_EMAIL_FROM,
+        from: Config.getEmailFrom(),
         html: html,
         subject: subject,
         to: email

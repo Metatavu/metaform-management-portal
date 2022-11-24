@@ -1,4 +1,4 @@
-import { cleanEnv, str, url } from "envalid";
+import { cleanEnv, email, str, url } from "envalid";
 import { Configuration } from "types";
 
 /**
@@ -16,7 +16,9 @@ const env = cleanEnv(process.env, {
   REACT_APP_ANONYMOUS_PASSWORD: str(),
   REACT_APP_TUTORIAL_URL: str({ default: "" }),
   REACT_APP_DEFAULT_EXPORT_THEME_ID: str({ default: undefined }),
-  REACT_APP_FORM_IDPHINT: str({ default: undefined })
+  REACT_APP_FORM_IDPHINT: str({ default: undefined }),
+  REACT_APP_EMAIL_FROM: email(),
+  REACT_APP_EMAIL_URL: url()
 });
 
 /**
@@ -90,6 +92,24 @@ export default class Config {
    */
   public static getCorsProxy(): string {
     return env.REACT_APP_CORS_PROXY;
+  }
+
+  /**
+  * Returns email from address for sending emails
+  *
+  * @returns email address for sending emails
+  */
+  public static getEmailFrom(): string {
+    return env.REACT_APP_EMAIL_FROM;
+  }
+
+  /**
+  * Returns email url address for sending emails
+  *
+  * @returns email address url for sending emails
+  */
+  public static getEmailUrl(): string {
+    return env.REACT_APP_EMAIL_URL;
   }
 
 }
