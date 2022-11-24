@@ -16,7 +16,7 @@ const env = cleanEnv(process.env, {
   REACT_APP_ANONYMOUS_PASSWORD: str(),
   REACT_APP_TUTORIAL_URL: str({ default: "" }),
   REACT_APP_DEFAULT_EXPORT_THEME_ID: str({ default: undefined }),
-  REACT_APP_FORM_IDPHINT: str({ }),
+  REACT_APP_FORM_IDPHINT: str(),
   REACT_APP_EMAIL_FROM: email(),
   REACT_APP_EMAIL_URL: url()
 });
