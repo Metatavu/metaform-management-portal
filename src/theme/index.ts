@@ -11,25 +11,27 @@ const { breakpoints, palette } = createTheme();
 export default createTheme({
 
   logo: {
-    logoPath: "/images/essote_logo.png"
+    logoPath: "/images/eloisa_logo.png"
   },
 
   palette: {
     primary: {
-      main: "#4FA3DF",
-      dark: "#375AA3"
+      main: "#000",
+      dark: "#000",
+      light: "#333"
     },
     secondary: {
-      main: "#fff",
-      dark: "#fff"
+      main: "#00ff00",
+      dark: "#00b200",
+      light: "#fff"
     },
     text: {
-      primary: "#333333",
-      secondary: "#bdbdbd"
+      primary: "#000",
+      secondary: "#333"
     },
     background: {
-      default: "#375AA3",
-      paper: "#ffffff"
+      default: "#666",
+      paper: "#fff"
     }
   },
 

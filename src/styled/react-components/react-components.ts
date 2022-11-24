@@ -54,7 +54,7 @@ export const SubmitFieldWrapper = styled(Button, {
 export const AddRowButtonWrapper = styled(Button, {
   label: "add-row-button-wrapper"
 })(() => ({
-  backgroundColor: "rgb(55 90 163)",
+  backgroundColor: theme.palette.primary.light,
   borderRadius: "0.5rem",
   border: 0,
   width: "100%",
@@ -71,7 +71,7 @@ export const FilesRowWrapper = styled(Stack, {
   display: "flex",
   padding: "0.5rem",
   alignItems: "center",
-  borderBottom: "1px dashed #aaa"
+  borderBottom: `1px dashed ${theme.palette.grey[400]}`
 }));
 
 /**
@@ -273,8 +273,8 @@ export const AdminFormTypographyField = styled(Typography, {
 export const VersionListHeader = styled(Grid, {
   label: "version-list-header"
 })(() => ({
-  borderTop: "1px solid rgba(0,0,0,0.1)",
-  borderBottom: "1px solid rgba(0,0,0,0.1)",
+  borderTop: `1px solid ${theme.palette.grey[400]}`,
+  borderBottom: `1px solid ${theme.palette.grey[400]}`,
   padding: 0,
   height: "60px",
   alignContent: "center"
