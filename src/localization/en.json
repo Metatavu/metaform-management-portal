@@ -356,7 +356,8 @@
       "previewEmail": {
         "content": "<p>Hi!</p><p>Please preview the form {0} from following link:</p><p><a href='{1}'>{1}</a></p><hr/><p>This is an automated message, please do not reply.</p>",
         "subject": "Please preview the form - {0}",
-        "emailSent": "Email sent"
+        "emailSent": "Email sent",
+        "noTitle": "No title"
       }
     }
   },
