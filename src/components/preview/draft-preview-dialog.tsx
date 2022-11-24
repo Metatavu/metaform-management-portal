@@ -15,6 +15,7 @@ import Config from "app/config";
 interface Props {
   open: boolean;
   linkToShare: string;
+  formTitle: string;
   onCancel: () => void;
   setEmailSent: (emailSent: boolean) => void;
   setLinkCopied: (emailSent: boolean) => void;
@@ -28,7 +29,8 @@ const DraftPreviewShareDialog: React.FC<Props> = ({
   onCancel,
   linkToShare,
   setEmailSent,
-  setLinkCopied
+  setLinkCopied,
+  formTitle
 }) => {
   const [ email, setEmail ] = useState("");
   const errorContext = React.useContext(ErrorContext);
@@ -49,8 +51,8 @@ const DraftPreviewShareDialog: React.FC<Props> = ({
       Mail.sendMail({
         from: Config.getEmailFrom(),
         to: email,
-        html: strings.draftEditorScreen.formPreview.previewEmail.content,
-        subject: strings.draftEditorScreen.formPreview.previewEmail.subject
+        html: (strings.formatString(strings.draftEditorScreen.formPreview.previewEmail.content, formTitle, linkToShare)) as string,
+        subject: (strings.formatString(strings.draftEditorScreen.formPreview.previewEmail.subject, formTitle)) as string
       });
 
       setEmailSent(true);
