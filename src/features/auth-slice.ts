@@ -8,10 +8,8 @@ import Keycloak from "keycloak-js";
 export interface AuthState {
   keycloak?: Keycloak;
   anonymousKeycloak?: Keycloak;
-  idpKeycloak?: Keycloak;
   accessToken?: string;
   anonymousAccessToken?: string;
-  idpAccessToken?: string;
 }
 
 /**
@@ -28,17 +26,15 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
   reducers: {
-    idpLogin: (state, { payload }: PayloadAction<Keycloak | undefined>) => {
-      state.idpKeycloak = payload;
-      state.idpAccessToken = payload?.token;
-    },
     anonymousLogin: (state, { payload }: PayloadAction<Keycloak | undefined>) => {
       state.anonymousKeycloak = payload;
       state.anonymousAccessToken = payload?.token;
     },
-    login: (state, { payload }: PayloadAction<Keycloak | undefined>) => {
+    setKeycloak: (state, { payload }: PayloadAction<Keycloak | undefined>) => {
       state.keycloak = payload;
-      state.accessToken = payload?.token;
+    },
+    setAccessToken: (state, { payload }: PayloadAction<string>) => {
+      state.accessToken = payload;
     },
     logout: state => {
       state.keycloak?.logout().then(() => {
@@ -52,7 +48,7 @@ export const authSlice = createSlice({
 /**
  * Authentication actions from created authentication slice
  */
-export const { anonymousLogin, idpLogin, login, logout } = authSlice.actions;
+export const { anonymousLogin, setAccessToken, logout, setKeycloak } = authSlice.actions;
 
 /**
  * Select Keycloak selector
@@ -63,7 +59,6 @@ export const { anonymousLogin, idpLogin, login, logout } = authSlice.actions;
 export const selectKeycloak = (state: RootState) => {
   const { auth } = state;
   if (auth.keycloak) return auth.keycloak;
-  if (auth.idpKeycloak) return auth.idpKeycloak;
 
   return auth.anonymousKeycloak;
 };
@@ -89,30 +84,12 @@ export const selectAnonymousAccessToken = (state: RootState) => {
 };
 
 /**
- * Select idp access token
- *
- * @param state Redux store root state
- * @returns idp access token
- */
-export const selectIdpAccessToken = (state: RootState) => {
-  return state.auth.idpAccessToken;
-};
-
-/**
  * Select Keycloak selector
  *
  * @param state Redux store root state
  * @returns keycloak instance from Redux store
  */
 export const selectAnonymousKeycloak = (state: RootState) => state.auth.anonymousKeycloak;
-
-/**
- * Select idp Keycloak selector
- *
- * @param state Redux store root state
- * @returns keycloak instance from Redux store
- */
-export const selectIdpKeycloak = (state: RootState) => state.auth.idpKeycloak;
 
 /**
  * Reducer from authentication slice

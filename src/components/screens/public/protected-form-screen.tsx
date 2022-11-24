@@ -1,5 +1,5 @@
 import { useAppSelector } from "app/hooks";
-import { selectIdpKeycloak } from "features/auth-slice";
+import { selectAccessToken } from "features/auth-slice";
 import * as React from "react";
 import PublicFormScreen from "./public-form-screen";
 
@@ -7,9 +7,9 @@ import PublicFormScreen from "./public-form-screen";
  * Component for protected form screen
  */
 const ProtectedFormScreen: React.FC = () => {
-  const idpKeycloak = useAppSelector(selectIdpKeycloak);
+  const accessToken = useAppSelector(selectAccessToken);
 
-  if (!idpKeycloak) {
+  if (!accessToken) {
     return null;
   }
 
