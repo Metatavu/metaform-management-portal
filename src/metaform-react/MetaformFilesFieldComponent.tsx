@@ -74,7 +74,7 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
    * @returns 
    */
   const ensureFileFieldType = (fieldValue: FieldValue | any): FileFieldValue => {
-    const files : any[] = [];
+    const files : { id: string, persisted: boolean }[] = [];
     if (!fieldValue || typeof fieldValue === "string") {
       return { files: [] };
     }

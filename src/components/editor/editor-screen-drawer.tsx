@@ -130,22 +130,21 @@ const EditorScreenDrawer: FC<Props> = ({
       <Stack>
         <Box sx={{
           padding: 2,
-          height: 72,
-          backgroundColor: "#F5F5F5",
+          backgroundColor: theme.palette.grey[100],
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-between"
+          justifyContent: "space-between",
+          alignItems: "center"
         }}
         >
-          <Typography variant="h4" fontWeight="bold" textAlign="start">
+          <Typography variant="h2">
             { strings.editorScreen.drawer.newForm }
           </Typography>
-          <Box>
+          <Stack direction="row" spacing={ 1 }>
             <IconButton
               sx={{
                 border: `1px solid ${valid ? theme.palette.primary.main : theme.palette.text.disabled}`,
-                borderRadius: "15px",
-                m: 1
+                borderRadius: "15px"
               }}
               disabled={ !valid }
               onClick={ handleFormSubmit }
@@ -154,17 +153,16 @@ const EditorScreenDrawer: FC<Props> = ({
             </IconButton>
             <IconButton
               sx={{
-                border: "1px solid rgba(79, 163, 223, 0.5)",
-                borderRadius: "15px",
-                m: 1
+                border: `1px solid ${theme.palette.primary.main}`,
+                borderRadius: "15px"
               }}
               onClick={ handleCloseClick }
             >
               <Clear color="primary"/>
             </IconButton>
-          </Box>
+          </Stack>
         </Box>
-        <Box sx={{ height: 42, justifyContent: "center" }}>
+        <Box sx={{ justifyContent: "center", padding: theme.spacing(1) }}>
           <Typography sx={{ fontSize: 12 }} align="center">
             { strings.editorScreen.drawer.helper }
           </Typography>

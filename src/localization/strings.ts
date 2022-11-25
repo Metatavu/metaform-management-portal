@@ -390,6 +390,7 @@ export interface Localized extends LocalizedStringsMethods {
         subject: string;
         content: string;
         emailSent: string;
+        noTitle: string;
       };
     };
   };

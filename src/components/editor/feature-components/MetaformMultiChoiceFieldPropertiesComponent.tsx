@@ -1,4 +1,4 @@
-import { Button, FormControlLabel, IconButton, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
+import { FormControlLabel, IconButton, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { uuid4 } from "@sentry/utils";
 import { MetaformField, MetaformFieldOption } from "generated/client";
 import produce from "immer";
@@ -10,6 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MetaformUtils from "utils/metaform-utils";
 import { selectMetaform } from "../../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
+import { RoundActionButton } from "styled/generic/form";
 /**
  * Component properties
  */
@@ -211,12 +212,14 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
             defaultValue={ getExistingMultiSelectOptions(field) }
             onChange={ handleMultiSelectTextChange }
           />
-          <Button
-            sx={{ height: "50px" }}
+          <RoundActionButton
+            fullWidth
             onClick={ onMultiSelectTextModeUpdate }
           >
-            { strings.draftEditorScreen.editor.features.field.updateFields }
-          </Button>
+            <Typography>
+              { strings.draftEditorScreen.editor.features.field.updateFields }
+            </Typography>
+          </RoundActionButton>
         </>
       );
     }
@@ -224,13 +227,14 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
       return (
         <>
           { field.options?.map(renderMultiChoiceOptionEdit) }
-          <Button
+          <RoundActionButton
             fullWidth
-            sx={{ height: "50px" }}
             onClick={ addNewFieldOption }
           >
-            { strings.draftEditorScreen.editor.features.field.addFieldOption }
-          </Button>
+            <Typography>
+              { strings.draftEditorScreen.editor.features.field.addFieldOption }
+            </Typography>
+          </RoundActionButton>
         </>
       );
     }

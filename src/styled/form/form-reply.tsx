@@ -33,7 +33,7 @@ export const FormReplyAction = styled(Box, {
 })(({ theme }) => ({
   height: 100,
   display: "flex",
-  backgroundColor: "#fff",
+  backgroundColor: theme.palette.background.paper,
   alignItems: "center",
   padding: theme.spacing(4),
   justifyContent: "space-between"

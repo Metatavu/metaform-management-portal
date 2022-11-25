@@ -135,7 +135,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           notInteractive={ true }
           field={ field }
           fieldId={ fieldId }
-          value={ field.name || "" }
+          value=""
           fieldLabelId={ fieldLabelId }
         />
       );
