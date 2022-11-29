@@ -406,8 +406,8 @@ export interface Localized extends LocalizedStringsMethods {
       user: string;
     };
     editMemberButton: string;
-    addMemberButton: string
-    addMemberGroupButton: string
+    addMemberButton: string;
+    addMemberGroupButton: string;
     addMemberDialog: {
       title: string;
       text: string;
