@@ -86,7 +86,9 @@ const DraftEditorScreen: React.FC = () => {
    */
   const checkIfMemberGroups = () => {
     if (pendingForm.defaultPermissionGroups) {
-      if (JSON.stringify(pendingForm.defaultPermissionGroups).length > 57) {
+      if (pendingForm.defaultPermissionGroups!.editGroupIds!.length > 0 ||
+          pendingForm.defaultPermissionGroups!.notifyGroupIds!.length > 0 ||
+          pendingForm.defaultPermissionGroups!.viewGroupIds!.length > 0) {
         setHasMemberGroups(true);
       } else {
         pendingForm.sections?.forEach((section => {
@@ -94,7 +96,9 @@ const DraftEditorScreen: React.FC = () => {
             if (field.type === MetaformFieldType.Select || field.type === MetaformFieldType.Checklist || field.type === MetaformFieldType.Radio) {
               field.options?.forEach((option => {
                 if (option.permissionGroups) {
-                  if (JSON.stringify(option.permissionGroups).length > 57) {
+                  if (option.permissionGroups!.editGroupIds!.length > 0 ||
+                      option.permissionGroups!.notifyGroupIds!.length > 0 ||
+                      option.permissionGroups!.viewGroupIds!.length > 0) {
                     setHasMemberGroups(true);
                   }
                 }
