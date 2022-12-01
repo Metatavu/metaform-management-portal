@@ -1,6 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
-import { Divider, Stack, Typography } from "@mui/material";
-import { Metaform, MetaformMemberGroup, MetaformVersion, MetaformVersionType } from "generated/client";
+import { Divider, Stack, Tooltip, Typography } from "@mui/material";
+import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVersion, MetaformVersionType } from "generated/client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import MetaformUtils from "utils/metaform-utils";
 import MetaformEditor from "components/editor/metaform-editor";
@@ -32,12 +32,13 @@ const DraftEditorScreen: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const { metaformVersion } = useAppSelector(selectMetaform);
-  
+  const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
   const draftForm = MetaformUtils.getDraftForm(metaformVersion);
   const editorRef = useRef<HTMLDivElement>(null);
   const [ loading, setLoading ] = useState(false);
   const [ publishDialogOpen, setPublishDialogOpen ] = useState(false);
   const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
+  const [ hasMemberGroups, setHasMemberGroups ] = useState<boolean>(false);
 
   /**
    * Loads MetaformVersion to edit.
@@ -79,6 +80,36 @@ const DraftEditorScreen: React.FC = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  /**
+   * Check if form have some member groups defined
+   */
+  const checkIfMemberGroups = () => {
+    if (pendingForm.defaultPermissionGroups) {
+      if (JSON.stringify(pendingForm.defaultPermissionGroups).length > 57) {
+        setHasMemberGroups(true);
+      } else {
+        pendingForm.sections?.forEach((section => {
+          section.fields?.forEach((field => {
+            if (field.type === MetaformFieldType.Select || field.type === MetaformFieldType.Checklist || field.type === MetaformFieldType.Radio) {
+              field.options?.forEach((option => {
+                if (option.permissionGroups) {
+                  if (JSON.stringify(option.permissionGroups).length > 57) {
+                    setHasMemberGroups(true);
+                  }
+                }
+              }));
+            }
+          }));
+        }));
+      }
+    }
+  };
+
+  useEffect(() => {
+    setHasMemberGroups(false);
+    checkIfMemberGroups();
+  }, [pendingForm]);
 
   /**
    * Sets pending form
@@ -188,13 +219,17 @@ const DraftEditorScreen: React.FC = () => {
       >
         <Typography>{ strings.draftEditorScreen.preview }</Typography>
       </RoundActionButton>
-      <RoundActionButton
-        startIcon={ <Public/> }
-        onClick={ () => setPublishDialogOpen(true) }
-        disabled={ !draftForm?.sections || draftForm?.sections?.length! === 0 }
-      >
-        <Typography>{ strings.draftEditorScreen.publish }</Typography>
-      </RoundActionButton>
+      <Tooltip title={ strings.draftEditorScreen.editor.form.publishNoMemberGroupsDescription } disableHoverListener={ hasMemberGroups }>
+        <span>
+          <RoundActionButton
+            startIcon={ <Public/> }
+            onClick={ () => setPublishDialogOpen(true) }
+            disabled={ !pendingForm?.sections || pendingForm?.sections?.length! === 0 || !hasMemberGroups }
+          >
+            <Typography>{ strings.draftEditorScreen.publish }</Typography>
+          </RoundActionButton>
+        </span>
+      </Tooltip>
     </Stack>
   );
 

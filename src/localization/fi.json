@@ -238,7 +238,8 @@
         "formVisibilityLabel": "Lomakkeen näkyvyys",
         "private": "Yksityinen (Suomi.fi)",
         "public": "Julkinen",
-        "tooltipDescription": "Lomakkeen perustiedot: otsikko, näkyvyys ja oletus-käyttäjäryhmä."
+        "tooltipDescription": "Lomakkeen perustiedot: otsikko, näkyvyys ja oletus-käyttäjäryhmä.",
+        "publishNoMemberGroupsDescription": "Julkaistaaksesi lomakkeen, määrittele lomakkeelle tai kentälle käyttäjäryhmä."
       },
       "fields": {
         "tabTitle": "Kentät",
