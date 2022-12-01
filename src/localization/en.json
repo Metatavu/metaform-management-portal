@@ -238,7 +238,8 @@
         "formVisibilityLabel": "Form visibility",
         "private": "Private (Suomi.fi)",
         "public": "Public",
-        "tooltipDescription": "Edit form title and set form to public or private."
+        "tooltipDescription": "Edit form title and set form to public or private.",
+        "publishNoMemberGroupsDescription": "To publish form, define member group to form or field/fields."
       },
       "fields": {
         "tabTitle": "Fields",
