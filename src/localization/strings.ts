@@ -278,6 +278,7 @@ export interface Localized extends LocalizedStringsMethods {
         private: string;
         public: string;
         tooltipDescription: string;
+        publishNoMemberGroupsDescription: string;
       };
       fields: {
         tabTitle: string;
