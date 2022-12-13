@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import ConfirmDialog from "components/generic/confirm-dialog";
 import strings from "localization/strings";
 import React, { FC, useCallback, useEffect, useState } from "react";
@@ -10,7 +11,7 @@ import getRoutes from "components/layouts/breadcrumbs/routes";
 
 interface Props {
   active: boolean;
-  loadData?: Metaform;
+  updatedFormData?: Metaform;
   children: JSX.Element;
 }
 
@@ -19,18 +20,20 @@ interface Props {
  */
 const LeavePageHandler: FC<Props> = ({
   active,
-  loadData,
+  updatedFormData,
   children
 }) => {
   const navigate = useNavigate();
   const [ confirmLeavePageWithoutSaving, setConfirmLeavePageWithoutSaving ] = useState(false);
   const [ clickedButtonNavigation, setClickedButtonNavigation ] = useState<NavigationLinks>();
-  const [ clickedBreadcrumb, setClickedBreadcrumb ] = useState<string>("");
-  const [ confirmDialogState, setConfirmDialogState ] = useState<boolean>(false);
+  const [ clickedBreadcrumb, setClickedBreadcrumb ] = useState("");
+  const [ confirmDialogState, setConfirmDialogState ] = useState(false);
   const breadcrumbs = useBreadcrumbs(getRoutes(), { disableDefaults: true });
 
   /**
    * Handles user alert
+   * 
+   * @param e BeforeUnloadEvent
    */
   const handleUserAlert = useCallback((e: BeforeUnloadEvent) => {
     e.preventDefault();
@@ -40,17 +43,21 @@ const LeavePageHandler: FC<Props> = ({
 
   /**
    * Checks whether are any changes made to form
+   * 
    * @returns boolean 
    */
-  const changesMadeToForm = () : boolean => {
-    if (loadData != null && localStorage.getItem("formData") != null) {
-      return localStorage.getItem("formData") !== JSON.stringify(loadData);
+  const isFormChanged = () : boolean => {
+    const storedFormData = localStorage.getItem("formData");
+    if (updatedFormData !== undefined && storedFormData !== null) {
+      return storedFormData !== JSON.stringify(updatedFormData);
     }
     return false;
   };
 
   /**
    * Prevents navlink or breadcrumb link from triggering page change 
+   * 
+   * @param e Event
    */
   const preventLinkDefaultAction = (e : Event) => {
     setConfirmLeavePageWithoutSaving(true);
@@ -60,8 +67,10 @@ const LeavePageHandler: FC<Props> = ({
 
   /**
    * Adds confirm dialog handler for navButtons and links
+   * 
+   * @param e Event
    */
-  const addConfirmDialogForButtons = useCallback((e: Event) => {
+  const onNavButtonClick = useCallback((e: Event) => {
     const target = e.currentTarget as HTMLAnchorElement;
     const targetTextContent = target.textContent;
     const navHeader = strings.navigationHeader;
@@ -70,61 +79,120 @@ const LeavePageHandler: FC<Props> = ({
     if (target.href !== undefined && clickedButtonNavigation === undefined) {
       setClickedBreadcrumb(target.getAttribute("href") as string);
       preventLinkDefaultAction(e);
-    } else if (targetTextContent === navHeader.formsScreens.title ||
-               targetTextContent === navHeader.usersScreens.title ||
-               targetTextContent === navHeader.editorScreens.title) {
-      switch (targetTextContent) {
-        case navHeader.formsScreens.title:
-          setClickedButtonNavigation(NavigationLinks.FORMS);
-          break;
-        case navHeader.usersScreens.title:
-          setClickedButtonNavigation(NavigationLinks.USERS);
-          break;
-        case navHeader.editorScreens.title:
-          setClickedButtonNavigation(NavigationLinks.EDITOR);
-          break;
-        default:
-          setClickedButtonNavigation(undefined);
-          break;
-      }
-      preventLinkDefaultAction(e);
     }
+    switch (targetTextContent) {
+      case navHeader.formsScreens.title:
+        setClickedButtonNavigation(NavigationLinks.FORMS);
+        break;
+      case navHeader.usersScreens.title:
+        setClickedButtonNavigation(NavigationLinks.USERS);
+        break;
+      case navHeader.editorScreens.title:
+        setClickedButtonNavigation(NavigationLinks.EDITOR);
+        break;
+      default:
+        setClickedButtonNavigation(undefined);
+        break;
+    }
+    preventLinkDefaultAction(e);
   }, []);
  
   /**
    * Handles confirm dialog of navbuttons and links
+   * 
    * @param setConfirmDialog Set confirm dialog visible values true or false 
    */
   const handleConfirmDialog = (setConfirmDialog : boolean) => {
     if (setConfirmDialog !== confirmDialogState) {
       const allNavButtons = Array.from(document.querySelectorAll("button, a"));
       allNavButtons.forEach(button => {
-        button.removeEventListener("click", addConfirmDialogForButtons);
         const isLastBreadDrumb = breadcrumbs.length - 1 === Number(button.getAttribute("a-key"));
         if (setConfirmDialog && !isLastBreadDrumb) {
-          button.addEventListener("click", addConfirmDialogForButtons);
+          button.addEventListener("click", onNavButtonClick);
+        } else {
+          button.removeEventListener("click", onNavButtonClick);
         }
       });
       setConfirmDialogState(setConfirmDialog);
     }
   };
 
-  useEffect(() => {
-    if (loadData !== undefined) {
-      const formDataKeys = Object.keys(JSON.parse(JSON.stringify(loadData)));
+  /**
+   * Stores form data in Local Storage
+   */
+  const storeFormData = () => {
+    if (updatedFormData !== undefined) {
+      const formDataKeys = Object.keys(JSON.parse(JSON.stringify(updatedFormData)));
 
       if (localStorage.getItem("formData") == null && formDataKeys.length !== 0) {
-        localStorage.setItem("formData", JSON.stringify(loadData));
+        localStorage.setItem("formData", JSON.stringify(updatedFormData));
       }
     }
-    if (changesMadeToForm()) {
+  };
+
+  /**
+   * Handles the actions of navlinks if form data has changed
+   */
+  const handleConfirmDialogIfDataChanged = () => {
+    if (isFormChanged()) {
       handleConfirmDialog(true);
       window.addEventListener("beforeunload", handleUserAlert);
     } else {
       handleConfirmDialog(false);
       window.removeEventListener("beforeunload", handleUserAlert);
     }
-  }, [loadData]);
+  };
+
+  /**
+   *  Removes confirmation pop up
+   */
+  const resetNavLinks = () => {
+    setConfirmLeavePageWithoutSaving(false);
+    setClickedBreadcrumb("");
+    setClickedButtonNavigation(undefined);
+    window.addEventListener("beforeunload", handleUserAlert);
+  };
+
+  /**
+   * Navigates to corresponding page
+   */
+  const navigateToPage = () => {
+    if (clickedBreadcrumb === "" && clickedButtonNavigation !== undefined) {
+      navigate(NavigationUtils.getTranslatedNavigation(clickedButtonNavigation));
+    } else {
+      navigate(`../../../${clickedBreadcrumb}`);
+    }
+  };
+
+  /**
+   * Handles whether this components event listeners should be active
+   */
+  const handleActive = () => (active ? window.addEventListener("beforeunload", handleUserAlert) : window.removeEventListener("beforeunload", handleUserAlert));
+
+  useEffect(() => {
+    storeFormData();
+    handleConfirmDialogIfDataChanged();
+  }, [updatedFormData]);
+
+  useEffect(() => {
+    handleActive();
+  }, [active]);
+
+  useEffect(() => {
+    return () => {
+      window.removeEventListener("beforeunload", handleUserAlert);
+      const allNavButtons = Array.from(document.querySelectorAll("button, a"));
+      allNavButtons.forEach(button => {
+        button.removeEventListener("click", onNavButtonClick);
+      });
+    };
+  }, []);
+
+  window.onunload = () => {
+    if (localStorage.getItem("formData") != null) {
+      localStorage.removeItem("formData");
+    }
+  };
 
   /**
    * Renders page leaving confirmation dialog
@@ -132,15 +200,9 @@ const LeavePageHandler: FC<Props> = ({
   const renderConfirmLeavePageWithoutSaving = () => {
     return (
       <ConfirmDialog
-        onClose={ () => { setConfirmLeavePageWithoutSaving(false); setClickedBreadcrumb(""); setClickedButtonNavigation(undefined); window.addEventListener("beforeunload", handleUserAlert); } }
-        onCancel={ () => { setConfirmLeavePageWithoutSaving(false); setClickedBreadcrumb(""); setClickedButtonNavigation(undefined); window.addEventListener("beforeunload", handleUserAlert); } }
-        onConfirm={ () => {
-          if (clickedBreadcrumb === "") {
-            navigate(NavigationUtils.getTranslatedNavigation(clickedButtonNavigation!));
-          } else {
-            navigate(`../../../${clickedBreadcrumb}`);
-          }
-        } }
+        onClose={ () => resetNavLinks() }
+        onCancel={ () => resetNavLinks() }
+        onConfirm={ () => navigateToPage() }
         cancelButtonText={ strings.generic.cancel }
         positiveButtonText={ strings.generic.confirm }
         title={ strings.draftEditorScreen.unsavedChanges }
@@ -149,25 +211,6 @@ const LeavePageHandler: FC<Props> = ({
       />
     );
   };
-
-  /**
-   * Handles whether this components event listeners should be active
-   */
-  const handleActive = () => (active ? window.addEventListener("beforeunload", handleUserAlert) : window.removeEventListener("beforeunload", handleUserAlert));
-
-  window.onunload = () => {
-    if (localStorage.getItem("formData") != null) {
-      localStorage.removeItem("formData");
-    }
-  };
-
-  useEffect(() => {
-    handleActive();
-  }, [active]);
-
-  useEffect(() => {
-    return () => window.removeEventListener("beforeunload", handleUserAlert);
-  }, []);
 
   return (
     <>

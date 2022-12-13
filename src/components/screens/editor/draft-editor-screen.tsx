@@ -175,40 +175,40 @@ const DraftEditorScreen: React.FC = () => {
   /**
    * Renders draft editor actions
    */
-  const draftEditorActions = () => (
-    <LeavePageHandler active={ true } loadData={MetaformUtils.jsonToMetaform(draftForm)}>
-      <Stack direction="row" spacing={ 2 }>
-        <RoundActionButton
-          startIcon={ <Save/> }
-          onClick={ saveMetaformVersion }
-        >
-          <Typography>{ strings.generic.save }</Typography>
-        </RoundActionButton>
-        <RoundActionButton
-          onClick={ () => navigate(window.location.pathname.replace("editor", "preview")) }
-          startIcon={ <Preview/> }
-        >
-          <Typography>{ strings.draftEditorScreen.preview }</Typography>
-        </RoundActionButton>
-        <RoundActionButton
-          startIcon={ <Public/> }
-          onClick={ () => setPublishDialogOpen(true) }
-          disabled={ !draftForm?.sections || draftForm?.sections?.length! === 0 }
-        >
-          <Typography>{ strings.draftEditorScreen.publish }</Typography>
-        </RoundActionButton>
-      </Stack>
-    </LeavePageHandler>
+  const renderDraftEditorActions = () => (
+    <Stack direction="row" spacing={ 2 }>
+      <RoundActionButton
+        startIcon={ <Save/> }
+        onClick={ saveMetaformVersion }
+      >
+        <Typography>{ strings.generic.save }</Typography>
+      </RoundActionButton>
+      <RoundActionButton
+        onClick={ () => navigate(window.location.pathname.replace("editor", "preview")) }
+        startIcon={ <Preview/> }
+      >
+        <Typography>{ strings.draftEditorScreen.preview }</Typography>
+      </RoundActionButton>
+      <RoundActionButton
+        startIcon={ <Public/> }
+        onClick={ () => setPublishDialogOpen(true) }
+        disabled={ !draftForm?.sections || draftForm?.sections?.length! === 0 }
+      >
+        <Typography>{ strings.draftEditorScreen.publish }</Typography>
+      </RoundActionButton>
+    </Stack>
   );
 
   return (
     <Stack flex={ 1 } overflow="hidden">
       { renderPublishConfirmDialog() }
       <NavigationTabContainer>
-        <NavigationTab
-          text={ strings.navigationHeader.editorScreens.draftEditorScreen }
-          renderActions={ draftEditorActions }
-        />
+        <LeavePageHandler active={ true } updatedFormData={MetaformUtils.jsonToMetaform(draftForm)}>
+          <NavigationTab
+            text={ strings.navigationHeader.editorScreens.draftEditorScreen }
+            renderActions={ renderDraftEditorActions }
+          />
+        </LeavePageHandler>
       </NavigationTabContainer>
       <Divider/>
       <GenericLoaderWrapper loading={ loading }>
