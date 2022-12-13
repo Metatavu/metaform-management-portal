@@ -1,22 +1,28 @@
-import { Button, Checkbox, Divider, FormControl, FormControlLabel, IconButton, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
-import { Metaform, MetaformField, MetaformFieldOption, MetaformSection, MetaformTableColumn, MetaformTableColumnType, MetaformFieldType, FieldRule, MetaformMemberGroup } from "generated/client";
+import { Button, Checkbox, Divider, FormControl, FormControlLabel, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { Metaform, MetaformField, MetaformSection, MetaformFieldType, FieldRule, MetaformMemberGroup, MetaformFieldOption } from "generated/client";
 import produce from "immer";
-import slugify from "slugify";
 import strings from "localization/strings";
-import React, { useEffect, FC, useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { FormContext, MemberGroupPermission, NOT_SELECTED, NullableMemberGroupPermission } from "../../types/index";
+import React, { FC, useEffect, useState } from "react";
 import MetaformUtils from "utils/metaform-utils";
+import MetaformDefineMemberGroupComponent from "./feature-components/MetaformDefineMemberGroupComponent";
+import MetaformSliderComponent from "./feature-components/MetaformSlidercomponent";
+import MetaformTableComponent from "./feature-components/MetaformTableComponent";
+import MetaformDateTimeComponent from "./feature-components/MetaformDateTimeComponent";
+import MetaformMultiChoiceFieldPropertiesComponent from "./feature-components/MetaformMultiChoiceFieldPropertiesComponent";
+import MetaformContextOptionsComponent from "./feature-components/MetaformContextOptionsComponent";
+import MetaformFieldAndSubmitEditTitleComponent from "./feature-components/MetaformFieldAndSubmitTitleEditComponent";
+import MetaformFieldRequiredComponent from "./feature-components/MetaformFieldRequiredComponent";
+import { selectMetaform } from "../../features/metaform-slice";
+import { useAppSelector } from "app/hooks";
+import slugify from "slugify";
+import { FormContext } from "types";
 import LocalizationUtils from "utils/localization-utils";
-import { uuid4 } from "@sentry/utils";
 
 /**
  * Component properties
  */
 interface Props {
   memberGroups: MetaformMemberGroup[],
-  sectionIndex?: number;
-  fieldIndex?: number;
   pendingForm: Metaform;
   setPendingForm: (metaform: Metaform) => void;
 }
@@ -24,16 +30,12 @@ interface Props {
 /**
  * Draft editor right drawer feature component
  */
-const MetaformEditorRightDrawerFeature: FC<Props> = ({
+export const MetaformEditorRightDrawerFeature: FC<Props> = ({
   memberGroups,
-  sectionIndex,
-  fieldIndex,
   pendingForm,
   setPendingForm
 }) => {
-  const [ newColumnType, setNewColumnType ] = useState<MetaformTableColumnType>();
-  const [ selectedSection, setSelectedSection ] = useState<MetaformSection>();
-  const [ selectedField, setSelectedField ] = useState<MetaformField>();
+  const { metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
   const [ debounceTimerId, setDebounceTimerId ] = useState<NodeJS.Timeout>();
   const [ selectMemberGroupEnabled, setSelectMemberGroupEnabled ] = useState<boolean>(false);
   const [ selectedMemberGroupId, setSelectedMemberGroupId ] = useState<string>();
@@ -50,38 +52,80 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   };
 
   /**
+   * Empties member group settings
+   */
+  const emptyMemberGroupSettings = () => {
+    setSelectMemberGroupEnabled(false);
+    setMemberGroupOptIndex(undefined);
+    setSelectedMemberGroupId(undefined);
+    setSelectedMemberGroupPermission(NOT_SELECTED);
+  };
+
+  /**
    * Set member groups for selected field to the found first group
    */
   const checkIfMemberGroupsAreSelected = () => {
-    if (!selectedField || !MetaformUtils.fieldTypesAllowVisibility.includes(selectedField.type)) {
+    if (sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
 
-    const foundOptionIndex = selectedField.options?.findIndex(option => MetaformUtils.getOptionPermissionGroup(option) !== undefined);
+    const updatedSelectedField = pendingForm.sections?.[sectionIndex].fields?.[fieldIndex];
+
+    if (!updatedSelectedField || !MetaformUtils.fieldTypesAllowVisibility.includes(updatedSelectedField.type)) {
+      return;
+    }
+
+    const foundOptionIndex = updatedSelectedField.options?.findIndex(option => MetaformUtils.getOptionPermissionGroup(option) !== undefined);
 
     if (foundOptionIndex !== -1 && foundOptionIndex !== undefined) {
-      const [ groupId, permission ] = MetaformUtils.getOptionPermissionGroup(selectedField.options![foundOptionIndex])!;
+      const [ groupId, permission ] = MetaformUtils.getOptionPermissionGroup(updatedSelectedField.options![foundOptionIndex])!;
 
       setSelectMemberGroupEnabled(true);
       setSelectedMemberGroupId(groupId);
-      setSelectedMemberGroupPermission(permission);
+      setSelectedMemberGroupPermission(permission !== MemberGroupPermission.NOTIFY ? permission : NOT_SELECTED);
       setMemberGroupOptIndex(foundOptionIndex);
-    } else {
-      setSelectMemberGroupEnabled(false);
-      setMemberGroupOptIndex(undefined);
-      setSelectedMemberGroupId(undefined);
-      setSelectedMemberGroupPermission(NOT_SELECTED);
     }
   };
 
   useEffect(() => {
-    updateSelected();
-  }, [ sectionIndex, fieldIndex, pendingForm ]);
-
-  useEffect(() => {
-    checkIfMemberGroupsAreSelected();
-  }, [ selectedField?.name, selectedField?.options?.length ]);
-
+    if (metaformSectionIndex !== undefined) {
+      setMetaformSection(pendingForm.sections?.[metaformSectionIndex]);
+    }
+    if (metaformFieldIndex !== undefined && metaformSectionIndex !== undefined) {
+      setMetaformField(pendingForm.sections?.[metaformSectionIndex].fields?.[metaformFieldIndex]);
+    }
+    if (metaformFieldIndex === undefined) {
+      setMetaformField(undefined);
+    }
+    if (metaformSectionIndex === undefined) {
+      setMetaformSection(undefined);
+    }
+  }, [pendingForm, metaformSectionIndex, metaformFieldIndex]);
+  
+  /**
+   * 
+   * @param fieldRules field rules
+   * @param field metaform field
+   * @param optionIndex option index
+   * @param fieldOptionMatch field option match
+   */
+  const checkFieldRules = (fieldRules: FieldRule[], field: MetaformField, optionIndex?: number, fieldOptionMatch?: MetaformFieldOption) => {
+    fieldRules.forEach(rule => {
+      if ((metaformField!.name !== undefined && field.name !== metaformField!.name)) {
+        rule.field = field.name;
+      // option update
+      } else if (optionIndex !== undefined) {
+        const fieldOptionToUpdate = field.options![optionIndex];
+        if (rule.equals === fieldOptionMatch!.name) {
+          rule.equals = fieldOptionToUpdate.name;
+        } else if (rule.notEquals === fieldOptionMatch!.name) {
+          rule.notEquals = fieldOptionToUpdate.name;
+        }
+      }
+      return field;
+    });
+  };
+  
   /**
    * Updates field with visibility
    *
@@ -89,17 +133,18 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * @param optionIndex option index
    */
   const updateFormField = (field: MetaformField, optionIndex?: number) => {
-    if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
+    if (!metaformField || metaformSectionIndex === undefined || metaformFieldIndex === undefined) {
       return;
     }
 
     const updatedForm = produce(pendingForm, draftForm => {
       if (MetaformUtils.fieldTypesAllowVisibility.includes(field.type)) {
-        if ((selectedField.name !== undefined && field.name !== selectedField.name) || optionIndex !== undefined) {
+        const checkedName = pendingForm.sections![metaformSectionIndex!].fields![metaformFieldIndex!];
+        if ((checkedName!.name !== undefined && field.name !== checkedName!.name) || optionIndex !== undefined) {
           const fieldOptionMatch = optionIndex !== undefined ?
-            pendingForm.sections![sectionIndex].fields![fieldIndex].options![optionIndex] :
+            pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex].options![optionIndex] :
             undefined;
-          const fieldNameMatch = pendingForm.sections![sectionIndex].fields![fieldIndex].name || "";
+          const fieldNameMatch = pendingForm.sections![metaformSectionIndex].fields![metaformFieldIndex].name || "";
 
           const fieldRules: FieldRule[] = [];
 
@@ -113,24 +158,11 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
               }
             });
           });
-
-          fieldRules.forEach(rule => {
-            if ((selectedField.name !== undefined && field.name !== selectedField.name)) {
-              rule.field = field.name;
-            // option update
-            } else if (optionIndex !== undefined) {
-              const fieldOptionToUpdate = field.options![optionIndex];
-              if (rule.equals === fieldOptionMatch!.name) {
-                rule.equals = fieldOptionToUpdate.name;
-              } else if (rule.notEquals === fieldOptionMatch!.name) {
-                rule.notEquals = fieldOptionToUpdate.name;
-              }
-            }
-          });
+          checkFieldRules(fieldRules, field, optionIndex, fieldOptionMatch);
         }
       }
 
-      draftForm.sections?.[sectionIndex]?.fields?.splice(fieldIndex, 1, field);
+      draftForm.sections?.[metaformSectionIndex]?.fields?.splice(metaformFieldIndex, 1, field);
     });
 
     setPendingForm(updatedForm);
@@ -140,11 +172,8 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Debounced update field
    *
    * @param field edited field
-   * @param optionIndex option index
    */
   const updateFormFieldDebounced = (field: MetaformField, optionIndex?: number) => {
-    setSelectedField(field);
-
     debounceTimerId && clearTimeout(debounceTimerId);
     setDebounceTimerId(setTimeout(() => updateFormField(field, optionIndex), 500));
   };
@@ -154,15 +183,14 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    *
    * @param metaformSection metaform section what we are editing
    */
-  const updateFormSection = (metaformSection: MetaformSection) => {
-    if (sectionIndex === undefined) {
+  const updateFormSection = (selectedMetaformSection: MetaformSection) => {
+    if (metaformSectionIndex === undefined) {
       return;
     }
-
     const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections?.splice(sectionIndex, 1, metaformSection);
+      draftForm.sections?.splice(metaformSectionIndex, 1, selectedMetaformSection);
     });
-
+    setMetaformSection(selectedMetaformSection);
     setPendingForm(updatedForm);
   };
 
@@ -211,8 +239,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * @param optionIndex Option index value of option field what we delete
    */
   const deleteFieldOptions = (optionIndex: number) => {
-    setSelectMemberGroupEnabled(false);
-
+    setMemberGroupOptIndex(undefined);
     if (!selectedField || sectionIndex === undefined || fieldIndex === undefined) {
       return;
     }
@@ -451,7 +478,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
     const updatedField = produce(selectedField, draftField => {
       draftField.options?.forEach(option => { option.permissionGroups = undefined; });
     });
-
+    setMemberGroupOptIndex(undefined);
     setSelectedMemberGroupId(undefined);
     setSelectedMemberGroupPermission(NOT_SELECTED);
     updateFormField(updatedField);
@@ -517,14 +544,12 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
   /**
    * Render member group role options
    *
-   * @param field selected metaform field
    */
   const renderMemberGroupPermissionSelect = (field: MetaformField) => {
-    if (memberGroupOptIndex === undefined || selectedMemberGroupId === undefined) {
+    if (memberGroupOptIndex === undefined || selectedMemberGroupId === undefined || selectedMemberGroupId === NOT_SELECTED) {
       return null;
     }
-
-    const notifyChecked = !!field.options?.[memberGroupOptIndex].permissionGroups?.notifyGroupIds?.length;
+    const notifyChecked = !!field.options?.[memberGroupOptIndex]?.permissionGroups?.notifyGroupIds?.length;
     return (
       <FormControl fullWidth>
         <TextField
@@ -533,7 +558,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           value={ selectedMemberGroupPermission }
           onChange={ ({ target }) => setMemberGroupPermission(target.value as NullableMemberGroupPermission) }
         >
-          <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.none }</MenuItem>
+          <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.noPermission }</MenuItem>
           <MenuItem value={ MemberGroupPermission.EDIT }>{ strings.draftEditorScreen.editor.memberGroups.edit }</MenuItem>
           <MenuItem value={ MemberGroupPermission.VIEW }>{ strings.draftEditorScreen.editor.memberGroups.view }</MenuItem>
         </TextField>
@@ -554,19 +579,21 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Render member groups of current metaform
    */
   const renderMemberGroupSelect = () => {
-    if (memberGroupOptIndex === undefined) {
+    if (memberGroupOptIndex === undefined || !selectMemberGroupEnabled) {
       return null;
     }
-
     return (
       <FormControl fullWidth>
         <TextField
           fullWidth
           select
           label={ strings.draftEditorScreen.editor.memberGroups.memberGroup }
-          value={ selectedMemberGroupId }
+          value={ selectedMemberGroupId || "" }
           onChange={ event => handleMemberGroupChange(event.target.value) }
         >
+          <MenuItem value={ NOT_SELECTED } key={uuid4()}>
+            { strings.draftEditorScreen.editor.memberGroups.noMemberGroupSelected }
+          </MenuItem>
           { memberGroups.map(memberGroup => (
             <MenuItem value={ memberGroup.id } key={ memberGroup.id }>
               { memberGroup.displayName }
@@ -587,14 +614,14 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
     if (!selectMemberGroupEnabled) {
       return null;
     }
-
+    const currentIndex = memberGroupOptIndex ?? "";
     return (
       <FormControl fullWidth>
         <TextField
           select
           fullWidth
           label={ strings.draftEditorScreen.editor.memberGroups.fieldValueLabel }
-          value={ memberGroupOptIndex }
+          value={ currentIndex }
           onChange={ event => onSelectedOptionChange(Number(event.target.value))}
         >
           { field.options!.map((option, index) => {
@@ -685,6 +712,8 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       <TextField
         value={ option.text }
         label={ index }
+        focused={ memberGroupOptIndex === index }
+        color="success"
         onChange={ event => updateOptionText({
           ...option,
           name: slugify(event.target.value),
@@ -830,6 +859,7 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
           label={ strings.draftEditorScreen.editor.features.field.defineUserGroup }
           control={
             <Switch
+              disabled={ selectedField?.options!.length === 0 }
               checked={ selectMemberGroupEnabled }
               onChange={ event => toggleMemberGroupEnabled(event.target.checked) }
             />
@@ -869,7 +899,9 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       case MetaformFieldType.Number:
         return (
           <>
-            { renderSliderProperties(field) }
+            <MetaformSliderComponent
+              updateFormFieldDebounced={ updateFormFieldDebounced }
+            />
             <Divider/>
           </>
         );
@@ -878,16 +910,23 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       case MetaformFieldType.Select:
         return (
           <>
-            { renderMultiChoiceFieldProperties(field) }
+            <MetaformMultiChoiceFieldPropertiesComponent
+              updateFormFieldDebounced={ updateFormFieldDebounced }
+            />
             <Divider/>
-            { renderDefineMemberGroup(field) }
+            <MetaformDefineMemberGroupComponent
+              memberGroups={ memberGroups }
+              updateFormFieldDebounced={ updateFormFieldDebounced }
+            />
             <Divider/>
           </>
         );
       case MetaformFieldType.Table:
         return (
           <>
-            { renderTableProperties(field) }
+            <MetaformTableComponent
+              updateFormFieldDebounced={ updateFormFieldDebounced }
+            />
             <Divider/>
           </>
         );
@@ -895,7 +934,9 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
       case MetaformFieldType.DateTime:
         return (
           <>
-            { renderDateTimeProperties(field) }
+            <MetaformDateTimeComponent
+              updateFormFieldDebounced={ updateFormFieldDebounced }
+            />
             <Divider/>
           </>
         );
@@ -903,84 +944,6 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
         break;
     }
   };
-
-  /**
-   * Renders field title
-   *
-   * @param section field
-   * @param field field
-   */
-  const renderFieldTitleEdit = (section: MetaformSection, field: MetaformField) => (
-    <Stack spacing={ 2 }>
-      <Typography variant="subtitle1" style={{ width: "100%" }}>
-        { strings.draftEditorScreen.editor.features.field.fieldData }
-      </Typography>
-      <TextField
-        fullWidth
-        label={ strings.draftEditorScreen.editor.features.field.fieldTitle }
-        value={ field.title }
-        onChange={ event => updateFormFieldDebounced({
-          ...field,
-          title: event.target.value,
-          name: slugify(`${section.title}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
-        })
-        }
-      />
-      <Typography variant="body2">
-        { `${strings.draftEditorScreen.editor.features.field.fieldType}: ${LocalizationUtils.getLocalizedFieldType(field.type)}` }
-      </Typography>
-    </Stack>
-  );
-
-  /**
-   * Renders submit title
-   *
-   * @param section field
-   * @param field field
-   */
-  const renderSubmitTitleEdit = (section: MetaformSection, field: MetaformField) => (
-    <Stack spacing={ 2 }>
-      <Typography variant="subtitle1" style={{ width: "100%" }}>
-        { strings.draftEditorScreen.editor.features.field.fieldData }
-      </Typography>
-      <TextField
-        fullWidth
-        label={ strings.draftEditorScreen.editor.features.field.submitButtonText }
-        value={ field.text }
-        onChange={ event => updateFormFieldDebounced({
-          ...field,
-          text: event.target.value,
-          name: slugify(`${section.title}-${event.target.value}-${sectionIndex}-${fieldIndex}`)
-        })
-        }
-      />
-    </Stack>
-  );
-
-  /**
-   * Renders field required edit
-   *
-   * @param field field
-   */
-  const renderFieldRequiredEdit = (field: MetaformField) => (
-    <Stack spacing={ 2 }>
-      <Typography variant="subtitle1" style={{ width: "100%" }}>
-        { strings.draftEditorScreen.editor.features.field.required }
-      </Typography>
-      <FormControlLabel
-        label={ strings.generic.yes }
-        control={
-          <Checkbox
-            checked={ field.required }
-            onChange={ event => updateFormFieldDebounced({
-              ...field,
-              required: event.target.checked
-            }) }
-          />
-        }
-      />
-    </Stack>
-  );
 
   /**
    * Renders section editor
@@ -1008,19 +971,21 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Renders field editor
    *
    * @param field field
-   * @param section section
    */
-  const renderFieldEditor = (field: MetaformField, section: MetaformSection) => (
+  const renderFieldEditor = (field: MetaformField) => (
     <>
-      { field.type === MetaformFieldType.Submit ?
-        renderSubmitTitleEdit(section, field) :
-        renderFieldTitleEdit(section, field)
-      }
+      <MetaformFieldAndSubmitEditTitleComponent
+        updateFormFieldDebounced={ updateFormFieldDebounced }
+      />
       <Divider/>
       { renderFieldProperties(field) }
-      { renderContextOptions(field) }
+      <MetaformContextOptionsComponent
+        updateFormFieldDebounced={ updateFormFieldDebounced }
+      />
       <Divider/>
-      { renderFieldRequiredEdit(field) }
+      <MetaformFieldRequiredComponent
+        updateFormFieldDebounced={ updateFormFieldDebounced }
+      />
       <Divider/>
     </>
   );
@@ -1036,12 +1001,12 @@ const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Renders feature editor
    */
   const renderFeatureEditor = () => {
-    if (selectedField !== undefined && selectedSection !== undefined) {
-      return renderFieldEditor(selectedField, selectedSection);
+    if (metaformField && metaformSection) {
+      return renderFieldEditor(metaformField);
     }
 
-    if (selectedSection !== undefined) {
-      return renderSectionEditor(selectedSection);
+    if (metaformSection) {
+      return renderSectionEditor(metaformSection);
     }
 
     return renderEmptySelection();

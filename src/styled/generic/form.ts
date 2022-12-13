@@ -57,7 +57,7 @@ export const MetaformSectionWrapper = styled(Box, {
   padding: theme.spacing(2),
   marginBottom: theme.spacing(2),
   backgroundColor: "#fff",
-  boxShadow: "5px 5px 5px rgba(0,0,0,0.5)"
+  boxShadow: "0px 0px 10px rgba(0,0,0,0.2)"
 }));
 
 /**

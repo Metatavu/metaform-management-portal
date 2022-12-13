@@ -1,7 +1,7 @@
 // import { Configuration } from "../generated/client";
 
 import Config from "app/config";
-import { AttachmentsApi, Configuration, ConfigurationParameters, DraftsApi, MetaformsApi, RepliesApi, MetaformMembersApi, MetaformMemberGroupsApi, VersionsApi, AuditLogEntriesApi } from "generated/client";
+import { AttachmentsApi, Configuration, ConfigurationParameters, DraftsApi, MetaformsApi, RepliesApi, MetaformMembersApi, MetaformMemberGroupsApi, VersionsApi, AuditLogEntriesApi, UsersApi, EmailNotificationsApi } from "generated/client";
 
 /**
  * Utility class for loading api with predefined configuration
@@ -46,7 +46,9 @@ namespace Api {
       metaformMembersApi: new MetaformMembersApi(getConfiguration()),
       metaformMemberGroupsApi: new MetaformMemberGroupsApi(getConfiguration()),
       versionsApi: new VersionsApi(getConfiguration()),
-      auditLogEntriesApi: new AuditLogEntriesApi(getConfiguration())
+      auditLogEntriesApi: new AuditLogEntriesApi(getConfiguration()),
+      usersApi: new UsersApi(getConfiguration()),
+      emailNotificationsApi: new EmailNotificationsApi(getConfiguration())
     };
   };
 

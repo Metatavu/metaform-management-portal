@@ -75,7 +75,7 @@ const MetaformComponent: React.FC<Props> = ({
     }
 
     return (
-      <MetaformTitle color={ titleColor || theme.palette.secondary.dark }>
+      <MetaformTitle color={ titleColor || theme.palette.secondary.light }>
         { form.title }
       </MetaformTitle>
     );

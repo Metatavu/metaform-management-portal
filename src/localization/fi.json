@@ -29,7 +29,7 @@
       "reloadPage": "Kokeile ladata sivu uudelleen.",
       "tryAgain": "Tarkista internet-yhteytesi ja yritä uudelleen.",
       "unsavedContents": "Huomaathan, että tallentamattomat sisällöt häviävät uudelleen ladattaessa. Mikäli sinulla on sivulla tallentamattomia sisältöjä, voit sulkea tämän ilmoituksen ja kopioida sisällöt leikepöydälle ennen uudelleenlatausta.",
-      "reportIssue": "Mikäli ongelma jatkuu, ota sähköpostilla yhteyttä osoitteeseen support@metatavu.fi. Liitä tekniset lisätiedot osaksi sähköpostia nopeuttaaksesi ongelman selvittelyä.",
+      "reportIssue": "Mikäli ongelma jatkuu, voi vika olla myös käyttämissämme taustajärjestelmissä. Voit halutessasi ottaa sähköpostilla yhteyttä osoitteeseen support@metatavu.fi. Liitä tekniset lisätiedot osaksi sähköpostia nopeuttaaksesi ongelman selvittelyä.",
       "technicalDetails": "Teknisiä lisätietoja:",
       "time": "Aika: {0}",
       "url": "Osoite: {0}",
@@ -45,7 +45,8 @@
       "createForm": "Lomakkeen luominen epäonnistui",
       "deleteVersion": "Lomakeversion poistaminen epäonnistui",
       "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
-      "convertSosmetaError": "Sosmetan muuntaminen epäonnistui"
+      "convertSosmetaError": "Sosmetan muuntaminen epäonnistui",
+      "getLastModifiers": "Lomakkeiden viimeisten muokkaajien haku epäonnistui"
     },
     "draftEditorScreen": {
       "findDraft": "Lomakeversion haku epäonnistui",
@@ -84,11 +85,14 @@
     "usersScreen": {
       "loadMetaforms": "Lomakkeiden latauksessa tapahtui virhe",
       "loadMemberGroups": "Käyttäjäryhmien latauksessa tapahtui virhe",
-      "createMember": "Käyttäjän luonnissa tapahtui virhe",
+      "createMember": "Käyttäjän lisäämisessä lomakkeelle tapahtui virhe",
       "createMemberGroup": "Käyttäjäryhmän luonnissa tapahtui virhe",
       "loadMembers": "Käyttäjien latauksessa tapahtui virhe",
       "removeMemberNotFound": "Ryhmän poistossa tapahtui virhe, käyttäjää ei löytynyt",
-      "addMemberNotFound": "Ryhmän lisäämisessä tapahtui virhe, käyttäjää ei löytynyt"
+      "addMemberNotFound": "Ryhmän lisäämisessä tapahtui virhe, käyttäjää ei löytynyt",
+      "loadUsers": "Käyttäjien latauksessa tapahtui virhe",
+      "createUser": "Käyttäjän luonnissa tapahtui virhe",
+      "updateUser": "Käyttäjän päivityksessä tapahtui virhe"
     },
     "previewScreen": {
       "shareLink": "Linkin jakamisessa tapahtui virhe"
@@ -105,6 +109,13 @@
     }
   },
 
+  "protectedForm": {
+    "redirectDialog": {
+      "title": "Vaaditaan vahva tunnistautuminen",
+      "text": "Tämä lomake vaatii vahvan tunnistautumisen. Siirry eteenpäin tunnistautumispalveluun."
+    }
+  },
+
   "formComponent": {
     "html": "Tyhjä html",
     "datePicker": "Päivämäärä",
@@ -115,6 +126,7 @@
     "user": "Käyttäjä",
     "logo": "Essote logo",
     "selectLanguage": "Valitse kieli",
+    "infoLabel": "Ohjeet",
     "languages": {
       "fi": "Suomi",
       "en": "English"
@@ -158,7 +170,7 @@
       "description": "Käyttäjien tarkastelu ja käyttäjäryhmien hallinta.",
       "subheader": {
         "title": "Käyttäjänhallinta",
-        "description": "Ohjeteksti"
+        "description": "Lomakkeiden käyttäjien ja ryhmien hallinnointi."
       }
     },
     "editorScreens": {
@@ -228,7 +240,8 @@
         "formVisibilityLabel": "Lomakkeen näkyvyys",
         "private": "Yksityinen (Suomi.fi)",
         "public": "Julkinen",
-        "tooltipDescription": "Lomakkeen perustiedot: otsikko, näkyvyys ja oletus-käyttäjäryhmä."
+        "tooltipDescription": "Lomakkeen perustiedot: otsikko, näkyvyys ja oletus-käyttäjäryhmä.",
+        "publishNoMemberGroupsDescription": "Julkaistaksesi lomakkeen, määrittele lomakkeelle tai kentälle käyttäjäryhmä."
       },
       "fields": {
         "tabTitle": "Kentät",
@@ -239,6 +252,8 @@
         "html": "Html",
         "boolean": "Totuusarvo",
         "select": "Pudotusvalikko",
+        "socialServicesSelect": "Sosiaalipalvelut pudotusvalikko",
+        "socialServicesChecklist": "Sosiaalipalvelut valintalista",
         "slider": "Liukuvalinta",
         "checklist": "Valintalista",
         "radio": "Radiovalinta",
@@ -268,6 +283,9 @@
           "defineUserGroup": "Määrittää käyttäjäryhmän",
           "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
           "fieldTitle": "Kentän otsikko",
+          "addFieldsAsText": "Tekstitila",
+          "addFieldsAsTextHelper": "Syötä valinnat rivinvaihdolla eroteltuna.",
+          "updateFields": "Päivitä kentät",
           "addFieldOption": "Lisää kenttä",
           "addNewColumn": "Lisää uusi sarake",
           "addColumnType": "Anna kentän tyyppi",
@@ -289,7 +307,7 @@
         "tabTitle": "näkyvyys",
         "fieldVisibility": "Kenttä näkyy lomakkeella:",
         "conditionLabelTitle": "Ehtokentän nimi",
-        "visibilityCondition": "Näkyvyyden ehto",
+        "visibilityCondition": "Näkyvyyden ehto ",
         "conditionally": "Ehdollisesti",
         "conditionalFieldValue": "Ehtokentän arvo",
         "conditionalFieldInfo": "Valitse se lomakkeen kenttä, joka määrittää näkyvyyden.",
@@ -303,7 +321,14 @@
         "formVisibilityLabel": "Lomakkeen näkyvyys",
         "private": "Yksityinen",
         "public": "Julkinen",
-        "tooltipDescription": "Aseta ehdollinen näkyvyys osiolle tai kentälle."
+        "tooltipDescription": "Aseta ehdollinen näkyvyys osiolle tai kentälle.",
+        "or": "Tai",
+        "addVisibleOrButtonText": "Lisää ehtokenttä",
+        "showConditionChain": "Näytä ehtojono",
+        "closeConditionChain": "Sulje ehtojono",
+        "allChoices": "Mikä tahansa valinta",
+        "andConditionChainTerms": "Näkyvyyden muut ehdot",
+        "visibilityConditionTooltip": "Näkyvyyden ehto määrittää kentän näkyvyyden lomakkeella. Näkyvyyden ehtoja voi olla useita, jolloin minkä tahansa ehdon täyttyessä kenttä näkyy lomakkeella. \n Jos kentän näkyvyys riippuu myös jonkin toisen kentän näkyvyydestä, 'NÄYTÄ EHTOJONO'-nappia painamalla voidaan tarkastella ehtojonoa."
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Käyttäjäryhmän asetukset",
@@ -315,8 +340,11 @@
         "view": "Katselu",
         "edit": "Muokkaus",
         "none": "Ei oikeuksia",
+        "noMemberGroupSelected": "Ei käyttäjäryhmää valittuna",
         "fieldValueLabel": "Kentän arvo",
         "notifications": "Ilmoitukset",
+        "noMemberGroup": "Ei Käyttäjäryhmää",
+        "noPermission": "Ei oikeuksia",
         "noDefaultPermissionMemberGroup": "Ei oletus-käyttäjäryhmää"
       }
     },
@@ -334,7 +362,8 @@
       "previewEmail": {
         "content": "<p>Hei!</p><p>Ole hyvä ja tarkastele lomaketta {0} seuraavasta linkistä:</p><p><a href='{1}'>{1}</a></p><hr/><p>Tämä on automaattinen viesti, älä vastaa viestiin.</p>",
         "subject": "Ole hyvä ja tarkastele lomaketta - {0}",
-        "emailSent": "Linkki lähetetty sähköpostitse"
+        "emailSent": "Linkki lähetetty sähköpostitse",
+        "noTitle": "Ei otsikkoa"
       }
     }
   },
@@ -345,25 +374,74 @@
       "group": "Valitse ryhmä",
       "user": "Valitse käyttäjä"
     },
+    "editMemberButton": "Muokkaa käyttäjää",
     "addMemberButton": "Uusi käyttäjä",
     "addMemberGroupButton": "Uusi käyttäjäryhmä",
     "addMemberDialog": {
       "title": "Uusi käyttäjä",
       "text": "Lisää uusi käyttäjä lomakkeelle",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "usersSelectLabel": "Käyttäjät",
+      "searchButton": "Hae",
       "emailLabel": "Sähköpostiosoite",
       "firstNameLabel": "Etunimi",
       "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
       "createButton": "Luo käyttäjä",
       "cancelButton": "Peruuta",
-      "roleAdministrator": "Ylläpitäjä",
-      "roleManager": "Ammattilainen"
+      "snackbarText": "Käyttäjän lisääminen onnistui!",
+      "tooltip": {
+        "tooltipGeneral": "Lisää olemassa oleva käyttäjä tai luo uusi käyttäjä lomakkeelle.",
+        "tooltipNoIconDescription": "Käyttäjä ilman ikonia löytyy vain Portaalin käyttäjärekisteristä.",
+        "tooltipLinkIconDescription": "Käyttäjä linkki-ikonilla löytyy Portaalin käyttäjärekisteristä, ja on linkitetty ammattilaiskorttiin",
+        "tooltipCardIconDescription": "Käyttäjä kortti-ikonilla löytyy vain DVV:n käyttäjärekisteristä, eikä ole vielä tuotu Portaalin käyttäjärekisteriin."
+      }
     },
     "addMemberGroupDialog": {
       "title": "Uusi käyttäjäryhmä",
       "text": "Lisää uusi käyttäjäryhmä lomakkeelle",
       "displayNameLabel": "Ryhmän nimi",
       "createButton": "Luo ryhmä",
-      "cancelButton": "Peruuta"
+      "cancelButton": "Peruuta",
+      "snackbarText": "Käyttäjäryhmän lisääminen onnistui!"
+    },
+    "editMemberDialog": {
+      "title": "Muokkaa käyttäjää",
+      "text": "Muokkaa olemassa olevaa käyttäjää",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "metaformUsersSelectLabel": "Portaali-käyttäjät",
+      "cardAuthUsersSelectLabel": "Kortti-käyttäjät",
+      "userIsLinked": "Käyttäjä on linkitetty korttiin",
+      "searchButton": "Hae",
+      "emailLabel": "Sähköpostiosoite",
+      "firstNameLabel": "Etunimi",
+      "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
+      "cancelButton": "Peruuta",
+      "editButton": "Muokkaa käyttäjää",
+      "snackbarText": "Käyttäjän muokkaaminen onnistui!",
+      "tooltip": {
+        "tooltipGeneral": "Muokkaa käyttäjän tietoja sekä lisää tai poista linkitys ammattilaiskorttiin."
+      }
+    },
+    "groupMembership": {
+      "groupMembershipAddSnackbarText": "Käyttäjä lisääminen ryhmään onnistui!",
+      "groupMembershipRemoveSnackbarText": "Käyttäjän poistaminen ryhmästä onnistui!"
+    },
+    "editMemberDialog": {
+      "title": "Muokkaa käyttäjää",
+      "text": "Muokkaa olemassa olevaa käyttäjää",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "metaformUsersSelectLabel": "Portaali-käyttäjät",
+      "cardAuthUsersSelectLabel": "Kortti-käyttäjät",
+      "userIsLinked": "Käyttäjä on linkitetty korttiin",
+      "searchButton": "Hae",
+      "emailLabel": "Sähköpostiosoite",
+      "firstNameLabel": "Etunimi",
+      "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
+      "cancelButton": "Peruuta",
+      "editButton": "Muokkaa käyttäjää"
     },
     "usersTable": {
       "nameColumn": {
@@ -399,7 +477,7 @@
       "form": "Lomake",
       "latestReply": "Viimeisin",
       "newReply": "Uusia",
-      "notProcessed": "Käsittelemättömiä"
+      "notProcessed": "Käsittelemättömiä ({0})"
     }
   },
 
@@ -447,8 +525,10 @@
     "formCreatedAt": "LUOTU",
     "formModifiedAt": "MUOKATTU",
     "formLastModifier": "VIIMEISIN MUOKKAAJA",
-    "formVersionArchived": "arkistoitu",
-    "formVersionDraft": "luonnos",
+    "formLastModifierNotFound": "Ei löytynyt",
+    "formVersionArchived": "Arkistoitu",
+    "formVersionDraft": "Luonnos",
+    "formProductionVersion": "Tuotanto",
     "drawer": {
       "newForm": "Luo uusi lomake",
       "helper": "Lomakkeen yleiset asetukset, jotka vaikuttavat valitun lomakkeen kaikkiin lomakeversioihin.",
@@ -468,8 +548,7 @@
       "formIdentificationNone": "Ei vaadi tunnistautumista"
     },
     "confirmDeleteVersionTitle": "Oletko varma?",
-    "confirmDeleteVersionText": "Oletko varma, että haluat poistaa lomakeversion?",
-    "formProductionVersion": "tuotanto"
+    "confirmDeleteVersionText": "Oletko varma, että haluat poistaa lomakeversion?"
   },
 
   "emailDialog": {
@@ -508,6 +587,30 @@
 
   "dataGrid": {
     "rowsPerPage": "Rivejä sivulla:"
-  }
+  },
 
+  "successSnackbars": {
+    "formEditor": {
+      "deleteFormSuccessText": "Tuotantolomake poistettu onnistuneesti!",
+      "deleteFormVersionSuccessText": "Lomakkeen luonnos poistettu onnistuneesti!",
+      "createFormSuccessText": "Uusi lomake luotu onnistuneesti!",
+      "restoreArchiveFormSuccessText": "Arkistoitu lomake palautettu onnistuneesti!",
+      "convertSchemaSuccessText": "Sosmetan lomakepohja luotu onnistuneesti!"
+    },
+    "draftEditor": {
+      "saveDraftSuccessText": "Lomakkeen luonnos tallennettu onnistuneesti!",
+      "publishDraftSuccessText": "Lomake julkaistu onnistuneesti!"
+    },
+    "users": {
+      "addMemberSuccessText": "Käyttäjän lisääminen onnistui!",
+      "editUserSuccessText": "Käyttäjän muokkaaminen onnistui!",
+      "addMemberGroupSuccessText": "Käyttäjäryhmän lisääminen onnistui!",
+      "groupMembershipAddSuccessText": "Käyttäjän lisääminen ryhmään onnistui!",
+      "groupMembershipRemoveSuccessText": "Käyttäjän poistaminen ryhmästä onnistui!"
+    },
+    "replies": {
+      "replyDeleteSuccessText": "Vastauksen poistaminen onnistui!",
+      "replyEditSuccessText": "Vastauksen muokkaus onnistui!"
+    }
+  }
 }

@@ -66,7 +66,8 @@ namespace LocalizationUtils {
   export const getLocalizedFormContext = (context: FormContext) => ({
     [FormContext.FORM]: strings.formContext.form,
     [FormContext.MANAGEMENT]: strings.formContext.management,
-    [FormContext.MANAGEMENT_LIST]: strings.formContext.managementList
+    [FormContext.MANAGEMENT_LIST]: strings.formContext.managementList,
+    [FormContext.META]: ""
   })[context];
 
   /**

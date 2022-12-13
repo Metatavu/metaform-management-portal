@@ -2,14 +2,15 @@ import { Archive, DateRangeRounded, Delete, KeyboardArrowDown, ListRounded, Pers
 import { Accordion, AccordionDetails, AccordionSummary, Divider, Typography } from "@mui/material";
 import ConfirmDialog from "components/generic/confirm-dialog";
 import GenericLoaderWrapper from "components/generic/generic-loader";
-import { Metaform, MetaformVersion, MetaformVersionType } from "generated/client";
+import { Metaform, MetaformVersion, MetaformVersionType, User } from "generated/client";
 import strings from "localization/strings";
 import moment from "moment";
 import React, { FC, useState } from "react";
 import { FormListContainer, FormPagination, FormsContainer } from "styled/editor/metaform-editor";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
-import { DataGrid, GridActionsCellItem, GridColumns, GridRowParams } from "@mui/x-data-grid";
+import { DataGrid, fiFI, GridActionsCellItem, GridColumns, GridRowParams } from "@mui/x-data-grid";
 import { DataValidation } from "utils/data-validation-utils";
+
 /**
 * Component props
 */
@@ -17,6 +18,7 @@ interface Props {
   loading: boolean;
   metaforms: Metaform[];
   metaformVersions: MetaformVersion[];
+  lastModifiers: User[];
   deleteMetaformOrVersion: (id: string) => void;
   goToEditor: (id: string) => void;
 }
@@ -26,11 +28,11 @@ interface Props {
 */
 interface MetaformVersionRow {
   id: string;
-  typeString?: string;
+  typeString: string;
   type?: MetaformVersionType;
-  createdAt?: Date;
-  modifiedAt?: Date;
-  modifierId?: string;
+  createdAt: Date;
+  modifiedAt: Date;
+  lastModifier?: User;
 }
 
 /**
@@ -40,11 +42,10 @@ const EditorScreenTable: FC<Props> = ({
   loading,
   metaforms,
   metaformVersions,
+  lastModifiers,
   deleteMetaformOrVersion,
   goToEditor
 }) => {
-  // TODO: Currently API doesn't return metadata (created/modified dates etc) for Metaforms.
-  // That needs to be changed and after that, this components version row functionality need slight refactoring.
   const [ deleteDialogOpen, setDeleteDialogOpen ] = useState<boolean>(false);
   const [ selectedId, setSelectedId ] = useState<string | undefined>();
   const [ page, setPage ] = useState(0);
@@ -93,13 +94,14 @@ const EditorScreenTable: FC<Props> = ({
   const buildProductionVersion = (id: string): MetaformVersionRow => {
     const metaform = metaforms.find(form => form.id === id);
     const { createdAt, modifiedAt, lastModifierId } = metaform!;
-    
+    const lastModifier = lastModifiers.find(modifier => modifier.id === lastModifierId);
+
     return {
       id: id,
       typeString: strings.editorScreen.formProductionVersion,
-      createdAt: createdAt,
-      modifiedAt: modifiedAt,
-      modifierId: lastModifierId
+      createdAt: createdAt!,
+      modifiedAt: modifiedAt!,
+      lastModifier: lastModifier
     };
   };
 
@@ -117,16 +119,18 @@ const EditorScreenTable: FC<Props> = ({
 
     const productionVersion = buildProductionVersion(metaform.id!);
     const versionRows: MetaformVersionRow[] = versions.map((version: MetaformVersion) => {
+      const { id, type, createdAt, modifiedAt, lastModifierId } = version;
       const { formVersionArchived, formVersionDraft } = strings.editorScreen;
-      const typeString = version.type === MetaformVersionType.Archived ? formVersionArchived : formVersionDraft;
-      
+      const typeString = type === MetaformVersionType.Archived ? formVersionArchived : formVersionDraft;
+      const lastModifier = lastModifiers.find(modifier => modifier.id === lastModifierId);
+
       return {
-        id: version.id!,
+        id: id!,
         typeString: typeString,
-        type: version.type,
-        createdAt: version.createdAt!,
-        modifiedAt: version.modifiedAt!,
-        modifierId: version.lastModifierId!
+        type: type,
+        createdAt: createdAt!,
+        modifiedAt: modifiedAt!,
+        lastModifier: lastModifier
       };
     });
     versionRows.unshift(productionVersion);
@@ -217,6 +221,7 @@ const EditorScreenTable: FC<Props> = ({
       field: "createdAt",
       headerName: strings.editorScreen.formCreatedAt,
       width: 250,
+      type: "dateTime",
       renderHeader: params => {
         return (
           <AdminFormListStack direction="row">
@@ -238,6 +243,7 @@ const EditorScreenTable: FC<Props> = ({
       field: "modifiedAt",
       headerName: strings.editorScreen.formModifiedAt,
       width: 250,
+      type: "dateTime",
       renderHeader: params => {
         return (
           <AdminFormListStack direction="row">
@@ -267,11 +273,11 @@ const EditorScreenTable: FC<Props> = ({
           </AdminFormListStack>
         );
       },
-      renderCell: () => {
+      renderCell: params => {
         return (
           <AdminFormListStack direction="row">
             <PersonRounded style={ { fill: "darkgrey" } }/>
-            <AdminFormTypographyField>{ strings.generic.notImplemented }</AdminFormTypographyField>
+            <AdminFormTypographyField>{ params.row.lastModifier?.email ?? strings.editorScreen.formLastModifierNotFound }</AdminFormTypographyField>
           </AdminFormListStack>
         );
       }
@@ -315,11 +321,7 @@ const EditorScreenTable: FC<Props> = ({
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
-        componentsProps={{
-          pagination: {
-            labelRowsPerPage: strings.dataGrid.rowsPerPage
-          }
-        }}
+        localeText={ fiFI.components.MuiDataGrid.defaultProps.localeText }
         rows={ versions }
         columns={ getColumns() }
         getRowId={ row => row.id }

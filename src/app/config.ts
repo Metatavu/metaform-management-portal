@@ -1,4 +1,4 @@
-import { cleanEnv, str, url } from "envalid";
+import { cleanEnv, email, str, url } from "envalid";
 import { Configuration } from "types";
 
 /**
@@ -13,7 +13,8 @@ const env = cleanEnv(process.env, {
   REACT_APP_SENTRY_ENVIRONMENT: str({ default: "production" }),
   REACT_APP_CORS_PROXY: str({ default: undefined }),
   REACT_APP_ANONYMOUS_USER: str(),
-  REACT_APP_ANONYMOUS_PASSWORD: str()
+  REACT_APP_ANONYMOUS_PASSWORD: str(),
+  REACT_APP_TUTORIAL_URL: str({ default: "" })
 });
 
 /**
@@ -38,12 +39,24 @@ export default class Config {
     },
     api: {
       baseUrl: env.REACT_APP_API_BASE_URL
+    },
+    form: {
+      idpHint: env.REACT_APP_FORM_IDPHINT
     }
   });
 
   /**
-   * Returns sentry dsn
+   * Returns tutorial url
    * 
+   * @returns tutorial url
+   */
+  public static getTutorialUrl(): string | undefined {
+    return env.REACT_APP_TUTORIAL_URL;
+  }
+
+  /**
+   * Returns sentry dsn
+   *
    * @returns sentry dsn
    */
   public static getSentryDsn(): string | undefined {
@@ -52,7 +65,7 @@ export default class Config {
 
   /**
    * Returns sentry environment
-   * 
+   *
    * @returns sentry environment
    */
   public static getSentryEnvironment(): string {
@@ -61,11 +74,29 @@ export default class Config {
 
   /**
    * Returns address for CORS proxy service
-   * 
+   *
    * @returns address for CORS proxy service
    */
   public static getCorsProxy(): string {
     return env.REACT_APP_CORS_PROXY;
+  }
+
+  /**
+  * Returns email from address for sending emails
+  *
+  * @returns email address for sending emails
+  */
+  public static getEmailFrom(): string {
+    return env.REACT_APP_EMAIL_FROM;
+  }
+
+  /**
+  * Returns email url address for sending emails
+  *
+  * @returns email address url for sending emails
+  */
+  public static getEmailUrl(): string {
+    return env.REACT_APP_EMAIL_URL;
   }
 
 }

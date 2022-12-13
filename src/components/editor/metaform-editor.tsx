@@ -16,6 +16,8 @@ import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper
 import DragAndDropUtils from "utils/drag-and-drop-utils";
 import AddableFieldRenderer from "./field-renderer/addable-field-renderer";
 import strings from "localization/strings";
+import { setMetaformFieldIndex, setMetaformSectionIndex, setMetaformSelectionsUndefined, selectMetaform } from "../../features/metaform-slice";
+import { useAppDispatch, useAppSelector } from "app/hooks";
 
 /**
  * Component properties
@@ -36,17 +38,18 @@ const MetaformEditor: React.FC<Props> = ({
   memberGroups,
   setPendingForm
 }) => {
-  const [ selectedFieldIndex, setSelectedFieldIndex ] = React.useState<number>();
-  const [ selectedSectionIndex, setSelectedSectionIndex ] = React.useState<number>();
   const [ draggingMode, setDraggingMode ] = React.useState<DraggingMode>();
+  const [ debounceTimerId, setDebounceTimerId ] = React.useState<NodeJS.Timeout>();
+  const { metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
+
+  const dispatch = useAppDispatch();
 
   /**
    * Event handler for empty space click
    */
   const onGlobalClick = (event: MouseEvent) => {
     if (editorRef.current?.isEqualNode(event.target as Node)) {
-      setSelectedFieldIndex(undefined);
-      setSelectedSectionIndex(undefined);
+      dispatch(setMetaformSelectionsUndefined(undefined));
     }
   };
 
@@ -75,8 +78,8 @@ const MetaformEditor: React.FC<Props> = ({
     });
 
     setPendingForm(updatedForm);
-    setSelectedFieldIndex(fieldIndex);
-    setSelectedSectionIndex(sectionIndex);
+    dispatch(setMetaformSectionIndex(sectionIndex));
+    dispatch(setMetaformFieldIndex(fieldIndex));
   };
 
   /**
@@ -113,9 +116,8 @@ const MetaformEditor: React.FC<Props> = ({
       formDraft?.sections?.splice(originSectionIndex, 1);
       formDraft?.sections?.splice(destinationSectionIndex, 0, draggedSection!);
     });
-
+    setTimeout(() => dispatch(setMetaformSectionIndex(destinationSectionIndex)), 1);
     setPendingForm(updatedForm);
-    setSelectedSectionIndex(destinationSectionIndex);
   };
 
   /**
@@ -142,8 +144,8 @@ const MetaformEditor: React.FC<Props> = ({
     });
 
     setPendingForm(updatedForm);
-    setSelectedFieldIndex(toFieldIndex);
-    setSelectedSectionIndex(toSectionIndex);
+    dispatch(setMetaformSectionIndex(toSectionIndex));
+    dispatch(setMetaformFieldIndex(toFieldIndex));
   };
 
   /**
@@ -201,9 +203,9 @@ const MetaformEditor: React.FC<Props> = ({
    * @param sectionIndex section index
    */
   const onSectionClick = (sectionIndex: number) => () => {
-    if (selectedSectionIndex !== sectionIndex) {
-      setSelectedSectionIndex(sectionIndex);
-      setSelectedFieldIndex(undefined);
+    if (metaformSectionIndex !== sectionIndex) {
+      dispatch(setMetaformSectionIndex(sectionIndex));
+      dispatch(setMetaformFieldIndex(undefined));
     }
   };
 
@@ -214,8 +216,8 @@ const MetaformEditor: React.FC<Props> = ({
    * @param fieldIndex field index
    */
   const onFieldClick = (sectionIndex: number, fieldIndex: number) => () => {
-    setSelectedFieldIndex(fieldIndex);
-    setSelectedSectionIndex(sectionIndex);
+    dispatch(setMetaformSectionIndex(sectionIndex));
+    dispatch(setMetaformFieldIndex(fieldIndex));
   };
 
   /**
@@ -233,8 +235,7 @@ const MetaformEditor: React.FC<Props> = ({
     });
 
     setPendingForm(updatedForm);
-    setSelectedFieldIndex(undefined);
-    setSelectedSectionIndex(undefined);
+    dispatch(setMetaformSelectionsUndefined(undefined));
   };
 
   /**
@@ -243,8 +244,15 @@ const MetaformEditor: React.FC<Props> = ({
    * @param sectionIndex section index
    */
   const onSectionEditClick = (sectionIndex: number) => () => {
-    setSelectedFieldIndex(undefined);
-    setSelectedSectionIndex(sectionIndex);
+    dispatch(setMetaformSectionIndex(sectionIndex));
+    dispatch(setMetaformFieldIndex(undefined));
+  };
+
+  /**
+   * Wait updating to avoid wrong field data.
+   */
+  const timerFunc = () => {
+    dispatch(setMetaformFieldIndex(undefined));
   };
 
   /**
@@ -280,7 +288,9 @@ const MetaformEditor: React.FC<Props> = ({
         });
       });
     });
-    setSelectedFieldIndex(undefined);
+
+    debounceTimerId && clearTimeout(debounceTimerId);
+    setDebounceTimerId(setTimeout(() => timerFunc(), 1));
     setPendingForm(updatedForm);
   };
 
@@ -292,13 +302,14 @@ const MetaformEditor: React.FC<Props> = ({
    * @param fieldIndex field index
    */
   const renderFormField = (field: MetaformField, sectionIndex: number, fieldIndex: number) => {
-    const selected = selectedFieldIndex === fieldIndex && selectedSectionIndex === sectionIndex;
+    const selected = metaformFieldIndex === fieldIndex && metaformSectionIndex === sectionIndex;
 
     return (
       <DraggableWrapper
         index={ fieldIndex }
         draggableId={ DragAndDropUtils.getFieldDraggableId(sectionIndex, fieldIndex) }
-        isDragDisabled={ selectedFieldIndex !== fieldIndex || selectedSectionIndex !== sectionIndex }
+        isDragDisabled={ metaformFieldIndex !== fieldIndex || metaformSectionIndex !== sectionIndex }
+        key={ fieldIndex }
       >
         <Box onClick={ onFieldClick(sectionIndex, fieldIndex) }>
           <FieldDragHandle
@@ -311,7 +322,7 @@ const MetaformEditor: React.FC<Props> = ({
             <AddableFieldRenderer
               key="key"
               field={ field }
-              focus={ selectedSectionIndex === sectionIndex && selectedFieldIndex === fieldIndex }
+              focus={ metaformSectionIndex === sectionIndex && metaformFieldIndex === fieldIndex }
               fieldId={ DragAndDropUtils.getFieldId(pendingForm, field) }
               fieldLabelId={ DragAndDropUtils.getFieldLabelId(pendingForm, field) }
               onFieldUpdate={ onFieldUpdate(sectionIndex, fieldIndex) }
@@ -332,10 +343,11 @@ const MetaformEditor: React.FC<Props> = ({
     <DraggableWrapper
       draggableId={ DragAndDropUtils.getSectionDraggableId(sectionIndex) }
       index={ sectionIndex }
-      isDragDisabled={ selectedSectionIndex !== sectionIndex }
+      isDragDisabled={ metaformSectionIndex !== sectionIndex }
+      key={ sectionIndex }
     >
       <SectionDragHandle
-        selected={ selectedSectionIndex === sectionIndex }
+        selected={ metaformSectionIndex === sectionIndex }
         onEditClick={ onSectionEditClick(sectionIndex) }
         onDeleteClick={ onSectionDeleteClick(sectionIndex) }
       >
@@ -414,8 +426,6 @@ const MetaformEditor: React.FC<Props> = ({
         memberGroups={ memberGroups }
         pendingForm={ pendingForm }
         setPendingForm={ setPendingForm }
-        fieldIndex={ selectedFieldIndex }
-        sectionIndex={ selectedSectionIndex }
       />
     </EditorWrapper>
   );

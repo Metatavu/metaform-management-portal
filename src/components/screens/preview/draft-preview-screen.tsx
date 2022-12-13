@@ -88,6 +88,7 @@ const DraftPreviewScreen: FC = () => {
       linkToShare={ linkToShare }
       setEmailSent={ setEmailSent }
       setLinkCopied={ setLinkCopied }
+      formTitle={ draftForm.title || strings.draftEditorScreen.formPreview.previewEmail.noTitle }
     />
   );
 

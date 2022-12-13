@@ -1,17 +1,19 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from "react";
 import Keycloak from "keycloak-js";
-import { anonymousLogin, login, selectAnonymousKeycloak, selectKeycloak } from "features/auth-slice";
+import { anonymousLogin, selectAnonymousKeycloak, selectAccessToken, selectKeycloak, setKeycloak, setAccessToken, selectAnonymousAccessToken } from "features/auth-slice";
 import { useAppDispatch, useAppSelector, useInterval } from "app/hooks";
 import Config from "app/config";
 import jwt_decode from "jwt-decode";
 import { AccessToken } from "types";
 import * as querystring from "query-string";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ErrorContext } from "components/contexts/error-handler";
 import strings from "localization/strings";
+import ConfirmDialog from "components/generic/confirm-dialog";
 
 const MIN_VALIDITY_IN_SECONDS = 70;
+const REFRESH_INTERVAL = 30;
 
 /**
  * Interface representing a decoded access token
@@ -31,11 +33,18 @@ interface DecodedAccessToken {
 const AuthenticationProvider: React.FC = ({ children }) => {
   const errorContext = React.useContext(ErrorContext);
 
-  const keycloak = useAppSelector(selectKeycloak);
+  const authConfig = Config.get().auth;
   const anonymousKeycloak = useAppSelector(selectAnonymousKeycloak);
+
   const dispatch = useAppDispatch();
   const location = useLocation();
-
+  const navigate = useNavigate();
+  const adminLogin = location.pathname.startsWith("/admin");
+  const userLogin = location.pathname.startsWith("/protected");
+  const accessToken = useAppSelector(selectAccessToken);
+  const anonymousAccessToken = useAppSelector(selectAnonymousAccessToken);
+  const keycloak = useAppSelector(selectKeycloak);
+ 
   /**
    * Builds access token object from login data
    *
@@ -62,7 +71,6 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   const initializeAnonymousAuthentication = async () => {
     try {
       const { username, password } = Config.get().anonymousUser;
-      const authConfig = Config.get().auth;
       const keycloakInstance = new Keycloak(authConfig);
 
       const response = await fetch(`${authConfig.url}/realms/${authConfig.realm}/protocol/openid-connect/token`, {
@@ -78,11 +86,11 @@ const AuthenticationProvider: React.FC = ({ children }) => {
         }
       });
 
-      const accessToken = buildToken(await response.json());
+      const createdToken = buildToken(await response.json());
 
       await keycloakInstance.init({
-        token: accessToken.access_token,
-        refreshToken: accessToken.refresh_token,
+        token: createdToken.access_token,
+        refreshToken: createdToken.refresh_token,
         checkLoginIframe: false
       });
 
@@ -94,15 +102,26 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   };
 
   /**
-   * Starts the login process. Used for /admin routes.
+   * Starts the login process.
    */
-  const initializeLogin = async () => {
+  const loginKeycloak = async (keycloakInstance: Keycloak) => {
     try {
-      const authConfig = Config.get().auth;
-      const keycloakInstance = new Keycloak(authConfig);
-      await keycloakInstance.init({ onLoad: "login-required", checkLoginIframe: false });
-      await keycloakInstance.loadUserProfile();
-      dispatch(login(keycloakInstance));
+      if (keycloakInstance.token) {
+        dispatch(setAccessToken(keycloakInstance.token));
+      } else {
+        if (adminLogin) {
+          await keycloakInstance.login();
+        } else {
+          await keycloakInstance.login({ idpHint: Config.get().form.idpHint });
+        }
+
+        await keycloakInstance.loadUserProfile();
+        const { token } = keycloakInstance;
+
+        if (token) {
+          dispatch(setAccessToken(token));
+        }
+      }
     } catch (error) {
       errorContext.setError(strings.errorHandling.authentication, error);
     }
@@ -110,15 +129,32 @@ const AuthenticationProvider: React.FC = ({ children }) => {
 
   /**
    * Refreshes signed authentication
+   *
+   * @param keycloakInstance keycloakInstance
    */
-  const refreshAuthentication = async () => {
+  const refreshAuthentication = async (keycloakInstance?: Keycloak) => {
     try {
-      if (!keycloak?.authenticated) {
+      if (!keycloakInstance) {
+        return;
+      }
+
+      if (!keycloakInstance?.authenticated) {
         throw new Error("Not authenticated");
       }
 
-      await keycloak.updateToken(MIN_VALIDITY_IN_SECONDS);
-      dispatch(login(keycloak));
+      const refreshed = await keycloakInstance.updateToken(MIN_VALIDITY_IN_SECONDS);
+
+      if (!refreshed) {
+        return;
+      }
+
+      const { token, tokenParsed } = keycloakInstance;
+
+      if (!tokenParsed || !tokenParsed.sub || !token) {
+        return;
+      }
+
+      return keycloakInstance;
     } catch (error) {
       errorContext.setError(strings.errorHandling.authentication, error);
     }
@@ -126,15 +162,32 @@ const AuthenticationProvider: React.FC = ({ children }) => {
 
   /**
    * Refreshes anonymous authentication
+   *
+   * @param keycloakInstance keycloakInstance
    */
-  const refreshAnonymousAuthentication = async () => {
+  const refreshAnonymousAuthentication = async (keycloakInstance?: Keycloak) => {
     try {
+      if (!keycloakInstance) {
+        return;
+      }
+
       if (!anonymousKeycloak?.authenticated) {
         throw new Error("Not authenticated");
       }
 
-      await anonymousKeycloak.updateToken(MIN_VALIDITY_IN_SECONDS);
-      dispatch(login(anonymousKeycloak));
+      const refreshed = await anonymousKeycloak.updateToken(MIN_VALIDITY_IN_SECONDS);
+
+      if (!refreshed) {
+        return;
+      }
+
+      const { token, tokenParsed } = keycloakInstance;
+
+      if (!tokenParsed || !tokenParsed.sub || !token) {
+        return;
+      }
+
+      return keycloakInstance;
     } catch (error) {
       errorContext.setError(strings.errorHandling.authentication, error);
     }
@@ -144,24 +197,85 @@ const AuthenticationProvider: React.FC = ({ children }) => {
    * Initializes authentication
    */
   React.useEffect(() => {
-    if (!location.pathname.startsWith("/admin")) {
+    if (!userLogin && !adminLogin) {
       initializeAnonymousAuthentication();
     }
-  }, []);
+  }, [userLogin, adminLogin]);
 
   React.useEffect(() => {
-    if (!keycloak && location.pathname.startsWith("/admin")) {
-      initializeLogin();
+    if (keycloak && !accessToken && adminLogin) {
+      loginKeycloak(keycloak);
     }
-  }, [location]);
+  }, [keycloak, adminLogin, accessToken]);
+
+  React.useEffect(() => {
+    if (adminLogin || userLogin) {
+      const keycloakInstance = new Keycloak(authConfig);
+
+      keycloakInstance.init({ onLoad: "check-sso", checkLoginIframe: false }).then(() => {
+        dispatch(setKeycloak(keycloakInstance));
+        
+        const { token } = keycloakInstance;
+        if (token) {
+          dispatch(setAccessToken(token));
+        }
+      });
+    }
+  }, [adminLogin, userLogin]);
+
+  /**
+   * Dispatches Keycloak to Redux
+   *
+   * @param updatedKeycloak Keycloak
+   */
+  const updateKeycloak = (updatedKeycloak?: Keycloak) => {
+    if (updatedKeycloak) {
+      const { token } = updatedKeycloak;
+      token && dispatch(setAccessToken(token));
+    }
+  };
+
+  /**
+   * Dispatches anonymous Keycloak to Redux
+   *
+   * @param updatedKeycloak Keycloak
+   */
+  const updateAnonymousKeycloak = (updatedKeycloak?: Keycloak) => {
+    updatedKeycloak && dispatch(anonymousLogin(updatedKeycloak));
+  };
 
   /**
    * Begins token refresh interval
    */
-  useInterval(refreshAuthentication, 1000 * 60);
-  useInterval(refreshAnonymousAuthentication, 1000 * 60);
+  useInterval(refreshAuthentication, 1000 * REFRESH_INTERVAL);
+  useInterval(refreshAnonymousAuthentication, 1000 * REFRESH_INTERVAL);
 
-  if (!keycloak?.token) return null;
+  if (adminLogin && !keycloak) {
+    return null;
+  }
+
+  if (userLogin && !accessToken) {
+    if (!keycloak) {
+      return null;
+    }
+
+    return (
+      <ConfirmDialog
+        open
+        onCancel={ () => navigate(-1) }
+        onClose={ () => navigate(-1) }
+        onConfirm={ () => loginKeycloak(keycloak) }
+        cancelButtonText={ strings.generic.close }
+        positiveButtonText={ strings.generic.confirm }
+        title={ strings.protectedForm.redirectDialog.title }
+        text={ strings.protectedForm.redirectDialog.text }
+      />
+    );
+  }
+
+  if (!accessToken && !anonymousAccessToken) {
+    return null;
+  }
 
   return <>{ children }</>;
 };

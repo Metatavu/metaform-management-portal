@@ -6,7 +6,7 @@ import MetaformUtils from "utils/metaform-utils";
 import Form from "components/generic/form";
 import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
-import { useApiClient, useAppSelector } from "app/hooks";
+import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import { selectKeycloak } from "features/auth-slice";
 import { Dictionary, ReplyStatus } from "types";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,28 +15,31 @@ import ReplySaved from "./form/ReplySaved";
 import { Divider, MenuItem, Stack, TextField } from "@mui/material";
 import LocalizationUtils from "utils/localization-utils";
 import { FormReplyAction, FormReplyContent, ReplyViewContainer } from "styled/form/form-reply";
-import { ArrowBack, SaveAlt } from "@mui/icons-material";
+import { ArrowBack, SaveAlt, CheckCircle, NewReleases, Pending } from "@mui/icons-material";
 import { RoundActionButton } from "styled/generic/form";
+import { setSnackbarMessage } from "features/snackbar-slice";
+import theme from "theme";
 
 /**
  * Component for single reply screen
  */
 const ReplyScreen: FC = () => {
   const errorContext = useContext(ErrorContext);
+  const navigate = useNavigate();
+  const params = useParams();
+  const { formSlug, replyId } = params;
+
+  const apiClient = useApiClient(Api.getApiClient);
+  const { metaformsApi, repliesApi, attachmentsApi } = apiClient;
+
+  const dispatch = useAppDispatch();
+  const keycloak = useAppSelector(selectKeycloak);
 
   const [ loading, setLoading ] = useState(false);
   const [ metaform, setMetaform ] = useState<Metaform>(MetaformUtils.jsonToMetaform({}));
   const [ formValues, setFormValues ] = useState<Dictionary<FieldValue>>({});
   const [ reply, setReply ] = useState<Reply>();
   const [ replySavedVisible, setReplySavedVisible ] = useState(false);
-
-  const params = useParams();
-  const { formSlug, replyId } = params;
-  const navigate = useNavigate();
-
-  const apiClient = useApiClient(Api.getApiClient);
-  const keycloak = useAppSelector(selectKeycloak);
-  const { metaformsApi, repliesApi, attachmentsApi } = apiClient;
 
   if (!formSlug) {
     errorContext.setError(strings.errorHandling.adminRepliesScreen.formSlugNotFound);
@@ -124,6 +127,8 @@ const ReplyScreen: FC = () => {
         replyId: reply.id
       });
       const updatedValues = await MetaformUtils.processReplyData(metaform, updatedReply, attachmentsApi);
+      
+      dispatch(setSnackbarMessage(strings.successSnackbars.replies.replyEditSuccessText));
       setReply(updatedReply);
       setFormValues(updatedValues as any);
     } catch (e) {
@@ -208,6 +213,24 @@ const ReplyScreen: FC = () => {
   };
 
   /**
+   * Renders reply status icon
+   * 
+   * @param replyStatus replyStatus
+   */
+  const renderReplyStatusIcon = (replyStatus: ReplyStatus) => {
+    switch (replyStatus) {
+      case ReplyStatus.WAITING:
+        return <NewReleases sx={{ color: theme.palette.error.light, mr: 1 }}/>;
+      case ReplyStatus.PROCESSING:
+        return <Pending sx={{ color: theme.palette.warning.light, mr: 1 }}/>;
+      case ReplyStatus.DONE:
+        return <CheckCircle sx={{ color: theme.palette.success.light, mr: 1 }}/>;
+      default:
+        break;
+    }
+  };
+
+  /**
    * Renter status switch
    */
   const renderStatusSelect = () => (
@@ -225,7 +248,10 @@ const ReplyScreen: FC = () => {
               key={ `metaform-reply-status-${status}` }
               value={ status }
             >
-              { LocalizationUtils.getLocalizedStatusOfReply(status) }
+              <Stack direction="row">
+                { renderReplyStatusIcon(status) }
+                { LocalizationUtils.getLocalizedStatusOfReply(status) }
+              </Stack>
             </MenuItem>)
         }
       </TextField>
