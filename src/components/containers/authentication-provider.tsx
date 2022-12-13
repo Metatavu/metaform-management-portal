@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from "react";
 import Keycloak from "keycloak-js";
-import { anonymousLogin, idpLogin, login, selectAnonymousKeycloak, selectIdpKeycloak, selectKeycloak } from "features/auth-slice";
+import { anonymousLogin, selectAnonymousKeycloak, selectAccessToken, selectKeycloak, setKeycloak, setAccessToken, selectAnonymousAccessToken } from "features/auth-slice";
 import { useAppDispatch, useAppSelector, useInterval } from "app/hooks";
 import Config from "app/config";
 import jwt_decode from "jwt-decode";
@@ -33,13 +33,18 @@ interface DecodedAccessToken {
 const AuthenticationProvider: React.FC = ({ children }) => {
   const errorContext = React.useContext(ErrorContext);
 
-  const keycloak = useAppSelector(selectKeycloak);
+  const authConfig = Config.get().auth;
   const anonymousKeycloak = useAppSelector(selectAnonymousKeycloak);
-  const idpKeycloak = useAppSelector(selectIdpKeycloak);
+
   const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-
+  const adminLogin = location.pathname.startsWith("/admin");
+  const userLogin = location.pathname.startsWith("/protected");
+  const accessToken = useAppSelector(selectAccessToken);
+  const anonymousAccessToken = useAppSelector(selectAnonymousAccessToken);
+  const keycloak = useAppSelector(selectKeycloak);
+ 
   /**
    * Builds access token object from login data
    *
@@ -66,7 +71,6 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   const initializeAnonymousAuthentication = async () => {
     try {
       const { username, password } = Config.get().anonymousUser;
-      const authConfig = Config.get().auth;
       const keycloakInstance = new Keycloak(authConfig);
 
       const response = await fetch(`${authConfig.url}/realms/${authConfig.realm}/protocol/openid-connect/token`, {
@@ -82,11 +86,11 @@ const AuthenticationProvider: React.FC = ({ children }) => {
         }
       });
 
-      const accessToken = buildToken(await response.json());
+      const createdToken = buildToken(await response.json());
 
       await keycloakInstance.init({
-        token: accessToken.access_token,
-        refreshToken: accessToken.refresh_token,
+        token: createdToken.access_token,
+        refreshToken: createdToken.refresh_token,
         checkLoginIframe: false
       });
 
@@ -98,37 +102,26 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   };
 
   /**
-   * Starts the login process. Used for /protected routes.
+   * Starts the login process.
    */
-  const initializeIDPLogin = async () => {
+  const loginKeycloak = async (keycloakInstance: Keycloak) => {
     try {
-      const { idpHint } = Config.get().form;
-      if (!idpHint) {
-        return;
-      }
-      const authConfig = Config.get().auth;
-      const keycloakInstance = new Keycloak(authConfig);
-      await keycloakInstance.init({
-        checkLoginIframe: false
-      });
-      await keycloakInstance.login({ idpHint: idpHint });
-      await keycloakInstance.loadUserProfile();
-      dispatch(idpLogin(keycloakInstance));
-    } catch (error) {
-      errorContext.setError(strings.errorHandling.authentication, error);
-    }
-  };
+      if (keycloakInstance.token) {
+        dispatch(setAccessToken(keycloakInstance.token));
+      } else {
+        if (adminLogin) {
+          await keycloakInstance.login();
+        } else {
+          await keycloakInstance.login({ idpHint: Config.get().form.idpHint });
+        }
 
-  /**
-   * Starts the login process. Used for /admin routes.
-   */
-  const initializeLogin = async () => {
-    try {
-      const authConfig = Config.get().auth;
-      const keycloakInstance = new Keycloak(authConfig);
-      await keycloakInstance.init({ onLoad: "login-required", checkLoginIframe: false });
-      await keycloakInstance.loadUserProfile();
-      dispatch(login(keycloakInstance));
+        await keycloakInstance.loadUserProfile();
+        const { token } = keycloakInstance;
+
+        if (token) {
+          dispatch(setAccessToken(token));
+        }
+      }
     } catch (error) {
       errorContext.setError(strings.errorHandling.authentication, error);
     }
@@ -204,16 +197,31 @@ const AuthenticationProvider: React.FC = ({ children }) => {
    * Initializes authentication
    */
   React.useEffect(() => {
-    if (!location.pathname.startsWith("/admin") && !location.pathname.startsWith("/protected")) {
+    if (!userLogin && !adminLogin) {
       initializeAnonymousAuthentication();
     }
-  }, []);
+  }, [userLogin, adminLogin]);
 
   React.useEffect(() => {
-    if (!keycloak && location.pathname.startsWith("/admin")) {
-      initializeLogin();
+    if (keycloak && !accessToken && adminLogin) {
+      loginKeycloak(keycloak);
     }
-  }, [location]);
+  }, [keycloak, adminLogin, accessToken]);
+
+  React.useEffect(() => {
+    if (adminLogin || userLogin) {
+      const keycloakInstance = new Keycloak(authConfig);
+
+      keycloakInstance.init({ onLoad: "check-sso", checkLoginIframe: false }).then(() => {
+        dispatch(setKeycloak(keycloakInstance));
+        
+        const { token } = keycloakInstance;
+        if (token) {
+          dispatch(setAccessToken(token));
+        }
+      });
+    }
+  }, [adminLogin, userLogin]);
 
   /**
    * Dispatches Keycloak to Redux
@@ -221,7 +229,10 @@ const AuthenticationProvider: React.FC = ({ children }) => {
    * @param updatedKeycloak Keycloak
    */
   const updateKeycloak = (updatedKeycloak?: Keycloak) => {
-    updatedKeycloak && dispatch(login(updatedKeycloak));
+    if (updatedKeycloak) {
+      const { token } = updatedKeycloak;
+      token && dispatch(setAccessToken(token));
+    }
   };
 
   /**
@@ -239,13 +250,21 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   useInterval(() => refreshAuthentication(keycloak).then(updateKeycloak), 1000 * REFRESH_INTERVAL);
   useInterval(() => refreshAnonymousAuthentication(anonymousKeycloak).then(updateAnonymousKeycloak), 1000 * REFRESH_INTERVAL);
 
-  if (location.pathname.startsWith("/protected") && !idpKeycloak) {
+  if (adminLogin && !keycloak) {
+    return null;
+  }
+
+  if (userLogin && !accessToken) {
+    if (!keycloak) {
+      return null;
+    }
+
     return (
       <ConfirmDialog
         open
         onCancel={ () => navigate(-1) }
         onClose={ () => navigate(-1) }
-        onConfirm={ () => initializeIDPLogin() }
+        onConfirm={ () => loginKeycloak(keycloak) }
         cancelButtonText={ strings.generic.close }
         positiveButtonText={ strings.generic.confirm }
         title={ strings.protectedForm.redirectDialog.title }
@@ -254,7 +273,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
     );
   }
 
-  if (!keycloak?.token) {
+  if (!accessToken && !anonymousAccessToken) {
     return null;
   }
 

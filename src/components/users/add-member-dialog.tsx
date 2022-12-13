@@ -111,7 +111,7 @@ const AddMemberDialog: FC<Props> = ({
       .filter(user => user.displayName !== API_ADMIN_USER)
       .sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
 
-    setFoundUsers(users.length <= 10 ? users : users.slice(10));
+    setFoundUsers(users);
     setLoading(false);
   };
 

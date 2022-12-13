@@ -240,7 +240,8 @@
         "formVisibilityLabel": "Form visibility",
         "private": "Private (Suomi.fi)",
         "public": "Public",
-        "tooltipDescription": "Edit form title and set form to public or private."
+        "tooltipDescription": "Edit form title and set form to public or private.",
+        "publishNoMemberGroupsDescription": "To publish form, define member group to form or field/fields."
       },
       "fields": {
         "tabTitle": "Fields",
@@ -358,7 +359,8 @@
       "previewEmail": {
         "content": "<p>Hi!</p><p>Please preview the form {0} from following link:</p><p><a href='{1}'>{1}</a></p><hr/><p>This is an automated message, please do not reply.</p>",
         "subject": "Please preview the form - {0}",
-        "emailSent": "Email sent"
+        "emailSent": "Email sent",
+        "noTitle": "No title"
       }
     }
   },

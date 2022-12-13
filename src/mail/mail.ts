@@ -1,4 +1,4 @@
-const { REACT_APP_EMAIL_URL } = process.env;
+import Config from "app/config";
 
 /**
  * Interface describing an email
@@ -21,11 +21,7 @@ export default class Mail {
    * @param email email data
    */
   public static sendMail = async (email: Email) => {
-    if (!REACT_APP_EMAIL_URL) {
-      throw new Error("Missing REACT_APP_EMAIL_URL env");
-    }
-
-    return (await fetch(REACT_APP_EMAIL_URL, {
+    return (await fetch(Config.getEmailUrl(), {
       headers: {
         "Content-Type": "application/json"
       },
