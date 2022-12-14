@@ -1,9 +1,9 @@
 import * as React from "react";
-
 import strings from "../../localization/strings";
 import { useState } from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import GenericLoaderWrapper from "components/generic/generic-loader";
+import UsersScreenDialog from "./users-screen-dialog";
 
 /**
  * Interface representing component properties
@@ -49,37 +49,45 @@ const AddMemberGroupDialog: React.FC<Props> = ({
     setDisplayName(undefined);
     onCancel();
   };
-  
-  if (!open) {
-    return null;
-  }
 
-  return (
-    <Dialog open={ true } onClose={ onCancelClick }>
-      <DialogTitle variant="h2">{ strings.userManagementScreen.addMemberGroupDialog.title }</DialogTitle>
-      <DialogContent style={{ width: 500 }}>
-        <DialogContentText variant="body1" color="#ccc" style={{ paddingBottom: 16 }}>
-          { strings.userManagementScreen.addMemberGroupDialog.text }
-        </DialogContentText>
-        <TextField
-          size="medium"
-          fullWidth
-          required={ true }
-          label={ strings.userManagementScreen.addMemberGroupDialog.displayNameLabel }
-          onChange={ onDisplayNameChange }
-        />
-      </DialogContent>
-      <DialogActions style={{ padding: 24, paddingTop: 0 }}>
-        <Button disableElevation variant="contained" onClick={ onCancelClick } color="secondary" autoFocus>
+  /**
+   * Renders dialog content
+   */
+  const renderDialogContent = () => (
+    <TextField
+      size="medium"
+      fullWidth
+      required={ true }
+      label={ strings.userManagementScreen.addMemberGroupDialog.displayNameLabel }
+      onChange={ onDisplayNameChange }
+    />
+  );
+  
+  /**
+   * Renders dialog actions
+   */
+  const renderDialogActions = () => (
+    <GenericLoaderWrapper loading={ loading }>
+      <>
+        <Button disableElevation variant="contained" onClick={ onCancelClick } color="warning" autoFocus>
           { strings.userManagementScreen.addMemberGroupDialog.cancelButton }
         </Button>
-        <GenericLoaderWrapper loading={ loading }>
-          <Button onClick={ onCreateClick } color="primary" disabled={ !displayName }>
-            { strings.userManagementScreen.addMemberGroupDialog.createButton }
-          </Button>
-        </GenericLoaderWrapper>
-      </DialogActions>
-    </Dialog>
+        <Button onClick={ onCreateClick } color="primary" disabled={ !displayName }>
+          { strings.userManagementScreen.addMemberGroupDialog.createButton }
+        </Button>
+      </>
+    </GenericLoaderWrapper>
+  );
+
+  return (
+    <UsersScreenDialog
+      open={ open }
+      dialogTitle={ strings.userManagementScreen.addMemberGroupDialog.title }
+      dialogDescription={ strings.userManagementScreen.addMemberGroupDialog.text }
+      dialogContent={ renderDialogContent() }
+      dialogActions={ renderDialogActions() }
+      onCancel={ onCancel }
+    />
   );
 };
 

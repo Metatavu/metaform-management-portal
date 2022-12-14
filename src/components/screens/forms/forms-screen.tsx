@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, fiFI, GridColDef } from "@mui/x-data-grid";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
@@ -24,8 +24,8 @@ interface Row {
   id: string;
   slug?: string;
   title: string;
-  latestReply: string;
-  newReply?: string;
+  latestReply?: Date;
+  newReply?: number;
 }
 
 /**
@@ -45,14 +45,14 @@ const FormsScreen: React.FC = () => {
    */
   const getLatestReplyDate = (replies: Reply[]) => {
     if (replies.length < 1) {
-      return "";
+      return;
     }
 
     if (!replies[replies.length - 1].modifiedAt) {
-      return "";
+      return;
     }
 
-    return moment(replies[replies.length - 1].modifiedAt).format("LLL");
+    return replies[replies.length - 1].modifiedAt;
   };
 
   /**
@@ -76,7 +76,7 @@ const FormsScreen: React.FC = () => {
       slug: form.slug || "",
       title: form.title || strings.formScreen.noTitle,
       latestReply: getLatestReplyDate(replies),
-      newReply: amountWaiting > 0 ? `${strings.formsScreen.formTable.notProcessed} (${amountWaiting})` : undefined
+      newReply: amountWaiting > 0 ? amountWaiting : 0
     };
   };
 
@@ -145,6 +145,7 @@ const FormsScreen: React.FC = () => {
       field: "latestReply",
       headerName: strings.formsScreen.formTable.latestReply,
       width: 250,
+      type: "dateTime",
       renderHeader: params => {
         return (
           <AdminFormListStack direction="row">
@@ -154,10 +155,11 @@ const FormsScreen: React.FC = () => {
         );
       },
       renderCell: params => {
+        const latestReplyDate = params.row.latestReply;
         return (
           <AdminFormListStack direction="row">
             <DateRangeIcon style={ { fill: "darkgrey" } }/>
-            <AdminFormTypographyField>{ params.row.latestReply }</AdminFormTypographyField>
+            <AdminFormTypographyField>{ latestReplyDate ? moment(latestReplyDate).format("LLL") : "" }</AdminFormTypographyField>
           </AdminFormListStack>
         );
       }
@@ -166,6 +168,7 @@ const FormsScreen: React.FC = () => {
       field: "newReply",
       headerName: strings.formsScreen.formTable.newReply,
       width: 250,
+      type: "number",
       renderHeader: params => {
         return (
           <AdminFormListStack direction="row">
@@ -176,10 +179,11 @@ const FormsScreen: React.FC = () => {
       },
       renderCell: params => {
         const fill = params.row.newReply ? "red" : "gray";
+        const newReplies = params.row.newReply > 0 ? strings.formatString(strings.formsScreen.formTable.notProcessed, params.row.newReply) : undefined;
         return (
           <AdminFormListStack direction="row">
             <NotificationsActiveIcon style={{ fill: fill }}/>
-            <AdminFormTypographyField>{ params.row.newReply }</AdminFormTypographyField>
+            <AdminFormTypographyField>{ newReplies }</AdminFormTypographyField>
           </AdminFormListStack>
         );
       }
@@ -203,11 +207,7 @@ const FormsScreen: React.FC = () => {
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
-        componentsProps={{
-          pagination: {
-            labelRowsPerPage: strings.dataGrid.rowsPerPage
-          }
-        }}
+        localeText={ fiFI.components.MuiDataGrid.defaultProps.localeText }
         loading={ loading }
         rows={ rows }
         columns={ columns }

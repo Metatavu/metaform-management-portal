@@ -6,7 +6,7 @@ import { CircularProgress, Stack } from "@mui/material";
  */
 interface Props {
   loading?: boolean;
-  style?: React.CSSProperties
+  style?: React.CSSProperties;
   children: JSX.Element;
 }
 

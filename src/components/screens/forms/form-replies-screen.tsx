@@ -1,7 +1,7 @@
 import { FormControlLabel, Switch, Typography } from "@mui/material";
-import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, fiFI, GridActionsCellItem, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import Api from "api";
-import { useApiClient, useAppSelector } from "app/hooks";
+import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
 import ConfirmDialog from "components/generic/confirm-dialog";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
@@ -13,20 +13,36 @@ import { useNavigate, useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { selectKeycloak } from "features/auth-slice";
-import { ReplyStatus } from "types";
+import { FormContext, ReplyStatus } from "types";
 import FormRestrictedContent from "components/containers/form-restricted-content";
 import AuthUtils from "utils/auth-utils";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
+import { setSnackbarMessage } from "features/snackbar-slice";
+import theme from "theme";
+import LocalizationUtils from "utils/localization-utils";
+import { CheckCircle, NewReleases, Pending } from "@mui/icons-material";
+import { CREATED_FIELD_NAME, MODIFIED_FIELD_NAME, STATUS_FIELD_NAME } from "consts";
+
+/**
+ * Meta fields with type of date-time
+ */
+const DATETIME_META_FIELDS = [
+  MODIFIED_FIELD_NAME,
+  CREATED_FIELD_NAME
+];
 
 /**
  * Form replies screen component
  */
 const FormRepliesScreen: React.FC = () => {
   const errorContext = useContext(ErrorContext);
-  const keycloak = useAppSelector(selectKeycloak);
+  const navigate = useNavigate();
+
   const apiClient = useApiClient(Api.getApiClient);
   const { repliesApi, metaformsApi } = apiClient;
-  const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+  const keycloak = useAppSelector(selectKeycloak);
 
   const [ rows, setRows ] = useState<any[]>([]);
   const [ filteredRows, setFilteredRows] = useState<any[]>([]);
@@ -55,9 +71,52 @@ const FormRepliesScreen: React.FC = () => {
 
     const fieldData = (metaformData.sections || [])
       .flatMap(section => section.fields || [])
-      .filter(field => (field.contexts || []).includes("MANAGEMENT_LIST"));
+      .filter(field => (field.contexts || []).includes(FormContext.MANAGEMENT_LIST));
     return fieldData;
   };
+
+  /**
+   * Renders reply status icon
+   * 
+   * @param replyStatus replyStatus
+   */
+  const renderReplyStatusIcon = (replyStatus: ReplyStatus) => {
+    switch (replyStatus) {
+      case ReplyStatus.WAITING:
+        return <NewReleases sx={{ color: theme.palette.error.light }}/>;
+      case ReplyStatus.PROCESSING:
+        return <Pending sx={{ color: theme.palette.warning.light }}/>;
+      case ReplyStatus.DONE:
+        return <CheckCircle sx={{ color: theme.palette.success.light }}/>;
+      default:
+        break;
+    }
+  };
+
+  /**
+   * Renders reply status column
+   * 
+   * @param replyStatus replyStatus
+   */
+  const renderReplyStatusColumn = (replyStatus: ReplyStatus) => (
+    <AdminFormListStack direction="row" spacing={ 2 }>
+      { renderReplyStatusIcon(replyStatus) }
+      <AdminFormTypographyField>
+        { LocalizationUtils.getLocalizedStatusOfReply(replyStatus) }
+      </AdminFormTypographyField>
+    </AdminFormListStack>
+  );
+
+  /**
+   * Renders metadata datetime columns
+   * 
+   * @param datetime datetime
+   */
+  const renderDateTimeMetaFields = (datetime: string) => (
+    <AdminFormListStack direction="row">
+      <AdminFormTypographyField>{ moment(datetime).format("LLL") }</AdminFormTypographyField>
+    </AdminFormListStack>
+  );
 
   /**
    * Builds the columns for the table
@@ -71,32 +130,44 @@ const FormRepliesScreen: React.FC = () => {
       return;
     }
 
-    const managementListColumns = await getManagementListFields(metaformData);
+    const managementListColumns = getManagementListFields(metaformData);
 
     if (!managementListColumns) {
       return;
     }
 
-    const gridColumns = managementListColumns.map<GridColDef>(column => ({
-      field: column.name || "",
-      headerName: column.title,
-      allowProps: true,
-      flex: 1,
-      renderHeader: params => {
-        return (
-          <AdminFormListStack direction="row">
-            <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
-          </AdminFormListStack>
-        );
-      },
-      renderCell: params => {
-        return (
-          <AdminFormListStack direction="row">
-            <AdminFormTypographyField>{ column.name ? params.row[column.name] : "" }</AdminFormTypographyField>
-          </AdminFormListStack>
-        );
-      }
-    }));
+    const gridColumns = managementListColumns.map<GridColDef>(column => {
+      const columnName = column.name ?? "";
+      return ({
+        field: columnName,
+        headerName: column.title,
+        allowProps: true,
+        flex: 1,
+        type: DATETIME_META_FIELDS.includes(columnName) ? "dateTime" : "string",
+        renderHeader: params => {
+          return (
+            <AdminFormListStack direction="row">
+              <AdminFormTypographyField sx={{ fontWeight: "bold" }}>{ params.colDef.headerName }</AdminFormTypographyField>
+            </AdminFormListStack>
+          );
+        },
+        renderCell: params => {
+          switch (columnName) {
+            case STATUS_FIELD_NAME:
+              return renderReplyStatusColumn(params.row.replyStatus);
+            case CREATED_FIELD_NAME:
+            case MODIFIED_FIELD_NAME:
+              return renderDateTimeMetaFields(params.row[columnName]);
+            default:
+              return (
+                <AdminFormListStack direction="row">
+                  <AdminFormTypographyField>{ params.row[columnName] }</AdminFormTypographyField>
+                </AdminFormListStack>
+              );
+          }
+        }
+      });
+    });
 
     if (AuthUtils.isSystemAdmin(keycloak)) {
       gridColumns.push({
@@ -147,12 +218,6 @@ const FormRepliesScreen: React.FC = () => {
       const fieldOptions = field.options || [];
 
       switch (field.type) {
-        case MetaformFieldType.Date:
-          row[fieldName] = moment(replyData[fieldName]).format("LLL");
-          break;
-        case MetaformFieldType.DateTime:
-          row[fieldName] = moment(replyData[fieldName]).format("LLL");
-          break;
         case MetaformFieldType.Select:
         case MetaformFieldType.Radio:
           row[fieldName] = fieldOptions.find(fieldOption => fieldOption.name === fieldValue.toString())?.text || fieldValue.toString();
@@ -240,6 +305,7 @@ const FormRepliesScreen: React.FC = () => {
         replyId: replyId
       });
 
+      dispatch(setSnackbarMessage(strings.successSnackbars.replies.replyDeleteSuccessText));
       setRows(rows?.filter(row => row.id !== replyId));
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.deleteReply, e);
@@ -257,6 +323,19 @@ const FormRepliesScreen: React.FC = () => {
     }
 
     setDeletableReplyId(undefined);
+  };
+
+  /**
+   * Event handler for row double click
+   * 
+   * @param rowParams rowParams
+   */
+  const onRowDoubleClick = async (rowParams: GridRowParams<any>) => {
+    if (!AuthUtils.isMetaformManager(keycloak)) {
+      return;
+    }
+
+    return navigate(rowParams.row.id);
   };
 
   /**
@@ -313,16 +392,12 @@ const FormRepliesScreen: React.FC = () => {
         disableColumnMenu
         disableColumnSelector
         disableSelectionOnClick
-        componentsProps={{
-          pagination: {
-            labelRowsPerPage: strings.dataGrid.rowsPerPage
-          }
-        }}
+        localeText={ fiFI.components.MuiDataGrid.defaultProps.localeText }
         loading={ loading }
         rows={ filteredRows }
         columns={ columns }
         getRowId={ row => row.id }
-        onRowDoubleClick={ rowParams => navigate(rowParams.row.id) }
+        onRowDoubleClick={ onRowDoubleClick }
       />
       { renderDeleteReplyConfirm() }
     </>

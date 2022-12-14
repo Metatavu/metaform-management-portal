@@ -75,7 +75,7 @@ const Form: React.FC<Props> = ({
   };
 
   /**
-   * Renders date picker
+   * Renders date picker with disabled past dates and disabled current date 
    *
    * @param field field
    */
@@ -86,6 +86,8 @@ const Form: React.FC<Props> = ({
     return (
       <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
         <DatePicker
+          disablePast={ true }
+          minDate={ moment().add(1, "days").toDate() }
           label={ strings.formComponent.dateTimePicker }
           aria-label={ fieldName }
           shouldDisableDate={ MetaformUtils.shouldDisableHolidays(field.workdaysOnly || false) }
@@ -101,7 +103,7 @@ const Form: React.FC<Props> = ({
   };
 
   /**
-   * Renders date time picker
+   * Renders date time picker with disabled past dates and disabled current date 
    */
   const renderDatetimePicker = (field: MetaformField) => {
     const fieldName = field.name || "";
@@ -110,6 +112,8 @@ const Form: React.FC<Props> = ({
     return (
       <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
         <MobileDateTimePicker
+          minDate={ moment().add(1, "days").toDate() }
+          disablePast={ true }
           value={ value ? new Date(value as string) : null }
           shouldDisableDate={ MetaformUtils.shouldDisableHolidays(field.workdaysOnly || false) }
           onChange={ (date: Date | null) => handleDateTimeChange(date, fieldName) }
@@ -123,6 +127,7 @@ const Form: React.FC<Props> = ({
 
   /**
    * Creates url with default format for accessing uploaded file
+   * 
    * @param id fileRef id
    */
   const createDefaultFileUrl = (id: string) => {
@@ -215,7 +220,11 @@ const Form: React.FC<Props> = ({
 
     const { attachmentsApi } = apiClient;
     const data = await attachmentsApi.findAttachmentData({ attachmentId: value.id, ownerKey: ownerKey });
-    MetaformUtils.downloadBlob(data, value.name || "attachment");
+    const img = URL.createObjectURL(data);
+    window.open(img);
+
+    /* Download image */
+    /* MetaformUtils.downloadBlob(data, value.name || "attachment"); */
   };
 
   /**

@@ -1,4 +1,4 @@
-import { Button, FormControl, InputLabel, MenuItem, Stack } from "@mui/material";
+import { Button, FormControl, IconButton, InputLabel, MenuItem, Stack, Tooltip } from "@mui/material";
 import React, { useEffect } from "react";
 import { HeaderSelect, HeaderToolbar, Logo, Root } from "styled/layout-components/header";
 import { logout, selectKeycloak } from "features/auth-slice";
@@ -6,6 +6,9 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import strings from "localization/strings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { selectLocale, setLocale } from "features/locale-slice";
+import { HelpOutline } from "@mui/icons-material";
+import Config from "app/config";
+import theme from "theme";
 
 /**
  * Header component
@@ -27,7 +30,23 @@ const Header: React.FC = ({
       setUserEmail(keycloak.tokenParsed.email);
     }
   }, []);
-
+  
+  /**
+   * Renders info button with link to instructions of essote management portal
+   */
+  const renderInfoButton = () => {
+    const tutorialUrl = Config.getTutorialUrl() || "";
+    return (
+      <Tooltip title={ strings.header.infoLabel } placement="left" arrow>
+        <IconButton href={ tutorialUrl } target="_blank" disabled={ !tutorialUrl }>
+          <HelpOutline
+            fontSize="large"
+            sx={{ color: tutorialUrl ? theme.palette.secondary.main : theme.palette.text.disabled }}
+          />
+        </IconButton>
+      </Tooltip>
+    );
+  };
   /**
    * Renders logout button
    */
@@ -98,6 +117,7 @@ const Header: React.FC = ({
       <HeaderToolbar>
         <Logo/>
         <Stack direction="row" spacing={ 3 }>
+          { renderInfoButton() }
           <FormControl>
             <InputLabel
               style={{

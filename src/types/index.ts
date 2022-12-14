@@ -1,3 +1,4 @@
+import { NOT_SELECTED } from "consts";
 import { AuditLogEntryType } from "generated/client";
 
 /**
@@ -15,6 +16,9 @@ export interface Configuration {
   };
   api: {
     baseUrl: string;
+  };
+  form: {
+    idpHint: string;
   };
 }
 
@@ -75,16 +79,6 @@ export type ListItemData = {
   title: string;
   description: string;
 };
-
-/**
- * Not selected for placeholder
- */
-export const NOT_SELECTED = "NOT_SELECTED";
-
-/**
- * System admin role
- */
-export const SYSTEM_ADMIN_ROLE = "metaform-admin";
 
 /**
  * React dnd dragging mode
@@ -148,7 +142,8 @@ export enum SosmetaType {
 export enum FormContext {
   FORM = "FORM",
   MANAGEMENT = "MANAGEMENT",
-  MANAGEMENT_LIST = "MANAGEMENT_LIST"
+  MANAGEMENT_LIST = "MANAGEMENT_LIST",
+  META = "META"
 }
 
 /**

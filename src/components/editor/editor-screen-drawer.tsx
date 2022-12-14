@@ -8,6 +8,7 @@ import slugify from "slugify";
 import SosmetaUtils from "utils/sosmeta-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { ErrorContext } from "components/contexts/error-handler";
+import Config from "app/config";
 
 /**
  * Component props
@@ -16,6 +17,7 @@ interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
   createMetaform: (metaform: Metaform) => void;
+  setSnackbarMessage: (message: string) => void;
 }
 
 /**
@@ -37,7 +39,8 @@ interface FormSettings {
 const EditorScreenDrawer: FC<Props> = ({
   open,
   setOpen,
-  createMetaform
+  createMetaform,
+  setSnackbarMessage
 }) => {
   const currentHostname = window.location.hostname;
   const errorContext = useContext(ErrorContext);
@@ -68,6 +71,7 @@ const EditorScreenDrawer: FC<Props> = ({
     try {
       const convertedForm = await SosmetaUtils.convertSosmetaToMetaform(formSettings.formSchema);
 
+      setSnackbarMessage(strings.successSnackbars.formEditor.convertSchemaSuccessText);
       setFormSettings({
         ...formSettings,
         formName: convertedForm.title!,
@@ -89,7 +93,8 @@ const EditorScreenDrawer: FC<Props> = ({
       visibility: formSettings.formAuthentication ? MetaformVisibility.Private : MetaformVisibility.Public,
       title: formSettings.formName,
       slug: formSettings.formSlug,
-      sections: formSettings.formSections
+      sections: formSettings.formSections,
+      exportThemeId: Config.getDefaultExportThemeId()
     });
   };
 
@@ -125,22 +130,21 @@ const EditorScreenDrawer: FC<Props> = ({
       <Stack>
         <Box sx={{
           padding: 2,
-          height: 72,
-          backgroundColor: "#F5F5F5",
+          backgroundColor: theme.palette.grey[100],
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-between"
+          justifyContent: "space-between",
+          alignItems: "center"
         }}
         >
-          <Typography variant="h4" fontWeight="bold" textAlign="start">
+          <Typography variant="h2">
             { strings.editorScreen.drawer.newForm }
           </Typography>
-          <Box>
+          <Stack direction="row" spacing={ 1 }>
             <IconButton
               sx={{
                 border: `1px solid ${valid ? theme.palette.primary.main : theme.palette.text.disabled}`,
-                borderRadius: "15px",
-                m: 1
+                borderRadius: "15px"
               }}
               disabled={ !valid }
               onClick={ handleFormSubmit }
@@ -149,17 +153,16 @@ const EditorScreenDrawer: FC<Props> = ({
             </IconButton>
             <IconButton
               sx={{
-                border: "1px solid rgba(79, 163, 223, 0.5)",
-                borderRadius: "15px",
-                m: 1
+                border: `1px solid ${theme.palette.primary.main}`,
+                borderRadius: "15px"
               }}
               onClick={ handleCloseClick }
             >
               <Clear color="primary"/>
             </IconButton>
-          </Box>
+          </Stack>
         </Box>
-        <Box sx={{ height: 42, justifyContent: "center" }}>
+        <Box sx={{ justifyContent: "center", padding: theme.spacing(1) }}>
           <Typography sx={{ fontSize: 12 }} align="center">
             { strings.editorScreen.drawer.helper }
           </Typography>

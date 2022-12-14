@@ -3,6 +3,7 @@ import getRoutes from "./routes";
 import React from "react";
 import useBreadcrumbs, { BreadcrumbData } from "use-react-router-breadcrumbs";
 import { Crumb, Wrapper } from "styled/layouts/breadcrumbs";
+import theme from "theme";
 
 /**
  * Breadcrumbs component
@@ -37,7 +38,7 @@ const Breadcrumbs: React.FC = () => {
           </Typography>
         </Crumb>
         { !lastLink &&
-          <Typography variant="subtitle2">/</Typography>
+          <Typography color={ theme.palette.secondary.main } variant="subtitle2">/</Typography>
         }
       </Stack>
     );

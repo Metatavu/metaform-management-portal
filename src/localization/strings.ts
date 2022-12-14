@@ -58,6 +58,7 @@ export interface Localized extends LocalizedStringsMethods {
       deleteVersion: string;
       createFormDuplicateNameError: string;
       convertSosmetaError: string;
+      getLastModifiers: string;
     };
     draftEditorScreen: {
       findDraft: string;
@@ -101,6 +102,9 @@ export interface Localized extends LocalizedStringsMethods {
       loadMembers: string;
       removeMemberNotFound: string;
       addMemberNotFound: string;
+      loadUsers: string;
+      createUser: string;
+      updateUser: string;
     };
     previewScreen: {
       shareLink: string;
@@ -116,6 +120,16 @@ export interface Localized extends LocalizedStringsMethods {
       listAuditLogEntries: string;
     };
   };
+
+  /**
+   * Translations related to protected forms
+   */
+  protectedForm: {
+    redirectDialog: {
+      title: string;
+      text: string;
+    }
+  }
 
   /**
    * Translations related to form component
@@ -143,6 +157,7 @@ export interface Localized extends LocalizedStringsMethods {
     user: string;
     logo: string;
     selectLanguage: string;
+    infoLabel: string;
     languages: {
       fi: string;
       en: string;
@@ -265,6 +280,7 @@ export interface Localized extends LocalizedStringsMethods {
         private: string;
         public: string;
         tooltipDescription: string;
+        publishNoMemberGroupsDescription: string;
       };
       fields: {
         tabTitle: string;
@@ -303,6 +319,9 @@ export interface Localized extends LocalizedStringsMethods {
           defineUserGroup: string;
           selectableFieldsInfo: string;
           required: string;
+          addFieldsAsText: string;
+          addFieldsAsTextHelper: string;
+          updateFields: string;
           addFieldOption: string;
           addNewColumn: string;
           addColumnType: string;
@@ -335,6 +354,13 @@ export interface Localized extends LocalizedStringsMethods {
         fieldConditionLabel: string;
         sectionConditionLabel: string;
         tooltipDescription: string;
+        or: string;
+        addVisibleOrButtonText: string;
+        showConditionChain: string;
+        closeConditionChain: string;
+        allChoices: string;
+        andConditionChainTerms: string;
+        visibilityConditionTooltip: string;
       };
       memberGroups: {
         memberGroupDefineSettings: string;
@@ -345,9 +371,10 @@ export interface Localized extends LocalizedStringsMethods {
         selectedMemberGroup: string;
         edit: string;
         view: string;
-        none: string;
         fieldValueLabel: string;
         notifications: string;
+        noMemberGroup: string;
+        noPermission: string;
         noDefaultPermissionMemberGroup: string;
       };
     };
@@ -366,6 +393,7 @@ export interface Localized extends LocalizedStringsMethods {
         subject: string;
         content: string;
         emailSent: string;
+        noTitle: string;
       };
     };
   };
@@ -379,37 +407,64 @@ export interface Localized extends LocalizedStringsMethods {
       group: string;
       user: string;
     };
-    addMemberButton: string
-    addMemberGroupButton: string
+    editMemberButton: string;
+    addMemberButton: string;
+    addMemberGroupButton: string;
     addMemberDialog: {
-      title: string
-      text: string
-      emailLabel: string
-      firstNameLabel: string
-      lastNameLabel: string
-      createButton: string
-      cancelButton: string
-      roleAdministrator: string
-      roleManager: string
-    }
+      title: string;
+      text: string;
+      freeTextSearchLabel: string;
+      usersSelectLabel: string;
+      searchButton: string;
+      emailLabel: string;
+      firstNameLabel: string;
+      lastNameLabel: string;
+      upnNumberLabel: string;
+      createButton: string;
+      cancelButton: string;
+      tooltip: {
+        tooltipGeneral: string;
+        tooltipNoIconDescription: string;
+        tooltipLinkIconDescription: string;
+        tooltipCardIconDescription: string;
+      };
+    };
     addMemberGroupDialog: {
-      title: string
-      text: string
-      displayNameLabel: string
-      createButton: string
-      cancelButton: string
-    }
+      title: string;
+      text: string;
+      displayNameLabel: string;
+      createButton: string;
+      cancelButton: string;
+    };
+    editMemberDialog: {
+      title: string;
+      text: string;
+      freeTextSearchLabel: string;
+      metaformUsersSelectLabel: string;
+      cardAuthUsersSelectLabel: string;
+      userIsLinked: string;
+      searchButton: string;
+      emailLabel: string;
+      firstNameLabel: string;
+      lastNameLabel: string;
+      upnNumberLabel: string;
+      cancelButton: string;
+      editButton: string;
+      tooltip: {
+        tooltipGeneral: string;
+      };
+    };
     usersTable: {
       nameColumn: {
-        label: string
-      }
+        label: string;
+      };
       emailColumn: {
-        label: string
-      }
+        label: string;
+      };
       groupsColumn: {
-        label: string
-      }
-    }
+        label: string;
+      };
+    };
   };
 
   /**
@@ -499,8 +554,10 @@ export interface Localized extends LocalizedStringsMethods {
     formCreatedAt: string;
     formModifiedAt: string;
     formLastModifier: string;
+    formLastModifierNotFound: string;
     formVersionArchived: string;
     formVersionDraft: string;
+    formProductionVersion: string;
     drawer: {
       newForm: string;
       helper: string;
@@ -521,7 +578,6 @@ export interface Localized extends LocalizedStringsMethods {
     };
     confirmDeleteVersionTitle: string;
     confirmDeleteVersionText: string;
-    formProductionVersion: string;
   };
 
   /**
@@ -575,6 +631,34 @@ export interface Localized extends LocalizedStringsMethods {
    */
   dataGrid: {
     rowsPerPage: string;
+  }
+
+  /**
+   * Translation related to success snackbars
+   */
+  successSnackbars: {
+    formEditor: {
+      deleteFormSuccessText: string;
+      deleteFormVersionSuccessText: string;
+      createFormSuccessText: string;
+      restoreArchiveFormSuccessText: string;
+      convertSchemaSuccessText: string;
+    };
+    draftEditor: {
+      saveDraftSuccessText: string;
+      publishDraftSuccessText: string;
+    };
+    users: {
+      editUserSuccessText: string;
+      addMemberGroupSuccessText: string;
+      addMemberSuccessText: string;
+      groupMembershipAddSuccessText: string;
+      groupMembershipRemoveSuccessText: string;
+    };
+    replies: {
+      replyDeleteSuccessText: string;
+      replyEditSuccessText: string;
+    }
   }
 }
 /**
