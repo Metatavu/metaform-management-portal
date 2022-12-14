@@ -247,8 +247,8 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   /**
    * Begins token refresh interval
    */
-  useInterval(() => refreshAuthentication(keycloak).then(updateKeycloak), 1000 * REFRESH_INTERVAL);
-  useInterval(() => refreshAnonymousAuthentication(anonymousKeycloak).then(updateAnonymousKeycloak), 1000 * REFRESH_INTERVAL);
+  useInterval(refreshAuthentication, 1000 * REFRESH_INTERVAL);
+  useInterval(refreshAnonymousAuthentication, 1000 * REFRESH_INTERVAL);
 
   if (adminLogin && !keycloak) {
     return null;

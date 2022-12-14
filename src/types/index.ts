@@ -81,6 +81,16 @@ export type ListItemData = {
 };
 
 /**
+ * Not selected for placeholder
+ */
+export const NOT_SELECTED = "NOT_SELECTED";
+
+/**
+ * System admin role
+ */
+export const SYSTEM_ADMIN_ROLE = "system-admin";
+
+/**
  * React dnd dragging mode
  */
 export enum DraggingMode {

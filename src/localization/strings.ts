@@ -371,6 +371,8 @@ export interface Localized extends LocalizedStringsMethods {
         selectedMemberGroup: string;
         edit: string;
         view: string;
+        none: string;
+        noMemberGroupSelected: string;
         fieldValueLabel: string;
         notifications: string;
         noMemberGroup: string;
@@ -435,7 +437,7 @@ export interface Localized extends LocalizedStringsMethods {
       displayNameLabel: string;
       createButton: string;
       cancelButton: string;
-    };
+    }
     editMemberDialog: {
       title: string;
       text: string;
@@ -450,10 +452,7 @@ export interface Localized extends LocalizedStringsMethods {
       upnNumberLabel: string;
       cancelButton: string;
       editButton: string;
-      tooltip: {
-        tooltipGeneral: string;
-      };
-    };
+    }
     usersTable: {
       nameColumn: {
         label: string;

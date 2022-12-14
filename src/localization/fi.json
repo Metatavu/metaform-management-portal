@@ -339,6 +339,8 @@
         "selectedMemberGroup": "Valittu käyttäjäryhmä",
         "view": "Katselu",
         "edit": "Muokkaus",
+        "none": "Ei oikeuksia",
+        "noMemberGroupSelected": "Ei käyttäjäryhmää valittuna",
         "fieldValueLabel": "Kentän arvo",
         "notifications": "Ilmoitukset",
         "noMemberGroup": "Ei Käyttäjäryhmää",
@@ -425,6 +427,21 @@
     "groupMembership": {
       "groupMembershipAddSnackbarText": "Käyttäjä lisääminen ryhmään onnistui!",
       "groupMembershipRemoveSnackbarText": "Käyttäjän poistaminen ryhmästä onnistui!"
+    },
+    "editMemberDialog": {
+      "title": "Muokkaa käyttäjää",
+      "text": "Muokkaa olemassa olevaa käyttäjää",
+      "freeTextSearchLabel": "Käyttäjähaku",
+      "metaformUsersSelectLabel": "Portaali-käyttäjät",
+      "cardAuthUsersSelectLabel": "Kortti-käyttäjät",
+      "userIsLinked": "Käyttäjä on linkitetty korttiin",
+      "searchButton": "Hae",
+      "emailLabel": "Sähköpostiosoite",
+      "firstNameLabel": "Etunimi",
+      "lastNameLabel": "Sukunimi",
+      "upnNumberLabel": "UPN-numero",
+      "cancelButton": "Peruuta",
+      "editButton": "Muokkaa käyttäjää"
     },
     "usersTable": {
       "nameColumn": {

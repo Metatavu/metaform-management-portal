@@ -338,11 +338,14 @@
         "memberGroup": "Member group",
         "view":"View",
         "edit":"Edit",
+        "none":"No permissions",
+        "noMemberGroupSelected": "No member group selected",
         "fieldValueLabel": "Field value",
         "notifications": "Notifications",
         "noMemberGroup":"No Member group",
         "noPermission":"No permission",
-        "noDefaultPermissionMemberGroup": "No default permission member group"
+        "noDefaultPermissionMemberGroup": "No default permission member group",
+        "tooltipDescription": ""
       }
     },
     "formPreview": {
@@ -413,10 +416,7 @@
       "lastNameLabel": "Last name",
       "upnNumberLabel": "UPN number",
       "cancelButton": "Cancel",
-      "editButton": "Edit user",
-      "tooltip": {
-        "tooltipGeneral": "Edit users information and add or remove link with professional card."
-      }
+      "editButton": "Edit user"
     },
     "usersTable": {
       "nameColumn": {

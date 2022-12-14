@@ -309,6 +309,7 @@ const MetaformEditor: React.FC<Props> = ({
         index={ fieldIndex }
         draggableId={ DragAndDropUtils.getFieldDraggableId(sectionIndex, fieldIndex) }
         isDragDisabled={ metaformFieldIndex !== fieldIndex || metaformSectionIndex !== sectionIndex }
+        key={ fieldIndex }
       >
         <Box onClick={ onFieldClick(sectionIndex, fieldIndex) }>
           <FieldDragHandle
@@ -343,6 +344,7 @@ const MetaformEditor: React.FC<Props> = ({
       draggableId={ DragAndDropUtils.getSectionDraggableId(sectionIndex) }
       index={ sectionIndex }
       isDragDisabled={ metaformSectionIndex !== sectionIndex }
+      key={ sectionIndex }
     >
       <SectionDragHandle
         selected={ metaformSectionIndex === sectionIndex }

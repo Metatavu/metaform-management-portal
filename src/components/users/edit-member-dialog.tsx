@@ -6,7 +6,7 @@ import { Button, FormControlLabel, IconButton, InputAdornment, MenuItem, Stack, 
 import ClearIcon from "@mui/icons-material/Clear";
 import UsersScreenDialog from "./users-screen-dialog";
 import GenericLoaderWrapper from "components/generic/generic-loader";
-import { API_ADMIN_USER } from "consts";
+import { API_ADMIN_USER } from "types";
 
 /**
  * Interface representing component properties
@@ -315,7 +315,7 @@ const EditMemberDialog: FC<Props> = ({
   const renderDialogActions = () => (
     <GenericLoaderWrapper loading={ loading }>
       <>
-        <Button disableElevation variant="contained" onClick={ handleCancelClick } color="warning" autoFocus>
+        <Button disableElevation variant="contained" onClick={ handleCancelClick } color="secondary" autoFocus>
           { strings.userManagementScreen.editMemberDialog.cancelButton }
         </Button>
         <Button onClick={ handleEditClick } color="primary" disabled={ !valid }>
@@ -331,7 +331,7 @@ const EditMemberDialog: FC<Props> = ({
       dialogTitle={ strings.userManagementScreen.editMemberDialog.title }
       dialogDescription={ strings.userManagementScreen.editMemberDialog.text }
       helperIcon
-      tooltipText={ strings.userManagementScreen.editMemberDialog.tooltip.tooltipGeneral }
+      tooltipText={ strings.generic.notImplemented }
       dialogContent={ renderDialogContent() }
       dialogActions={ renderDialogActions() }
       onCancel={ onCancel }

@@ -8,8 +8,8 @@ import LinkIcon from "@mui/icons-material/Link";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import ClearIcon from "@mui/icons-material/Clear";
 import UsersScreenDialog from "./users-screen-dialog";
+import { API_ADMIN_USER } from "types";
 import produce from "immer";
-import { API_ADMIN_USER } from "consts";
 
 /**
  * Interface representing component properties
@@ -111,7 +111,7 @@ const AddMemberDialog: FC<Props> = ({
       .filter(user => user.displayName !== API_ADMIN_USER)
       .sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
 
-    setFoundUsers(users);
+    setFoundUsers(users.length <= 10 ? users : users.slice(10));
     setLoading(false);
   };
 
@@ -278,7 +278,7 @@ const AddMemberDialog: FC<Props> = ({
   const renderDialogActions = () => (
     <GenericLoaderWrapper loading={ loading }>
       <>
-        <Button disableElevation variant="contained" onClick={ handleCancelClick } color="warning" autoFocus>
+        <Button disableElevation variant="contained" onClick={ handleCancelClick } color="secondary" autoFocus>
           { strings.userManagementScreen.addMemberDialog.cancelButton }
         </Button>
         <Button onClick={ handleCreateClick } color="primary" disabled={ !valid }>
@@ -288,39 +288,13 @@ const AddMemberDialog: FC<Props> = ({
     </GenericLoaderWrapper>
   );
 
-  /**
-   * Renders dialog tooltip text
-   */
-  const renderDialogTooltipText = () => (
-    <Stack spacing={ 1 }>
-      <span>
-        { strings.userManagementScreen.addMemberDialog.tooltip.tooltipGeneral }
-      </span>
-      <span>
-        { strings.userManagementScreen.addMemberDialog.tooltip.tooltipNoIconDescription }
-      </span>
-      <Stack spacing={ 1 } direction="row" alignItems="center">
-        <LinkIcon/>
-        <span>
-          { strings.userManagementScreen.addMemberDialog.tooltip.tooltipLinkIconDescription }
-        </span>
-      </Stack>
-      <Stack spacing={ 1 } direction="row" alignItems="center">
-        <CreditCardIcon/>
-        <span>
-          { strings.userManagementScreen.addMemberDialog.tooltip.tooltipCardIconDescription }
-        </span>
-      </Stack>
-    </Stack>
-  );
-
   return (
     <UsersScreenDialog
       open={ open }
       dialogTitle={ strings.userManagementScreen.addMemberDialog.title }
       dialogDescription={ strings.userManagementScreen.addMemberDialog.text }
       helperIcon
-      tooltipText={ renderDialogTooltipText() }
+      tooltipText={ strings.generic.notImplemented }
       dialogContent={ renderDialogContent() }
       dialogActions={ renderDialogActions() }
       onCancel={ onCancel }
