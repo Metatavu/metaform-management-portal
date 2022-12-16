@@ -88,7 +88,7 @@ const Form: React.FC<Props> = ({
         <DatePicker
           disablePast={ true }
           minDate={ moment().add(1, "days").toDate() }
-          label={ strings.formComponent.dateTimePicker }
+          label={ strings.formComponent.datePicker }
           aria-label={ fieldName }
           shouldDisableDate={ MetaformUtils.shouldDisableHolidays(field.workdaysOnly || false) }
           value={ value ? new Date(value as string) : null }
