@@ -72,29 +72,30 @@ const LeavePageHandler: FC<Props> = ({
    */
   const onNavButtonClick = useCallback((e: Event) => {
     const target = e.currentTarget as HTMLAnchorElement;
-    const targetTextContent = target.textContent;
+    const targetTextContent : string = target.textContent as string;
     const navHeader = strings.navigationHeader;
     window.removeEventListener("beforeunload", handleUserAlert);
 
     if (target.href !== undefined && clickedButtonNavigation === undefined) {
       setClickedBreadcrumb(target.getAttribute("href") as string);
       preventLinkDefaultAction(e);
+    } else if ([navHeader.formsScreens.title, navHeader.usersScreens.title, navHeader.editorScreens.title].includes(targetTextContent)) {
+      switch (targetTextContent) {
+        case navHeader.formsScreens.title:
+          setClickedButtonNavigation(NavigationLinks.FORMS);
+          break;
+        case navHeader.usersScreens.title:
+          setClickedButtonNavigation(NavigationLinks.USERS);
+          break;
+        case navHeader.editorScreens.title:
+          setClickedButtonNavigation(NavigationLinks.EDITOR);
+          break;
+        default:
+          setClickedButtonNavigation(undefined);
+          break;
+      }
+      preventLinkDefaultAction(e);
     }
-    switch (targetTextContent) {
-      case navHeader.formsScreens.title:
-        setClickedButtonNavigation(NavigationLinks.FORMS);
-        break;
-      case navHeader.usersScreens.title:
-        setClickedButtonNavigation(NavigationLinks.USERS);
-        break;
-      case navHeader.editorScreens.title:
-        setClickedButtonNavigation(NavigationLinks.EDITOR);
-        break;
-      default:
-        setClickedButtonNavigation(undefined);
-        break;
-    }
-    preventLinkDefaultAction(e);
   }, []);
  
   /**
@@ -200,9 +201,9 @@ const LeavePageHandler: FC<Props> = ({
   const renderConfirmLeavePageWithoutSaving = () => {
     return (
       <ConfirmDialog
-        onClose={ () => resetNavLinks() }
-        onCancel={ () => resetNavLinks() }
-        onConfirm={ () => navigateToPage() }
+        onClose={ resetNavLinks }
+        onCancel={ resetNavLinks }
+        onConfirm={ navigateToPage }
         cancelButtonText={ strings.generic.cancel }
         positiveButtonText={ strings.generic.confirm }
         title={ strings.draftEditorScreen.unsavedChanges }
