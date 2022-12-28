@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import React, { ReactNode } from "react";
 import { MetaformFieldset, MetaformSectionWrapper } from "styled/generic/form";
+import theme from "theme";
 import { MetaformSection, MetaformField } from "../generated/client/models";
 import { MetaformFieldComponent } from "./MetaformFieldComponent";
 import { FieldValue, FileFieldValueItem, IconName, ValidationErrors } from "./types";
@@ -65,7 +66,7 @@ const MetaformSectionComponent: React.FC<Props> = ({
       return null;
     }
 
-    return <Typography variant="h2">{ section.title }</Typography>;
+    return <Typography style={ theme.sectionTitle }>{ section.title }</Typography>;
   };
 
   /**

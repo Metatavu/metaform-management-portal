@@ -14,6 +14,16 @@ export default createTheme({
     logoPath: "/images/eloisa_logo.png"
   },
 
+  backgroundImage: {
+    backgroundImagePath: "/images/backgroundImage.png"
+  },
+
+  sectionTitle: {
+    fontFamily: "Arial, sans-serif",
+    fontWeight: 200,
+    fontSize: 26
+  },
+
   palette: {
     primary: {
       main: "#000",

@@ -18,7 +18,11 @@ export const FormLayout = styled(Box, {
 })(({ theme }) => ({
   display: "flex",
   padding: theme.spacing(2),
-  justifyContent: "center"
+  justifyContent: "center",
+  backgroundColor: theme.palette.background.paper,
+  backgroundImage: `url(${theme.backgroundImage.backgroundImagePath})`,
+  backgroundSize: "cover",
+  backgroundAttachment: "fixed"
 }));
 
 /**
@@ -27,7 +31,7 @@ export const FormLayout = styled(Box, {
 export const MetaformBody = styled(Stack, {
   label: "metaform-body"
 })(({ theme }) => ({
-  maxWidth: 800,
+  maxWidth: 1000,
   flex: 1,
   marginInline: theme.spacing(4),
   "@media(max-width: 800px)": {
@@ -40,10 +44,13 @@ export const MetaformBody = styled(Stack, {
  */
 export const MetaformTitle = styled(Typography, {
   label: "metaform-title"
-})(() => ({
+})(({ theme }) => ({
   textAlign: "center",
-  fontSize: 32,
-  fontWeight: 600
+  fontSize: 36,
+  fontWeight: "bold",
+  color: theme.palette.text.primary,
+  fontFamily: "Arial, sans-serif",
+  marginBottom: theme.spacing(2)
 }));
 
 /**
@@ -53,11 +60,10 @@ export const MetaformSectionWrapper = styled(Box, {
   label: "metaform-section-wrapper"
 })(({ theme }) => ({
   border: "none",
-  borderRadius: "0.5rem",
   padding: theme.spacing(2),
   marginBottom: theme.spacing(2),
-  backgroundColor: "#fff",
-  boxShadow: "0px 0px 10px rgba(0,0,0,0.2)"
+  backgroundColor: "#E5FFE5",
+  filter: "drop-shadow(0px 0px 20px rgba(0,0,0,0.1))"
 }));
 
 /**

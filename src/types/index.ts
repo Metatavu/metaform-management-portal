@@ -165,6 +165,14 @@ declare module "@mui/material/styles" {
     logo: {
       logoPath: string;
     };
+    backgroundImage: {
+      backgroundImagePath: string;
+    };
+    sectionTitle: {
+      fontFamily: string;
+      fontWeight: number;
+      fontSize: number;
+    };
   }
 
   interface Theme extends CustomTheme {}

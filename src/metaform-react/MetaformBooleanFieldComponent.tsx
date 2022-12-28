@@ -1,5 +1,6 @@
-import { Checkbox } from "@mui/material";
+import { Box, Checkbox } from "@mui/material";
 import React, { ReactNode } from "react";
+import theme from "theme";
 import { MetaformField } from "../generated/client/models";
 import { FieldValue, IconName } from "./types";
 
@@ -54,22 +55,35 @@ const MetaformBooleanFieldComponent: React.FC<Props> = ({
       return renderIcon("square-o", `${fieldId}-${option.name}-icon-checked`);
     }
     
-    return <Checkbox
-      style={ notInteractive ? { pointerEvents: "none" } : {}}
-      key={ `${fieldId}-${option.name}-input` }
-      id={ `${fieldId}-${option.name}` }
-      name={ field.name }
-      title={ field.title }
-      required={ field.required }
-      readOnly={ formReadOnly || field.readonly }
-      value={ optionValue }
-      checked={ checked }
-      onChange={ onChange }
-      onFocus={ onFocus }
-      inputProps={{
-        "aria-label": field.title
-      }}
-    />;
+    return (
+      <Box
+        style={{
+          backgroundColor: "#fff",
+          width: "100%",
+          border: `1px solid ${theme.palette.grey[300]}`,
+          height: 50,
+          display: "flex",
+          alignItems: "center"
+        }}
+      >
+        <Checkbox
+          style={ notInteractive ? { pointerEvents: "none" } : {}}
+          key={ `${fieldId}-${option.name}-input` }
+          id={ `${fieldId}-${option.name}` }
+          name={ field.name }
+          title={ field.title }
+          required={ field.required }
+          readOnly={ formReadOnly || field.readonly }
+          value={ optionValue }
+          checked={ checked }
+          onChange={ onChange }
+          onFocus={ onFocus }
+          inputProps={{
+            "aria-label": field.title
+          }}
+        />
+      </Box>
+    );
   };
 
   const option = field;

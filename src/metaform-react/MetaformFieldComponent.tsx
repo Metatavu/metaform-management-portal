@@ -249,7 +249,6 @@ export const MetaformFieldComponent: React.FC<Props> = ({
                   formReadOnly={ formReadOnly }
                   field={ field }
                   value={ thisFieldValue() }
-                  renderIcon={ renderIcon }
                   onValueChange={ onValueChange }
                 />;
       default:

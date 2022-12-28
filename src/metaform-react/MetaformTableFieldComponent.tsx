@@ -1,9 +1,10 @@
+import { Add } from "@mui/icons-material";
 import { TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import strings from "localization/strings";
-import React, { ReactNode } from "react";
+import React from "react";
 import { AddRowButtonWrapper, TableNumberCellWrapper, TableTextCellWrapper, TableWrapper } from "styled/react-components/react-components";
 import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "../generated/client/models";
-import { FieldValue, IconName, TableFieldValue, TableFieldRowValue, TableFieldCellValue } from "./types";
+import { FieldValue, TableFieldValue, TableFieldRowValue, TableFieldCellValue } from "./types";
 
 /**
  * Component props
@@ -12,7 +13,6 @@ interface Props {
   field: MetaformField,
   formReadOnly: boolean,
   value: FieldValue,
-  renderIcon: (icon: IconName, key: string) => ReactNode;
   onValueChange?: (value: FieldValue) => void;
   notInteractive?: boolean;
 }
@@ -24,7 +24,6 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
   field,
   formReadOnly,
   value,
-  renderIcon,
   onValueChange,
   notInteractive
 }) => {
@@ -108,10 +107,9 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
       <AddRowButtonWrapper
         onClick={ onAddRowButtonClick }
         variant="contained"
-        size="small"
+        startIcon={ <Add/>}
       >
         { strings.fieldComponents.tableField.addNewRow }
-        { renderIcon("add", "add") }
       </AddRowButtonWrapper>
     );
   };
