@@ -13,7 +13,12 @@ export const Root = styled(Box, {
   overflow: "auto",
   display: "grid",
   gridTemplateRows: "auto auto auto 1fr",
-  background: theme.palette.background.default
+  backgroundColor: theme.palette.background.paper,
+  backgroundImage: `url(${theme.backgroundImage.backgroundImagePath})`,
+  backgroundPosition: "center",
+  backgroundRepeat: " no-repeat",
+  backgroundSize: "75%",
+  backgroundAttachment: "fixed"
 }));
 
 export default Root;

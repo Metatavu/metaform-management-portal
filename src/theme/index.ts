@@ -11,11 +11,12 @@ const { breakpoints, palette } = createTheme();
 export default createTheme({
 
   logo: {
-    logoPath: "/images/eloisa_logo.png"
+    darkPath: "/images/logo_dark.png",
+    lightPath: "/images/logo_light.png"
   },
 
   backgroundImage: {
-    backgroundImagePath: "/images/backgroundImage.png"
+    backgroundImagePath: "/images/backgroundImage.svg"
   },
 
   sectionTitle: {

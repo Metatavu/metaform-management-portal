@@ -191,6 +191,7 @@ const ReplyScreen: FC = () => {
         getFieldValue={ getFieldValue }
         setFieldValue={ setFieldValue }
         onSubmit={ onSave }
+        isReply
       />
     );
   };

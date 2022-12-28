@@ -15,6 +15,7 @@ import FormAutocomplete from "./form-autocomplete";
 import { LocalizationProvider, DatePicker, MobileDateTimePicker } from "@mui/x-date-pickers";
 import { Dictionary } from "types";
 import { DateRange } from "@mui/icons-material";
+import { FormLogo } from "styled/layout-components/header";
 
 /**
  * Component props
@@ -30,6 +31,7 @@ interface Props {
   onSubmit: (source: Metaform) => void;
   onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
   saving?: boolean;
+  isReply?: boolean;
 }
 
 /**
@@ -42,6 +44,7 @@ const Form: React.FC<Props> = ({
   saving,
   titleColor,
   formValues,
+  isReply,
   getFieldValue,
   setFieldValue,
   onValidationErrorsChange,
@@ -283,6 +286,7 @@ const Form: React.FC<Props> = ({
 
   return (
     <FormContainer>
+      { !isReply && <FormLogo/> }
       <FormLayout>
         <MetaformComponent
           form={ metaform }

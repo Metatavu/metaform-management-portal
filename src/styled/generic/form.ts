@@ -18,11 +18,7 @@ export const FormLayout = styled(Box, {
 })(({ theme }) => ({
   display: "flex",
   padding: theme.spacing(2),
-  justifyContent: "center",
-  backgroundColor: theme.palette.background.paper,
-  backgroundImage: `url(${theme.backgroundImage.backgroundImagePath})`,
-  backgroundSize: "cover",
-  backgroundAttachment: "fixed"
+  justifyContent: "center"
 }));
 
 /**
@@ -31,7 +27,7 @@ export const FormLayout = styled(Box, {
 export const MetaformBody = styled(Stack, {
   label: "metaform-body"
 })(({ theme }) => ({
-  maxWidth: 1000,
+  maxWidth: 800,
   flex: 1,
   marginInline: theme.spacing(4),
   "@media(max-width: 800px)": {
@@ -59,11 +55,10 @@ export const MetaformTitle = styled(Typography, {
 export const MetaformSectionWrapper = styled(Box, {
   label: "metaform-section-wrapper"
 })(({ theme }) => ({
-  border: "none",
   padding: theme.spacing(2),
   marginBottom: theme.spacing(2),
   backgroundColor: "#E5FFE5",
-  filter: "drop-shadow(0px 0px 20px rgba(0,0,0,0.1))"
+  filter: "drop-shadow(0px 0px 10px rgba(0,0,0,0.05))"
 }));
 
 /**

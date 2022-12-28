@@ -13,7 +13,7 @@ export const ContentWrapper = styled(Box, {
   display: "flex",
   padding: theme.spacing(4),
   overflow: "hidden",
-  background: "transparent"
+  background: theme.palette.background.default
 }));
 
 /**

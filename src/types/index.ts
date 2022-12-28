@@ -163,7 +163,8 @@ export type NullableMemberGroupPermission = MemberGroupPermission | typeof NOT_S
 declare module "@mui/material/styles" {
   interface CustomTheme {
     logo: {
-      logoPath: string;
+      lightPath: string;
+      darkPath: string;
     };
     backgroundImage: {
       backgroundImagePath: string;
