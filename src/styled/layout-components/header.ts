@@ -8,7 +8,7 @@ export const Root = styled(AppBar, {
   label: "header-root"
 })(({ theme }) => ({
   zIndex: theme.zIndex.drawer,
-  backgroundColor: "transparent",
+  background: theme.palette.background.default,
   padding: `${theme.spacing(2)} 0`
 }));
 
@@ -35,16 +35,33 @@ export const LogoContainer = styled(Box, {
 }));
 
 /**
- * Styled logo container component
+ * Styled header logo container component
  */
-export const Logo = styled(Box, {
-  label: "logo"
+export const HeaderLogo = styled(Box, {
+  label: "header-logo"
 })(({ theme }) => ({
   width: "100%",
-  backgroundImage: `url(${theme.logo.logoPath})`,
+  backgroundImage: `url(${theme.logo.darkPath})`,
   backgroundSize: "contain",
   backgroundRepeat: "no-repeat",
   height: 62
+}));
+
+/**
+ * Styled form logo container component
+ */
+export const FormLogo = styled(Box, {
+  label: "form-logo"
+})(({ theme }) => ({
+  position: "absolute",
+  bottom: 20,
+  right: 20,
+  backgroundImage: `url(${theme.logo.lightPath})`,
+  backgroundSize: "contain",
+  backgroundRepeat: "no-repeat",
+  height: 80,
+  width: "100%",
+  backgroundPosition: "right"
 }));
 
 /**

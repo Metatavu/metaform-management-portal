@@ -60,7 +60,7 @@ const AddableFieldRenderer: React.FC<Prop> = ({
     <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
       <DatePicker
         disabled
-        label={ strings.formComponent.dateTimePicker }
+        label={ strings.formComponent.datePicker }
         onChange={ () => {} }
         value={ new Date() }
         views={["day", "month", "year"]}
@@ -112,7 +112,6 @@ const AddableFieldRenderer: React.FC<Prop> = ({
             addRows: true
           }}
           formReadOnly={ false }
-          renderIcon={ renderIcon }
           value=""
         />
       );

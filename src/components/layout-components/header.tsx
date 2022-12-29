@@ -1,6 +1,6 @@
 import { Button, FormControl, IconButton, InputLabel, MenuItem, Stack, Tooltip } from "@mui/material";
 import React, { useEffect } from "react";
-import { HeaderSelect, HeaderToolbar, Logo, Root } from "styled/layout-components/header";
+import { HeaderLogo, HeaderSelect, HeaderToolbar, Root } from "styled/layout-components/header";
 import { logout, selectKeycloak } from "features/auth-slice";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import strings from "localization/strings";
@@ -115,7 +115,7 @@ const Header: React.FC = ({
   return (
     <Root position="static">
       <HeaderToolbar>
-        <Logo/>
+        <HeaderLogo/>
         <Stack direction="row" spacing={ 3 }>
           { renderInfoButton() }
           <FormControl>

@@ -1,3 +1,4 @@
+import { Send } from "@mui/icons-material";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import React, { CSSProperties } from "react";
 import { SubmitFieldWrapper } from "styled/react-components/react-components";
@@ -44,6 +45,7 @@ export const MetaformSubmitFieldComponent: React.FC<Props> = ({
       <SubmitFieldWrapper
         variant="contained"
         style={ style }
+        startIcon={ <Send/> }
         disabled={ disabled }
         onClick={ () => onClick && onClick(field) }
       >

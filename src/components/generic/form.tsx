@@ -1,4 +1,4 @@
-import { LinearProgress, TextField, Icon } from "@mui/material";
+import { LinearProgress, TextField, Icon, InputAdornment } from "@mui/material";
 import { Metaform, MetaformField } from "generated/client";
 import { FileFieldValueItem, ValidationErrors, FieldValue, FileFieldValue, IconName } from "../../metaform-react/types";
 import React from "react";
@@ -14,6 +14,8 @@ import MetaformUtils from "utils/metaform-utils";
 import FormAutocomplete from "./form-autocomplete";
 import { LocalizationProvider, DatePicker, MobileDateTimePicker } from "@mui/x-date-pickers";
 import { Dictionary } from "types";
+import { DateRange } from "@mui/icons-material";
+import { FormLogo } from "styled/layout-components/header";
 
 /**
  * Component props
@@ -29,6 +31,7 @@ interface Props {
   onSubmit: (source: Metaform) => void;
   onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
   saving?: boolean;
+  isReply?: boolean;
 }
 
 /**
@@ -41,6 +44,7 @@ const Form: React.FC<Props> = ({
   saving,
   titleColor,
   formValues,
+  isReply,
   getFieldValue,
   setFieldValue,
   onValidationErrorsChange,
@@ -88,14 +92,28 @@ const Form: React.FC<Props> = ({
         <DatePicker
           disablePast={ true }
           minDate={ moment().add(1, "days").toDate() }
-          label={ strings.formComponent.dateTimePicker }
+          label={ strings.formComponent.datePicker }
           aria-label={ fieldName }
           shouldDisableDate={ MetaformUtils.shouldDisableHolidays(field.workdaysOnly || false) }
           value={ value ? new Date(value as string) : null }
           onChange={ (date: Date | null) => handleDateChange(date, fieldName) }
           views={["day", "month", "year"]}
+          InputProps={{
+            style: {
+              height: 50,
+              borderRadius: 0
+            }
+          }}
           renderInput={ params =>
-            <TextField { ...params }/>
+            <TextField
+              { ...params }
+              label={ strings.formComponent.datePicker }
+              InputLabelProps={{
+                style: {
+                  top: 5
+                }
+              }}
+            />
           }
         />
       </LocalizationProvider>
@@ -112,13 +130,33 @@ const Form: React.FC<Props> = ({
     return (
       <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
         <MobileDateTimePicker
-          minDate={ moment().add(1, "days").toDate() }
           disablePast={ true }
-          value={ value ? new Date(value as string) : null }
+          minDate={ moment().add(1, "days").toDate() }
+          aria-label={ fieldName }
           shouldDisableDate={ MetaformUtils.shouldDisableHolidays(field.workdaysOnly || false) }
+          value={ value ? new Date(value as string) : null }
           onChange={ (date: Date | null) => handleDateTimeChange(date, fieldName) }
+          InputProps={{
+            style: {
+              height: 50,
+              borderRadius: 0
+            },
+            endAdornment: (
+              <InputAdornment position="end">
+                <DateRange/>
+              </InputAdornment>
+            )
+          }}
           renderInput={ params =>
-            <TextField label={ strings.formComponent.dateTimePicker } aria-label={ fieldName } { ...params }/>
+            <TextField
+              { ...params }
+              label={ strings.formComponent.dateTimePicker }
+              InputLabelProps={{
+                style: {
+                  top: 5
+                }
+              }}
+            />
           }
         />
       </LocalizationProvider>
@@ -248,6 +286,7 @@ const Form: React.FC<Props> = ({
 
   return (
     <FormContainer>
+      { !isReply && <FormLogo/> }
       <FormLayout>
         <MetaformComponent
           form={ metaform }

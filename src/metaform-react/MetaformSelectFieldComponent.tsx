@@ -1,5 +1,5 @@
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import React from "react";
+import React, { CSSProperties } from "react";
 import { SelectFieldWrapper } from "styled/react-components/react-components";
 import { MetaformField } from "../generated/client/models";
 import { FieldValue } from "./types";
@@ -45,11 +45,12 @@ export const MetaformSelectFieldComponent: React.FC<Props> = ({
   const options = field.options || [];
   const selected = value as string || (options.length > 0 ? options[0].name : "");
   const readOnly = formReadOnly || field.readonly;
-
+  const style: CSSProperties = {};
+  
   return (
     <SelectFieldWrapper>
       <Select
-        style={ notInteractive ? { pointerEvents: "none" } : {} }
+        style={ notInteractive ? { pointerEvents: "none" } : style }
         onChange={ onChange }
         value={ selected }
         disabled={ readOnly }

@@ -1,6 +1,6 @@
-import { Box, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { Box, Checkbox, FormControlLabel } from "@mui/material";
 import React, { CSSProperties, ReactNode } from "react";
-import { ChecklistFieldWrapper } from "styled/react-components/react-components";
+import { ChecklistFieldWrapper, CheckListOptionWrapper } from "styled/react-components/react-components";
 import { MetaformField, MetaformFieldOption } from "../generated/client/models";
 import { FieldValue, IconName } from "./types";
 
@@ -72,16 +72,18 @@ export const MetaformChecklistFieldComponent: React.FC<Props> = ({
       );
     }
 
-    const style: CSSProperties = {};
+    const style: CSSProperties = {
+      color: "#00008b"
+    };
 
     if (notInteractive) {
       style.pointerEvents = "none";
-      style.color = "black";
+      style.color = "#00008b";
     }
 
     return (
       <Box key={ option.name }>
-        <FormGroup>
+        <CheckListOptionWrapper>
           <FormControlLabel
             value={ option.name }
             control={
@@ -98,7 +100,7 @@ export const MetaformChecklistFieldComponent: React.FC<Props> = ({
             }
             label={ option.text }
           />
-        </FormGroup>
+        </CheckListOptionWrapper>
       </Box>
     );
   };
