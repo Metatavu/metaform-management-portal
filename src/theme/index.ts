@@ -11,7 +11,18 @@ const { breakpoints, palette } = createTheme();
 export default createTheme({
 
   logo: {
-    logoPath: "/images/eloisa_logo.png"
+    darkPath: "/images/logo_dark.png",
+    lightPath: "/images/logo_light.png"
+  },
+
+  backgroundImage: {
+    backgroundImagePath: "/images/backgroundImage.svg"
+  },
+
+  sectionTitle: {
+    fontFamily: "Arial, sans-serif",
+    fontWeight: 200,
+    fontSize: 26
   },
 
   palette: {

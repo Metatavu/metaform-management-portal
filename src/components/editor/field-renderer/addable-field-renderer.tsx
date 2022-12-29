@@ -112,7 +112,6 @@ const AddableFieldRenderer: React.FC<Prop> = ({
             addRows: true
           }}
           formReadOnly={ false }
-          renderIcon={ renderIcon }
           value=""
         />
       );

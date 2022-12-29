@@ -11,8 +11,7 @@ export const HtmlAutocompleteWrapper = styled(Autocomplete, {
   flex: 1,
   width: "100%",
   height: "auto;",
-  borderRadius: "0.5em",
-  border: `1px solid ${theme.palette.grey[400]}`,
+  border: `1px solid ${theme.palette.grey[300]}`,
   padding: "0.5rem 1rem"
 }));
 
@@ -42,10 +41,19 @@ export const SliderFieldWrapper = styled(Slider, {
 export const SubmitFieldWrapper = styled(Button, {
   label: "submit-field-wrapper"
 })(() => ({
-  borderRadius: "0.5rem",
   border: 0,
-  width: "100%",
-  color: "#fff"
+  color: "#fff",
+  backgroundColor: "#000",
+  "& .MuiSvgIcon-root": {
+    color: "#00ff00"
+  },
+  "&:hover": {
+    color: "#000",
+    backgroundColor: "#00ff00",
+    "& .MuiSvgIcon-root": {
+      color: "#000"
+    }
+  }
 }));
 
 /**
@@ -54,11 +62,20 @@ export const SubmitFieldWrapper = styled(Button, {
 export const AddRowButtonWrapper = styled(Button, {
   label: "add-row-button-wrapper"
 })(() => ({
-  backgroundColor: theme.palette.primary.light,
-  borderRadius: "0.5rem",
   border: 0,
-  width: "100%",
   color: "#fff",
+  backgroundColor: "#000",
+  "& .MuiSvgIcon-root": {
+    color: "#00ff00"
+  },
+  "&:hover": {
+    color: "#000",
+    backgroundColor: "#00ff00",
+    "& .MuiSvgIcon-root": {
+      color: "#000"
+    }
+  },
+  width: "100%",
   marginTop: "0.5rem"
 }));
 
@@ -71,7 +88,7 @@ export const FilesRowWrapper = styled(Stack, {
   display: "flex",
   padding: "0.5rem",
   alignItems: "center",
-  borderBottom: `1px dashed ${theme.palette.grey[400]}`
+  borderBottom: `1px dashed ${theme.palette.grey[300]}`
 }));
 
 /**
@@ -89,7 +106,6 @@ export const TableWrapper = styled(Stack, {
 export const FilesButtonWrapper = styled(Button, {
   label: "files-button-wrapper"
 })(() => ({
-  borderRadius: "0.5rem",
   border: 0,
   flex: 0.5,
   color: "#fff"
@@ -101,10 +117,39 @@ export const FilesButtonWrapper = styled(Button, {
 export const SelectFieldWrapper = styled(FormControl, {
   label: "select-field-wrapper"
 })(() => ({
+  backgroundColor: theme.palette.background.paper,
   width: "100%",
-  borderRadius: "0.5em",
-  border: `1px solid ${theme.palette.grey[400]}`,
+  border: `1px solid ${theme.palette.grey[300]}`,
   maxHeight: 50,
+  justifyContent: "center",
+  overflow: "hidden"
+}));
+
+/**
+ * Styled radio option component
+ */
+export const RadioOptionWrapper = styled(FormControl, {
+  label: "radio-option-wrapper"
+})(() => ({
+  backgroundColor: theme.palette.background.paper,
+  width: "100%",
+  border: `1px solid ${theme.palette.grey[300]}`,
+  maxHeight: 50,
+  justifyContent: "center",
+  overflow: "hidden",
+  height: 50
+}));
+
+/**
+ * Styled form group component
+ */
+export const CheckListOptionWrapper = styled(FormControl, {
+  label: "checklist-option-wrapper"
+})(() => ({
+  backgroundColor: theme.palette.background.paper,
+  width: "100%",
+  border: `1px solid ${theme.palette.grey[300]}`,
+  height: 50,
   justifyContent: "center",
   overflow: "hidden"
 }));
@@ -112,12 +157,13 @@ export const SelectFieldWrapper = styled(FormControl, {
 /**
  * Styled radio field component
  */
-export const RadioFieldWrapper = styled(Box, {
+export const RadioFieldWrapper = styled(Stack, {
   label: "radio-field-wrapper"
 })(() => ({
   width: "100%",
   display: "flex",
-  flexDirection: "column"
+  flexDirection: "column",
+  gap: theme.spacing(0.5)
 }));
 
 /*
@@ -127,8 +173,7 @@ export const UrlFieldWrapper = styled(Input, {
   label: "url-field-wrapper"
 })(() => ({
   flex: 1,
-  border: `1px solid ${theme.palette.grey[400]}`,
-  borderRadius: "0.5rem",
+  border: `1px solid ${theme.palette.grey[300]}`,
   padding: "0.5rem 1rem"
 }));
 
@@ -140,9 +185,8 @@ export const TextFieldWrapper = styled(Input, {
 })(() => ({
   flex: 1,
   width: "100%",
-  border: `1px solid ${theme.palette.grey[400]}`,
-  borderRadius: "0.5rem",
-  backgroundColor: "#fff",
+  border: `1px solid ${theme.palette.grey[300]}`,
+  backgroundColor: theme.palette.background.paper,
   padding: "0.5rem 1rem"
 }));
 
@@ -152,11 +196,10 @@ export const TextFieldWrapper = styled(Input, {
 export const MemoFieldWrapper = styled(TextField, {
   label: "memo-field-wrapper"
 })(() => ({
-  backgroundColor: "white",
-  border: `1px solid ${theme.palette.grey[400]}`,
-  borderRadius: "0.5rem",
+  backgroundColor: theme.palette.background.paper,
+  border: `1px solid ${theme.palette.grey[300]}`,
   width: "100%",
-  minHeight: "5rem"
+  minHeight: 100
 }));
 
 /**
@@ -165,10 +208,9 @@ export const MemoFieldWrapper = styled(TextField, {
 export const DateFieldWrapper = styled(Box, {
   label: "date-field-wrapper"
 })(() => ({
+  backgroundColor: theme.palette.background.paper,
   flex: 1,
   width: "100%",
-  height: "auto",
-  borderRadius: "0.5rem",
   minHeight: 50,
   display: "flex",
   flexDirection: "column",
@@ -182,10 +224,10 @@ export const DateFieldWrapper = styled(Box, {
 export const NumberFieldWrapper = styled(TextField, {
   label: "number-field-wrapper"
 })(() => ({
+  backgroundColor: theme.palette.background.paper,
   width: "100%",
   fontSize: "1em",
-  border: `1px solid ${theme.palette.grey[400]}`,
-  borderRadius: "0.5rem",
+  border: `1px solid ${theme.palette.grey[300]}`,
   padding: "0.5 rem 1 rem",
   overflow: "hidden",
   minHeight: 50
@@ -199,8 +241,7 @@ export const EmailFieldWrapper = styled(TextField, {
 })(() => ({
   width: "100%",
   fontSize: "1em",
-  border: `1px solid ${theme.palette.grey[400]}`,
-  borderRadius: "0.5rem",
+  border: `1px solid ${theme.palette.grey[300]}`,
   padding: "0.5 rem 1 rem",
   overflow: "hidden",
   minHeight: 50,
@@ -210,11 +251,12 @@ export const EmailFieldWrapper = styled(TextField, {
 /**
  * Styled checklist field component
  */
-export const ChecklistFieldWrapper = styled(Box, {
+export const ChecklistFieldWrapper = styled(Stack, {
   label: "checklistFieldWrapper-field-wrapper"
 })(() => ({
   flex: 1,
-  width: "100%"
+  width: "100%",
+  gap: theme.spacing(0.5)
 }));
 
 /*
@@ -227,7 +269,7 @@ export const TableTextCellWrapper = styled(TextField, {
   width: "100%",
   fontSize: "1em",
   border: "none",
-  backgroundColor: "rgba(0,0,0,0.07)",
+  backgroundColor: theme.palette.background.paper,
   overflow: "auto"
 }));
 
@@ -239,7 +281,7 @@ export const TableNumberCellWrapper = styled(TextField, {
 })(() => ({
   width: "100%",
   fontSize: "1em",
-  backgroundColor: "rgba(0,0,0,0.07)",
+  backgroundColor: theme.palette.background.paper,
   overflow: "auto"
 }));
 
@@ -273,8 +315,8 @@ export const AdminFormTypographyField = styled(Typography, {
 export const VersionListHeader = styled(Grid, {
   label: "version-list-header"
 })(() => ({
-  borderTop: `1px solid ${theme.palette.grey[400]}`,
-  borderBottom: `1px solid ${theme.palette.grey[400]}`,
+  borderTop: `1px solid ${theme.palette.grey[300]}`,
+  borderBottom: `1px solid ${theme.palette.grey[300]}`,
   padding: 0,
   height: "60px",
   alignContent: "center"

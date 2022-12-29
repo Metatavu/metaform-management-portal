@@ -1,6 +1,6 @@
-import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { FormControl, FormControlLabel, Radio } from "@mui/material";
 import React, { CSSProperties, ReactNode } from "react";
-import { RadioFieldWrapper } from "styled/react-components/react-components";
+import { RadioFieldWrapper, RadioOptionWrapper } from "styled/react-components/react-components";
 import { MetaformField, MetaformFieldOption } from "../generated/client/models";
 import { FieldValue, IconName } from "./types";
 
@@ -60,15 +60,17 @@ export const MetaformRadioFieldComponent: React.FC<Props> = ({
       return renderIcon("circle-o", `${fieldId}-${option.name}-icon-checked`);
     }
 
-    const style: CSSProperties = {};
+    const style: CSSProperties = {
+      color: "#00008b"
+    };
 
     if (notInteractive) {
       style.pointerEvents = "none";
-      style.color = "black";
+      style.color = "#00008b";
     }
 
     return (
-      <RadioGroup>
+      <RadioOptionWrapper>
         <FormControlLabel
           className="metaform-radio-field-label"
           label={ option.text }
@@ -93,7 +95,7 @@ export const MetaformRadioFieldComponent: React.FC<Props> = ({
             }}
           /> }
         />
-      </RadioGroup>
+      </RadioOptionWrapper>
     );
   };
 

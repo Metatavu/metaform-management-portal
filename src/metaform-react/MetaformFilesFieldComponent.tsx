@@ -121,7 +121,7 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
   return (
     <Box
       style={{
-        border: `1px dashed ${theme.palette.grey[400]}`,
+        border: `1px dashed ${theme.palette.grey[300]}`,
         width: "100%",
         borderRadius: "0.5rem",
         overflow: "hidden"

@@ -40,10 +40,13 @@ export const MetaformBody = styled(Stack, {
  */
 export const MetaformTitle = styled(Typography, {
   label: "metaform-title"
-})(() => ({
+})(({ theme }) => ({
   textAlign: "center",
-  fontSize: 32,
-  fontWeight: 600
+  fontSize: 36,
+  fontWeight: "bold",
+  color: theme.palette.text.primary,
+  fontFamily: "Arial, sans-serif",
+  marginBottom: theme.spacing(2)
 }));
 
 /**
@@ -52,12 +55,10 @@ export const MetaformTitle = styled(Typography, {
 export const MetaformSectionWrapper = styled(Box, {
   label: "metaform-section-wrapper"
 })(({ theme }) => ({
-  border: "none",
-  borderRadius: "0.5rem",
   padding: theme.spacing(2),
   marginBottom: theme.spacing(2),
-  backgroundColor: "#fff",
-  boxShadow: "0px 0px 10px rgba(0,0,0,0.2)"
+  backgroundColor: "#E5FFE5",
+  filter: "drop-shadow(0px 0px 10px rgba(0,0,0,0.05))"
 }));
 
 /**
