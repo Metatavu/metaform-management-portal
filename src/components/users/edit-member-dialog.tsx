@@ -1,5 +1,5 @@
 import { User, UserFederationSource } from "generated/client";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import strings from "../../localization/strings";
 import * as EmailValidator from "email-validator";
 import { Button, FormControlLabel, IconButton, InputAdornment, MenuItem, Stack, Switch, TextField } from "@mui/material";
@@ -38,10 +38,6 @@ const EditMemberDialog: FC<Props> = ({
   const [ foundCardUsers, setFoundCardUsers ] = useState<User[]>([]);
   const [ linkSwitchChecked, setLinkSwitchChecked ] = useState<boolean>(false);
 
-  useEffect(() => {
-    setLinkSwitchChecked(!!selectedMetaformUser?.federatedIdentities?.length ?? false);
-  }, [ selectedMetaformUser ]);
-
   /**
    * Event handler for cancel click
    */
@@ -60,7 +56,7 @@ const EditMemberDialog: FC<Props> = ({
     if (!selectedMetaformUser) {
       return;
     }
-    
+
     if (linkSwitchChecked) {
       if (!selectedCardUser) {
         return;
@@ -74,6 +70,7 @@ const EditMemberDialog: FC<Props> = ({
 
       await editUser({
         ...selectedMetaformUser,
+        username: federatedUser.username,
         federatedIdentities: [ ...selectedMetaformUser.federatedIdentities!, federatedUser ]
       });
     } else {
@@ -95,7 +92,7 @@ const EditMemberDialog: FC<Props> = ({
 
   /**
    * Event handler for free text search change
-   * 
+   *
    * @param event event
    */
   const handleUserSearchChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -105,17 +102,19 @@ const EditMemberDialog: FC<Props> = ({
 
   /**
    * Event handler for selecting Metaform Keycloak User
-   * 
+   *
    * @param event event
    */
   const handleMetaformUserSelectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target: { value } } = event;
-    setSelectedMetaformUser(foundMetaformUsers.find(user => user.id === value));
+    const foundUser = foundMetaformUsers.find(user => user.id === value);
+    setSelectedMetaformUser(foundUser);
+    setLinkSwitchChecked(!!foundUser?.federatedIdentities?.length ?? false);
   };
 
   /**
    * Event handler for changing switch value
-   * 
+   *
    * @param event event
    */
   const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,7 +123,7 @@ const EditMemberDialog: FC<Props> = ({
 
   /**
    * Event handler for selecting Card Auth Keycloak User
-   * 
+   *
    * @param event event
    */
   const handleCardUserSelectChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,7 +149,7 @@ const EditMemberDialog: FC<Props> = ({
 
   /**
    * Event handler for text field change
-   * 
+   *
    * @param event event
    */
   const onTextFieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -171,7 +170,7 @@ const EditMemberDialog: FC<Props> = ({
     }
 
     const federatedUser = selectedMetaformUser?.federatedIdentities?.find(user => user.source === UserFederationSource.Card);
-    
+
     if (!federatedUser) {
       return "";
     }
@@ -192,12 +191,12 @@ const EditMemberDialog: FC<Props> = ({
 
   /**
    * Renders card users menu items
-   * 
+   *
    * @param user user
    */
   const renderCardUsersMenuItems = (user: User) => {
     const federatedUser = user.federatedIdentities?.find(federatedIdentity => federatedIdentity.source === UserFederationSource.Card);
-  
+
     return (
       <MenuItem key={ user.displayName } value={ federatedUser?.userId }>
         { `${user.firstName} ${user.lastName}` }
