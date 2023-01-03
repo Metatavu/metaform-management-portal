@@ -28,7 +28,8 @@ const MetaformDateTimeComponent: FC<Props> = ({
     if (metaformSectionIndex !== undefined && metaformFieldIndex !== undefined) {
       setMetaformField(pendingForm.sections?.[metaformSectionIndex].fields?.[metaformFieldIndex]);
     }
-  }, [metaformFieldIndex, metaformSectionIndex, metaformVersion]);
+  }, [ metaformFieldIndex, metaformSectionIndex, metaformVersion ]);
+
   /**
    * Updates allows work days only for date, date-time field
    *
@@ -42,6 +43,24 @@ const MetaformDateTimeComponent: FC<Props> = ({
     const updatedField = produce(metaformField, draftField => {
       draftField.workdaysOnly = checked;
     });
+    setMetaformField(updatedField);
+    updateFormFieldDebounced(updatedField);
+  };
+  
+  /**
+   * Updates allow past days only for date, date-time field
+   * 
+   * @param checked checked value of the checkbox value true or false
+   */
+  const updateAllowPastDays = (checked: boolean) => {
+    if (!metaformField) {
+      return;
+    }
+    
+    const updatedField = produce(metaformField, draftDield => {
+      draftDield.allowPastDays = checked;
+    });
+    
     setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
   };
@@ -64,11 +83,26 @@ const MetaformDateTimeComponent: FC<Props> = ({
               />
             }
           />
+          <FormControlLabel
+            label={ strings.draftEditorScreen.editor.features.field.allowPast }
+            control={
+              <Switch
+                checked={ field.allowPastDays }
+                onChange={ ({ target }) => updateAllowPastDays(target.checked) }
+              />
+            }
+          />
         </Stack>
       );
     }
   };
 
+  useEffect(() => {
+    if (metaformField?.allowPastDays === undefined) {
+      updateAllowPastDays(true);
+    }
+  }, [ metaformField ]);
+  
   /**
    * Component render
    */

@@ -231,6 +231,17 @@ namespace MetaformUtils {
           type: fieldType,
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
         };
+      case MetaformFieldType.Date:
+      case MetaformFieldType.DateTime:
+        return {
+          name: name ?? fieldType + uuid4(),
+          title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
+          required: required ?? false,
+          text: name ?? fieldType + uuid4(),
+          type: fieldType,
+          contexts: [ FormContext.FORM, FormContext.MANAGEMENT ],
+          allowPastDays: true
+        };
       default:
         return {
           name: name ?? fieldType + uuid4(),

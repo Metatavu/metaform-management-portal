@@ -77,6 +77,20 @@ const Form: React.FC<Props> = ({
   const handleDateTimeChange = (date: Date | null, fieldName: string) => {
     setFieldValue(fieldName, date ? moment(date).toISOString() : null);
   };
+  
+  /**
+   * Checks whether past days should be disabled for given date/date-time field
+   * 
+   * @param field field
+   * @returns Whether past days should be disabled or not
+   */
+  const checkDisablePastDays = (field: MetaformField) => {
+    if (field.allowPastDays === undefined) {
+      return false;
+    }
+    
+    return !field.allowPastDays;
+  };
 
   /**
    * Renders date picker with disabled past dates and disabled current date 
@@ -90,8 +104,7 @@ const Form: React.FC<Props> = ({
     return (
       <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
         <DatePicker
-          disablePast={ true }
-          minDate={ moment().add(1, "days").toDate() }
+          disablePast={ checkDisablePastDays(field) }
           label={ strings.formComponent.datePicker }
           aria-label={ fieldName }
           shouldDisableDate={ MetaformUtils.shouldDisableHolidays(field.workdaysOnly || false) }
@@ -130,8 +143,7 @@ const Form: React.FC<Props> = ({
     return (
       <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
         <MobileDateTimePicker
-          disablePast={ true }
-          minDate={ moment().add(1, "days").toDate() }
+          disablePast={ checkDisablePastDays(field) }
           aria-label={ fieldName }
           shouldDisableDate={ MetaformUtils.shouldDisableHolidays(field.workdaysOnly || false) }
           value={ value ? new Date(value as string) : null }

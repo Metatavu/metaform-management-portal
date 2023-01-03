@@ -294,6 +294,7 @@
           "addCustomHtml": "Lisää tähän HTML-sisältöä",
           "contextVisibilityInfo": "Kentän hallinnointi asetukset",
           "workDaysOnly": "Vain työpäivät",
+          "allowPast": "Menneet päivät",
           "slider": {
             "minValueLabel": "Kentän pienin arvo",
             "maxValueLabel": "Kentän suurin arvo"
