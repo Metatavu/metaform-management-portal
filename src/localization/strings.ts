@@ -330,6 +330,7 @@ export interface Localized extends LocalizedStringsMethods {
           addCustomHtml: string;
           contextVisibilityInfo: string;
           workDaysOnly: string;
+          allowPast: string;
           slider: {
             minValueLabel: string;
             maxValueLabel: string;
