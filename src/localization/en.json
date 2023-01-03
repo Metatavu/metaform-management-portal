@@ -293,6 +293,7 @@
           "addCustomHtml": "Add HTML code in field",
           "contextVisibilityInfo": "Field management settings",
           "workDaysOnly": "Work days only",
+          "allowPast": "Past days",
           "slider": {
             "minValueLabel": "Field minimum value",
             "maxValueLabel": "Field maximum value"
