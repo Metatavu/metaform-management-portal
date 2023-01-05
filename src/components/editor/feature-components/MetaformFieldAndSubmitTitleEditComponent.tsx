@@ -63,8 +63,7 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
             value={ field.title }
             onChange={ event => updateFormField({
               ...field,
-              title: event.target.value,
-              name: slugify(`${section.title}-${event.target.value}-${metaformSectionIndex}-${metaformFieldIndex}`)
+              title: event.target.value
             })
             }
           />
