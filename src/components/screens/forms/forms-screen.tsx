@@ -10,9 +10,8 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 import { useApiClient } from "app/hooks";
 import Api from "api";
-import { Metaform, MetaformMemberRole, Reply } from "generated/client";
+import { Metaform, MetaformMemberRole } from "generated/client";
 import { ErrorContext } from "components/contexts/error-handler";
-import { ReplyStatus } from "types";
 import { useNavigate } from "react-router-dom";
 import FormRestrictedContent from "components/containers/form-restricted-content";
 import moment from "moment";
@@ -35,32 +34,10 @@ const FormsScreen: React.FC = () => {
   const errorContext = useContext(ErrorContext);
 
   const apiClient = useApiClient(Api.getApiClient);
-  const { metaformsApi, repliesApi } = apiClient;
+  const { metaformsApi, metaformStatisticsApi } = apiClient;
   const [ rows, setRows ] = useState<Row[]>([]);
   const [ loading, setLoading ] = useState(false);
   const navigate = useNavigate();
-
-  /**
-   * Gets the latest reply date of a Metaform
-   */
-  const getLatestReplyDate = (replies: Reply[]) => {
-    if (replies.length < 1) {
-      return;
-    }
-
-    if (!replies[replies.length - 1].modifiedAt) {
-      return;
-    }
-
-    return replies[replies.length - 1].modifiedAt;
-  };
-
-  /**
-   * Counts amount of waiting replies to be displayed in the row
-   * @param replies replies
-   * @return count of waiting replies
-   */
-  const countWaitingReplies = (replies: Reply[]) => replies.filter(reply => reply.data?.status as (string | undefined) === ReplyStatus.WAITING).length;
 
   /**
    * Builds a row for the table
@@ -68,30 +45,16 @@ const FormsScreen: React.FC = () => {
    * @param form form
    * @param replies replies
    */
-  const buildRow = (form: Metaform, replies: Reply[]) => {
-    const amountWaiting = countWaitingReplies(replies);
-
+  const buildRow = async (form: Metaform) => {
+    const statistics = await metaformStatisticsApi.getStatistics({ metaformId: form.id! });
+    
     return {
       id: form.id || "",
       slug: form.slug || "",
       title: form.title || strings.formScreen.noTitle,
-      latestReply: getLatestReplyDate(replies),
-      newReply: amountWaiting > 0 ? amountWaiting : 0
+      latestReply: statistics.lastReplyDate,
+      newReply: statistics.unprocessedReplies
     };
-  };
-
-  /**
-   * Load replies
-   *
-   * @param metaformId metaform id
-  */
-  const loadReplies = async (metaformId: string): Promise<Reply[]> => {
-    try {
-      return await repliesApi.listReplies({ metaformId: metaformId });
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.adminFormsDataScreen.listReplies, e);
-      return [];
-    }
   };
 
   /**
@@ -104,8 +67,7 @@ const FormsScreen: React.FC = () => {
       const forms = await metaformsApi.listMetaforms({
         memberRole: MetaformMemberRole.Manager
       });
-      const replies = await Promise.all(forms.map(form => loadReplies(form.id!)));
-      const builtRows = forms.map((form, i) => buildRow(form, replies[i]));
+      const builtRows = await Promise.all(forms.map(form => buildRow(form)));
 
       setRows(builtRows);
     } catch (e) {
