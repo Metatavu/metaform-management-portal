@@ -1,9 +1,8 @@
 import Api from "api";
-import { AttachmentsApi, AuditLogEntry, AuditLogEntryType, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, MetaformVersion, Reply } from "generated/client";
+import { AttachmentsApi, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, MetaformVersion, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
-import { Dictionary, MemberGroupPermission, ReplyAuditLog } from "types";
+import { Dictionary, MemberGroupPermission } from "types";
 import strings from "localization/strings";
-import moment from "moment";
 import { FormContext } from "../types/index";
 import Holidays from "date-holidays";
 import { CREATED_FIELD_NAME, MODIFIED_FIELD_NAME, STATUS_FIELD_NAME } from "consts";
@@ -389,99 +388,6 @@ namespace MetaformUtils {
     });
 
     return result;
-  };
-
-  /**
-   * Gets the monthly average reply count
-   *
-   * @param replies replies
-   * @returns monthly average reply
-   */
-  export const getMonthlyAverageReply = (replies: Reply[]): number => {
-    const sortedReplyDates = (replies
-      .map(reply => reply.createdAt)
-      .filter(createdAt => createdAt !== undefined) as Date[])
-      .sort();
-
-    if (sortedReplyDates.length === 0) {
-      return 0;
-    }
-
-    const monthCount = sortedReplyDates.filter((prev, index) => {
-      if (index === sortedReplyDates.length - 1) {
-        return;
-      }
-      const next: Date = sortedReplyDates[index + 1];
-      return !moment(prev).isSame(next, "month") || !moment(prev).isSame(next, "year");
-    }).length + 1;
-
-    return sortedReplyDates.length / monthCount;
-  };
-
-  /**
-   * Date comparator
-   *
-   * @param replyAuditLog1 reply audit log 1
-   * @param replyAuditLog2 reply audit log 2
-   * @returns integer indicates the result
-   */
-  const dateComparator = (replyAuditLog1: ReplyAuditLog, replyAuditLog2: ReplyAuditLog) =>
-    (moment(replyAuditLog1.createdAt).isAfter(replyAuditLog2.createdAt) ? 1 : -1);
-
-  /**
-  * Reply id comparator
-  *
-  * @param replyAuditLog1 reply audit log 1
-  * @param replyAuditLog2 reply audit log 2
-  * @returns integer indicates the result
-  */
-  const replyIdComparator = (replyAuditLog1: ReplyAuditLog, replyAuditLog2: ReplyAuditLog) =>
-    (replyAuditLog1.replyId.localeCompare(replyAuditLog2.replyId));
-
-  /**
-   * Gets the average reply view delay
-   *
-   * @param auditLogEntries audit log entries
-   * @returns average reply delay
-   */
-  export const getAverageReplyViewDelay = (auditLogEntries: AuditLogEntry[]): moment.Duration => {
-    const preprocessAuditLogEntries: ReplyAuditLog[] = auditLogEntries
-      .filter(entry =>
-        entry.replyId !== undefined &&
-        entry.createdAt !== undefined &&
-        entry.logEntryType !== undefined).map(entry => (
-        {
-          replyId: entry.replyId!,
-          createdAt: entry.createdAt!,
-          logEntryType: entry.logEntryType!
-        }
-      ));
-
-    // js sort is stable
-    preprocessAuditLogEntries.sort(dateComparator);
-    preprocessAuditLogEntries.sort(replyIdComparator);
-
-    let replyCount = 0;
-    // time in millisecond
-    let totalTime = 0;
-    let createEntry: ReplyAuditLog;
-
-    preprocessAuditLogEntries.forEach(entry => {
-      if (entry.logEntryType === AuditLogEntryType.CreateReply) {
-        createEntry = entry;
-      } else if (
-        entry.logEntryType === AuditLogEntryType.ViewReply &&
-        createEntry !== undefined &&
-        entry.replyId === createEntry.replyId
-      ) {
-        totalTime += entry.createdAt.getTime() - createEntry.createdAt.getTime();
-        replyCount += 1;
-      }
-    });
-
-    if (replyCount === 0) return moment.duration(0);
-
-    return moment.duration(Math.floor(totalTime / replyCount));
   };
 
   /**
