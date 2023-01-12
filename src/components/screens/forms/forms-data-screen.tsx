@@ -12,6 +12,7 @@ import { ErrorContext } from "components/contexts/error-handler";
 import moment from "moment";
 import { EqualizerRounded, HistoryRounded } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { DataValidation } from "utils/data-validation-utils";
 
 /**
  * Interface for single form row
@@ -43,12 +44,16 @@ const FormsDataScreen: React.FC = () => {
    * @param replies replies
    * @param auditLogEntries audit log entries
    */
-  const buildRow = async (form: Metaform): Promise<Row> => {
-    const statistics = await metaformStatisticsApi.getStatistics({ metaformId: form.id! });
+  const buildRow = async (form: Metaform) => {
+    if (!form.id || !form.slug) {
+      return;
+    }
+    
+    const statistics = await metaformStatisticsApi.getStatistics({ metaformId: form.id });
     const averageReplyProcessDelay = statistics.averageReplyProcessDelay! > 0 ? statistics.averageReplyProcessDelay : 0;
     
     return {
-      id: form.id || "",
+      id: form.id,
       title: form.title || strings.formScreen.noTitle,
       slug: form.slug,
       monthlyReplies: statistics.averageMonthlyReplies ?? 0,
@@ -82,7 +87,7 @@ const FormsDataScreen: React.FC = () => {
     try {
       const builtRows = await Promise.all(forms.map(form => buildRow(form)));
 
-      setRows(builtRows);
+      setRows(builtRows.filter(DataValidation.validateValueIsNotUndefinedNorNull));
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsDataScreen.listForms, e);
     }

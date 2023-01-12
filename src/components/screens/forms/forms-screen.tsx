@@ -15,6 +15,7 @@ import { ErrorContext } from "components/contexts/error-handler";
 import { useNavigate } from "react-router-dom";
 import FormRestrictedContent from "components/containers/form-restricted-content";
 import moment from "moment";
+import { DataValidation } from "utils/data-validation-utils";
 
 /**
  * Interface for single form row
@@ -46,11 +47,15 @@ const FormsScreen: React.FC = () => {
    * @param replies replies
    */
   const buildRow = async (form: Metaform) => {
-    const statistics = await metaformStatisticsApi.getStatistics({ metaformId: form.id! });
+    if (!form.id || !form.slug) {
+      return;
+    }
+    
+    const statistics = await metaformStatisticsApi.getStatistics({ metaformId: form.id });
     
     return {
-      id: form.id || "",
-      slug: form.slug || "",
+      id: form.id,
+      slug: form.slug,
       title: form.title || strings.formScreen.noTitle,
       latestReply: statistics.lastReplyDate,
       newReply: statistics.unprocessedReplies
@@ -69,7 +74,7 @@ const FormsScreen: React.FC = () => {
       });
       const builtRows = await Promise.all(forms.map(form => buildRow(form)));
 
-      setRows(builtRows);
+      setRows(builtRows.filter(DataValidation.validateValueIsNotUndefinedNorNull));
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
