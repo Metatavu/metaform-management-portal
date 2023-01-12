@@ -45,17 +45,19 @@ const FormsDataScreen: React.FC = () => {
    * @param auditLogEntries audit log entries
    */
   const buildRow = async (form: Metaform) => {
-    if (!form.id || !form.slug) {
+    const { id, slug, title } = form;
+    
+    if (!id || !slug) {
       return;
     }
     
-    const statistics = await metaformStatisticsApi.getStatistics({ metaformId: form.id });
+    const statistics = await metaformStatisticsApi.getStatistics({ metaformId: id });
     const averageReplyProcessDelay = statistics.averageReplyProcessDelay! > 0 ? statistics.averageReplyProcessDelay : 0;
     
     return {
-      id: form.id,
-      title: form.title || strings.formScreen.noTitle,
-      slug: form.slug,
+      id: id,
+      title: title || strings.formScreen.noTitle,
+      slug: slug,
       monthlyReplies: statistics.averageMonthlyReplies ?? 0,
       replyViewDelay: moment.duration(averageReplyProcessDelay, "seconds")
     };
