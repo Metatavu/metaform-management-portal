@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { AlertTitle, Typography } from "@mui/material";
 import GenericSnackbar from "components/generic/generic-snackbar";
 import strings from "localization/strings";
 import React, { FC, useEffect, useState } from "react";
@@ -41,10 +41,11 @@ const ConnectionHandler: FC = ({ children }) => {
       open={ connectionLost }
       onClose={ () => setConnectionLost(!connectionLost) }
       severity="error"
+      disableClickaway
     >
       <>
-        <Typography variant="h5">{ strings.errorHandling.formScreen.noConnection }</Typography>
-        <Typography variant="caption">{ strings.errorHandling.formScreen.noConnectionHelper }</Typography>
+        <AlertTitle>{ strings.errorHandling.formScreen.noConnection }</AlertTitle>
+        <Typography variant="body2" color="#fff">{ strings.errorHandling.formScreen.noConnectionHelper }</Typography>
       </>
     </GenericSnackbar>
   );
