@@ -2,7 +2,6 @@ import { Stack, TextField, Typography } from "@mui/material";
 import { MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
 import strings from "localization/strings";
 import React, { FC, useEffect } from "react";
-import slugify from "slugify";
 import LocalizationUtils from "utils/localization-utils";
 import { selectMetaform } from "../../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
@@ -63,8 +62,7 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
             value={ field.title }
             onChange={ event => updateFormField({
               ...field,
-              title: event.target.value,
-              name: slugify(`${section.title}-${event.target.value}-${metaformSectionIndex}-${metaformFieldIndex}`)
+              title: event.target.value
             })
             }
           />
@@ -95,8 +93,7 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
             value={ field.text }
             onChange={ event => updateFormField({
               ...field,
-              text: event.target.value,
-              name: slugify(`${section.title}-${event.target.value}-${metaformSectionIndex}-${metaformFieldIndex}`)
+              text: event.target.value
             })
             }
           />
