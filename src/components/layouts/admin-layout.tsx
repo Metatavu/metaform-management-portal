@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { AlertTitle } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import GenericSnackbar from "components/generic/generic-snackbar";
 import Header from "components/layout-components/header";
@@ -41,9 +41,9 @@ const AdminLayout: React.FC = ({ children }) => {
           autoHideDuration={ 4000 }
           severity="success"
         >
-          <Typography variant="body2">
+          <AlertTitle>
             { snackbarMessage }
-          </Typography>
+          </AlertTitle>
         </GenericSnackbar>
         <Content>
           {children}

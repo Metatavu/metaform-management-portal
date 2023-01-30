@@ -27,6 +27,7 @@ namespace SosmetaUtils {
 
       return MetaformUtils.createField(
         MetaformFieldType.Text,
+        metaform,
         fieldData.name[0].value,
         `${sectionName.toLowerCase()}.${fieldData.name[0].value.toLowerCase()}`,
         required ?? fieldData.required
@@ -49,6 +50,7 @@ namespace SosmetaUtils {
 
       return MetaformUtils.createField(
         MetaformFieldType.Boolean,
+        metaform,
         fieldData.name[0].value,
         `${sectionName.toLowerCase()}.${fieldData.name[0].value.toLowerCase()}`,
         required ?? fieldData.required

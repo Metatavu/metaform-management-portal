@@ -134,6 +134,29 @@ namespace MetaformUtils {
   };
 
   /**
+   * Checks if field name on form is unique
+   * 
+   * @param metaform metaform
+   * @param name metaform field name
+   * @returns true if name is unique
+   */
+  const checkIfFieldNameIsUnique = (metaform: Metaform, name: string) => {
+    return !!metaform.sections?.find(section => {
+      return section.fields?.find(item => item.name !== name);
+    });
+  };
+
+  /**
+   * Creates a random field name
+   * 
+   * @param fieldType metaform field type
+   * @returns random field name
+   */
+  const createFieldName = (fieldType: string) => {
+    return `${fieldType}-${uuid4().slice(0, 5)}`;
+  };
+
+  /**
    * Create empty field for given field type
    * Name is given random name to avoid duplicated names
    * 
@@ -144,13 +167,29 @@ namespace MetaformUtils {
    * @param options options
    * @returns created field
    */
-  export const createField = (fieldType: MetaformFieldType, title?: string, name?: string, required?: boolean, options?: any[]): MetaformField => {
+  export const createField = (
+    fieldType: MetaformFieldType,
+    metaform: Metaform,
+    title?: string,
+    name?: string,
+    required?: boolean,
+    options?: any[]
+  ): MetaformField => {
+    let uniqueFieldName: string = "";
+    let nameFound = false;
+    do {
+      const nameToTest = createFieldName(fieldType);
+      if (checkIfFieldNameIsUnique(metaform, nameToTest)) {
+        uniqueFieldName = nameToTest;
+        nameFound = true;
+      }
+    } while (!nameFound);
     switch (fieldType) {
       case MetaformFieldType.Select:
       case MetaformFieldType.Radio:
       case MetaformFieldType.Checklist:
         return {
-          name: name ?? fieldType + uuid4(),
+          name: uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           type: fieldType,
           required: required ?? false,
@@ -170,7 +209,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Boolean:
         return {
-          name: name ?? fieldType + uuid4(),
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           type: fieldType,
           required: required ?? false,
@@ -179,7 +218,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Slider:
         return {
-          name: name ?? fieldType + uuid4(),
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           type: fieldType,
           required: required ?? false,
@@ -189,7 +228,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Table:
         return {
-          name: name ?? fieldType + uuid4(),
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           text: fieldType,
           type: fieldType,
@@ -213,7 +252,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Html:
         return {
-          name: name ?? fieldType + uuid4(),
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           required: required ?? false,
           type: fieldType,
@@ -221,7 +260,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Number:
         return {
-          name: name ?? fieldType + uuid4(),
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           required: required ?? false,
           text: fieldType,
@@ -233,17 +272,17 @@ namespace MetaformUtils {
       case MetaformFieldType.Date:
       case MetaformFieldType.DateTime:
         return {
-          name: name ?? fieldType + uuid4(),
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           required: required ?? false,
-          text: name ?? fieldType + uuid4(),
+          text: name ?? uniqueFieldName,
           type: fieldType,
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ],
           allowPastDays: true
         };
       default:
         return {
-          name: name ?? fieldType + uuid4(),
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           required: required ?? false,
           text: fieldType,

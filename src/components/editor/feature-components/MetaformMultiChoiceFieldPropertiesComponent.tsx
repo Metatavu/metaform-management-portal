@@ -4,7 +4,6 @@ import { MetaformField, MetaformFieldOption } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
 import React, { FC, useEffect, useState } from "react";
-import slugify from "slugify";
 import theme from "theme";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MetaformUtils from "utils/metaform-utils";
@@ -99,7 +98,6 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
         color="success"
         onChange={ event => updateOptionText({
           ...option,
-          name: slugify(event.target.value),
           text: event.target.value
         }, index)}
       />
@@ -124,7 +122,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
     }
 
     const newOption: MetaformFieldOption = {
-      name: `${strings.draftEditorScreen.editor.features.field.newFieldOption}-${uuid4()}`,
+      name: `${strings.draftEditorScreen.editor.features.field.newFieldOption}-${uuid4().slice(0, 5)}`,
       text: `${strings.draftEditorScreen.editor.features.field.newFieldOption}`,
       permissionGroups: undefined
     };

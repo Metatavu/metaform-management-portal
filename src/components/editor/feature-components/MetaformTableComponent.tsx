@@ -3,7 +3,6 @@ import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "gen
 import produce from "immer";
 import strings from "localization/strings";
 import React, { FC, useEffect } from "react";
-import slugify from "slugify";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { selectMetaform } from "../../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
@@ -85,7 +84,6 @@ const MetaformTableComponent: FC<Props> = ({
         label={ index }
         onChange={ event => updateTableColumn({
           ...column,
-          name: slugify(`${event.target.value}-${index}`),
           title: event.target.value,
           type: "text" as MetaformTableColumnType,
           values: undefined
