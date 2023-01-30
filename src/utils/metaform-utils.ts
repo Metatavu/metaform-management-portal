@@ -152,7 +152,7 @@ namespace MetaformUtils {
    * @param fieldType metaform field type
    * @returns random field name
    */
-  const createRandomFieldName = (fieldType: string) => {
+  const createFieldName = (fieldType: string) => {
     return `${fieldType}-${uuid4().slice(0, 5)}`;
   };
 
