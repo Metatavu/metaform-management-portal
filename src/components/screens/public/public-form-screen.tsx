@@ -57,7 +57,7 @@ const PublicFormScreen: FC = () => {
   const [ formValueChangeTimeout, setFormValueChangeTimeout ] = useState<NodeJS.Timeout>();
   const [ metaformId, setMetaformId ] = useState<string>();
   const [ formFilling, setFormFilling ] = useState<boolean>(false);
-  const [initialFormValues, setInitialFormValues] = useState<Dictionary<FieldValue>>({});
+  const [ initialFormValues, setInitialFormValues ] = useState<Dictionary<FieldValue>>({});
 
   const AUTOSAVE_COOLDOWN = 500;
 
