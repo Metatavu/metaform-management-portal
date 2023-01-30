@@ -400,10 +400,6 @@ const PublicFormScreen: FC = () => {
       const createdReply = await createReply(metaform);
 
       const updatedOwnerKey = ownerKey || reply?.ownerKey;
-      // let updatedValues = createdReply?.data;
-      // if (updatedOwnerKey && reply) {
-      //   updatedValues = await MetaformUtils.processReplyData(metaform, createdReply!, attachmentsApi, updatedOwnerKey);
-      // }
 
       setLoading(false);
       setReply(createdReply);

@@ -175,12 +175,12 @@ namespace MetaformUtils {
     required?: boolean,
     options?: any[]
   ): MetaformField => {
-    let generatedRandomName: string = "";
+    let uniqueFieldName: string = "";
     let nameFound = false;
     do {
-      const nameToTest = createRandomFieldName(fieldType);
+      const nameToTest = createFieldName(fieldType);
       if (checkIfFieldNameIsUnique(metaform, nameToTest)) {
-        generatedRandomName = nameToTest;
+        uniqueFieldName = nameToTest;
         nameFound = true;
       }
     } while (!nameFound);
@@ -189,7 +189,7 @@ namespace MetaformUtils {
       case MetaformFieldType.Radio:
       case MetaformFieldType.Checklist:
         return {
-          name: generatedRandomName,
+          name: uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           type: fieldType,
           required: required ?? false,
@@ -209,7 +209,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Boolean:
         return {
-          name: name ?? generatedRandomName,
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           type: fieldType,
           required: required ?? false,
@@ -218,7 +218,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Slider:
         return {
-          name: name ?? generatedRandomName,
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           type: fieldType,
           required: required ?? false,
@@ -228,7 +228,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Table:
         return {
-          name: name ?? generatedRandomName,
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           text: fieldType,
           type: fieldType,
@@ -252,7 +252,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Html:
         return {
-          name: name ?? generatedRandomName,
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           required: required ?? false,
           type: fieldType,
@@ -260,7 +260,7 @@ namespace MetaformUtils {
         };
       case MetaformFieldType.Number:
         return {
-          name: name ?? generatedRandomName,
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           required: required ?? false,
           text: fieldType,
@@ -272,17 +272,17 @@ namespace MetaformUtils {
       case MetaformFieldType.Date:
       case MetaformFieldType.DateTime:
         return {
-          name: name ?? generatedRandomName,
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           required: required ?? false,
-          text: name ?? generatedRandomName,
+          text: name ?? uniqueFieldName,
           type: fieldType,
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ],
           allowPastDays: true
         };
       default:
         return {
-          name: name ?? generatedRandomName,
+          name: name ?? uniqueFieldName,
           title: title ?? LocalizationUtils.getLocalizedFieldType(fieldType),
           required: required ?? false,
           text: fieldType,
