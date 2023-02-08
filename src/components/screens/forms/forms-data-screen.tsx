@@ -7,12 +7,12 @@ import ListIcon from "@mui/icons-material/List";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
 import { useApiClient } from "app/hooks";
 import Api from "api";
-import { AuditLogEntry, Metaform, MetaformMemberRole, Reply } from "generated/client";
+import { Metaform, MetaformMemberRole } from "generated/client";
 import { ErrorContext } from "components/contexts/error-handler";
-import MetaformUtils from "utils/metaform-utils";
 import moment from "moment";
 import { EqualizerRounded, HistoryRounded } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { DataValidation } from "utils/data-validation-utils";
 
 /**
  * Interface for single form row
@@ -32,7 +32,7 @@ const FormsDataScreen: React.FC = () => {
   const errorContext = useContext(ErrorContext);
 
   const apiClient = useApiClient(Api.getApiClient);
-  const { metaformsApi, repliesApi, auditLogEntriesApi } = apiClient;
+  const { metaformsApi, metaformStatisticsApi } = apiClient;
   const [ rows, setRows ] = useState<Row[]>([]);
   const [ loading, setLoading ] = useState(false);
   const navigate = useNavigate();
@@ -44,16 +44,22 @@ const FormsDataScreen: React.FC = () => {
    * @param replies replies
    * @param auditLogEntries audit log entries
    */
-  const buildRow = (form: Metaform, replies: Reply[], auditLogEntries: AuditLogEntry[]): Row => {
-    const monthlyAverageReplies = MetaformUtils.getMonthlyAverageReply(replies);
-    const averageReplyViewDelay = MetaformUtils.getAverageReplyViewDelay(auditLogEntries);
-
+  const buildRow = async (form: Metaform) => {
+    const { id, slug, title } = form;
+    
+    if (!id || !slug) {
+      return;
+    }
+    
+    const statistics = await metaformStatisticsApi.getStatistics({ metaformId: id });
+    const averageReplyProcessDelay = statistics.averageReplyProcessDelay! > 0 ? statistics.averageReplyProcessDelay : 0;
+    
     return {
-      id: form.id || "",
-      title: form.title || strings.formScreen.noTitle,
-      slug: form.slug,
-      monthlyReplies: monthlyAverageReplies,
-      replyViewDelay: averageReplyViewDelay
+      id: id,
+      title: title || strings.formScreen.noTitle,
+      slug: slug,
+      monthlyReplies: statistics.averageMonthlyReplies ?? 0,
+      replyViewDelay: moment.duration(averageReplyProcessDelay, "seconds")
     };
   };
 
@@ -74,38 +80,6 @@ const FormsDataScreen: React.FC = () => {
   };
 
   /**
-   * Loads relies
-   *
-   * @param metaformId metaform id
-   * @return replies list promise
-   */
-  const loadReplies = async (metaformId: string): Promise<Reply[]> => {
-    try {
-      return await repliesApi.listReplies({ metaformId: metaformId });
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.adminFormsDataScreen.listReplies, e);
-      return [];
-    }
-  };
-
-  /**
-   * Loads audit log entries
-   *
-   * @param metaformId metaform id
-   * @return audit log entries list promise
-   */
-  const loadAuditLogEntries = async (metaformId: string): Promise<AuditLogEntry[]> => {
-    try {
-      const auditLogEntries = await auditLogEntriesApi.listAuditLogEntries({ metaformId: metaformId });
-      
-      return auditLogEntries;
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.adminFormsDataScreen.listAuditLogEntries, e);
-      return [];
-    }
-  };
-
-  /**
    * Loads data
    */
   const loadData = async () => {
@@ -113,13 +87,9 @@ const FormsDataScreen: React.FC = () => {
 
     const forms = await loadForms();
     try {
-      const [ replies, auditLogEntries ] = await Promise.all([
-        Promise.all(forms.map(form => loadReplies(form.id!))),
-        Promise.all(forms.map(form => loadAuditLogEntries(form.id!)))
-      ]);
-      const builtRows = forms.map((form, i) => buildRow(form, replies[i], auditLogEntries[i]));
+      const builtRows = await Promise.all(forms.map(form => buildRow(form)));
 
-      setRows(builtRows);
+      setRows(builtRows.filter(DataValidation.validateValueIsNotUndefinedNorNull));
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsDataScreen.listForms, e);
     }

@@ -1,4 +1,4 @@
-import { Button, Link, Typography } from "@mui/material";
+import { AlertTitle, Button, Link, Typography } from "@mui/material";
 import GenericSnackbar from "components/generic/generic-snackbar";
 import strings from "localization/strings";
 import React from "react";
@@ -8,7 +8,6 @@ interface Props {
   replySavedVisible: boolean;
   setReplySavedVisible: (status: boolean) => void;
   onReplyEmailLinkClick?: () => void;
-
 }
 
 /**
@@ -47,7 +46,9 @@ const ReplySaved: React.FC<Props> = ({
       severity="success"
       autoHideDuration={ 5000 }
     >
-      <Typography>{ strings.formScreen.replySaved }</Typography>
+      <AlertTitle>
+        { strings.formScreen.replySaved }
+      </AlertTitle>
     </GenericSnackbar>
   );
 };

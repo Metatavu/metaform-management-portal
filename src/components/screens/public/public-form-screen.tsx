@@ -57,6 +57,7 @@ const PublicFormScreen: FC = () => {
   const [ formValueChangeTimeout, setFormValueChangeTimeout ] = useState<NodeJS.Timeout>();
   const [ metaformId, setMetaformId ] = useState<string>();
   const [ formFilling, setFormFilling ] = useState<boolean>(false);
+  const [ initialFormValues, setInitialFormValues ] = useState<Dictionary<FieldValue>>({});
 
   const AUTOSAVE_COOLDOWN = 500;
 
@@ -173,6 +174,7 @@ const PublicFormScreen: FC = () => {
       setMetaformId(foundMetaform.id);
       setMetaform(foundMetaform);
       setFormValues(preparedFormValues);
+      setInitialFormValues(preparedFormValues);
     } catch (e) {
       if (e instanceof Response && (e as Response).status === 403) {
         navigate(`/protected/${metaformSlug}`);
@@ -398,16 +400,12 @@ const PublicFormScreen: FC = () => {
       const createdReply = await createReply(metaform);
 
       const updatedOwnerKey = ownerKey || reply?.ownerKey;
-      let updatedValues = createdReply?.data;
-      if (updatedOwnerKey && reply) {
-        updatedValues = await MetaformUtils.processReplyData(metaform, createdReply!, attachmentsApi, updatedOwnerKey);
-      }
 
       setLoading(false);
       setReply(createdReply);
       setOwnerKey(updatedOwnerKey);
-      setFormValues(updatedValues as any);
       setReplySavedVisible(true);
+      setFormValues(initialFormValues);
     } catch (e) {
       errorContext.setError(strings.errorHandling.formScreen.saveReply, e);
     }

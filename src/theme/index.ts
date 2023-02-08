@@ -43,6 +43,12 @@ export default createTheme({
     background: {
       default: "#666",
       paper: "#fff"
+    },
+    success: {
+      main: "#00ff00"
+    },
+    error: {
+      main: "#ff0000"
     }
   },
 
@@ -192,6 +198,51 @@ export default createTheme({
       },
       defaultProps: {
         elevation: 0
+      }
+    },
+    MuiSnackbar: {
+      styleOverrides: {
+        root: {
+          bottom: 0,
+          left: 0,
+          right: 0,
+          top: 0,
+          backgroundOpacity: 0.5,
+          justifyContent: "center",
+          backgroundColor: "rgba(0,0,0,0.25)",
+          "@media (min-width: 600px)": {
+            bottom: 0,
+            left: 0,
+            right: 0,
+            top: 0
+          }
+        }
+      }
+    },
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#000",
+          borderRadius: 0,
+          padding: 20,
+          paddingTop: 25,
+          width: "90%",
+          "@media (min-width: 400px)": {
+            width: 500
+          }
+        },
+        icon: {
+          fontSize: 28
+        }
+      }
+    },
+    MuiAlertTitle: {
+      styleOverrides: {
+        root: {
+          fontSize: 20,
+          fontWeight: 600,
+          color: "#fff"
+        }
       }
     }
   }

@@ -489,7 +489,7 @@
     "draftEmailText": "Voit lähettää linkin itsellesi sähköpostilla klikkaamalla",
     "draftEmailLink": "tästä",
     "draftEmailDialogText": "Kirjoita sähköpostiosoite, johon haluat vedoksen muokkauslinkin lähetettävän",
-    "replySaved": "Lähetetty onnistuneesti!",
+    "replySaved": "Vastaus lähetetty onnistuneesti!",
     "replyEdit": "Voit muokata vastaustasi käyttämällä seuraavaa linkkiä:",
     "replyEditEmailDialogText": "Kirjoita sähköpostiosoite, johon haluat lomakkeen muokkauslinkin lähetettävän",
     "replyDeleteText": "Voit poistaa tämän vastauksen klikkaamalla",
