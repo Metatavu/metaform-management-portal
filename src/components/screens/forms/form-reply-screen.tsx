@@ -106,24 +106,23 @@ const ReplyScreen: FC = () => {
     metaform.sections?.forEach(section => {
       section.fields?.forEach(field => {
         if (field.type === MetaformFieldType.Files) {
-          let value = getFieldValue(field.name as string);
-          if (!value) {
-            value = { files: [] };
+          const fileValue = getFieldValue(field.name as string) as FileFieldValue;
+          if (fileValue && fileValue.files) {
+            values[field.name as string] = fileValue.files.map(file => file.id);
           }
-          values[field.name as string] = (value as FileFieldValue).files.map(file => file.id);
         }
       });
     });
 
     try {
       await repliesApi.updateReply({
-        metaformId: metaform.id!,
+        metaformId: metaform.id,
         reply: { ...reply, data: values as { [index: string]: object } },
         replyId: reply.id
       });
 
       const updatedReply = await repliesApi.findReply({
-        metaformId: metaform.id!,
+        metaformId: metaform.id,
         replyId: reply.id
       });
       const updatedValues = await MetaformUtils.processReplyData(metaform, updatedReply, attachmentsApi);
@@ -154,7 +153,7 @@ const ReplyScreen: FC = () => {
    * Event handler for PDF export button click
    */
   const onExportPdfClick = async () => {
-    if (!metaform.id) {
+    if (!metaform.id || !replyId) {
       return;
     }
 
@@ -162,8 +161,8 @@ const ReplyScreen: FC = () => {
 
     try {
       const pdf = await repliesApi.replyExport({
-        metaformId: metaform.id!,
-        replyId: replyId!,
+        metaformId: metaform.id,
+        replyId: replyId,
         format: "PDF"
       });
 
