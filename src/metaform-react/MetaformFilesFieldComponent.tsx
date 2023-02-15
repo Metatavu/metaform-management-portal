@@ -73,18 +73,20 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
    * @param fieldValue
    * @returns 
    */
-  const ensureFileFieldType = (fieldValue: FieldValue | any): FileFieldValue => {
-    const files : { id: string, persisted: boolean }[] = [];
-    if (!fieldValue || typeof fieldValue === "string") {
+  const ensureFileFieldType = (fieldValue: FieldValue): FileFieldValue => {
+    if (!fieldValue) {
       return { files: [] };
     }
     if (isFileFieldValue(fieldValue)) return fieldValue as FileFieldValue;
-    fieldValue.map((imgId: string) => (
-      files.push({
-        id: imgId,
-        persisted: true
-      })));
-    return { files: files };
+
+    return {
+      files: [
+        {
+          id: fieldValue as string,
+          persisted: false
+        }
+      ]
+    };
   };
 
   const normalizedValue = ensureFileFieldType(value);
