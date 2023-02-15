@@ -1,4 +1,4 @@
-import { Slider, Box, TextField, Input, Autocomplete, Stack, Typography, Button, FormControl, Grid } from "@mui/material";
+import { Slider, Box, TextField, Input, Autocomplete, Stack, Typography, Button, FormControl, Grid, DialogTitle } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import theme from "theme";
 
@@ -48,6 +48,7 @@ export const SubmitFieldWrapper = styled(Button, {
     color: "#00ff00"
   },
   "&:hover": {
+    border: 0,
     color: "#000",
     backgroundColor: "#00ff00",
     "& .MuiSvgIcon-root": {
@@ -320,4 +321,17 @@ export const VersionListHeader = styled(Grid, {
   padding: 0,
   height: "60px",
   alignContent: "center"
+}));
+
+/**
+ * Style dialog title component
+ */
+export const DialogTitleWrapper = styled(DialogTitle, {
+  label: "dialog-title"
+})(() => ({
+  fontSize: 20,
+  fontWeight: 600,
+  backgroundColor: "#000",
+  color: "#fff",
+  textAlign: "center"
 }));
