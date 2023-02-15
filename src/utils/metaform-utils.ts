@@ -346,36 +346,27 @@ namespace MetaformUtils {
    * @return data processes to be used by ui
    */
   export const processReplyData = async (foundMetaform: Metaform, foundReply: Reply, attachmentsApi: AttachmentsApi, currentOwnerKey?: string) => {
-    const values = foundReply.data;
-    foundMetaform.sections?.forEach(async foundSection => {
-      const section = foundMetaform.sections && foundSection ? foundSection : undefined;
-      if (section) {
-        section.fields?.forEach(async foundField => {
-          const field = section.fields && foundField ? foundField : undefined;
-          if (field &&
-                    field.type === MetaformFieldType.Files &&
-                    values &&
-                    field.name &&
-                    values[field.name]) {
-            const fileIds = Array.isArray(values[field.name]) ? values[field.name] : [values[field.name]];
-            const attachmentPromises = (fileIds as string[]).map(fileId => {
-              return attachmentsApi.findAttachment({ attachmentId: fileId, ownerKey: currentOwnerKey });
-            });
-              // eslint-disable-next-line no-await-in-loop
-            const attachments = await Promise.all(attachmentPromises);
-            values[field.name] = {
-              files: attachments.map(a => {
-                return {
-                  name: a.name,
-                  id: a.id,
-                  persisted: true
-                };
-              })
-            };
-          }
-        });
+    const values = { ...foundReply.data };
+    // eslint-disable-next-line no-restricted-syntax
+    for (const section of foundMetaform.sections || []) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const field of section.fields || []) {
+        if (field && field.type === MetaformFieldType.Files && values && field.name && values[field.name]) {
+          const fileIds = Array.isArray(values[field.name]) ? values[field.name] : [values[field.name]];
+          const attachmentPromises = (fileIds as string[]).map(fileId => {
+            return attachmentsApi.findAttachment({ attachmentId: fileId, ownerKey: currentOwnerKey });
+          });
+          
+          // eslint-disable-next-line no-await-in-loop
+          const attachments = await Promise.all(attachmentPromises);
+
+          values[field.name] = {
+            files: attachments.map(attachment => ({ ...attachment, persisted: true }))
+          };
+        }
       }
-    });
+    }
+
     return values;
   };
 
