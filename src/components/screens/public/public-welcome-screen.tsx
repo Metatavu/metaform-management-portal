@@ -23,7 +23,7 @@ const PublicWelcomeScreen: React.FC = () => {
         <DialogActions sx={{ backgroundColor: alpha(theme.palette.secondary.main, 0.1) }}>
           <Button
             variant="outlined"
-            href="https://www.essote.fi"
+            href="https://etelasavonha.fi/"
             fullWidth
             sx={{ height: 60, textAlign: "center" }}
           >
