@@ -244,6 +244,15 @@ export default createTheme({
           color: "#fff"
         }
       }
+    },
+    MuiSelect: {
+      styleOverrides: {
+        select: {
+          "&.MuiInputBase-input": {
+            whiteSpace: "normal"
+          }
+        }
+      }
     }
   }
 

@@ -1,75 +1,45 @@
 import React from "react";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, Divider } from "@mui/material";
 import strings from "localization/strings";
+import Root from "styled/layouts/basic-layout";
+import theme from "theme";
+import { alpha } from "@mui/material/styles";
+import { DialogTitleWrapper } from "styled/react-components/react-components";
 
 /**
  * Public forms screen component
  */
 const PublicWelcomeScreen: React.FC = () => {
   return (
-    <Box bgcolor="#375AA3" height="100vh">
-      <Box
-        margin="auto"
-        mt="200px"
-        width="500px"
-        bgcolor="white"
-        borderRadius="15px"
-        boxShadow="10"
-      >
-        <Container
-          disableGutters
-        >
-          <Typography
-            variant="body1"
-            padding="30px 50px"
-            textAlign="center"
+    <Root>
+      <Dialog open hideBackdrop>
+        <DialogTitleWrapper>
+          { strings.publicFormsScreen.welcome }
+        </DialogTitleWrapper>
+        <Divider/>
+        <DialogContent sx={{ backgroundColor: alpha(theme.palette.secondary.main, 0.1), textAlign: "center" }}>
+          { strings.publicFormsScreen.welcomeInfo }
+        </DialogContent>
+        <DialogActions sx={{ backgroundColor: alpha(theme.palette.secondary.main, 0.1) }}>
+          <Button
+            variant="outlined"
+            href="https://etelasavonha.fi/"
+            fullWidth
+            sx={{ height: 60, textAlign: "center" }}
           >
-            { strings.publicFormsScreen.welcomeInfo }
-          </Typography>
-          <Stack
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            padding="0px 0px 20px 0px "
+            { strings.publicFormsScreen.backToEssote }
+          </Button>
+          <Button
+            variant="outlined"
+            href="/admin"
+            fullWidth
+            sx={{ height: 60, textAlign: "center" }}
           >
-            <Container
-              sx={{
-                justifyContent: "center",
-                textAlign: "center"
-              }}
-            >
-              <Button
-                variant="outlined"
-                sx={{
-                  bgcolor: "white",
-                  borderRadius: "15px"
-                }}
-                href="https://www.essote.fi"
-              >
-                { strings.publicFormsScreen.backToEssote }
-              </Button>
-            </Container>
-            <Container
-              sx={{
-                justifyContent: "center",
-                textAlign: "center"
-              }}
-            >
-              <Button
-                variant="outlined"
-                sx={{
-                  bgcolor: "white",
-                  borderRadius: "15px"
-                }}
-                href="/admin"
-              >
-                { strings.generic.login }
-              </Button>
-            </Container>
-          </Stack>
-        </Container>
-      </Box>
-    </Box>
+            { strings.generic.login }
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Root>
   );
 };
 
