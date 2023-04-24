@@ -33,9 +33,9 @@ const App: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>{process.env.REACT_APP_THEME_TITLE}</title>
-        <link rel="icon" href={process.env.REACT_APP_THEME_FAVICON_URL}/>
-        <link href={process.env.REACT_APP_THEME_FONT_FAMILY_URL} rel="stylesheet"/>
+        <title>{ process.env.REACT_APP_THEME_TITLE }</title>
+        <link rel="icon" href={ process.env.REACT_APP_THEME_FAVICON_URL }/>
+        <link href={ process.env.REACT_APP_THEME_FONT_FAMILY_URL } rel="stylesheet"/>
       </Helmet>
       <BrowserRouter>
         <AuthenticationProvider>
