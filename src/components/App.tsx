@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { selectLocale, setLocale } from "features/locale-slice";
 import DraftPreviewScreen from "./screens/preview/draft-preview-screen";
 import FormRestrictedContent from "./containers/form-restricted-content";
+import { Helmet } from "react-helmet";
 
 /**
  * Application component
@@ -30,58 +31,66 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <BrowserRouter>
-      <AuthenticationProvider>
-        <ErrorHandler>
-          <ConfirmHandler>
-            <BasicLayout>
-              <Routes>
-                <Route
-                  path="/admin"
-                  element={ <Navigate to="/admin/forms"/> }
-                />
-                <Route
-                  path="/admin/users"
-                  element={
-                    <FormRestrictedContent route>
-                      <AdminLayout>
-                        <UsersScreen/>
-                      </AdminLayout>
-                    </FormRestrictedContent>
-                  }
-                />
-                <Route
-                  path="/admin/forms/*"
-                  element={ <AdminLayout><FormsRoutes/></AdminLayout> }
-                />
-                <Route
-                  path="/admin/editor/*"
-                  element={
-                    <FormRestrictedContent route>
-                      <AdminLayout>
-                        <EditorRoutes/>
-                      </AdminLayout>
-                    </FormRestrictedContent>
-                  }
-                />
-                <Route
-                  path="/admin/preview/:formSlug/:draftId"
-                  element={ <BasicLayout><DraftPreviewScreen/></BasicLayout> }
-                />
-                <Route
-                  path="/admin/*"
-                  element={ <Navigate to="/admin/forms"/> }
-                />
-                <Route
-                  path="/*"
-                  element={ <PublicLayout><PublicRoutes/></PublicLayout> }
-                />
-              </Routes>
-            </BasicLayout>
-          </ConfirmHandler>
-        </ErrorHandler>
-      </AuthenticationProvider>
-    </BrowserRouter>
+    <>
+      <Helmet>
+        <title>{process.env.REACT_APP_THEME_TITLE}</title>
+        <link rel="icon" href={process.env.REACT_APP_THEME_FAVICON_URL}/>
+        <link href={process.env.REACT_APP_THEME_FONT_FAMILY_URL} rel="stylesheet"/>
+      </Helmet>
+      <BrowserRouter>
+        <AuthenticationProvider>
+          <ErrorHandler>
+            <ConfirmHandler>
+              <BasicLayout>
+                <Routes>
+                  <Route
+                    path="/admin"
+                    element={ <Navigate to="/admin/forms"/> }
+                  />
+                  <Route
+                    path="/admin/users"
+                    element={
+                      <FormRestrictedContent route>
+                        <AdminLayout>
+                          <UsersScreen/>
+                        </AdminLayout>
+                      </FormRestrictedContent>
+                    }
+                  />
+                  <Route
+                    path="/admin/forms/*"
+                    element={ <AdminLayout><FormsRoutes/></AdminLayout> }
+                  />
+                  <Route
+                    path="/admin/editor/*"
+                    element={
+                      <FormRestrictedContent route>
+                        <AdminLayout>
+                          <EditorRoutes/>
+                        </AdminLayout>
+                      </FormRestrictedContent>
+                    }
+                  />
+                  <Route
+                    path="/admin/preview/:formSlug/:draftId"
+                    element={ <BasicLayout><DraftPreviewScreen/></BasicLayout> }
+                  />
+                  <Route
+                    path="/admin/*"
+                    element={ <Navigate to="/admin/forms"/> }
+                  />
+                  <Route
+                    path="/*"
+                    element={ <PublicLayout><PublicRoutes/></PublicLayout> }
+                  />
+                </Routes>
+              </BasicLayout>
+            </ConfirmHandler>
+          </ErrorHandler>
+        </AuthenticationProvider>
+      </BrowserRouter>
+    </>
+
   );
 };
 

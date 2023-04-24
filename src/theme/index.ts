@@ -6,55 +6,80 @@ import { createTheme, darkScrollbar } from "@mui/material";
 const { breakpoints, palette } = createTheme();
 
 /**
+ * Converts color hex value to RGB value
+ */
+function hexToRgb(color: string): { r: number; g: number; b: number } {
+  const r = parseInt(color.slice(1, 3), 16);
+  const g = parseInt(color.slice(3, 5), 16);
+  const b = parseInt(color.slice(5, 7), 16);
+
+  return {
+    r: r,
+    g: g,
+    b: b
+  };
+}
+
+/**
+ * Calculates color brightness
+ */
+function calculateBrightness({ r, g, b }: { r: number; g: number; b: number }): number {
+  return (r * 299 + g * 587 + b * 114) / 1000;
+}
+
+/**
+ * Determine contrast text color based on the background color
+ */
+function getTextColor(backgroundColor: string): string {
+  const rgb = hexToRgb(backgroundColor);
+  const brightness = calculateBrightness(rgb);
+  
+  return brightness > 128 ? "#000000" : "#FFFFFF";
+}
+
+/**
+ * Creates a new hex value based on the source hex value and white
+ */
+function lightenColor(color: string, percent: number): string {
+  const rgb = hexToRgb(color);
+  const newRgb = {
+    r: Math.round((255 - rgb.r) * percent) + rgb.r,
+    g: Math.round((255 - rgb.g) * percent) + rgb.g,
+    b: Math.round((255 - rgb.b) * percent) + rgb.b
+  };
+
+  return `rgb(${newRgb.r}, ${newRgb.g}, ${newRgb.b})`;
+}
+
+/**
  * Custom theme for Material UI
  */
 export default createTheme({
 
-  logo: {
-    darkPath: "/images/logo_dark.png",
-    lightPath: "/images/logo_light.png"
-  },
-
-  backgroundImage: {
-    backgroundImagePath: "/images/backgroundImage.svg"
-  },
-
   sectionTitle: {
-    fontFamily: "Arial, sans-serif",
+    fontFamily: process.env.REACT_APP_THEME_FONT_FAMILY || "Arial, sans-serif",
     fontWeight: 200,
     fontSize: 26
   },
 
   palette: {
     primary: {
-      main: "#000",
-      dark: "#000",
-      light: "#333"
+      main: "#000000",
+      contrastText: getTextColor(process.env.REACT_APP_THEME_PALETTE_SECONDARY || palette.common.white)
     },
     secondary: {
-      main: "#00ff00",
-      dark: "#00b200",
-      light: "#fff"
-    },
-    text: {
-      primary: "#000",
-      secondary: "#333"
+      main: process.env.REACT_APP_THEME_PALETTE_SECONDARY || palette.secondary.main,
+      light: lightenColor(process.env.REACT_APP_THEME_PALETTE_SECONDARY || palette.secondary.main, 0.9)
     },
     background: {
       default: "#666",
       paper: "#fff"
-    },
-    success: {
-      main: "#00ff00"
-    },
-    error: {
-      main: "#ff0000"
     }
   },
 
   typography: {
     allVariants: {
-      fontFamily: "poppins, sans-serif"
+      fontFamily: process.env.REACT_APP_THEME_FONT_FAMILY || "Arial, sans-serif"
     },
     h1: {
       fontWeight: 600,

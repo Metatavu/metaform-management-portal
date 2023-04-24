@@ -45,12 +45,12 @@ export const SubmitFieldWrapper = styled(Button, {
   color: "#fff",
   backgroundColor: "#000",
   "& .MuiSvgIcon-root": {
-    color: "#00ff00"
+    color: process.env.REACT_APP_THEME_PALETTE_SECONDARY
   },
   "&:hover": {
     border: 0,
     color: "#000",
-    backgroundColor: "#00ff00",
+    backgroundColor: process.env.REACT_APP_THEME_PALETTE_SECONDARY,
     "& .MuiSvgIcon-root": {
       color: "#000"
     }
@@ -67,13 +67,13 @@ export const AddRowButtonWrapper = styled(Button, {
   color: "#fff",
   backgroundColor: "#000",
   "& .MuiSvgIcon-root": {
-    color: "#00ff00"
+    color: "#fff"
   },
   "&:hover": {
-    color: "#000",
-    backgroundColor: "#00ff00",
+    color: theme.palette.primary.contrastText,
+    backgroundColor: process.env.REACT_APP_THEME_PALETTE_SECONDARY,
     "& .MuiSvgIcon-root": {
-      color: "#000"
+      color: theme.palette.primary.contrastText
     }
   },
   width: "100%",

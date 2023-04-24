@@ -39,9 +39,9 @@ export const LogoContainer = styled(Box, {
  */
 export const HeaderLogo = styled(Box, {
   label: "header-logo"
-})(({ theme }) => ({
+})(() => ({
   width: "100%",
-  backgroundImage: `url(${theme.logo.darkPath})`,
+  backgroundImage: `url(${process.env.REACT_APP_THEME_LOGO_PATH})`,
   backgroundSize: "contain",
   backgroundRepeat: "no-repeat",
   height: 62
@@ -52,11 +52,11 @@ export const HeaderLogo = styled(Box, {
  */
 export const FormLogo = styled(Box, {
   label: "form-logo"
-})(({ theme }) => ({
+})(() => ({
   position: "absolute",
   bottom: 20,
   right: 20,
-  backgroundImage: `url(${theme.logo.lightPath})`,
+  backgroundImage: `url(${process.env.REACT_APP_THEME_FORMLOGO_PATH})`,
   backgroundSize: "contain",
   backgroundRepeat: "no-repeat",
   height: 80,

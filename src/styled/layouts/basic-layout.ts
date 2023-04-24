@@ -14,7 +14,7 @@ export const Root = styled(Box, {
   display: "grid",
   gridTemplateRows: "auto auto auto 1fr",
   backgroundColor: theme.palette.background.paper,
-  backgroundImage: `url(${theme.backgroundImage.backgroundImagePath})`,
+  backgroundImage: `url(${process.env.REACT_APP_THEME_BACKGROUNDIMAGE_PATH})`,
   backgroundPosition: "center",
   backgroundRepeat: " no-repeat",
   backgroundSize: "75%",
