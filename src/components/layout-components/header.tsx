@@ -85,7 +85,7 @@ const Header: React.FC = ({
    * Renders select value
    */
   const renderSelectValue = (value: string) => (
-    <Typography color={ process.env.REACT_APP_THEME_USE_COLORED_HEADER === "true" ? theme.palette.primary.contrastText : "white" }>
+    <Typography color={ theme.header.main }>
       { value }
     </Typography>
   );
@@ -125,7 +125,7 @@ const Header: React.FC = ({
   return (
     <Root
       position="static"
-      sx={{ backgroundColor: process.env.REACT_APP_THEME_USE_COLORED_HEADER === "true" ? process.env.REACT_APP_THEME_PALETTE_SECONDARY : "" }}
+      sx={{ backgroundColor: theme.header.backgGround }}
     >
       <HeaderToolbar>
         <HeaderLogo/>
@@ -133,9 +133,7 @@ const Header: React.FC = ({
           { renderInfoButton() }
           <FormControl>
             <InputLabel
-              style={{
-                color: process.env.REACT_APP_THEME_USE_COLORED_HEADER === "true" ? theme.palette.primary.contrastText : "white"
-              }}
+              style={{ color: theme.header.main }}
               htmlFor="localization"
             >
               { strings.header.selectLanguage }
@@ -144,9 +142,7 @@ const Header: React.FC = ({
           </FormControl>
           <FormControl sx={{ minWidth: 300 }}>
             <InputLabel
-              style={{
-                color: process.env.REACT_APP_THEME_USE_COLORED_HEADER === "true" ? theme.palette.primary.contrastText : "white"
-              }}
+              style={{ color: theme.header.main }}
               htmlFor="user-email"
             >
               { strings.header.user }

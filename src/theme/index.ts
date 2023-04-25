@@ -1,4 +1,6 @@
 import { createTheme, darkScrollbar } from "@mui/material";
+import Config from "app/config";
+import ThemeUtils from "utils/theme-utils";
 
 /**
  * Values from default theme to use in custom theme
@@ -6,70 +8,29 @@ import { createTheme, darkScrollbar } from "@mui/material";
 const { breakpoints, palette } = createTheme();
 
 /**
- * Converts color hex value to RGB value
- */
-function hexToRgb(color: string): { r: number; g: number; b: number } {
-  const r = parseInt(color.slice(1, 3), 16);
-  const g = parseInt(color.slice(3, 5), 16);
-  const b = parseInt(color.slice(5, 7), 16);
-
-  return {
-    r: r,
-    g: g,
-    b: b
-  };
-}
-
-/**
- * Calculates color brightness
- */
-function calculateBrightness({ r, g, b }: { r: number; g: number; b: number }): number {
-  return (r * 299 + g * 587 + b * 114) / 1000;
-}
-
-/**
- * Determine contrast text color based on the background color
- */
-function getTextColor(backgroundColor: string): string {
-  const rgb = hexToRgb(backgroundColor);
-  const brightness = calculateBrightness(rgb);
-  
-  return brightness > 128 ? "#000000" : "#FFFFFF";
-}
-
-/**
- * Creates a new hex value based on the source hex value and white
- */
-function lightenColor(color: string, percent: number): string {
-  const rgb = hexToRgb(color);
-  const newRgb = {
-    r: Math.round((255 - rgb.r) * percent) + rgb.r,
-    g: Math.round((255 - rgb.g) * percent) + rgb.g,
-    b: Math.round((255 - rgb.b) * percent) + rgb.b
-  };
-
-  return `rgb(${newRgb.r}, ${newRgb.g}, ${newRgb.b})`;
-}
-
-/**
  * Custom theme for Material UI
  */
 export default createTheme({
 
   sectionTitle: {
-    fontFamily: process.env.REACT_APP_THEME_FONT_FAMILY || "Arial, sans-serif",
+    fontFamily: Config.get().theme.fontFamily,
     fontWeight: 200,
     fontSize: 26
+  },
+
+  header: {
+    backgGround: ThemeUtils.getHeaderBackgroundColor(),
+    main: ThemeUtils.getHeaderTextColor()
   },
 
   palette: {
     primary: {
       main: "#000000",
-      contrastText: getTextColor(process.env.REACT_APP_THEME_PALETTE_SECONDARY || palette.common.white)
+      contrastText: ThemeUtils.getContrastTextColor(Config.get().theme.paletteSecondaryMain)
     },
     secondary: {
-      main: process.env.REACT_APP_THEME_PALETTE_SECONDARY || palette.secondary.main,
-      light: lightenColor(process.env.REACT_APP_THEME_PALETTE_SECONDARY || palette.secondary.main, 0.9)
+      main: Config.get().theme.paletteSecondaryMain,
+      light: ThemeUtils.lightenColor(Config.get().theme.paletteSecondaryMain, 0.9)
     },
     background: {
       default: "#666",
@@ -79,7 +40,7 @@ export default createTheme({
 
   typography: {
     allVariants: {
-      fontFamily: process.env.REACT_APP_THEME_FONT_FAMILY || "Arial, sans-serif"
+      fontFamily: Config.get().theme.fontFamily
     },
     h1: {
       fontWeight: 600,

@@ -1,5 +1,6 @@
 import { AppBar, Box, Select, Toolbar } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import Config from "app/config";
 
 /**
  * Styled header
@@ -41,7 +42,7 @@ export const HeaderLogo = styled(Box, {
   label: "header-logo"
 })(() => ({
   width: "100%",
-  backgroundImage: `url(${process.env.REACT_APP_THEME_LOGO_PATH})`,
+  backgroundImage: `url(${Config.get().theme.logoPath})`,
   backgroundSize: "contain",
   backgroundRepeat: "no-repeat",
   height: 62
@@ -56,7 +57,7 @@ export const FormLogo = styled(Box, {
   position: "absolute",
   bottom: 20,
   right: 20,
-  backgroundImage: `url(${process.env.REACT_APP_THEME_FORMLOGO_PATH})`,
+  backgroundImage: `url(${Config.get().theme.formLogoPath})`,
   backgroundSize: "contain",
   backgroundRepeat: "no-repeat",
   height: 80,

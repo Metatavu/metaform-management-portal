@@ -20,6 +20,19 @@ export interface Configuration {
   form: {
     idpHint: string;
   };
+  theme: {
+    paletteSecondaryMain: string;
+    useColoredHeader: string;
+    fontFamilyUrl?: string;
+    fontFamily: string;
+    faviconUrl?: string;
+    logoPath?: string;
+    formLogoPath?: string;
+    backgroundImagePath?: string;
+    backgroundColor?: string;
+    title?: string;
+    supportEmail?: string;
+  };
 }
 
 /**
@@ -166,6 +179,10 @@ declare module "@mui/material/styles" {
       fontFamily: string;
       fontWeight: number;
       fontSize: number;
+    };
+    header: {
+      backgGround: string | undefined;
+      main: string | undefined;
     };
   }
 

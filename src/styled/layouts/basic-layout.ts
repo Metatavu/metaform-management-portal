@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
+import Config from "app/config";
 import theme from "theme";
 
 /**
@@ -14,7 +15,7 @@ export const Root = styled(Box, {
   display: "grid",
   gridTemplateRows: "auto auto auto 1fr",
   backgroundColor: theme.palette.background.paper,
-  backgroundImage: `url(${process.env.REACT_APP_THEME_BACKGROUNDIMAGE_PATH})`,
+  backgroundImage: `url(${Config.get().theme.backgroundImagePath})`,
   backgroundPosition: "center",
   backgroundRepeat: " no-repeat",
   backgroundSize: "75%",

@@ -17,6 +17,7 @@ import { selectLocale, setLocale } from "features/locale-slice";
 import DraftPreviewScreen from "./screens/preview/draft-preview-screen";
 import FormRestrictedContent from "./containers/form-restricted-content";
 import { Helmet } from "react-helmet";
+import Config from "app/config";
 
 /**
  * Application component
@@ -33,9 +34,9 @@ const App: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>{ process.env.REACT_APP_THEME_TITLE }</title>
-        <link rel="icon" href={ process.env.REACT_APP_THEME_FAVICON_URL }/>
-        <link href={ process.env.REACT_APP_THEME_FONT_FAMILY_URL } rel="stylesheet"/>
+        <title>{ Config.get().theme.title }</title>
+        <link rel="icon" href={ Config.get().theme.faviconUrl }/>
+        <link href={ Config.get().theme.fontFamilyUrl } rel="stylesheet"/>
       </Helmet>
       <BrowserRouter>
         <AuthenticationProvider>
