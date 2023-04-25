@@ -27,9 +27,10 @@
     "dialog": {
       "title": "Whoops! Something went wrong",
       "reloadPage": "Try reloading the page.",
-      "tryAgain": "Please check your internet connection and try again.",
+      "tryAgain": "Please check your internet connection and try again. If the problem persists wait a short while before retry.",
       "unsavedContents": "Please note that unsaved content will not be saved when reloading. If you have unsaved content on this page, you can close this message and copy the content to the clipboard before reloading.",
-      "reportIssue": "If the problem persists it is possible that the fault is in background services we're using. Feel free to contact support@metatavu.fi by email. Please include technical details in the email to speed up resolution of the problem.",
+      "reportIssue1": "It could be possible that the fault is in background services we're using. Feel free to contact",
+      "reportIssue2": "Please include technical details in the email to speed up resolution of the problem.",
       "technicalDetails": "Technical details:",
       "time": "Time: {0}",
       "url": "URL: {0}",

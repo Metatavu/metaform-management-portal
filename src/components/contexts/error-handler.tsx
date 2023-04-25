@@ -101,7 +101,7 @@ const ErrorHandler: React.FC = ({ children }) => {
             { strings.errorHandling.dialog.tryAgain }
           </Typography>
           <Typography marginBottom={ 2 }>
-            { strings.errorHandling.dialog.reportIssue }
+            { `${strings.errorHandling.dialog.reportIssue1} ${process.env.REACT_APP_SUPPORT_EMAIL}. ${strings.errorHandling.dialog.reportIssue2}` }
           </Typography>
           <Typography fontWeight="bold">
             { strings.errorHandling.dialog.technicalDetails }
