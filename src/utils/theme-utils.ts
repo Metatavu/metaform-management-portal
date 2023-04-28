@@ -44,6 +44,7 @@ namespace ThemeUtils {
 
   /**
    * Lightens a color by a percentage
+   *
    * @param color color hex value
    * @param percent percent to lighten
    */
