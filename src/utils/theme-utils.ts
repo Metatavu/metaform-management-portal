@@ -31,6 +31,7 @@ namespace ThemeUtils {
 
   /**
    * Gets the contrast text color based on the background color
+   *
    * @param backgroundColor background color
    */
   export const getContrastTextColor = (backgroundColor: string) => {
