@@ -1,4 +1,4 @@
-import { Button, FormControl, IconButton, InputLabel, MenuItem, Stack, Tooltip } from "@mui/material";
+import { Button, FormControl, IconButton, InputLabel, MenuItem, Stack, Tooltip, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { HeaderLogo, HeaderSelect, HeaderToolbar, Root } from "styled/layout-components/header";
 import { logout, selectKeycloak } from "features/auth-slice";
@@ -82,6 +82,15 @@ const Header: React.FC = ({
   );
 
   /**
+   * Renders select value
+   */
+  const renderSelectValue = (value: string) => (
+    <Typography color={ theme.header.main }>
+      { value }
+    </Typography>
+  );
+
+  /**
    * Renders language selection
    */
   const renderLanguageSelection = () => (
@@ -93,6 +102,7 @@ const Header: React.FC = ({
         width: "125px"
       }}
       onChange={ event => dispatch(setLocale(event.target.value as string)) }
+      renderValue={ () => renderSelectValue(strings.getString(`header.languages.${locale}`, locale)) }
     >
       { renderLanguageSelectOptions() }
     </HeaderSelect>
@@ -106,23 +116,24 @@ const Header: React.FC = ({
       label={ strings.header.user }
       value={ userEmail }
       id="user-email"
-      renderValue={ () => userEmail}
+      renderValue={ () => renderSelectValue(userEmail) }
     >
       <MenuItem style={{ backgroundColor: "#fff" }}>{ renderLogoutButton() }</MenuItem>
     </HeaderSelect>
   );
 
   return (
-    <Root position="static">
+    <Root
+      position="static"
+      sx={{ backgroundColor: theme.header.background }}
+    >
       <HeaderToolbar>
         <HeaderLogo/>
         <Stack direction="row" spacing={ 3 }>
           { renderInfoButton() }
           <FormControl>
             <InputLabel
-              style={{
-                color: "white"
-              }}
+              style={{ color: theme.header.main }}
               htmlFor="localization"
             >
               { strings.header.selectLanguage }
@@ -131,9 +142,7 @@ const Header: React.FC = ({
           </FormControl>
           <FormControl sx={{ minWidth: 300 }}>
             <InputLabel
-              style={{
-                color: "white"
-              }}
+              style={{ color: theme.header.main }}
               htmlFor="user-email"
             >
               { strings.header.user }
