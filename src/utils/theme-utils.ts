@@ -61,6 +61,7 @@ namespace ThemeUtils {
 
   /**
    * Returns the background color of the header
+   *
    * @returns The background color of the header
    */
   export const getHeaderBackgroundColor = () => {
