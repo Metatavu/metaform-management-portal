@@ -125,7 +125,7 @@ const Header: React.FC = ({
   return (
     <Root
       position="static"
-      sx={{ backgroundColor: theme.header.backgGround }}
+      sx={{ backgroundColor: theme.header.background }}
     >
       <HeaderToolbar>
         <HeaderLogo/>

@@ -181,7 +181,7 @@ declare module "@mui/material/styles" {
       fontSize: number;
     };
     header: {
-      backgGround: string | undefined;
+      background: string | undefined;
       main: string | undefined;
     };
   }
