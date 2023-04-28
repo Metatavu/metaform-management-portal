@@ -42,7 +42,8 @@ export interface Localized extends LocalizedStringsMethods {
       reloadPage: string;
       tryAgain: string;
       unsavedContents: string;
-      reportIssue: string;
+      reportIssue1: string;
+      reportIssue2: string;
       technicalDetails: string;
       time: string;
       url: string;
