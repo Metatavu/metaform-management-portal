@@ -21,6 +21,7 @@ namespace ThemeUtils {
 
   /**
    * Gets color brightness
+   *
    * @param r red value
    * @param g green value
    * @param b blue value
