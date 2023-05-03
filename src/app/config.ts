@@ -1,11 +1,5 @@
-import { createTheme } from "@mui/material";
 import { cleanEnv, email, str, url } from "envalid";
 import { Configuration } from "types";
-
-/**
- * Values from default theme to use in custom theme
- */
-const { palette } = createTheme();
 
 /**
  * Validates that environment variables are in place and have correct form
@@ -25,17 +19,17 @@ const env = cleanEnv(process.env, {
   REACT_APP_FORM_IDPHINT: str(),
   REACT_APP_EMAIL_FROM: email(),
   REACT_APP_EMAIL_URL: url(),
-  REACT_APP_THEME_PALETTE_SECONDARY: str({ default: palette.secondary.main }),
-  REACT_APP_THEME_USE_COLORED_HEADER: str({ default: undefined }),
-  REACT_APP_THEME_FONT_FAMILY_URL: str({ default: undefined }),
-  REACT_APP_THEME_FONT_FAMILY: str({ default: "Arial, sans-serif" }),
-  REACT_APP_THEME_FAVICON_URL: str({ default: undefined }),
-  REACT_APP_THEME_LOGO_PATH: str({ default: undefined }),
+  REACT_APP_THEME_PALETTE_SECONDARY: str({ default: "#f9473b" }),
+  REACT_APP_THEME_USE_COLORED_HEADER: str({ default: "true" }),
+  REACT_APP_THEME_FONT_FAMILY_URL: str({ default: "https://fonts.googleapis.com/css2?family=Roboto&display=swap" }),
+  REACT_APP_THEME_FONT_FAMILY: str({ default: "Roboto, sans-serif" }),
+  REACT_APP_THEME_FAVICON_URL: str({ default: "https://metatavu.fi/wp-content/uploads/2021/06/cropped-metatavu-favicon.jpg" }),
+  REACT_APP_THEME_LOGO_PATH: str({ default: "/images/metaform-logo.png" }),
   REACT_APP_THEME_FORMLOGO_PATH: str({ default: undefined }),
   REACT_APP_THEME_BACKGROUND_IMAGE_PATH: str({ default: undefined }),
   REACT_APP_THEME_BACKGROUND_COLOR: str({ default: undefined }),
-  REACT_APP_THEME_TITLE: str({ default: undefined }),
-  REACT_APP_SUPPORT_EMAIL: str({ default: undefined })
+  REACT_APP_THEME_TITLE: str({ default: "Metataform Management Portal" }),
+  REACT_APP_SUPPORT_EMAIL: email({ default: "support@metatavu.fi" })
 });
 
 /**
