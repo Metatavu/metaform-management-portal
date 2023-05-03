@@ -1,5 +1,6 @@
 import { Slider, Box, TextField, Input, Autocomplete, Stack, Typography, Button, FormControl, Grid, DialogTitle } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import Config from "app/config";
 import theme from "theme";
 
 /**
@@ -45,12 +46,12 @@ export const SubmitFieldWrapper = styled(Button, {
   color: "#fff",
   backgroundColor: "#000",
   "& .MuiSvgIcon-root": {
-    color: "#00ff00"
+    color: Config.get().theme.paletteSecondaryMain
   },
   "&:hover": {
     border: 0,
     color: "#000",
-    backgroundColor: "#00ff00",
+    backgroundColor: Config.get().theme.paletteSecondaryMain,
     "& .MuiSvgIcon-root": {
       color: "#000"
     }
@@ -67,13 +68,13 @@ export const AddRowButtonWrapper = styled(Button, {
   color: "#fff",
   backgroundColor: "#000",
   "& .MuiSvgIcon-root": {
-    color: "#00ff00"
+    color: "#fff"
   },
   "&:hover": {
-    color: "#000",
-    backgroundColor: "#00ff00",
+    color: theme.palette.primary.contrastText,
+    backgroundColor: Config.get().theme.paletteSecondaryMain,
     "& .MuiSvgIcon-root": {
-      color: "#000"
+      color: theme.palette.primary.contrastText
     }
   },
   width: "100%",

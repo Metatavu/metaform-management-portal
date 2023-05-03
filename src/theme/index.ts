@@ -1,4 +1,6 @@
 import { createTheme, darkScrollbar } from "@mui/material";
+import Config from "app/config";
+import ThemeUtils from "utils/theme-utils";
 
 /**
  * Values from default theme to use in custom theme
@@ -10,51 +12,35 @@ const { breakpoints, palette } = createTheme();
  */
 export default createTheme({
 
-  logo: {
-    darkPath: "/images/logo_dark.png",
-    lightPath: "/images/logo_light.png"
-  },
-
-  backgroundImage: {
-    backgroundImagePath: "/images/backgroundImage.svg"
-  },
-
   sectionTitle: {
-    fontFamily: "Arial, sans-serif",
+    fontFamily: Config.get().theme.fontFamily,
     fontWeight: 200,
     fontSize: 26
   },
 
+  header: {
+    background: ThemeUtils.getHeaderBackgroundColor(),
+    main: ThemeUtils.getHeaderTextColor()
+  },
+
   palette: {
     primary: {
-      main: "#000",
-      dark: "#000",
-      light: "#333"
+      main: "#000000",
+      contrastText: ThemeUtils.getContrastTextColor(Config.get().theme.paletteSecondaryMain)
     },
     secondary: {
-      main: "#00ff00",
-      dark: "#00b200",
-      light: "#fff"
-    },
-    text: {
-      primary: "#000",
-      secondary: "#333"
+      main: Config.get().theme.paletteSecondaryMain,
+      light: ThemeUtils.lightenColor(Config.get().theme.paletteSecondaryMain, 0.9)
     },
     background: {
       default: "#666",
       paper: "#fff"
-    },
-    success: {
-      main: "#00ff00"
-    },
-    error: {
-      main: "#ff0000"
     }
   },
 
   typography: {
     allVariants: {
-      fontFamily: "poppins, sans-serif"
+      fontFamily: Config.get().theme.fontFamily
     },
     h1: {
       fontWeight: 600,

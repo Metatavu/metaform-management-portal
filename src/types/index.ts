@@ -20,6 +20,19 @@ export interface Configuration {
   form: {
     idpHint: string;
   };
+  theme: {
+    paletteSecondaryMain: string;
+    useColoredHeader: string;
+    fontFamilyUrl?: string;
+    fontFamily: string;
+    faviconUrl?: string;
+    logoPath?: string;
+    formLogoPath?: string;
+    backgroundImagePath?: string;
+    backgroundColor?: string;
+    title?: string;
+    supportEmail?: string;
+  };
 }
 
 /**
@@ -162,17 +175,14 @@ export type NullableMemberGroupPermission = MemberGroupPermission | typeof NOT_S
 
 declare module "@mui/material/styles" {
   interface CustomTheme {
-    logo: {
-      lightPath: string;
-      darkPath: string;
-    };
-    backgroundImage: {
-      backgroundImagePath: string;
-    };
     sectionTitle: {
       fontFamily: string;
       fontWeight: number;
       fontSize: number;
+    };
+    header: {
+      background: string | undefined;
+      main: string | undefined;
     };
   }
 
