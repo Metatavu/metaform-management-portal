@@ -6,6 +6,7 @@ import type { ErrorContextType } from "types";
 import GenericDialog from "components/generic/generic-dialog";
 import * as Sentry from "@sentry/react";
 import moment from "moment";
+import Config from "app/config";
 
 /**
  * Error context initialization
@@ -101,7 +102,7 @@ const ErrorHandler: React.FC = ({ children }) => {
             { strings.errorHandling.dialog.tryAgain }
           </Typography>
           <Typography marginBottom={ 2 }>
-            { `${strings.errorHandling.dialog.reportIssue1} ${process.env.REACT_APP_SUPPORT_EMAIL}. ${strings.errorHandling.dialog.reportIssue2}` }
+            { `${strings.errorHandling.dialog.reportIssue1} ${Config.get().theme.supportEmail}. ${strings.errorHandling.dialog.reportIssue2}` }
           </Typography>
           <Typography fontWeight="bold">
             { strings.errorHandling.dialog.technicalDetails }
