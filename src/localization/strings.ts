@@ -242,6 +242,7 @@ export interface Localized extends LocalizedStringsMethods {
     statusDone: string;
     confirmDeleteReplyTitle: string;
     confirmDeleteReplyText: string;
+    export: string;
   }
 
   /**

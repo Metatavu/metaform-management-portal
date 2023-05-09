@@ -201,7 +201,8 @@
     "statusProcessing": "Processing",
     "statusDone": "Done",
     "confirmDeleteReplyTitle": "Delete answer",
-    "confirmDeleteReplyText":"Are you sure you want to delete this answer?"
+    "confirmDeleteReplyText":"Are you sure you want to delete this answer?",
+    "export": "Export"
   },
 
   "replyScreen": {

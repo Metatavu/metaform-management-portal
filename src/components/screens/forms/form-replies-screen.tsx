@@ -1,4 +1,4 @@
-import { FormControlLabel, Switch, Typography } from "@mui/material";
+import { Button, FormControlLabel, Switch, Typography } from "@mui/material";
 import { DataGrid, fiFI, GridActionsCellItem, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import Api from "api";
 import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
@@ -359,19 +359,24 @@ const FormRepliesScreen: React.FC = () => {
   /**
    * Render toggle switch for not processed/all replies
    */
-  const renderToggleSwitch = () => (
-    <AdminFormListStack direction="row">
-      <Typography>
-        { strings.repliesScreen.selectorShowOpen }
-      </Typography>
-      <FormControlLabel
-        control={ <Switch onChange={() => { setShowAllReplies(!showAllReplies); }}/> }
-        label={ undefined }
-      />
-      <Typography>
-        { strings.repliesScreen.selectorShowAll }
-      </Typography>
-    </AdminFormListStack>
+  const renderActions = () => (
+    <>
+      <Button size="large" style={{ marginRight: 15 }}>
+        { strings.repliesScreen.export }
+      </Button>
+      <AdminFormListStack direction="row">
+        <Typography>
+          {strings.repliesScreen.selectorShowOpen}
+        </Typography>
+        <FormControlLabel
+          control={<Switch onChange={() => { setShowAllReplies(!showAllReplies); }}/>}
+          label={undefined}
+        />
+        <Typography>
+          {strings.repliesScreen.selectorShowAll}
+        </Typography>
+      </AdminFormListStack>
+    </>
   );
 
   return (
@@ -379,7 +384,7 @@ const FormRepliesScreen: React.FC = () => {
       <NavigationTabContainer>
         <NavigationTab
           text={ strings.navigationHeader.formsScreens.formRepliesScreen }
-          renderActions={ renderToggleSwitch }
+          renderActions={ renderActions }
         />
         <FormRestrictedContent>
           <NavigationTab
