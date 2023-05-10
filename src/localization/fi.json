@@ -75,7 +75,8 @@
       "fetchReplies": "Vastauksien hakemisessa tapahtui virhe",
       "fetchFields": "Lomakekenttien hakemisessa tapahtui virhe",
       "deleteReply":"Vastauksen poistaminen epäonnistui",
-      "formSlugNotFound": "Lomakkeen slugia ei löytynyt"
+      "formSlugNotFound": "Lomakkeen slugia ei löytynyt",
+      "export": "Vastauksien viennissä tapahtui virhe"
     },
     "adminReplyScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",

@@ -75,7 +75,8 @@
       "fetchReplies": "Fetching replies failed",
       "fetchFields": "Fetching column fields failed",
       "deleteReply":"Deleting reply failed",
-      "formSlugNotFound": "Form slug not found"
+      "formSlugNotFound": "Form slug not found",
+      "export": "Exporting replies failed"
     },
     "adminReplyScreen": {
       "saveReply": "Saving reply failed",
