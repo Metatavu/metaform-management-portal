@@ -27,9 +27,10 @@
     "dialog": {
       "title": "Hups! Jokin meni pieleen",
       "reloadPage": "Kokeile ladata sivu uudelleen.",
-      "tryAgain": "Tarkista internet-yhteytesi ja yritä uudelleen.",
+      "tryAgain": "Tarkista internet-yhteytesi ja yritä uudelleen. Jos ongelma ei poistu, odota hetki ennen uudelleenyritystä.",
       "unsavedContents": "Huomaathan, että tallentamattomat sisällöt häviävät uudelleen ladattaessa. Mikäli sinulla on sivulla tallentamattomia sisältöjä, voit sulkea tämän ilmoituksen ja kopioida sisällöt leikepöydälle ennen uudelleenlatausta.",
-      "reportIssue": "Mikäli ongelma jatkuu, voi vika olla myös käyttämissämme taustajärjestelmissä. Voit halutessasi ottaa sähköpostilla yhteyttä osoitteeseen support@metatavu.fi. Liitä tekniset lisätiedot osaksi sähköpostia nopeuttaaksesi ongelman selvittelyä.",
+      "reportIssue1": "Vika voi mahdollisesti olla myös käyttämissämme taustajärjestelmissä. Voit halutessasi ottaa sähköpostilla yhteyttä osoitteeseen",
+      "reportIssue2": "Liitä tekniset lisätiedot osaksi sähköpostia nopeuttaaksesi ongelman selvittelyä.",
       "technicalDetails": "Teknisiä lisätietoja:",
       "time": "Aika: {0}",
       "url": "Osoite: {0}",

@@ -21,6 +21,7 @@ namespace ThemeUtils {
 
   /**
    * Gets color brightness
+   *
    * @param r red value
    * @param g green value
    * @param b blue value
@@ -31,6 +32,7 @@ namespace ThemeUtils {
 
   /**
    * Gets the contrast text color based on the background color
+   *
    * @param backgroundColor background color
    */
   export const getContrastTextColor = (backgroundColor: string) => {
@@ -42,6 +44,7 @@ namespace ThemeUtils {
 
   /**
    * Lightens a color by a percentage
+   *
    * @param color color hex value
    * @param percent percent to lighten
    */
@@ -58,6 +61,7 @@ namespace ThemeUtils {
 
   /**
    * Returns the background color of the header
+   *
    * @returns The background color of the header
    */
   export const getHeaderBackgroundColor = () => {

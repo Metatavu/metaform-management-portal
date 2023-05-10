@@ -19,7 +19,7 @@ export default createTheme({
   },
 
   header: {
-    backgGround: ThemeUtils.getHeaderBackgroundColor(),
+    background: ThemeUtils.getHeaderBackgroundColor(),
     main: ThemeUtils.getHeaderTextColor()
   },
 
