@@ -22,6 +22,7 @@ import theme from "theme";
 import LocalizationUtils from "utils/localization-utils";
 import { CheckCircle, NewReleases, Pending } from "@mui/icons-material";
 import { CREATED_FIELD_NAME, MODIFIED_FIELD_NAME, STATUS_FIELD_NAME } from "consts";
+import Feature, { Strategy } from "components/containers/feature";
 
 /**
  * Meta fields with type of date-time
@@ -382,10 +383,17 @@ const FormRepliesScreen: React.FC = () => {
           renderActions={ renderToggleSwitch }
         />
         <FormRestrictedContent>
-          <NavigationTab
-            text={ strings.navigationHeader.formsScreens.formHistoryScreen }
-            to="./../history"
-          />
+          <Feature
+            feature="auditLog"
+            featureName="Historia"
+            featureDescription="Lomakkeen käsittelyhistoria. Ominaisuutta ei ole otettu käyttöön."
+            strategy={ Strategy.DISABLE}
+          >
+            <NavigationTab
+              text={ strings.navigationHeader.formsScreens.formHistoryScreen }
+              to="./../history"
+            />
+          </Feature>
         </FormRestrictedContent>
       </NavigationTabContainer>
       <DataGrid

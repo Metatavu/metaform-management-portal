@@ -9,6 +9,7 @@ import SosmetaUtils from "utils/sosmeta-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { ErrorContext } from "components/contexts/error-handler";
 import Config from "app/config";
+import Feature, { Strategy } from "components/containers/feature";
 
 /**
  * Component props
@@ -48,9 +49,9 @@ const EditorScreenDrawer: FC<Props> = ({
     formName: "",
     formSlug: "",
     formUrl: "",
-    formTemplate: true,
+    formTemplate: false,
     formSchema: "",
-    formAuthentication: true
+    formAuthentication: false
   });
   const [ valid, setValid ] = useState<boolean>(false);
   const [ converting, setConverting ] = useState<boolean>(false);
@@ -219,22 +220,32 @@ const EditorScreenDrawer: FC<Props> = ({
             <FormHelperText>
               { strings.editorScreen.drawer.formTemplateCustomHelper }
             </FormHelperText>
-            <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateSosmeta }/>
-            <FormHelperText>
-              { strings.editorScreen.drawer.formTemplateSosmetaHelper }
-              <Link href="https://sosmeta.thl.fi/document-definitions/list" target="_blank">
-                { strings.editorScreen.drawer.formTemplateSosmetaLink }
-              </Link>
-            </FormHelperText>
+            <Feature
+              feature="sosmeta"
+              featureName="Sosmeta"
+              featureDescription="Sosmeta is a tool for creating and managing forms."
+              strategy={ Strategy.HIDE}
+            >
+              <>
+                <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateSosmeta }/>
+                <FormHelperText>
+                  { strings.editorScreen.drawer.formTemplateSosmetaHelper }
+                  <Link href="https://sosmeta.thl.fi/document-definitions/list" target="_blank">
+                    { strings.editorScreen.drawer.formTemplateSosmetaLink }
+                  </Link>
+                </FormHelperText>
+              </>
+            </Feature>
           </RadioGroup>
-          <TextField
-            fullWidth
-            label={ strings.editorScreen.drawer.formTemplateSchema }
-            value={ formSettings.formSchema }
-            disabled={ !formSettings.formTemplate }
-            onChange={ onInputFieldChange }
-            name="formSchema"
-          />
+          { formSettings.formTemplate &&
+            <TextField
+              fullWidth
+              label={ strings.editorScreen.drawer.formTemplateSchema }
+              value={ formSettings.formSchema }
+              onChange={ onInputFieldChange }
+              name="formSchema"
+            />
+          }
         </Stack>
       </Box>
     );
@@ -254,11 +265,20 @@ const EditorScreenDrawer: FC<Props> = ({
             onChange={ onInputFieldChange }
             name="formAuthentication"
           >
-            <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationService }/>
-            <FormHelperText>
-              { strings.editorScreen.drawer.formIdentificationHelper }
-            </FormHelperText>
             <FormControlLabel value={ false } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationNone }/>
+            <Feature
+              feature="authentication"
+              featureName="Authentication"
+              featureDescription="Authentication is a feature that allows users to log in to the system."
+              strategy={ Strategy.DISABLE }
+            >
+              <>
+                <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationService }/>
+                <FormHelperText>
+                  { strings.editorScreen.drawer.formIdentificationHelper }
+                </FormHelperText>
+              </>
+            </Feature>
           </RadioGroup>
         </Stack>
       </Box>
