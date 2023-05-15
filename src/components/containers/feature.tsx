@@ -11,8 +11,8 @@ export enum Strategy {
 interface FeatureProps {
   feature: string;
   children: ReactElement;
-  featureName: string;
-  featureDescription: string;
+  featureName?: string;
+  featureDescription?: string;
   strategy: Strategy;
 }
 
@@ -27,7 +27,7 @@ const Feature: FC<FeatureProps> = ({ feature, children, featureName, featureDesc
     return null;
   }
 
-  if (strategy === Strategy.REPLACE && !hasFeature) {
+  if (strategy === Strategy.DISABLE && !hasFeature) {
     return (
       <div style={{ position: "relative", flex: 1 }}>
         { children }

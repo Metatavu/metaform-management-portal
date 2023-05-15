@@ -222,8 +222,6 @@ const EditorScreenDrawer: FC<Props> = ({
             </FormHelperText>
             <Feature
               feature="sosmeta"
-              featureName="Sosmeta"
-              featureDescription="Sosmeta is a tool for creating and managing forms."
               strategy={ Strategy.HIDE}
             >
               <>
