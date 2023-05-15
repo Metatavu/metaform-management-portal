@@ -660,6 +660,32 @@ export interface Localized extends LocalizedStringsMethods {
       replyEditSuccessText: string;
     }
   }
+
+  /**
+   * Traslations related to features
+   */
+  features: {
+    sosMeta: {
+      title: string;
+      description: string;
+    };
+    formUsageStatistics: {
+      title: string;
+      description: string;
+    };
+    auditLog: {
+      title: string;
+      description: string;
+    };
+    strongAuthentication: {
+      title: string;
+      description: string;
+    };
+    excelExport: {
+      title: string;
+      description: string;
+    };
+  }
 }
 /**
  * Initialized localized strings

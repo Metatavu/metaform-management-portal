@@ -587,5 +587,28 @@
       "replyDeleteSuccessText": "Form deleted successfully!",
       "replyEditSuccessText": "Form edited successfully!"
     }
+  },
+
+  "features": {
+    "sosMeta": {
+      "title": "Sosmeta",
+      "description": "Sosmeta is a service maintained by the Institute of Health and Welfare that includes ready-made form templates. You can create a form according to Sosmeta's structures by selecting a Sosmeta template as the base for the form."
+    },
+    "formUsageStatistics": {
+      "title": "Lomakkeen käyttödata",
+      "description": "Review of form usage statistics. This feature has not been activated."
+    },
+    "auditLog": {
+      "title": "Auditointi",
+      "description": "Review of form processing history. This feature has not been activated."
+    },
+    "strongAuthentication": {
+      "title": "Vahva tunnistautuminen",
+      "description": "Strong authentication of the form filler. This feature has not been activated."
+    },
+    "excelExport": {
+      "title": "Excel-vienti",
+      "description": "Export of form responses as an Excel spreadsheet. This feature has not been activated."
+    }
   }
 }

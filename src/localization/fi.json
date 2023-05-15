@@ -595,5 +595,29 @@
       "replyDeleteSuccessText": "Vastauksen poistaminen onnistui!",
       "replyEditSuccessText": "Vastauksen muokkaus onnistui!"
     }
+  },
+
+  "features": {
+    "sosMeta": {
+      "title": "Sosmeta",
+      "description": "Sosmeta on Terveyden ja Hyvinvoinnin laitoksen ylläpitämä palvelu, joka sisältää valmiita rakennepohjia lomakkeille. Voit luoda lomakkeen Sosmetan rakenteiden mukaisesti valitsemalla lomakkeen pohjaksi Sosmetan pohjan."
+    },
+    "formUsageStatistics": {
+      "title": "Lomakkeen käyttödata",
+      "description": "Lomakkeiden käyttötilastojen tarkastelu. Ominaisuutta ei ole otettu käyttöön."
+    },
+    "auditLog": {
+      "title": "Auditointi",
+      "description": "Lomakkeiden käsittelyhistorian tarkastelu. Ominaisuutta ei ole otettu käyttöön."
+    },
+    "strongAuthentication": {
+      "title": "Vahva tunnistautuminen",
+      "description": "Lomakkeen täyttäjän vahva tunnistautuminen. Ominaisuutta ei ole otettu käyttöön."
+    },
+    "excelExport": {
+      "title": "Excel-vienti",
+      "description": "Lomakkeen vastausten vienti Excel-taulukkona. Ominaisuutta ei ole otettu käyttöön."
+    }
   }
+
 }
