@@ -38,7 +38,6 @@ const Feature: FC<FeatureProps> = ({ feature, children, featureName, featureDesc
             left: 0,
             width: "100%",
             height: "100%",
-            backgroundImage: "linear-gradient(to bottom left, transparent calc(50% - 2px), rgba(0,0,0,.1) calc(50% - 2px), rgba(0,0,0,.1) 50%, transparent calc(50% + 1px))",
             backdropFilter: "blur(1.5px)",
             zIndex: 1,
             display: "flex",
