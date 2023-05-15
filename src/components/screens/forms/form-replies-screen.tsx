@@ -13,7 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { selectKeycloak } from "features/auth-slice";
-import { FormContext, ReplyStatus } from "types";
+import { FormContext, FeatureType, FeatureStrategy, ReplyStatus } from "types";
 import FormRestrictedContent from "components/containers/form-restricted-content";
 import AuthUtils from "utils/auth-utils";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
@@ -22,7 +22,7 @@ import theme from "theme";
 import LocalizationUtils from "utils/localization-utils";
 import { CheckCircle, NewReleases, Pending } from "@mui/icons-material";
 import { CREATED_FIELD_NAME, MODIFIED_FIELD_NAME, STATUS_FIELD_NAME } from "consts";
-import Feature, { Strategy } from "components/containers/feature";
+import Feature from "components/containers/feature";
 
 /**
  * Meta fields with type of date-time
@@ -384,10 +384,10 @@ const FormRepliesScreen: React.FC = () => {
         />
         <FormRestrictedContent>
           <Feature
-            feature="auditLog"
-            featureName="Historia"
-            featureDescription="Lomakkeen käsittelyhistoria. Ominaisuutta ei ole otettu käyttöön."
-            strategy={ Strategy.DISABLE}
+            feature={FeatureType.AUDIT_LOG}
+            title={ strings.features.auditLog.title }
+            description={ strings.features.auditLog.description }
+            strategy={ FeatureStrategy.DISABLE}
           >
             <NavigationTab
               text={ strings.navigationHeader.formsScreens.formHistoryScreen }

@@ -336,3 +336,21 @@ export const DialogTitleWrapper = styled(DialogTitle, {
   color: "#fff",
   textAlign: "center"
 }));
+
+/**
+ *  Styled wrapper for disabled feature
+ */
+export const DisabledFeatureWrapper = styled(Box, {
+  label: "disabled-feature-wrapper"
+})(() => ({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backdropFilter: "blur(1.5px)",
+  zIndex: 1,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center"
+}));

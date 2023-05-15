@@ -16,7 +16,8 @@ import { useNavigate } from "react-router-dom";
 import FormRestrictedContent from "components/containers/form-restricted-content";
 import moment from "moment";
 import { DataValidation } from "utils/data-validation-utils";
-import Feature, { Strategy } from "components/containers/feature";
+import Feature from "components/containers/feature";
+import { FeatureType, FeatureStrategy } from "types";
 
 /**
  * Interface for single form row
@@ -166,10 +167,10 @@ const FormsScreen: React.FC = () => {
         />
         <FormRestrictedContent>
           <Feature
-            feature="statistics"
-            featureName="Datan tarkastelu"
-            featureDescription="Lomakkeiden käyttötilastojen tarkastelu. Ominaisuutta ei ole otettu käyttöön."
-            strategy={ Strategy.DISABLE}
+            feature={ FeatureType.FORM_USAGE_STATISTICS }
+            title={ strings.features.formUsageStatistics.title }
+            description={ strings.features.formUsageStatistics.description }
+            strategy={ FeatureStrategy.DISABLE }
           >
             <NavigationTab
               text={ strings.navigationHeader.formsScreens.formsDataScreen }

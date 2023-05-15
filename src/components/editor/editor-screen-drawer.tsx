@@ -9,7 +9,8 @@ import SosmetaUtils from "utils/sosmeta-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { ErrorContext } from "components/contexts/error-handler";
 import Config from "app/config";
-import Feature, { Strategy } from "components/containers/feature";
+import Feature from "components/containers/feature";
+import { FeatureType, FeatureStrategy } from "types";
 
 /**
  * Component props
@@ -221,8 +222,8 @@ const EditorScreenDrawer: FC<Props> = ({
               { strings.editorScreen.drawer.formTemplateCustomHelper }
             </FormHelperText>
             <Feature
-              feature="sosmeta"
-              strategy={ Strategy.HIDE}
+              feature={ FeatureType.SOSMETA}
+              strategy={ FeatureStrategy.HIDE}
             >
               <>
                 <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateSosmeta }/>
@@ -265,10 +266,10 @@ const EditorScreenDrawer: FC<Props> = ({
           >
             <FormControlLabel value={ false } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationNone }/>
             <Feature
-              feature="authentication"
-              featureName="Authentication"
-              featureDescription="Authentication is a feature that allows users to log in to the system."
-              strategy={ Strategy.DISABLE }
+              feature={ FeatureType.STRONG_AUTHENTICATION }
+              title={ strings.features.strongAuthentication.title }
+              description={ strings.features.strongAuthentication.description }
+              strategy={ FeatureStrategy.DISABLE }
             >
               <>
                 <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationService }/>

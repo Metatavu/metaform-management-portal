@@ -1,67 +1,47 @@
-import { IconButton, Tooltip, Box, ListItem, ListItemText } from "@mui/material";
-import React, { FC, ReactElement } from "react";
+import { Tooltip, ListItem, ListItemText } from "@mui/material";
+import React, { FC } from "react";
 import HelpIcon from "@mui/icons-material/Help";
-
-export enum Strategy {
-  HIDE = "hide",
-  DISABLE = "disable",
-  REPLACE = "replace"
-}
-
-interface FeatureProps {
-  feature: string;
-  children: ReactElement;
-  featureName?: string;
-  featureDescription?: string;
-  strategy: Strategy;
-}
+import { FeatureProps, FeatureStrategy } from "types";
+import Config from "app/config";
+import { DisabledFeatureWrapper } from "styled/react-components/react-components";
 
 /**
  * Component for features
  */
-const Feature: FC<FeatureProps> = ({ feature, children, featureName, featureDescription, strategy }) => {
-  const hasFeature = JSON.parse(process.env.REACT_APP_FEATURES || "[]").includes(feature);
+const Feature: FC<FeatureProps> = ({ feature, children, title, description, strategy }) => {
+  const hasFeature = Config.get().features.includes(feature);
   const [ showTooltip, setShowTooltip ] = React.useState(false);
 
-  if (strategy === Strategy.HIDE && !hasFeature) {
+  if (strategy === FeatureStrategy.HIDE && !hasFeature) {
     return null;
   }
 
-  if (strategy === Strategy.DISABLE && !hasFeature) {
+  if (strategy === FeatureStrategy.DISABLE && !hasFeature) {
     return (
       <div style={{ position: "relative", flex: 1 }}>
         { children }
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backdropFilter: "blur(1.5px)",
-            zIndex: 1,
-            display: "flex",
-            justifyContent: "center"
-          }}
+        <DisabledFeatureWrapper
+          onMouseEnter={ () => setShowTooltip(true) }
+          onMouseLeave={ () => setShowTooltip(false) }
         >
           <Tooltip
+            open={ showTooltip }
             title={
               <ListItem dense>
                 <ListItemText
-                  primary={ featureName }
-                  secondary={ featureDescription }
+                  primary={ title }
+                  secondary={ description }
                   secondaryTypographyProps={{ color: "#ffffff90" }}
                 />
               </ListItem>
             }
-            disableHoverListener
-            open={ showTooltip }
           >
-            <IconButton onClick={ () => setShowTooltip(!showTooltip) } sx={{ alignSelf: "center" }}>
-              <HelpIcon/>
-            </IconButton>
+            <HelpIcon
+              onMouseEnter={ () => setShowTooltip(true) }
+              onMouseLeave={ () => setShowTooltip(false) }
+            />
           </Tooltip>
-        </Box>
+        </DisabledFeatureWrapper>
       </div>
     );
   }
