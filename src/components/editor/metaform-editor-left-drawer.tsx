@@ -6,10 +6,11 @@ import TabPanel from "components/generic/tab-panel";
 import strings from "localization/strings";
 import React, { ChangeEventHandler, useEffect, useState, FC } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
-import { DraggingMode } from "types";
+import { DraggingMode, FeatureStrategy, FeatureType } from "types";
 import slugify from "slugify";
 import produce from "immer";
 import { NOT_SELECTED } from "consts";
+import Feature from "components/containers/feature";
 
 /**
  * Component properties
@@ -140,17 +141,23 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
           value={ `${currentHostname}/${pendingForm?.slug}` }
           disabled
         />
-        <FormLabel>{ strings.draftEditorScreen.editor.form.formVisibility }</FormLabel>
-        <TextField
-          select
-          label={ strings.draftEditorScreen.editor.form.formVisibilityLabel }
-          value={ pendingForm?.visibility }
-          onChange={ event => onFormVisibilityChange(event.target.value as MetaformVisibility) }
-          disabled={ !JSON.parse(process.env.REACT_APP_FEATURES || "[]").includes("authentication")}
+        <Feature
+          feature={ FeatureType.SOSMETA}
+          strategy={ FeatureStrategy.HIDE}
         >
-          <MenuItem value={ MetaformVisibility.Public }>{ strings.draftEditorScreen.editor.form.public }</MenuItem>
-          <MenuItem value={ MetaformVisibility.Private }>{ strings.draftEditorScreen.editor.form.private }</MenuItem>
-        </TextField>
+          <>
+            <FormLabel>{ strings.draftEditorScreen.editor.form.formVisibility }</FormLabel>
+            <TextField
+              select
+              label={ strings.draftEditorScreen.editor.form.formVisibilityLabel }
+              value={ pendingForm?.visibility }
+              onChange={ event => onFormVisibilityChange(event.target.value as MetaformVisibility) }
+            >
+              <MenuItem value={ MetaformVisibility.Public }>{ strings.draftEditorScreen.editor.form.public }</MenuItem>
+              <MenuItem value={ MetaformVisibility.Private }>{ strings.draftEditorScreen.editor.form.private }</MenuItem>
+            </TextField>
+          </>
+        </Feature>
         <FormLabel>{ strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfo }</FormLabel>
         <TextField
           select

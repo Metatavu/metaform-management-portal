@@ -221,20 +221,14 @@ const EditorScreenDrawer: FC<Props> = ({
             <FormHelperText>
               { strings.editorScreen.drawer.formTemplateCustomHelper }
             </FormHelperText>
-            <Feature
-              feature={ FeatureType.SOSMETA}
-              strategy={ FeatureStrategy.HIDE}
-            >
-              <>
-                <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateSosmeta }/>
-                <FormHelperText>
-                  { strings.editorScreen.drawer.formTemplateSosmetaHelper }
-                  <Link href="https://sosmeta.thl.fi/document-definitions/list" target="_blank">
-                    { strings.editorScreen.drawer.formTemplateSosmetaLink }
-                  </Link>
-                </FormHelperText>
-              </>
-            </Feature>
+            <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateSosmeta }/>
+            <FormHelperText>
+              { strings.editorScreen.drawer.formTemplateSosmetaHelper }
+              <Link href="https://sosmeta.thl.fi/document-definitions/list" target="_blank">
+                { strings.editorScreen.drawer.formTemplateSosmetaLink }
+              </Link>
+            </FormHelperText>
+              
           </RadioGroup>
           { formSettings.formTemplate &&
             <TextField
@@ -355,7 +349,12 @@ const EditorScreenDrawer: FC<Props> = ({
             <Divider/>
             { renderDrawerInfoSection() }
             <Divider/>
-            { renderDrawerTemplateSection() }
+            <Feature
+              feature={ FeatureType.SOSMETA}
+              strategy={ FeatureStrategy.HIDE}
+            >
+              { renderDrawerTemplateSection() }
+            </Feature>
             <Divider/>
             { renderDrawerAuthenticationSection() }
           </FormControl>
