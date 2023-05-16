@@ -33,6 +33,7 @@ export interface Configuration {
     backgroundColor?: string;
     title?: string;
     supportEmail?: string;
+    leaveSiteUrl?: string;
   };
   features: string;
 }

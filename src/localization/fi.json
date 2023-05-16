@@ -212,8 +212,8 @@
   "publicFormsScreen": {
     "title": "Lomakkeet",
     "welcome": "Tervetuloa lomakeportaaliin",
-    "welcomeInfo": "Jos olet ammattilainen, niin voit kirjautua sisään. Vierailija palaa hyvinvointialueen sivuille.",
-    "backToEssote": "Hyvinvointialueen sivuille"
+    "welcomeInfo": "Jos olet ammattilainen, niin voit kirjautua sisään. Vierailija palaa takaisin kotisivulle.",
+    "backToEssote": "Takaisin kotisivulle"
   },
 
   "draftEditorScreen": {

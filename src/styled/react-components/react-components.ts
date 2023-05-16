@@ -46,14 +46,14 @@ export const SubmitFieldWrapper = styled(Button, {
   color: "#fff",
   backgroundColor: "#000",
   "& .MuiSvgIcon-root": {
-    color: Config.get().theme.paletteSecondaryMain
+    color: "#fff"
   },
   "&:hover": {
     border: 0,
-    color: "#000",
+    color: theme.palette.primary.contrastText,
     backgroundColor: Config.get().theme.paletteSecondaryMain,
     "& .MuiSvgIcon-root": {
-      color: "#000"
+      color: theme.palette.primary.contrastText
     }
   }
 }));
