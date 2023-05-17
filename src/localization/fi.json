@@ -617,6 +617,10 @@
     "excelExport": {
       "title": "Excel-vienti",
       "description": "Lomakkeen vastausten vienti Excel-taulukkona. Ominaisuutta ei ole otettu käyttöön."
+    },
+    "advancedPermissionTargeting": {
+      "title": "Käyttäjäryhmien hallinta",
+      "description": "Lomakkeen käyttäjäryhmien hallinta. Ominaisuutta ei ole otettu käyttöön." 
     }
   }
 

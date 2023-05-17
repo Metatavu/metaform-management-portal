@@ -609,6 +609,10 @@
     "excelExport": {
       "title": "Excel-vienti",
       "description": "Export of form responses as an Excel spreadsheet. This feature has not been activated."
+    },
+    "advancedPermissionTargeting": {
+      "title": "User Group Management",
+      "description": "Management of form user groups. This feature has not been activated."
     }
   }
 }

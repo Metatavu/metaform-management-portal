@@ -685,6 +685,10 @@ export interface Localized extends LocalizedStringsMethods {
       title: string;
       description: string;
     };
+    advancedPermissionTargeting: {
+      title: string;
+      description: string;
+    };
   }
 }
 /**

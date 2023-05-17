@@ -3,11 +3,12 @@ import { MetaformField, MetaformMemberGroup } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
 import React, { FC, useEffect, useState } from "react";
-import { NullableMemberGroupPermission, MemberGroupPermission } from "types";
+import { NullableMemberGroupPermission, MemberGroupPermission, FeatureType, FeatureStrategy } from "types";
 import MetaformUtils from "utils/metaform-utils";
 import { NOT_SELECTED } from "consts";
 import { selectMetaform } from "../../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
+import Feature from "components/containers/feature";
 
 /**
  * Component properties
@@ -345,12 +346,19 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
   const renderDefineMemberGroup = (field?: MetaformField) => {
     if (field && MetaformUtils.fieldTypesAllowVisibility.includes(field.type)) {
       return (
-        <Stack spacing={ 2 }>
-          { renderDefineMemberGroupSwitch(field) }
-          { renderMemberGroupOptionSelect(field) }
-          { renderMemberGroupSelect() }
-          { renderMemberGroupPermissionSelect(field) }
-        </Stack>
+        <Feature
+          feature={ FeatureType.ADVANCED_PERMISSION_TARGETING }
+          strategy={ FeatureStrategy.DISABLE }
+          title={ strings.features.advancedPermissionTargeting.title}
+          description={ strings.features.advancedPermissionTargeting.description }
+        >
+          <Stack spacing={ 2 }>
+            { renderDefineMemberGroupSwitch(field) }
+            { renderMemberGroupOptionSelect(field) }
+            { renderMemberGroupSelect() }
+            { renderMemberGroupPermissionSelect(field) }
+          </Stack>
+        </Feature>
       );
     }
   };

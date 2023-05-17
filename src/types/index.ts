@@ -201,7 +201,8 @@ export enum FeatureType {
   FORM_USAGE_STATISTICS = "formUsageStatistics",
   AUDIT_LOG = "auditLog",
   STRONG_AUTHENTICATION = "StrongAuthentication",
-  EXCEL_EXPORT = "excelExport"
+  EXCEL_EXPORT = "excelExport",
+  ADVANCED_PERMISSION_TARGETING = "advancedPermissionTargeting"
 }
 
 /**
