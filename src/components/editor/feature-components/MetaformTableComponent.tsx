@@ -1,13 +1,13 @@
-import { IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { IconButton, MenuItem, Stack, TextField } from "@mui/material";
 import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
 import React, { FC, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 import { selectMetaform } from "../../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
 import MetaformUtils from "utils/metaform-utils";
-import { RoundActionButton } from "styled/generic/form";
 /**
  * Component properties
  */
@@ -76,12 +76,12 @@ const MetaformTableComponent: FC<Props> = ({
   const renderTableColumnEdit = (column: MetaformTableColumn, index: number) => (
     <Stack
       key={ `column-${index}` }
-      spacing={ 2 }
+      spacing={ 0 }
       direction="row"
     >
       <TextField
+        fullWidth
         value={ column.title }
-        label={ index }
         onChange={ event => updateTableColumn({
           ...column,
           title: event.target.value,
@@ -126,14 +126,14 @@ const MetaformTableComponent: FC<Props> = ({
    * Renders table new column
    */
   const renderTableNewColumn = () => (
-    <Stack spacing={ 2 }>
-      <Typography variant="subtitle1" style={{ width: "100%" }}>
-        { strings.draftEditorScreen.editor.features.field.addNewColumn }
-      </Typography>
+    <Stack
+      spacing={ 0 }
+      direction="row"
+    >
       <TextField
         select
         fullWidth
-        label={ strings.draftEditorScreen.editor.features.field.addColumnType }
+        label={ strings.draftEditorScreen.editor.features.field.addNewColumn }
         value={ newColumnType }
         onChange={ ({ target }) => setNewColumnType(target.value as MetaformTableColumnType) }
       >
@@ -144,15 +144,12 @@ const MetaformTableComponent: FC<Props> = ({
           { strings.draftEditorScreen.editor.features.field.columnNumberType }
         </MenuItem>
       </TextField>
-      <RoundActionButton
-        fullWidth
+      <IconButton
         disabled={ newColumnType === undefined }
         onClick={ addNewColumn }
       >
-        <Typography>
-          { strings.draftEditorScreen.editor.features.field.addNewColumn }
-        </Typography>
-      </RoundActionButton>
+        <AddIcon/>
+      </IconButton>
     </Stack>
   );
   
