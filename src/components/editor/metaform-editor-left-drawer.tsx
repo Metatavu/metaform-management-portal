@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, FormControlLabel, FormLabel, Icon, MenuItem, Stack, Tab, Tabs, TextField, Tooltip, Typography } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, FormLabel, Grid, Icon, MenuItem, Stack, Tab, Tabs, TextField, Tooltip, Typography } from "@mui/material";
 import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVisibility } from "generated/client";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
@@ -217,7 +217,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
    * Render fields tab
    */
   const renderFieldsTab = () => (
-    <>
+    <Grid container gap={ 1 }>
       <FormLabel sx={{ width: "100%" }}>{ strings.draftEditorScreen.editor.fields.staticFields }</FormLabel>
       { renderFieldDraggable(MetaformFieldType.Html, strings.draftEditorScreen.editor.fields.html, "html") }
       <FormLabel sx={{ width: "100%" }}>{ strings.draftEditorScreen.editor.fields.selectorFields }</FormLabel>
@@ -235,7 +235,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
       { renderFieldDraggable(MetaformFieldType.Files, strings.draftEditorScreen.editor.fields.files, "attachment") }
       { renderFieldDraggable(MetaformFieldType.Table, strings.draftEditorScreen.editor.fields.table, "table_chart") }
       { renderFieldDraggable(MetaformFieldType.Submit, strings.draftEditorScreen.editor.fields.submit, "send") }
-    </>
+    </Grid>
   );
 
   /**

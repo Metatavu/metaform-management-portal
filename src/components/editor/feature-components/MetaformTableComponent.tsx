@@ -4,7 +4,7 @@ import produce from "immer";
 import strings from "localization/strings";
 import React, { FC, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { selectMetaform } from "../../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
 import MetaformUtils from "utils/metaform-utils";
@@ -147,8 +147,9 @@ const MetaformTableComponent: FC<Props> = ({
       <IconButton
         disabled={ newColumnType === undefined }
         onClick={ addNewColumn }
+        color="success"
       >
-        <AddIcon/>
+        <AddCircleIcon/>
       </IconButton>
     </Stack>
   );
