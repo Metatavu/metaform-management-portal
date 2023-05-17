@@ -203,7 +203,7 @@
     "statusDone": "Käsitelty",
     "confirmDeleteReplyTitle": "Vastauksen poistaminen",
     "confirmDeleteReplyText":"Oletko varma, että haluat poistaa vastauksen?",
-    "export": "Vie"
+    "export": "Vie xlsx-muodossa"
   },
 
   "replyScreen": {
