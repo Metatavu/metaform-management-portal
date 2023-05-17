@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
+import { FormControlLabel, FormGroup, Switch } from "@mui/material";
 import { MetaformField } from "generated/client";
 import strings from "localization/strings";
 import React, { FC, useEffect } from "react";
@@ -46,14 +46,11 @@ const MetaformFieldRequiredComponent: FC<Props> = ({
     if (field) {
       const requiredField = field.required;
       return (
-        <Stack spacing={ 2 }>
-          <Typography variant="subtitle1" style={{ width: "100%" }}>
-            { strings.draftEditorScreen.editor.features.field.required }
-          </Typography>
+        <FormGroup>
           <FormControlLabel
-            label={ strings.generic.yes }
+            label={ strings.draftEditorScreen.editor.features.field.required }
             control={
-              <Checkbox
+              <Switch
                 checked={ requiredField }
                 onChange={ event => updateFormField({
                   ...field,
@@ -62,7 +59,7 @@ const MetaformFieldRequiredComponent: FC<Props> = ({
               />
             }
           />
-        </Stack>
+        </FormGroup>
       );
     }
   };

@@ -2,7 +2,6 @@ import { Stack, TextField, Typography } from "@mui/material";
 import { MetaformField, MetaformFieldType, MetaformSection } from "generated/client";
 import strings from "localization/strings";
 import React, { FC, useEffect } from "react";
-import LocalizationUtils from "utils/localization-utils";
 import { selectMetaform } from "../../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
 import MetaformUtils from "utils/metaform-utils";
@@ -66,9 +65,6 @@ const MetaformFieldAndSubmitTitleComponent: FC<Props> = ({
             })
             }
           />
-          <Typography variant="body2">
-            { `${strings.draftEditorScreen.editor.features.field.fieldType}: ${LocalizationUtils.getLocalizedFieldType(field.type)}` }
-          </Typography>
         </Stack>
       );
     }

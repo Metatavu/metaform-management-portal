@@ -278,7 +278,8 @@
         "field": {
           "fieldData": "Kentän tiedot",
           "fieldType": "Kentän tyyppi",
-          "required": "Pakollisuus",
+          "fieldProperties": "Kentän ominaisuudet",
+          "required": "Pakollinen kenttä",
           "defineUserGroup": "Määrittää käyttäjäryhmän",
           "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
           "fieldTitle": "Kentän otsikko",
@@ -293,7 +294,7 @@
           "submitButtonText": "Painikkeen teksti",
           "newFieldOption": "Valintakenttä",
           "addCustomHtml": "Lisää tähän HTML-sisältöä",
-          "contextVisibilityInfo": "Kentän hallinnointi asetukset",
+          "contextVisibilityInfo": "Kentän hallinnointiasetukset",
           "workDaysOnly": "Vain työpäivät",
           "allowPast": "Menneet päivät",
           "slider": {

@@ -314,6 +314,7 @@ export interface Localized extends LocalizedStringsMethods {
         field: {
           fieldData: string;
           fieldType: string;
+          fieldProperties: string;
           fieldTitle: string;
           defineUserGroup: string;
           selectableFieldsInfo: string;
