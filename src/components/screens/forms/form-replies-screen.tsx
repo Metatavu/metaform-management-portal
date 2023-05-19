@@ -384,9 +384,16 @@ const FormRepliesScreen: React.FC = () => {
    */
   const renderActions = () => (
     <>
-      <Button onClick={ onExportClick } size="large" style={{ marginRight: 15 }}>
-        { strings.repliesScreen.export }
-      </Button>
+      <Feature
+        feature={ FeatureType.EXCEL_EXPORT }
+        title={ strings.features.excelExport.title }
+        description={ strings.features.excelExport.description }
+        strategy={ FeatureStrategy.HIDE }
+      >
+        <Button onClick={ onExportClick } size="large" sx={{ mr: 2 }}>
+          { strings.repliesScreen.export }
+        </Button>
+      </Feature>
       <AdminFormListStack direction="row">
         <Typography>
           {strings.repliesScreen.selectorShowOpen}
