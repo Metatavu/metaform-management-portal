@@ -143,7 +143,8 @@
     "data": "Data",
     "list": "List",
     "answers": "Answers",
-    "history": "History"
+    "history": "History",
+    "scripts": "Scripts"
   },
 
   "navigationHeader": {
@@ -187,6 +188,10 @@
         "description": "Editing the form"
       },
       "newFormButton": "Create new form"
+    },
+    "scriptsScreens": {
+      "title": "Scripts",
+      "description": "Create and edit scripts"
     }
   },
 

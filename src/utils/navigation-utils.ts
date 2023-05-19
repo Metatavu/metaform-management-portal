@@ -10,7 +10,8 @@ namespace NavigationUtils {
   export const getTranslatedNavigation = (navigation: NavigationLinks): string => ({
     [NavigationLinks.EDITOR]: "/admin/editor",
     [NavigationLinks.FORMS]: "/admin/forms",
-    [NavigationLinks.USERS]: "/admin/users"
+    [NavigationLinks.USERS]: "/admin/users",
+    [NavigationLinks.SCRIPTS]: "/admin/scripts"
   })[navigation];
 
   /**

@@ -106,6 +106,7 @@ export enum DraggingMode {
  * Enum navigation links
  */
 export enum NavigationLinks {
+  SCRIPTS = "SCRIPTS",
   FORMS = "FORMS",
   USERS = "USERS",
   EDITOR = "EDITOR"

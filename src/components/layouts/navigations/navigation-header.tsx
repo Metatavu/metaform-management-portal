@@ -7,6 +7,7 @@ import NavigationLink from "./navigation-link";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import GroupIcon from "@mui/icons-material/Group";
 import EditIcon from "@mui/icons-material/Edit";
+import CodeIcon from "@mui/icons-material/Code";
 import NavigationUtils from "utils/navigation-utils";
 import { HeaderNavigationWrapper } from "styled/layouts/navigations";
 import FormRestrictedContent from "components/containers/form-restricted-content";
@@ -40,6 +41,11 @@ const NavigationHeader: React.FC = () => {
           currentNavigation={ currentNavigation }
           navigation={ NavigationLinks.EDITOR }
           renderIcon={ color => <EditIcon htmlColor={ color }/> }
+        />
+        <NavigationLink
+          currentNavigation={ currentNavigation }
+          navigation={ NavigationLinks.SCRIPTS }
+          renderIcon={ color => <CodeIcon htmlColor={ color }/> }
         />
       </FormRestrictedContent>
     </Stack>

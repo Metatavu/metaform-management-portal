@@ -3,7 +3,7 @@ import { Divider, Stack, Tooltip, Typography } from "@mui/material";
 import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVersion, MetaformVersionType } from "generated/client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import MetaformUtils from "utils/metaform-utils";
-import MetaformEditor from "components/editor/metaform-editor";
+import MetaformEditor from "components/forms-editor/metaform-editor";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";

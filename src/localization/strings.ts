@@ -178,6 +178,7 @@ export interface Localized extends LocalizedStringsMethods {
     list: string;
     answers: string;
     history: string;
+    scripts: string;
   };
 
   /**
@@ -225,6 +226,10 @@ export interface Localized extends LocalizedStringsMethods {
       };
       newFormButton: string;
     };
+    scriptsScreens: {
+      title: string
+      description: string
+    }
   };
 
   /**
