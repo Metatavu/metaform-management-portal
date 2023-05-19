@@ -191,7 +191,12 @@
     },
     "scriptsScreens": {
       "title": "Scripts",
-      "description": "Create and edit scripts"
+      "description": "Create and edit scripts",
+      "newScriptButton": "Create a new script",
+      "scriptsScreen": {
+        "title": "Select script",
+        "description": "Select a script to edit, or create a new one."
+      }
     }
   },
 
@@ -597,6 +602,12 @@
     "replies": {
       "replyDeleteSuccessText": "Form deleted successfully!",
       "replyEditSuccessText": "Form edited successfully!"
+    }
+  },
+
+  "scriptsScreen": {
+    "scriptsTable": {
+      "script": "Script"
     }
   }
 }

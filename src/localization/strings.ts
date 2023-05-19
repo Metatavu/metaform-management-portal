@@ -227,8 +227,13 @@ export interface Localized extends LocalizedStringsMethods {
       newFormButton: string;
     };
     scriptsScreens: {
-      title: string
-      description: string
+      title: string;
+      description: string;
+      newScriptButton: string;
+      scriptsScreen: {
+        title: string;
+        description: string;
+      };
     }
   };
 
@@ -669,6 +674,12 @@ export interface Localized extends LocalizedStringsMethods {
     replies: {
       replyDeleteSuccessText: string;
       replyEditSuccessText: string;
+    }
+  }
+
+  scriptsScreen: {
+    scriptsTable: {
+      script: string;
     }
   }
 }

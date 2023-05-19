@@ -191,7 +191,12 @@
     },
     "scriptsScreens": {
       "title": "Skriptit",
-      "description": "Skriptien luominen ja muokkaaminen"
+      "description": "Skriptien luominen ja muokkaaminen",
+      "newScriptButton": "Luo uusi skripti",
+      "scriptsScreen": {
+        "title": "Valitse skripti",
+        "description": "Valitse editoitava skripti tai luo uusi."
+      }
     }
   },
 
@@ -605,6 +610,12 @@
     "replies": {
       "replyDeleteSuccessText": "Vastauksen poistaminen onnistui!",
       "replyEditSuccessText": "Vastauksen muokkaus onnistui!"
+    }
+  },
+
+  "scriptsScreen": {
+    "scriptsTable": {
+      "script": "Skripti"
     }
   }
 }

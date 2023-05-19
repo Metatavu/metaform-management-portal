@@ -18,6 +18,7 @@ import DraftPreviewScreen from "./screens/preview/draft-preview-screen";
 import FormRestrictedContent from "./containers/form-restricted-content";
 import { Helmet } from "react-helmet";
 import Config from "app/config";
+import ScriptRoutes from "./script-editor/script-routes";
 
 /**
  * Application component
@@ -83,6 +84,16 @@ const App: React.FC = () => {
                   <Route
                     path="/*"
                     element={ <PublicLayout><PublicRoutes/></PublicLayout> }
+                  />
+                  <Route
+                    path="/admin/scripts/*"
+                    element={
+                      <FormRestrictedContent route>
+                        <AdminLayout>
+                          <ScriptRoutes/>
+                        </AdminLayout>
+                      </FormRestrictedContent>
+                    }
                   />
                 </Routes>
               </BasicLayout>
