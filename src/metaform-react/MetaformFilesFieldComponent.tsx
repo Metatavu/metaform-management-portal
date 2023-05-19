@@ -15,7 +15,7 @@ interface Props {
   fieldLabelId: string,
   value: FieldValue,
   onValueChange?: (value: FieldValue) => void,
-  // onFileUpload?: (fieldName: string, file: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => void,
+  onFileUpload?: (fieldName: string, file: FileList) => void,
   onFileShow?: (value: FileFieldValueItem) => void,
   onFileDelete?: (fieldName: string, value: FileFieldValueItem) => void,
   onFocus?: () => void,
@@ -34,6 +34,7 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
   onFileShow,
   onFileDelete,
   onFocus,
+  onFileUpload,
   notInteractive
 }) => {
   /**
@@ -43,7 +44,7 @@ const MetaformFilesFieldComponent: React.FC<Props> = ({
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && field) {
-      // onFileUpload && onFileUpload(field.name || "", event.target.files, field.uploadUrl, field.maxFileSize, field.singleFile); 
+      onFileUpload && onFileUpload(field.name || "", event.target.files);
     } else {
       onValueChange && onValueChange(event.target.value);
     }

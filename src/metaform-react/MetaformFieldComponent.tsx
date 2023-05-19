@@ -42,7 +42,7 @@ interface Props {
   renderDatePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element;
   renderDatetimePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element;
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
-  uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
+  uploadFile: (fieldName: string, file: FileList) => void;
   onFileShow: (value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
@@ -200,7 +200,7 @@ export const MetaformFieldComponent: React.FC<Props> = ({
                   fieldLabelId={ getFieldLabelId() }
                   fieldId={ getFieldId() }
                   field={ field }
-                  //onFileUpload={ onFileUpload }
+                  onFileUpload={ onFileUpload }
                   onValueChange={ onValueChange }
                   value={ thisFieldValue() }
                   onFocus={ onFocus }
@@ -334,26 +334,11 @@ export const MetaformFieldComponent: React.FC<Props> = ({
   /**
    * Event handler for file upload
    *
+   * @param fieldName field name
    * @param files file list
-   * @param path string
-   * @param maxFileSize number
-   * @param uploadSingle boolean
    */
-  const onFileUpload = (fieldName: string, files: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => {
-    if (uploadSingle) {
-      const file = files[0];
-      if (maxFileSize && file.size > maxFileSize) {
-        throw new Error(`Couldn't upload the file because it exceeded the maximum file size of ${ maxFileSize }`);
-      }
-      return uploadFile(fieldName, file, path);
-    } else {
-      for (let i = 0; i < files.length; i++) {
-        if (maxFileSize && files[i].size > maxFileSize) {
-          throw new Error(`Couldn't upload the files because one of them exceeded the maximum file size of ${ maxFileSize }`);
-        }
-      }
-      uploadFile(fieldName, files, path);
-    }
+  const onFileUpload = (fieldName: string, files: FileList) => {
+    uploadFile(fieldName, files);
   }
 
 
