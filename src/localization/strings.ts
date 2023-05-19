@@ -325,6 +325,8 @@ export interface Localized extends LocalizedStringsMethods {
           updateFields: string;
           addFieldOption: string;
           addNewColumn: string;
+          calculateColumnSum: string;
+          sumPostfix: string;
           addColumnType: string;
           columnTextType: string;
           columnNumberType: string;
