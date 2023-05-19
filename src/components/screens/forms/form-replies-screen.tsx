@@ -1,4 +1,4 @@
-import { FormControlLabel, Switch, Typography } from "@mui/material";
+import { Button, FormControlLabel, Switch, Typography } from "@mui/material";
 import { DataGrid, fiFI, GridActionsCellItem, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import Api from "api";
 import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
@@ -23,6 +23,7 @@ import LocalizationUtils from "utils/localization-utils";
 import { CheckCircle, NewReleases, Pending } from "@mui/icons-material";
 import { CREATED_FIELD_NAME, MODIFIED_FIELD_NAME, STATUS_FIELD_NAME } from "consts";
 import Feature from "components/containers/feature";
+import FileUtils from "utils/file-utils";
 
 /**
  * Meta fields with type of date-time
@@ -340,6 +341,27 @@ const FormRepliesScreen: React.FC = () => {
   };
 
   /**
+   * Event handler for export button click
+   */
+  const onExportClick = async () => {
+    setLoading(true);
+      
+    try {
+      if (!metaform?.id) {
+        return;
+      }
+
+      // eslint-disable-next-line no-underscore-dangle
+      const file = await repliesApi._export({ metaformId: metaform.id, format: "XLSX" });
+      FileUtils.downloadBlob(file, "replies.xlsx");
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminRepliesScreen.export, e);
+    }
+
+    setLoading(false);
+  };
+
+  /**
    * Renders delete reply confirm dialog
    */
   const renderDeleteReplyConfirm = () => {
@@ -360,19 +382,24 @@ const FormRepliesScreen: React.FC = () => {
   /**
    * Render toggle switch for not processed/all replies
    */
-  const renderToggleSwitch = () => (
-    <AdminFormListStack direction="row">
-      <Typography>
-        { strings.repliesScreen.selectorShowOpen }
-      </Typography>
-      <FormControlLabel
-        control={ <Switch onChange={() => { setShowAllReplies(!showAllReplies); }}/> }
-        label={ undefined }
-      />
-      <Typography>
-        { strings.repliesScreen.selectorShowAll }
-      </Typography>
-    </AdminFormListStack>
+  const renderActions = () => (
+    <>
+      <Button onClick={ onExportClick } size="large" style={{ marginRight: 15 }}>
+        { strings.repliesScreen.export }
+      </Button>
+      <AdminFormListStack direction="row">
+        <Typography>
+          {strings.repliesScreen.selectorShowOpen}
+        </Typography>
+        <FormControlLabel
+          control={<Switch onChange={() => { setShowAllReplies(!showAllReplies); }}/>}
+          label={undefined}
+        />
+        <Typography>
+          {strings.repliesScreen.selectorShowAll}
+        </Typography>
+      </AdminFormListStack>
+    </>
   );
 
   return (
@@ -380,7 +407,7 @@ const FormRepliesScreen: React.FC = () => {
       <NavigationTabContainer>
         <NavigationTab
           text={ strings.navigationHeader.formsScreens.formRepliesScreen }
-          renderActions={ renderToggleSwitch }
+          renderActions={ renderActions }
         />
         <FormRestrictedContent>
           <Feature

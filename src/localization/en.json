@@ -75,7 +75,8 @@
       "fetchReplies": "Fetching replies failed",
       "fetchFields": "Fetching column fields failed",
       "deleteReply":"Deleting reply failed",
-      "formSlugNotFound": "Form slug not found"
+      "formSlugNotFound": "Form slug not found",
+      "export": "Exporting replies failed"
     },
     "adminReplyScreen": {
       "saveReply": "Saving reply failed",
@@ -201,7 +202,8 @@
     "statusProcessing": "Processing",
     "statusDone": "Done",
     "confirmDeleteReplyTitle": "Delete answer",
-    "confirmDeleteReplyText":"Are you sure you want to delete this answer?"
+    "confirmDeleteReplyText":"Are you sure you want to delete this answer?",
+    "export": "Export"
   },
 
   "replyScreen": {

@@ -88,6 +88,7 @@ export interface Localized extends LocalizedStringsMethods {
       fetchFields: string;
       deleteReply: string;
       formSlugNotFound: string;
+      export: string;
     };
     adminReplyScreen: {
       saveReply: string;
@@ -242,6 +243,7 @@ export interface Localized extends LocalizedStringsMethods {
     statusDone: string;
     confirmDeleteReplyTitle: string;
     confirmDeleteReplyText: string;
+    export: string;
   }
 
   /**
