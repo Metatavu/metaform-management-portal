@@ -289,6 +289,8 @@
           "updateFields": "Päivitä kentät",
           "addFieldOption": "Lisää kenttä",
           "addNewColumn": "Lisää uusi sarake",
+          "classifiers": "Luokittelijat",
+          "addNewClassifier": "Lisää uusi luokittelija",
           "calculateColumnSum": "Laske sarakkeen summa",
           "sumPostfix": "Summan jälkiliite",
           "addColumnType": "Anna kentän tyyppi",

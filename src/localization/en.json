@@ -288,6 +288,8 @@
           "updateFields": "Update fields",
           "addFieldOption": "Add field",
           "addNewColumn": "Add new column",
+          "classifiers": "Classifiers",
+          "addNewClassifier": "Add new classifier",
           "calculateColumnSum": "Calculate column sum",
           "sumPostfix": "Sum post fix",
           "addColumnType": "Add column type",

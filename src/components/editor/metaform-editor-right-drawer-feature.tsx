@@ -14,6 +14,7 @@ import MetaformFieldAndSubmitEditTitleComponent from "./feature-components/Metaf
 import MetaformFieldRequiredComponent from "./feature-components/MetaformFieldRequiredComponent";
 import { selectMetaform } from "../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
+import MetaformFieldClassifiersComponent from "./feature-components/MetaformFieldClassifiersComponent";
 
 /**
  * Component properties
@@ -245,6 +246,9 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         updateFormFieldDebounced={ updateFormFieldDebounced }
       />
       <Divider/>
+      <MetaformFieldClassifiersComponent
+        updateFormFieldDebounced={ updateFormFieldDebounced }
+      />
     </>
   );
 
