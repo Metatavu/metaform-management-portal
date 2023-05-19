@@ -226,11 +226,15 @@ const Form: React.FC<Props> = ({
    * @param files files
    * @param path path
    */
-  const uploadFile = (fieldName: string, files: FileList) => {
-    for (let i = 0; i < files.length; i++) {
-      const item = files.item(i);
-      if (item) {
-        doUpload(fieldName, item, Api.createDefaultUploadUrl());
+  const uploadFile = (fieldName: string, files: FileList | File) => {
+    if (files instanceof File) {
+      doUpload(fieldName, files, Api.createDefaultUploadUrl());
+    } else {
+      for (let i = 0; i < files.length; i++) {
+        const item = files.item(i);
+        if (item) {
+          doUpload(fieldName, item, Api.createDefaultUploadUrl());
+        }
       }
     }
   };

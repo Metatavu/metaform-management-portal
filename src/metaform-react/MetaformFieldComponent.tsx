@@ -42,7 +42,7 @@ interface Props {
   renderDatePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element;
   renderDatetimePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element;
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
-  uploadFile: (fieldName: string, file: FileList) => void;
+  uploadFile: (fieldName: string, file: FileList | File) => void;
   onFileShow: (value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
@@ -337,7 +337,7 @@ export const MetaformFieldComponent: React.FC<Props> = ({
    * @param fieldName field name
    * @param files file list
    */
-  const onFileUpload = (fieldName: string, files: FileList) => {
+  const onFileUpload = (fieldName: string, files: FileList | File) => {
     uploadFile(fieldName, files);
   }
 

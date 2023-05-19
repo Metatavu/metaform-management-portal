@@ -15,7 +15,7 @@ interface Props {
   fieldLabelId: string,
   value: FieldValue,
   onValueChange?: (value: FieldValue) => void,
-  onFileUpload?: (fieldName: string, file: FileList) => void,
+  onFileUpload?: (fieldName: string, file: FileList | File) => void,
   onFileShow?: (value: FileFieldValueItem) => void,
   onFileDelete?: (fieldName: string, value: FileFieldValueItem) => void,
   onFocus?: () => void,
