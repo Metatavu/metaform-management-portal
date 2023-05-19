@@ -77,7 +77,7 @@ const ScriptsScreen: React.FC = () => {
         />
         <RoundActionButton
           endIcon={ <Add/> }
-          onClick={() => {} }
+          onClick={() => navigate("newScript") }
           sx={{ mr: theme.spacing(2) }}
         >
           { strings.navigationHeader.scriptsScreens.newScriptButton }

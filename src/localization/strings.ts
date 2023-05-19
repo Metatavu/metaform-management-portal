@@ -682,6 +682,12 @@ export interface Localized extends LocalizedStringsMethods {
       script: string;
     }
   }
+
+  scriptEditorScreen: {
+    scriptName: string;
+    scriptType: string;
+    scriptContent: string;
+  }
 }
 /**
  * Initialized localized strings

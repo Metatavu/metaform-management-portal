@@ -617,5 +617,11 @@
     "scriptsTable": {
       "script": "Skripti"
     }
+  },
+
+  "scriptEditorScreen": {
+    "scriptName": "Nimi",
+    "scriptType": "Tyyppi",
+    "scriptContent": "Skriptin sisältö"
   }
 }

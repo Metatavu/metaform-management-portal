@@ -609,5 +609,11 @@
     "scriptsTable": {
       "script": "Script"
     }
+  },
+
+  "scriptEditorScreen": {
+    "scriptName": "Name",
+    "scriptType": "Type",
+    "scriptContent": "Script content"
   }
 }
