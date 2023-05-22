@@ -19,6 +19,7 @@ import FormRestrictedContent from "./containers/form-restricted-content";
 import { Helmet } from "react-helmet";
 import Config from "app/config";
 import ScriptRoutes from "./script-editor/script-routes";
+import { selectKeycloak } from "features/auth-slice";
 
 /**
  * Application component
@@ -26,6 +27,7 @@ import ScriptRoutes from "./script-editor/script-routes";
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const { locale } = useAppSelector(selectLocale);
+  const keycloak = useAppSelector(selectKeycloak);
 
   React.useLayoutEffect(() => {
     dispatch(setLocale(locale));
@@ -85,16 +87,18 @@ const App: React.FC = () => {
                     path="/*"
                     element={ <PublicLayout><PublicRoutes/></PublicLayout> }
                   />
-                  <Route
-                    path="/admin/scripts/*"
-                    element={
-                      <FormRestrictedContent route>
-                        <AdminLayout>
-                          <ScriptRoutes/>
-                        </AdminLayout>
-                      </FormRestrictedContent>
-                    }
-                  />
+                  { keycloak?.hasRealmRole("metatavu-admin") &&
+                    <Route
+                      path="/admin/scripts/*"
+                      element={
+                        <FormRestrictedContent route>
+                          <AdminLayout>
+                            <ScriptRoutes/>
+                          </AdminLayout>
+                        </FormRestrictedContent>
+                      }
+                    />
+                  }
                 </Routes>
               </BasicLayout>
             </ConfirmHandler>
