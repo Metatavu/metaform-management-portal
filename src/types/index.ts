@@ -1,5 +1,6 @@
 import { NOT_SELECTED } from "consts";
 import { AuditLogEntryType } from "generated/client";
+import { ReactElement } from "react";
 
 /**
  * Application configuration
@@ -32,7 +33,9 @@ export interface Configuration {
     backgroundColor?: string;
     title?: string;
     supportEmail?: string;
+    leaveSiteUrl?: string;
   };
+  features: string;
 }
 
 /**
@@ -189,4 +192,36 @@ declare module "@mui/material/styles" {
 
   interface Theme extends CustomTheme {}
   interface ThemeOptions extends CustomTheme {}
+}
+
+/**
+ * Enum for different types of Metaform features
+ */
+export enum FeatureType {
+  SOSMETA = "sosMeta",
+  FORM_USAGE_STATISTICS = "formUsageStatistics",
+  AUDIT_LOG = "auditLog",
+  STRONG_AUTHENTICATION = "StrongAuthentication",
+  EXCEL_EXPORT = "excelExport",
+  ADVANCED_PERMISSION_TARGETING = "advancedPermissionTargeting"
+}
+
+/**
+ * Enum for different types of Metaform feature strategies
+ */
+export enum FeatureStrategy {
+  HIDE = "hide",
+  DISABLE = "disable",
+  REPLACE = "replace"
+}
+
+/**
+ * Interface describing feature props
+ */
+export interface FeatureProps {
+  feature: FeatureType;
+  children: ReactElement;
+  title?: string;
+  description?: string;
+  strategy: FeatureStrategy;
 }

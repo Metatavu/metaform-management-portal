@@ -1,4 +1,4 @@
-import { Checkbox, Divider, FormControl, FormControlLabel, FormLabel, Icon, MenuItem, Stack, Tab, Tabs, TextField, Tooltip, Typography } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, Grid, Icon, MenuItem, Stack, Tab, Tabs, TextField, Tooltip, Typography } from "@mui/material";
 import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVisibility } from "generated/client";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
@@ -6,10 +6,11 @@ import TabPanel from "components/generic/tab-panel";
 import strings from "localization/strings";
 import React, { ChangeEventHandler, useEffect, useState, FC } from "react";
 import { EditorDrawer } from "styled/editor/metaform-editor";
-import { DraggingMode } from "types";
+import { DraggingMode, FeatureStrategy, FeatureType } from "types";
 import slugify from "slugify";
 import produce from "immer";
 import { NOT_SELECTED } from "consts";
+import Feature from "components/containers/feature";
 
 /**
  * Component properties
@@ -128,8 +129,10 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
    */
   const renderFormTab = () => (
     <FormControl fullWidth>
-      <Stack spacing={ 2 } padding={ 1 }>
-        <FormLabel>{ strings.draftEditorScreen.editor.form.versionInfo }</FormLabel>
+      <Stack spacing={ 2 }>
+        <Typography variant="subtitle1" style={{ width: "100%" }}>
+          { strings.draftEditorScreen.editor.form.versionInfo }
+        </Typography>
         <TextField
           label={ strings.draftEditorScreen.editor.form.formTitle }
           value={ pendingForm?.title }
@@ -140,19 +143,28 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
           value={ `${currentHostname}/${pendingForm?.slug}` }
           disabled
         />
-        <Divider/>
-        <FormLabel>{ strings.draftEditorScreen.editor.form.formVisibility }</FormLabel>
-        <TextField
-          select
-          label={ strings.draftEditorScreen.editor.form.formVisibilityLabel }
-          value={ pendingForm?.visibility }
-          onChange={ event => onFormVisibilityChange(event.target.value as MetaformVisibility) }
+        <Feature
+          feature={ FeatureType.SOSMETA}
+          strategy={ FeatureStrategy.HIDE}
         >
-          <MenuItem value={ MetaformVisibility.Public }>{ strings.draftEditorScreen.editor.form.public }</MenuItem>
-          <MenuItem value={ MetaformVisibility.Private }>{ strings.draftEditorScreen.editor.form.private }</MenuItem>
-        </TextField>
-        <Divider/>
-        <FormLabel>{ strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfo }</FormLabel>
+          <>
+            <Typography variant="subtitle1" style={{ width: "100%" }}>
+              { strings.draftEditorScreen.editor.form.formVisibility }
+            </Typography>
+            <TextField
+              select
+              label={ strings.draftEditorScreen.editor.form.formVisibilityLabel }
+              value={ pendingForm?.visibility }
+              onChange={ event => onFormVisibilityChange(event.target.value as MetaformVisibility) }
+            >
+              <MenuItem value={ MetaformVisibility.Public }>{ strings.draftEditorScreen.editor.form.public }</MenuItem>
+              <MenuItem value={ MetaformVisibility.Private }>{ strings.draftEditorScreen.editor.form.private }</MenuItem>
+            </TextField>
+          </>
+        </Feature>
+        <Typography variant="subtitle1" style={{ width: "100%" }}>
+          { strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfo }
+        </Typography>
         <TextField
           select
           label={ strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfoLabel }
@@ -200,17 +212,6 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
   );
 
   /**
-   * Renders fields category title
-   *
-   * @param title title
-   */
-  const renderFieldsCategoryTitle = (title: string) => (
-    <Typography variant="subtitle1" style={{ width: "100%" }}>
-      { title }
-    </Typography>
-  );
-
-  /**
    * When open form in form editor, check if form have default member group.
    */
   useEffect(() => {
@@ -222,16 +223,22 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
    * Render fields tab
    */
   const renderFieldsTab = () => (
-    <>
-      { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.fields.staticFields) }
+    <Grid container gap={ 1 }>
+      <Typography variant="subtitle1" style={{ width: "100%" }}>
+        { strings.draftEditorScreen.editor.fields.staticFields }
+      </Typography>
       { renderFieldDraggable(MetaformFieldType.Html, strings.draftEditorScreen.editor.fields.html, "html") }
-      { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.fields.selectorFields) }
+      <Typography variant="subtitle1" style={{ width: "100%" }}>
+        { strings.draftEditorScreen.editor.fields.selectorFields }
+      </Typography>
       { renderFieldDraggable(MetaformFieldType.Boolean, strings.draftEditorScreen.editor.fields.boolean, "checkbox") }
       { renderFieldDraggable(MetaformFieldType.Select, strings.draftEditorScreen.editor.fields.select, "expand_circle_down") }
       { renderFieldDraggable(MetaformFieldType.Slider, strings.draftEditorScreen.editor.fields.slider, "linear_scale") }
       { renderFieldDraggable(MetaformFieldType.Checklist, strings.draftEditorScreen.editor.fields.checklist, "fact_check") }
       { renderFieldDraggable(MetaformFieldType.Radio, strings.draftEditorScreen.editor.fields.radio, "radio_button_checked") }
-      { renderFieldsCategoryTitle(strings.draftEditorScreen.editor.fields.inputFields) }
+      <Typography variant="subtitle1" style={{ width: "100%" }}>
+        { strings.draftEditorScreen.editor.fields.inputFields }
+      </Typography>
       { renderFieldDraggable(MetaformFieldType.Text, strings.draftEditorScreen.editor.fields.text, "text_fields") }
       { renderFieldDraggable(MetaformFieldType.Number, strings.draftEditorScreen.editor.fields.number, "looks_one") }
       { renderFieldDraggable(MetaformFieldType.Memo, strings.draftEditorScreen.editor.fields.memo, "notes") }
@@ -240,7 +247,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
       { renderFieldDraggable(MetaformFieldType.Files, strings.draftEditorScreen.editor.fields.files, "attachment") }
       { renderFieldDraggable(MetaformFieldType.Table, strings.draftEditorScreen.editor.fields.table, "table_chart") }
       { renderFieldDraggable(MetaformFieldType.Submit, strings.draftEditorScreen.editor.fields.submit, "send") }
-    </>
+    </Grid>
   );
 
   /**

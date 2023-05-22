@@ -88,12 +88,12 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
   const renderMultiChoiceOptionEdit = (option: MetaformFieldOption, index: number) => (
     <Stack
       key={ `option-${index}` }
-      spacing={ 2 }
+      spacing={ 0 }
       direction="row"
     >
       <TextField
+        fullWidth
         value={ option.text }
-        label={ index }
         focused={ memberGroupOptIndex === index }
         color="success"
         onChange={ event => updateOptionText({

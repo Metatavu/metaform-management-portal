@@ -9,6 +9,8 @@ import SosmetaUtils from "utils/sosmeta-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { ErrorContext } from "components/contexts/error-handler";
 import Config from "app/config";
+import Feature from "components/containers/feature";
+import { FeatureType, FeatureStrategy } from "types";
 
 /**
  * Component props
@@ -48,9 +50,9 @@ const EditorScreenDrawer: FC<Props> = ({
     formName: "",
     formSlug: "",
     formUrl: "",
-    formTemplate: true,
+    formTemplate: false,
     formSchema: "",
-    formAuthentication: true
+    formAuthentication: false
   });
   const [ valid, setValid ] = useState<boolean>(false);
   const [ converting, setConverting ] = useState<boolean>(false);
@@ -226,15 +228,17 @@ const EditorScreenDrawer: FC<Props> = ({
                 { strings.editorScreen.drawer.formTemplateSosmetaLink }
               </Link>
             </FormHelperText>
+              
           </RadioGroup>
-          <TextField
-            fullWidth
-            label={ strings.editorScreen.drawer.formTemplateSchema }
-            value={ formSettings.formSchema }
-            disabled={ !formSettings.formTemplate }
-            onChange={ onInputFieldChange }
-            name="formSchema"
-          />
+          { formSettings.formTemplate &&
+            <TextField
+              fullWidth
+              label={ strings.editorScreen.drawer.formTemplateSchema }
+              value={ formSettings.formSchema }
+              onChange={ onInputFieldChange }
+              name="formSchema"
+            />
+          }
         </Stack>
       </Box>
     );
@@ -254,11 +258,20 @@ const EditorScreenDrawer: FC<Props> = ({
             onChange={ onInputFieldChange }
             name="formAuthentication"
           >
-            <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationService }/>
-            <FormHelperText>
-              { strings.editorScreen.drawer.formIdentificationHelper }
-            </FormHelperText>
             <FormControlLabel value={ false } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationNone }/>
+            <Feature
+              feature={ FeatureType.STRONG_AUTHENTICATION }
+              title={ strings.features.strongAuthentication.title }
+              description={ strings.features.strongAuthentication.description }
+              strategy={ FeatureStrategy.DISABLE }
+            >
+              <>
+                <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationService }/>
+                <FormHelperText>
+                  { strings.editorScreen.drawer.formIdentificationHelper }
+                </FormHelperText>
+              </>
+            </Feature>
           </RadioGroup>
         </Stack>
       </Box>
@@ -336,7 +349,12 @@ const EditorScreenDrawer: FC<Props> = ({
             <Divider/>
             { renderDrawerInfoSection() }
             <Divider/>
-            { renderDrawerTemplateSection() }
+            <Feature
+              feature={ FeatureType.SOSMETA}
+              strategy={ FeatureStrategy.HIDE}
+            >
+              { renderDrawerTemplateSection() }
+            </Feature>
             <Divider/>
             { renderDrawerAuthenticationSection() }
           </FormControl>

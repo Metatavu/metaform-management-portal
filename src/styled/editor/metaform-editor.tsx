@@ -30,7 +30,8 @@ export const EditorWrapper = styled(Stack, {
 export const EditorDrawer = styled(Paper, {
   label: "metaform-editor-drawer"
 })(() => ({
-  width: 300,
+  width: "12vw",
+  minWidth: 360,
   height: "100%",
   overflow: "hidden",
   display: "flex",

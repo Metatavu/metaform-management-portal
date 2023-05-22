@@ -158,6 +158,9 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
       case MetaformFieldType.Number:
         return (
           <>
+            <Typography variant="subtitle1" style={{ width: "100%" }}>
+              { strings.draftEditorScreen.editor.features.field.fieldProperties }
+            </Typography>
             <MetaformSliderComponent
               updateFormFieldDebounced={ updateFormFieldDebounced }
             />
@@ -169,6 +172,9 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
       case MetaformFieldType.Select:
         return (
           <>
+            <Typography variant="subtitle1" style={{ width: "100%" }}>
+              { strings.draftEditorScreen.editor.features.field.fieldProperties }
+            </Typography>
             <MetaformMultiChoiceFieldPropertiesComponent
               updateFormFieldDebounced={ updateFormFieldDebounced }
             />
@@ -183,6 +189,9 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
       case MetaformFieldType.Table:
         return (
           <>
+            <Typography variant="subtitle1" style={{ width: "100%" }}>
+              { strings.draftEditorScreen.editor.features.field.fieldProperties }
+            </Typography>
             <MetaformTableComponent
               updateFormFieldDebounced={ updateFormFieldDebounced }
             />
@@ -193,6 +202,9 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
       case MetaformFieldType.DateTime:
         return (
           <>
+            <Typography variant="subtitle1" style={{ width: "100%" }}>
+              { strings.draftEditorScreen.editor.features.field.fieldProperties }
+            </Typography>
             <MetaformDateTimeComponent
               updateFormFieldDebounced={ updateFormFieldDebounced }
             />
@@ -234,6 +246,9 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
   const renderFieldEditor = (field: MetaformField) => (
     <>
       <MetaformFieldAndSubmitEditTitleComponent
+        updateFormFieldDebounced={ updateFormFieldDebounced }
+      />
+      <MetaformFieldRequiredComponent
         updateFormFieldDebounced={ updateFormFieldDebounced }
       />
       <Divider/>
