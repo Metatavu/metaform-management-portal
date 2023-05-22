@@ -46,14 +46,14 @@ export const SubmitFieldWrapper = styled(Button, {
   color: "#fff",
   backgroundColor: "#000",
   "& .MuiSvgIcon-root": {
-    color: Config.get().theme.paletteSecondaryMain
+    color: "#fff"
   },
   "&:hover": {
     border: 0,
-    color: "#000",
+    color: theme.palette.primary.contrastText,
     backgroundColor: Config.get().theme.paletteSecondaryMain,
     "& .MuiSvgIcon-root": {
-      color: "#000"
+      color: theme.palette.primary.contrastText
     }
   }
 }));
@@ -335,4 +335,22 @@ export const DialogTitleWrapper = styled(DialogTitle, {
   backgroundColor: "#000",
   color: "#fff",
   textAlign: "center"
+}));
+
+/**
+ *  Styled wrapper for disabled feature
+ */
+export const DisabledFeatureWrapper = styled(Box, {
+  label: "disabled-feature-wrapper"
+})(() => ({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backdropFilter: "blur(1.5px)",
+  zIndex: 1,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center"
 }));

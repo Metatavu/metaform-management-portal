@@ -37,7 +37,7 @@ const TabPanel: React.FC<Props> = ({
         flexWrap: "wrap",
         flexDirection: "row"
       }}
-      p={ padding ?? 2 }
+      p={ padding ?? 1 }
     >
       { children }
     </Stack>

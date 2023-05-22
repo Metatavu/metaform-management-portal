@@ -13,7 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { selectKeycloak } from "features/auth-slice";
-import { FormContext, ReplyStatus } from "types";
+import { FormContext, FeatureType, FeatureStrategy, ReplyStatus } from "types";
 import FormRestrictedContent from "components/containers/form-restricted-content";
 import AuthUtils from "utils/auth-utils";
 import { AdminFormListStack, AdminFormTypographyField } from "styled/react-components/react-components";
@@ -22,6 +22,7 @@ import theme from "theme";
 import LocalizationUtils from "utils/localization-utils";
 import { CheckCircle, NewReleases, Pending } from "@mui/icons-material";
 import { CREATED_FIELD_NAME, MODIFIED_FIELD_NAME, STATUS_FIELD_NAME } from "consts";
+import Feature from "components/containers/feature";
 import FileUtils from "utils/file-utils";
 
 /**
@@ -383,9 +384,16 @@ const FormRepliesScreen: React.FC = () => {
    */
   const renderActions = () => (
     <>
-      <Button onClick={ onExportClick } size="large" style={{ marginRight: 15 }}>
-        { strings.repliesScreen.export }
-      </Button>
+      <Feature
+        feature={ FeatureType.EXCEL_EXPORT }
+        title={ strings.features.excelExport.title }
+        description={ strings.features.excelExport.description }
+        strategy={ FeatureStrategy.HIDE }
+      >
+        <Button onClick={ onExportClick } size="large" sx={{ mr: 2 }}>
+          { strings.repliesScreen.export }
+        </Button>
+      </Feature>
       <AdminFormListStack direction="row">
         <Typography>
           {strings.repliesScreen.selectorShowOpen}
@@ -409,10 +417,17 @@ const FormRepliesScreen: React.FC = () => {
           renderActions={ renderActions }
         />
         <FormRestrictedContent>
-          <NavigationTab
-            text={ strings.navigationHeader.formsScreens.formHistoryScreen }
-            to="./../history"
-          />
+          <Feature
+            feature={FeatureType.AUDIT_LOG}
+            title={ strings.features.auditLog.title }
+            description={ strings.features.auditLog.description }
+            strategy={ FeatureStrategy.DISABLE}
+          >
+            <NavigationTab
+              text={ strings.navigationHeader.formsScreens.formHistoryScreen }
+              to="./../history"
+            />
+          </Feature>
         </FormRestrictedContent>
       </NavigationTabContainer>
       <DataGrid

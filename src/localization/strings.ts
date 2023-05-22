@@ -316,6 +316,7 @@ export interface Localized extends LocalizedStringsMethods {
         field: {
           fieldData: string;
           fieldType: string;
+          fieldProperties: string;
           fieldTitle: string;
           defineUserGroup: string;
           selectableFieldsInfo: string;
@@ -661,6 +662,36 @@ export interface Localized extends LocalizedStringsMethods {
       replyDeleteSuccessText: string;
       replyEditSuccessText: string;
     }
+  }
+
+  /**
+   * Traslations related to features
+   */
+  features: {
+    sosMeta: {
+      title: string;
+      description: string;
+    };
+    formUsageStatistics: {
+      title: string;
+      description: string;
+    };
+    auditLog: {
+      title: string;
+      description: string;
+    };
+    strongAuthentication: {
+      title: string;
+      description: string;
+    };
+    excelExport: {
+      title: string;
+      description: string;
+    };
+    advancedPermissionTargeting: {
+      title: string;
+      description: string;
+    };
   }
 }
 /**

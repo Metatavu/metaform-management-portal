@@ -214,8 +214,8 @@
   "publicFormsScreen": {
     "title": "Lomakkeet",
     "welcome": "Tervetuloa lomakeportaaliin",
-    "welcomeInfo": "Jos olet ammattilainen, niin voit kirjautua sisään. Vierailija palaa hyvinvointialueen sivuille.",
-    "backToEssote": "Hyvinvointialueen sivuille"
+    "welcomeInfo": "Jos olet ammattilainen, niin voit kirjautua sisään. Vierailija palaa takaisin kotisivulle.",
+    "backToEssote": "Takaisin kotisivulle"
   },
 
   "draftEditorScreen": {
@@ -280,7 +280,8 @@
         "field": {
           "fieldData": "Kentän tiedot",
           "fieldType": "Kentän tyyppi",
-          "required": "Pakollisuus",
+          "fieldProperties": "Kentän ominaisuudet",
+          "required": "Pakollinen kenttä",
           "defineUserGroup": "Määrittää käyttäjäryhmän",
           "selectableFieldsInfo": "Valittavissa vain valikkoelementeille (radio, alasveto, checkbox, päivä & aika).",
           "fieldTitle": "Kentän otsikko",
@@ -295,7 +296,7 @@
           "submitButtonText": "Painikkeen teksti",
           "newFieldOption": "Valintakenttä",
           "addCustomHtml": "Lisää tähän HTML-sisältöä",
-          "contextVisibilityInfo": "Kentän hallinnointi asetukset",
+          "contextVisibilityInfo": "Kentän hallinnointiasetukset",
           "workDaysOnly": "Vain työpäivät",
           "allowPast": "Menneet päivät",
           "slider": {
@@ -597,5 +598,33 @@
       "replyDeleteSuccessText": "Vastauksen poistaminen onnistui!",
       "replyEditSuccessText": "Vastauksen muokkaus onnistui!"
     }
+  },
+
+  "features": {
+    "sosMeta": {
+      "title": "Sosmeta",
+      "description": "Sosmeta on Terveyden ja Hyvinvoinnin laitoksen ylläpitämä palvelu, joka sisältää valmiita rakennepohjia lomakkeille. Voit luoda lomakkeen Sosmetan rakenteiden mukaisesti valitsemalla lomakkeen pohjaksi Sosmetan pohjan."
+    },
+    "formUsageStatistics": {
+      "title": "Lomakkeen käyttödata",
+      "description": "Lomakkeiden käyttötilastojen tarkastelu. Ominaisuutta ei ole otettu käyttöön."
+    },
+    "auditLog": {
+      "title": "Auditointi",
+      "description": "Lomakkeiden käsittelyhistorian tarkastelu. Ominaisuutta ei ole otettu käyttöön."
+    },
+    "strongAuthentication": {
+      "title": "Vahva tunnistautuminen",
+      "description": "Lomakkeen täyttäjän vahva tunnistautuminen. Ominaisuutta ei ole otettu käyttöön."
+    },
+    "excelExport": {
+      "title": "Excel-vienti",
+      "description": "Lomakkeen vastausten vienti Excel-taulukkona. Ominaisuutta ei ole otettu käyttöön."
+    },
+    "advancedPermissionTargeting": {
+      "title": "Käyttäjäryhmien hallinta",
+      "description": "Lomakkeen käyttäjäryhmien hallinta. Ominaisuutta ei ole otettu käyttöön." 
+    }
   }
+
 }
