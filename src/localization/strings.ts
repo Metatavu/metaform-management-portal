@@ -121,6 +121,10 @@ export interface Localized extends LocalizedStringsMethods {
       listReplies: string;
       listAuditLogEntries: string;
     };
+    scriptEditorScreen: {
+      findScript: string;
+      saveScript: string;
+    }
   };
 
   /**
@@ -687,6 +691,7 @@ export interface Localized extends LocalizedStringsMethods {
     scriptName: string;
     scriptType: string;
     scriptContent: string;
+    saveScript: string;
   }
 }
 /**

@@ -108,6 +108,10 @@
       "listForms": "Fetching forms failed",
       "listReplies": "Fetching replies failed",
       "listAuditLogEntries": "Fetching audit log entries failed"
+    },
+    "scriptEditorScreen": {
+      "findScript": "Fetching script data failed",
+      "saveScript": "Saving script failed"
     }
   },
 
@@ -614,6 +618,7 @@
   "scriptEditorScreen": {
     "scriptName": "Name",
     "scriptType": "Type",
-    "scriptContent": "Script content"
+    "scriptContent": "Script content",
+    "saveScript": "Save"
   }
 }
