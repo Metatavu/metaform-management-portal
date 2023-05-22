@@ -1,5 +1,5 @@
-import { Add } from "@mui/icons-material";
-import { Divider, Stack } from "@mui/material";
+import { Add, Delete } from "@mui/icons-material";
+import { Divider, IconButton, Stack } from "@mui/material";
 import { DataGrid, GridColDef, fiFI } from "@mui/x-data-grid";
 import Api from "api";
 import { useApiClient } from "app/hooks";
@@ -45,11 +45,29 @@ const ScriptsScreen: React.FC = () => {
     loadScripts();
   }, []);
 
+  /**
+   * Delete script
+   * 
+   * @param id script id
+   */
+  const deleteScript = async (id: string) => {
+    setLoading(true);
+
+    try {
+      await scriptsApi.deleteScript({ scriptId: id });
+      setScripts(scripts.filter(script => script.id !== id));
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.scriptEditorScreen.findScript, e);
+    }
+
+    setLoading(false);
+  };
+
   const columns: GridColDef[] = [
     {
       field: "name",
       headerName: strings.scriptsScreen.scriptsTable.script,
-      flex: 1,
+      flex: 5,
       renderHeader: params => {
         return (
           <AdminFormListStack direction="row">
@@ -63,6 +81,19 @@ const ScriptsScreen: React.FC = () => {
           <AdminFormListStack direction="row">
             <ListIcon style={ { fill: "darkgrey" } }/>
             <AdminFormTypographyField>{ params.row.name }</AdminFormTypographyField>
+          </AdminFormListStack>
+        );
+      }
+      
+    },
+    {
+      field: "delete",
+      headerName: strings.scriptsScreen.scriptsTable.delete,
+      flex: 1,
+      renderCell: params => {
+        return (
+          <AdminFormListStack direction="row">
+            <AdminFormTypographyField>{ params.row.delete }</AdminFormTypographyField>
           </AdminFormListStack>
         );
       }
@@ -90,7 +121,11 @@ const ScriptsScreen: React.FC = () => {
         disableSelectionOnClick
         localeText={ fiFI.components.MuiDataGrid.defaultProps.localeText }
         loading={ loading }
-        rows={ scripts.map(script => ({ name: script.name, id: script.id })) }
+        rows={ scripts.map(script => ({
+          name: script.name,
+          id: script.id,
+          delete: (<IconButton onClick={ () => script.id && deleteScript(script.id) }><Delete/></IconButton>)
+        })) }
         columns={ columns }
         onRowDoubleClick={ rowParams => navigate(`${rowParams.row.id}/`) }
       />

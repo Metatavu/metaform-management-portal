@@ -619,7 +619,8 @@
 
   "scriptsScreen": {
     "scriptsTable": {
-      "script": "Skripti"
+      "script": "Skripti",
+      "delete": "Poista"
     }
   },
 

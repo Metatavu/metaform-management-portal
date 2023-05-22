@@ -684,6 +684,7 @@ export interface Localized extends LocalizedStringsMethods {
   scriptsScreen: {
     scriptsTable: {
       script: string;
+      delete: string;
     }
   }
 

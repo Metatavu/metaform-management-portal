@@ -611,7 +611,8 @@
 
   "scriptsScreen": {
     "scriptsTable": {
-      "script": "Script"
+      "script": "Script",
+      "delete": "Delete"
     }
   },
 
