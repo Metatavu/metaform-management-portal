@@ -194,7 +194,7 @@ declare module "@mui/material/styles" {
 }
 
 /**
- * Enum for different types of Metaform names
+ * Enum for different types of Metaform features
  */
 export enum FeatureType {
   SOSMETA = "sosMeta",
