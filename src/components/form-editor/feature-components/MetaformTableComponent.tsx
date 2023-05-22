@@ -156,7 +156,7 @@ const MetaformTableComponent: FC<Props> = ({
   const renderTableNewColumn = () => (
     <Stack
       spacing={ 0 }
-      direction="row"
+      direction="column"
     >
       <TextField
         select

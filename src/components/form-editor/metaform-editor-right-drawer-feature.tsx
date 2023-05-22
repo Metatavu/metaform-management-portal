@@ -15,6 +15,8 @@ import MetaformFieldRequiredComponent from "./feature-components/MetaformFieldRe
 import { selectMetaform } from "../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
 import MetaformFieldClassifiersComponent from "./feature-components/MetaformFieldClassifiersComponent";
+import Feature from "components/containers/feature";
+import { FeatureStrategy, FeatureType } from "types";
 
 /**
  * Component properties
@@ -261,9 +263,11 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         updateFormFieldDebounced={ updateFormFieldDebounced }
       />
       <Divider/>
-      <MetaformFieldClassifiersComponent
-        updateFormFieldDebounced={ updateFormFieldDebounced }
-      />
+      <Feature feature={ FeatureType.FORM_SCRIPTS } strategy={ FeatureStrategy.HIDE } >
+        <MetaformFieldClassifiersComponent
+          updateFormFieldDebounced={ updateFormFieldDebounced }
+        />
+      </Feature>
     </>
   );
 
