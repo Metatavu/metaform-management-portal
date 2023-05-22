@@ -17,7 +17,7 @@ const ScriptRoutes: React.FC = () => (
       element={ <ScriptEditorScreen/> }
     />
     <Route
-      path="/:id"
+      path="/:scriptId"
       element={ <ScriptEditorScreen/> }
     />
   </Routes>
