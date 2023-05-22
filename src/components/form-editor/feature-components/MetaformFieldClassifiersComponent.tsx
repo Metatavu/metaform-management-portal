@@ -33,7 +33,7 @@ const MetaformFieldClassifiersComponent: FC<Props> = ({
   }, [metaformFieldIndex, metaformSectionIndex, metaformVersion]);
 
   /**
-   * Add new classifier in table
+   * Add a new classifier
    */
   const addNewClassifier = () => {
     if (!metaformField) {

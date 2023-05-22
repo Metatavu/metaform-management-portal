@@ -1,5 +1,5 @@
 import { Checkbox, FormControl, FormControlLabel, Grid, Icon, MenuItem, Stack, Tab, Tabs, TextField, Tooltip, Typography } from "@mui/material";
-import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVisibility } from "generated/client";
+import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVisibility, Script } from "generated/client";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
 import TabPanel from "components/generic/tab-panel";
@@ -11,6 +11,7 @@ import slugify from "slugify";
 import produce from "immer";
 import { NOT_SELECTED } from "consts";
 import Feature from "components/containers/feature";
+import MetaformScriptsComponent from "./feature-components/MetaformScriptsComponent";
 
 /**
  * Component properties
@@ -57,6 +58,18 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
     pendingForm && setPendingForm({
       ...pendingForm,
       visibility: selectedVisibility
+    });
+  };
+
+  /**
+   * Event handler for metaform scripts change
+   * 
+   * @param scripts 
+   */
+  const onFormScriptsChange = (scripts: Script[]) => {
+    pendingForm && setPendingForm({
+      ...pendingForm,
+      scripts: scripts.map(script => script.id!!)
     });
   };
 
@@ -182,6 +195,11 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
           }
         </TextField>
         { renderNotifications() }
+        <Feature feature={ FeatureType.FORM_SCRIPTS } strategy={ FeatureStrategy.HIDE } >
+          <MetaformScriptsComponent
+            updateFormScripts={ onFormScriptsChange }
+          />
+        </Feature>
       </Stack>
     </FormControl>
   );

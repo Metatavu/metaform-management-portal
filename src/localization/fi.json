@@ -52,7 +52,8 @@
     "draftEditorScreen": {
       "findDraft": "Lomakeversion haku epäonnistui",
       "saveDraft": "Lomakeversion tallentaminen epäonnistui",
-      "publishDraft": "Lomakeversion julkaiseminen epäonnistui"
+      "publishDraft": "Lomakeversion julkaiseminen epäonnistui",
+      "loadScripts": "Skriptien lataaminen epäonnistui"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -235,6 +236,10 @@
   "draftEditorScreen": {
     "preview": "Esikatsele",
     "publish": "Julkaise",
+    "scripts": {
+      "scripts": "Skriptit",
+      "addNewScript": "Lisää uusi skripti"
+    },
     "publishDialog": {
       "title": "Julkaise versio",
       "contentText": "Oletko varma, että haluat julkaista lomakkeen {0}?"

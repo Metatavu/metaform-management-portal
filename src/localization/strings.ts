@@ -65,6 +65,7 @@ export interface Localized extends LocalizedStringsMethods {
       findDraft: string;
       saveDraft: string;
       publishDraft: string;
+      loadScripts: string;
     };
     formScreen: {
       saveReply: string;
@@ -417,6 +418,10 @@ export interface Localized extends LocalizedStringsMethods {
         noTitle: string;
       };
     };
+    scripts: {
+      scripts: string;
+      addNewScript: string;
+    }
   };
 
   /**

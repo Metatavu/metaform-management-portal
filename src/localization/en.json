@@ -52,7 +52,8 @@
     "draftEditorScreen": {
       "findDraft": "Fetching form version failed",
       "saveDraft": "Saving form version failed",
-      "publishDraft": "Publishing form version failed"
+      "publishDraft": "Publishing form version failed",
+      "loadScripts": "Loading scripts failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -238,6 +239,10 @@
     "publishDialog": {
       "title": "Publish version",
       "contentText": "Are you sure you wish to publish {0}?"
+    },
+    "scripts": {
+      "scripts": "Scripts",
+      "addNewScript": "Add new script"
     },
     "editor": {
       "addSection": "Add section",

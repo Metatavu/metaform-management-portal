@@ -124,7 +124,7 @@ const ScriptsScreen: React.FC = () => {
         rows={ scripts.map(script => ({
           name: script.name,
           id: script.id,
-          delete: (<IconButton onClick={ () => script.id && deleteScript(script.id) }><Delete/></IconButton>)
+          delete: (<IconButton color="error" onClick={ () => script.id && deleteScript(script.id) }><Delete color="error"/></IconButton>)
         })) }
         columns={ columns }
         onRowDoubleClick={ rowParams => navigate(`${rowParams.row.id}/`) }
