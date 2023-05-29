@@ -137,7 +137,7 @@ namespace MetaformUtils {
    * Checks if field name on form is unique
    * 
    * @param metaform metaform
-   * @param name field name
+   * @param name metaform field name
    * @returns boolean whether field name is unique
    */
   const checkIfFieldNameIsUnique = (metaform: Metaform, name: string) => {
