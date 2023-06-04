@@ -32,6 +32,7 @@ const Breadcrumbs: React.FC = () => {
       >
         <Crumb
           to={ pathname }
+          a-key={ index }
         >
           <Typography variant="subtitle2">
             { breadcrumb }

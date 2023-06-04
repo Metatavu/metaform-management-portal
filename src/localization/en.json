@@ -221,6 +221,8 @@
   "draftEditorScreen": {
     "preview": "Preview",
     "publish": "Publish",
+    "confirmLeavePageWithoutSaving": "Are you sure you want to leave without saving?",
+    "unsavedChanges": "Unsaved changes",
     "publishDialog": {
       "title": "Publish version",
       "contentText": "Are you sure you wish to publish {0}?"

@@ -17,6 +17,7 @@ import { RoundActionButton } from "styled/generic/form";
 import { selectMetaform, setMetaformVersion, setMetaformSelectionsUndefined } from "features/metaform-slice";
 import { setSnackbarMessage } from "features/snackbar-slice";
 import ConfirmDialog from "components/generic/confirm-dialog";
+import LeavePageHandler from "components/contexts/leave-page-handler";
 
 /**
  * Draft editor screen component
@@ -209,7 +210,7 @@ const DraftEditorScreen: React.FC = () => {
   /**
    * Renders draft editor actions
    */
-  const draftEditorActions = () => (
+  const renderDraftEditorActions = () => (
     <Stack direction="row" spacing={ 2 }>
       <RoundActionButton
         startIcon={ <Save/> }
@@ -241,10 +242,12 @@ const DraftEditorScreen: React.FC = () => {
     <Stack flex={ 1 } overflow="hidden">
       { renderPublishConfirmDialog() }
       <NavigationTabContainer>
-        <NavigationTab
-          text={ strings.navigationHeader.editorScreens.draftEditorScreen }
-          renderActions={ draftEditorActions }
-        />
+        <LeavePageHandler active={ true } updatedFormData={MetaformUtils.jsonToMetaform(draftForm)}>
+          <NavigationTab
+            text={ strings.navigationHeader.editorScreens.draftEditorScreen }
+            renderActions={ renderDraftEditorActions }
+          />
+        </LeavePageHandler>
       </NavigationTabContainer>
       <Divider/>
       <GenericLoaderWrapper loading={ loading }>
