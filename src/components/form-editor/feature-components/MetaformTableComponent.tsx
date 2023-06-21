@@ -87,7 +87,6 @@ const MetaformTableComponent: FC<Props> = ({
         onChange={ event => updateTableColumn({
           ...column,
           title: event.target.value,
-          type: "text" as MetaformTableColumnType,
           values: undefined
         }, index)}
       />

@@ -9,8 +9,9 @@ namespace ScriptUtils {
   /**
    * Runs a script on a spreadsheet
    * 
-   * @param spreadsheetFile 
-   * @param script 
+   * @param spreadsheetFile spreadsheet
+   * @param script  script
+   * @param nameClassifierEntries field names and classifiers
    */
   export const runScriptsOnSpreadsheet = async (spreadsheetFile: Blob, script: string, nameClassifierEntries: NameClassifierEntry[]) => {
     const workbook = new ExcelJS.Workbook();
@@ -27,6 +28,14 @@ namespace ScriptUtils {
         const currentValues = column.values?.map(value => value as any) || [];
         currentValues.shift();
         mainSheet.spliceColumns(columnIndex + 1, 1, currentValues, sumColumn);
+        column.values?.forEach((value, row) => {
+          const tableName = value?.toString();
+          if (tableName && row !== 1) {
+            const tableSheet = workbook.worksheets.find(sheet => sheet.name === tableName);
+            const cellAddress = tableSheet?.lastRow?.getCell("B").address;
+            mainSheet.getCell(row, columnIndex + 2).value = { formula: `='${tableName}'!${cellAddress}`, date1904: false };
+          }
+        });
       }
     });
     // eslint-disable-next-line no-eval
