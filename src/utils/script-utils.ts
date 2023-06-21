@@ -57,7 +57,7 @@ namespace ScriptUtils {
       }
     });
     // eslint-disable-next-line no-eval
-    eval(script); // Sensitive
+    eval(`${script}`);
     const newFile = new Blob([await workbook.xlsx.writeBuffer()]);
     return newFile;
   };
