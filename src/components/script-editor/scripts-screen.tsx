@@ -19,7 +19,7 @@ import ListIcon from "@mui/icons-material/List";
  * Scripts screen
  */
 const ScriptsScreen: React.FC = () => {
-  const [ loading, setLoading ] = useState<boolean>(false);
+  const [ loading, setLoading ] = useState(false);
   const errorContext = useContext(ErrorContext);
   const [ scripts, setScripts ] = useState<Script[]>([]);
   const navigate = useNavigate();
