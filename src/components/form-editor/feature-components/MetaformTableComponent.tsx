@@ -1,4 +1,4 @@
-import { IconButton, MenuItem, Stack, TextField } from "@mui/material";
+import { Checkbox, FormControlLabel, IconButton, MenuItem, Stack, TextField } from "@mui/material";
 import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
@@ -22,6 +22,8 @@ const MetaformTableComponent: FC<Props> = ({
   updateFormFieldDebounced
 }) => {
   const [ newColumnType, setNewColumnType ] = React.useState<MetaformTableColumnType>();
+  const [ newColumnCalculateSum, setNewColumnCalculateSum ] = React.useState<boolean>();
+  const [ newColumnSumPostfix, setNewColumnSumPostfix ] = React.useState<string>();
   const { metaformVersion, metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
   const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
   const [ metaformField, setMetaformField ] = React.useState<MetaformField>();
@@ -44,7 +46,7 @@ const MetaformTableComponent: FC<Props> = ({
     }
 
     const updatedField = produce(metaformField, draftField => {
-      draftField.columns?.splice(columnIndex, 1, tableColumn);
+      draftField.table?.columns?.splice(columnIndex, 1, tableColumn);
     });
     setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
@@ -61,7 +63,7 @@ const MetaformTableComponent: FC<Props> = ({
     }
 
     const updatedField = produce(metaformField, draftField => {
-      draftField.columns?.splice(columnIndex, 1);
+      draftField.table?.columns?.splice(columnIndex, 1);
     });
     setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
@@ -85,7 +87,6 @@ const MetaformTableComponent: FC<Props> = ({
         onChange={ event => updateTableColumn({
           ...column,
           title: event.target.value,
-          type: "text" as MetaformTableColumnType,
           values: undefined
         }, index)}
       />
@@ -107,20 +108,46 @@ const MetaformTableComponent: FC<Props> = ({
       return;
     }
 
-    const columnsAmount = metaformField.columns?.length || 0;
+    const columnsAmount = metaformField.table?.columns?.length || 0;
 
     const newColumn: MetaformTableColumn = {
       type: newColumnType!,
       name: columnsAmount.toString(),
-      title: columnsAmount.toString()
+      title: columnsAmount.toString(),
+      calculateSum: newColumnCalculateSum,
+      sumPostfix: newColumnSumPostfix
     };
 
     const updatedField = produce(metaformField, draftField => {
-      draftField.columns = [ ...(draftField.columns || []), newColumn ];
+      if (draftField.table) {
+        draftField.table.columns = [ ...(draftField.table.columns || []), newColumn ];
+      }
     });
     setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
   };
+
+  /**
+   * Render column sum options
+   */
+  const renderColumnSumOptions = () => (
+    <>
+      <FormControlLabel
+        label={ strings.draftEditorScreen.editor.features.field.calculateColumnSum }
+        control={
+          <Checkbox
+            checked={ newColumnCalculateSum }
+            onChange={ ({ target }) => setNewColumnCalculateSum(target.checked) }
+          />
+        }
+      />
+      <TextField
+        label={ strings.draftEditorScreen.editor.features.field.sumPostfix }
+        value={ newColumnSumPostfix }
+        onChange={ ({ target }) => setNewColumnSumPostfix(target.value) }
+      />
+    </>
+  );
 
   /**
    * Renders table new column
@@ -128,7 +155,7 @@ const MetaformTableComponent: FC<Props> = ({
   const renderTableNewColumn = () => (
     <Stack
       spacing={ 0 }
-      direction="row"
+      direction="column"
     >
       <TextField
         select
@@ -144,6 +171,9 @@ const MetaformTableComponent: FC<Props> = ({
           { strings.draftEditorScreen.editor.features.field.columnNumberType }
         </MenuItem>
       </TextField>
+      {
+        newColumnType === MetaformTableColumnType.Number && renderColumnSumOptions()
+      }
       <IconButton
         disabled={ newColumnType === undefined }
         onClick={ addNewColumn }
@@ -164,7 +194,7 @@ const MetaformTableComponent: FC<Props> = ({
     if (field2) {
       return (
         <Stack spacing={ 2 }>
-          { field2.columns?.map(renderTableColumnEdit) }
+          { field2.table?.columns?.map(renderTableColumnEdit) }
           { renderTableNewColumn() }
         </Stack>
       );

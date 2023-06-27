@@ -22,6 +22,10 @@ const getRoutes = () => [
     breadcrumb: strings.breadcrumb.editor
   },
   {
+    path: "/admin/scripts",
+    breadcrumb: strings.breadcrumb.scripts
+  },
+  {
     path: "/admin/editor/:formSlug",
     breadcrumb: FormBreadcrumb
   },

@@ -5,7 +5,7 @@ import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
 import ConfirmDialog from "components/generic/confirm-dialog";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
-import { Metaform, MetaformField, MetaformFieldType, Reply } from "generated/client";
+import { Metaform, MetaformField, MetaformFieldType, Reply, ScriptType } from "generated/client";
 import strings from "localization/strings";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
@@ -24,6 +24,7 @@ import { CheckCircle, NewReleases, Pending } from "@mui/icons-material";
 import { CREATED_FIELD_NAME, MODIFIED_FIELD_NAME, STATUS_FIELD_NAME } from "consts";
 import Feature from "components/containers/feature";
 import FileUtils from "utils/file-utils";
+import ScriptUtils from "utils/script-utils";
 
 /**
  * Meta fields with type of date-time
@@ -41,12 +42,13 @@ const FormRepliesScreen: React.FC = () => {
   const navigate = useNavigate();
 
   const apiClient = useApiClient(Api.getApiClient);
-  const { repliesApi, metaformsApi } = apiClient;
+  const { repliesApi, metaformsApi, scriptsApi } = apiClient;
 
   const dispatch = useAppDispatch();
   const keycloak = useAppSelector(selectKeycloak);
 
   const [ rows, setRows ] = useState<any[]>([]);
+  const [ replies, setReplies ] = useState<Reply[]>([]);
   const [ filteredRows, setFilteredRows] = useState<any[]>([]);
   const [ columns, setColumns ] = useState<GridColDef[]>([]);
   const [ loading, setLoading ] = useState(false);
@@ -255,6 +257,7 @@ const FormRepliesScreen: React.FC = () => {
       }
 
       const replyRows = repliesData.map(reply => buildRow(reply, fields));
+      setReplies(repliesData);
       setRows(replyRows);
       await setGridColumns(metaformData);
     } catch (e) {
@@ -308,6 +311,7 @@ const FormRepliesScreen: React.FC = () => {
       });
 
       dispatch(setSnackbarMessage(strings.successSnackbars.replies.replyDeleteSuccessText));
+      setReplies(replies?.filter(reply => reply.id !== replyId));
       setRows(rows?.filter(row => row.id !== replyId));
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.deleteReply, e);
@@ -345,7 +349,7 @@ const FormRepliesScreen: React.FC = () => {
    */
   const onExportClick = async () => {
     setLoading(true);
-      
+     
     try {
       if (!metaform?.id) {
         return;
@@ -353,7 +357,28 @@ const FormRepliesScreen: React.FC = () => {
 
       // eslint-disable-next-line no-underscore-dangle
       const file = await repliesApi._export({ metaformId: metaform.id, format: "XLSX" });
-      FileUtils.downloadBlob(file, "replies.xlsx");
+
+      if (!metaform.scripts) {
+        FileUtils.downloadBlob(file, "replies.xlsx");
+        return;
+      }
+      
+      const scripts = await Promise.all(metaform.scripts.map(script => scriptsApi.findScript({ scriptId: script })));
+      const xlsxScripts = scripts.filter(script => script.type === ScriptType.ExportXlsx);
+
+      let newFile = file;
+
+      const nameClassifierEntries = metaform.sections?.map(section => section.fields)
+        .flat().filter(field => !!field && !!field.classifiers && field!.title!)
+        .map(field => field!.classifiers!.map(classifier => ({ name: field!.title!, classifier: classifier })))
+        .flat() || [];
+
+      for (let i = 0; i < xlsxScripts.length; i++) {
+        // eslint-disable-next-line no-await-in-loop
+        newFile = await ScriptUtils.runScriptOnSpreadsheet(newFile, scripts[i].content, nameClassifierEntries);
+      }
+
+      FileUtils.downloadBlob(newFile, "replies.xlsx");
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminRepliesScreen.export, e);
     }

@@ -108,8 +108,10 @@ const AddableFieldRenderer: React.FC<Prop> = ({
           field={{
             ...field,
             name: "Table",
-            columns: field.columns,
-            addRows: true
+            table: {
+              columns: field.table?.columns,
+              addRows: true
+            }
           }}
           formReadOnly={ false }
           value=""

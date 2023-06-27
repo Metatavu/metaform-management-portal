@@ -109,6 +109,7 @@ export enum DraggingMode {
  * Enum navigation links
  */
 export enum NavigationLinks {
+  SCRIPTS = "SCRIPTS",
   FORMS = "FORMS",
   USERS = "USERS",
   EDITOR = "EDITOR"
@@ -202,7 +203,8 @@ export enum FeatureType {
   AUDIT_LOG = "auditLog",
   STRONG_AUTHENTICATION = "StrongAuthentication",
   EXCEL_EXPORT = "excelExport",
-  ADVANCED_PERMISSION_TARGETING = "advancedPermissionTargeting"
+  ADVANCED_PERMISSION_TARGETING = "advancedPermissionTargeting",
+  FORM_SCRIPTS = "formScripts"
 }
 
 /**

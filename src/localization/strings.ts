@@ -65,6 +65,7 @@ export interface Localized extends LocalizedStringsMethods {
       findDraft: string;
       saveDraft: string;
       publishDraft: string;
+      loadScripts: string;
     };
     formScreen: {
       saveReply: string;
@@ -121,6 +122,10 @@ export interface Localized extends LocalizedStringsMethods {
       listReplies: string;
       listAuditLogEntries: string;
     };
+    scriptEditorScreen: {
+      findScript: string;
+      saveScript: string;
+    }
   };
 
   /**
@@ -178,6 +183,7 @@ export interface Localized extends LocalizedStringsMethods {
     list: string;
     answers: string;
     history: string;
+    scripts: string;
   };
 
   /**
@@ -225,6 +231,15 @@ export interface Localized extends LocalizedStringsMethods {
       };
       newFormButton: string;
     };
+    scriptsScreens: {
+      title: string;
+      description: string;
+      newScriptButton: string;
+      scriptsScreen: {
+        title: string;
+        description: string;
+      };
+    }
   };
 
   /**
@@ -326,6 +341,10 @@ export interface Localized extends LocalizedStringsMethods {
           updateFields: string;
           addFieldOption: string;
           addNewColumn: string;
+          classifiers: string;
+          addNewClassifier: string;
+          calculateColumnSum: string;
+          sumPostfix: string;
           addColumnType: string;
           columnTextType: string;
           columnNumberType: string;
@@ -399,6 +418,10 @@ export interface Localized extends LocalizedStringsMethods {
         noTitle: string;
       };
     };
+    scripts: {
+      scripts: string;
+      addNewScript: string;
+    }
   };
 
   /**
@@ -664,6 +687,20 @@ export interface Localized extends LocalizedStringsMethods {
     }
   }
 
+  scriptsScreen: {
+    scriptsTable: {
+      script: string;
+      delete: string;
+    }
+  }
+
+  scriptEditorScreen: {
+    scriptName: string;
+    scriptType: string;
+    scriptContent: string;
+    saveScript: string;
+  }
+
   /**
    * Traslations related to features
    */
@@ -692,6 +729,7 @@ export interface Localized extends LocalizedStringsMethods {
       title: string;
       description: string;
     };
+
   }
 }
 /**

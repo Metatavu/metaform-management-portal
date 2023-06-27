@@ -95,7 +95,7 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
    * Renders an add row button
    */
   const renderAddRowButton = () => {
-    if (field.addRows === false) {
+    if (field.table?.addRows === false) {
       return null;
     }
 
@@ -232,7 +232,7 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
    * @param rowValue row value
    */
   const renderRow = (rowValue: TableFieldRowValue, rowNumber: number) => {
-    const columns = field.columns || [];
+    const columns = field.table?.columns || [];
 
     return (
       <TableRow key={ rowNumber }>
@@ -288,7 +288,7 @@ export const MetaformTableFieldComponent: React.FC<Props> = ({
    * Renders table header
    */
   const renderHeader = () => {
-    const columns = field.columns || [];
+    const columns = field.table?.columns || [];
     
     return (
       <TableHead>

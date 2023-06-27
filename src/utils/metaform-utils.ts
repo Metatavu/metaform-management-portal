@@ -1,4 +1,3 @@
-import Api from "api";
 import { AttachmentsApi, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, MetaformVersion, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
 import { Dictionary, MemberGroupPermission } from "types";
@@ -234,13 +233,15 @@ namespace MetaformUtils {
           type: fieldType,
           required: required ?? false,
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ],
-          columns: options ?? [
-            {
-              type: "text",
-              name: "column1",
-              title: "Column 1"
-            }
-          ]
+          table: {
+            columns: options ?? [
+              {
+                type: "text",
+                name: "column1",
+                title: "Column 1"
+              }
+            ]
+          }
         };
       case MetaformFieldType.Submit:
         return {
@@ -387,10 +388,6 @@ namespace MetaformUtils {
       section.fields?.forEach(field => {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         const { name, _default, options, source } = field;
-
-        if (field.type === MetaformFieldType.Files && !field.uploadUrl) {
-          field.uploadUrl = Api.createDefaultUploadUrl();
-        }
 
         if (name) {
           if (_default) {

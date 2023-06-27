@@ -52,7 +52,8 @@
     "draftEditorScreen": {
       "findDraft": "Fetching form version failed",
       "saveDraft": "Saving form version failed",
-      "publishDraft": "Publishing form version failed"
+      "publishDraft": "Publishing form version failed",
+      "loadScripts": "Loading scripts failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -108,6 +109,10 @@
       "listForms": "Fetching forms failed",
       "listReplies": "Fetching replies failed",
       "listAuditLogEntries": "Fetching audit log entries failed"
+    },
+    "scriptEditorScreen": {
+      "findScript": "Fetching script data failed",
+      "saveScript": "Saving script failed"
     }
   },
 
@@ -143,7 +148,8 @@
     "data": "Data",
     "list": "List",
     "answers": "Answers",
-    "history": "History"
+    "history": "History",
+    "scripts": "Scripts"
   },
 
   "navigationHeader": {
@@ -187,6 +193,15 @@
         "description": "Editing the form"
       },
       "newFormButton": "Create new form"
+    },
+    "scriptsScreens": {
+      "title": "Scripts",
+      "description": "Create and edit scripts",
+      "newScriptButton": "Create a new script",
+      "scriptsScreen": {
+        "title": "Select script",
+        "description": "Select a script to edit, or create a new one."
+      }
     }
   },
 
@@ -224,6 +239,10 @@
     "publishDialog": {
       "title": "Publish version",
       "contentText": "Are you sure you wish to publish {0}?"
+    },
+    "scripts": {
+      "scripts": "Scripts",
+      "addNewScript": "Add new script"
     },
     "editor": {
       "addSection": "Add section",
@@ -289,6 +308,10 @@
           "updateFields": "Update fields",
           "addFieldOption": "Add field",
           "addNewColumn": "Add new column",
+          "classifiers": "Classifiers",
+          "addNewClassifier": "Add new classifier",
+          "calculateColumnSum": "Calculate column sum",
+          "sumPostfix": "Sum post fix",
           "addColumnType": "Add column type",
           "columnTextType": "Text field",
           "columnNumberType": "Number field",
@@ -592,6 +615,19 @@
     }
   },
 
+  "scriptsScreen": {
+    "scriptsTable": {
+      "script": "Script",
+      "delete": "Delete"
+    }
+  },
+
+  "scriptEditorScreen": {
+    "scriptName": "Name",
+    "scriptType": "Type",
+    "scriptContent": "Script content",
+    "saveScript": "Save"
+  },
   "features": {
     "sosMeta": {
       "title": "Sosmeta",
