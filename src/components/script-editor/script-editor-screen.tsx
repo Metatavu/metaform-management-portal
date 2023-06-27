@@ -15,7 +15,7 @@ import { RoundActionButton } from "styled/generic/form";
  */
 const ScriptEditorScreen: React.FC = () => {
   const [ scriptName, setScriptName ] = useState("");
-  const [ scriptType, setScriptType ] = useState<ScriptType>(ScriptType.ExportXlsx);
+  const [ scriptType, setScriptType ] = useState(ScriptType.ExportXlsx);
   const [ scriptContent, setScriptContent ] = useState("");
   const [ loading, setLoading ] = useState(false);
   const params = useParams();
