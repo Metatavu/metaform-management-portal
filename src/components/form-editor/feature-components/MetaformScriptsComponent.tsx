@@ -25,7 +25,7 @@ interface Props {
 const MetaformScriptsComponent: FC<Props> = ({
   updateFormScripts
 }) => {
-  const [ loading, setLoading ] = useState<boolean>(false);
+  const [ loading, setLoading ] = useState(false);
   const errorContext = useContext(ErrorContext);
   const [ newScript, setNewScript ] = useState<Script>();
   const [ formScripts, setFormScripts ] = useState<Script[]>([]);
