@@ -27,7 +27,7 @@ interface Props {
 /**
  * React component for add member dialog
  */
-const AddMemberDialog: FC<Props> = ({
+const CardAuthFeatureAddMemberDialog: FC<Props> = ({
   loading,
   open,
   onCancel,
@@ -39,6 +39,16 @@ const AddMemberDialog: FC<Props> = ({
   const [ selectedUser, setSelectedUser ] = useState<User>();
   const [ userSearch, setUserSearch ] = useState<string>("");
   const [ foundUsers, setFoundUsers ] = useState<User[]>([]);
+
+  /**
+   * Gets Users UPN number from their display name
+   * 
+   * @param user User
+   */
+  const getUsersUpnNumber = (user: User) => {
+    const digits = user.displayName?.match(/\d/g);
+    return digits?.join("");
+  };
 
   /**
    * Event handler for text field change
@@ -251,6 +261,14 @@ const AddMemberDialog: FC<Props> = ({
         label={ strings.userManagementScreen.addMemberDialog.lastNameLabel }
         onChange={ handleTextFieldChange }
       />
+      <TextField
+        disabled
+        fullWidth
+        size="medium"
+        value={ (selectedUser && getUsersUpnNumber(selectedUser)) ?? "" }
+        label={ strings.userManagementScreen.addMemberDialog.upnNumberLabel }
+        onChange={ handleTextFieldChange }
+      />
     </Stack>
   );
 
@@ -310,4 +328,4 @@ const AddMemberDialog: FC<Props> = ({
   );
 };
 
-export default AddMemberDialog;
+export default CardAuthFeatureAddMemberDialog;

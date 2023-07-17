@@ -9,12 +9,16 @@ import { useApiClient, useAppDispatch } from "app/hooks";
 import { Metaform, MetaformMember, MetaformMemberGroup, User } from "generated/client";
 import AddMemberGroupDialog from "components/users/add-member-group-dialog";
 import UsersTable from "components/users/users-table";
-import AddMemberDialog from "components/users/add-member-dialog";
+import CardAuthFeatureAddMemberDialog from "components/users/card-auth-feature-add-member-dialog";
 import UsersFilter from "components/users/users-filter";
 import { RoundActionButton } from "styled/generic/form";
 import theme from "theme";
-import EditMemberDialog from "components/users/edit-member-dialog";
+import CardAuthFeatureEditMemberDialog from "components/users/card-auth-feature-edit-member-dialog";
 import { setSnackbarMessage } from "features/snackbar-slice";
+import Feature from "components/containers/feature";
+import { FeatureStrategy, FeatureType } from "types";
+import AddMemberDialog from "components/users/add-member-dialog";
+import EditMemberDialog from "components/users/edit-member-dialog";
 
 /**
  * Users screen component
@@ -333,29 +337,63 @@ const UsersScreen: React.FC = () => {
 
   return (
     <>
-      <AddMemberDialog
-        loading={ loading }
-        open={ addMemberOpen }
-        onCreate={ onAddMemberDialogCreate }
-        onCancel={ onAddMemberDialogCancel }
-        setLoading={ setLoading }
-        searchUsers={ searchUsers }
-        createUser={ createUser }
-      />
+      <Feature
+        replacement={
+          <AddMemberDialog
+            loading={ loading }
+            open={ addMemberOpen }
+            onCreate={ onAddMemberDialogCreate }
+            onCancel={ onAddMemberDialogCancel }
+            setLoading={ setLoading }
+            searchUsers={ searchUsers }
+            createUser={ createUser }
+          />
+        }
+        feature={FeatureType.CARD_AUTH}
+        strategy={FeatureStrategy.REPLACE}
+      >
+        <CardAuthFeatureAddMemberDialog
+          loading={ loading }
+          open={ addMemberOpen }
+          onCreate={ onAddMemberDialogCreate }
+          onCancel={ onAddMemberDialogCancel }
+          setLoading={ setLoading }
+          searchUsers={ searchUsers }
+          createUser={ createUser }
+        />
+      </Feature>
+
       <AddMemberGroupDialog
         loading={ loading }
         open={ addMemberGroupOpen }
         onCreate={ onAddMemberGroupDialogCreate }
         onCancel={ onAddMemberGroupDialogCancel }
       />
-      <EditMemberDialog
-        loading={ loading }
-        open={ editMemberOpen }
-        setLoading={ setLoading }
-        onCancel={ onEditMemberDialogCancel }
-        searchUsers={ searchUsers }
-        editUser={ editUser }
-      />
+
+      <Feature
+        replacement={
+          <EditMemberDialog
+            loading={ loading }
+            open={ editMemberOpen }
+            setLoading={ setLoading }
+            onCancel={ onEditMemberDialogCancel }
+            searchUsers={ searchUsers }
+            editUser={ editUser }
+          />
+        }
+        feature={FeatureType.CARD_AUTH}
+        strategy={FeatureStrategy.REPLACE}
+      >
+        <CardAuthFeatureEditMemberDialog
+          loading={ loading }
+          open={ editMemberOpen }
+          setLoading={ setLoading }
+          onCancel={ onEditMemberDialogCancel }
+          searchUsers={ searchUsers }
+          editUser={ editUser }
+        />
+      </Feature>
+
       <NavigationTabContainer>
         <NavigationTab
           text={ strings.navigationHeader.usersScreens.subheader }
