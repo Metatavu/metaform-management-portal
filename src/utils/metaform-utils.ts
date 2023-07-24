@@ -246,7 +246,7 @@ namespace MetaformUtils {
       case MetaformFieldType.Submit:
         return {
           title: "",
-          name: "submit",
+          name: name ?? uniqueFieldName,
           type: fieldType,
           text: strings.draftEditorScreen.editor.fields.submit ?? fieldType,
           contexts: [ FormContext.FORM, FormContext.MANAGEMENT ]
