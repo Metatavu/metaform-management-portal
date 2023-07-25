@@ -234,6 +234,9 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
    */
   useEffect(() => {
     const defaultPermissionGroups = pendingForm?.defaultPermissionGroups;
+    if (!pendingForm?.scripts?.length) {
+      onFormScriptsChange([]);
+    }
     setSelectedDefaultMemberGroup(defaultPermissionGroups?.editGroupIds!.length ? defaultPermissionGroups?.editGroupIds![0] : selectedDefaultMemberGroup);
   }, []);
 
