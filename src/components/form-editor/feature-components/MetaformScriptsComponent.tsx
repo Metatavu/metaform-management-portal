@@ -56,7 +56,7 @@ const MetaformScriptsComponent: FC<Props> = ({
   };
 
   useEffect(() => {
-    pendingForm.scripts && loadScripts(pendingForm.scripts);
+    loadScripts(pendingForm.scripts?.length ? pendingForm.scripts : []);
   }, [metaformVersion]);
 
   /**
