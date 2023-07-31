@@ -373,9 +373,10 @@ const FormRepliesScreen: React.FC = () => {
         .map(field => field!.classifiers!.map(classifier => ({ name: field!.title!, classifier: classifier })))
         .flat() || [];
 
-      for (let i = 0; i < xlsxScripts.length; i++) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const script of xlsxScripts) {
         // eslint-disable-next-line no-await-in-loop
-        newFile = await ScriptUtils.runScriptOnSpreadsheet(newFile, xlsxScripts[i].content, nameClassifierEntries);
+        newFile = await ScriptUtils.runScriptOnSpreadsheet(newFile, script.content, nameClassifierEntries);
       }
 
       FileUtils.downloadBlob(newFile, "replies.xlsx");
