@@ -16,7 +16,7 @@ namespace ScriptUtils {
    */
   export const runScriptOnSpreadsheet = async (spreadsheetFile: Blob, script: string, nameClassifierEntries: NameClassifierEntry[]) => {
     const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.read(spreadsheetFile.stream());
+    await workbook.xlsx.load(await spreadsheetFile.arrayBuffer());
     // eslint-disable-next-line no-eval
     eval(script);
     const newFile = new Blob([await workbook.xlsx.writeBuffer()]);

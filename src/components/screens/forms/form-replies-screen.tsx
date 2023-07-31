@@ -375,7 +375,7 @@ const FormRepliesScreen: React.FC = () => {
 
       for (let i = 0; i < xlsxScripts.length; i++) {
         // eslint-disable-next-line no-await-in-loop
-        newFile = await ScriptUtils.runScriptOnSpreadsheet(newFile, scripts[i].content, nameClassifierEntries);
+        newFile = await ScriptUtils.runScriptOnSpreadsheet(newFile, xlsxScripts[i].content, nameClassifierEntries);
       }
 
       FileUtils.downloadBlob(newFile, "replies.xlsx");
