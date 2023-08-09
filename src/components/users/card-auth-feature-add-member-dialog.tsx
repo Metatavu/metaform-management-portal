@@ -39,7 +39,7 @@ const CardAuthFeatureAddMemberDialog: FC<Props> = ({
   const [ selectedUser, setSelectedUser ] = useState<User>();
   const [ userSearch, setUserSearch ] = useState<string>("");
   const [ foundUsers, setFoundUsers ] = useState<User[]>([]);
-
+  const [ searchedOnce, setSearchedOnce ] = useState(false);
   /**
    * Gets Users UPN number from their display name
    * 
@@ -56,12 +56,10 @@ const CardAuthFeatureAddMemberDialog: FC<Props> = ({
    * @param event event
    */
   const handleTextFieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    if (!selectedUser) {
-      return;
-    }
+    const user: User = selectedUser ?? {} as User;
 
     const { target: { name, value } } = event;
-    const updatedUser = produce(selectedUser, draftUser => {
+    const updatedUser = produce(user, draftUser => {
       return { ...draftUser, [name]: value };
     });
 
@@ -111,6 +109,7 @@ const CardAuthFeatureAddMemberDialog: FC<Props> = ({
       .filter(user => user.displayName !== API_ADMIN_USER)
       .sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
 
+    setSearchedOnce(true);
     setFoundUsers(users);
     setLoading(false);
   };
@@ -124,7 +123,7 @@ const CardAuthFeatureAddMemberDialog: FC<Props> = ({
    * Event handler for create button click
    */
   const handleCreateClick = async () => {
-    if (!selectedUser) {
+    if (!selectedUser?.email) {
       return;
     }
 
@@ -231,7 +230,7 @@ const CardAuthFeatureAddMemberDialog: FC<Props> = ({
         { foundUsers.map(renderSelectableUsers) }
       </TextField>
       <TextField
-        disabled={ !selectedUser ?? loading }
+        disabled={ !searchedOnce ?? loading }
         fullWidth
         size="medium"
         required
@@ -242,7 +241,7 @@ const CardAuthFeatureAddMemberDialog: FC<Props> = ({
         onChange={ handleTextFieldChange }
       />
       <TextField
-        disabled={ !selectedUser ?? loading }
+        disabled={ !searchedOnce ?? loading }
         fullWidth
         size="medium"
         required
@@ -252,7 +251,7 @@ const CardAuthFeatureAddMemberDialog: FC<Props> = ({
         onChange={ handleTextFieldChange }
       />
       <TextField
-        disabled={ !selectedUser ?? loading }
+        disabled={ !searchedOnce ?? loading }
         fullWidth
         size="medium"
         required

@@ -39,6 +39,7 @@ const AddMemberDialog: FC<Props> = ({
   const [ selectedUser, setSelectedUser ] = useState<User>();
   const [ userSearch, setUserSearch ] = useState<string>("");
   const [ foundUsers, setFoundUsers ] = useState<User[]>([]);
+  const [ searchedOnce, setSearchedOnce ] = useState(false);
 
   /**
    * Event handler for text field change
@@ -46,12 +47,10 @@ const AddMemberDialog: FC<Props> = ({
    * @param event event
    */
   const handleTextFieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    if (!selectedUser) {
-      return;
-    }
+    const user: User = selectedUser ?? {} as User;
 
     const { target: { name, value } } = event;
-    const updatedUser = produce(selectedUser, draftUser => {
+    const updatedUser = produce(user, draftUser => {
       return { ...draftUser, [name]: value };
     });
 
@@ -101,6 +100,7 @@ const AddMemberDialog: FC<Props> = ({
       .filter(user => user.displayName !== API_ADMIN_USER)
       .sort((a: User, b: User) => (a.displayName! < b.displayName! ? -1 : 1));
 
+    setSearchedOnce(true);
     setFoundUsers(users);
     setLoading(false);
   };
@@ -114,7 +114,7 @@ const AddMemberDialog: FC<Props> = ({
    * Event handler for create button click
    */
   const handleCreateClick = async () => {
-    if (!selectedUser) {
+    if (!selectedUser?.email) {
       return;
     }
 
@@ -221,7 +221,7 @@ const AddMemberDialog: FC<Props> = ({
         { foundUsers.map(renderSelectableUsers) }
       </TextField>
       <TextField
-        disabled={ !selectedUser ?? loading }
+        disabled={ !searchedOnce ?? loading }
         fullWidth
         size="medium"
         required
@@ -232,7 +232,7 @@ const AddMemberDialog: FC<Props> = ({
         onChange={ handleTextFieldChange }
       />
       <TextField
-        disabled={ !selectedUser ?? loading }
+        disabled={ !searchedOnce ?? loading }
         fullWidth
         size="medium"
         required
@@ -242,7 +242,7 @@ const AddMemberDialog: FC<Props> = ({
         onChange={ handleTextFieldChange }
       />
       <TextField
-        disabled={ !selectedUser ?? loading }
+        disabled={ !searchedOnce ?? loading }
         fullWidth
         size="medium"
         required
@@ -270,39 +270,11 @@ const AddMemberDialog: FC<Props> = ({
     </GenericLoaderWrapper>
   );
 
-  /**
-   * Renders dialog tooltip text
-   */
-  const renderDialogTooltipText = () => (
-    <Stack spacing={ 1 }>
-      <span>
-        { strings.userManagementScreen.addMemberDialog.tooltip.tooltipGeneral }
-      </span>
-      <span>
-        { strings.userManagementScreen.addMemberDialog.tooltip.tooltipNoIconDescription }
-      </span>
-      <Stack spacing={ 1 } direction="row" alignItems="center">
-        <LinkIcon/>
-        <span>
-          { strings.userManagementScreen.addMemberDialog.tooltip.tooltipLinkIconDescription }
-        </span>
-      </Stack>
-      <Stack spacing={ 1 } direction="row" alignItems="center">
-        <CreditCardIcon/>
-        <span>
-          { strings.userManagementScreen.addMemberDialog.tooltip.tooltipCardIconDescription }
-        </span>
-      </Stack>
-    </Stack>
-  );
-
   return (
     <UsersScreenDialog
       open={ open }
       dialogTitle={ strings.userManagementScreen.addMemberDialog.title }
       dialogDescription={ strings.userManagementScreen.addMemberDialog.text }
-      helperIcon
-      tooltipText={ renderDialogTooltipText() }
       dialogContent={ renderDialogContent() }
       dialogActions={ renderDialogActions() }
       onCancel={ onCancel }

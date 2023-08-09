@@ -259,10 +259,6 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
         updateFormFieldDebounced={ updateFormFieldDebounced }
       />
       <Divider/>
-      <MetaformFieldRequiredComponent
-        updateFormFieldDebounced={ updateFormFieldDebounced }
-      />
-      <Divider/>
       <Feature feature={ FeatureType.FORM_SCRIPTS } strategy={ FeatureStrategy.HIDE } >
         <MetaformFieldClassifiersComponent
           updateFormFieldDebounced={ updateFormFieldDebounced }
