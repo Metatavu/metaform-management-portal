@@ -27,7 +27,7 @@ interface Props {
 /**
  * React component for add member dialog
  */
-const AddMemberDialog: FC<Props> = ({
+const CardAuthFeatureAddMemberDialog: FC<Props> = ({
   loading,
   open,
   onCancel,
@@ -40,6 +40,15 @@ const AddMemberDialog: FC<Props> = ({
   const [ userSearch, setUserSearch ] = useState<string>("");
   const [ foundUsers, setFoundUsers ] = useState<User[]>([]);
   const [ searchedOnce, setSearchedOnce ] = useState(false);
+  /**
+   * Gets Users UPN number from their display name
+   * 
+   * @param user User
+   */
+  const getUsersUpnNumber = (user: User) => {
+    const digits = user.displayName?.match(/\d/g);
+    return digits?.join("");
+  };
 
   /**
    * Event handler for text field change
@@ -252,6 +261,14 @@ const AddMemberDialog: FC<Props> = ({
         label={ strings.userManagementScreen.addMemberDialog.lastNameLabel }
         onChange={ handleTextFieldChange }
       />
+      <TextField
+        disabled
+        fullWidth
+        size="medium"
+        value={ (selectedUser && getUsersUpnNumber(selectedUser)) ?? "" }
+        label={ strings.userManagementScreen.addMemberDialog.upnNumberLabel }
+        onChange={ handleTextFieldChange }
+      />
     </Stack>
   );
 
@@ -271,11 +288,39 @@ const AddMemberDialog: FC<Props> = ({
     </GenericLoaderWrapper>
   );
 
+  /**
+   * Renders dialog tooltip text
+   */
+  const renderDialogTooltipText = () => (
+    <Stack spacing={ 1 }>
+      <span>
+        { strings.userManagementScreen.addMemberDialog.tooltip.tooltipGeneral }
+      </span>
+      <span>
+        { strings.userManagementScreen.addMemberDialog.tooltip.tooltipNoIconDescription }
+      </span>
+      <Stack spacing={ 1 } direction="row" alignItems="center">
+        <LinkIcon/>
+        <span>
+          { strings.userManagementScreen.addMemberDialog.tooltip.tooltipLinkIconDescription }
+        </span>
+      </Stack>
+      <Stack spacing={ 1 } direction="row" alignItems="center">
+        <CreditCardIcon/>
+        <span>
+          { strings.userManagementScreen.addMemberDialog.tooltip.tooltipCardIconDescription }
+        </span>
+      </Stack>
+    </Stack>
+  );
+
   return (
     <UsersScreenDialog
       open={ open }
       dialogTitle={ strings.userManagementScreen.addMemberDialog.title }
       dialogDescription={ strings.userManagementScreen.addMemberDialog.text }
+      helperIcon
+      tooltipText={ renderDialogTooltipText() }
       dialogContent={ renderDialogContent() }
       dialogActions={ renderDialogActions() }
       onCancel={ onCancel }
@@ -283,4 +328,4 @@ const AddMemberDialog: FC<Props> = ({
   );
 };
 
-export default AddMemberDialog;
+export default CardAuthFeatureAddMemberDialog;

@@ -402,6 +402,7 @@
     "addMemberButton": "Uusi käyttäjä",
     "addMemberGroupButton": "Uusi käyttäjäryhmä",
     "addMemberDialog": {
+      "addNewUserText": "Lisää uusi käyttäjä täyttämällä kentät",
       "title": "Uusi käyttäjä",
       "text": "Lisää uusi käyttäjä lomakkeelle",
       "freeTextSearchLabel": "Käyttäjähaku",

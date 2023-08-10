@@ -8,7 +8,7 @@ import { DisabledFeatureWrapper } from "styled/react-components/react-components
 /**
  * Component for features
  */
-const Feature: FC<FeatureProps> = ({ feature, children, title, description, strategy }) => {
+const Feature: FC<FeatureProps> = ({ feature, children, title, description, strategy, replacement }) => {
   const hasFeature = Config.get().features.includes(feature);
   const [ showTooltip, setShowTooltip ] = React.useState(false);
 
@@ -44,6 +44,10 @@ const Feature: FC<FeatureProps> = ({ feature, children, title, description, stra
         </DisabledFeatureWrapper>
       </div>
     );
+  }
+
+  if (strategy === FeatureStrategy.REPLACE && !hasFeature) {
+    return replacement || null;
   }
 
   return children;

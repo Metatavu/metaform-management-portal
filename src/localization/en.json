@@ -401,6 +401,7 @@
     "addMemberButton": "New member",
     "addMemberGroupButton": "New group",
     "addMemberDialog": {
+      "addNewUserText": "Add a new user by filling fields",
       "title": "New member",
       "text": "Add new member to the form",
       "freeTextSearchLabel": "User search",

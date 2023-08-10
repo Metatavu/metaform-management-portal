@@ -204,7 +204,8 @@ export enum FeatureType {
   STRONG_AUTHENTICATION = "StrongAuthentication",
   EXCEL_EXPORT = "excelExport",
   ADVANCED_PERMISSION_TARGETING = "advancedPermissionTargeting",
-  FORM_SCRIPTS = "formScripts"
+  FORM_SCRIPTS = "formScripts",
+  CARD_AUTH = "cardAuth"
 }
 
 /**
@@ -225,4 +226,5 @@ export interface FeatureProps {
   title?: string;
   description?: string;
   strategy: FeatureStrategy;
+  replacement?: ReactElement;
 }
