@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import strings from "../../localization/strings";
-import { Button, IconButton, InputAdornment, ListItem, ListItemIcon, MenuItem, Stack, TextField } from "@mui/material";
+import { Button, IconButton, InputAdornment, ListItem, ListItemIcon, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { MetaformMember, MetaformMemberRole, User, UserFederationSource } from "generated/client";
 import * as EmailValidator from "email-validator";
 import GenericLoaderWrapper from "components/generic/generic-loader";
@@ -229,6 +229,7 @@ const CardAuthFeatureAddMemberDialog: FC<Props> = ({
       >
         { foundUsers.map(renderSelectableUsers) }
       </TextField>
+      { searchedOnce && !foundUsers.length && <Typography>{strings.userManagementScreen.addMemberDialog.addNewUserText}</Typography> }
       <TextField
         disabled={ !searchedOnce ?? loading }
         fullWidth

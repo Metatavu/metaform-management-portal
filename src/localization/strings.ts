@@ -439,6 +439,7 @@ export interface Localized extends LocalizedStringsMethods {
     addMemberDialog: {
       title: string;
       text: string;
+      addNewUserText: string;
       freeTextSearchLabel: string;
       usersSelectLabel: string;
       searchButton: string;
