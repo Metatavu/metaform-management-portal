@@ -338,7 +338,7 @@ export const DialogTitleWrapper = styled(DialogTitle, {
 }));
 
 /**
- *  Styled wrapper for disabled feature
+ * Styled overlay for disabled feature
  */
 export const DisabledFeatureWrapper = styled(Box, {
   label: "disabled-feature-wrapper"
@@ -348,7 +348,7 @@ export const DisabledFeatureWrapper = styled(Box, {
   left: 0,
   width: "100%",
   height: "100%",
-  backdropFilter: "blur(1.5px)",
+  background: "repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 0, 0, 0.1) 10px, rgba(0, 0, 0, 0.1) 20px)",
   zIndex: 1,
   display: "flex",
   justifyContent: "center",
