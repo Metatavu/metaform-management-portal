@@ -36,6 +36,11 @@ const Header: React.FC = ({
    */
   const renderInfoButton = () => {
     const tutorialUrl = Config.getTutorialUrl() || "";
+
+    if (!tutorialUrl) {
+      return null;
+    }
+    
     return (
       <Tooltip title={ strings.header.infoLabel } placement="left" arrow>
         <IconButton href={ tutorialUrl } target="_blank" disabled={ !tutorialUrl }>
