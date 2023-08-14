@@ -480,7 +480,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
             strings.draftEditorScreen.editor.visibility.showConditionChain
           }
         </Button>
-        <Divider/>
       </>
     );
   };
