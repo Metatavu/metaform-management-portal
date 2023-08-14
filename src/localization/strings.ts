@@ -421,6 +421,7 @@ export interface Localized extends LocalizedStringsMethods {
     scripts: {
       scripts: string;
       addNewScript: string;
+      noScripts: string;
     }
   };
 

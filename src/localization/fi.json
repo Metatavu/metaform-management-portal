@@ -53,7 +53,7 @@
       "findDraft": "Lomakeversion haku epäonnistui",
       "saveDraft": "Lomakeversion tallentaminen epäonnistui",
       "publishDraft": "Lomakeversion julkaiseminen epäonnistui",
-      "loadScripts": "Skriptien lataaminen epäonnistui"
+      "loadScripts": "Laajennusten lataaminen epäonnistui"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -111,8 +111,8 @@
       "listAuditLogEntries": "Auditoinnoin haku epäonnistui"
     },
     "scriptEditorScreen": {
-      "findScript": "Skriptin tietojen hakeminen epäonnistui",
-      "saveScript": "Skriptin tallentaminen epäonnistui"
+      "findScript": "Laajennuksen tietojen hakeminen epäonnistui",
+      "saveScript": "Laajennuksen tallentaminen epäonnistui"
     }
   },
 
@@ -149,7 +149,7 @@
     "list": "Lista",
     "answers": "Vastaukset",
     "history": "Historia",
-    "scripts": "Skriptit"
+    "scripts": "Laajennukset"
   },
 
   "navigationHeader": {
@@ -195,12 +195,12 @@
       "newFormButton": "Luo uusi lomake"
     },
     "scriptsScreens": {
-      "title": "Skriptit",
-      "description": "Skriptien luominen ja muokkaaminen",
-      "newScriptButton": "Luo uusi skripti",
+      "title": "Laajennukset",
+      "description": "Laajennusten luominen ja muokkaaminen",
+      "newScriptButton": "Luo uusi laajennus",
       "scriptsScreen": {
-        "title": "Valitse skripti",
-        "description": "Valitse editoitava skripti tai luo uusi."
+        "title": "Valitse laajennus",
+        "description": "Valitse editoitava laajennus tai luo uusi."
       }
     }
   },
@@ -237,8 +237,9 @@
     "preview": "Esikatsele",
     "publish": "Julkaise",
     "scripts": {
-      "scripts": "Skriptit",
-      "addNewScript": "Lisää uusi skripti"
+      "scripts": "Laajennukset",
+      "addNewScript": "Lisää uusi laajennus",
+      "noScripts": "Ei valittavia laajennuksia"
     },
     "publishDialog": {
       "title": "Julkaise versio",
@@ -366,7 +367,7 @@
         "view": "Katselu",
         "edit": "Muokkaus",
         "fieldValueLabel": "Kentän arvo",
-        "notifications": "Ilmoitukset",
+        "notifications": "Sähköpostiherätteet",
         "noMemberGroup": "Ei Käyttäjäryhmää",
         "noPermission": "Ei oikeuksia",
         "noDefaultPermissionMemberGroup": "Ei oletus-käyttäjäryhmää"
@@ -626,7 +627,7 @@
 
   "scriptsScreen": {
     "scriptsTable": {
-      "script": "Skripti",
+      "script": "Laajennus",
       "delete": "Poista"
     }
   },
@@ -634,7 +635,7 @@
   "scriptEditorScreen": {
     "scriptName": "Nimi",
     "scriptType": "Tyyppi",
-    "scriptContent": "Skriptin sisältö",
+    "scriptContent": "Laajennusken sisältö",
     "saveScript": "Tallenna"
   },
   "features": {

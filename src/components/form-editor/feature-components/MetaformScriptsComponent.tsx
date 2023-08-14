@@ -5,12 +5,12 @@ import { Script } from "generated/client";
 import produce from "immer";
 import React, { FC, useContext, useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { RoundActionButton } from "styled/generic/form";
 import strings from "localization/strings";
 import MetaformUtils from "utils/metaform-utils";
 import Api from "api";
 import { ErrorContext } from "components/contexts/error-handler";
 import GenericLoaderWrapper from "components/generic/generic-loader";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 /**
  * Component properties
@@ -80,7 +80,7 @@ const MetaformScriptsComponent: FC<Props> = ({
    * Renders available scripts and a button to add one to the form
    */
   const renderNewFormScript = () => (
-    <Stack spacing={ 2 }>
+    <Stack direction="row">
       <TextField
         select
         fullWidth
@@ -89,21 +89,24 @@ const MetaformScriptsComponent: FC<Props> = ({
         onChange={ ({ target }) => setNewScript(availableScripts.find(script => script.id === target.value)) }
       >
         {
-          availableScripts.map(script => (
-            <MenuItem value={ script.id }>
-              { script.name }
+          availableScripts.length > 0 ?
+            availableScripts.map(script => (
+              <MenuItem value={ script.id } key={ script.id }>
+                { script.name }
+              </MenuItem>
+            )) :
+            <MenuItem key="no-scripts">
+              { strings.draftEditorScreen.scripts.noScripts }
             </MenuItem>
-          ))
         }
       </TextField>
-      <RoundActionButton
-        fullWidth
+      <IconButton
+        color="success"
+        disabled={ !newScript }
         onClick={ addNewScript }
       >
-        <Typography>
-          { strings.draftEditorScreen.scripts.addNewScript }
-        </Typography>
-      </RoundActionButton>
+        <AddCircleIcon/>
+      </IconButton>
     </Stack>
   );
 
@@ -135,9 +138,9 @@ const MetaformScriptsComponent: FC<Props> = ({
   const renderRemoveScriptButton = (script: Script, index: number) => (
     <Stack
       key={ `column-${index}` }
-      spacing={ 2 }
       direction="row"
       alignItems="center"
+      justifyContent="space-between"
     >
       <Typography>{ script.name }</Typography>
       <IconButton

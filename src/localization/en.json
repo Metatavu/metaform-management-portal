@@ -53,7 +53,7 @@
       "findDraft": "Fetching form version failed",
       "saveDraft": "Saving form version failed",
       "publishDraft": "Publishing form version failed",
-      "loadScripts": "Loading scripts failed"
+      "loadScripts": "Loading extension failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -111,8 +111,8 @@
       "listAuditLogEntries": "Fetching audit log entries failed"
     },
     "scriptEditorScreen": {
-      "findScript": "Fetching script data failed",
-      "saveScript": "Saving script failed"
+      "findScript": "Fetching extension data failed",
+      "saveScript": "Saving extension failed"
     }
   },
 
@@ -149,7 +149,7 @@
     "list": "List",
     "answers": "Answers",
     "history": "History",
-    "scripts": "Scripts"
+    "scripts": "Extensions"
   },
 
   "navigationHeader": {
@@ -195,12 +195,12 @@
       "newFormButton": "Create new form"
     },
     "scriptsScreens": {
-      "title": "Scripts",
-      "description": "Create and edit scripts",
-      "newScriptButton": "Create a new script",
+      "title": "Extensions",
+      "description": "Create and edit extensions",
+      "newScriptButton": "Create a new extension",
       "scriptsScreen": {
-        "title": "Select script",
-        "description": "Select a script to edit, or create a new one."
+        "title": "Select an extension",
+        "description": "Select an extension to edit, or create a new one."
       }
     }
   },
@@ -241,8 +241,9 @@
       "contentText": "Are you sure you wish to publish {0}?"
     },
     "scripts": {
-      "scripts": "Scripts",
-      "addNewScript": "Add new script"
+      "scripts": "Extensions",
+      "addNewScript": "Add a new extension",
+      "noScripts": "No extensions available"
     },
     "editor": {
       "addSection": "Add section",
@@ -618,7 +619,7 @@
 
   "scriptsScreen": {
     "scriptsTable": {
-      "script": "Script",
+      "script": "Extension",
       "delete": "Delete"
     }
   },
@@ -626,7 +627,7 @@
   "scriptEditorScreen": {
     "scriptName": "Name",
     "scriptType": "Type",
-    "scriptContent": "Script content",
+    "scriptContent": "Extension content",
     "saveScript": "Save"
   },
   "features": {
