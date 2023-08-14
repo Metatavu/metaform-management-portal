@@ -6,8 +6,8 @@ import produce from "immer";
 import React, { FC, useEffect } from "react";
 import MetaformUtils from "utils/metaform-utils";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { RoundActionButton } from "styled/generic/form";
 import strings from "localization/strings";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 /**
  * Component properties
@@ -25,6 +25,7 @@ const MetaformFieldClassifiersComponent: FC<Props> = ({
   const { metaformVersion, metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
   const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
   const [ metaformField, setMetaformField ] = React.useState<MetaformField>();
+  const [ classifierName, setClassifierName ] = React.useState<string>("");
 
   useEffect(() => {
     if (metaformSectionIndex !== undefined && metaformFieldIndex !== undefined) {
@@ -41,26 +42,31 @@ const MetaformFieldClassifiersComponent: FC<Props> = ({
     }
 
     const updatedField = produce(metaformField, draftField => {
-      draftField.classifiers = [ ...(draftField.classifiers || []), "" ];
+      draftField.classifiers = [ ...(draftField.classifiers || []), classifierName ];
     });
     setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
+    setClassifierName("");
   };
 
   /**
    * Renders a button to add a new field classifier
    */
   const renderNewFieldClassifier = () => (
-    <Stack spacing={ 2 }>
-      
-      <RoundActionButton
+    <Stack direction="row" justifyContent="space-between">
+      <TextField
+        value={ classifierName }
+        placeholder={ strings.draftEditorScreen.editor.features.field.addNewClassifier }
         fullWidth
-        onClick={ addNewClassifier }
+        onChange={ e => setClassifierName(e.target.value) }
+      />
+      <IconButton
+        disabled={ !classifierName }
+        color="success"
+        onClick={ () => addNewClassifier() }
       >
-        <Typography>
-          { strings.draftEditorScreen.editor.features.field.addNewClassifier }
-        </Typography>
-      </RoundActionButton>
+        <AddCircleIcon/>
+      </IconButton>
     </Stack>
   );
 
@@ -108,12 +114,13 @@ const MetaformFieldClassifiersComponent: FC<Props> = ({
   const renderClassifierEdit = (classifier: string, index: number) => (
     <Stack
       key={ `column-${index}` }
-      spacing={ 2 }
       direction="row"
+      justifyContent="space-between"
     >
       <TextField
         value={ classifier }
         label={ index }
+        fullWidth
         onChange={ event => updateFieldClassifier(event.target.value, index)}
       />
       <IconButton
