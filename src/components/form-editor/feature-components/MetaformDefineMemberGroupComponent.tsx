@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, FormControlLabel, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
+import { FormControl, FormControlLabel, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
 import { MetaformField, MetaformMemberGroup } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
@@ -233,8 +233,9 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
         </TextField>
         <FormControlLabel
           label={ strings.draftEditorScreen.editor.memberGroups.notifications }
+          sx={{ mt: 1 }}
           control={
-            <Checkbox
+            <Switch
               checked={ notifyChecked }
               onChange={ event => setMemberGroupNotify(event.target.checked) }
             />

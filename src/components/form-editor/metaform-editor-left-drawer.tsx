@@ -5,7 +5,7 @@ import DroppableComponentWrapper from "components/generic/drag-and-drop/droppabl
 import TabPanel from "components/generic/tab-panel";
 import strings from "localization/strings";
 import React, { ChangeEventHandler, useEffect, useState, FC } from "react";
-import { EditorDrawer } from "styled/editor/metaform-editor";
+import { DrawerSection, EditorDrawer } from "styled/editor/metaform-editor";
 import { DraggingMode, FeatureStrategy, FeatureType } from "types";
 import slugify from "slugify";
 import produce from "immer";
@@ -143,24 +143,26 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
   const renderFormTab = () => (
     <FormControl fullWidth>
       <Stack spacing={ 2 }>
-        <Typography variant="subtitle1" style={{ width: "100%" }}>
-          { strings.draftEditorScreen.editor.form.versionInfo }
-        </Typography>
-        <TextField
-          label={ strings.draftEditorScreen.editor.form.formTitle }
-          value={ pendingForm?.title }
-          onChange={ onMetaformPropertyChange("title", "slug") }
-        />
-        <TextField
-          label={ strings.draftEditorScreen.editor.form.formSlugUrl }
-          value={ `${currentHostname}/${pendingForm?.slug}` }
-          disabled
-        />
+        <DrawerSection>
+          <Typography variant="subtitle1" style={{ width: "100%" }}>
+            { strings.draftEditorScreen.editor.form.versionInfo }
+          </Typography>
+          <TextField
+            label={ strings.draftEditorScreen.editor.form.formTitle }
+            value={ pendingForm?.title }
+            onChange={ onMetaformPropertyChange("title", "slug") }
+          />
+          <TextField
+            label={ strings.draftEditorScreen.editor.form.formSlugUrl }
+            value={ `${currentHostname}/${pendingForm?.slug}` }
+            disabled
+          />
+        </DrawerSection>
         <Feature
-          feature={ FeatureType.SOSMETA}
-          strategy={ FeatureStrategy.HIDE}
+          feature={ FeatureType.SOSMETA }
+          strategy={ FeatureStrategy.HIDE }
         >
-          <>
+          <DrawerSection>
             <Typography variant="subtitle1" style={{ width: "100%" }}>
               { strings.draftEditorScreen.editor.form.formVisibility }
             </Typography>
@@ -173,32 +175,36 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
               <MenuItem value={ MetaformVisibility.Public }>{ strings.draftEditorScreen.editor.form.public }</MenuItem>
               <MenuItem value={ MetaformVisibility.Private }>{ strings.draftEditorScreen.editor.form.private }</MenuItem>
             </TextField>
-          </>
+          </DrawerSection>
         </Feature>
-        <Typography variant="subtitle1" style={{ width: "100%" }}>
-          { strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfo }
-        </Typography>
-        <TextField
-          select
-          label={ strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfoLabel }
-          value={ selectedDefaultMemberGroup }
-          onChange={ event => onDefaultMemberGroupChange(event.target.value) }
-        >
-          <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.noDefaultPermissionMemberGroup }</MenuItem>
-          { memberGroups.map(field => {
-            return (
-              <MenuItem value={ field.id } key={ field.id }>
-                { field.displayName }
-              </MenuItem>
-            );
-          })
-          }
-        </TextField>
-        { renderNotifications() }
-        <Feature feature={ FeatureType.FORM_SCRIPTS } strategy={ FeatureStrategy.HIDE } >
-          <MetaformScriptsComponent
-            updateFormScripts={ onFormScriptsChange }
-          />
+        <DrawerSection>
+          <Typography variant="subtitle1" style={{ width: "100%" }}>
+            { strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfo }
+          </Typography>
+          <TextField
+            select
+            label={ strings.draftEditorScreen.editor.memberGroups.defaultMemberGroupInfoLabel }
+            value={ selectedDefaultMemberGroup }
+            onChange={ event => onDefaultMemberGroupChange(event.target.value) }
+          >
+            <MenuItem value={ NOT_SELECTED }>{ strings.draftEditorScreen.editor.memberGroups.noDefaultPermissionMemberGroup }</MenuItem>
+            { memberGroups.map(field => {
+              return (
+                <MenuItem value={ field.id } key={ field.id }>
+                  { field.displayName }
+                </MenuItem>
+              );
+            })
+            }
+          </TextField>
+          { renderNotifications() }
+        </DrawerSection>
+        <Feature feature={ FeatureType.FORM_SCRIPTS } strategy={ FeatureStrategy.HIDE }>
+          <DrawerSection>
+            <MetaformScriptsComponent
+              updateFormScripts={ onFormScriptsChange }
+            />
+          </DrawerSection>
         </Feature>
       </Stack>
     </FormControl>
@@ -293,7 +299,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
           />
         </Tooltip>
       </Tabs>
-      <TabPanel value={ tabIndex } index={ 0 }>
+      <TabPanel value={ tabIndex } index={ 0 } padding={ 0 }>
         { renderFormTab() }
       </TabPanel>
       <TabPanel value={ tabIndex } index={ 1 }>

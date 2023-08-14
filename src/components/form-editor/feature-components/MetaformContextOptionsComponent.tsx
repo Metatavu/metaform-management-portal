@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
+import { Checkbox, FormControlLabel, Typography } from "@mui/material";
 import { MetaformField } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
@@ -8,6 +8,7 @@ import LocalizationUtils from "utils/localization-utils";
 import { selectMetaform } from "../../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
 import MetaformUtils from "utils/metaform-utils";
+import { DrawerSection } from "styled/editor/metaform-editor";
 
 /**
  * Component properties
@@ -88,12 +89,12 @@ const MetaformContextOptionsComponent: FC<Props> = ({
   const renderContextOptions = (field?: MetaformField) => {
     if (field) {
       return (
-        <Stack spacing={ 2 }>
+        <DrawerSection>
           <Typography variant="subtitle1">
             { strings.draftEditorScreen.editor.features.field.contextVisibilityInfo }
           </Typography>
           { Object.values(FormContext).map(context => renderContextOption(context, field.contexts || [])) }
-        </Stack>
+        </DrawerSection>
       );
     }
   };

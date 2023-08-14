@@ -10,6 +10,7 @@ import MetaformUtils from "utils/metaform-utils";
 import { selectMetaform } from "../../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
 import { RoundActionButton } from "styled/generic/form";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 /**
  * Component properties
  */
@@ -29,6 +30,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
   const { metaformVersion, metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
   const pendingForm = MetaformUtils.jsonToMetaform(MetaformUtils.getDraftForm(metaformVersion));
   const [ metaformField, setMetaformField ] = React.useState<MetaformField>();
+  const [ optionText, setOptionText ] = useState<string>("");
 
   useEffect(() => {
     if (metaformSectionIndex !== undefined && metaformFieldIndex !== undefined) {
@@ -123,7 +125,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
 
     const newOption: MetaformFieldOption = {
       name: `${strings.draftEditorScreen.editor.features.field.newFieldOption}-${uuid4().slice(0, 5)}`,
-      text: `${strings.draftEditorScreen.editor.features.field.newFieldOption}`,
+      text: optionText,
       permissionGroups: undefined
     };
 
@@ -133,6 +135,7 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
 
     setMetaformField(updatedField);
     updateFormFieldDebounced(updatedField);
+    setOptionText("");
   };
 
   /**
@@ -225,14 +228,21 @@ const MetaformMultiChoiceFieldComponent: FC<Props> = ({
       return (
         <>
           { field.options?.map(renderMultiChoiceOptionEdit) }
-          <RoundActionButton
-            fullWidth
-            onClick={ addNewFieldOption }
-          >
-            <Typography>
-              { strings.draftEditorScreen.editor.features.field.addFieldOption }
-            </Typography>
-          </RoundActionButton>
+          <Stack direction="row" justifyContent="space-between">
+            <TextField
+              value={ optionText }
+              placeholder={ strings.draftEditorScreen.editor.features.field.addNewOption }
+              fullWidth
+              onChange={ e => setOptionText(e.target.value) }
+            />
+            <IconButton
+              disabled={ !optionText }
+              color="success"
+              onClick={ () => addNewFieldOption() }
+            >
+              <AddCircleIcon/>
+            </IconButton>
+          </Stack>
         </>
       );
     }
