@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, FormControlLabel, Grid, Icon, MenuItem, Stack, Tab, Tabs, TextField, Tooltip, Typography } from "@mui/material";
+import { FormControl, FormControlLabel, Grid, Icon, MenuItem, Stack, Switch, Tab, Tabs, TextField, Tooltip, Typography } from "@mui/material";
 import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVisibility, Script } from "generated/client";
 import DraggableWrapper from "components/generic/drag-and-drop/draggable-wrapper";
 import DroppableComponentWrapper from "components/generic/drag-and-drop/droppable-component-wrapper";
@@ -118,7 +118,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
   };
   
   /**
-   * Render notifications checkbox if default permission member group
+   * Render notifications switch if default permission member group
    */
   const renderNotifications = () => {
     const notifyChecked = pendingForm?.defaultPermissionGroups?.notifyGroupIds?.length! > 0;
@@ -127,7 +127,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
         <FormControlLabel
           label={ strings.draftEditorScreen.editor.memberGroups.notifications }
           control={
-            <Checkbox
+            <Switch
               checked={ notifyChecked }
               onChange={ event => setNotificationsForDefaultMemberGroup(event.target.checked) }
             />
