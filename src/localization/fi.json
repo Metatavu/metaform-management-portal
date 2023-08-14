@@ -326,7 +326,8 @@
           "slider": {
             "minValueLabel": "Kentän pienin arvo",
             "maxValueLabel": "Kentän suurin arvo"
-          }
+          },
+          "addNewOption": "Lisää uusi valinta"
         },
         "tooltipDescription": "Muokkaa osion tai kentän tietoja ja ominaisuuksia."
       },

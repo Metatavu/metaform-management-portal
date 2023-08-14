@@ -325,7 +325,8 @@
           "slider": {
             "minValueLabel": "Field minimum value",
             "maxValueLabel": "Field maximum value"
-          }
+          },
+          "addNewOption": "Add new option"
         },
         "tooltipDescription": "Edit form section information. Edit field information, attributes, and display settings."
       },

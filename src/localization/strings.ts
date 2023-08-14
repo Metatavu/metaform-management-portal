@@ -357,7 +357,8 @@ export interface Localized extends LocalizedStringsMethods {
           slider: {
             minValueLabel: string;
             maxValueLabel: string;
-          }
+          },
+          addNewOption: string;
         };
         tooltipDescription: string;
       };
