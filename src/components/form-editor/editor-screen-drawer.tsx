@@ -1,4 +1,4 @@
-import { Box, Divider, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography, Link } from "@mui/material";
+import { Box, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography, Link } from "@mui/material";
 import { Save, Clear } from "@mui/icons-material";
 import strings from "localization/strings";
 import React, { FC, useContext, useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { ErrorContext } from "components/contexts/error-handler";
 import Config from "app/config";
 import Feature from "components/containers/feature";
 import { FeatureType, FeatureStrategy } from "types";
+import { DrawerSection } from "styled/editor/metaform-editor";
 
 /**
  * Component props
@@ -164,11 +165,11 @@ const EditorScreenDrawer: FC<Props> = ({
             </IconButton>
           </Stack>
         </Box>
-        <Box sx={{ justifyContent: "center", padding: theme.spacing(1) }}>
-          <Typography sx={{ fontSize: 12 }} align="center">
+        <DrawerSection>
+          <Typography align="center">
             { strings.editorScreen.drawer.helper }
           </Typography>
-        </Box>
+        </DrawerSection>
       </Stack>
     );
   };
@@ -178,26 +179,24 @@ const EditorScreenDrawer: FC<Props> = ({
    */
   const renderDrawerInfoSection = () => {
     return (
-      <Box sx={{ padding: 2 }}>
-        <Stack spacing={ 2 }>
-          <FormLabel required>{ strings.editorScreen.drawer.formInfo }</FormLabel>
-          <TextField
-            fullWidth
-            required
-            label={ strings.editorScreen.drawer.formName }
-            value={ formSettings.formName }
-            onChange={ onInputFieldChange }
-            name="formName"
-          />
-          <TextField
-            fullWidth
-            disabled
-            label={ strings.editorScreen.drawer.formUrl }
-            value={ formSettings.formUrl }
-            name="formUrl"
-          />
-        </Stack>
-      </Box>
+      <DrawerSection>
+        <FormLabel required>{ strings.editorScreen.drawer.formInfo }</FormLabel>
+        <TextField
+          fullWidth
+          required
+          label={ strings.editorScreen.drawer.formName }
+          value={ formSettings.formName }
+          onChange={ onInputFieldChange }
+          name="formName"
+        />
+        <TextField
+          fullWidth
+          disabled
+          label={ strings.editorScreen.drawer.formUrl }
+          value={ formSettings.formUrl }
+          name="formUrl"
+        />
+      </DrawerSection>
     );
   };
 
@@ -206,41 +205,37 @@ const EditorScreenDrawer: FC<Props> = ({
    */
   const renderDrawerTemplateSection = () => {
     return (
-      <Box
-        sx={{ padding: 2 }}
-      >
-        <Stack spacing={ 2 }>
-          <FormLabel required>{ strings.editorScreen.drawer.formTemplate }</FormLabel>
-          <RadioGroup
-            value={ formSettings.formTemplate }
-            defaultValue={ true }
+      <DrawerSection>
+        <FormLabel required>{ strings.editorScreen.drawer.formTemplate }</FormLabel>
+        <RadioGroup
+          value={ formSettings.formTemplate }
+          defaultValue={ true }
+          onChange={ onInputFieldChange }
+          name="formTemplate"
+        >
+          <FormControlLabel value={ false } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateCustom }/>
+          <FormHelperText>
+            { strings.editorScreen.drawer.formTemplateCustomHelper }
+          </FormHelperText>
+          <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateSosmeta }/>
+          <FormHelperText>
+            { strings.editorScreen.drawer.formTemplateSosmetaHelper }
+            <Link href="https://sosmeta.thl.fi/document-definitions/list" target="_blank">
+              { strings.editorScreen.drawer.formTemplateSosmetaLink }
+            </Link>
+          </FormHelperText>
+            
+        </RadioGroup>
+        { formSettings.formTemplate &&
+          <TextField
+            fullWidth
+            label={ strings.editorScreen.drawer.formTemplateSchema }
+            value={ formSettings.formSchema }
             onChange={ onInputFieldChange }
-            name="formTemplate"
-          >
-            <FormControlLabel value={ false } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateCustom }/>
-            <FormHelperText>
-              { strings.editorScreen.drawer.formTemplateCustomHelper }
-            </FormHelperText>
-            <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateSosmeta }/>
-            <FormHelperText>
-              { strings.editorScreen.drawer.formTemplateSosmetaHelper }
-              <Link href="https://sosmeta.thl.fi/document-definitions/list" target="_blank">
-                { strings.editorScreen.drawer.formTemplateSosmetaLink }
-              </Link>
-            </FormHelperText>
-              
-          </RadioGroup>
-          { formSettings.formTemplate &&
-            <TextField
-              fullWidth
-              label={ strings.editorScreen.drawer.formTemplateSchema }
-              value={ formSettings.formSchema }
-              onChange={ onInputFieldChange }
-              name="formSchema"
-            />
-          }
-        </Stack>
-      </Box>
+            name="formSchema"
+          />
+        }
+      </DrawerSection>
     );
   };
 
@@ -249,32 +244,30 @@ const EditorScreenDrawer: FC<Props> = ({
    */
   const renderDrawerAuthenticationSection = () => {
     return (
-      <Box sx={{ padding: 2 }}>
-        <Stack spacing={ 2 }>
-          <FormLabel required>{ strings.editorScreen.drawer.formIdentification }</FormLabel>
-          <RadioGroup
-            value={ formSettings.formAuthentication }
-            defaultValue={ true }
-            onChange={ onInputFieldChange }
-            name="formAuthentication"
+      <DrawerSection>
+        <FormLabel required>{ strings.editorScreen.drawer.formIdentification }</FormLabel>
+        <RadioGroup
+          value={ formSettings.formAuthentication }
+          defaultValue={ true }
+          onChange={ onInputFieldChange }
+          name="formAuthentication"
+        >
+          <FormControlLabel value={ false } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationNone }/>
+          <Feature
+            feature={ FeatureType.STRONG_AUTHENTICATION }
+            title={ strings.features.strongAuthentication.title }
+            description={ strings.features.strongAuthentication.description }
+            strategy={ FeatureStrategy.DISABLE }
           >
-            <FormControlLabel value={ false } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationNone }/>
-            <Feature
-              feature={ FeatureType.STRONG_AUTHENTICATION }
-              title={ strings.features.strongAuthentication.title }
-              description={ strings.features.strongAuthentication.description }
-              strategy={ FeatureStrategy.DISABLE }
-            >
-              <>
-                <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationService }/>
-                <FormHelperText>
-                  { strings.editorScreen.drawer.formIdentificationHelper }
-                </FormHelperText>
-              </>
-            </Feature>
-          </RadioGroup>
-        </Stack>
-      </Box>
+            <>
+              <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formIdentificationService }/>
+              <FormHelperText>
+                { strings.editorScreen.drawer.formIdentificationHelper }
+              </FormHelperText>
+            </>
+          </Feature>
+        </RadioGroup>
+      </DrawerSection>
     );
   };
 
@@ -330,7 +323,8 @@ const EditorScreenDrawer: FC<Props> = ({
     <Drawer
       PaperProps={{
         sx: {
-          width: "400px",
+          width: "20vw",
+          minWidth: "400px",
           borderRadius: "15px 0 0 15px"
         }
       }}
@@ -338,28 +332,18 @@ const EditorScreenDrawer: FC<Props> = ({
       open={ open }
       onClose={ toggleDrawerOpen }
     >
-      <GenericLoaderWrapper
-        loading={ converting }
-      >
-        <Stack spacing={ 2 } direction="column">
-          <FormControl
-            fullWidth
+      <GenericLoaderWrapper loading={ converting }>
+        <FormControl fullWidth>
+          { renderDrawerHeader() }
+          { renderDrawerInfoSection() }
+          <Feature
+            feature={ FeatureType.SOSMETA}
+            strategy={ FeatureStrategy.HIDE}
           >
-            { renderDrawerHeader() }
-            <Divider/>
-            { renderDrawerInfoSection() }
-            <Divider/>
-            <Feature
-              feature={ FeatureType.SOSMETA}
-              strategy={ FeatureStrategy.HIDE}
-            >
-              { renderDrawerTemplateSection() }
-            </Feature>
-            <Divider/>
-            { renderDrawerAuthenticationSection() }
-          </FormControl>
-        </Stack>
-
+            { renderDrawerTemplateSection() }
+          </Feature>
+          { renderDrawerAuthenticationSection() }
+        </FormControl>
       </GenericLoaderWrapper>
     </Drawer>
   );

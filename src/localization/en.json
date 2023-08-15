@@ -259,7 +259,7 @@
         "formStyling": "Form outfit",
         "formVisibility": "Form information",
         "formVisibilityLabel": "Form visibility",
-        "private": "Private (Suomi.fi)",
+        "private": "Strong authentication required",
         "public": "Public",
         "tooltipDescription": "Edit form title and set form to public or private.",
         "publishNoMemberGroupsDescription": "To publish form, define member group to form or field/fields."
@@ -547,8 +547,8 @@
       "formTemplateSosmetaLink": "https://sosmeta.thl.fi/document-definitions/list",
       "formTemplateSchema": "Schema",
       "formIdentification": "Repliers identification",
-      "formIdentificationService": "Suomi.fi -service",
-      "formIdentificationHelper": "Form replier needs to identificate themself through the Suomi.fi -service when submitting reply.",
+      "formIdentificationService": "Strong authentication",
+      "formIdentificationHelper": "Form replier needs to authentication themself through a strong authentication service when submitting reply.",
       "formIdentificationNone": "No identification"
     },
     "confirmDeleteVersionTitle": "Are you sure?",
