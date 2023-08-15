@@ -12,6 +12,7 @@ import { HelpOutline } from "@mui/icons-material";
 import { selectMetaform } from "../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
 import { DrawerSection } from "styled/editor/metaform-editor";
+
 /**
  * Component properties
  */
@@ -385,9 +386,10 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       </>
     );
   };
+
   /**
- * Renders visibility switch component
- */
+   * Renders visibility switch component
+   */
   const renderVisibilitySwitch = () => (
     <DrawerSection direction="column">
       <Typography variant="subtitle1" style={{ width: "100%" }}>
