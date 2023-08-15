@@ -159,7 +159,7 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
           />
         </DrawerSection>
         <Feature
-          feature={ FeatureType.SOSMETA }
+          feature={ FeatureType.STRONG_AUTHENTICATION }
           strategy={ FeatureStrategy.HIDE }
         >
           <DrawerSection>
