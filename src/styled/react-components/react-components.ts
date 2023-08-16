@@ -294,7 +294,8 @@ export const AdminFormListStack = styled(Stack, {
   label: "admin-form-list-stack"
 })(() => ({
   alignItems: "center",
-  flex: 1
+  flex: 1,
+  justifyContent: "flex-end"
 }));
 
 /**
