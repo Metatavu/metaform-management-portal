@@ -7,6 +7,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import UsersScreenDialog from "./users-screen-dialog";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import { API_ADMIN_USER } from "consts";
+import { RoundActionButton } from "styled/generic/form";
 
 /**
  * Interface representing component properties
@@ -314,12 +315,12 @@ const CardAuthFeatureEditMemberDialog: FC<Props> = ({
   const renderDialogActions = () => (
     <GenericLoaderWrapper loading={ loading }>
       <>
-        <Button disableElevation variant="contained" onClick={ handleCancelClick } color="warning" autoFocus>
+        <RoundActionButton disableElevation variant="contained" onClick={ handleCancelClick } color="warning" autoFocus>
           { strings.userManagementScreen.editMemberDialog.cancelButton }
-        </Button>
-        <Button onClick={ handleEditClick } color="primary" disabled={ !valid }>
+        </RoundActionButton>
+        <RoundActionButton onClick={ handleEditClick } color="primary" disabled={ !valid }>
           { strings.userManagementScreen.editMemberDialog.editButton }
-        </Button>
+        </RoundActionButton>
       </>
     </GenericLoaderWrapper>
   );
