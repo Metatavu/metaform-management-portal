@@ -160,11 +160,13 @@ const MetaformEditorLeftDrawer: FC<Props> = ({
         </DrawerSection>
         <Feature
           feature={ FeatureType.STRONG_AUTHENTICATION }
-          strategy={ FeatureStrategy.HIDE }
+          strategy={ FeatureStrategy.DISABLE }
+          title={ strings.features.strongAuthentication.title }
+          description={ strings.features.strongAuthentication.description }
         >
           <DrawerSection>
             <Typography variant="subtitle1" style={{ width: "100%" }}>
-              { strings.draftEditorScreen.editor.form.formVisibility }
+              { strings.draftEditorScreen.editor.form.formVisibilityLabel }
             </Typography>
             <TextField
               select

@@ -21,7 +21,7 @@ interface Props {
 /**
  * Draft editor right drawer feature define member group component
  */
-const RenderDefineMemberGroupComponent: FC<Props> = ({
+const MetaformDefineMemberGroupComponent: FC<Props> = ({
   memberGroups,
   updateFormFieldDebounced
 }) => {
@@ -374,4 +374,4 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
   );
 };
 
-export default RenderDefineMemberGroupComponent;
+export default MetaformDefineMemberGroupComponent;
