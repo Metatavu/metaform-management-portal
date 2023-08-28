@@ -20,7 +20,6 @@
     "restore": "Restore",
     "unknown": "Unknown"
   },
-
   "errorHandling": {
     "title": "Error occurred",
     "authentication": "User authentication failed",
@@ -67,7 +66,7 @@
       "noConnectionHelper": "Form cannot be submitted without internet connection. Please check your settings."
     },
     "formAutoComplete": {
-      "autocompleteField": "Fetching autocomplete field options failed. You can still fill and submit the form by closing this dialog." 
+      "autocompleteField": "Fetching autocomplete field options failed. You can still fill and submit the form by closing this dialog."
     },
     "publicFormsScreen": {
       "fetchForms": "Fetching forms failed"
@@ -75,7 +74,7 @@
     "adminRepliesScreen": {
       "fetchReplies": "Fetching replies failed",
       "fetchFields": "Fetching column fields failed",
-      "deleteReply":"Deleting reply failed",
+      "deleteReply": "Deleting reply failed",
       "formSlugNotFound": "Form slug not found",
       "export": "Exporting replies failed"
     },
@@ -115,20 +114,17 @@
       "saveScript": "Saving extension failed"
     }
   },
-
   "protectedForm": {
     "redirectDialog": {
       "title": "Strong authentication required",
       "text": "This form requires strong authentication, press confirm to precede to the authentication page"
     }
   },
-
   "formComponent": {
     "html": "Empty html",
     "datePicker": "Date",
     "dateTimePicker": "Date and time"
   },
-
   "header": {
     "user": "User",
     "logo": "Essote logo",
@@ -139,7 +135,6 @@
       "en": "English"
     }
   },
-
   "breadcrumb": {
     "home": "Home",
     "users": "Users",
@@ -151,7 +146,6 @@
     "history": "History",
     "scripts": "Extensions"
   },
-
   "navigationHeader": {
     "formsScreens": {
       "title": "Forms",
@@ -204,7 +198,6 @@
       }
     }
   },
-
   "repliesScreen": {
     "open": "Open",
     "createdColumnTitle": "CREATED",
@@ -217,22 +210,19 @@
     "statusProcessing": "Processing",
     "statusDone": "Done",
     "confirmDeleteReplyTitle": "Delete answer",
-    "confirmDeleteReplyText":"Are you sure you want to delete this answer?",
+    "confirmDeleteReplyText": "Are you sure you want to delete this answer?",
     "export": "Export"
   },
-
   "replyScreen": {
     "exportPdf": "Export PDF",
     "selectStatus": "Select status"
   },
-
   "publicFormsScreen": {
     "title": "Forms",
     "welcome": "Welcome to form portal",
     "welcomeInfo": "If you are a professional, you can log in. The visitor please return to the home page.",
     "backToEssote": "Return to front page"
   },
-  
   "draftEditorScreen": {
     "preview": "Preview",
     "publish": "Publish",
@@ -296,7 +286,7 @@
           "sectionData": "Section information",
           "sectionTitle": "Section title"
         },
-        "field":{
+        "field": {
           "fieldData": "Field information",
           "fieldType": "Field type",
           "fieldProperties": "Field properties",
@@ -333,12 +323,12 @@
       "visibility": {
         "tabTitle": "Visibility",
         "fieldVisibility": "The field is visible on the form:",
-        "conditionLabelTitle":"Condition field name",
+        "conditionLabelTitle": "Condition field name",
         "visibilityCondition": "Visibility condition",
         "conditionally": "Conditionally",
         "conditionalFieldValue": "Conditional field value",
         "conditionalFieldInfo": "Select the form field that determines visibility.",
-        "conditionalFieldValueInfo":"Select or enter the field value that determines the visibility.",
+        "conditionalFieldValueInfo": "Select or enter the field value that determines the visibility.",
         "fieldDefiningCondition": "Field defining the condition",
         "selectField": "Select a field",
         "fieldConditionLabel": "This field appears, if {0} value is {1}",
@@ -364,12 +354,12 @@
         "memberGroupPermission": "Member group permissions",
         "selectedMemberGroup": "Selected field",
         "memberGroup": "Member group",
-        "view":"View",
-        "edit":"Edit",
+        "view": "View",
+        "edit": "Edit",
         "fieldValueLabel": "Field value",
         "notifications": "Notifications",
-        "noMemberGroup":"No Member group",
-        "noPermission":"No permission",
+        "noMemberGroup": "No Member group",
+        "noPermission": "No permission",
         "noDefaultPermissionMemberGroup": "No default permission member group"
       }
     },
@@ -392,7 +382,6 @@
       }
     }
   },
-
   "userManagementScreen": {
     "selector": {
       "form": "Select form",
@@ -459,7 +448,6 @@
       }
     }
   },
-
   "formHistoryScreen": {
     "historyTable": {
       "date": "Date",
@@ -468,14 +456,12 @@
       "actionPerformed": "Action performed"
     }
   },
-
   "fieldComponents": {
     "tableField": {
       "addNewRow": "Add new row",
       "unknownColumnType": "Unknown column type"
     }
   },
-
   "formsScreen": {
     "formTable": {
       "form": "Form",
@@ -484,7 +470,6 @@
       "notProcessed": "Untreated ({0})"
     }
   },
-
   "formsDataScreen": {
     "formDataTable": {
       "form": "Forms",
@@ -494,7 +479,6 @@
       "delayFormat": "{0} d {1} h {2} min"
     }
   },
-
   "formScreen": {
     "autosaving": "Saving reply...",
     "replyNotFound": "Reply could not be found from the system",
@@ -522,7 +506,6 @@
     "replyDeleted": "Reply deleted",
     "noTitle": "No title"
   },
-
   "editorScreen": {
     "noMetaforms": "No forms found",
     "formVersion": "FORM VERSION",
@@ -554,14 +537,12 @@
     "confirmDeleteVersionTitle": "Are you sure?",
     "confirmDeleteVersionText": "Are you sure that you wish to delete the form version?"
   },
-
   "emailDialog": {
     "send": "Send",
     "title": "Title",
     "email": "Address",
     "cancel": "Cancel"
   },
-
   "autoComplete": {
     "missingOptions": "Code server autocomplete not configured",
     "missingCodeServerBaseUrl": "Code server autocomplete missing codeServerBaseUrl",
@@ -570,7 +551,6 @@
     "missingAutocomplete": "Autocomplete not configured",
     "unknownAutocompleteService": "UNKNOWN_AUTO_COMPLETE_SERVICE"
   },
-
   "auditLogEntryType": {
     "viewReply": "Viewed",
     "listReply": "Listed",
@@ -582,17 +562,14 @@
     "exportReplyPdf": "Exported pdf",
     "exportReplyXlsx": "Exported xlsx"
   },
-
   "formContext": {
     "management": "Shown on management screen",
     "managementList": "Shown on management list screen",
     "form": "Shown on the form for customer"
   },
-
   "dataGrid": {
     "rowsPerPage": "Rows per page:"
   },
-
   "successSnackbars": {
     "formEditor": {
       "deleteFormSuccessText": "Production form deleted successfully!",
@@ -617,14 +594,12 @@
       "replyEditSuccessText": "Form edited successfully!"
     }
   },
-
   "scriptsScreen": {
     "scriptsTable": {
       "script": "Extension",
       "delete": "Delete"
     }
   },
-
   "scriptEditorScreen": {
     "scriptName": "Name",
     "scriptType": "Type",
@@ -638,15 +613,15 @@
     },
     "formUsageStatistics": {
       "title": "Form Usage Data",
-      "description": "Review of form usage statistics. This feature has not been activated."
+      "description": "See how many times a form has been submitted in a month and the average time taken to review a response."
     },
     "auditLog": {
       "title": "Auditing",
-      "description": "Review of form processing history. This feature has not been activated."
+      "description": "Track who has viewed, saved, or modified the replies."
     },
     "strongAuthentication": {
       "title": "Strong Authentication",
-      "description": "Strong authentication of the form filler. This feature has not been activated."
+      "description": "Ensures the form filler is verified."
     },
     "excelExport": {
       "title": "Excel Export",
@@ -654,8 +629,8 @@
     },
     "advancedPermissionTargeting": {
       "title": "User Group Management",
-      "description": "Management of form user groups. This feature has not been activated."
-    }
+      "description": "Determine who has the right to see responses based on form completion."
+    },
+    "askForMoreInfo": "Contact for more information:"
   }
-
 }

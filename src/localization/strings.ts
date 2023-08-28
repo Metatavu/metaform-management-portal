@@ -732,6 +732,7 @@ export interface Localized extends LocalizedStringsMethods {
       title: string;
       description: string;
     };
+    askForMoreInfo: string;
 
   }
 }

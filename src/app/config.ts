@@ -31,7 +31,8 @@ const env = cleanEnv(process.env, {
   REACT_APP_THEME_TITLE: str({ default: "Metataform Management Portal" }),
   REACT_APP_SUPPORT_EMAIL: email({ default: "support@metatavu.fi" }),
   REACT_APP_METAFORM_FEATURES: str({ default: "[]" }),
-  REACT_APP_LEAVE_SITE_URL: url({ default: undefined })
+  REACT_APP_LEAVE_SITE_URL: url({ default: undefined }),
+  REACT_APP_FEATURE_CONTACT_EMAIL: str({ default: undefined })
 });
 
 /**
@@ -74,7 +75,8 @@ export default class Config {
       supportEmail: env.REACT_APP_SUPPORT_EMAIL,
       leaveSiteUrl: env.REACT_APP_LEAVE_SITE_URL
     },
-    features: env.REACT_APP_METAFORM_FEATURES
+    features: env.REACT_APP_METAFORM_FEATURES,
+    featureContactEmail: env.REACT_APP_FEATURE_CONTACT_EMAIL
   });
 
   /**
@@ -255,6 +257,15 @@ export default class Config {
    */
   public static getMetaformFeatures(): string | undefined {
     return JSON.parse(env.REACT_APP_METAFORM_FEATURES);
+  }
+
+  /**
+   * Returns feature contact email
+   * 
+   * @returns The feature contact email
+   */
+  public static getFeatureContactEmail(): string | undefined {
+    return env.REACT_APP_FEATURE_CONTACT_EMAIL;
   }
 
 }
