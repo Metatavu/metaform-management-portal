@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, FormControlLabel, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
+import { FormControl, FormControlLabel, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
 import { MetaformField, MetaformMemberGroup } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
@@ -21,7 +21,7 @@ interface Props {
 /**
  * Draft editor right drawer feature define member group component
  */
-const RenderDefineMemberGroupComponent: FC<Props> = ({
+const MetaformDefineMemberGroupComponent: FC<Props> = ({
   memberGroups,
   updateFormFieldDebounced
 }) => {
@@ -233,8 +233,9 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
         </TextField>
         <FormControlLabel
           label={ strings.draftEditorScreen.editor.memberGroups.notifications }
+          sx={{ mt: 1 }}
           control={
-            <Checkbox
+            <Switch
               checked={ notifyChecked }
               onChange={ event => setMemberGroupNotify(event.target.checked) }
             />
@@ -373,4 +374,4 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
   );
 };
 
-export default RenderDefineMemberGroupComponent;
+export default MetaformDefineMemberGroupComponent;

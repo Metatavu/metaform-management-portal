@@ -357,7 +357,8 @@ export interface Localized extends LocalizedStringsMethods {
           slider: {
             minValueLabel: string;
             maxValueLabel: string;
-          }
+          },
+          addNewOption: string;
         };
         tooltipDescription: string;
       };
@@ -421,6 +422,7 @@ export interface Localized extends LocalizedStringsMethods {
     scripts: {
       scripts: string;
       addNewScript: string;
+      noScripts: string;
     }
   };
 
@@ -730,6 +732,7 @@ export interface Localized extends LocalizedStringsMethods {
       title: string;
       description: string;
     };
+    askForMoreInfo: string;
 
   }
 }

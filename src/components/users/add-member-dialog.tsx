@@ -10,6 +10,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import UsersScreenDialog from "./users-screen-dialog";
 import produce from "immer";
 import { API_ADMIN_USER } from "consts";
+import { RoundActionButton } from "styled/generic/form";
 
 /**
  * Interface representing component properties
@@ -261,12 +262,12 @@ const AddMemberDialog: FC<Props> = ({
   const renderDialogActions = () => (
     <GenericLoaderWrapper loading={ loading }>
       <>
-        <Button disableElevation variant="contained" onClick={ handleCancelClick } color="warning" autoFocus>
+        <RoundActionButton disableElevation variant="contained" onClick={ handleCancelClick } color="warning" autoFocus>
           { strings.userManagementScreen.addMemberDialog.cancelButton }
-        </Button>
-        <Button onClick={ handleCreateClick } color="primary" disabled={ !valid }>
+        </RoundActionButton>
+        <RoundActionButton onClick={ handleCreateClick } color="primary" disabled={ !valid }>
           { strings.userManagementScreen.addMemberDialog.createButton }
-        </Button>
+        </RoundActionButton>
       </>
     </GenericLoaderWrapper>
   );

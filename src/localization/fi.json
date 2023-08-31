@@ -20,7 +20,6 @@
     "restore": "Palauta",
     "unknown": "Tuntematon"
   },
-
   "errorHandling": {
     "title": "Tapahtui virhe",
     "authentication": "Tunnistautumisessa tapahtui virhe",
@@ -53,7 +52,7 @@
       "findDraft": "Lomakeversion haku epäonnistui",
       "saveDraft": "Lomakeversion tallentaminen epäonnistui",
       "publishDraft": "Lomakeversion julkaiseminen epäonnistui",
-      "loadScripts": "Skriptien lataaminen epäonnistui"
+      "loadScripts": "Laajennusten lataaminen epäonnistui"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -75,7 +74,7 @@
     "adminRepliesScreen": {
       "fetchReplies": "Vastauksien hakemisessa tapahtui virhe",
       "fetchFields": "Lomakekenttien hakemisessa tapahtui virhe",
-      "deleteReply":"Vastauksen poistaminen epäonnistui",
+      "deleteReply": "Vastauksen poistaminen epäonnistui",
       "formSlugNotFound": "Lomakkeen slugia ei löytynyt",
       "export": "Vastauksien viennissä tapahtui virhe"
     },
@@ -111,24 +110,21 @@
       "listAuditLogEntries": "Auditoinnoin haku epäonnistui"
     },
     "scriptEditorScreen": {
-      "findScript": "Skriptin tietojen hakeminen epäonnistui",
-      "saveScript": "Skriptin tallentaminen epäonnistui"
+      "findScript": "Laajennuksen tietojen hakeminen epäonnistui",
+      "saveScript": "Laajennuksen tallentaminen epäonnistui"
     }
   },
-
   "protectedForm": {
     "redirectDialog": {
       "title": "Vaaditaan vahva tunnistautuminen",
       "text": "Tämä lomake vaatii vahvan tunnistautumisen. Siirry eteenpäin tunnistautumispalveluun."
     }
   },
-
   "formComponent": {
     "html": "Tyhjä html",
     "datePicker": "Päivämäärä",
     "dateTimePicker": "Päivämäärä ja aika"
   },
-
   "header": {
     "user": "Käyttäjä",
     "logo": "Essote logo",
@@ -139,7 +135,6 @@
       "en": "English"
     }
   },
-
   "breadcrumb": {
     "home": "Koti",
     "users": "Käyttäjät",
@@ -149,9 +144,8 @@
     "list": "Lista",
     "answers": "Vastaukset",
     "history": "Historia",
-    "scripts": "Skriptit"
+    "scripts": "Laajennukset"
   },
-
   "navigationHeader": {
     "formsScreens": {
       "title": "Lomakkeet",
@@ -195,16 +189,15 @@
       "newFormButton": "Luo uusi lomake"
     },
     "scriptsScreens": {
-      "title": "Skriptit",
-      "description": "Skriptien luominen ja muokkaaminen",
-      "newScriptButton": "Luo uusi skripti",
+      "title": "Laajennukset",
+      "description": "Laajennusten luominen ja muokkaaminen",
+      "newScriptButton": "Luo uusi laajennus",
       "scriptsScreen": {
-        "title": "Valitse skripti",
-        "description": "Valitse editoitava skripti tai luo uusi."
+        "title": "Valitse laajennus",
+        "description": "Valitse editoitava laajennus tai luo uusi."
       }
     }
   },
-
   "repliesScreen": {
     "open": "Avaa",
     "createdColumnTitle": "LUOTU",
@@ -217,28 +210,26 @@
     "statusProcessing": "Käsittelyssä",
     "statusDone": "Käsitelty",
     "confirmDeleteReplyTitle": "Vastauksen poistaminen",
-    "confirmDeleteReplyText":"Oletko varma, että haluat poistaa vastauksen?",
+    "confirmDeleteReplyText": "Oletko varma, että haluat poistaa vastauksen?",
     "export": "Vie xlsx-muodossa"
   },
-
   "replyScreen": {
     "exportPdf": "Lataa PDF",
     "selectStatus": "Valitse tila"
   },
-
   "publicFormsScreen": {
     "title": "Lomakkeet",
     "welcome": "Tervetuloa lomakeportaaliin",
     "welcomeInfo": "Jos olet ammattilainen, niin voit kirjautua sisään. Vierailija palaa takaisin kotisivulle.",
     "backToEssote": "Takaisin kotisivulle"
   },
-
   "draftEditorScreen": {
     "preview": "Esikatsele",
     "publish": "Julkaise",
     "scripts": {
-      "scripts": "Skriptit",
-      "addNewScript": "Lisää uusi skripti"
+      "scripts": "Laajennukset",
+      "addNewScript": "Lisää uusi laajennus",
+      "noScripts": "Ei valittavia laajennuksia"
     },
     "publishDialog": {
       "title": "Julkaise versio",
@@ -258,7 +249,7 @@
         "formStyling": "Lomakkeen ulkoasu",
         "formVisibility": "Lomakkeen tiedot",
         "formVisibilityLabel": "Lomakkeen näkyvyys",
-        "private": "Yksityinen (Suomi.fi)",
+        "private": "Vahva tunnistautuminen",
         "public": "Julkinen",
         "tooltipDescription": "Lomakkeen perustiedot: otsikko, näkyvyys ja oletus-käyttäjäryhmä.",
         "publishNoMemberGroupsDescription": "Julkaistaksesi lomakkeen, määrittele lomakkeelle tai kentälle käyttäjäryhmä."
@@ -325,7 +316,8 @@
           "slider": {
             "minValueLabel": "Kentän pienin arvo",
             "maxValueLabel": "Kentän suurin arvo"
-          }
+          },
+          "addNewOption": "Lisää uusi valinta"
         },
         "tooltipDescription": "Muokkaa osion tai kentän tietoja ja ominaisuuksia."
       },
@@ -366,7 +358,7 @@
         "view": "Katselu",
         "edit": "Muokkaus",
         "fieldValueLabel": "Kentän arvo",
-        "notifications": "Ilmoitukset",
+        "notifications": "Sähköpostiherätteet",
         "noMemberGroup": "Ei Käyttäjäryhmää",
         "noPermission": "Ei oikeuksia",
         "noDefaultPermissionMemberGroup": "Ei oletus-käyttäjäryhmää"
@@ -391,7 +383,6 @@
       }
     }
   },
-
   "userManagementScreen": {
     "selector": {
       "form": "Valitse lomake",
@@ -465,7 +456,6 @@
       }
     }
   },
-
   "formHistoryScreen": {
     "historyTable": {
       "date": "Päivämäärä",
@@ -474,14 +464,12 @@
       "actionPerformed": "Tehty toiminto"
     }
   },
-
   "fieldComponents": {
     "tableField": {
       "addNewRow": "Lisää uusi rivi",
       "unknownColumnType": "Tuntematon saraketyyppi"
     }
   },
-
   "formsScreen": {
     "formTable": {
       "form": "Lomake",
@@ -490,7 +478,6 @@
       "notProcessed": "Käsittelemättömiä ({0})"
     }
   },
-
   "formsDataScreen": {
     "formDataTable": {
       "form": "Lomake",
@@ -500,7 +487,6 @@
       "delayFormat": "{0} pv {1} t {2} min"
     }
   },
-
   "formScreen": {
     "autosaving": "Vastausta tallennetaan...",
     "replyEditEmailText": "Voit lähettää linkin itsellesi sähköpostilla klikkaamalla ",
@@ -528,7 +514,6 @@
     "replyDeleted": "Vastaus poistettu",
     "noTitle": "Ei otsikkoa"
   },
-
   "editorScreen": {
     "noMetaforms": "Lomakkeita ei löytynyt",
     "formVersion": "LOMAKEVERSIO",
@@ -553,21 +538,19 @@
       "formTemplateSosmetaLink": "https://sosmeta.thl.fi/document-definitions/list",
       "formTemplateSchema": "Schema",
       "formIdentification": "Vastaajan tunnistautuminen",
-      "formIdentificationService": "Suomi.fi -palvelu",
-      "formIdentificationHelper": "Lomakkeen vastaajan täytyy tunnistatutua Suomi.fi -palvelun kautta vastauksen lähettämisen yhteydessä.",
+      "formIdentificationService": "Vahva tunnistautuminen",
+      "formIdentificationHelper": "Lomakkeen vastaajan täytyy tunnistatutua vahvasti vastauksen lähettämisen yhteydessä.",
       "formIdentificationNone": "Ei vaadi tunnistautumista"
     },
     "confirmDeleteVersionTitle": "Oletko varma?",
     "confirmDeleteVersionText": "Oletko varma, että haluat poistaa lomakeversion?"
   },
-
   "emailDialog": {
     "send": "Lähetä",
     "title": "Otsikko",
     "email": "Sähköposti",
     "cancel": "Peruuta"
   },
-
   "autoComplete": {
     "missingOptions": "Code server autocomplete ei ole määritelty",
     "missingCodeServerBaseUrl": "Code server autocomplete puuttuu codeServerBaseUrl",
@@ -576,7 +559,6 @@
     "missingAutocomplete": "Autocomplete ei ole määritelty",
     "unknownAutocompleteService": "TUNTEMATON_AUTO_COMPLETE_SERVICE"
   },
-
   "auditLogEntryType": {
     "viewReply": "Avattu",
     "listReply": "Listattu",
@@ -588,17 +570,14 @@
     "exportReplyPdf": "Viety PDF:nä",
     "exportReplyXlsx": "Viety taulukkona"
   },
-
   "formContext": {
     "form": "Näkyy lomaketta täyttäessä",
     "management": "Näkyy ammattilaiselle vastausnäkymässä",
     "managementList": "Näkyy ammattilaiselle vastauslistauksessa"
   },
-
   "dataGrid": {
     "rowsPerPage": "Rivejä sivulla:"
   },
-
   "successSnackbars": {
     "formEditor": {
       "deleteFormSuccessText": "Tuotantolomake poistettu onnistuneesti!",
@@ -623,18 +602,16 @@
       "replyEditSuccessText": "Vastauksen muokkaus onnistui!"
     }
   },
-
   "scriptsScreen": {
     "scriptsTable": {
-      "script": "Skripti",
+      "script": "Laajennus",
       "delete": "Poista"
     }
   },
-
   "scriptEditorScreen": {
     "scriptName": "Nimi",
     "scriptType": "Tyyppi",
-    "scriptContent": "Skriptin sisältö",
+    "scriptContent": "Laajennusken sisältö",
     "saveScript": "Tallenna"
   },
   "features": {
@@ -644,15 +621,15 @@
     },
     "formUsageStatistics": {
       "title": "Lomakkeen käyttödata",
-      "description": "Lomakkeiden käyttötilastojen tarkastelu. Ominaisuutta ei ole otettu käyttöön."
+      "description": "Näe kuinka monta kertaa lomaketta on lähetetty kuukaudessa ja kuinka kauan keskimäärin menee vastauksen tarkasteluun."
     },
     "auditLog": {
       "title": "Auditointi",
-      "description": "Lomakkeiden käsittelyhistorian tarkastelu. Ominaisuutta ei ole otettu käyttöön."
+      "description": "Seuraa, kuka on katsellut, tallentanut tai muokannut vastauksia."
     },
     "strongAuthentication": {
       "title": "Vahva tunnistautuminen",
-      "description": "Lomakkeen täyttäjän vahva tunnistautuminen. Ominaisuutta ei ole otettu käyttöön."
+      "description": "Varmista, että lomakkeen täyttäjä on varmennettu."
     },
     "excelExport": {
       "title": "Excel-vienti",
@@ -660,8 +637,8 @@
     },
     "advancedPermissionTargeting": {
       "title": "Käyttäjäryhmien hallinta",
-      "description": "Lomakkeen käyttäjäryhmien hallinta. Ominaisuutta ei ole otettu käyttöön." 
-    }
+      "description": "Määritä, kenellä on oikeus nähdä vastaukset lomakkeen täyttämisen perusteella."
+    },
+    "askForMoreInfo": "Kysy lisätietoja:"
   }
-
 }

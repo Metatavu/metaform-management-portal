@@ -36,6 +36,7 @@ export interface Configuration {
     leaveSiteUrl?: string;
   };
   features: string;
+  featureContactEmail: string;
 }
 
 /**
@@ -190,8 +191,8 @@ declare module "@mui/material/styles" {
     };
   }
 
-  interface Theme extends CustomTheme {}
-  interface ThemeOptions extends CustomTheme {}
+  interface Theme extends CustomTheme { }
+  interface ThemeOptions extends CustomTheme { }
 }
 
 /**

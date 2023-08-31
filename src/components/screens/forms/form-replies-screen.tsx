@@ -1,4 +1,4 @@
-import { Button, FormControlLabel, Switch, Typography } from "@mui/material";
+import { Button, Switch, Typography } from "@mui/material";
 import { DataGrid, fiFI, GridActionsCellItem, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import Api from "api";
 import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
@@ -349,7 +349,7 @@ const FormRepliesScreen: React.FC = () => {
    */
   const onExportClick = async () => {
     setLoading(true);
-     
+
     try {
       if (!metaform?.id) {
         return;
@@ -409,7 +409,7 @@ const FormRepliesScreen: React.FC = () => {
    * Render toggle switch for not processed/all replies
    */
   const renderActions = () => (
-    <>
+    <AdminFormListStack direction="row">
       <Feature
         feature={ FeatureType.EXCEL_EXPORT }
         title={ strings.features.excelExport.title }
@@ -420,19 +420,14 @@ const FormRepliesScreen: React.FC = () => {
           { strings.repliesScreen.export }
         </Button>
       </Feature>
-      <AdminFormListStack direction="row">
-        <Typography>
-          {strings.repliesScreen.selectorShowOpen}
-        </Typography>
-        <FormControlLabel
-          control={<Switch onChange={() => { setShowAllReplies(!showAllReplies); }}/>}
-          label={undefined}
-        />
-        <Typography>
-          {strings.repliesScreen.selectorShowAll}
-        </Typography>
-      </AdminFormListStack>
-    </>
+      <Typography>
+        { strings.repliesScreen.selectorShowOpen }
+      </Typography>
+      <Switch onChange={() => { setShowAllReplies(!showAllReplies); }}/>
+      <Typography>
+        { strings.repliesScreen.selectorShowAll }
+      </Typography>
+    </AdminFormListStack>
   );
 
   return (
@@ -444,10 +439,10 @@ const FormRepliesScreen: React.FC = () => {
         />
         <FormRestrictedContent>
           <Feature
-            feature={FeatureType.AUDIT_LOG}
+            feature={FeatureType.AUDIT_LOG }
             title={ strings.features.auditLog.title }
             description={ strings.features.auditLog.description }
-            strategy={ FeatureStrategy.DISABLE}
+            strategy={ FeatureStrategy.DISABLE }
           >
             <NavigationTab
               text={ strings.navigationHeader.formsScreens.formHistoryScreen }

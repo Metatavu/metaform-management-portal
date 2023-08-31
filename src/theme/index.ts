@@ -35,6 +35,15 @@ export default createTheme({
     background: {
       default: "#666",
       paper: "#fff"
+    },
+    warning: {
+      main: "#ff9800"
+    },
+    error: {
+      main: "#f44336"
+    },
+    success: {
+      main: "#4caf50"
     }
   },
 

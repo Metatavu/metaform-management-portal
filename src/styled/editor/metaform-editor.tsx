@@ -77,3 +77,15 @@ export const FormsContainer = styled(Stack, {
   overflow: "auto",
   flex: 1
 }));
+
+/**
+ * Styled drawer section component
+ */
+export const DrawerSection = styled(Stack, {
+  label: "drawer-section"
+})(({ theme }) => ({
+  padding: theme.spacing(1),
+  paddingTop: theme.spacing(2),
+  gap: theme.spacing(2),
+  borderTop: `1px solid ${theme.palette.grey[200]}`
+}));

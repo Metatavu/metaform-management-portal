@@ -1,9 +1,10 @@
 import * as React from "react";
 import strings from "../../localization/strings";
 import { useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import GenericLoaderWrapper from "components/generic/generic-loader";
 import UsersScreenDialog from "./users-screen-dialog";
+import { RoundActionButton } from "styled/generic/form";
 
 /**
  * Interface representing component properties
@@ -69,12 +70,12 @@ const AddMemberGroupDialog: React.FC<Props> = ({
   const renderDialogActions = () => (
     <GenericLoaderWrapper loading={ loading }>
       <>
-        <Button disableElevation variant="contained" onClick={ onCancelClick } color="warning" autoFocus>
+        <RoundActionButton disableElevation variant="contained" onClick={ onCancelClick } color="warning" autoFocus>
           { strings.userManagementScreen.addMemberGroupDialog.cancelButton }
-        </Button>
-        <Button onClick={ onCreateClick } color="primary" disabled={ !displayName }>
+        </RoundActionButton>
+        <RoundActionButton onClick={ onCreateClick } color="primary" disabled={ !displayName }>
           { strings.userManagementScreen.addMemberGroupDialog.createButton }
-        </Button>
+        </RoundActionButton>
       </>
     </GenericLoaderWrapper>
   );

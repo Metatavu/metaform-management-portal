@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, IconButton, MenuItem, Stack, TextField } from "@mui/material";
+import { FormControlLabel, IconButton, MenuItem, Stack, Switch, TextField } from "@mui/material";
 import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
@@ -135,17 +135,19 @@ const MetaformTableComponent: FC<Props> = ({
       <FormControlLabel
         label={ strings.draftEditorScreen.editor.features.field.calculateColumnSum }
         control={
-          <Checkbox
+          <Switch
             checked={ newColumnCalculateSum }
             onChange={ ({ target }) => setNewColumnCalculateSum(target.checked) }
           />
         }
       />
-      <TextField
-        label={ strings.draftEditorScreen.editor.features.field.sumPostfix }
-        value={ newColumnSumPostfix }
-        onChange={ ({ target }) => setNewColumnSumPostfix(target.value) }
-      />
+      { newColumnCalculateSum &&
+        <TextField
+          label={ strings.draftEditorScreen.editor.features.field.sumPostfix }
+          value={ newColumnSumPostfix }
+          onChange={ ({ target }) => setNewColumnSumPostfix(target.value) }
+        />
+      }
     </>
   );
 
@@ -155,29 +157,32 @@ const MetaformTableComponent: FC<Props> = ({
   const renderTableNewColumn = () => (
     <Stack
       spacing={ 0 }
-      direction="column"
+      direction="row"
     >
-      <TextField
-        select
-        fullWidth
-        label={ strings.draftEditorScreen.editor.features.field.addNewColumn }
-        value={ newColumnType }
-        onChange={ ({ target }) => setNewColumnType(target.value as MetaformTableColumnType) }
-      >
-        <MenuItem value={ MetaformTableColumnType.Text }>
-          { strings.draftEditorScreen.editor.features.field.columnTextType }
-        </MenuItem>
-        <MenuItem value={ MetaformTableColumnType.Number }>
-          { strings.draftEditorScreen.editor.features.field.columnNumberType }
-        </MenuItem>
-      </TextField>
-      {
-        newColumnType === MetaformTableColumnType.Number && renderColumnSumOptions()
-      }
+      <Stack flex={ 1 }>
+        <TextField
+          select
+          fullWidth
+          label={ strings.draftEditorScreen.editor.features.field.addNewColumn }
+          value={ newColumnType }
+          onChange={ ({ target }) => setNewColumnType(target.value as MetaformTableColumnType) }
+        >
+          <MenuItem value={ MetaformTableColumnType.Text }>
+            { strings.draftEditorScreen.editor.features.field.columnTextType }
+          </MenuItem>
+          <MenuItem value={ MetaformTableColumnType.Number }>
+            { strings.draftEditorScreen.editor.features.field.columnNumberType }
+          </MenuItem>
+        </TextField>
+        {
+          newColumnType === MetaformTableColumnType.Number && renderColumnSumOptions()
+        }
+      </Stack>
       <IconButton
         disabled={ newColumnType === undefined }
         onClick={ addNewColumn }
         color="success"
+        sx={{ alignSelf: "flex-start" }}
       >
         <AddCircleIcon/>
       </IconButton>
