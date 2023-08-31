@@ -531,7 +531,7 @@
       "formTemplateSchema": "Schema",
       "formIdentification": "Repliers identification",
       "formIdentificationService": "Strong authentication",
-      "formIdentificationHelper": "Form replier needs to authentication themself through a strong authentication service when submitting reply.",
+      "formIdentificationHelper": "Form replier needs to authenticate themself through a strong authentication service when submitting reply.",
       "formIdentificationNone": "No identification"
     },
     "confirmDeleteVersionTitle": "Are you sure?",
