@@ -18,6 +18,8 @@ import moment from "moment";
 import { DataValidation } from "utils/data-validation-utils";
 import Feature from "components/containers/feature";
 import { FeatureType, FeatureStrategy } from "types";
+import LinearProgress from "@mui/material/LinearProgress";
+import Box from "@mui/material/Box";
 
 /**
  * Interface for single form row
@@ -26,8 +28,8 @@ interface Row {
   id: string;
   slug?: string;
   title: string;
-  latestReply?: Date;
-  newReply?: number;
+  latestReply?: Date | null;
+  newReply?: number | null;
 }
 
 /**
@@ -43,6 +45,26 @@ const FormsScreen: React.FC = () => {
   const navigate = useNavigate();
 
   /**
+   *  Builds a row with placeholder statistic values
+   *
+   * @param form form
+   * @returns replies replies
+   */
+  const buildRowWithPlaceholders = (form: Metaform) => {
+    if (!form.id || !form.slug) {
+      return;
+    }
+
+    return {
+      id: form.id,
+      slug: form.slug,
+      title: form.title || strings.formScreen.noTitle,
+      latestReply: null,
+      newReply: null
+    };
+  };
+
+  /**
    * Builds a row for the table
    *
    * @param form form
@@ -52,9 +74,9 @@ const FormsScreen: React.FC = () => {
     if (!form.id || !form.slug) {
       return;
     }
-    
+
     const statistics = await metaformStatisticsApi.getStatistics({ metaformId: form.id });
-    
+
     return {
       id: form.id,
       slug: form.slug,
@@ -65,11 +87,29 @@ const FormsScreen: React.FC = () => {
   };
 
   /**
-   * Loads data
+   * Loads row data without statistics for faster render
    */
-  const loadData = async () => {
+  const loadInitialData = async () => {
     setLoading(true);
 
+    try {
+      const forms = await metaformsApi.listMetaforms({
+        memberRole: MetaformMemberRole.Manager
+      });
+      const builtRows = forms.map(form => buildRowWithPlaceholders(form));
+
+      setRows(builtRows.filter(DataValidation.validateValueIsNotUndefinedNorNull));
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
+    }
+
+    setLoading(false);
+  };
+
+  /**
+   * Loads data with statistics
+   */
+  const loadData = async () => {
     try {
       const forms = await metaformsApi.listMetaforms({
         memberRole: MetaformMemberRole.Manager
@@ -80,11 +120,10 @@ const FormsScreen: React.FC = () => {
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
-
-    setLoading(false);
   };
 
   useEffect(() => {
+    loadInitialData();
     loadData();
   }, []);
 
@@ -125,10 +164,16 @@ const FormsScreen: React.FC = () => {
       },
       renderCell: params => {
         const latestReplyDate = params.row.latestReply;
+        const dateString = latestReplyDate ? moment(latestReplyDate).format("LLL") : "";
+
         return (
           <AdminFormListStack direction="row">
             <DateRangeIcon style={ { fill: "darkgrey" } }/>
-            <AdminFormTypographyField>{ latestReplyDate ? moment(latestReplyDate).format("LLL") : "" }</AdminFormTypographyField>
+            <AdminFormTypographyField>
+              { latestReplyDate === null
+                ? <Box sx={{ width: "100%" }}><LinearProgress/></Box>
+                : dateString }
+            </AdminFormTypographyField>
           </AdminFormListStack>
         );
       }
@@ -148,11 +193,17 @@ const FormsScreen: React.FC = () => {
       },
       renderCell: params => {
         const fill = params.row.newReply ? "red" : "gray";
-        const newReplies = params.row.newReply > 0 ? strings.formatString(strings.formsScreen.formTable.notProcessed, params.row.newReply) : undefined;
+        const newReplies = params.row.newReply;
+        const newRepliesString = newReplies > 0 ? strings.formatString(strings.formsScreen.formTable.notProcessed, params.row.newReply) : undefined;
+
         return (
           <AdminFormListStack direction="row">
             <NotificationsActiveIcon style={{ fill: fill }}/>
-            <AdminFormTypographyField>{ newReplies }</AdminFormTypographyField>
+            <AdminFormTypographyField>
+              { newReplies === null
+                ? <Box sx={{ width: "100%" }}><LinearProgress/></Box>
+                : newRepliesString }
+            </AdminFormTypographyField>
           </AdminFormListStack>
         );
       }
