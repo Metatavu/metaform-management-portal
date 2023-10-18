@@ -63,7 +63,8 @@
       "deleteReply": "Vastauksen poistaminen epäonnistui",
       "findMetaform": "Lomakkeen hakemisessa tapahtui virhe",
       "noConnection": "Ei internet-yhteyttä!",
-      "noConnectionHelper": "Lomaketta ei voida lähettää ilman toimivaa internet-yhteyttä. Tarkista verkkoasetuksesi."
+      "noConnectionHelper": "Lomaketta ei voida lähettää ilman toimivaa internet-yhteyttä. Tarkista verkkoasetuksesi.",
+      "statisticsFailure": "Tietojen nouto epäonnistui"
     },
     "formAutoComplete": {
       "autocompleteField": "Automaattisen täytön asetusten haku epäonnistui, voit kuitenkin jatkaa lomakkeen täyttöä sulkemalla tämän ilmoituksen."

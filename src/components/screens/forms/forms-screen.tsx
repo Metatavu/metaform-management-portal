@@ -20,6 +20,8 @@ import Feature from "components/containers/feature";
 import { FeatureType, FeatureStrategy } from "types";
 import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import ReplayIcon from "@mui/icons-material/Replay";
 
 /**
  * Interface for single form row
@@ -30,6 +32,7 @@ interface Row {
   title: string;
   latestReply?: Date | null;
   newReply?: number | null;
+  error?: boolean;
 }
 
 /**
@@ -42,6 +45,7 @@ const FormsScreen: React.FC = () => {
   const { metaformsApi, metaformStatisticsApi } = apiClient;
   const [ rows, setRows ] = useState<Row[]>([]);
   const [ loading, setLoading ] = useState(false);
+  const [ rowLoadingId, setRowLoadingId ] = useState("");
   const navigate = useNavigate();
 
   /**
@@ -75,15 +79,25 @@ const FormsScreen: React.FC = () => {
       return;
     }
 
-    const statistics = await metaformStatisticsApi.getStatistics({ metaformId: form.id });
+    try {
+      const statistics = await metaformStatisticsApi.getStatistics({ metaformId: form.id });
 
-    return {
-      id: form.id,
-      slug: form.slug,
-      title: form.title || strings.formScreen.noTitle,
-      latestReply: statistics.lastReplyDate,
-      newReply: statistics.unprocessedReplies
-    };
+      return {
+        id: form.id,
+        slug: form.slug,
+        title: form.title || strings.formScreen.noTitle,
+        latestReply: statistics.lastReplyDate,
+        newReply: statistics.unprocessedReplies
+      };
+    } catch {
+      // TODO: Do we want to set an error here as previously in the loadData??
+      return {
+        id: form.id,
+        slug: form.slug,
+        title: form.title || strings.formScreen.noTitle,
+        error: true
+      };
+    }
   };
 
   /**
@@ -127,6 +141,24 @@ const FormsScreen: React.FC = () => {
     loadData();
   }, []);
 
+  /**
+   * Reloads a forms statistics data
+   *
+   * @param formId formId
+   */
+  const reloadFormStatisticData = async (formId: string) => {
+    setRowLoadingId(formId);
+    const form = await metaformsApi.findMetaform({
+      metaformId: formId
+    });
+
+    const rowData = await buildRow(form);
+    if (!rowData) return;
+
+    setRows(rows.map(row => (row.id === rowData.id ? rowData : row)));
+    setRowLoadingId("");
+  };
+
   const columns: GridColDef[] = [
     {
       field: "title",
@@ -163,14 +195,30 @@ const FormsScreen: React.FC = () => {
         );
       },
       renderCell: params => {
-        const latestReplyDate = params.row.latestReply;
-        const dateString = latestReplyDate ? moment(latestReplyDate).format("LLL") : "";
+        const { latestReply, error } = params.row;
+
+        if (error) {
+          return (
+            <AdminFormListStack direction="row">
+              <DateRangeIcon style={ { fill: "darkgrey" } }/>
+              <AdminFormTypographyField>
+                { rowLoadingId === params.row.id
+                  ? <Box sx={{ width: "100%" }}><LinearProgress/></Box>
+                  : strings.errorHandling.formScreen.statisticsFailure}
+              </AdminFormTypographyField>
+            </AdminFormListStack>
+          );
+        }
+
+        const dateString = latestReply
+          ? moment(latestReply).format("LLL")
+          : "";
 
         return (
           <AdminFormListStack direction="row">
             <DateRangeIcon style={ { fill: "darkgrey" } }/>
             <AdminFormTypographyField>
-              { latestReplyDate === null
+              { latestReply === null
                 ? <Box sx={{ width: "100%" }}><LinearProgress/></Box>
                 : dateString }
             </AdminFormTypographyField>
@@ -193,14 +241,28 @@ const FormsScreen: React.FC = () => {
       },
       renderCell: params => {
         const fill = params.row.newReply ? "red" : "gray";
-        const newReplies = params.row.newReply;
-        const newRepliesString = newReplies > 0 ? strings.formatString(strings.formsScreen.formTable.notProcessed, params.row.newReply) : undefined;
+        const { newReply, error } = params.row;
+
+        if (error) {
+          return (
+            <AdminFormListStack direction="row">
+              <NotificationsActiveIcon style={{ fill: fill }}/>
+              <AdminFormTypographyField>
+                { rowLoadingId === params.row.id
+                  ? <Box sx={{ width: "100%" }}><LinearProgress/></Box>
+                  : <IconButton onClick={() => reloadFormStatisticData(params.row.id)}><ReplayIcon/></IconButton>}
+              </AdminFormTypographyField>
+            </AdminFormListStack>
+          );
+        }
+
+        const newRepliesString = newReply > 0 ? strings.formatString(strings.formsScreen.formTable.notProcessed, params.row.newReply) : undefined;
 
         return (
           <AdminFormListStack direction="row">
             <NotificationsActiveIcon style={{ fill: fill }}/>
             <AdminFormTypographyField>
-              { newReplies === null
+              { newReply === null
                 ? <Box sx={{ width: "100%" }}><LinearProgress/></Box>
                 : newRepliesString }
             </AdminFormTypographyField>

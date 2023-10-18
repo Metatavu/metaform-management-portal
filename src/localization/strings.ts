@@ -77,6 +77,7 @@ export interface Localized extends LocalizedStringsMethods {
       findMetaform: string;
       noConnection: string;
       noConnectionHelper: string;
+      statisticsFailure: string;
     },
     formAutoComplete: {
       autocompleteField: string;
