@@ -89,7 +89,6 @@ const FormsScreen: React.FC = () => {
         newReply: statistics.unprocessedReplies
       };
     } catch {
-      // TODO: Do we want to set an error here as previously in the loadData??
       return {
         id: form.id,
         slug: form.slug,
