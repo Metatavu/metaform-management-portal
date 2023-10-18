@@ -18,10 +18,9 @@ import moment from "moment";
 import { DataValidation } from "utils/data-validation-utils";
 import Feature from "components/containers/feature";
 import { FeatureType, FeatureStrategy } from "types";
-import LinearProgress from "@mui/material/LinearProgress";
-import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import ReplayIcon from "@mui/icons-material/Replay";
+import Skeleton from "@mui/material/Skeleton";
 
 /**
  * Interface for single form row
@@ -203,7 +202,7 @@ const FormsScreen: React.FC = () => {
               <DateRangeIcon style={ { fill: "darkgrey" } }/>
               <AdminFormTypographyField>
                 { rowLoadingId === params.row.id
-                  ? <Box sx={{ width: "100%" }}><LinearProgress/></Box>
+                  ? <span style={{ width: "100%" }}><Skeleton/></span>
                   : strings.errorHandling.formScreen.statisticsFailure}
               </AdminFormTypographyField>
             </AdminFormListStack>
@@ -219,7 +218,7 @@ const FormsScreen: React.FC = () => {
             <DateRangeIcon style={ { fill: "darkgrey" } }/>
             <AdminFormTypographyField>
               { latestReply === null
-                ? <Box sx={{ width: "100%" }}><LinearProgress/></Box>
+                ? <span style={{ width: "100%" }}><Skeleton/></span>
                 : dateString }
             </AdminFormTypographyField>
           </AdminFormListStack>
@@ -249,7 +248,7 @@ const FormsScreen: React.FC = () => {
               <NotificationsActiveIcon style={{ fill: fill }}/>
               <AdminFormTypographyField>
                 { rowLoadingId === params.row.id
-                  ? <Box sx={{ width: "100%" }}><LinearProgress/></Box>
+                  ? <span style={{ width: "100%" }}><Skeleton/></span>
                   : <IconButton onClick={() => reloadFormStatisticData(params.row.id)}><ReplayIcon/></IconButton>}
               </AdminFormTypographyField>
             </AdminFormListStack>
@@ -263,7 +262,7 @@ const FormsScreen: React.FC = () => {
             <NotificationsActiveIcon style={{ fill: fill }}/>
             <AdminFormTypographyField>
               { newReply === null
-                ? <Box sx={{ width: "100%" }}><LinearProgress/></Box>
+                ? <span style={{ width: "100%" }}><Skeleton/></span>
                 : newRepliesString }
             </AdminFormTypographyField>
           </AdminFormListStack>
