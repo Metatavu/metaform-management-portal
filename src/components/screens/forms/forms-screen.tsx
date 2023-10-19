@@ -18,6 +18,9 @@ import moment from "moment";
 import { DataValidation } from "utils/data-validation-utils";
 import Feature from "components/containers/feature";
 import { FeatureType, FeatureStrategy } from "types";
+import IconButton from "@mui/material/IconButton";
+import ReplayIcon from "@mui/icons-material/Replay";
+import Skeleton from "@mui/material/Skeleton";
 
 /**
  * Interface for single form row
@@ -26,8 +29,9 @@ interface Row {
   id: string;
   slug?: string;
   title: string;
-  latestReply?: Date;
-  newReply?: number;
+  latestReply?: Date | null;
+  newReply?: number | null;
+  error?: boolean;
 }
 
 /**
@@ -40,36 +44,84 @@ const FormsScreen: React.FC = () => {
   const { metaformsApi, metaformStatisticsApi } = apiClient;
   const [ rows, setRows ] = useState<Row[]>([]);
   const [ loading, setLoading ] = useState(false);
+  const [ rowLoadingId, setRowLoadingId ] = useState("");
   const navigate = useNavigate();
+
+  /**
+   * Builds a row with placeholder statistic values
+   *
+   * @param form form
+   * @returns replies replies
+   */
+  const buildRowWithPlaceholders = (form: Metaform) => {
+    if (!form.id || !form.slug) {
+      return;
+    }
+
+    return {
+      id: form.id,
+      slug: form.slug,
+      title: form.title || strings.formScreen.noTitle,
+      latestReply: null,
+      newReply: null
+    };
+  };
 
   /**
    * Builds a row for the table
    *
    * @param form form
-   * @param replies replies
+   * @returns row for the table
    */
   const buildRow = async (form: Metaform) => {
     if (!form.id || !form.slug) {
       return;
     }
-    
-    const statistics = await metaformStatisticsApi.getStatistics({ metaformId: form.id });
-    
-    return {
-      id: form.id,
-      slug: form.slug,
-      title: form.title || strings.formScreen.noTitle,
-      latestReply: statistics.lastReplyDate,
-      newReply: statistics.unprocessedReplies
-    };
+
+    try {
+      const statistics = await metaformStatisticsApi.getStatistics({ metaformId: form.id });
+
+      return {
+        id: form.id,
+        slug: form.slug,
+        title: form.title || strings.formScreen.noTitle,
+        latestReply: statistics.lastReplyDate,
+        newReply: statistics.unprocessedReplies
+      };
+    } catch {
+      return {
+        id: form.id,
+        slug: form.slug,
+        title: form.title || strings.formScreen.noTitle,
+        error: true
+      };
+    }
   };
 
   /**
-   * Loads data
+   * Loads row data without statistics for faster render
    */
-  const loadData = async () => {
+  const loadInitialData = async () => {
     setLoading(true);
 
+    try {
+      const forms = await metaformsApi.listMetaforms({
+        memberRole: MetaformMemberRole.Manager
+      });
+      const builtRows = forms.map(form => buildRowWithPlaceholders(form));
+
+      setRows(builtRows.filter(DataValidation.validateValueIsNotUndefinedNorNull));
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
+    }
+
+    setLoading(false);
+  };
+
+  /**
+   * Loads data with statistics
+   */
+  const loadData = async () => {
     try {
       const forms = await metaformsApi.listMetaforms({
         memberRole: MetaformMemberRole.Manager
@@ -80,13 +132,30 @@ const FormsScreen: React.FC = () => {
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
-
-    setLoading(false);
   };
 
   useEffect(() => {
+    loadInitialData();
     loadData();
   }, []);
+
+  /**
+   * Reloads a forms statistics data
+   *
+   * @param formId formId
+   */
+  const reloadFormStatisticData = async (formId: string) => {
+    setRowLoadingId(formId);
+    const form = await metaformsApi.findMetaform({
+      metaformId: formId
+    });
+
+    const rowData = await buildRow(form);
+    if (!rowData) return;
+
+    setRows(rows.map(row => (row.id === rowData.id ? rowData : row)));
+    setRowLoadingId("");
+  };
 
   const columns: GridColDef[] = [
     {
@@ -124,11 +193,33 @@ const FormsScreen: React.FC = () => {
         );
       },
       renderCell: params => {
-        const latestReplyDate = params.row.latestReply;
+        const { latestReply, error } = params.row;
+
+        if (error) {
+          return (
+            <AdminFormListStack direction="row">
+              <DateRangeIcon style={ { fill: "darkgrey" } }/>
+              <AdminFormTypographyField>
+                { rowLoadingId === params.row.id
+                  ? <span style={{ width: "100%" }}><Skeleton/></span>
+                  : strings.errorHandling.formScreen.statisticsFailure}
+              </AdminFormTypographyField>
+            </AdminFormListStack>
+          );
+        }
+
+        const dateString = latestReply
+          ? moment(latestReply).format("LLL")
+          : "";
+
         return (
           <AdminFormListStack direction="row">
             <DateRangeIcon style={ { fill: "darkgrey" } }/>
-            <AdminFormTypographyField>{ latestReplyDate ? moment(latestReplyDate).format("LLL") : "" }</AdminFormTypographyField>
+            <AdminFormTypographyField>
+              { latestReply === null
+                ? <span style={{ width: "100%" }}><Skeleton/></span>
+                : dateString }
+            </AdminFormTypographyField>
           </AdminFormListStack>
         );
       }
@@ -148,11 +239,39 @@ const FormsScreen: React.FC = () => {
       },
       renderCell: params => {
         const fill = params.row.newReply ? "red" : "gray";
-        const newReplies = params.row.newReply > 0 ? strings.formatString(strings.formsScreen.formTable.notProcessed, params.row.newReply) : undefined;
+        const { newReply, error } = params.row;
+
+        if (error) {
+          return (
+            <AdminFormListStack direction="row">
+              <NotificationsActiveIcon style={{ fill: fill }}/>
+              <AdminFormTypographyField>
+                { rowLoadingId === params.row.id
+                  ? <span style={{ width: "100%" }}><Skeleton/></span>
+                  : (
+                    <span>
+                      <IconButton onClick={() => reloadFormStatisticData(params.row.id)}>
+                        <ReplayIcon/>
+                      </IconButton>
+                      {strings.errorHandling.formScreen.tryAgain}
+                    </span>
+                  )
+                }
+              </AdminFormTypographyField>
+            </AdminFormListStack>
+          );
+        }
+
+        const newRepliesString = newReply > 0 ? strings.formatString(strings.formsScreen.formTable.notProcessed, params.row.newReply) : undefined;
+
         return (
           <AdminFormListStack direction="row">
             <NotificationsActiveIcon style={{ fill: fill }}/>
-            <AdminFormTypographyField>{ newReplies }</AdminFormTypographyField>
+            <AdminFormTypographyField>
+              { newReply === null
+                ? <span style={{ width: "100%" }}><Skeleton/></span>
+                : newRepliesString }
+            </AdminFormTypographyField>
           </AdminFormListStack>
         );
       }
