@@ -48,7 +48,7 @@ const FormsScreen: React.FC = () => {
   const navigate = useNavigate();
 
   /**
-   *  Builds a row with placeholder statistic values
+   * Builds a row with placeholder statistic values
    *
    * @param form form
    * @returns replies replies
