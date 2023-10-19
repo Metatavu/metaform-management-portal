@@ -78,6 +78,7 @@ export interface Localized extends LocalizedStringsMethods {
       noConnection: string;
       noConnectionHelper: string;
       statisticsFailure: string;
+      tryAgain: string;
     },
     formAutoComplete: {
       autocompleteField: string;

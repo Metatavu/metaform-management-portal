@@ -248,7 +248,15 @@ const FormsScreen: React.FC = () => {
               <AdminFormTypographyField>
                 { rowLoadingId === params.row.id
                   ? <span style={{ width: "100%" }}><Skeleton/></span>
-                  : <IconButton onClick={() => reloadFormStatisticData(params.row.id)}><ReplayIcon/></IconButton>}
+                  : (
+                    <span>
+                      <IconButton onClick={() => reloadFormStatisticData(params.row.id)}>
+                        <ReplayIcon/>
+                      </IconButton>
+                      {strings.errorHandling.formScreen.tryAgain}
+                    </span>
+                  )
+                }
               </AdminFormTypographyField>
             </AdminFormListStack>
           );

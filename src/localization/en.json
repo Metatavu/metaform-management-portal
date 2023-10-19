@@ -64,7 +64,8 @@
       "findMetaform": "Finding Metaform failed",
       "noConnection": "No internet connection!",
       "noConnectionHelper": "Form cannot be submitted without internet connection. Please check your settings.",
-      "statisticsFailure": "Fetching data failed"
+      "statisticsFailure": "Fetching data failed",
+      "tryAgain": "Try again"
     },
     "formAutoComplete": {
       "autocompleteField": "Fetching autocomplete field options failed. You can still fill and submit the form by closing this dialog."
