@@ -71,7 +71,7 @@ const FormsScreen: React.FC = () => {
    * Builds a row for the table
    *
    * @param form form
-   * @param replies replies
+   * @returns row for the table
    */
   const buildRow = async (form: Metaform) => {
     if (!form.id || !form.slug) {
