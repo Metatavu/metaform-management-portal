@@ -98,7 +98,7 @@ const EditorScreenDrawer: FC<Props> = ({
   const applyTemplateToForm = () => {
     const foundTemplate = templates.find(template => template.id === selectedTemplate);
 
-    if (!foundTemplate || !foundTemplate.data.sections || !foundTemplate.data.title) return;
+    if (!foundTemplate?.data?.sections || !foundTemplate?.data?.title) return;
 
     setFormSettings({
       ...formSettings,
