@@ -52,7 +52,9 @@
       "findDraft": "Fetching form version failed",
       "saveDraft": "Saving form version failed",
       "publishDraft": "Publishing form version failed",
-      "loadScripts": "Loading extension failed"
+      "loadScripts": "Loading extension failed",
+      "saveTemplate": "Saving template failed",
+      "fetchTemplates": "Fetching templates failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -228,6 +230,7 @@
   "draftEditorScreen": {
     "preview": "Preview",
     "publish": "Publish",
+    "saveTemplate": "Save as template",
     "publishDialog": {
       "title": "Publish version",
       "contentText": "Are you sure you wish to publish {0}?"
@@ -525,6 +528,8 @@
       "formName": "Name",
       "formUrl": "Url-address",
       "formTemplate": "Form template",
+      "formTemplates": "Form templates",
+      "formTemplateSelect": "Select a form template",
       "formTemplateCustom": "Empty template",
       "formTemplateCustomHelper": "Create new form with empty template. Recommended only if Sosmeta doesn't contain a suitable form template.",
       "formTemplateSosmeta": "Sosmeta template",
@@ -544,6 +549,11 @@
     "title": "Title",
     "email": "Address",
     "cancel": "Cancel"
+  },
+  "templateDialog": {
+    "title": "Save template",
+    "input": "Template title",
+    "text": "Enter template title"
   },
   "autoComplete": {
     "missingOptions": "Code server autocomplete not configured",
