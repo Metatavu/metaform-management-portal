@@ -66,6 +66,8 @@ export interface Localized extends LocalizedStringsMethods {
       saveDraft: string;
       publishDraft: string;
       loadScripts: string;
+      saveTemplate: string;
+      fetchTemplates: string;
     };
     formScreen: {
       saveReply: string;
@@ -277,6 +279,7 @@ export interface Localized extends LocalizedStringsMethods {
   draftEditorScreen: {
     preview: string;
     publish: string;
+    saveTemplate: string;
     publishDialog: {
       title: string;
       contentText: string;
@@ -596,6 +599,8 @@ export interface Localized extends LocalizedStringsMethods {
       formName: string;
       formUrl: string;
       formTemplate: string;
+      formTemplates: string;
+      formTemplateSelect: string;
       formTemplateCustom: string;
       formTemplateCustomHelper: string;
       formTemplateSosmeta: string;
@@ -619,6 +624,15 @@ export interface Localized extends LocalizedStringsMethods {
     email: string;
     cancel: string;
     send: string;
+  }
+
+  /**
+   * Translations related to template dialog
+   */
+  templateDialog: {
+    title: string;
+    input: string;
+    text: string;
   }
 
   /**

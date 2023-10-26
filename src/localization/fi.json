@@ -52,7 +52,9 @@
       "findDraft": "Lomakeversion haku epäonnistui",
       "saveDraft": "Lomakeversion tallentaminen epäonnistui",
       "publishDraft": "Lomakeversion julkaiseminen epäonnistui",
-      "loadScripts": "Laajennusten lataaminen epäonnistui"
+      "loadScripts": "Laajennusten lataaminen epäonnistui",
+      "saveTemplate": "Mallin tallentaminen epäonnistui",
+      "fetchTemplates": "Mallien nouto epäonnistui"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -228,6 +230,7 @@
   "draftEditorScreen": {
     "preview": "Esikatsele",
     "publish": "Julkaise",
+    "saveTemplate": "Tallenna mallina",
     "scripts": {
       "scripts": "Laajennukset",
       "addNewScript": "Lisää uusi laajennus",
@@ -534,6 +537,8 @@
       "formUrl": "Url-osoite",
       "formTemplate": "Lomakkeen pohja",
       "formTemplateCustom": "Tyhjä pohja",
+      "formTemplates": "Lomakemallit",
+      "formTemplateSelect": "Valitse lomakemalli",
       "formTemplateCustomHelper": "Luo uusi lomake tyhjällä pohjalla. Suositeltavaa vain, jos Sosmetasta ei löydy sopivaa pohjaa lomakkeelle.",
       "formTemplateSosmeta": "Sosmetan pohja",
       "formTemplateSosmetaHelper": "Luo uusi lomake Sosmetan rakenteiden mukaisesti. Sosmeta on Terveyden ja Hyvinvoinnin laitoksen ylläpitä palvelu. Rakennepohjat löytyvät osoitteesta: ",
@@ -552,6 +557,11 @@
     "title": "Otsikko",
     "email": "Sähköposti",
     "cancel": "Peruuta"
+  },
+  "templateDialog": {
+    "title": "Tallenna malli",
+    "input": "Mallin otsikko",
+    "text": "Anna mallin otsikko"
   },
   "autoComplete": {
     "missingOptions": "Code server autocomplete ei ole määritelty",
