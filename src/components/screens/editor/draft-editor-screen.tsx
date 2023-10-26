@@ -7,7 +7,7 @@ import MetaformEditor from "components/form-editor/metaform-editor";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
-import { Preview, Public, Save, SaveAs } from "@mui/icons-material";
+import { Preview, Public, Save, SaveAs, Delete } from "@mui/icons-material";
 import { useParams, useNavigate } from "react-router-dom";
 import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
@@ -37,6 +37,7 @@ const DraftEditorScreen: React.FC = () => {
   const draftForm = MetaformUtils.getDraftForm(metaformVersion);
   const editorRef = useRef<HTMLDivElement>(null);
   const [ loading, setLoading ] = useState(false);
+  const [ savedTemplateId, setSavedTemplateId ] = useState("");
   const [ publishDialogOpen, setPublishDialogOpen ] = useState(false);
   const [ templateDialogOpen, setTemplateDialogOpen ] = useState(false);
   const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
@@ -218,7 +219,7 @@ const DraftEditorScreen: React.FC = () => {
     setLoading(true);
 
     try {
-      await templatesApi.createTemplate({
+      const createdTemplate = await templatesApi.createTemplate({
         template: {
           visibility: TemplateVisibility.Public,
           data: {
@@ -229,8 +230,28 @@ const DraftEditorScreen: React.FC = () => {
         }
       });
       dispatch(setSnackbarMessage(strings.successSnackbars.draftEditor.saveTemplateSuccessText));
+      setSavedTemplateId(createdTemplate.id!);
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.saveTemplate, e);
+    }
+    setLoading(false);
+  };
+
+  /**
+   * Delete form template that was just created
+   *
+   * @param templateId form template string
+   */
+  const deleteTemplate = async (templateId: string) => {
+    try {
+      setLoading(true);
+      await templatesApi.deleteTemplate({
+        templateId: templateId
+      });
+      dispatch(setSnackbarMessage(strings.successSnackbars.draftEditor.deleteTemplateSuccessText));
+      setSavedTemplateId("");
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.draftEditorScreen.deleteTemplate, e);
     }
     setLoading(false);
   };
@@ -263,12 +284,21 @@ const DraftEditorScreen: React.FC = () => {
       >
         <Typography>{ strings.draftEditorScreen.preview }</Typography>
       </RoundActionButton>
-      <RoundActionButton
-        onClick={ () => setTemplateDialogOpen(true) }
-        startIcon={ <SaveAs/> }
-      >
-        <Typography>{ strings.draftEditorScreen.saveTemplate }</Typography>
-      </RoundActionButton>
+      {savedTemplateId
+        ? (
+          <RoundActionButton
+            onClick={ () => deleteTemplate(savedTemplateId) }
+            startIcon={ <Delete/> }
+          >
+            <Typography>{ strings.draftEditorScreen.deleteTemplate }</Typography>
+          </RoundActionButton>)
+        : (
+          <RoundActionButton
+            onClick={ () => setTemplateDialogOpen(true) }
+            startIcon={ <SaveAs/> }
+          >
+            <Typography>{ strings.draftEditorScreen.saveTemplate }</Typography>
+          </RoundActionButton>)}
       <Tooltip title={ strings.draftEditorScreen.editor.form.publishNoMemberGroupsDescription } disableHoverListener={ hasMemberGroups }>
         <span>
           <RoundActionButton

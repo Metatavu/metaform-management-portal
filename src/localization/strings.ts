@@ -68,6 +68,7 @@ export interface Localized extends LocalizedStringsMethods {
       loadScripts: string;
       saveTemplate: string;
       fetchTemplates: string;
+      deleteTemplate: string;
     };
     formScreen: {
       saveReply: string;
@@ -280,6 +281,7 @@ export interface Localized extends LocalizedStringsMethods {
     preview: string;
     publish: string;
     saveTemplate: string;
+    deleteTemplate: string;
     publishDialog: {
       title: string;
       contentText: string;
@@ -693,6 +695,7 @@ export interface Localized extends LocalizedStringsMethods {
       saveDraftSuccessText: string;
       publishDraftSuccessText: string;
       saveTemplateSuccessText: string;
+      deleteTemplateSuccessText: string;
     };
     users: {
       editUserSuccessText: string;

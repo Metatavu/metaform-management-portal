@@ -54,7 +54,8 @@
       "publishDraft": "Publishing form version failed",
       "loadScripts": "Loading extension failed",
       "saveTemplate": "Saving template failed",
-      "fetchTemplates": "Fetching templates failed"
+      "fetchTemplates": "Fetching templates failed",
+      "deleteTemplate": "Deleting form template failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -231,6 +232,7 @@
     "preview": "Preview",
     "publish": "Publish",
     "saveTemplate": "Save as template",
+    "deleteTemplate": "Delete template",
     "publishDialog": {
       "title": "Publish version",
       "contentText": "Are you sure you wish to publish {0}?"
@@ -593,7 +595,8 @@
     "draftEditor": {
       "saveDraftSuccessText": "Draft form saved successfully!",
       "publishDraftSuccessText": "Form published successfully!",
-      "saveTemplateSuccessText": "Form template saved successfully!"
+      "saveTemplateSuccessText": "Form template saved successfully!",
+      "deleteTemplateSuccessText": "Form template deleted successfully!"
     },
     "users": {
       "addMemberSuccessText": "Added user successfully!",

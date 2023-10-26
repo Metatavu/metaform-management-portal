@@ -54,7 +54,8 @@
       "publishDraft": "Lomakeversion julkaiseminen epäonnistui",
       "loadScripts": "Laajennusten lataaminen epäonnistui",
       "saveTemplate": "Mallin tallentaminen epäonnistui",
-      "fetchTemplates": "Mallien nouto epäonnistui"
+      "fetchTemplates": "Mallien nouto epäonnistui",
+      "deleteTemplate": "Lomakemallin poistaminen epäonnistui"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -231,6 +232,7 @@
     "preview": "Esikatsele",
     "publish": "Julkaise",
     "saveTemplate": "Tallenna mallina",
+    "deleteTemplate": "Poista malli",
     "scripts": {
       "scripts": "Laajennukset",
       "addNewScript": "Lisää uusi laajennus",
@@ -601,7 +603,8 @@
     "draftEditor": {
       "saveDraftSuccessText": "Lomakkeen luonnos tallennettu onnistuneesti!",
       "publishDraftSuccessText": "Lomake julkaistu onnistuneesti!",
-      "saveTemplateSuccessText": "Lomakemallin tallennus onnistui!"
+      "saveTemplateSuccessText": "Lomakemallin tallennus onnistui!",
+      "deleteTemplateSuccessText": "Lomakemallin poistaminen onnistui!"
     },
     "users": {
       "addMemberSuccessText": "Käyttäjän lisääminen onnistui!",
