@@ -78,7 +78,7 @@ const EditorScreenDrawer: FC<Props> = ({
    * Gets a list of templates
    */
   const getTemplates = async () => {
-    if (!templates.length) {
+    if (!templates.length && open) {
       try {
         setLoading(true);
         const foundTemplates = await templatesApi.listTemplates({
@@ -368,7 +368,7 @@ const EditorScreenDrawer: FC<Props> = ({
 
   useEffect(() => {
     getTemplates();
-  }, []);
+  }, [open]);
 
   useEffect(() => {
     applyTemplateToForm();
