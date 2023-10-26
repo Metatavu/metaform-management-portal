@@ -228,7 +228,7 @@ const DraftEditorScreen: React.FC = () => {
           }
         }
       });
-      // TODO: Add a success snackbar
+      dispatch(setSnackbarMessage(strings.successSnackbars.draftEditor.saveTemplateSuccessText));
     } catch (e) {
       errorContext.setError(strings.errorHandling.draftEditorScreen.saveTemplate, e);
     }

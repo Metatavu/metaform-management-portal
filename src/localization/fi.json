@@ -600,7 +600,8 @@
     },
     "draftEditor": {
       "saveDraftSuccessText": "Lomakkeen luonnos tallennettu onnistuneesti!",
-      "publishDraftSuccessText": "Lomake julkaistu onnistuneesti!"
+      "publishDraftSuccessText": "Lomake julkaistu onnistuneesti!",
+      "saveTemplateSuccessText": "Lomakemallin tallennus onnistui!"
     },
     "users": {
       "addMemberSuccessText": "Käyttäjän lisääminen onnistui!",
