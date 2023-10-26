@@ -592,7 +592,8 @@
     },
     "draftEditor": {
       "saveDraftSuccessText": "Draft form saved successfully!",
-      "publishDraftSuccessText": "Form published successfully!"
+      "publishDraftSuccessText": "Form published successfully!",
+      "saveTemplateSuccessText": "Form template saved successfully!"
     },
     "users": {
       "addMemberSuccessText": "Added user successfully!",

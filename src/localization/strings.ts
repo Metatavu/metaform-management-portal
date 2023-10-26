@@ -692,6 +692,7 @@ export interface Localized extends LocalizedStringsMethods {
     draftEditor: {
       saveDraftSuccessText: string;
       publishDraftSuccessText: string;
+      saveTemplateSuccessText: string;
     };
     users: {
       editUserSuccessText: string;
