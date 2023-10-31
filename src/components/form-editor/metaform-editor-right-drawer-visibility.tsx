@@ -3,7 +3,7 @@ import { FieldRule, Metaform, MetaformField, MetaformFieldOption } from "generat
 import produce from "immer";
 import strings from "localization/strings";
 import React, { useEffect, FC } from "react";
-import { VisibilitySource } from "types";
+import { FeatureStrategy, FeatureType, VisibilitySource } from "types";
 import MetaformUtils from "utils/metaform-utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -16,6 +16,7 @@ import { MetaformFieldSchedule } from "generated/client/models/MetaformFieldSche
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+import Feature from "components/containers/feature";
 
 /**
  * Component properties
@@ -691,45 +692,47 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    */
   const renderScheduledVisibilityPanelSection = () => {
     return (
-      <DrawerSection direction="column">
-        <Typography variant="subtitle1" style={{ width: "100%" }}>
-          { strings.draftEditorScreen.editor.schedule.title }
-        </Typography>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={ !!scheduledVisibility }
-              onChange={ event => toggleScheduledVisibility(event.target.checked) }
-            />
+      <Feature feature={ FeatureType.SCHEDULED_FIELDS } strategy={ FeatureStrategy.DISABLE } >
+        <DrawerSection direction="column">
+          <Typography variant="subtitle1" style={{ width: "100%" }}>
+            { strings.draftEditorScreen.editor.schedule.title }
+          </Typography>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={ !!scheduledVisibility }
+                onChange={ event => toggleScheduledVisibility(event.target.checked) }
+              />
+            }
+            label={ strings.draftEditorScreen.editor.visibility.conditionally }
+          />
+          {
+            scheduledVisibility &&
+            <LocalizationProvider dateAdapter={AdapterLuxon}>
+              <DateTimePicker
+                value={ scheduledVisibilityStart ?? null }
+                onChange={ scheduledStartTimeHandler }
+                renderInput={ params =>
+                  <TextField { ...params }/>
+                }
+                views={["day", "hours"]}
+                label={ strings.draftEditorScreen.editor.schedule.startDate }
+                maxDateTime={ scheduledVisibilityEnd ?? undefined }
+              />
+              <DateTimePicker
+                value={ scheduledVisibilityEnd ?? null }
+                onChange={ scheduledEndTimeHandler }
+                renderInput={ params =>
+                  <TextField { ...params }/>
+                }
+                views={["day", "hours"]}
+                label={ strings.draftEditorScreen.editor.schedule.endDate }
+                minDateTime={ scheduledVisibilityStart ?? undefined}
+              />
+            </LocalizationProvider>
           }
-          label={ strings.draftEditorScreen.editor.visibility.conditionally }
-        />
-        {
-          scheduledVisibility &&
-          <LocalizationProvider dateAdapter={AdapterLuxon}>
-            <DateTimePicker
-              value={ scheduledVisibilityStart ?? null }
-              onChange={ scheduledStartTimeHandler }
-              renderInput={ params =>
-                <TextField { ...params }/>
-              }
-              views={["day", "hours"]}
-              label={ strings.draftEditorScreen.editor.schedule.startDate }
-              maxDateTime={ scheduledVisibilityEnd ?? undefined }
-            />
-            <DateTimePicker
-              value={ scheduledVisibilityEnd ?? null }
-              onChange={ scheduledEndTimeHandler }
-              renderInput={ params =>
-                <TextField { ...params }/>
-              }
-              views={["day", "hours"]}
-              label={ strings.draftEditorScreen.editor.schedule.endDate }
-              minDateTime={ scheduledVisibilityStart ?? undefined}
-            />
-          </LocalizationProvider>
-        }
-      </DrawerSection>
+        </DrawerSection>
+      </Feature>
     );
   };
 
