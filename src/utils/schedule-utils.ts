@@ -27,8 +27,7 @@ namespace ScheduleUtils {
       const startDateTime = DateTime.fromJSDate(new Date(startTime));
 
       if (!endTime) {
-        const endDateTime = DateTime.local(2100, 1, 1);
-        return startDateTime <= currentTime && currentTime < endDateTime;
+        return startDateTime <= currentTime;
       }
 
       if (endTime) {
