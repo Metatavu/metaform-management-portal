@@ -131,7 +131,15 @@ const FormsScreen: React.FC = () => {
         try {
           const builtRow = await buildRow(form);
           if (DataValidation.validateValueIsNotUndefinedNorNull(builtRow)) {
-            setRows(prevRows => [...prevRows, builtRow]);
+            setRows(prevRows => {
+              const index = prevRows.findIndex(row => row.id === builtRow.id);
+              if (index !== -1) {
+                const updatedRows = [...prevRows];
+                updatedRows[index] = builtRow;
+                return updatedRows;
+              }
+              return [...prevRows, builtRow];
+            });
           }
         } catch (error) {
           errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, error);
