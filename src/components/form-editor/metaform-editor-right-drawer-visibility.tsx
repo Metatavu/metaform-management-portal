@@ -67,9 +67,20 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
     const field = MetaformUtils.getMetaformField(pendingForm, metaformSectionIndex, metaformFieldIndex);
     if (!field) return null;
 
+    if (!field.schedule) {
+      setScheduledVisibility(undefined);
+      setScheduledVisibilityStart(null);
+      setScheduledVisibilityEnd(null);
+      return;
+    }
+
     setScheduledVisibility(field.schedule);
-    field.schedule?.startTime && setScheduledVisibilityStart(field.schedule.startTime);
-    field.schedule?.endTime && setScheduledVisibilityEnd(field.schedule.endTime);
+    field.schedule?.startTime
+      ? setScheduledVisibilityStart(field.schedule.startTime)
+      : setScheduledVisibilityStart(null);
+    field.schedule?.endTime
+      ? setScheduledVisibilityEnd(field.schedule.endTime)
+      : setScheduledVisibilityEnd(null);
   };
 
   useEffect(() => {
@@ -616,6 +627,11 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       setPendingForm(updatedForm);
       setScheduledVisibilityStart(null);
       setScheduledVisibilityEnd(null);
+    } else {
+      const updatedForm = produce(pendingForm, draftForm => {
+        draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].schedule = {};
+      });
+      setPendingForm(updatedForm);
     }
   };
 
