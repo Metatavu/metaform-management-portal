@@ -206,7 +206,8 @@ export enum FeatureType {
   EXCEL_EXPORT = "excelExport",
   ADVANCED_PERMISSION_TARGETING = "advancedPermissionTargeting",
   FORM_SCRIPTS = "formScripts",
-  CARD_AUTH = "cardAuth"
+  CARD_AUTH = "cardAuth",
+  SCHEDULED_FIELDS = "scheduledFields"
 }
 
 /**
