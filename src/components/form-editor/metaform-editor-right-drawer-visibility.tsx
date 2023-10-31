@@ -14,7 +14,6 @@ import { useAppSelector } from "app/hooks";
 import { DrawerSection } from "styled/editor/metaform-editor";
 import { MetaformFieldSchedule } from "generated/client/models/MetaformFieldSchedule";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { DateTime } from "luxon";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 
@@ -39,8 +38,8 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   const [ showTooltip, setShowTooltip ] = React.useState<boolean>(false);
   const { metaformFieldIndex, metaformSectionIndex } = useAppSelector(selectMetaform);
   const [ scheduledVisibility, setScheduledVisibility ] = React.useState<MetaformFieldSchedule | undefined>();
-  const [ scheduledVisibilityStart, setScheduledVisibilityStart ] = React.useState<DateTime | null>();
-  const [ scheduledVisibilityEnd, setScheduledVisibilityEnd ] = React.useState<DateTime | null>();
+  const [ scheduledVisibilityStart, setScheduledVisibilityStart ] = React.useState<Date | null>();
+  const [ scheduledVisibilityEnd, setScheduledVisibilityEnd ] = React.useState<Date | null>();
 
   /**
    * Updates visibleIf source section, field
@@ -62,15 +61,15 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   };
 
   /**
-   * TODO:
+   * Loads a fields scheduled visibility
    */
   const loadScheduledVisibility = () => {
     const field = MetaformUtils.getMetaformField(pendingForm, metaformSectionIndex, metaformFieldIndex);
     if (!field) return null;
 
     setScheduledVisibility(field.schedule);
-
-    // TODO:  If there is a schedule for the field then it should update the states that are in the dateTime handlers.
+    field.schedule?.startTime && setScheduledVisibilityStart(field.schedule.startTime);
+    field.schedule?.endTime && setScheduledVisibilityEnd(field.schedule.endTime);
   };
 
   useEffect(() => {
@@ -597,62 +596,88 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   };
 
   /**
-   * TODO:
+   * Toggle scheduled visibility
+   *
+   * @param enableScheduledVisibility boolean
    */
   const toggleScheduledVisibility = (enableScheduledVisibility: boolean) => {
     const updatedScheduledVisibility = enableScheduledVisibility ? {} : undefined;
 
     setScheduledVisibility(updatedScheduledVisibility);
 
-    // TODO: Refactor the handlers to a useEffect, and it has logic to also clear the schedules if scheduledVisibility is undefined.
+    if (metaformSectionIndex === undefined || metaformFieldIndex === undefined) {
+      return;
+    }
+
+    if (!updatedScheduledVisibility) {
+      const updatedForm = produce(pendingForm, draftForm => {
+        draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].schedule = undefined;
+      });
+      setPendingForm(updatedForm);
+      setScheduledVisibilityStart(null);
+      setScheduledVisibilityEnd(null);
+    }
   };
 
   /**
-   * TODO:
+   * Handler for scheduled start time
+   *
+   * @param dateTime DateTime object
    */
-  const scheduledStartTimeHandler = (dateTime: DateTime | null) => {
+  const scheduledStartTimeHandler = (dateTime: Date | null) => {
+    if (!dateTime) return;
+
     setScheduledVisibilityStart(dateTime);
 
-    if (!metaformSectionIndex || !metaformFieldIndex) {
+    if (metaformSectionIndex === undefined || metaformFieldIndex === undefined) {
       return;
     }
 
     const updatedForm = produce(pendingForm, draftForm => {
+      const endTime = draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].schedule?.endTime;
+
       draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].schedule = {
-        startTime: dateTime?.toJSDate()
+        startTime: dateTime,
+        endTime: endTime
       };
     });
+
     setPendingForm(updatedForm);
   };
 
   /**
-   * TODO:
+   * Handler for scheduled end time
+   *
+   * @param dateTime DateTime object
    */
-  const scheduledEndTimeHandler = (dateTime: DateTime | null) => {
+  const scheduledEndTimeHandler = (dateTime: Date | null) => {
     if (!dateTime) return;
 
     setScheduledVisibilityEnd(dateTime);
 
-    if (!metaformSectionIndex || !metaformFieldIndex) {
+    if (metaformSectionIndex === undefined || metaformFieldIndex === undefined) {
       return;
     }
 
     const updatedForm = produce(pendingForm, draftForm => {
+      const startTime = draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].schedule?.startTime;
+
       draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].schedule = {
-        endTime: dateTime?.toJSDate()
+        startTime: startTime,
+        endTime: dateTime
       };
     });
     setPendingForm(updatedForm);
   };
 
   /**
-   * TODO: strings
+   * Render scheduled visibility panel section
    */
-  const renderScheduledVisibilityField = () => {
+  const renderScheduledVisibilityPanelSection = () => {
     return (
       <DrawerSection direction="column">
         <Typography variant="subtitle1" style={{ width: "100%" }}>
-          Schedule field
+          { strings.draftEditorScreen.editor.schedule.title }
         </Typography>
         <FormControlLabel
           control={
@@ -673,7 +698,8 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
                 <TextField { ...params }/>
               }
               views={["day", "hours"]}
-              label="start date"
+              label={ strings.draftEditorScreen.editor.schedule.startDate }
+              maxDateTime={ scheduledVisibilityEnd ?? undefined }
             />
             <DateTimePicker
               value={ scheduledVisibilityEnd ?? null }
@@ -682,34 +708,14 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
                 <TextField { ...params }/>
               }
               views={["day", "hours"]}
-              label="End date"
+              label={ strings.draftEditorScreen.editor.schedule.endDate }
+              minDateTime={ scheduledVisibilityStart ?? undefined}
             />
           </LocalizationProvider>
         }
       </DrawerSection>
     );
   };
-
-  /**
-   * Updates pending form field with scheduled visibility
-   */
-  const updateScheduledVisibilityForField = () => {
-    if (!metaformSectionIndex || !metaformFieldIndex) {
-      return;
-    }
-
-    const updatedForm = produce(pendingForm, draftForm => {
-      draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].schedule = {
-        startTime: scheduledVisibilityStart?.toJSDate(),
-        endTime: scheduledVisibilityEnd?.toJSDate()
-      };
-    });
-    setPendingForm(updatedForm);
-  };
-
-  useEffect(() => {
-    updateScheduledVisibilityForField();
-  }, [scheduledVisibilityStart, scheduledVisibilityEnd]);
 
   /**
    * Renders editor
@@ -723,7 +729,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
         { renderShowAndConditionButton() }
         { renderVisibleOrField() }
         { renderAddVisibleOrFieldButton() }
-        { renderScheduledVisibilityField()}
+        { renderScheduledVisibilityPanelSection()}
       </DrawerSection>
     </>
   );

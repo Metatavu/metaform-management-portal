@@ -355,6 +355,11 @@
         "andConditionChainTerms": "Näkyvyyden muut ehdot",
         "visibilityConditionTooltip": "Näkyvyyden ehto määrittää kentän näkyvyyden lomakkeella. Näkyvyyden ehtoja voi olla useita, jolloin minkä tahansa ehdon täyttyessä kenttä näkyy lomakkeella. \n Jos kentän näkyvyys riippuu myös jonkin toisen kentän näkyvyydestä, 'NÄYTÄ EHTOJONO'-nappia painamalla voidaan tarkastella ehtojonoa."
       },
+      "schedule": {
+        "title": "Aikataulukenttä",
+        "startDate": "Aloituspäivämäärä",
+        "endDate": "Päättymispäivä"
+      },
       "memberGroups": {
         "memberGroupDefineSettings": "Käyttäjäryhmän asetukset",
         "defaultMemberGroupInfo": "Oletus-käyttäjäryhmä",

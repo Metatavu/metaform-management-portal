@@ -24,6 +24,7 @@ import { MetaformChecklistFieldComponent } from "./MetaformChecklistFieldCompone
 import ContextUtils from '../utils/context-utils';
 import { MetaformFieldWrapper } from 'styled/generic/form';
 import { Typography } from '@mui/material';
+import ScheduleUtils from 'utils/schedule-utils';
 
 /**
  * Component props
@@ -357,7 +358,9 @@ export const MetaformFieldComponent: React.FC<Props> = ({
     return null;
   }
 
-  // TODO: Add a condition similar to above to render field or not based on schedule.
+  if (!ScheduleUtils.isVisible(field.schedule)) {
+    return null;
+  }
 
   return (
     <MetaformFieldWrapper className={ pristine ? "pristine" : undefined } key={ getFieldId() }>
