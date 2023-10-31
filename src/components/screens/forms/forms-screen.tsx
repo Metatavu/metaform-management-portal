@@ -126,9 +126,17 @@ const FormsScreen: React.FC = () => {
       const forms = await metaformsApi.listMetaforms({
         memberRole: MetaformMemberRole.Manager
       });
-      const builtRows = await Promise.all(forms.map(form => buildRow(form)));
 
-      setRows(builtRows.filter(DataValidation.validateValueIsNotUndefinedNorNull));
+      forms.forEach(async form => {
+        try {
+          const builtRow = await buildRow(form);
+          if (DataValidation.validateValueIsNotUndefinedNorNull(builtRow)) {
+            setRows(prevRows => [...prevRows, builtRow]);
+          }
+        } catch (error) {
+          errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, error);
+        }
+      });
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
