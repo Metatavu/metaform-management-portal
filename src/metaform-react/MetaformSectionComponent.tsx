@@ -25,7 +25,7 @@ interface Props {
   renderDatePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element;
   renderDatetimePicker: (field: MetaformField, onChange: (date: Date) => void) => JSX.Element;
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
-  uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
+  uploadFile: (fieldName: string, file: FileList | File) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
   onSubmit: (source: MetaformField) => void;
   onFileShow: (value: FileFieldValueItem) => void;

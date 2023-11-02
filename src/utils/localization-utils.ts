@@ -25,6 +25,7 @@ namespace LocalizationUtils {
    * @param navigationLink navigation link
    */
   export const getLocalizedNavigationLink = (navigationLink: NavigationLinks): string[] => ({
+    [NavigationLinks.SCRIPTS]: [ strings.navigationHeader.scriptsScreens.title, strings.navigationHeader.scriptsScreens.description ],
     [NavigationLinks.EDITOR]: [ strings.navigationHeader.editorScreens.title, strings.navigationHeader.editorScreens.description ],
     [NavigationLinks.FORMS]: [ strings.navigationHeader.formsScreens.title, strings.navigationHeader.formsScreens.description ],
     [NavigationLinks.USERS]: [ strings.navigationHeader.usersScreens.title, strings.navigationHeader.usersScreens.description ]

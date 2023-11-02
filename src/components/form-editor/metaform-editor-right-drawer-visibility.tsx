@@ -11,6 +11,8 @@ import Navigation from "@mui/icons-material/Navigation";
 import { HelpOutline } from "@mui/icons-material";
 import { selectMetaform } from "../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
+import { DrawerSection } from "styled/editor/metaform-editor";
+
 /**
  * Component properties
  */
@@ -384,11 +386,12 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
       </>
     );
   };
+
   /**
- * Renders visibility switch component
- */
+   * Renders visibility switch component
+   */
   const renderVisibilitySwitch = () => (
-    <Stack spacing={ 2 }>
+    <DrawerSection direction="column">
       <Typography variant="subtitle1" style={{ width: "100%" }}>
         { strings.draftEditorScreen.editor.visibility.fieldVisibility }
       </Typography>
@@ -401,7 +404,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
         }
         label={ strings.draftEditorScreen.editor.visibility.conditionally }
       />
-    </Stack>
+    </DrawerSection>
   );
 
   /**
@@ -479,7 +482,6 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
             strings.draftEditorScreen.editor.visibility.showConditionChain
           }
         </Button>
-        <Divider/>
       </>
     );
   };
@@ -579,12 +581,13 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   const renderEditor = () => (
     <>
       { renderVisibilitySwitch() }
-      <Divider/>
-      { renderFieldCondition() }
-      { renderConditionValueField() }
-      { renderShowAndConditionButton() }
-      { renderVisibleOrField() }
-      { renderAddVisibleOrFieldButton() }
+      <DrawerSection>
+        { renderFieldCondition() }
+        { renderConditionValueField() }
+        { renderShowAndConditionButton() }
+        { renderVisibleOrField() }
+        { renderAddVisibleOrFieldButton() }
+      </DrawerSection>
     </>
   );
 
@@ -592,7 +595,9 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
    * Renders empty selection
    */
   const renderEmptySelection = () => (
-    <Typography>{ strings.draftEditorScreen.editor.emptySelection}</Typography>
+    <DrawerSection>
+      <Typography>{ strings.draftEditorScreen.editor.emptySelection}</Typography>
+    </DrawerSection>
   );
 
   /**

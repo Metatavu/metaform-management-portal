@@ -1,7 +1,7 @@
-import { Add, Delete, DragHandle } from "@mui/icons-material";
-import { Button, IconButton, Stack } from "@mui/material";
-import { FieldDraggable } from "styled/generic/drag-handles";
+import { Delete } from "@mui/icons-material";
+import { IconButton, Stack, SxProps, Theme, alpha } from "@mui/material";
 import React from "react";
+import theme from "theme";
 
 /**
  * Component properties
@@ -18,31 +18,46 @@ const FieldDragHandle: React.FC<Props> = ({
   selected,
   children,
   onDeleteClick
-}) => (
-  <Stack>
-    { children }
-    <FieldDraggable sx={{ ...(!selected && { height: 0 }) }}>
+}) => {
+  const selectedStyle: SxProps<Theme> = {
+    backgroundColor: alpha(theme.palette.secondary.main, 0.02),
+    border: "1px solid #000",
+    borderRadius: 2,
+    borderTopRightRadius: 0,
+    p: 2
+  };
+  
+  return (
+    <Stack
+      position="relative"
+      sx={ selected ? selectedStyle : { cursor: "pointer" } }
+    >
+      { children }
       { selected &&
-        <>
-          {/* TODO add option to field */}
-          <Button
-            variant="text"
-            disabled
-            sx={{ color: "#fff" }}
-            startIcon={ <Add/> }
-          />
-          <DragHandle htmlColor="#fff"/>
-          <IconButton
-            disabled={ !onDeleteClick }
-            sx={{ color: "#fff" }}
-            onClick={ onDeleteClick }
-          >
-            <Delete/>
-          </IconButton>
-        </>
+        <IconButton
+          onClick={ onDeleteClick }
+          disabled={ !onDeleteClick }
+          size="medium"
+          sx={{
+            position: "absolute",
+            right: -56,
+            top: -1,
+            backgroundColor: "#000",
+            padding: 2,
+            color: "#fff",
+            borderRadius: 4,
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0,
+            "&:hover": {
+              backgroundColor: "#000"
+            }
+          }}
+        >
+          <Delete/>
+        </IconButton>
       }
-    </FieldDraggable>
-  </Stack>
-);
+    </Stack>
+  );
+};
 
 export default FieldDragHandle;

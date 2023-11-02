@@ -239,16 +239,6 @@ const MetaformEditor: React.FC<Props> = ({
   };
 
   /**
-   * Event handler for section edit click
-   *
-   * @param sectionIndex section index
-   */
-  const onSectionEditClick = (sectionIndex: number) => () => {
-    dispatch(setMetaformSectionIndex(sectionIndex));
-    dispatch(setMetaformFieldIndex(undefined));
-  };
-
-  /**
    * Wait updating to avoid wrong field data.
    */
   const timerFunc = () => {
@@ -346,7 +336,6 @@ const MetaformEditor: React.FC<Props> = ({
     >
       <SectionDragHandle
         selected={ metaformSectionIndex === sectionIndex }
-        onEditClick={ onSectionEditClick(sectionIndex) }
         onDeleteClick={ onSectionDeleteClick(sectionIndex) }
       >
         <EditorSection
@@ -388,7 +377,12 @@ const MetaformEditor: React.FC<Props> = ({
         droppableId={ DraggingMode.SECTION.toString() }
         isDropDisabled={ draggingMode !== DraggingMode.SECTION }
       >
-        <Stack spacing={ 2 }>
+        <Stack
+          spacing={ 2 }
+          maxWidth={ 1200 }
+          alignSelf="center"
+          margin="auto"
+        >
           { pendingForm.sections?.map(renderFormSection) }
         </Stack>
       </DroppableWrapper>

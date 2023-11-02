@@ -30,7 +30,8 @@ export const EditorWrapper = styled(Stack, {
 export const EditorDrawer = styled(Paper, {
   label: "metaform-editor-drawer"
 })(() => ({
-  width: 300,
+  width: "12vw",
+  minWidth: 360,
   height: "100%",
   overflow: "hidden",
   display: "flex",
@@ -75,4 +76,16 @@ export const FormsContainer = styled(Stack, {
 })(() => ({
   overflow: "auto",
   flex: 1
+}));
+
+/**
+ * Styled drawer section component
+ */
+export const DrawerSection = styled(Stack, {
+  label: "drawer-section"
+})(({ theme }) => ({
+  padding: theme.spacing(1),
+  paddingTop: theme.spacing(2),
+  gap: theme.spacing(2),
+  borderTop: `1px solid ${theme.palette.grey[200]}`
 }));

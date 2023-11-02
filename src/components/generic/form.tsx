@@ -226,19 +226,19 @@ const Form: React.FC<Props> = ({
    * @param files files
    * @param path path
    */
-  const uploadFile = (fieldName: string, files: FileList | File, path: string) => {
-    if (files instanceof FileList) {
+  const uploadFile = (fieldName: string, files: FileList | File) => {
+    if (files instanceof File) {
+      doUpload(fieldName, files, Api.createDefaultUploadUrl());
+    } else {
       for (let i = 0; i < files.length; i++) {
         const item = files.item(i);
         if (item) {
-          doUpload(fieldName, item, path);
+          doUpload(fieldName, item, Api.createDefaultUploadUrl());
         }
       }
-    } else if (files instanceof File) {
-      doUpload(fieldName, files, path);
     }
   };
-
+  
   /**
    * Deletes uploaded file
    * Only unsecure (not yet persisted) files can be deleted, otherwise they are just removed from data

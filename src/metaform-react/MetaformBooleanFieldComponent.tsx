@@ -1,8 +1,9 @@
-import { Box, Checkbox } from "@mui/material";
+import { Box, Checkbox, Typography } from "@mui/material";
 import React, { ReactNode } from "react";
 import theme from "theme";
 import { MetaformField } from "../generated/client/models";
 import { FieldValue, IconName } from "./types";
+import strings from "localization/strings";
 
 /**
  * Component props
@@ -82,6 +83,9 @@ const MetaformBooleanFieldComponent: React.FC<Props> = ({
             "aria-label": field.title
           }}
         />
+        <Typography>
+          { optionValue ? strings.generic.yes : strings.generic.no }
+        </Typography>
       </Box>
     );
   };

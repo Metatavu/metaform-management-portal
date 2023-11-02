@@ -20,7 +20,7 @@ const env = cleanEnv(process.env, {
   REACT_APP_EMAIL_FROM: email(),
   REACT_APP_EMAIL_URL: url(),
   REACT_APP_THEME_PALETTE_SECONDARY: str({ default: "#f9473b" }),
-  REACT_APP_THEME_USE_COLORED_HEADER: str({ default: "true" }),
+  REACT_APP_THEME_USE_COLORED_HEADER: str({ default: undefined }),
   REACT_APP_THEME_FONT_FAMILY_URL: url({ default: "https://fonts.googleapis.com/css2?family=Roboto&display=swap" }),
   REACT_APP_THEME_FONT_FAMILY: str({ default: "Roboto, sans-serif" }),
   REACT_APP_THEME_FAVICON_URL: url({ default: "https://metatavu.fi/wp-content/uploads/2021/06/cropped-metatavu-favicon.jpg" }),
@@ -29,7 +29,10 @@ const env = cleanEnv(process.env, {
   REACT_APP_THEME_BACKGROUND_IMAGE_PATH: str({ default: undefined }),
   REACT_APP_THEME_BACKGROUND_COLOR: str({ default: undefined }),
   REACT_APP_THEME_TITLE: str({ default: "Metataform Management Portal" }),
-  REACT_APP_SUPPORT_EMAIL: email({ default: "support@metatavu.fi" })
+  REACT_APP_SUPPORT_EMAIL: email({ default: "support@metatavu.fi" }),
+  REACT_APP_METAFORM_FEATURES: str({ default: "[]" }),
+  REACT_APP_LEAVE_SITE_URL: url({ default: undefined }),
+  REACT_APP_FEATURE_CONTACT_EMAIL: str({ default: undefined })
 });
 
 /**
@@ -69,8 +72,11 @@ export default class Config {
       backgroundImagePath: env.REACT_APP_THEME_BACKGROUND_IMAGE_PATH,
       backgroundColor: env.REACT_APP_THEME_BACKGROUND_COLOR,
       title: env.REACT_APP_THEME_TITLE,
-      supportEmail: env.REACT_APP_SUPPORT_EMAIL
-    }
+      supportEmail: env.REACT_APP_SUPPORT_EMAIL,
+      leaveSiteUrl: env.REACT_APP_LEAVE_SITE_URL
+    },
+    features: env.REACT_APP_METAFORM_FEATURES,
+    featureContactEmail: env.REACT_APP_FEATURE_CONTACT_EMAIL
   });
 
   /**
@@ -233,6 +239,33 @@ export default class Config {
    */
   public static getSupportEmail(): string | undefined {
     return env.REACT_APP_SUPPORT_EMAIL;
+  }
+
+  /**
+   * Returns leave site url
+   * 
+   * @returns The leave site url
+   */
+  public static getLeaveSiteUrl(): string | undefined {
+    return env.REACT_APP_LEAVE_SITE_URL;
+  }
+
+  /**
+   * Returns metaform features
+   * 
+   * @returns The Metaform features
+   */
+  public static getMetaformFeatures(): string | undefined {
+    return JSON.parse(env.REACT_APP_METAFORM_FEATURES);
+  }
+
+  /**
+   * Returns feature contact email
+   * 
+   * @returns The feature contact email
+   */
+  public static getFeatureContactEmail(): string | undefined {
+    return env.REACT_APP_FEATURE_CONTACT_EMAIL;
   }
 
 }

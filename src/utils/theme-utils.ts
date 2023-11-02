@@ -65,7 +65,7 @@ namespace ThemeUtils {
    * @returns The background color of the header
    */
   export const getHeaderBackgroundColor = () => {
-    if (Config.get().theme.useColoredHeader === "true") {
+    if (Config.get().theme.useColoredHeader) {
       return Config.get().theme.paletteSecondaryMain;
     }
     return "";
@@ -76,7 +76,7 @@ namespace ThemeUtils {
    * @returns The text color of the header
    */
   export const getHeaderTextColor = () => {
-    if (Config.get().theme.useColoredHeader === "true") {
+    if (Config.get().theme.useColoredHeader) {
       return getContrastTextColor(Config.get().theme.paletteSecondaryMain);
     }
     return "#ffffff";

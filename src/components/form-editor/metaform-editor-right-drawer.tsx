@@ -48,14 +48,14 @@ const MetaformEditorRightDrawer: React.FC<Props> = ({
           />
         </Tooltip>
       </Tabs>
-      <TabPanel value={ tabIndex } index={ 0 }>
+      <TabPanel value={ tabIndex } index={ 0 } padding={ 0 }>
         <MetaFormRightDrawerFeature
           memberGroups={ memberGroups }
           pendingForm={ pendingForm }
           setPendingForm={ setPendingForm }
         />
       </TabPanel>
-      <TabPanel value={ tabIndex } index={ 1 }>
+      <TabPanel value={ tabIndex } index={ 1 } padding={ 0 }>
         <MetaFormRightDrawerVisibility
           pendingForm={ pendingForm }
           setPendingForm={ setPendingForm }

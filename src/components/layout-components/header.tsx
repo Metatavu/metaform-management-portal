@@ -36,12 +36,17 @@ const Header: React.FC = ({
    */
   const renderInfoButton = () => {
     const tutorialUrl = Config.getTutorialUrl() || "";
+
+    if (!tutorialUrl) {
+      return null;
+    }
+
     return (
       <Tooltip title={ strings.header.infoLabel } placement="left" arrow>
-        <IconButton href={ tutorialUrl } target="_blank" disabled={ !tutorialUrl }>
+        <IconButton href={ tutorialUrl } target="_blank">
           <HelpOutline
             fontSize="large"
-            sx={{ color: tutorialUrl ? theme.palette.secondary.main : theme.palette.text.disabled }}
+            sx={{ color: Config.getUseColoredHeader() ? theme.palette.primary.contrastText : theme.palette.common.white }}
           />
         </IconButton>
       </Tooltip>

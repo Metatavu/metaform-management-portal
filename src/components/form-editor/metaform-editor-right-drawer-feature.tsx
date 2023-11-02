@@ -1,4 +1,4 @@
-import { Divider, Stack, TextField, Typography } from "@mui/material";
+import { Stack, TextField, Typography } from "@mui/material";
 import { Metaform, MetaformField, MetaformSection, MetaformFieldType, FieldRule, MetaformMemberGroup, MetaformFieldOption } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
@@ -14,6 +14,10 @@ import MetaformFieldAndSubmitEditTitleComponent from "./feature-components/Metaf
 import MetaformFieldRequiredComponent from "./feature-components/MetaformFieldRequiredComponent";
 import { selectMetaform } from "../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
+import MetaformFieldClassifiersComponent from "./feature-components/MetaformFieldClassifiersComponent";
+import Feature from "components/containers/feature";
+import { FeatureStrategy, FeatureType } from "types";
+import { DrawerSection } from "styled/editor/metaform-editor";
 
 /**
  * Component properties
@@ -156,47 +160,58 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
       case MetaformFieldType.Slider:
       case MetaformFieldType.Number:
         return (
-          <>
+          <DrawerSection>
+            <Typography variant="subtitle1" style={{ width: "100%" }}>
+              { strings.draftEditorScreen.editor.features.field.fieldProperties }
+            </Typography>
             <MetaformSliderComponent
               updateFormFieldDebounced={ updateFormFieldDebounced }
             />
-            <Divider/>
-          </>
+          </DrawerSection>
         );
       case MetaformFieldType.Checklist:
       case MetaformFieldType.Radio:
       case MetaformFieldType.Select:
         return (
           <>
-            <MetaformMultiChoiceFieldPropertiesComponent
-              updateFormFieldDebounced={ updateFormFieldDebounced }
-            />
-            <Divider/>
-            <MetaformDefineMemberGroupComponent
-              memberGroups={ memberGroups }
-              updateFormFieldDebounced={ updateFormFieldDebounced }
-            />
-            <Divider/>
+            <DrawerSection>
+              <Typography variant="subtitle1" style={{ width: "100%" }}>
+                { strings.draftEditorScreen.editor.features.field.fieldProperties }
+              </Typography>
+              <MetaformMultiChoiceFieldPropertiesComponent
+                updateFormFieldDebounced={ updateFormFieldDebounced }
+              />
+            </DrawerSection>
+            <DrawerSection>
+              <MetaformDefineMemberGroupComponent
+                memberGroups={ memberGroups }
+                updateFormFieldDebounced={ updateFormFieldDebounced }
+              />
+            </DrawerSection>
           </>
         );
       case MetaformFieldType.Table:
         return (
-          <>
+          <DrawerSection>
+            <Typography variant="subtitle1" style={{ width: "100%" }}>
+              { strings.draftEditorScreen.editor.features.field.fieldProperties }
+            </Typography>
             <MetaformTableComponent
               updateFormFieldDebounced={ updateFormFieldDebounced }
             />
-            <Divider/>
-          </>
+          </DrawerSection>
         );
       case MetaformFieldType.Date:
       case MetaformFieldType.DateTime:
         return (
-          <>
+          <DrawerSection>
+            <Typography variant="subtitle1" style={{ width: "100%" }}>
+              { strings.draftEditorScreen.editor.features.field.fieldProperties }
+            </Typography>
             <MetaformDateTimeComponent
               updateFormFieldDebounced={ updateFormFieldDebounced }
             />
-            <Divider/>
-          </>
+          </DrawerSection>
         );
       default:
         break;
@@ -209,7 +224,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * @param section section
    */
   const renderSectionEditor = (section: MetaformSection) => (
-    <>
+    <DrawerSection>
       <Typography variant="subtitle1" style={{ width: "100%" }}>
         { strings.draftEditorScreen.editor.features.section.sectionData }
       </Typography>
@@ -222,7 +237,7 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
           title: event.target.value
         }) }
       />
-    </>
+    </DrawerSection>
   );
 
   /**
@@ -232,19 +247,25 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
    */
   const renderFieldEditor = (field: MetaformField) => (
     <>
-      <MetaformFieldAndSubmitEditTitleComponent
-        updateFormFieldDebounced={ updateFormFieldDebounced }
-      />
-      <Divider/>
+      <DrawerSection>
+        <MetaformFieldAndSubmitEditTitleComponent
+          updateFormFieldDebounced={ updateFormFieldDebounced }
+        />
+        <MetaformFieldRequiredComponent
+          updateFormFieldDebounced={ updateFormFieldDebounced }
+        />
+      </DrawerSection>
       { renderFieldProperties(field) }
       <MetaformContextOptionsComponent
         updateFormFieldDebounced={ updateFormFieldDebounced }
       />
-      <Divider/>
-      <MetaformFieldRequiredComponent
-        updateFormFieldDebounced={ updateFormFieldDebounced }
-      />
-      <Divider/>
+      <Feature feature={ FeatureType.FORM_SCRIPTS } strategy={ FeatureStrategy.HIDE } >
+        <DrawerSection>
+          <MetaformFieldClassifiersComponent
+            updateFormFieldDebounced={ updateFormFieldDebounced }
+          />
+        </DrawerSection>
+      </Feature>
     </>
   );
 
@@ -252,7 +273,9 @@ export const MetaformEditorRightDrawerFeature: FC<Props> = ({
    * Renders empty selection
    */
   const renderEmptySelection = () => (
-    <Typography>{ strings.draftEditorScreen.editor.emptySelection}</Typography>
+    <DrawerSection>
+      <Typography>{ strings.draftEditorScreen.editor.emptySelection}</Typography>
+    </DrawerSection>
   );
 
   /**

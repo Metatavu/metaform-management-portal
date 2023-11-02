@@ -11,7 +11,7 @@ export const ContentWrapper = styled(Box, {
   flex: 1,
   width: "100%",
   display: "flex",
-  padding: theme.spacing(4),
+  padding: theme.spacing(2),
   overflow: "hidden",
   background: theme.palette.background.default
 }));
@@ -41,7 +41,7 @@ export const Content = styled(Paper, {
   flex: 1,
   width: "100%",
   height: "100%",
-  borderRadius: theme.spacing(4),
+  borderRadius: theme.spacing(2),
   boxShadow: "none",
   overflow: "hidden"
 }));

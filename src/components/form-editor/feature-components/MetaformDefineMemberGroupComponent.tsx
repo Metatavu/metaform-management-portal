@@ -1,13 +1,14 @@
-import { Checkbox, FormControl, FormControlLabel, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
+import { FormControl, FormControlLabel, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
 import { MetaformField, MetaformMemberGroup } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
 import React, { FC, useEffect, useState } from "react";
-import { NullableMemberGroupPermission, MemberGroupPermission } from "types";
+import { NullableMemberGroupPermission, MemberGroupPermission, FeatureType, FeatureStrategy } from "types";
 import MetaformUtils from "utils/metaform-utils";
 import { NOT_SELECTED } from "consts";
 import { selectMetaform } from "../../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
+import Feature from "components/containers/feature";
 
 /**
  * Component properties
@@ -20,7 +21,7 @@ interface Props {
 /**
  * Draft editor right drawer feature define member group component
  */
-const RenderDefineMemberGroupComponent: FC<Props> = ({
+const MetaformDefineMemberGroupComponent: FC<Props> = ({
   memberGroups,
   updateFormFieldDebounced
 }) => {
@@ -232,8 +233,9 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
         </TextField>
         <FormControlLabel
           label={ strings.draftEditorScreen.editor.memberGroups.notifications }
+          sx={{ mt: 1 }}
           control={
-            <Checkbox
+            <Switch
               checked={ notifyChecked }
               onChange={ event => setMemberGroupNotify(event.target.checked) }
             />
@@ -345,12 +347,19 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
   const renderDefineMemberGroup = (field?: MetaformField) => {
     if (field && MetaformUtils.fieldTypesAllowVisibility.includes(field.type)) {
       return (
-        <Stack spacing={ 2 }>
-          { renderDefineMemberGroupSwitch(field) }
-          { renderMemberGroupOptionSelect(field) }
-          { renderMemberGroupSelect() }
-          { renderMemberGroupPermissionSelect(field) }
-        </Stack>
+        <Feature
+          feature={ FeatureType.ADVANCED_PERMISSION_TARGETING }
+          strategy={ FeatureStrategy.DISABLE }
+          title={ strings.features.advancedPermissionTargeting.title}
+          description={ strings.features.advancedPermissionTargeting.description }
+        >
+          <Stack spacing={ 2 }>
+            { renderDefineMemberGroupSwitch(field) }
+            { renderMemberGroupOptionSelect(field) }
+            { renderMemberGroupSelect() }
+            { renderMemberGroupPermissionSelect(field) }
+          </Stack>
+        </Feature>
       );
     }
   };
@@ -365,4 +374,4 @@ const RenderDefineMemberGroupComponent: FC<Props> = ({
   );
 };
 
-export default RenderDefineMemberGroupComponent;
+export default MetaformDefineMemberGroupComponent;

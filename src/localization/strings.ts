@@ -65,6 +65,7 @@ export interface Localized extends LocalizedStringsMethods {
       findDraft: string;
       saveDraft: string;
       publishDraft: string;
+      loadScripts: string;
     };
     formScreen: {
       saveReply: string;
@@ -76,6 +77,8 @@ export interface Localized extends LocalizedStringsMethods {
       findMetaform: string;
       noConnection: string;
       noConnectionHelper: string;
+      statisticsFailure: string;
+      tryAgain: string;
     },
     formAutoComplete: {
       autocompleteField: string;
@@ -88,6 +91,7 @@ export interface Localized extends LocalizedStringsMethods {
       fetchFields: string;
       deleteReply: string;
       formSlugNotFound: string;
+      export: string;
     };
     adminReplyScreen: {
       saveReply: string;
@@ -120,6 +124,10 @@ export interface Localized extends LocalizedStringsMethods {
       listReplies: string;
       listAuditLogEntries: string;
     };
+    scriptEditorScreen: {
+      findScript: string;
+      saveScript: string;
+    }
   };
 
   /**
@@ -177,6 +185,7 @@ export interface Localized extends LocalizedStringsMethods {
     list: string;
     answers: string;
     history: string;
+    scripts: string;
   };
 
   /**
@@ -224,6 +233,15 @@ export interface Localized extends LocalizedStringsMethods {
       };
       newFormButton: string;
     };
+    scriptsScreens: {
+      title: string;
+      description: string;
+      newScriptButton: string;
+      scriptsScreen: {
+        title: string;
+        description: string;
+      };
+    }
   };
 
   /**
@@ -242,6 +260,7 @@ export interface Localized extends LocalizedStringsMethods {
     statusDone: string;
     confirmDeleteReplyTitle: string;
     confirmDeleteReplyText: string;
+    export: string;
   }
 
   /**
@@ -314,6 +333,7 @@ export interface Localized extends LocalizedStringsMethods {
         field: {
           fieldData: string;
           fieldType: string;
+          fieldProperties: string;
           fieldTitle: string;
           defineUserGroup: string;
           selectableFieldsInfo: string;
@@ -323,6 +343,10 @@ export interface Localized extends LocalizedStringsMethods {
           updateFields: string;
           addFieldOption: string;
           addNewColumn: string;
+          classifiers: string;
+          addNewClassifier: string;
+          calculateColumnSum: string;
+          sumPostfix: string;
           addColumnType: string;
           columnTextType: string;
           columnNumberType: string;
@@ -335,7 +359,8 @@ export interface Localized extends LocalizedStringsMethods {
           slider: {
             minValueLabel: string;
             maxValueLabel: string;
-          }
+          },
+          addNewOption: string;
         };
         tooltipDescription: string;
       };
@@ -396,6 +421,11 @@ export interface Localized extends LocalizedStringsMethods {
         noTitle: string;
       };
     };
+    scripts: {
+      scripts: string;
+      addNewScript: string;
+      noScripts: string;
+    }
   };
 
   /**
@@ -413,6 +443,7 @@ export interface Localized extends LocalizedStringsMethods {
     addMemberDialog: {
       title: string;
       text: string;
+      addNewUserText: string;
       freeTextSearchLabel: string;
       usersSelectLabel: string;
       searchButton: string;
@@ -659,6 +690,52 @@ export interface Localized extends LocalizedStringsMethods {
       replyDeleteSuccessText: string;
       replyEditSuccessText: string;
     }
+  }
+
+  scriptsScreen: {
+    scriptsTable: {
+      script: string;
+      delete: string;
+    }
+  }
+
+  scriptEditorScreen: {
+    scriptName: string;
+    scriptType: string;
+    scriptContent: string;
+    saveScript: string;
+  }
+
+  /**
+   * Traslations related to features
+   */
+  features: {
+    sosMeta: {
+      title: string;
+      description: string;
+    };
+    formUsageStatistics: {
+      title: string;
+      description: string;
+    };
+    auditLog: {
+      title: string;
+      description: string;
+    };
+    strongAuthentication: {
+      title: string;
+      description: string;
+    };
+    excelExport: {
+      title: string;
+      description: string;
+    };
+    advancedPermissionTargeting: {
+      title: string;
+      description: string;
+    };
+    askForMoreInfo: string;
+
   }
 }
 /**

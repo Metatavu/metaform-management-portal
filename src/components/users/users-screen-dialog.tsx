@@ -1,5 +1,5 @@
 import { HelpOutline } from "@mui/icons-material";
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Stack, Tooltip } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 import theme from "theme";
 
@@ -79,10 +79,8 @@ const UsersScreenDialog: React.FC<Props> = ({
         </DialogContentText>
         { dialogContent }
       </DialogContent>
-      <DialogActions>
-        <Stack direction="row" paddingX={ 2 } paddingY={ 1 }>
-          { dialogActions }
-        </Stack>
+      <DialogActions sx={{ pr: 3, pb: 2 }}>
+        { dialogActions }
       </DialogActions>
     </Dialog>
   );
