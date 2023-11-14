@@ -635,6 +635,7 @@ export interface Localized extends LocalizedStringsMethods {
     title: string;
     input: string;
     text: string;
+    unique: string;
   }
 
   /**

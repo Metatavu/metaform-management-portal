@@ -1,6 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
 import { Divider, Stack, Tooltip, Typography } from "@mui/material";
-import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVersion, MetaformVersionType, TemplateVisibility } from "generated/client";
+import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVersion, MetaformVersionType, Template, TemplateVisibility } from "generated/client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import MetaformUtils from "utils/metaform-utils";
 import MetaformEditor from "components/form-editor/metaform-editor";
@@ -42,6 +42,7 @@ const DraftEditorScreen: React.FC = () => {
   const [ templateDialogOpen, setTemplateDialogOpen ] = useState(false);
   const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
   const [ hasMemberGroups, setHasMemberGroups ] = useState<boolean>(false);
+  const [ templates, setTemplates ] = useState<Template[]>([]);
 
   /**
    * Loads MetaformVersion to edit.
@@ -210,6 +211,27 @@ const DraftEditorScreen: React.FC = () => {
   );
 
   /**
+   * Checks if template name is unique
+   *
+   * @param templateTitle string
+   */
+  const checkTemplateNameIsUnique = async (templateTitle: string) => {
+    let currentTemplates = templates;
+    if (!currentTemplates.length) {
+      try {
+        currentTemplates = await templatesApi.listTemplates({
+          visibility: TemplateVisibility.Public
+        });
+        setTemplates(currentTemplates);
+      } catch (e) {
+        errorContext.setError(strings.errorHandling.draftEditorScreen.fetchTemplates, e);
+      }
+    }
+
+    return !currentTemplates.some(template => template.data.title === templateTitle);
+  };
+
+  /**
    * Saves draft form as a template
    *
    * @param templateTitle template title string
@@ -264,6 +286,7 @@ const DraftEditorScreen: React.FC = () => {
       onCancel={ () => setTemplateDialogOpen(false) }
       onSubmit={ saveTemplate }
       open={ templateDialogOpen }
+      checkTemplateNameIsUnique={ checkTemplateNameIsUnique }
     />
   );
 

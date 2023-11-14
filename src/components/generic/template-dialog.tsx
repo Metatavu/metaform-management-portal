@@ -1,7 +1,7 @@
 import * as React from "react";
 import strings from "../../localization/strings";
 import { useState } from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
 
 /**
  * Interface representing component properties
@@ -10,6 +10,7 @@ interface Props {
   open: boolean;
   onCancel: () => void;
   onSubmit: (title: string) => void;
+  checkTemplateNameIsUnique: (templateTitle: string) => Promise<boolean>;
 }
 
 /**
@@ -18,9 +19,12 @@ interface Props {
 const TemplateDialog: React.FC<Props> = ({
   open,
   onCancel,
-  onSubmit
+  onSubmit,
+  checkTemplateNameIsUnique
 }) => {
   const [ input, setInput ] = useState("");
+  const [ validationError, setValidationError ] = useState(false);
+  const [ loading, setLoading ] = useState(false);
 
   /**
    * Event handler for input change
@@ -34,8 +38,17 @@ const TemplateDialog: React.FC<Props> = ({
   /**
    * Event handler for input submit click
    */
-  const onSendClick = () => {
+  const onSendClick = async () => {
+    setLoading(true);
+    const isUnique = await checkTemplateNameIsUnique(input);
+    if (!isUnique) {
+      setValidationError(true);
+      setLoading(false);
+      return;
+    }
+    setValidationError(false);
     onSubmit(input);
+    setLoading(false);
   };
 
   if (!open) {
@@ -47,9 +60,7 @@ const TemplateDialog: React.FC<Props> = ({
       <DialogTitle variant="h2">{ strings.templateDialog.title }</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          <p>
-            { strings.templateDialog.text }
-          </p>
+          { strings.templateDialog.text }
         </DialogContentText>
         <TextField
           style={{ width: "100%" }}
@@ -57,13 +68,17 @@ const TemplateDialog: React.FC<Props> = ({
           label={ strings.templateDialog.input }
           onChange={ onInputChange }
         />
+        {validationError &&
+        <DialogContentText sx={{ color: "#FF0000" }}>
+          { strings.templateDialog.unique }
+        </DialogContentText>}
       </DialogContent>
       <DialogActions>
         <Button disableElevation variant="contained" onClick={ onCancel } color="secondary" autoFocus>
           { strings.generic.cancel }
         </Button>
         <Button onClick={ onSendClick } color="primary" disabled={!input}>
-          { strings.generic.save }
+          { loading ? <CircularProgress/> : strings.generic.save }
         </Button>
       </DialogActions>
     </Dialog>
