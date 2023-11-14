@@ -238,7 +238,7 @@ const DraftEditorScreen: React.FC = () => {
   };
 
   /**
-   * Delete form template that was just created
+   * Delete form template
    *
    * @param templateId form template string
    */
