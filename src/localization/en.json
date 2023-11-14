@@ -554,7 +554,7 @@
   },
   "templateDialog": {
     "title": "Save template",
-    "input": "Template title",
+    "input": "Template name",
     "text": "Enter template title"
   },
   "autoComplete": {
