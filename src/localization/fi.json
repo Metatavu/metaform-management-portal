@@ -54,8 +54,8 @@
       "publishDraft": "Lomakeversion julkaiseminen epäonnistui",
       "loadScripts": "Laajennusten lataaminen epäonnistui",
       "saveTemplate": "Mallin tallentaminen epäonnistui",
-      "fetchTemplates": "Mallien nouto epäonnistui",
-      "deleteTemplate": "Lomakemallin poistaminen epäonnistui"
+      "fetchTemplates": "Lomakepohjien nouto epäonnistui",
+      "deleteTemplate": "Lomakepohjan poistaminen epäonnistui"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
