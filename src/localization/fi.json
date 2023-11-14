@@ -231,7 +231,7 @@
   "draftEditorScreen": {
     "preview": "Esikatsele",
     "publish": "Julkaise",
-    "saveTemplate": "Tallenna mallina",
+    "saveTemplate": "Tallenna lomakepohjana",
     "deleteTemplate": "Poista malli",
     "scripts": {
       "scripts": "Laajennukset",
