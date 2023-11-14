@@ -232,7 +232,7 @@
     "preview": "Preview",
     "publish": "Publish",
     "saveTemplate": "Save as template",
-    "deleteTemplate": "Delete template",
+    "deleteTemplate": "Cancel template saving",
     "publishDialog": {
       "title": "Publish version",
       "contentText": "Are you sure you wish to publish {0}?"
