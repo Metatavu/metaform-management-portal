@@ -53,7 +53,7 @@
       "saveDraft": "Lomakeversion tallentaminen epäonnistui",
       "publishDraft": "Lomakeversion julkaiseminen epäonnistui",
       "loadScripts": "Laajennusten lataaminen epäonnistui",
-      "saveTemplate": "Mallin tallentaminen epäonnistui",
+      "saveTemplate": "Pohjan tallentaminen epäonnistui",
       "fetchTemplates": "Lomakepohjien nouto epäonnistui",
       "deleteTemplate": "Lomakepohjan poistaminen epäonnistui"
     },
