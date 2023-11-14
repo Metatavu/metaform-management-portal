@@ -603,8 +603,8 @@
     "draftEditor": {
       "saveDraftSuccessText": "Lomakkeen luonnos tallennettu onnistuneesti!",
       "publishDraftSuccessText": "Lomake julkaistu onnistuneesti!",
-      "saveTemplateSuccessText": "Lomakemallin tallennus onnistui!",
-      "deleteTemplateSuccessText": "Lomakemallin poistaminen onnistui!"
+      "saveTemplateSuccessText": "Lomakepohjan tallennus onnistui!",
+      "deleteTemplateSuccessText": "Lomakepohjan poistaminen onnistui!"
     },
     "users": {
       "addMemberSuccessText": "Käyttäjän lisääminen onnistui!",
