@@ -126,9 +126,25 @@ const FormsScreen: React.FC = () => {
       const forms = await metaformsApi.listMetaforms({
         memberRole: MetaformMemberRole.Manager
       });
-      const builtRows = await Promise.all(forms.map(form => buildRow(form)));
 
-      setRows(builtRows.filter(DataValidation.validateValueIsNotUndefinedNorNull));
+      forms.forEach(async form => {
+        try {
+          const builtRow = await buildRow(form);
+          if (DataValidation.validateValueIsNotUndefinedNorNull(builtRow)) {
+            setRows(prevRows => {
+              const index = prevRows.findIndex(row => row.id === builtRow.id);
+              if (index !== -1) {
+                const updatedRows = [...prevRows];
+                updatedRows[index] = builtRow;
+                return updatedRows;
+              }
+              return [...prevRows, builtRow];
+            });
+          }
+        } catch (error) {
+          errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, error);
+        }
+      });
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.listForms, e);
     }
