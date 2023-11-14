@@ -20,6 +20,7 @@
     "@types/node": "^17.0.14",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
+    "@vitejs/plugin-react": "^4.1.1",
     "codemirror": "^5.60.0",
     "date-holidays": "^3.16.7",
     "email-validator": "^2.0.4",
@@ -40,22 +41,19 @@
     "react-quill": "^2.0.0",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
-    "react-scripts": "5.0.0",
     "slugify": "^1.6.5",
     "typescript": "^4.7.3",
     "use-react-router-breadcrumbs": "^3.2.1",
     "validator": "^13.7.0",
+    "vite": "^4.5.0",
+    "vite-tsconfig-paths": "^4.2.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "npm run build-client && npm run build-codeserver-client && react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint --fix --ext .ts,.tsx ./src",
-    "build-codeserver-client": "openapi-generator-cli generate -i https://koodistopalvelu.kanta.fi/codeserver/resources/apidocs/v3/openapi.yaml -o src/generated/codeserver-client -c generator-config.json -g typescript-fetch",
-    "build-client": "openapi-generator-cli generate -i metaform-api-spec/swagger.yaml -o src/generated/client -c generator-config.json -g typescript-fetch"
-  },
+    "start": "vite", 
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+},
   "eslintConfig": {
     "extends": [
       "react-app",
