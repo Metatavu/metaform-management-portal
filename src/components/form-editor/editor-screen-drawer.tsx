@@ -93,7 +93,7 @@ const EditorScreenDrawer: FC<Props> = ({
   };
 
   /**
-   * Applys template sections to form
+   * Applies template sections to form
    */
   const applyTemplateToForm = () => {
     const foundTemplate = templates.find(template => template.id === selectedTemplate);
