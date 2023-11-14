@@ -312,6 +312,7 @@ const DraftEditorScreen: React.FC = () => {
           <RoundActionButton
             onClick={ () => deleteTemplate(savedTemplateId) }
             startIcon={ <Delete/> }
+            color="error"
           >
             <Typography>{ strings.draftEditorScreen.deleteTemplate }</Typography>
           </RoundActionButton>)
