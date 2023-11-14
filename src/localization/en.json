@@ -532,6 +532,7 @@
       "formTemplate": "Form template",
       "formTemplates": "Form templates",
       "formTemplateSelect": "Select a form template",
+      "noFormTemplateSelected": "Not selected",
       "formTemplateCustom": "Empty template",
       "formTemplateCustomHelper": "Create new form with empty template. Recommended only if Sosmeta doesn't contain a suitable form template.",
       "formTemplateSosmeta": "Sosmeta template",
