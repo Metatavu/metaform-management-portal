@@ -232,7 +232,7 @@
     "preview": "Esikatsele",
     "publish": "Julkaise",
     "saveTemplate": "Tallenna lomakepohjana",
-    "deleteTemplate": "Poista malli",
+    "deleteTemplate": "Poista lomakepohja",
     "scripts": {
       "scripts": "Laajennukset",
       "addNewScript": "Lisää uusi laajennus",
