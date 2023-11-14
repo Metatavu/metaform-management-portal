@@ -1,4 +1,4 @@
-import { Button, Divider, FormControlLabel, IconButton, MenuItem, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
+import { Button, Divider, FormControlLabel, IconButton, InputAdornment, MenuItem, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { FieldRule, Metaform, MetaformField, MetaformFieldOption } from "generated/client";
 import produce from "immer";
 import strings from "localization/strings";
@@ -8,15 +8,15 @@ import MetaformUtils from "utils/metaform-utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Navigation from "@mui/icons-material/Navigation";
-import { HelpOutline } from "@mui/icons-material";
+import { DateRange, HelpOutline } from "@mui/icons-material";
 import { selectMetaform } from "../../features/metaform-slice";
 import { useAppSelector } from "app/hooks";
 import { DrawerSection } from "styled/editor/metaform-editor";
 import { MetaformFieldSchedule } from "generated/client/models/MetaformFieldSchedule";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+import { LocalizationProvider, MobileDateTimePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import Feature from "components/containers/feature";
+import fiLocale from "date-fns/locale/fi";
 
 /**
  * Component properties
@@ -708,28 +708,63 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
           />
           {
             scheduledVisibility &&
-            <LocalizationProvider dateAdapter={AdapterLuxon}>
-              <DateTimePicker
-                value={ scheduledVisibilityStart ?? null }
-                onChange={ scheduledStartTimeHandler }
-                renderInput={ params =>
-                  <TextField { ...params }/>
-                }
-                views={["day", "hours"]}
-                label={ strings.draftEditorScreen.editor.schedule.startDate }
-                maxDateTime={ scheduledVisibilityEnd ?? undefined }
-              />
-              <DateTimePicker
-                value={ scheduledVisibilityEnd ?? null }
-                onChange={ scheduledEndTimeHandler }
-                renderInput={ params =>
-                  <TextField { ...params }/>
-                }
-                views={["day", "hours"]}
-                label={ strings.draftEditorScreen.editor.schedule.endDate }
-                minDateTime={ scheduledVisibilityStart ?? undefined}
-              />
-            </LocalizationProvider>
+              <LocalizationProvider dateAdapter={ AdapterDateFns } locale={ fiLocale }>
+                <MobileDateTimePicker
+                  aria-label={ strings.draftEditorScreen.editor.schedule.startDate }
+                  value={ scheduledVisibilityStart ?? null }
+                  onChange={ scheduledStartTimeHandler }
+                  InputProps={{
+                    style: {
+                      height: 50,
+                      borderRadius: 0
+                    },
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <DateRange/>
+                      </InputAdornment>
+                    )
+                  }}
+                  renderInput={ params =>
+                    <TextField
+                      { ...params }
+                      label={ strings.draftEditorScreen.editor.schedule.startDate }
+                      InputLabelProps={{
+                        style: {
+                          top: 5
+                        }
+                      }}
+                    />
+                  }
+                />
+                <MobileDateTimePicker
+                  disablePast={ true }
+                  aria-label={ strings.draftEditorScreen.editor.schedule.endDate }
+                  value={ scheduledVisibilityEnd ?? null }
+                  onChange={ scheduledEndTimeHandler }
+                  InputProps={{
+                    style: {
+                      height: 50,
+                      borderRadius: 0
+                    },
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <DateRange/>
+                      </InputAdornment>
+                    )
+                  }}
+                  renderInput={ params =>
+                    <TextField
+                      { ...params }
+                      label={ strings.draftEditorScreen.editor.schedule.endDate }
+                      InputLabelProps={{
+                        style: {
+                          top: 5
+                        }
+                      }}
+                    />
+                  }
+                />
+              </LocalizationProvider>
           }
         </DrawerSection>
       </Feature>
@@ -748,7 +783,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
         { renderShowAndConditionButton() }
         { renderVisibleOrField() }
         { renderAddVisibleOrFieldButton() }
-        { renderScheduledVisibilityPanelSection()}
+        { metaformFieldIndex !== undefined && renderScheduledVisibilityPanelSection() }
       </DrawerSection>
     </>
   );
