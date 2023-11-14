@@ -555,7 +555,8 @@
   "templateDialog": {
     "title": "Save template",
     "input": "Template name",
-    "text": "Enter template name"
+    "text": "Enter template name",
+    "unique": "Template title must be unique"
   },
   "autoComplete": {
     "missingOptions": "Code server autocomplete not configured",

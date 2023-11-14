@@ -563,7 +563,9 @@
   "templateDialog": {
     "title": "Tallenna lomakepohja",
     "input": "Lomakepohjan otsikko",
-    "text": "Anna lomakepohjan otsikko"
+    "text": "Anna lomakepohjan otsikko",
+    "unique": "Lomakepohjan otsikon on oltava yksilöllinen"
+
   },
   "autoComplete": {
     "missingOptions": "Code server autocomplete ei ole määritelty",
