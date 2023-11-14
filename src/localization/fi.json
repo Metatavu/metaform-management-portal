@@ -562,8 +562,8 @@
   },
   "templateDialog": {
     "title": "Tallenna lomakepohja",
-    "input": "Lomakepohjan otsikko",
-    "text": "Anna lomakepohjan otsikko",
+    "input": "Lomakepohjan nimi",
+    "text": "Anna lomakepohjan nimi",
     "unique": "Lomakepohjan tällä nimellä on jo olemassa"
 
   },
