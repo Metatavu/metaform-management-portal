@@ -561,9 +561,9 @@
     "cancel": "Peruuta"
   },
   "templateDialog": {
-    "title": "Tallenna malli",
-    "input": "Mallin otsikko",
-    "text": "Anna mallin otsikko"
+    "title": "Tallenna lomakepohja",
+    "input": "Lomakepohjan otsikko",
+    "text": "Anna lomakepohjan otsikko"
   },
   "autoComplete": {
     "missingOptions": "Code server autocomplete ei ole määritelty",
