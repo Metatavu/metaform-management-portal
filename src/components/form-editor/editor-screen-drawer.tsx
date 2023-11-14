@@ -102,7 +102,7 @@ const EditorScreenDrawer: FC<Props> = ({
 
     setFormSettings({
       ...formSettings,
-      formName: foundTemplate.data.title,
+      formName: formSettings.formName || "",
       formSections: foundTemplate.data.sections
     });
   };
@@ -256,6 +256,9 @@ const EditorScreenDrawer: FC<Props> = ({
             value={ selectedTemplate || "" }
             onChange={ e => setSelectedTemplate(e.target.value) }
           >
+            <MenuItem value="">
+              { strings.editorScreen.drawer.noFormTemplateSelected }
+            </MenuItem>
             { templates.map(template =>
               <MenuItem value={template.id} key={template.id}>
                 { template.data.title }
@@ -279,11 +282,21 @@ const EditorScreenDrawer: FC<Props> = ({
           onChange={ onInputFieldChange }
           name="formTemplate"
         >
-          <FormControlLabel value={ false } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateCustom }/>
+          <FormControlLabel
+            value={ false }
+            control={ <Radio/> }
+            label={ strings.editorScreen.drawer.formTemplateCustom }
+            disabled={ !!selectedTemplate }
+          />
           <FormHelperText>
             { strings.editorScreen.drawer.formTemplateCustomHelper }
           </FormHelperText>
-          <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateSosmeta }/>
+          <FormControlLabel
+            value={ true }
+            control={ <Radio/> }
+            label={ strings.editorScreen.drawer.formTemplateSosmeta }
+            disabled={ !!selectedTemplate }
+          />
           <FormHelperText>
             { strings.editorScreen.drawer.formTemplateSosmetaHelper }
             <Link href="https://sosmeta.thl.fi/document-definitions/list" target="_blank">

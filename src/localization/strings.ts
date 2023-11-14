@@ -603,6 +603,7 @@ export interface Localized extends LocalizedStringsMethods {
       formTemplate: string;
       formTemplates: string;
       formTemplateSelect: string;
+      noFormTemplateSelected: string;
       formTemplateCustom: string;
       formTemplateCustomHelper: string;
       formTemplateSosmeta: string;
