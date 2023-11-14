@@ -564,7 +564,7 @@
     "title": "Tallenna lomakepohja",
     "input": "Lomakepohjan otsikko",
     "text": "Anna lomakepohjan otsikko",
-    "unique": "Lomakepohjan otsikon on oltava yksilöllinen"
+    "unique": "Lomakepohjan tällä nimellä on jo olemassa"
 
   },
   "autoComplete": {
