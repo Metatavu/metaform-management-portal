@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],    
-        "target": "ESNext",   
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "target": "ESNext",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -12,7 +16,9 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "types": ["vite/client"],
+    "types": [
+      "vite/client"
+    ],
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
@@ -20,6 +26,7 @@
   },
   "include": [
     "src",
+    "vite.config.ts",
     "vite-env.d.ts"
   ]
 }
