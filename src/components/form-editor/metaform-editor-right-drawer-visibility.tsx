@@ -637,53 +637,27 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
   };
 
   /**
-   * Handler for scheduled start time
+   * Handler for scheduled date times
    *
-   * @param dateTime DateTime object
+   * @param date Date object
+   * @param fieldName string
    */
-  const scheduledStartTimeHandler = (dateTime: Date | null) => {
-    if (!dateTime) return;
+  const scheduledDateTimeHandler = (date: Date | null, fieldName: string) => {
+    if (!date) return;
 
-    setScheduledVisibilityStart(dateTime);
+    setScheduledVisibilityStart(date);
 
     if (metaformSectionIndex === undefined || metaformFieldIndex === undefined) {
       return;
     }
 
     const updatedForm = produce(pendingForm, draftForm => {
-      const endTime = draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].schedule?.endTime;
-
       draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].schedule = {
-        startTime: dateTime,
-        endTime: endTime
+        ...draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].schedule,
+        [fieldName]: date
       };
     });
 
-    setPendingForm(updatedForm);
-  };
-
-  /**
-   * Handler for scheduled end time
-   *
-   * @param dateTime DateTime object
-   */
-  const scheduledEndTimeHandler = (dateTime: Date | null) => {
-    if (!dateTime) return;
-
-    setScheduledVisibilityEnd(dateTime);
-
-    if (metaformSectionIndex === undefined || metaformFieldIndex === undefined) {
-      return;
-    }
-
-    const updatedForm = produce(pendingForm, draftForm => {
-      const startTime = draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].schedule?.startTime;
-
-      draftForm.sections![metaformSectionIndex].fields![metaformFieldIndex].schedule = {
-        startTime: startTime,
-        endTime: dateTime
-      };
-    });
     setPendingForm(updatedForm);
   };
 
@@ -712,7 +686,8 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
                 <MobileDateTimePicker
                   aria-label={ strings.draftEditorScreen.editor.schedule.startDate }
                   value={ scheduledVisibilityStart ?? null }
-                  onChange={ scheduledStartTimeHandler }
+                  label="startDate"
+                  onChange={ (date: Date | null) => scheduledDateTimeHandler(date, "startTime") }
                   InputProps={{
                     style: {
                       height: 50,
@@ -727,6 +702,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
                   renderInput={ params =>
                     <TextField
                       { ...params }
+                      name="startDate"
                       label={ strings.draftEditorScreen.editor.schedule.startDate }
                       InputLabelProps={{
                         style: {
@@ -740,7 +716,7 @@ const MetaFormRightDrawerVisibility: FC<Props> = ({
                   disablePast={ true }
                   aria-label={ strings.draftEditorScreen.editor.schedule.endDate }
                   value={ scheduledVisibilityEnd ?? null }
-                  onChange={ scheduledEndTimeHandler }
+                  onChange={ (date: Date | null) => scheduledDateTimeHandler(date, "endTime") }
                   InputProps={{
                     style: {
                       height: 50,
