@@ -1,5 +1,5 @@
 {
-  "name": "essote-management-portal",
+  "name": "metaform-management-portal",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -51,7 +51,7 @@
   },
   "scripts": {
     "start": "vite", 
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && npm run build-client && npm run build-codeserver-client",
     "preview": "vite preview"
 },
   "eslintConfig": {
