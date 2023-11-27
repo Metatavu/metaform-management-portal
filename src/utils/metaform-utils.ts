@@ -1,4 +1,4 @@
-import { AttachmentsApi, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformFromJSON, MetaformSection, MetaformToJSON, MetaformVersion, Reply } from "generated/client";
+import { AttachmentsApi, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformFromJSON, MetaformSection, MetaformVersion, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
 import { Dictionary, MemberGroupPermission } from "types";
 import strings from "localization/strings";
@@ -117,7 +117,7 @@ namespace MetaformUtils {
    * @returns metaform data
    */
   export const jsonToMetaform = (metaformJson: Metaform): Metaform => {
-    return MetaformFromJSON(MetaformToJSON(metaformJson));
+    return MetaformFromJSON(metaformJson);
   };
 
   /**
