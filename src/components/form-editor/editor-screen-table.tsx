@@ -144,10 +144,12 @@ const EditorScreenTable: FC<Props> = ({
    */
   const renderActionCellArchiveItem = (id: string) => (
     <GridActionsCellItem
-      icon={ <RestorePage/> }
-      label={ strings.generic.restore }
-      onClick={ () => goToEditor(id) }
+      icon={<RestorePage/>}
+      label={strings.generic.restore}
+      onClick={() => goToEditor(id)}
       showInMenu
+      onResize={() => {}}
+      onResizeCapture={() => {}}
     />
   );
 
@@ -161,6 +163,8 @@ const EditorScreenTable: FC<Props> = ({
       label={ strings.generic.delete }
       onClick={ () => handleDeleteDialogOpen(id) }
       showInMenu
+      onResize={() => {}}
+      onResizeCapture={() => {}}
     />
   );
 
@@ -175,6 +179,8 @@ const EditorScreenTable: FC<Props> = ({
       label={ strings.generic.edit }
       onClick={ () => goToEditor(id) }
       showInMenu
+      onResize={() => {}}
+      onResizeCapture={() => {}}
     />
   );
 

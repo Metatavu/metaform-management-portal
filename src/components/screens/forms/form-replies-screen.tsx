@@ -185,6 +185,8 @@ const FormRepliesScreen: React.FC = () => {
             onClick={ () => setDeletableReplyId(params.row.id) }
             label={ strings.generic.delete }
             showInMenu
+            onResize={() => {}}
+            onResizeCapture={() => {}}
           />
         ]
       } as GridColDef);
