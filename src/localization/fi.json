@@ -351,7 +351,7 @@
         "visibilityConditionTooltip": "Näkyvyyden ehto määrittää kentän näkyvyyden lomakkeella. Näkyvyyden ehtoja voi olla useita, jolloin minkä tahansa ehdon täyttyessä kenttä näkyy lomakkeella. \n Jos kentän näkyvyys riippuu myös jonkin toisen kentän näkyvyydestä, 'NÄYTÄ EHTOJONO'-nappia painamalla voidaan tarkastella ehtojonoa."
       },
       "schedule": {
-        "title": "Aikataulukenttä",
+        "title": "Ajastettu kentän näkyvyys",
         "startDate": "Aloituspäivämäärä",
         "endDate": "Päättymispäivä"
       },
