@@ -358,7 +358,7 @@
       "schedule": {
         "title": "Ajastettu kentän näkyvyys",
         "startDate": "Näkyvyyden aloitusaika",
-        "endDate": "Päättymispäivä"
+        "endDate": "Näkyvyyden lopetusaika"
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Käyttäjäryhmän asetukset",
