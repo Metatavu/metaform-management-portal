@@ -1,5 +1,5 @@
 import { NOT_SELECTED } from "consts";
-import { AuditLogEntryType } from "generated/client";
+import { AuditLogEntryType, MetaformFieldSchedule } from "generated/client";
 import { ReactElement } from "react";
 
 /**
@@ -229,4 +229,13 @@ export interface FeatureProps {
   description?: string;
   strategy: FeatureStrategy;
   replacement?: ReactElement;
+}
+
+/**
+ * Interface for Visibility Scheduler
+ */
+export interface VisibilityScheduler {
+  scheduledVisibility: MetaformFieldSchedule | undefined;
+  scheduledVisibilityStart: Date | null;
+  scheduledVisibilityEnd: Date | null;
 }
