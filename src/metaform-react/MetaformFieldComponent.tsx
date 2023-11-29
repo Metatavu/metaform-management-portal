@@ -22,9 +22,9 @@ import { MetaformSliderFieldComponent } from './MetaformSliderFieldComponent';
 import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent";
 import { MetaformChecklistFieldComponent } from "./MetaformChecklistFieldComponent";
 import ContextUtils from '../utils/context-utils';
-import { MetaformFieldWrapper } from 'styled/generic/form';
-import { Typography } from '@mui/material';
-import ScheduleUtils from 'utils/schedule-utils';
+import { MetaformFieldWrapper } from "styled/generic/form";
+import { Typography } from "@mui/material";
+import ScheduleUtils from "utils/schedule-utils";
 
 /**
  * Component props
