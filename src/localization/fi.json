@@ -357,7 +357,7 @@
       },
       "schedule": {
         "title": "Ajastettu kentän näkyvyys",
-        "startDate": "Aloituspäivämäärä",
+        "startDate": "Näkyvyyden aloitusaika",
         "endDate": "Päättymispäivä"
       },
       "memberGroups": {
