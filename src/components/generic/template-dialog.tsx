@@ -77,7 +77,7 @@ const TemplateDialog: React.FC<Props> = ({
         <Button disableElevation variant="contained" onClick={ onCancel } color="secondary" autoFocus>
           { strings.generic.cancel }
         </Button>
-        <Button onClick={ onSendClick } color="primary" disabled={!input}>
+        <Button onClick={ onSendClick } color="primary" disabled={!input.trim()}>
           { loading ? <CircularProgress/> : strings.generic.save }
         </Button>
       </DialogActions>
