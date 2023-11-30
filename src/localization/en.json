@@ -52,7 +52,10 @@
       "findDraft": "Fetching form version failed",
       "saveDraft": "Saving form version failed",
       "publishDraft": "Publishing form version failed",
-      "loadScripts": "Loading extension failed"
+      "loadScripts": "Loading extension failed",
+      "saveTemplate": "Saving template failed",
+      "fetchTemplates": "Fetching templates failed",
+      "deleteTemplate": "Deleting form template failed"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -228,6 +231,8 @@
   "draftEditorScreen": {
     "preview": "Preview",
     "publish": "Publish",
+    "saveTemplate": "Save as template",
+    "deleteTemplate": "Cancel template saving",
     "publishDialog": {
       "title": "Publish version",
       "contentText": "Are you sure you wish to publish {0}?"
@@ -530,6 +535,9 @@
       "formName": "Name",
       "formUrl": "Url-address",
       "formTemplate": "Form template",
+      "formTemplates": "Form templates",
+      "formTemplateSelect": "Select a form template",
+      "noFormTemplateSelected": "Not selected",
       "formTemplateCustom": "Empty template",
       "formTemplateCustomHelper": "Create new form with empty template. Recommended only if Sosmeta doesn't contain a suitable form template.",
       "formTemplateSosmeta": "Sosmeta template",
@@ -549,6 +557,12 @@
     "title": "Title",
     "email": "Address",
     "cancel": "Cancel"
+  },
+  "templateDialog": {
+    "title": "Save template",
+    "input": "Template name",
+    "text": "Enter template name",
+    "unique": "Template title must be unique"
   },
   "autoComplete": {
     "missingOptions": "Code server autocomplete not configured",
@@ -587,7 +601,9 @@
     },
     "draftEditor": {
       "saveDraftSuccessText": "Draft form saved successfully!",
-      "publishDraftSuccessText": "Form published successfully!"
+      "publishDraftSuccessText": "Form published successfully!",
+      "saveTemplateSuccessText": "Form template saved successfully!",
+      "deleteTemplateSuccessText": "Form template deleted successfully!"
     },
     "users": {
       "addMemberSuccessText": "Added user successfully!",
