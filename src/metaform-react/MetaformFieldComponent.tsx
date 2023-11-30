@@ -22,8 +22,9 @@ import { MetaformSliderFieldComponent } from './MetaformSliderFieldComponent';
 import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent";
 import { MetaformChecklistFieldComponent } from "./MetaformChecklistFieldComponent";
 import ContextUtils from '../utils/context-utils';
-import { MetaformFieldWrapper } from 'styled/generic/form';
-import { Typography } from '@mui/material';
+import { MetaformFieldWrapper } from "styled/generic/form";
+import { Typography } from "@mui/material";
+import ScheduleUtils from "utils/schedule-utils";
 
 /**
  * Component props
@@ -354,6 +355,10 @@ export const MetaformFieldComponent: React.FC<Props> = ({
   }
 
   if (!VisibleIfEvaluator.isVisible(field.visibleIf, getFieldValue)) {
+    return null;
+  }
+
+  if (!ScheduleUtils.isVisible(field.schedule)) {
     return null;
   }
 

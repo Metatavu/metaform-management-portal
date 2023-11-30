@@ -1,4 +1,4 @@
-import { AttachmentsApi, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformSection, MetaformVersion, Reply } from "generated/client";
+import { AttachmentsApi, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformFromJSON, MetaformSection, MetaformVersion, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
 import { Dictionary, MemberGroupPermission } from "types";
 import strings from "localization/strings";
@@ -111,30 +111,18 @@ namespace MetaformUtils {
   };
 
   /**
-   * Convert metaform to json format
-   *
-   * @param metaform metaform data
-   * @returns metaform in json format
-   */
-  export const metaformToJson = (metaform: Metaform): string => {
-    return metaform ? JSON.stringify(metaform, null, 2) : "";
-  };
-
-  /**
    * Convert Object to metaform data
    *
    * @param metaformJson metaform data in json
    * @returns metaform data
    */
-  export const jsonToMetaform = (metaformJson: Object): Metaform => {
-    return {
-      ...JSON.parse(JSON.stringify(metaformJson))
-    } as Metaform;
+  export const jsonToMetaform = (metaformJson: Metaform): Metaform => {
+    return MetaformFromJSON(metaformJson);
   };
 
   /**
    * Checks if field name on form is unique
-   * 
+   *
    * @param metaform metaform
    * @param name metaform field name
    * @returns boolean whether field name is unique
@@ -147,7 +135,7 @@ namespace MetaformUtils {
 
   /**
    * Creates a random field name
-   * 
+   *
    * @param fieldType metaform field type
    * @returns random field name
    */
@@ -158,7 +146,7 @@ namespace MetaformUtils {
   /**
    * Create empty field for given field type
    * Name is given random name to avoid duplicated names
-   * 
+   *
    * @param fieldType metaform field type
    * @param title title
    * @param name name
@@ -357,7 +345,7 @@ namespace MetaformUtils {
           const attachmentPromises = (fileIds as string[]).map(fileId => {
             return attachmentsApi.findAttachment({ attachmentId: fileId, ownerKey: currentOwnerKey });
           });
-          
+
           // eslint-disable-next-line no-await-in-loop
           const attachments = await Promise.all(attachmentPromises);
 
@@ -453,7 +441,7 @@ namespace MetaformUtils {
 
   /**
    * Create created field for new metaform
-   * 
+   *
    * @returns created field for form
    */
   export const createFormCreatedField = (): MetaformField => {
@@ -473,7 +461,7 @@ namespace MetaformUtils {
 
   /**
    * Create modified field for new metaform
-   * 
+   *
    * @returns modified field for form
    */
   export const createFormModifiedField = (): MetaformField => {
@@ -494,7 +482,7 @@ namespace MetaformUtils {
   /**
    * Creates forms metadata fields
    * e.g. status, created and modified
-   * 
+   *
    * @returns MetaformField[]
    */
   export const createFormsMetadataFields = () => {
