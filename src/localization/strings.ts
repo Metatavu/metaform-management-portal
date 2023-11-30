@@ -387,6 +387,11 @@ export interface Localized extends LocalizedStringsMethods {
         andConditionChainTerms: string;
         visibilityConditionTooltip: string;
       };
+      schedule: {
+        title: string;
+        startDate: string;
+        endDate: string;
+      },
       memberGroups: {
         memberGroupDefineSettings: string;
         defaultMemberGroupInfo: string;

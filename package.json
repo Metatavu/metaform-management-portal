@@ -31,6 +31,7 @@
     "jwt-decode": "^3.1.2",
     "keycloak-js": "^19.0.1",
     "localized-strings": "^0.2.4",
+    "luxon": "^2.5.2",
     "moment": "^2.29.4",
     "query-string": "^7.1.1",
     "react": "^17.0.2",
@@ -53,7 +54,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .ts,.tsx ./src",
-    "build-codeserver-client": "openapi-generator-cli generate -i https://koodistopalvelu.kanta.fi/codeserver/resources/apidocs/v3/openapi.yaml -o src/generated/codeserver-client -c generator-config.json -g typescript-fetch",
+    "build-codeserver-client": "openapi-generator-cli generate -i https://koodistopalvelu.kanta.fi/codeserver/resources/apidocs/v6/openapi.yaml -o src/generated/codeserver-client -c generator-config.json -g typescript-fetch",
     "build-client": "openapi-generator-cli generate -i metaform-api-spec/swagger.yaml -o src/generated/client -c generator-config.json -g typescript-fetch"
   },
   "eslintConfig": {
@@ -76,6 +77,7 @@
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.4.26",
+    "@types/luxon": "^3.3.3",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-helmet": "^6.1.6",
     "@types/react-router-dom": "^5.3.3",

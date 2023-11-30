@@ -1,5 +1,5 @@
 import { NOT_SELECTED } from "consts";
-import { AuditLogEntryType } from "generated/client";
+import { AuditLogEntryType, MetaformFieldSchedule } from "generated/client";
 import { ReactElement } from "react";
 
 /**
@@ -206,7 +206,8 @@ export enum FeatureType {
   EXCEL_EXPORT = "excelExport",
   ADVANCED_PERMISSION_TARGETING = "advancedPermissionTargeting",
   FORM_SCRIPTS = "formScripts",
-  CARD_AUTH = "cardAuth"
+  CARD_AUTH = "cardAuth",
+  SCHEDULED_FIELDS = "scheduledFields"
 }
 
 /**
@@ -228,4 +229,13 @@ export interface FeatureProps {
   description?: string;
   strategy: FeatureStrategy;
   replacement?: ReactElement;
+}
+
+/**
+ * Interface for Visibility Scheduler
+ */
+export interface VisibilityScheduler {
+  scheduledVisibility: MetaformFieldSchedule | undefined;
+  scheduledVisibilityStart: Date | null;
+  scheduledVisibilityEnd: Date | null;
 }

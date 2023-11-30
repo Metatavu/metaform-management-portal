@@ -349,6 +349,11 @@
         "andConditionChainTerms": "And condition chain terms",
         "visibilityConditionTooltip": "The visibility condition determines the visibility of the field on the form. There can be several conditions for visibility, so when any condition is met, the field is visible on the form. \n If the field's visibility also depends on the visibility of another field, the 'SHOW CONDITIONAL LINE' button can be used to view the condition line."
       },
+      "schedule": {
+        "title": "Set scheduled visibility",
+        "startDate": "Start date",
+        "endDate": "End date"
+      },
       "memberGroups": {
         "memberGroupDefineSettings": "Member group defining settings",
         "defaultMemberGroupInfo": "Default member group",
