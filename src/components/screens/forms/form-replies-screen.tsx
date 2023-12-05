@@ -5,7 +5,7 @@ import { useApiClient, useAppDispatch, useAppSelector } from "app/hooks";
 import { ErrorContext } from "components/contexts/error-handler";
 import ConfirmDialog from "components/generic/confirm-dialog";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
-import { Metaform, MetaformField, MetaformFieldType, Reply, ScriptType } from "generated/client";
+import { Metaform, MetaformField, MetaformFieldType, Reply, ReplyOrderCriteria, ScriptType } from "generated/client";
 import strings from "localization/strings";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
@@ -248,7 +248,12 @@ const FormRepliesScreen: React.FC = () => {
       const metaformData = await metaformsApi.findMetaform({ metaformSlug: formSlug });
       setMetaform(metaformData);
       const [ repliesData, fields ] = await Promise.all([
-        repliesApi.listReplies({ metaformId: metaformData.id! }),
+        repliesApi.listReplies({
+          metaformId: metaformData.id!,
+          maxResults: 100,
+          latestFirst: true,
+          orderBy: ReplyOrderCriteria.Created
+        }),
         getManagementListFields(metaformData)
       ]);
 
