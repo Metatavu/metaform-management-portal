@@ -1,5 +1,5 @@
 import { Box, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography, Link, MenuItem, LinearProgress } from "@mui/material";
-import { Save, Clear } from "@mui/icons-material";
+import { Save, Clear, GetApp } from "@mui/icons-material";
 import strings from "localization/strings";
 import React, { FC, useContext, useEffect, useState } from "react";
 import theme from "theme";
@@ -14,6 +14,7 @@ import { FeatureType, FeatureStrategy } from "types";
 import { DrawerSection } from "styled/editor/metaform-editor";
 import { useApiClient } from "app/hooks";
 import Api from "api";
+import JSZip from "jszip";
 
 /**
  * Component props
@@ -143,6 +144,22 @@ const EditorScreenDrawer: FC<Props> = ({
   };
 
   /**
+   * Handles export to ZIP file
+   */
+  const exportToZip = async () => {
+    const zip = new JSZip();
+
+    zip.file("form-settings.json", JSON.stringify(formSettings, null, 2));
+    const content = await zip.generateAsync({ type: "blob" });
+
+    // Create a download link and trigger the download
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(content);
+    link.download = "form-settings.zip";
+    link.click();
+  };
+
+  /**
    * Event handler for input element change
    * This method is being used by not only textfields but also radio buttons that return a boolean value.
    * Radio buttons do not return boolean, but rather true or false as a string.
@@ -194,6 +211,17 @@ const EditorScreenDrawer: FC<Props> = ({
               onClick={ handleFormSubmit }
             >
               <Save color={ valid ? "primary" : "disabled" }/>
+            </IconButton>
+            <IconButton
+              sx={{
+                border: `1px solid ${theme.palette.text.disabled}`,
+                borderRadius: "15px",
+                marginTop: "1rem"
+              }}
+              onClick={exportToZip}
+            >
+              <GetApp/>
+              { strings.draftEditorScreen.exportToZip }
             </IconButton>
             <IconButton
               sx={{

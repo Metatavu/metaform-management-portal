@@ -282,6 +282,7 @@ export interface Localized extends LocalizedStringsMethods {
     publish: string;
     saveTemplate: string;
     deleteTemplate: string;
+    exportToZip: string;
     publishDialog: {
       title: string;
       contentText: string;

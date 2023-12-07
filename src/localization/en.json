@@ -55,7 +55,8 @@
       "loadScripts": "Loading extension failed",
       "saveTemplate": "Saving template failed",
       "fetchTemplates": "Fetching templates failed",
-      "deleteTemplate": "Deleting form template failed"
+      "deleteTemplate": "Deleting form template failed",
+      "exportToZip": "Export to ZIP"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -233,6 +234,7 @@
     "publish": "Publish",
     "saveTemplate": "Save as template",
     "deleteTemplate": "Cancel template saving",
+    "exportToZip":"Export to ZIP",
     "publishDialog": {
       "title": "Publish version",
       "contentText": "Are you sure you wish to publish {0}?"

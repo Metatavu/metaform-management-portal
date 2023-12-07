@@ -55,7 +55,8 @@
       "loadScripts": "Laajennusten lataaminen epäonnistui",
       "saveTemplate": "Pohjan tallentaminen epäonnistui",
       "fetchTemplates": "Lomakepohjien nouto epäonnistui",
-      "deleteTemplate": "Lomakepohjan poistaminen epäonnistui"
+      "deleteTemplate": "Lomakepohjan poistaminen epäonnistui",
+      "exportToZip": "Vie ZIP-tiedostona"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -233,6 +234,7 @@
     "publish": "Julkaise",
     "saveTemplate": "Tallenna lomakepohjana",
     "deleteTemplate": "Poista lomakepohja",
+    "exportToZip": "Vie ZIP-tiedostona",
     "scripts": {
       "scripts": "Laajennukset",
       "addNewScript": "Lisää uusi laajennus",

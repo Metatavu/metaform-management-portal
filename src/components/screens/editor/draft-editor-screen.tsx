@@ -7,7 +7,7 @@ import MetaformEditor from "components/form-editor/metaform-editor";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
-import { Preview, Public, Save, SaveAs, Delete } from "@mui/icons-material";
+import { Preview, Public, Save, SaveAs, Delete, GetApp } from "@mui/icons-material";
 import { useParams, useNavigate } from "react-router-dom";
 import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
@@ -18,6 +18,7 @@ import { selectMetaform, setMetaformVersion, setMetaformSelectionsUndefined } fr
 import { setSnackbarMessage } from "features/snackbar-slice";
 import ConfirmDialog from "components/generic/confirm-dialog";
 import TemplateDialog from "components/generic/template-dialog";
+import JSZip from "jszip";
 
 /**
  * Draft editor screen component
@@ -291,6 +292,22 @@ const DraftEditorScreen: React.FC = () => {
   );
 
   /**
+   * Handles export to ZIP
+   */
+  const exportToZip = async () => {
+    const zip = new JSZip();
+
+    zip.file("draft-form-settings.json", JSON.stringify(draftForm, null, 2));
+    const content = await zip.generateAsync({ type: "blob" });
+
+    // Create a download link and trigger the download
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(content);
+    link.download = "draft-form-settings.zip";
+    link.click();
+  };
+
+  /**
    * Renders draft editor actions
    */
   const draftEditorActions = () => (
@@ -334,6 +351,12 @@ const DraftEditorScreen: React.FC = () => {
           </RoundActionButton>
         </span>
       </Tooltip>
+      <RoundActionButton
+        onClick={exportToZip}
+        startIcon={<GetApp/>}
+      >
+        <Typography>{ strings.draftEditorScreen.exportToZip }</Typography>
+      </RoundActionButton>
     </Stack>
   );
 
