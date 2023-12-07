@@ -43,7 +43,7 @@ const DraftEditorScreen: React.FC = () => {
   const [ templateDialogOpen, setTemplateDialogOpen ] = useState(false);
   const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
   const [ hasMemberGroups, setHasMemberGroups ] = useState<boolean>(false);
-  const [ templates, setTemplates ] = useState<Template[]>([]);
+  const [templates, setTemplates] = useState<Template[]>([]);
 
   /**
    * Loads MetaformVersion to edit.
@@ -297,7 +297,7 @@ const DraftEditorScreen: React.FC = () => {
   const exportToZip = async () => {
     const zip = new JSZip();
 
-    zip.file("draft-form-settings.json", JSON.stringify(draftForm, null, 2));
+    zip.file(`${draftForm.slug}-form-settings.json`, JSON.stringify(draftForm, null, 2));
     const content = await zip.generateAsync({ type: "blob" });
 
     // Create a download link and trigger the download
