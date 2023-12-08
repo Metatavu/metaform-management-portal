@@ -255,7 +255,8 @@ const FormRepliesScreen: React.FC = () => {
           latestFirst: true,
           orderBy: ReplyOrderCriteria.Created,
           fields: [`${showAllReplies ? "" : "status:waiting"}`],
-          maxResults: 10
+          maxResults: 5, // Check the max result what it should be
+          firstResult: page * resultsPerPage + 1
         }),
         getManagementListFields(metaformData)
       ]);
@@ -278,7 +279,7 @@ const FormRepliesScreen: React.FC = () => {
 
   useEffect(() => {
     loadData();
-  }, [showAllReplies]);
+  }, [showAllReplies, page]);
 
   /**
    * Deletes a reply
@@ -453,6 +454,7 @@ const FormRepliesScreen: React.FC = () => {
         paginationMode="server"
         pageSize={ resultsPerPage }
         page={ page }
+        rowCount={ ((page + 1) * resultsPerPage) + 1 } // This should have total count
         onPageChange={ newPage => setPage(newPage) }
         rowsPerPageOptions={ [5] }
       />
