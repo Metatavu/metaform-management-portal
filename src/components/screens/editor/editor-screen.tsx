@@ -15,6 +15,7 @@ import EditorScreenTable from "../../form-editor/editor-screen-table";
 import theme from "theme";
 import { RoundActionButton } from "styled/generic/form";
 import { setSnackbarMessage } from "features/snackbar-slice";
+import Config from "app/config";
 
 /**
  * Editor screen component
@@ -102,8 +103,8 @@ const EditorScreen: React.FC = () => {
         metaformId: newMetaform.id!,
         emailNotification: {
           emails: [],
-          subjectTemplate: "Uusi vastaus sähköiselle lomakkeelle",
-          contentTemplate: "Järjestelmään on jätetty uusi vastaus sähköiselle lomakkeelle. <br/><br/> Voit käydä tarkastelemassa vastausta osoitteessa https://metaform-portal.etelasavonha.fi/admin"
+          subjectTemplate: Config.getEmailDefaultSubject(),
+          contentTemplate: Config.getEmailDefaultContent()
         }
       });
       
