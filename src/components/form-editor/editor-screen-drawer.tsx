@@ -1,5 +1,5 @@
 import { Box, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography, Link, MenuItem, LinearProgress } from "@mui/material";
-import { Save, Clear } from "@mui/icons-material";
+import { Save, Clear, GetApp } from "@mui/icons-material";
 import strings from "localization/strings";
 import React, { FC, useContext, useEffect, useState } from "react";
 import theme from "theme";
@@ -14,6 +14,7 @@ import { FeatureType, FeatureStrategy } from "types";
 import { DrawerSection } from "styled/editor/metaform-editor";
 import { useApiClient } from "app/hooks";
 import Api from "api";
+import { RoundActionButton } from "styled/generic/form";
 
 /**
  * Component props
@@ -65,7 +66,8 @@ const EditorScreenDrawer: FC<Props> = ({
   const [ converting, setConverting ] = useState<boolean>(false);
   const [ templates, setTemplates ] = useState<Template[]>([]);
   const [ selectedTemplate, setSelectedTemplate ] = useState("");
-  const [ loading, setLoading ] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [, setImportedFormData] = useState<Metaform | null>(null);
 
   /**
    * Toggle drawer
@@ -160,6 +162,34 @@ const EditorScreenDrawer: FC<Props> = ({
   };
 
   /**
+   * Handles file change for import
+   */
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = event => {
+        try {
+          const importedData = JSON.parse(event.target?.result as string);
+          setImportedFormData(importedData);
+        } catch (error) {
+          console.error("Error parsing JSON file:", error);
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
+  /**
+   * Handles form import from JSON
+   * @param formData Form data in JSON format
+   */
+  const handleImport = (formData: Metaform) => {
+    // Process the imported data as needed
+    setImportedFormData(formData);
+  };
+
+  /**
    * Handles close icon click
    */
   const handleCloseClick = () => {
@@ -221,6 +251,19 @@ const EditorScreenDrawer: FC<Props> = ({
   const renderDrawerInfoSection = () => {
     return (
       <DrawerSection>
+        <RoundActionButton
+          onClick={() => document.getElementById("file-input")?.click()}
+          startIcon={<GetApp/>}
+        >
+          <input
+            type="file"
+            id="file-input"
+            accept=".json"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
+          <Typography>Import From JSON</Typography>
+        </RoundActionButton>
         <FormLabel required>{ strings.editorScreen.drawer.formInfo }</FormLabel>
         <TextField
           fullWidth
