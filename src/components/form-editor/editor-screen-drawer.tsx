@@ -180,14 +180,14 @@ const EditorScreenDrawer: FC<Props> = ({
     }
   };
 
-  /**
-   * Handles form import from JSON
-   * @param formData Form data in JSON format
-   */
-  const handleImport = (formData: Metaform) => {
-    // Process the imported data as needed
-    setImportedFormData(formData);
-  };
+  // /**
+  //  * Handles form import from JSON
+  //  * @param formData Form data in JSON format
+  //  */
+  // const handleImport = (formData: Metaform) => {
+  //   // Process the imported data as needed
+  //   setImportedFormData(formData);
+  // };
 
   /**
    * Handles close icon click
