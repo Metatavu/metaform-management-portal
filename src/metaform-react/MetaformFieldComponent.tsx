@@ -179,12 +179,9 @@ export const MetaformFieldComponent: React.FC<Props> = ({
       case MetaformFieldType.Autocomplete:
         return  <MetaformAutocompleteFieldComponent
                   formReadOnly={ formReadOnly }
-                  fieldLabelId={ getFieldLabelId() }
-                  fieldId={ getFieldId() }
                   renderAutocomplete={ renderAutocomplete }
                   field={ field }
                   value={ thisFieldValue() }
-                  onFocus={ onFocus }
                 />;
       case MetaformFieldType.Hidden:
         return  <MetaformHiddenFieldComponent
