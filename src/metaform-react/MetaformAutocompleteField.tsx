@@ -7,12 +7,9 @@ import { FieldValue } from "./types";
  */
 interface Props {
   field: MetaformField;
-  fieldId: string;
-  fieldLabelId: string;
   formReadOnly: boolean;
   value: FieldValue;
   renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
-  onFocus: () => void;
 }
 
 /**
