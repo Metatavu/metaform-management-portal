@@ -210,7 +210,7 @@ const EditorScreenDrawer: FC<Props> = ({
   };
 
   /**
-   * Redners file input button
+   * Renders file input button
    */
   const renderFileInputButton = () => (
     <RoundActionButton
