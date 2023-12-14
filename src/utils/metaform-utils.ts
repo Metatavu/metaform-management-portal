@@ -603,6 +603,27 @@ namespace MetaformUtils {
 
     return undefined;
   };
+
+  /**
+   * Removes permissionGroups from object
+   *
+   * @param obj any
+   * @returns Metaform
+   */
+  export const removePermissionGroups = (obj: any): Metaform => {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key in obj) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (obj.hasOwnProperty(key)) {
+        if (key === "permissionGroups" && typeof obj[key] === "object") {
+          delete obj[key];
+        } else if (typeof obj[key] === "object") {
+          obj[key] = removePermissionGroups(obj[key]);
+        }
+      }
+    }
+    return obj;
+  };
 }
 
 export default MetaformUtils;

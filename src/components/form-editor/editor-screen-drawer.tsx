@@ -15,6 +15,7 @@ import { DrawerSection } from "styled/editor/metaform-editor";
 import { useApiClient } from "app/hooks";
 import Api from "api";
 import { RoundActionButton } from "styled/generic/form";
+import MetaformUtils from "utils/metaform-utils";
 
 /**
  * Component props
@@ -182,10 +183,12 @@ const EditorScreenDrawer: FC<Props> = ({
           throw new Error(strings.errorHandling.adminFormsScreen.jsonContainsNoSections);
         }
 
+        const cleanedData = MetaformUtils.removePermissionGroups(importedData);
+
         setFormSettings({
           ...formSettings,
           formName: formSettings.formName || "",
-          formSections: importedData.sections
+          formSections: cleanedData.sections
         });
       } catch (err) {
         errorContext.setError(strings.errorHandling.adminFormsScreen.parsingJsonFile, err);
