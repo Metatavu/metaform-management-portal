@@ -604,6 +604,7 @@ export interface Localized extends LocalizedStringsMethods {
     formProductionVersion: string;
     drawer: {
       newForm: string;
+      importJson: string,
       helper: string;
       formInfo: string;
       formName: string;

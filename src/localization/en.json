@@ -534,6 +534,7 @@
     "formProductionVersion": "Production",
     "drawer": {
       "newForm": "Create new form",
+      "importJson": "Import",
       "helper": "Forms general settings that affect all versions of form.",
       "formInfo": "Form info",
       "formName": "Name",
