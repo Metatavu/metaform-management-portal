@@ -7,7 +7,7 @@ import MetaformEditor from "components/form-editor/metaform-editor";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
-import { Preview, Public, Save, SaveAs, Delete } from "@mui/icons-material";
+import { Preview, Public, Save, SaveAs, Delete, GetApp } from "@mui/icons-material";
 import { useParams, useNavigate } from "react-router-dom";
 import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
@@ -18,6 +18,8 @@ import { selectMetaform, setMetaformVersion, setMetaformSelectionsUndefined } fr
 import { setSnackbarMessage } from "features/snackbar-slice";
 import ConfirmDialog from "components/generic/confirm-dialog";
 import TemplateDialog from "components/generic/template-dialog";
+import FileUtils from "utils/file-utils";
+import { selectKeycloak } from "features/auth-slice";
 
 /**
  * Draft editor screen component
@@ -42,7 +44,8 @@ const DraftEditorScreen: React.FC = () => {
   const [ templateDialogOpen, setTemplateDialogOpen ] = useState(false);
   const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
   const [ hasMemberGroups, setHasMemberGroups ] = useState<boolean>(false);
-  const [ templates, setTemplates ] = useState<Template[]>([]);
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const keycloak = useAppSelector(selectKeycloak);
 
   /**
    * Loads MetaformVersion to edit.
@@ -334,6 +337,13 @@ const DraftEditorScreen: React.FC = () => {
           </RoundActionButton>
         </span>
       </Tooltip>
+      { keycloak?.hasRealmRole("metatavu-admin") &&
+        <RoundActionButton
+          onClick={() => FileUtils.exportToZip(draftForm)}
+          startIcon={<GetApp/>}
+        >
+          <Typography>{ strings.draftEditorScreen.exportToZip }</Typography>
+        </RoundActionButton>}
     </Stack>
   );
 

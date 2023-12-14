@@ -60,6 +60,8 @@ export interface Localized extends LocalizedStringsMethods {
       createFormDuplicateNameError: string;
       convertSosmetaError: string;
       getLastModifiers: string;
+      parsingJsonFile: string;
+      jsonContainsNoSections: string;
     };
     draftEditorScreen: {
       findDraft: string;
@@ -282,6 +284,7 @@ export interface Localized extends LocalizedStringsMethods {
     publish: string;
     saveTemplate: string;
     deleteTemplate: string;
+    exportToZip: string;
     publishDialog: {
       title: string;
       contentText: string;
@@ -601,6 +604,8 @@ export interface Localized extends LocalizedStringsMethods {
     formProductionVersion: string;
     drawer: {
       newForm: string;
+      importJson: string,
+      importedFileName: string,
       helper: string;
       formInfo: string;
       formName: string;

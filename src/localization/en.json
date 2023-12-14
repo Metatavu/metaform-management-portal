@@ -46,7 +46,9 @@
       "deleteVersion": "Deleting form failed",
       "createFormDuplicateNameError": "Form with that name already exists!",
       "convertSosmetaError": "Converting Sosmeta failed",
-      "getLastModifiers": "Fetching forms last modifiers dailed"
+      "getLastModifiers": "Fetching forms last modifiers failed",
+      "parsingJsonFile": "Parsing JSON file failed",
+      "jsonContainsNoSections": "JSON data contains no sections"
     },
     "draftEditorScreen": {
       "findDraft": "Fetching form version failed",
@@ -55,7 +57,8 @@
       "loadScripts": "Loading extension failed",
       "saveTemplate": "Saving template failed",
       "fetchTemplates": "Fetching templates failed",
-      "deleteTemplate": "Deleting form template failed"
+      "deleteTemplate": "Deleting form template failed",
+      "exportToZip": "Export to ZIP"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -233,6 +236,7 @@
     "publish": "Publish",
     "saveTemplate": "Save as template",
     "deleteTemplate": "Cancel template saving",
+    "exportToZip":"Export to ZIP",
     "publishDialog": {
       "title": "Publish version",
       "contentText": "Are you sure you wish to publish {0}?"
@@ -530,6 +534,8 @@
     "formProductionVersion": "Production",
     "drawer": {
       "newForm": "Create new form",
+      "importJson": "Import",
+      "importedFileName": "Imported file:",
       "helper": "Forms general settings that affect all versions of form.",
       "formInfo": "Form info",
       "formName": "Name",

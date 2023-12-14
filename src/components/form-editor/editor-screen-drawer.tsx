@@ -12,8 +12,11 @@ import Config from "app/config";
 import Feature from "components/containers/feature";
 import { FeatureType, FeatureStrategy } from "types";
 import { DrawerSection } from "styled/editor/metaform-editor";
-import { useApiClient } from "app/hooks";
+import { useApiClient, useAppSelector } from "app/hooks";
 import Api from "api";
+import { RoundActionButton } from "styled/generic/form";
+import MetaformUtils from "utils/metaform-utils";
+import { selectKeycloak } from "features/auth-slice";
 
 /**
  * Component props
@@ -65,7 +68,9 @@ const EditorScreenDrawer: FC<Props> = ({
   const [ converting, setConverting ] = useState<boolean>(false);
   const [ templates, setTemplates ] = useState<Template[]>([]);
   const [ selectedTemplate, setSelectedTemplate ] = useState("");
-  const [ loading, setLoading ] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [importedFileName, setImportedFileName] = useState("");
+  const keycloak = useAppSelector(selectKeycloak);
 
   /**
    * Toggle drawer
@@ -160,11 +165,67 @@ const EditorScreenDrawer: FC<Props> = ({
   };
 
   /**
+   * Handles file change for import
+   *
+   * @param event event
+   */
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.parsingJsonFile);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const importedData = JSON.parse(e.target?.result as string);
+
+        if (!importedData.sections) {
+          throw new Error(strings.errorHandling.adminFormsScreen.jsonContainsNoSections);
+        }
+
+        const cleanedData = MetaformUtils.removePermissionGroups(importedData);
+
+        setFormSettings({
+          ...formSettings,
+          formName: formSettings.formName || "",
+          formSections: cleanedData.sections
+        });
+        setImportedFileName(cleanedData.title!);
+      } catch (err) {
+        errorContext.setError(strings.errorHandling.adminFormsScreen.parsingJsonFile, err);
+      }
+    };
+
+    reader.readAsText(file);
+  };
+
+  /**
    * Handles close icon click
    */
   const handleCloseClick = () => {
     setOpen(!open);
   };
+
+  /**
+   * Renders file input button
+   */
+  const renderFileInputButton = () => (
+    <RoundActionButton
+      onClick={() => document.getElementById("file-input")?.click()}
+    >
+      <input
+        type="file"
+        id="file-input"
+        accept=".json"
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
+      <Typography>{ strings.editorScreen.drawer.importJson }</Typography>
+    </RoundActionButton>
+  );
 
   /**
    * Renders Drawer header
@@ -195,6 +256,7 @@ const EditorScreenDrawer: FC<Props> = ({
             >
               <Save color={ valid ? "primary" : "disabled" }/>
             </IconButton>
+            { keycloak?.hasRealmRole("metatavu-admin") && renderFileInputButton() }
             <IconButton
               sx={{
                 border: `1px solid ${theme.palette.primary.main}`,
@@ -206,6 +268,10 @@ const EditorScreenDrawer: FC<Props> = ({
             </IconButton>
           </Stack>
         </Box>
+        { importedFileName &&
+          <DrawerSection>
+            <Typography align="center">{ `${strings.editorScreen.drawer.importedFileName} ${importedFileName}` }</Typography>
+          </DrawerSection>}
         <DrawerSection>
           <Typography align="center">
             { strings.editorScreen.drawer.helper }

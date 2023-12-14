@@ -46,7 +46,9 @@
       "deleteVersion": "Lomakeversion poistaminen epäonnistui",
       "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
       "convertSosmetaError": "Sosmetan muuntaminen epäonnistui",
-      "getLastModifiers": "Lomakkeiden viimeisten muokkaajien haku epäonnistui"
+      "getLastModifiers": "Lomakkeiden viimeisten muokkaajien haku epäonnistui",
+      "parsingJsonFile": "JSON-tiedoston jäsentäminen epäonnistui",
+      "jsonContainsNoSections": "JSON-tiedot eivät sisällä osioita"
     },
     "draftEditorScreen": {
       "findDraft": "Lomakeversion haku epäonnistui",
@@ -55,7 +57,8 @@
       "loadScripts": "Laajennusten lataaminen epäonnistui",
       "saveTemplate": "Pohjan tallentaminen epäonnistui",
       "fetchTemplates": "Lomakepohjien nouto epäonnistui",
-      "deleteTemplate": "Lomakepohjan poistaminen epäonnistui"
+      "deleteTemplate": "Lomakepohjan poistaminen epäonnistui",
+      "exportToZip": "Vie ZIP-tiedostona"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -233,6 +236,7 @@
     "publish": "Julkaise",
     "saveTemplate": "Tallenna lomakepohjana",
     "deleteTemplate": "Poista lomakepohja",
+    "exportToZip": "Vie ZIP-tiedostona",
     "scripts": {
       "scripts": "Laajennukset",
       "addNewScript": "Lisää uusi laajennus",
@@ -538,6 +542,8 @@
     "formProductionVersion": "Tuotanto",
     "drawer": {
       "newForm": "Luo uusi lomake",
+      "importJson": "Tuo",
+      "importedFileName": "Tuotu tiedosto:",
       "helper": "Lomakkeen yleiset asetukset, jotka vaikuttavat valitun lomakkeen kaikkiin lomakeversioihin.",
       "formInfo": "Lomakkeen tiedot",
       "formName": "Nimi",
