@@ -46,7 +46,9 @@
       "deleteVersion": "Lomakeversion poistaminen epäonnistui",
       "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
       "convertSosmetaError": "Sosmetan muuntaminen epäonnistui",
-      "getLastModifiers": "Lomakkeiden viimeisten muokkaajien haku epäonnistui"
+      "getLastModifiers": "Lomakkeiden viimeisten muokkaajien haku epäonnistui",
+      "parsingJsonFile": "JSON-tiedoston jäsentäminen epäonnistui",
+      "jsonContainsNoSections": "JSON-tiedot eivät sisällä osioita"
     },
     "draftEditorScreen": {
       "findDraft": "Lomakeversion haku epäonnistui",

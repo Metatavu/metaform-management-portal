@@ -67,7 +67,6 @@ const EditorScreenDrawer: FC<Props> = ({
   const [ templates, setTemplates ] = useState<Template[]>([]);
   const [ selectedTemplate, setSelectedTemplate ] = useState("");
   const [loading, setLoading] = useState(false);
-  const [, setImportedFormData] = useState<Metaform | null>(null);
 
   /**
    * Toggle drawer
@@ -163,31 +162,38 @@ const EditorScreenDrawer: FC<Props> = ({
 
   /**
    * Handles file change for import
+   *
+   * @param event event
    */
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = event => {
-        try {
-          const importedData = JSON.parse(event.target?.result as string);
-          setImportedFormData(importedData);
-        } catch (error) {
-          console.error("Error parsing JSON file:", error);
-        }
-      };
-      reader.readAsText(file);
-    }
-  };
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
 
-  // /**
-  //  * Handles form import from JSON
-  //  * @param formData Form data in JSON format
-  //  */
-  // const handleImport = (formData: Metaform) => {
-  //   // Process the imported data as needed
-  //   setImportedFormData(formData);
-  // };
+    if (!file) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.parsingJsonFile);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const importedData = JSON.parse(e.target?.result as string);
+
+        if (!importedData.sections) {
+          throw new Error(strings.errorHandling.adminFormsScreen.jsonContainsNoSections);
+        }
+
+        setFormSettings({
+          ...formSettings,
+          formName: formSettings.formName || "",
+          formSections: importedData.sections
+        });
+      } catch (err) {
+        errorContext.setError(strings.errorHandling.adminFormsScreen.parsingJsonFile, err);
+      }
+    };
+
+    reader.readAsText(file);
+  };
 
   /**
    * Handles close icon click

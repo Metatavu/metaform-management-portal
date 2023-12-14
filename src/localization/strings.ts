@@ -60,6 +60,8 @@ export interface Localized extends LocalizedStringsMethods {
       createFormDuplicateNameError: string;
       convertSosmetaError: string;
       getLastModifiers: string;
+      parsingJsonFile: string;
+      jsonContainsNoSections: string;
     };
     draftEditorScreen: {
       findDraft: string;
