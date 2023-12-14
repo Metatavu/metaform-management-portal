@@ -12,10 +12,11 @@ import Config from "app/config";
 import Feature from "components/containers/feature";
 import { FeatureType, FeatureStrategy } from "types";
 import { DrawerSection } from "styled/editor/metaform-editor";
-import { useApiClient } from "app/hooks";
+import { useApiClient, useAppSelector } from "app/hooks";
 import Api from "api";
 import { RoundActionButton } from "styled/generic/form";
 import MetaformUtils from "utils/metaform-utils";
+import { selectKeycloak } from "features/auth-slice";
 
 /**
  * Component props
@@ -68,6 +69,7 @@ const EditorScreenDrawer: FC<Props> = ({
   const [ templates, setTemplates ] = useState<Template[]>([]);
   const [ selectedTemplate, setSelectedTemplate ] = useState("");
   const [loading, setLoading] = useState(false);
+  const keycloak = useAppSelector(selectKeycloak);
 
   /**
    * Toggle drawer
@@ -206,6 +208,24 @@ const EditorScreenDrawer: FC<Props> = ({
   };
 
   /**
+   * Redners file input button
+   */
+  const renderFileInputButton = () => (
+    <RoundActionButton
+      onClick={() => document.getElementById("file-input")?.click()}
+    >
+      <input
+        type="file"
+        id="file-input"
+        accept=".json"
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
+      <Typography>{ strings.editorScreen.drawer.importJson }</Typography>
+    </RoundActionButton>
+  );
+
+  /**
    * Renders Drawer header
    */
   const renderDrawerHeader = () => {
@@ -234,18 +254,7 @@ const EditorScreenDrawer: FC<Props> = ({
             >
               <Save color={ valid ? "primary" : "disabled" }/>
             </IconButton>
-            <RoundActionButton
-              onClick={() => document.getElementById("file-input")?.click()}
-            >
-              <input
-                type="file"
-                id="file-input"
-                accept=".json"
-                style={{ display: "none" }}
-                onChange={handleFileChange}
-              />
-              <Typography>{ strings.editorScreen.drawer.importJson }</Typography>
-            </RoundActionButton>
+            { keycloak?.hasRealmRole("metatavu-admin") && renderFileInputButton() }
             <IconButton
               sx={{
                 border: `1px solid ${theme.palette.primary.main}`,

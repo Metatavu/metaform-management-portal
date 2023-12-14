@@ -19,6 +19,7 @@ import { setSnackbarMessage } from "features/snackbar-slice";
 import ConfirmDialog from "components/generic/confirm-dialog";
 import TemplateDialog from "components/generic/template-dialog";
 import FileUtils from "utils/file-utils";
+import { selectKeycloak } from "features/auth-slice";
 
 /**
  * Draft editor screen component
@@ -44,6 +45,7 @@ const DraftEditorScreen: React.FC = () => {
   const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
   const [ hasMemberGroups, setHasMemberGroups ] = useState<boolean>(false);
   const [templates, setTemplates] = useState<Template[]>([]);
+  const keycloak = useAppSelector(selectKeycloak);
 
   /**
    * Loads MetaformVersion to edit.
@@ -335,12 +337,13 @@ const DraftEditorScreen: React.FC = () => {
           </RoundActionButton>
         </span>
       </Tooltip>
-      <RoundActionButton
-        onClick={() => FileUtils.exportToZip(draftForm)}
-        startIcon={<GetApp/>}
-      >
-        <Typography>{ strings.draftEditorScreen.exportToZip }</Typography>
-      </RoundActionButton>
+      { keycloak?.hasRealmRole("metatavu-admin") &&
+        <RoundActionButton
+          onClick={() => FileUtils.exportToZip(draftForm)}
+          startIcon={<GetApp/>}
+        >
+          <Typography>{ strings.draftEditorScreen.exportToZip }</Typography>
+        </RoundActionButton>}
     </Stack>
   );
 
