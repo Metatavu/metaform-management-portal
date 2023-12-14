@@ -542,7 +542,7 @@
     "formProductionVersion": "Tuotanto",
     "drawer": {
       "newForm": "Luo uusi lomake",
-      "importJson": "Tuonti",
+      "importJson": "Tuo",
       "helper": "Lomakkeen yleiset asetukset, jotka vaikuttavat valitun lomakkeen kaikkiin lomakeversioihin.",
       "formInfo": "Lomakkeen tiedot",
       "formName": "Nimi",
