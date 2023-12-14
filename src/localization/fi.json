@@ -543,6 +543,7 @@
     "drawer": {
       "newForm": "Luo uusi lomake",
       "importJson": "Tuo",
+      "importedFileName": "Tuotu tiedosto:",
       "helper": "Lomakkeen yleiset asetukset, jotka vaikuttavat valitun lomakkeen kaikkiin lomakeversioihin.",
       "formInfo": "Lomakkeen tiedot",
       "formName": "Nimi",

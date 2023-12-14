@@ -69,6 +69,7 @@ const EditorScreenDrawer: FC<Props> = ({
   const [ templates, setTemplates ] = useState<Template[]>([]);
   const [ selectedTemplate, setSelectedTemplate ] = useState("");
   const [loading, setLoading] = useState(false);
+  const [importedFileName, setImportedFileName] = useState("");
   const keycloak = useAppSelector(selectKeycloak);
 
   /**
@@ -192,6 +193,7 @@ const EditorScreenDrawer: FC<Props> = ({
           formName: formSettings.formName || "",
           formSections: cleanedData.sections
         });
+        setImportedFileName(cleanedData.title!);
       } catch (err) {
         errorContext.setError(strings.errorHandling.adminFormsScreen.parsingJsonFile, err);
       }
@@ -266,6 +268,10 @@ const EditorScreenDrawer: FC<Props> = ({
             </IconButton>
           </Stack>
         </Box>
+        { importedFileName &&
+          <DrawerSection>
+            <Typography align="center">{ `${strings.editorScreen.drawer.importedFileName} ${importedFileName}` }</Typography>
+          </DrawerSection>}
         <DrawerSection>
           <Typography align="center">
             { strings.editorScreen.drawer.helper }
