@@ -46,13 +46,19 @@
       "deleteVersion": "Lomakeversion poistaminen epäonnistui",
       "createFormDuplicateNameError": "Antamallasi nimellä on jo lomake!",
       "convertSosmetaError": "Sosmetan muuntaminen epäonnistui",
-      "getLastModifiers": "Lomakkeiden viimeisten muokkaajien haku epäonnistui"
+      "getLastModifiers": "Lomakkeiden viimeisten muokkaajien haku epäonnistui",
+      "parsingJsonFile": "JSON-tiedoston jäsentäminen epäonnistui",
+      "jsonContainsNoSections": "JSON-tiedot eivät sisällä osioita"
     },
     "draftEditorScreen": {
       "findDraft": "Lomakeversion haku epäonnistui",
       "saveDraft": "Lomakeversion tallentaminen epäonnistui",
       "publishDraft": "Lomakeversion julkaiseminen epäonnistui",
-      "loadScripts": "Laajennusten lataaminen epäonnistui"
+      "loadScripts": "Laajennusten lataaminen epäonnistui",
+      "saveTemplate": "Pohjan tallentaminen epäonnistui",
+      "fetchTemplates": "Lomakepohjien nouto epäonnistui",
+      "deleteTemplate": "Lomakepohjan poistaminen epäonnistui",
+      "exportToZip": "Vie ZIP-tiedostona"
     },
     "formScreen": {
       "saveReply": "Vastauksen tallentamisessa tapahtui virhe",
@@ -228,6 +234,9 @@
   "draftEditorScreen": {
     "preview": "Esikatsele",
     "publish": "Julkaise",
+    "saveTemplate": "Tallenna lomakepohjana",
+    "deleteTemplate": "Poista lomakepohja",
+    "exportToZip": "Vie ZIP-tiedostona",
     "scripts": {
       "scripts": "Laajennukset",
       "addNewScript": "Lisää uusi laajennus",
@@ -349,6 +358,11 @@
         "allChoices": "Mikä tahansa valinta",
         "andConditionChainTerms": "Näkyvyyden muut ehdot",
         "visibilityConditionTooltip": "Näkyvyyden ehto määrittää kentän näkyvyyden lomakkeella. Näkyvyyden ehtoja voi olla useita, jolloin minkä tahansa ehdon täyttyessä kenttä näkyy lomakkeella. \n Jos kentän näkyvyys riippuu myös jonkin toisen kentän näkyvyydestä, 'NÄYTÄ EHTOJONO'-nappia painamalla voidaan tarkastella ehtojonoa."
+      },
+      "schedule": {
+        "title": "Ajastettu kentän näkyvyys",
+        "startDate": "Näkyvyyden aloitusaika",
+        "endDate": "Näkyvyyden lopetusaika"
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Käyttäjäryhmän asetukset",
@@ -528,12 +542,17 @@
     "formProductionVersion": "Tuotanto",
     "drawer": {
       "newForm": "Luo uusi lomake",
+      "importJson": "Tuo",
+      "importedFileName": "Tuotu tiedosto:",
       "helper": "Lomakkeen yleiset asetukset, jotka vaikuttavat valitun lomakkeen kaikkiin lomakeversioihin.",
       "formInfo": "Lomakkeen tiedot",
       "formName": "Nimi",
       "formUrl": "Url-osoite",
       "formTemplate": "Lomakkeen pohja",
       "formTemplateCustom": "Tyhjä pohja",
+      "formTemplates": "Lomakepohjat",
+      "formTemplateSelect": "Valitse lomakepohja",
+      "noFormTemplateSelected": "Ei valittu",
       "formTemplateCustomHelper": "Luo uusi lomake tyhjällä pohjalla. Suositeltavaa vain, jos Sosmetasta ei löydy sopivaa pohjaa lomakkeelle.",
       "formTemplateSosmeta": "Sosmetan pohja",
       "formTemplateSosmetaHelper": "Luo uusi lomake Sosmetan rakenteiden mukaisesti. Sosmeta on Terveyden ja Hyvinvoinnin laitoksen ylläpitä palvelu. Rakennepohjat löytyvät osoitteesta: ",
@@ -552,6 +571,13 @@
     "title": "Otsikko",
     "email": "Sähköposti",
     "cancel": "Peruuta"
+  },
+  "templateDialog": {
+    "title": "Tallenna lomakepohja",
+    "input": "Lomakepohjan nimi",
+    "text": "Anna lomakepohjan nimi",
+    "unique": "Lomakepohjan tällä nimellä on jo olemassa"
+
   },
   "autoComplete": {
     "missingOptions": "Code server autocomplete ei ole määritelty",
@@ -590,7 +616,9 @@
     },
     "draftEditor": {
       "saveDraftSuccessText": "Lomakkeen luonnos tallennettu onnistuneesti!",
-      "publishDraftSuccessText": "Lomake julkaistu onnistuneesti!"
+      "publishDraftSuccessText": "Lomake julkaistu onnistuneesti!",
+      "saveTemplateSuccessText": "Lomakepohjan tallennus onnistui!",
+      "deleteTemplateSuccessText": "Lomakepohjan poistaminen onnistui!"
     },
     "users": {
       "addMemberSuccessText": "Käyttäjän lisääminen onnistui!",

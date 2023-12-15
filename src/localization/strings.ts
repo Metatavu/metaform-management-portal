@@ -60,12 +60,17 @@ export interface Localized extends LocalizedStringsMethods {
       createFormDuplicateNameError: string;
       convertSosmetaError: string;
       getLastModifiers: string;
+      parsingJsonFile: string;
+      jsonContainsNoSections: string;
     };
     draftEditorScreen: {
       findDraft: string;
       saveDraft: string;
       publishDraft: string;
       loadScripts: string;
+      saveTemplate: string;
+      fetchTemplates: string;
+      deleteTemplate: string;
     };
     formScreen: {
       saveReply: string;
@@ -277,6 +282,9 @@ export interface Localized extends LocalizedStringsMethods {
   draftEditorScreen: {
     preview: string;
     publish: string;
+    saveTemplate: string;
+    deleteTemplate: string;
+    exportToZip: string;
     publishDialog: {
       title: string;
       contentText: string;
@@ -387,6 +395,11 @@ export interface Localized extends LocalizedStringsMethods {
         andConditionChainTerms: string;
         visibilityConditionTooltip: string;
       };
+      schedule: {
+        title: string;
+        startDate: string;
+        endDate: string;
+      },
       memberGroups: {
         memberGroupDefineSettings: string;
         defaultMemberGroupInfo: string;
@@ -591,11 +604,16 @@ export interface Localized extends LocalizedStringsMethods {
     formProductionVersion: string;
     drawer: {
       newForm: string;
+      importJson: string,
+      importedFileName: string,
       helper: string;
       formInfo: string;
       formName: string;
       formUrl: string;
       formTemplate: string;
+      formTemplates: string;
+      formTemplateSelect: string;
+      noFormTemplateSelected: string;
       formTemplateCustom: string;
       formTemplateCustomHelper: string;
       formTemplateSosmeta: string;
@@ -619,6 +637,16 @@ export interface Localized extends LocalizedStringsMethods {
     email: string;
     cancel: string;
     send: string;
+  }
+
+  /**
+   * Translations related to template dialog
+   */
+  templateDialog: {
+    title: string;
+    input: string;
+    text: string;
+    unique: string;
   }
 
   /**
@@ -678,6 +706,8 @@ export interface Localized extends LocalizedStringsMethods {
     draftEditor: {
       saveDraftSuccessText: string;
       publishDraftSuccessText: string;
+      saveTemplateSuccessText: string;
+      deleteTemplateSuccessText: string;
     };
     users: {
       editUserSuccessText: string;

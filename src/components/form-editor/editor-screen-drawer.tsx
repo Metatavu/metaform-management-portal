@@ -1,9 +1,9 @@
-import { Box, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography, Link } from "@mui/material";
+import { Box, Drawer, FormControl, FormControlLabel, FormHelperText, FormLabel, IconButton, Radio, RadioGroup, Stack, TextField, Typography, Link, MenuItem, LinearProgress } from "@mui/material";
 import { Save, Clear } from "@mui/icons-material";
 import strings from "localization/strings";
 import React, { FC, useContext, useEffect, useState } from "react";
 import theme from "theme";
-import { Metaform, MetaformSection, MetaformVisibility } from "generated/client";
+import { Metaform, MetaformSection, MetaformVisibility, Template, TemplateVisibility } from "generated/client";
 import slugify from "slugify";
 import SosmetaUtils from "utils/sosmeta-utils";
 import GenericLoaderWrapper from "components/generic/generic-loader";
@@ -12,6 +12,11 @@ import Config from "app/config";
 import Feature from "components/containers/feature";
 import { FeatureType, FeatureStrategy } from "types";
 import { DrawerSection } from "styled/editor/metaform-editor";
+import { useApiClient, useAppSelector } from "app/hooks";
+import Api from "api";
+import { RoundActionButton } from "styled/generic/form";
+import MetaformUtils from "utils/metaform-utils";
+import { selectKeycloak } from "features/auth-slice";
 
 /**
  * Component props
@@ -34,10 +39,11 @@ interface FormSettings {
   formSchema: string;
   formAuthentication: boolean;
   formSections?: MetaformSection[];
+  exportThemeId?: string;
 }
 
 /**
- * Editor Screen Drawer component 
+ * Editor Screen Drawer component
  */
 const EditorScreenDrawer: FC<Props> = ({
   open,
@@ -47,6 +53,9 @@ const EditorScreenDrawer: FC<Props> = ({
 }) => {
   const currentHostname = window.location.hostname;
   const errorContext = useContext(ErrorContext);
+  const apiClient = useApiClient(Api.getApiClient);
+  const { templatesApi } = apiClient;
+
   const [ formSettings, setFormSettings ] = useState<FormSettings>({
     formName: "",
     formSlug: "",
@@ -57,12 +66,50 @@ const EditorScreenDrawer: FC<Props> = ({
   });
   const [ valid, setValid ] = useState<boolean>(false);
   const [ converting, setConverting ] = useState<boolean>(false);
+  const [ templates, setTemplates ] = useState<Template[]>([]);
+  const [ selectedTemplate, setSelectedTemplate ] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [importedFileName, setImportedFileName] = useState("");
+  const keycloak = useAppSelector(selectKeycloak);
 
   /**
    * Toggle drawer
    */
   const toggleDrawerOpen = () => {
     setOpen(!open);
+  };
+
+  /**
+   * Gets a list of templates
+   */
+  const getTemplates = async () => {
+    if (!templates.length && open) {
+      try {
+        setLoading(true);
+        const foundTemplates = await templatesApi.listTemplates({
+          visibility: TemplateVisibility.Public
+        });
+        setTemplates(foundTemplates);
+      } catch (e) {
+        errorContext.setError(strings.errorHandling.draftEditorScreen.fetchTemplates, e);
+      }
+      setLoading(false);
+    }
+  };
+
+  /**
+   * Applies template sections to form
+   */
+  const applyTemplateToForm = () => {
+    const foundTemplate = templates.find(template => template.id === selectedTemplate);
+
+    if (!foundTemplate?.data?.sections || !foundTemplate?.data?.title) return;
+
+    setFormSettings({
+      ...formSettings,
+      formName: formSettings.formName || "",
+      formSections: foundTemplate.data.sections
+    });
   };
 
   /**
@@ -83,7 +130,6 @@ const EditorScreenDrawer: FC<Props> = ({
     } catch (e) {
       errorContext.setError(strings.errorHandling.adminFormsScreen.convertSosmetaError, e);
     }
-    
     setConverting(false);
   };
 
@@ -106,7 +152,7 @@ const EditorScreenDrawer: FC<Props> = ({
    * This method is being used by not only textfields but also radio buttons that return a boolean value.
    * Radio buttons do not return boolean, but rather true or false as a string.
    * Therefore that is being converterd to boolean.
-   * 
+   *
    * @param event event
    */
   const onInputFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,11 +165,67 @@ const EditorScreenDrawer: FC<Props> = ({
   };
 
   /**
+   * Handles file change for import
+   *
+   * @param event event
+   */
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      errorContext.setError(strings.errorHandling.adminFormsScreen.parsingJsonFile);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const importedData = JSON.parse(e.target?.result as string);
+
+        if (!importedData.sections) {
+          throw new Error(strings.errorHandling.adminFormsScreen.jsonContainsNoSections);
+        }
+
+        const cleanedData = MetaformUtils.removePermissionGroups(importedData);
+
+        setFormSettings({
+          ...formSettings,
+          formName: formSettings.formName || "",
+          formSections: cleanedData.sections
+        });
+        setImportedFileName(cleanedData.title!);
+      } catch (err) {
+        errorContext.setError(strings.errorHandling.adminFormsScreen.parsingJsonFile, err);
+      }
+    };
+
+    reader.readAsText(file);
+  };
+
+  /**
    * Handles close icon click
    */
   const handleCloseClick = () => {
     setOpen(!open);
   };
+
+  /**
+   * Renders file input button
+   */
+  const renderFileInputButton = () => (
+    <RoundActionButton
+      onClick={() => document.getElementById("file-input")?.click()}
+    >
+      <input
+        type="file"
+        id="file-input"
+        accept=".json"
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
+      <Typography>{ strings.editorScreen.drawer.importJson }</Typography>
+    </RoundActionButton>
+  );
 
   /**
    * Renders Drawer header
@@ -154,6 +256,7 @@ const EditorScreenDrawer: FC<Props> = ({
             >
               <Save color={ valid ? "primary" : "disabled" }/>
             </IconButton>
+            { keycloak?.hasRealmRole("metatavu-admin") && renderFileInputButton() }
             <IconButton
               sx={{
                 border: `1px solid ${theme.palette.primary.main}`,
@@ -165,6 +268,10 @@ const EditorScreenDrawer: FC<Props> = ({
             </IconButton>
           </Stack>
         </Box>
+        { importedFileName &&
+          <DrawerSection>
+            <Typography align="center">{ `${strings.editorScreen.drawer.importedFileName} ${importedFileName}` }</Typography>
+          </DrawerSection>}
         <DrawerSection>
           <Typography align="center">
             { strings.editorScreen.drawer.helper }
@@ -201,9 +308,37 @@ const EditorScreenDrawer: FC<Props> = ({
   };
 
   /**
+   * Renders drawer template section
+   */
+  const renderDrawerTemplateSection = () => (
+    <DrawerSection>
+      <FormLabel>{ strings.editorScreen.drawer.formTemplates }</FormLabel>
+      { loading
+        ? <LinearProgress/>
+        : (
+          <TextField
+            select
+            label={ strings.editorScreen.drawer.formTemplateSelect }
+            value={ selectedTemplate || "" }
+            onChange={ e => setSelectedTemplate(e.target.value) }
+          >
+            <MenuItem value="">
+              { strings.editorScreen.drawer.noFormTemplateSelected }
+            </MenuItem>
+            { templates.map(template =>
+              <MenuItem value={template.id} key={template.id}>
+                { template.data.title }
+              </MenuItem>) }
+          </TextField>
+        )
+      }
+    </DrawerSection>
+  );
+
+  /**
    * Renders Drawer template section
    */
-  const renderDrawerTemplateSection = () => {
+  const renderDrawerSosmetaTemplateSection = () => {
     return (
       <DrawerSection>
         <FormLabel required>{ strings.editorScreen.drawer.formTemplate }</FormLabel>
@@ -213,18 +348,27 @@ const EditorScreenDrawer: FC<Props> = ({
           onChange={ onInputFieldChange }
           name="formTemplate"
         >
-          <FormControlLabel value={ false } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateCustom }/>
+          <FormControlLabel
+            value={ false }
+            control={ <Radio/> }
+            label={ strings.editorScreen.drawer.formTemplateCustom }
+            disabled={ !!selectedTemplate }
+          />
           <FormHelperText>
             { strings.editorScreen.drawer.formTemplateCustomHelper }
           </FormHelperText>
-          <FormControlLabel value={ true } control={ <Radio/> } label={ strings.editorScreen.drawer.formTemplateSosmeta }/>
+          <FormControlLabel
+            value={ true }
+            control={ <Radio/> }
+            label={ strings.editorScreen.drawer.formTemplateSosmeta }
+            disabled={ !!selectedTemplate }
+          />
           <FormHelperText>
             { strings.editorScreen.drawer.formTemplateSosmetaHelper }
             <Link href="https://sosmeta.thl.fi/document-definitions/list" target="_blank">
               { strings.editorScreen.drawer.formTemplateSosmetaLink }
             </Link>
           </FormHelperText>
-            
         </RadioGroup>
         { formSettings.formTemplate &&
           <TextField
@@ -302,6 +446,14 @@ const EditorScreenDrawer: FC<Props> = ({
   };
 
   useEffect(() => {
+    getTemplates();
+  }, [open]);
+
+  useEffect(() => {
+    applyTemplateToForm();
+  }, [selectedTemplate]);
+
+  useEffect(() => {
     if (formSettings.formSchema) {
       handleSosmetaConversion();
     }
@@ -336,11 +488,12 @@ const EditorScreenDrawer: FC<Props> = ({
         <FormControl fullWidth>
           { renderDrawerHeader() }
           { renderDrawerInfoSection() }
+          { renderDrawerTemplateSection() }
           <Feature
             feature={ FeatureType.SOSMETA}
             strategy={ FeatureStrategy.HIDE}
           >
-            { renderDrawerTemplateSection() }
+            { renderDrawerSosmetaTemplateSection() }
           </Feature>
           { renderDrawerAuthenticationSection() }
         </FormControl>

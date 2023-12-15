@@ -46,13 +46,19 @@
       "deleteVersion": "Deleting form failed",
       "createFormDuplicateNameError": "Form with that name already exists!",
       "convertSosmetaError": "Converting Sosmeta failed",
-      "getLastModifiers": "Fetching forms last modifiers dailed"
+      "getLastModifiers": "Fetching forms last modifiers failed",
+      "parsingJsonFile": "Parsing JSON file failed",
+      "jsonContainsNoSections": "JSON data contains no sections"
     },
     "draftEditorScreen": {
       "findDraft": "Fetching form version failed",
       "saveDraft": "Saving form version failed",
       "publishDraft": "Publishing form version failed",
-      "loadScripts": "Loading extension failed"
+      "loadScripts": "Loading extension failed",
+      "saveTemplate": "Saving template failed",
+      "fetchTemplates": "Fetching templates failed",
+      "deleteTemplate": "Deleting form template failed",
+      "exportToZip": "Export to ZIP"
     },
     "formScreen": {
       "saveReply": "Error when saving reply",
@@ -228,6 +234,9 @@
   "draftEditorScreen": {
     "preview": "Preview",
     "publish": "Publish",
+    "saveTemplate": "Save as template",
+    "deleteTemplate": "Cancel template saving",
+    "exportToZip":"Export to ZIP",
     "publishDialog": {
       "title": "Publish version",
       "contentText": "Are you sure you wish to publish {0}?"
@@ -348,6 +357,11 @@
         "allChoices": "Any choice",
         "andConditionChainTerms": "And condition chain terms",
         "visibilityConditionTooltip": "The visibility condition determines the visibility of the field on the form. There can be several conditions for visibility, so when any condition is met, the field is visible on the form. \n If the field's visibility also depends on the visibility of another field, the 'SHOW CONDITIONAL LINE' button can be used to view the condition line."
+      },
+      "schedule": {
+        "title": "Set scheduled visibility",
+        "startDate": "Start date",
+        "endDate": "End date"
       },
       "memberGroups": {
         "memberGroupDefineSettings": "Member group defining settings",
@@ -520,11 +534,16 @@
     "formProductionVersion": "Production",
     "drawer": {
       "newForm": "Create new form",
+      "importJson": "Import",
+      "importedFileName": "Imported file:",
       "helper": "Forms general settings that affect all versions of form.",
       "formInfo": "Form info",
       "formName": "Name",
       "formUrl": "Url-address",
       "formTemplate": "Form template",
+      "formTemplates": "Form templates",
+      "formTemplateSelect": "Select a form template",
+      "noFormTemplateSelected": "Not selected",
       "formTemplateCustom": "Empty template",
       "formTemplateCustomHelper": "Create new form with empty template. Recommended only if Sosmeta doesn't contain a suitable form template.",
       "formTemplateSosmeta": "Sosmeta template",
@@ -544,6 +563,12 @@
     "title": "Title",
     "email": "Address",
     "cancel": "Cancel"
+  },
+  "templateDialog": {
+    "title": "Save template",
+    "input": "Template name",
+    "text": "Enter template name",
+    "unique": "Template title must be unique"
   },
   "autoComplete": {
     "missingOptions": "Code server autocomplete not configured",
@@ -582,7 +607,9 @@
     },
     "draftEditor": {
       "saveDraftSuccessText": "Draft form saved successfully!",
-      "publishDraftSuccessText": "Form published successfully!"
+      "publishDraftSuccessText": "Form published successfully!",
+      "saveTemplateSuccessText": "Form template saved successfully!",
+      "deleteTemplateSuccessText": "Form template deleted successfully!"
     },
     "users": {
       "addMemberSuccessText": "Added user successfully!",

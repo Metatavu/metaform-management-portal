@@ -1,13 +1,13 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
 import { Divider, Stack, Tooltip, Typography } from "@mui/material";
-import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVersion, MetaformVersionType } from "generated/client";
+import { Metaform, MetaformFieldType, MetaformMemberGroup, MetaformVersion, MetaformVersionType, Template, TemplateVisibility } from "generated/client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import MetaformUtils from "utils/metaform-utils";
 import MetaformEditor from "components/form-editor/metaform-editor";
 import { NavigationTabContainer } from "styled/layouts/navigations";
 import NavigationTab from "components/layouts/navigations/navigation-tab";
 import strings from "localization/strings";
-import { Preview, Public, Save } from "@mui/icons-material";
+import { Preview, Public, Save, SaveAs, Delete, GetApp } from "@mui/icons-material";
 import { useParams, useNavigate } from "react-router-dom";
 import { ErrorContext } from "components/contexts/error-handler";
 import Api from "api";
@@ -17,6 +17,9 @@ import { RoundActionButton } from "styled/generic/form";
 import { selectMetaform, setMetaformVersion, setMetaformSelectionsUndefined } from "features/metaform-slice";
 import { setSnackbarMessage } from "features/snackbar-slice";
 import ConfirmDialog from "components/generic/confirm-dialog";
+import TemplateDialog from "components/generic/template-dialog";
+import FileUtils from "utils/file-utils";
+import { selectKeycloak } from "features/auth-slice";
 
 /**
  * Draft editor screen component
@@ -28,7 +31,7 @@ const DraftEditorScreen: React.FC = () => {
   const { formSlug, draftId } = params;
 
   const apiClient = useApiClient(Api.getApiClient);
-  const { metaformMemberGroupsApi, metaformsApi, versionsApi } = apiClient;
+  const { metaformMemberGroupsApi, metaformsApi, versionsApi, templatesApi } = apiClient;
 
   const dispatch = useAppDispatch();
   const { metaformVersion } = useAppSelector(selectMetaform);
@@ -36,9 +39,13 @@ const DraftEditorScreen: React.FC = () => {
   const draftForm = MetaformUtils.getDraftForm(metaformVersion);
   const editorRef = useRef<HTMLDivElement>(null);
   const [ loading, setLoading ] = useState(false);
+  const [ savedTemplateId, setSavedTemplateId ] = useState("");
   const [ publishDialogOpen, setPublishDialogOpen ] = useState(false);
+  const [ templateDialogOpen, setTemplateDialogOpen ] = useState(false);
   const [ memberGroups, setMemberGroups ] = useState<MetaformMemberGroup[]>([]);
   const [ hasMemberGroups, setHasMemberGroups ] = useState<boolean>(false);
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const keycloak = useAppSelector(selectKeycloak);
 
   /**
    * Loads MetaformVersion to edit.
@@ -207,6 +214,86 @@ const DraftEditorScreen: React.FC = () => {
   );
 
   /**
+   * Checks if template name is unique
+   *
+   * @param templateTitle string
+   */
+  const checkTemplateNameIsUnique = async (templateTitle: string) => {
+    let currentTemplates = templates;
+    if (!currentTemplates.length) {
+      try {
+        currentTemplates = await templatesApi.listTemplates({
+          visibility: TemplateVisibility.Public
+        });
+        setTemplates(currentTemplates);
+      } catch (e) {
+        errorContext.setError(strings.errorHandling.draftEditorScreen.fetchTemplates, e);
+      }
+    }
+
+    return !currentTemplates.some(template => template.data.title === templateTitle);
+  };
+
+  /**
+   * Saves draft form as a template
+   *
+   * @param templateTitle template title string
+   */
+  const saveTemplate = async (templateTitle: string) => {
+    setTemplateDialogOpen(false);
+    setLoading(true);
+
+    try {
+      const createdTemplate = await templatesApi.createTemplate({
+        template: {
+          visibility: TemplateVisibility.Public,
+          data: {
+            title: templateTitle,
+            sections: draftForm.sections,
+            exportThemeId: draftForm.exportThemeId
+          }
+        }
+      });
+      dispatch(setSnackbarMessage(strings.successSnackbars.draftEditor.saveTemplateSuccessText));
+      setSavedTemplateId(createdTemplate.id!);
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.draftEditorScreen.saveTemplate, e);
+    }
+    setLoading(false);
+  };
+
+  /**
+   * Delete form template
+   *
+   * @param templateId form template string
+   */
+  const deleteTemplate = async (templateId: string) => {
+    try {
+      setLoading(true);
+      await templatesApi.deleteTemplate({
+        templateId: templateId
+      });
+      dispatch(setSnackbarMessage(strings.successSnackbars.draftEditor.deleteTemplateSuccessText));
+      setSavedTemplateId("");
+    } catch (e) {
+      errorContext.setError(strings.errorHandling.draftEditorScreen.deleteTemplate, e);
+    }
+    setLoading(false);
+  };
+
+  /**
+   * Renders dialog for saving template
+   */
+  const renderTemplateDialog = () => (
+    <TemplateDialog
+      onCancel={ () => setTemplateDialogOpen(false) }
+      onSubmit={ saveTemplate }
+      open={ templateDialogOpen }
+      checkTemplateNameIsUnique={ checkTemplateNameIsUnique }
+    />
+  );
+
+  /**
    * Renders draft editor actions
    */
   const draftEditorActions = () => (
@@ -223,6 +310,22 @@ const DraftEditorScreen: React.FC = () => {
       >
         <Typography>{ strings.draftEditorScreen.preview }</Typography>
       </RoundActionButton>
+      {savedTemplateId
+        ? (
+          <RoundActionButton
+            onClick={ () => deleteTemplate(savedTemplateId) }
+            startIcon={ <Delete/> }
+            color="error"
+          >
+            <Typography>{ strings.draftEditorScreen.deleteTemplate }</Typography>
+          </RoundActionButton>)
+        : (
+          <RoundActionButton
+            onClick={ () => setTemplateDialogOpen(true) }
+            startIcon={ <SaveAs/> }
+          >
+            <Typography>{ strings.draftEditorScreen.saveTemplate }</Typography>
+          </RoundActionButton>)}
       <Tooltip title={ strings.draftEditorScreen.editor.form.publishNoMemberGroupsDescription } disableHoverListener={ hasMemberGroups }>
         <span>
           <RoundActionButton
@@ -234,12 +337,20 @@ const DraftEditorScreen: React.FC = () => {
           </RoundActionButton>
         </span>
       </Tooltip>
+      { keycloak?.hasRealmRole("metatavu-admin") &&
+        <RoundActionButton
+          onClick={() => FileUtils.exportToZip(draftForm)}
+          startIcon={<GetApp/>}
+        >
+          <Typography>{ strings.draftEditorScreen.exportToZip }</Typography>
+        </RoundActionButton>}
     </Stack>
   );
 
   return (
     <Stack flex={ 1 } overflow="hidden">
       { renderPublishConfirmDialog() }
+      { renderTemplateDialog() }
       <NavigationTabContainer>
         <NavigationTab
           text={ strings.navigationHeader.editorScreens.draftEditorScreen }

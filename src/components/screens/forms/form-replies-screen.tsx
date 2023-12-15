@@ -49,12 +49,14 @@ const FormRepliesScreen: React.FC = () => {
 
   const [ rows, setRows ] = useState<any[]>([]);
   const [ replies, setReplies ] = useState<Reply[]>([]);
-  const [ filteredRows, setFilteredRows] = useState<any[]>([]);
   const [ columns, setColumns ] = useState<GridColDef[]>([]);
   const [ loading, setLoading ] = useState(false);
   const [ metaform, setMetaform ] = useState<Metaform>();
   const [ deletableReplyId, setDeletableReplyId ] = useState<string | undefined>(undefined);
   const [ showAllReplies, setShowAllReplies ] = useState(false);
+  const resultsPerPage = 25;
+  const [ page, setPage ] = useState(0);
+  const [ totalResults, setTotalResults ] = useState(0);
 
   const useparams = useParams();
   const { formSlug } = useparams;
@@ -73,9 +75,9 @@ const FormRepliesScreen: React.FC = () => {
       return;
     }
 
-    const fieldData = (metaformData.sections || [])
-      .flatMap(section => section.fields || [])
-      .filter(field => (field.contexts || []).includes(FormContext.MANAGEMENT_LIST));
+    const fieldData = (metaformData.sections ?? [])
+      .flatMap(section => section.fields ?? [])
+      .filter(field => (field.contexts ?? []).includes(FormContext.MANAGEMENT_LIST));
     return fieldData;
   };
 
@@ -181,6 +183,7 @@ const FormRepliesScreen: React.FC = () => {
         // eslint-disable-next-line react/no-unstable-nested-components
         getActions: (params: { row: any; }) => [
           <GridActionsCellItem
+            key={ params.row.id }
             icon={ <DeleteIcon/> }
             onClick={ () => setDeletableReplyId(params.row.id) }
             label={ strings.generic.delete }
@@ -203,7 +206,7 @@ const FormRepliesScreen: React.FC = () => {
 
     row.id = reply.id!;
 
-    row.replyStatus = reply.data?.status?.toString() || "";
+    row.replyStatus = reply.data?.status?.toString() ?? "";
 
     fields.forEach(field => {
       const replyData = reply.data;
@@ -224,7 +227,7 @@ const FormRepliesScreen: React.FC = () => {
       switch (field.type) {
         case MetaformFieldType.Select:
         case MetaformFieldType.Radio:
-          row[fieldName] = fieldOptions.find(fieldOption => fieldOption.name === fieldValue.toString())?.text || fieldValue.toString();
+          row[fieldName] = fieldOptions.find(fieldOption => fieldOption.name === fieldValue.toString())?.text ?? fieldValue.toString();
           break;
         default:
           row[fieldName] = replyData[fieldName].toString();
@@ -247,12 +250,14 @@ const FormRepliesScreen: React.FC = () => {
     try {
       const metaformData = await metaformsApi.findMetaform({ metaformSlug: formSlug });
       setMetaform(metaformData);
-      const [ repliesData, fields ] = await Promise.all([
-        repliesApi.listReplies({
+      const [ [repliesData, headers], fields ] = await Promise.all([
+        repliesApi.listRepliesWithHeaders({
           metaformId: metaformData.id!,
-          maxResults: 100,
           latestFirst: true,
-          orderBy: ReplyOrderCriteria.Created
+          orderBy: ReplyOrderCriteria.Created,
+          fields: [`${showAllReplies ? "" : "status:waiting"}`],
+          firstResult: page * resultsPerPage,
+          maxResults: resultsPerPage
         }),
         getManagementListFields(metaformData)
       ]);
@@ -260,9 +265,10 @@ const FormRepliesScreen: React.FC = () => {
       if (!repliesData || !fields) {
         return;
       }
-
       const replyRows = repliesData.map(reply => buildRow(reply, fields));
+
       setReplies(repliesData);
+      setTotalResults(Number(headers.get("Total-Results")));
       setRows(replyRows);
       await setGridColumns(metaformData);
     } catch (e) {
@@ -274,28 +280,7 @@ const FormRepliesScreen: React.FC = () => {
 
   useEffect(() => {
     loadData();
-  }, []);
-
-  /**
-   * Filter replies
-   */
-  const filterRows = () => {
-    if (!rows) {
-      return;
-    }
-
-    const filterableRows = [ ...rows ];
-
-    if (!showAllReplies) {
-      setFilteredRows(filterableRows.filter(row => row.replyStatus === ReplyStatus.WAITING));
-    } else {
-      setFilteredRows(filterableRows);
-    }
-  };
-
-  useEffect(() => {
-    filterRows();
-  }, [ showAllReplies, rows ]);
+  }, [showAllReplies, page]);
 
   /**
    * Deletes a reply
@@ -374,9 +359,9 @@ const FormRepliesScreen: React.FC = () => {
       let newFile = file;
 
       const nameClassifierEntries = metaform.sections?.map(section => section.fields)
-        .flat().filter(field => !!field && !!field.classifiers && field!.title!)
+        .flat().filter(field => !!field && !!field.classifiers && field.title!)
         .map(field => field!.classifiers!.map(classifier => ({ name: field!.title!, classifier: classifier })))
-        .flat() || [];
+        .flat() ?? [];
 
       // eslint-disable-next-line no-restricted-syntax
       for (const script of xlsxScripts) {
@@ -462,10 +447,17 @@ const FormRepliesScreen: React.FC = () => {
         disableSelectionOnClick
         localeText={ fiFI.components.MuiDataGrid.defaultProps.localeText }
         loading={ loading }
-        rows={ filteredRows }
+        rows={ rows }
         columns={ columns }
         getRowId={ row => row.id }
         onRowDoubleClick={ onRowDoubleClick }
+        pagination
+        paginationMode="server"
+        pageSize={ resultsPerPage }
+        page={ page }
+        rowCount={ totalResults }
+        onPageChange={ newPage => setPage(newPage) }
+        rowsPerPageOptions={ [25] }
       />
       { renderDeleteReplyConfirm() }
     </>
