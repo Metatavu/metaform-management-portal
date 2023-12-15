@@ -54,8 +54,9 @@ const FormRepliesScreen: React.FC = () => {
   const [ metaform, setMetaform ] = useState<Metaform>();
   const [ deletableReplyId, setDeletableReplyId ] = useState<string | undefined>(undefined);
   const [ showAllReplies, setShowAllReplies ] = useState(false);
-  const [ resultsPerPage ] = useState(5);
+  const resultsPerPage = 25;
   const [ page, setPage ] = useState(0);
+  const [ totalResults, setTotalResults ] = useState(0);
 
   const useparams = useParams();
   const { formSlug } = useparams;
@@ -249,14 +250,14 @@ const FormRepliesScreen: React.FC = () => {
     try {
       const metaformData = await metaformsApi.findMetaform({ metaformSlug: formSlug });
       setMetaform(metaformData);
-      const [ repliesData, fields ] = await Promise.all([
-        repliesApi.listReplies({
+      const [ [repliesData, headers], fields ] = await Promise.all([
+        repliesApi.listRepliesWithHeaders({
           metaformId: metaformData.id!,
           latestFirst: true,
           orderBy: ReplyOrderCriteria.Created,
           fields: [`${showAllReplies ? "" : "status:waiting"}`],
-          maxResults: 5, // Check the max result what it should be
-          firstResult: page * resultsPerPage + 1
+          firstResult: page * resultsPerPage,
+          maxResults: resultsPerPage
         }),
         getManagementListFields(metaformData)
       ]);
@@ -264,10 +265,10 @@ const FormRepliesScreen: React.FC = () => {
       if (!repliesData || !fields) {
         return;
       }
-
       const replyRows = repliesData.map(reply => buildRow(reply, fields));
-      setReplies(repliesData);
 
+      setReplies(repliesData);
+      setTotalResults(Number(headers.get("Total-Results")));
       setRows(replyRows);
       await setGridColumns(metaformData);
     } catch (e) {
@@ -454,9 +455,9 @@ const FormRepliesScreen: React.FC = () => {
         paginationMode="server"
         pageSize={ resultsPerPage }
         page={ page }
-        rowCount={ ((page + 1) * resultsPerPage) + 1 } // This should have total count
+        rowCount={ totalResults }
         onPageChange={ newPage => setPage(newPage) }
-        rowsPerPageOptions={ [5] }
+        rowsPerPageOptions={ [25] }
       />
       { renderDeleteReplyConfirm() }
     </>
