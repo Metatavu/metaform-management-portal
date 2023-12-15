@@ -32,7 +32,9 @@ const env = cleanEnv(process.env, {
   REACT_APP_SUPPORT_EMAIL: email({ default: "support@metatavu.fi" }),
   REACT_APP_METAFORM_FEATURES: str({ default: "[]" }),
   REACT_APP_LEAVE_SITE_URL: url({ default: undefined }),
-  REACT_APP_FEATURE_CONTACT_EMAIL: str({ default: undefined })
+  REACT_APP_FEATURE_CONTACT_EMAIL: str({ default: undefined }),
+  REACT_APP_EMAIL_DEFAULT_SUBJECT: str({ default: "" }),
+  REACT_APP_EMAIL_DEFAULT_CONTENT: str({ default: "" })
 });
 
 /**
@@ -76,7 +78,11 @@ export default class Config {
       leaveSiteUrl: env.REACT_APP_LEAVE_SITE_URL
     },
     features: env.REACT_APP_METAFORM_FEATURES,
-    featureContactEmail: env.REACT_APP_FEATURE_CONTACT_EMAIL
+    featureContactEmail: env.REACT_APP_FEATURE_CONTACT_EMAIL,
+    email: {
+      defaultSubject: env.REACT_APP_EMAIL_DEFAULT_SUBJECT,
+      defaultContent: env.REACT_APP_EMAIL_DEFAULT_CONTENT
+    }
   });
 
   /**
@@ -266,6 +272,24 @@ export default class Config {
    */
   public static getFeatureContactEmail(): string | undefined {
     return env.REACT_APP_FEATURE_CONTACT_EMAIL;
+  }
+
+  /**
+   * Returns email default subject
+   * 
+   * @returns The email default subject
+   */
+  public static getEmailDefaultSubject(): string {
+    return env.REACT_APP_EMAIL_DEFAULT_SUBJECT;
+  }
+
+  /**
+   * Returns email default content
+   * 
+   * @returns The email default content
+   */
+  public static getEmailDefaultContent(): string {
+    return env.REACT_APP_EMAIL_DEFAULT_CONTENT;
   }
 
 }

@@ -37,6 +37,10 @@ export interface Configuration {
   };
   features: string;
   featureContactEmail: string;
+  email: {
+    defaultSubject: string;
+    defaultContent: string;
+  };
 }
 
 /**
