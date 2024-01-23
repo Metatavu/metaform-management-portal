@@ -21,7 +21,7 @@ const env = cleanEnv(process.env, {
   REACT_APP_EMAIL_URL: url(),
   REACT_APP_THEME_PALETTE_SECONDARY: str({ default: "#f9473b" }),
   REACT_APP_THEME_USE_COLORED_HEADER: str({ default: undefined }),
-  REACT_APP_THEME_FONT_FAMILY_URL: url({ default: "https://fonts.googleapis.com/css2?family=Roboto&display=swap" }),
+  REACT_APP_THEME_FONT_FAMILY_URL: url({ default: undefined }),
   REACT_APP_THEME_FONT_FAMILY: str({ default: "Roboto, sans-serif" }),
   REACT_APP_THEME_FAVICON_URL: url({ default: "https://metatavu.fi/wp-content/uploads/2021/06/cropped-metatavu-favicon.jpg" }),
   REACT_APP_THEME_LOGO_PATH: str({ default: "/images/metaform-logo.png" }),
