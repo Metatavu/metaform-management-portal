@@ -371,20 +371,13 @@ const PublicFormScreen: FC = () => {
    * @param currentMetaform metaform
    */
   const createReply = async (currentMetaform: Metaform) => {
-    setLoading(true);
-    
-    try {
-      const createdReply = await repliesApi.createReply({
-        metaformId: metaformId!,
-        reply: {
-          data: getFormValues(currentMetaform)
-        },
-        replyMode: "CUMULATIVE"
-      });
-      return createdReply;
-    } catch (e) {
-      errorContext.setError(strings.errorHandling.formScreen.saveReply, e);
-    }
+    return repliesApi.createReply({
+      metaformId: metaformId!,
+      reply: {
+        data: getFormValues(currentMetaform)
+      },
+      replyMode: "CUMULATIVE"
+    });
   };
 
   /**
