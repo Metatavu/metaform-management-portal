@@ -1,4 +1,4 @@
-import { AttachmentsApi, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformFromJSON, MetaformSection, MetaformVersion, Reply } from "generated/client";
+import { AttachmentsApi, FieldRule, Metaform, MetaformField, MetaformFieldOption, MetaformFieldSourceType, MetaformFieldType, MetaformFromJSON, MetaformSection, MetaformSectionFromJSON, MetaformVersion, Reply } from "generated/client";
 import { FieldValue } from "metaform-react/types";
 import { Dictionary, MemberGroupPermission } from "types";
 import strings from "localization/strings";
@@ -502,7 +502,7 @@ namespace MetaformUtils {
   export const removeStatusFieldFromForm = (form: Metaform) => {
     const sectionsWithoutStatusField = form.sections?.map(section => {
       const hasNoMetadataFields = section?.fields?.filter(field => !METADATA_FIELD_NAMES.includes(field.name!));
-      const newSection: MetaformSection = jsonToMetaform(section);
+      const newSection = MetaformSectionFromJSON(section);
       newSection.fields = hasNoMetadataFields;
       return newSection;
     });
