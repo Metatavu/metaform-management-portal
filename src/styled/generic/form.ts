@@ -42,11 +42,15 @@ export const MetaformTitle = styled(Typography, {
   label: "metaform-title"
 })(({ theme }) => ({
   textAlign: "center",
+  wordBreak: "break-word",
   fontSize: 36,
   fontWeight: "bold",
   color: theme.palette.text.primary,
   fontFamily: "Arial, sans-serif",
-  marginBottom: theme.spacing(2)
+  marginBottom: theme.spacing(2),
+  "@media(max-width: 510px)": {
+    fontSize: 28
+  }
 }));
 
 /**
