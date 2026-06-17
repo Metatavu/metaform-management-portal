@@ -18,16 +18,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-  dispatch-staging-charts:
-    needs: build-and-push-image
-    environment: develop
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        repository:
-        - Metatavu/eloisa-charts
-        # Add more chart repos here as needed.
-        # - Metatavu/another-charts-repo
     steps:
     - name: Import secrets
       id: import-deployment-secrets
@@ -84,6 +74,25 @@ jobs:
         file: Dockerfile
         tags: ${{ steps.meta.outputs.tags }},${{ env.REGISTRY }}/${{ steps.image_name.outputs.IMAGE_NAME }}:develop
         labels: ${{ steps.meta.outputs.labels }}
+  dispatch-staging-charts:
+    needs: build-and-push-image
+    environment: develop
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repository:
+        - Metatavu/eloisa-charts
+        # Add more chart repos here as needed.
+        # - Metatavu/another-charts-repo
+    steps:
+    - name: Import secrets
+      id: import-deployment-secrets
+      uses: hashicorp/vault-action@v2
+      with:
+        url: ${{ secrets.VAULT_ADDR }}
+        token: ${{ secrets.VAULT_TOKEN }}
+        secrets: |
+          ${{ secrets.VAULT_PATH }} CHARTS_UPDATE_PAT | CHARTS_UPDATE_PAT ;
     - name: Install staging charts
       uses: peter-evans/repository-dispatch@v3
       with:
