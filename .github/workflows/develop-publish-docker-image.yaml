@@ -1,0 +1,92 @@
+name: Update staging UI
+
+on:
+  push:
+    branches:
+    - develop
+  workflow_dispatch:
+
+
+env:
+  REGISTRY: ghcr.io
+  GITHUB_REPOSITORY: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    environment: develop
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+  dispatch-staging-charts:
+    needs: build-and-push-image
+    environment: develop
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repository:
+        - Metatavu/eloisa-charts
+        # Add more chart repos here as needed.
+        # - Metatavu/another-charts-repo
+    steps:
+    - name: Import secrets
+      id: import-deployment-secrets
+      uses: hashicorp/vault-action@v2
+      with:
+        url: ${{ secrets.VAULT_ADDR }}
+        token: ${{ secrets.VAULT_TOKEN }}
+        secrets: |
+          ${{ secrets.VAULT_PATH }} CHARTS_UPDATE_PAT | CHARTS_UPDATE_PAT ;
+          ${{ secrets.VAULT_PATH }} GH_CHECKOUT_SUBMODULE_PAT | GH_CHECKOUT_SUBMODULE_PAT ;
+    - name: Checkout Main Repository
+      uses: actions/checkout@v4
+      with:
+        submodules: false
+    - name: Configure and Checkout Private Submodule
+      run: |
+        git config --global url."https://${{ env.GH_CHECKOUT_SUBMODULE_PAT }}@github.com/".insteadOf "git@github.com:"
+        git submodule sync --recursive
+        git submodule update --init --recursive
+    - name: Resolve docker image name
+      id: image_name
+      run: |
+        echo "IMAGE_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
+    - name: Log in to the Container registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Extract metadata for Docker
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ steps.image_name.outputs.IMAGE_NAME }}
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+    - name: Install dependencies
+      run: npm install
+    - name: Generate client
+      run: npm run build
+    - name: Create develop build
+      env:
+        VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+        VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+        VAULT_PATH: ${{ secrets.VAULT_PATH }}
+      run: npm run build
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        file: Dockerfile
+        tags: ${{ steps.meta.outputs.tags }},${{ env.REGISTRY }}/${{ steps.image_name.outputs.IMAGE_NAME }}:develop
+        labels: ${{ steps.meta.outputs.labels }}
+    - name: Install staging charts
+      uses: peter-evans/repository-dispatch@v3
+      with:
+        repository: ${{ matrix.repository }}
+        event-type: update-staging
+        token: ${{ env.CHARTS_UPDATE_PAT }}
