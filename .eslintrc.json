@@ -21,6 +21,16 @@
     "react",
     "@typescript-eslint"
   ],
+  "overrides": [
+    {
+      "files": [
+        "src/utils/sosmeta-utils.ts"
+      ],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ],
   "rules": {
     "@typescript-eslint/comma-dangle": [
       "error",
