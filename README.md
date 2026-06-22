@@ -66,3 +66,4 @@ Fixes all linting problems reported by ESLint in the project.
 ### `npm run build-client`
 
 Generates API client from the provided specification file into *src/generated/client*
+
