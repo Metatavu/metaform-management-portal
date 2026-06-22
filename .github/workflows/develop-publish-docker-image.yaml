@@ -65,7 +65,29 @@ jobs:
         VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
         VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
         VAULT_PATH: ${{ secrets.VAULT_PATH }}
-      run: npm run build
+      run: |
+        set -euo pipefail
+
+        if [ -z "${VAULT_ADDR}" ] || [ -z "${VAULT_TOKEN}" ] || [ -z "${VAULT_PATH}" ]; then
+          echo "VAULT_ADDR, VAULT_TOKEN and VAULT_PATH are required"
+          exit 1
+        fi
+
+        VAULT_URL="${VAULT_ADDR%/}/v1/${VAULT_PATH#/}"
+        RESPONSE="$(curl -sS -H "X-Vault-Token: ${VAULT_TOKEN}" "${VAULT_URL}")"
+
+        if ! echo "${RESPONSE}" | jq -e '.data.data' >/dev/null; then
+          echo "Failed to read Vault data from ${VAULT_URL}"
+          echo "${RESPONSE}"
+          exit 1
+        fi
+
+        echo "Exporting REACT_APP_* variables from Vault to GitHub environment"
+        while IFS= read -r line; do
+          echo "${line}" >> "${GITHUB_ENV}"
+        done < <(echo "${RESPONSE}" | jq -r '.data.data | to_entries[] | select(.key | startswith("REACT_APP_")) | "\(.key)=\(.value)"')
+
+        npm run build
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
