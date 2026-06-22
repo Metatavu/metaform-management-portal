@@ -82,10 +82,31 @@ jobs:
           exit 1
         fi
 
-        echo "Exporting REACT_APP_* variables from Vault to GitHub environment"
-        while IFS= read -r line; do
-          echo "${line}" >> "${GITHUB_ENV}"
-        done < <(echo "${RESPONSE}" | jq -r '.data.data | to_entries[] | select(.key | startswith("REACT_APP_")) | "\(.key)=\(.value)"')
+        echo "Exporting REACT_APP_* variables from Vault"
+        EXPORTED_COUNT=0
+        while IFS= read -r entry; do
+          key="$(echo "${entry}" | base64 -d | jq -r '.key')"
+          value="$(echo "${entry}" | base64 -d | jq -r '.value')"
+
+          # Export for this shell so npm build sees these immediately.
+          export "${key}=${value}"
+
+          # Persist for following workflow steps, preserving special characters.
+          {
+            echo "${key}<<__EOF__"
+            echo "${value}"
+            echo "__EOF__"
+          } >> "${GITHUB_ENV}"
+
+          EXPORTED_COUNT=$((EXPORTED_COUNT + 1))
+        done < <(echo "${RESPONSE}" | jq -r '.data.data | to_entries[] | select(.key | startswith("REACT_APP_")) | @base64')
+
+        if [ "${EXPORTED_COUNT}" -eq 0 ]; then
+          echo "No REACT_APP_* keys found in Vault path ${VAULT_PATH}"
+          exit 1
+        fi
+
+        echo "Exported ${EXPORTED_COUNT} REACT_APP_* variables"
 
         npm run build
     - name: Build and push Docker image
