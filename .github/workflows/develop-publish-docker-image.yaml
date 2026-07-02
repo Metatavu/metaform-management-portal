@@ -124,7 +124,7 @@ jobs:
     strategy:
       matrix:
         repository:
-        - Metatavu/eloisa-charts
+        - Metatavu/eloisa-metaform-charts
         # Add more chart repos here as needed.
         # - Metatavu/another-charts-repo
     steps:
