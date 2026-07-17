@@ -203,25 +203,22 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   }, [userLogin, adminLogin]);
 
   React.useEffect(() => {
-    if (keycloak && !accessToken && adminLogin) {
-      loginKeycloak(keycloak);
-    }
-  }, [keycloak, adminLogin, accessToken]);
-
-  React.useEffect(() => {
     if (adminLogin || userLogin) {
       const keycloakInstance = new Keycloak(authConfig);
 
-      keycloakInstance.init({ onLoad: "check-sso", checkLoginIframe: false }).then(() => {
+      keycloakInstance.init({ onLoad: "check-sso", checkLoginIframe: false }).then(authenticated => {
         dispatch(setKeycloak(keycloakInstance));
-        
-        const { token } = keycloakInstance;
-        if (token) {
-          dispatch(setAccessToken(token));
+
+        if (authenticated && keycloakInstance.token) {
+          dispatch(setAccessToken(keycloakInstance.token));
+        } else if (adminLogin) {
+          keycloakInstance.login();
         }
+      }).catch(error => {
+        errorContext.setError(strings.errorHandling.authentication, error);
       });
     }
-  }, [adminLogin, userLogin]);
+  }, [adminLogin, userLogin, errorContext]);
 
   /**
    * Dispatches Keycloak to Redux
