@@ -44,13 +44,6 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   const accessToken = useAppSelector(selectAccessToken);
   const anonymousAccessToken = useAppSelector(selectAnonymousAccessToken);
   const keycloak = useAppSelector(selectKeycloak);
-
-  /**
-   * Returns the current route without an OIDC callback fragment.
-   *
-   * @returns clean redirect URI
-   */
-  const getRedirectUri = () => `${window.location.origin}${window.location.pathname}${window.location.search}`;
  
   /**
    * Builds access token object from login data
@@ -117,12 +110,9 @@ const AuthenticationProvider: React.FC = ({ children }) => {
         dispatch(setAccessToken(keycloakInstance.token));
       } else {
         if (adminLogin) {
-          await keycloakInstance.login({ redirectUri: getRedirectUri() });
+          await keycloakInstance.login();
         } else {
-          await keycloakInstance.login({
-            idpHint: Config.get().form.idpHint,
-            redirectUri: getRedirectUri()
-          });
+          await keycloakInstance.login({ idpHint: Config.get().form.idpHint });
         }
 
         await keycloakInstance.loadUserProfile();
@@ -213,30 +203,25 @@ const AuthenticationProvider: React.FC = ({ children }) => {
   }, [userLogin, adminLogin]);
 
   React.useEffect(() => {
+    if (keycloak && !accessToken && adminLogin) {
+      loginKeycloak(keycloak);
+    }
+  }, [keycloak, adminLogin, accessToken]);
+
+  React.useEffect(() => {
     if (adminLogin || userLogin) {
       const keycloakInstance = new Keycloak(authConfig);
 
-      keycloakInstance.init({
-        redirectUri: getRedirectUri(),
-        onLoad: "check-sso",
-        checkLoginIframe: false
-      }).then(async authenticated => {
+      keycloakInstance.init({ onLoad: "check-sso", checkLoginIframe: false }).then(() => {
         dispatch(setKeycloak(keycloakInstance));
 
-        if (window.location.hash) {
-          window.history.replaceState({}, document.title, getRedirectUri());
+        const { token } = keycloakInstance;
+        if (token) {
+          dispatch(setAccessToken(token));
         }
-
-        if (authenticated && keycloakInstance.token) {
-          dispatch(setAccessToken(keycloakInstance.token));
-        } else if (adminLogin) {
-          await keycloakInstance.login({ redirectUri: getRedirectUri() });
-        }
-      }).catch(error => {
-        errorContext.setError(strings.errorHandling.authentication, error);
       });
     }
-  }, [adminLogin, userLogin, errorContext]);
+  }, [adminLogin, userLogin]);
 
   /**
    * Dispatches Keycloak to Redux
