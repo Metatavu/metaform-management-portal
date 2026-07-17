@@ -42,8 +42,8 @@ const App: React.FC = () => {
         <link href={ Config.get().theme.fontFamilyUrl } rel="stylesheet"/>
       </Helmet>
       <BrowserRouter>
-        <AuthenticationProvider>
-          <ErrorHandler>
+        <ErrorHandler>
+          <AuthenticationProvider>
             <ConfirmHandler>
               <BasicLayout>
                 <Routes>
@@ -102,8 +102,8 @@ const App: React.FC = () => {
                 </Routes>
               </BasicLayout>
             </ConfirmHandler>
-          </ErrorHandler>
-        </AuthenticationProvider>
+          </AuthenticationProvider>
+        </ErrorHandler>
       </BrowserRouter>
     </>
 

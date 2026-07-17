@@ -206,13 +206,13 @@ const AuthenticationProvider: React.FC = ({ children }) => {
     if (adminLogin || userLogin) {
       const keycloakInstance = new Keycloak(authConfig);
 
-      keycloakInstance.init({ onLoad: "check-sso", checkLoginIframe: false }).then(authenticated => {
+      keycloakInstance.init({ onLoad: "check-sso", checkLoginIframe: false }).then(async authenticated => {
         dispatch(setKeycloak(keycloakInstance));
 
         if (authenticated && keycloakInstance.token) {
           dispatch(setAccessToken(keycloakInstance.token));
         } else if (adminLogin) {
-          keycloakInstance.login();
+          await keycloakInstance.login();
         }
       }).catch(error => {
         errorContext.setError(strings.errorHandling.authentication, error);
