@@ -30,7 +30,7 @@
     "immer": "^9.0.15",
     "jszip": "^3.10.1",
     "jwt-decode": "^3.1.2",
-    "keycloak-js": "^19.0.1",
+    "keycloak-js": "^26.2.4",
     "localized-strings": "^0.2.4",
     "luxon": "^2.5.2",
     "moment": "^2.29.4",

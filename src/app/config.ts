@@ -49,7 +49,7 @@ export default class Config {
    */
   public static get = (): Configuration => ({
     auth: {
-      url: env.REACT_APP_KEYCLOAK_URL,
+      url: env.REACT_APP_KEYCLOAK_URL.replace(/\/auth\/?$/, ""),
       realm: env.REACT_APP_KEYCLOAK_REALM,
       clientId: env.REACT_APP_KEYCLOAK_CLIENT_ID
     },

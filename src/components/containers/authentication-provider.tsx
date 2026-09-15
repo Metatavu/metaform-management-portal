@@ -214,7 +214,7 @@ const AuthenticationProvider: React.FC = ({ children }) => {
 
       keycloakInstance.init({ onLoad: "check-sso", checkLoginIframe: false }).then(() => {
         dispatch(setKeycloak(keycloakInstance));
-        
+
         const { token } = keycloakInstance;
         if (token) {
           dispatch(setAccessToken(token));
